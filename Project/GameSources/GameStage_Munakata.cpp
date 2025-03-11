@@ -30,6 +30,7 @@ namespace basecross {
 
 	void GameStage::OnCreate() {
 		try {
+			///wow
 			//ビューとライトの作成
 			CreateViewLight();
 		}
