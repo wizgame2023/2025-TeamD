@@ -48,6 +48,7 @@ namespace basecross{
 		else {
 			int result = MessageBox(NULL, L"Key Not Found. key : ", L"ERROR", MB_OK);
 		}
+		return nullptr;
 	}
 	shared_ptr<SoundItem> SoundManager::PlayBGM(const wstring& key, const float volume) {
 		if (m_Audio == nullptr) {
