@@ -5,9 +5,47 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Character.h"
 
 namespace basecross{
 
+	void Character::OnCreate()
+	{
+		GameObject::OnCreate();
+	}
+	void Character::OnUpdate()
+	{
+		GameObject::OnUpdate();
+	}
+	void Character::OnDraw()
+	{
+		GameObject::OnDraw();
+	}
 
+
+	FixedBox::FixedBox(const shared_ptr<Stage>& stage):
+		GameObject(stage)
+	{
+	}
+	FixedBox::~FixedBox(){}
+
+	void FixedBox::OnCreate()
+	{
+		//‰ŠúˆÊ’u‚Ìİ’è
+		auto ptr = AddComponent<Transform>();
+		ptr->SetPosition(Vec3(0));
+		ptr->SetRotation(Vec3(0));
+		ptr->SetScale(Vec3(50.0f,0.5f,50.0f));
+
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(true);//debug
+
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+
+	}
 }
 //end basecross

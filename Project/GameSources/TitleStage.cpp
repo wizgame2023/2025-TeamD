@@ -1,6 +1,6 @@
 /*!
-@file GameStage.cpp
-@brief ゲームステージ実体
+@file TitleScne.cpp
+@brief タイトルシーン実体
 */
 
 #include "stdafx.h"
@@ -11,7 +11,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	void GameStageK::CreateViewLight() {
+	void TitleStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
@@ -26,38 +26,28 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
-	void GameStageK::CreatePlayer()
-	{
-		//配列の初期化
-		vector< vector<Vec3> > vec = {
-			{
-				Vec3(0.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-		};
-		//オブジェクトの作成
-		for (auto v : vec) {
-			AddGameObject<Player>(v[0], v[1], v[2]);
-		}
-
-	}
-
-	void GameStageK::CreateEnemy()
-	{
-	}
-
-	void GameStageK::OnCreate() {
+	void TitleStage::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			AddGameObject<FixedBox>();
-			CreatePlayer();
+			OnUpdate();
+			Which = false;
 		}
 		catch (...) {
 			throw;
 		}
 	}
 
+	void TitleStage::OnUpdate() {
+		m_InputHandler.PushHandle(GetThis<TitleStage>());
+		auto& app = App::GetApp();
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (Which) OnPushA();
+	}
+
+	void TitleStage::OnPushA() {
+		//ボタンを押されたらtrue
+		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+	}
+
 }
-//end basecross
