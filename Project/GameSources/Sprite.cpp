@@ -375,6 +375,7 @@ namespace basecross{
 	}
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
 		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
+		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
 		if (selectedTex != L"" && button == nullptr) {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group,selectedTex);
@@ -388,9 +389,14 @@ namespace basecross{
 	}
 	void ButtonManager::OnCreate() {
 		instance = GetThis<ButtonManager>();
+		AddTag(L"Manager");
 	}
 	void ButtonManager::OnUpdate() {
 		if (!m_IsActive) return;
+		if (!ExistOpenGroup()) {
+			m_IsActive = false;
+			return;
+		}
 		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return;
 		if (!m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->GetActive()) {
 			if (m_SelectIndexes[m_UsingGroup] > 0) {
