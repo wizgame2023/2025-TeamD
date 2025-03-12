@@ -103,19 +103,20 @@ namespace basecross {
 		{
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				m_PlayerStateNum = PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::ZONE;
 			}
 		}
 		else {
 			m_EnergyCharge += 0.01f;
 		}
 
-		if (m_PlayerStateNum == PlayerState::ZONE)
+		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f)
 			{
-				m_PlayerStateNum = PlayerState::NORMAL;
+				m_PlayerStateNum -= PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
 				m_EnergyCharge = 0;
 			}
@@ -129,15 +130,17 @@ namespace basecross {
 		wstringstream wss(L"");
 		wss << L"\nZoneCharge : "
 			<< m_EnergyCharge
+			<< L"\HP : "
+			<< m_HP
 			<< endl;
 		scene->SetDebugString(wss.str());
 	}
 
 	void Player::PlayerHit()
 	{
-		if (m_PlayerStateNum == PlayerState::GUARD)
+		if ((m_PlayerStateNum & PlayerState::GUARD) == 1)
 		{
-			
+			m_HP -= 0;
 		}
 		else {
 			m_HP -= 1;
@@ -147,6 +150,11 @@ namespace basecross {
 	Vec3 Player::GetForward()
 	{
 		return GetComponent<Transform>()->GetForward();
+	}
+
+	int Player::GetStates()
+	{
+		return m_PlayerStateNum;
 	}
 
 	void Player::OnCreate()
@@ -186,7 +194,14 @@ namespace basecross {
 		MovePlayer();
 		ZoneActivation();
 		Debug();
-
+		if (cntlVec[0].wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+		{
+			m_PlayerStateNum += PlayerState::GUARD;
+		}
+		else
+		{
+			m_PlayerStateNum -= PlayerState::GUARD;
+		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
@@ -237,7 +252,8 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-		if (player->m_PlayerStateNum != Player::PlayerState::ZONE) {
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
 			m_speed = 12.0f;
 		}
