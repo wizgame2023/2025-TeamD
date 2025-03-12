@@ -133,6 +133,17 @@ namespace basecross {
 		scene->SetDebugString(wss.str());
 	}
 
+	void Player::PlayerHit()
+	{
+		if (m_PlayerStateNum == PlayerState::GUARD)
+		{
+			
+		}
+		else {
+			m_HP -= 1;
+		}
+	}
+
 	Vec3 Player::GetForward()
 	{
 		return GetComponent<Transform>()->GetForward();

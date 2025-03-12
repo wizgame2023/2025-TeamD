@@ -38,6 +38,7 @@ namespace basecross {
 		void MovePlayer();
 		void ZoneActivation();
 		void Debug();
+		void PlayerHit();
 		Vec3 GetForward();
 	};
 
