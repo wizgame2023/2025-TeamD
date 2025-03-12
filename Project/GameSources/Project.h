@@ -12,6 +12,7 @@
 #include "GameStage.h"
 #include "Character.h"
 #include "Player.h"
+#include "Enemy.h"
 #include "SoundManager.h"
 #include "GameStage_Munakata.h"
 #include "GameStage_Kamata.h"
