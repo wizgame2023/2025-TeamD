@@ -14,7 +14,8 @@ namespace basecross{
 		Vec3 m_Position;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;
-
+		float m_EnergyCharge;
+		float m_ZoneTime;
 	public:
 		int m_PlayerStateNum;
 		enum PlayerState
@@ -35,6 +36,8 @@ namespace basecross{
 		Vec2 GetInputState() const;
 		Vec3 GetMoveVector();
 		void MovePlayer();
+		void ZoneActivation();
+		void Debug();
 	};
 
 	class HitSphere : public GameObject

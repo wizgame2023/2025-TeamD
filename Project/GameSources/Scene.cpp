@@ -10,7 +10,6 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	繧ｲ繝ｼ繝繧ｷ繝ｼ繝ｳ
 	//--------------------------------------------------------------------------------------
 	void Scene::OnCreate() {
 		try {
@@ -37,7 +36,7 @@ namespace basecross {
 			ResetActiveStage<TitleStage>();
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
-			//最初のアクティブステージの設定
+			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>();
     }
 		else if (event->m_MsgStr == L"ToGameStageM") {
@@ -46,6 +45,11 @@ namespace basecross {
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
 			ResetActiveStage<GameStageK>();
 		}
+		else if (event->m_MsgStr == L"ToGameStageSatou") {
+			//最初のアクティブステージの設定
+			ResetActiveStage<GameStageS>();
+		}
+
 	}
 
 }
