@@ -100,10 +100,10 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
       <Filter>Sources</Filter>
-      </ClInclude>
+      </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
       <Filter>TitleScene</Filter>
-      </ClInclude>
+      </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
