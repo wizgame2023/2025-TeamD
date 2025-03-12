@@ -548,7 +548,14 @@ namespace basecross{
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
-
+		bool ExistOpenGroup() {
+			for (auto& buttons : m_ButtonGroup) {
+				if (buttons.second[0]->GetDrawActive()) {
+					return true;
+				}
+			}
+			return false;
+		}
 		int GetSize(const wstring& group) {
 			if (m_InputDates.find(group) != end(m_InputDates)) {
 				return m_ButtonGroup[group].size();
@@ -605,7 +612,6 @@ namespace basecross{
 			for (auto& buttons : m_ButtonGroup) {
 				Close(buttons.first);
 			}
-			SetActive(false);
 		}
 		void OpenAndUse(const wstring& group) {
 			Open(group);
@@ -625,6 +631,7 @@ namespace basecross{
 					button->Close();
 				}
 				m_SelectIndexes[group] = 0;
+				SetActive(false);
 			}
 		}
 		void SetActive(bool flag) {
