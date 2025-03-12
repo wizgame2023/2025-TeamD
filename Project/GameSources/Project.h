@@ -16,4 +16,5 @@
 #include "GameStage_Munakata.h"
 #include "GameStage_Kamata.h"
 #include "GameStage_Satou.h"
+#include "TitleStage.h"
 
