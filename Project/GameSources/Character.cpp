@@ -31,6 +31,7 @@ namespace basecross{
 
 	void FixedBox::OnCreate()
 	{
+		Wicth_FixedBox = true;
 		//初期位置の設定
 		auto ptr = AddComponent<Transform>();
 		ptr->SetPosition(Vec3(0));
@@ -40,6 +41,7 @@ namespace basecross{
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(Wicth_FixedBox);
 
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -47,5 +49,32 @@ namespace basecross{
 
 
 	}
+
+	Wall::Wall(const shared_ptr<Stage>& stage) :
+		GameObject(stage)
+	{
+	}
+	Wall::~Wall() {}
+
+	void Wall::OnCreate()
+	{
+		Wicth_Wall = true;
+		//初期位置の設定
+		auto ptr = AddComponent<Transform>();
+		ptr->SetPosition(Vec3(0.0f, 0.0f,5.0f));
+		ptr->SetRotation(Vec3(0));
+		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
+
+		//CollisionSphere衝突判定を付ける
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(Wicth_Wall);
+		//描画設定
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+
+	}
+
 }
 //end basecross
