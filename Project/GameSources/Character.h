@@ -13,9 +13,9 @@ namespace basecross{
 		int m_HP;
 
 		Character(const shared_ptr<Stage>& stage) :
-			GameObject(stage) 
+			GameObject(stage) ,m_HP(0)
 		{};
-		~Character() {};
+		virtual ~Character() {};
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;

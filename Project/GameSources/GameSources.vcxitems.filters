@@ -19,6 +19,12 @@
     <Filter Include="Sprite">
       <UniqueIdentifier>{72e70f84-eb12-4e21-a45e-24815ba3a84c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Enemy">
+      <UniqueIdentifier>{f7cf3f0c-40ff-49cd-a58d-cdbc266332a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ballet">
+      <UniqueIdentifier>{8ba9bc39-057d-4b3c-8d36-ff3d94759d2c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -54,14 +60,20 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
-      <Filter>Headers</Filter>
-      </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
       <Filter>TitleScene</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h">
+      <Filter>Ballet</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -98,14 +110,20 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
-      <Filter>Sources</Filter>
-      </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
       <Filter>TitleScene</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp">
+      <Filter>Ballet</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

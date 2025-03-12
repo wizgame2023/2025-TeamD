@@ -393,6 +393,10 @@ namespace basecross{
 	}
 	void ButtonManager::OnUpdate() {
 		if (!m_IsActive) return;
+		if (!ExistOpenGroup()) {
+			m_IsActive = false;
+			return;
+		}
 		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return;
 		if (!m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->GetActive()) {
 			if (m_SelectIndexes[m_UsingGroup] > 0) {

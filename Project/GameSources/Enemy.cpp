@@ -5,16 +5,14 @@
 
 #include "stdafx.h"
 #include "Project.h"
-#include "Enemy.h"
 
 namespace basecross {
-	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
+	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Character(stage),
 		m_Position(position),
-		m_Rotation(rotation),
-		m_Scale(scale)
-	{
-	}
+		m_Rotation(Vec3()),
+		m_Scale(scale){}
+
 	Enemy::~Enemy()
 	{
 	}
@@ -22,10 +20,10 @@ namespace basecross {
 	{
 		m_HP = 3;
 		//èâä˙à íuÇÃê›íË
-		auto ptr = AddComponent<Transform>();
-		ptr->SetPosition(m_Position);
-		ptr->SetRotation(m_Rotation);
-		ptr->SetScale(m_Scale);
+		m_Transform = AddComponent<Transform>();
+		m_Transform->SetPosition(m_Position);
+		m_Transform->SetRotation(m_Rotation);
+		m_Transform->SetScale(m_Scale);
 
 		//CollisionSphereè’ìÀîªíËÇïtÇØÇÈ
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -48,9 +46,16 @@ namespace basecross {
 	{
 		if (m_HP <= 0)
 		{
-			SetDrawActive(false);
-			SetUpdateActive(false);
+			GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
 		}
+	}
+	Vec3 Enemy::GetDirectionToIntruder() {
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		offset = offset.normalize();
+		return offset;
 	}
 	void Enemy::OnDraw()
 	{
