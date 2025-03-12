@@ -10,6 +10,8 @@ namespace basecross{
 	class Character : public GameObject
 	{
 	public:
+		int m_HP;
+
 		Character(const shared_ptr<Stage>& stage) :
 			GameObject(stage) 
 		{};

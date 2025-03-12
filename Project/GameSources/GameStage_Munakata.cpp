@@ -25,16 +25,114 @@ namespace basecross {
 		//デフォルトのライティングを指定
 		PtrMultiLight->SetDefaultLighting();
 	}
+	void GameStageM::CreateResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
 
+		app->RegisterTexture(L"POSE_TITLE",uiPath +  L"BackToTitle.png");
+		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
+		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
+		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
+		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
 
+	}
+	void GameStageM::CreatePose() {
+		//タイトル
+		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f,150.0f,0.0f), Vec2(200,50),
+			[](shared_ptr<Stage> stage) {
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+			});
+		//やめる
+		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
+			[](shared_ptr<Stage> stage) {
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+			});
+		//再開
+		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+			[](shared_ptr<Stage> stage) {
+				auto currentStage = static_pointer_cast<GameStageM>(stage);
+				currentStage->ClosePose();
+			});
+		//サウンド
+		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
+			[](shared_ptr<Stage> stage) {
+				auto currentStage = static_pointer_cast<GameStageM>(stage);
+				ButtonManager::instance->Close(L"POSE");
+				ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
+			});
 
+		ButtonManager::instance->SetInput(L"POSE",InputData(StickMode::LY,1,0.1f));
+		ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
+		ClosePose();
+	}
+	void GameStageM::CreateSoundTest() {
+		//SE
+		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
+			[](shared_ptr<Stage> stage) {
+				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+				if (press & XINPUT_GAMEPAD_DPAD_UP) {
+					SoundManager::Instance().SEVolumeUp(0.1f);
+				}
+				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+					SoundManager::Instance().SEVolumeDown(0.1f);
+				}
+			});
+		//BGM
+		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+			[](shared_ptr<Stage> stage) {
+				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+				if (press & XINPUT_GAMEPAD_DPAD_UP) {
+					SoundManager::Instance().SEVolumeUp(0.1f);
+				}
+				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+					SoundManager::Instance().SEVolumeDown(0.1f);
+				}
+			});
+
+		ButtonManager::instance->SetInput(L"SOUND_TEST", InputData(StickMode::LY, 1, 0.1f));
+		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_UP);
+		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_DOWN);
+
+		ButtonManager::instance->Close(L"SOUND_TEST");
+	}
+	void GameStageM::ClosePose() {
+		m_IsPose = false;
+		ButtonManager::instance->Close(L"POSE");
+	}
+	void GameStageM::OpenPose() {
+		m_IsPose = true;
+		ButtonManager::instance->Close(L"SOUND_TEST");
+		ButtonManager::instance->OpenAndUse(L"POSE");
+	}
 	void GameStageM::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
+			AddGameObject<ButtonManager>();
+			CreateResource();
+			CreatePose();
+			CreateSoundTest();
 		}
 		catch (...) {
 			throw;
+		}
+	}
+	
+	void GameStageM::OnUpdate() {
+		auto& app = App::GetApp();
+
+		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
+				OpenPose();
+			}
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
+				SoundManager::Instance().PlaySE(L"TEST");
+			}
 		}
 	}
 
