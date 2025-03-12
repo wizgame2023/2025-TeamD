@@ -10,12 +10,17 @@ namespace basecross {
 	class Character;
 	class Enemy : public Character
 	{
+		//“ü—Íƒnƒ“ƒhƒ‰[
+		Vec3 m_Position;
+		Vec3 m_Rotation;
+		Vec3 m_Scale;
 	public:
-		Enemy(const shared_ptr<Stage>& stage);
+		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
 		~Enemy();
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-		virtual void OnDraw() override;
+		virtual void OnCreate();
+		virtual void OnUpdate();
+		virtual void OnDraw();
+		void OnCollisionEnter(shared_ptr<GameObject>& other);
 	private:
 
 	};

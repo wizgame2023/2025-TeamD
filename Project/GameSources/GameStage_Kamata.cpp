@@ -12,7 +12,7 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStageK::CreateViewLight() {
-		const Vec3 eye(0.0f, 5.0f, -5.0f);
+		const Vec3 eye(0.0f, 10.0f, -10.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
@@ -28,6 +28,7 @@ namespace basecross {
 
 	void GameStageK::CreatePlayer()
 	{
+		shared_ptr<GameObject> player;
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
@@ -38,13 +39,26 @@ namespace basecross {
 		};
 		//オブジェクトの作成
 		for (auto v : vec) {
-			AddGameObject<Player>(v[0], v[1], v[2]);
+			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
-
+		SetSharedGameObject(L"Player", player);
 	}
 
 	void GameStageK::CreateEnemy()
 	{
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		//オブジェクトの作成
+		for (auto v : vec) {
+			AddGameObject<Enemy>(v[0], v[1], v[2]);
+		}
+
 	}
 
 	void GameStageK::OnCreate() {
@@ -53,6 +67,7 @@ namespace basecross {
 			CreateViewLight();
 			AddGameObject<FixedBox>();
 			CreatePlayer();
+			CreateEnemy();
 		}
 		catch (...) {
 			throw;
