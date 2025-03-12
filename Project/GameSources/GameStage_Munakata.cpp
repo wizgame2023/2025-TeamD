@@ -11,7 +11,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	void GameStage::CreateViewLight() {
+	void GameStageM::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
@@ -28,7 +28,7 @@ namespace basecross {
 
 
 
-	void GameStage::OnCreate() {
+	void GameStageM::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
