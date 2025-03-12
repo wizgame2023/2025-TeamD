@@ -11,7 +11,10 @@ namespace basecross {
 		Character(stage),
 		m_Position(position),
 		m_Rotation(rotation),
-		m_Scale(scale)
+		m_Scale(scale),
+		m_EnergyCharge(0.0f),
+		m_PlayerStateNum(PlayerState::NORMAL),
+		m_ZoneTime(0.0f)
 	{
 	}
 	Player::~Player()
@@ -92,6 +95,44 @@ namespace basecross {
 		}
 	}
 
+	void Player::ZoneActivation()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (m_EnergyCharge > 1.0)
+		{
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
+			{
+				m_PlayerStateNum = PlayerState::ZONE;
+			}
+		}
+		else {
+			m_EnergyCharge += 0.01f;
+		}
+
+		if (m_PlayerStateNum == PlayerState::ZONE)
+		{
+			m_ZoneTime += elapsedTime;
+			if (m_ZoneTime > 5.0f)
+			{
+				m_PlayerStateNum = PlayerState::NORMAL;
+				m_ZoneTime = 0;
+				m_EnergyCharge = 0;
+			}
+		}
+
+	}
+
+	void Player::Debug()
+	{
+		auto scene = App::GetApp()->GetScene<Scene>();
+		wstringstream wss(L"");
+		wss << L"\nZoneCharge : "
+			<< m_EnergyCharge
+			<< endl;
+		scene->SetDebugString(wss.str());
+	}
+
 
 	void Player::OnCreate()
 	{
@@ -128,7 +169,9 @@ namespace basecross {
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		MovePlayer();
-		
+		ZoneActivation();
+		Debug();
+
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
@@ -141,11 +184,11 @@ namespace basecross {
 		Character::OnDraw();
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation) : 
-		GameObject(stage), 
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation) :
+		GameObject(stage),
 		m_HitPosition(position),
 		m_HitRotation(rotation),
-		m_HitScale(Vec3(1,1,1)), 
+		m_HitScale(Vec3(1, 1, 1)),
 		m_FlyingTime(1.0f),
 		m_totalTime(0.0f),
 		m_speed(12.0f)
@@ -178,11 +221,13 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-		if (player->m_PlayerStateNum != Player::PlayerState::ZONE){
+		if (player->m_PlayerStateNum != Player::PlayerState::ZONE) {
 			m_FlyingTime = 0.1f;
+			m_speed = 12.0f;
 		}
 		else {
 			m_FlyingTime = 1.0f;
+			m_speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_totalTime)
