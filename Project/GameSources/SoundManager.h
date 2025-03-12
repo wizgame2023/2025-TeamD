@@ -33,17 +33,27 @@ namespace basecross{
 		void StopAll();
 		void StopBGM();
 
+		float GetSEVolume() {
+			return m_SEVolume;
+		}
+		float GetBGMVolume() {
+			return m_BGMVolume;
+		}
 		void SEVolumeDown(float volume) {
 			m_SEVolume -= volume;
+			m_SEVolume = max(m_SEVolume, 0.0f);
 		}
 		void SEVolumeUp(float volume) {
 			m_SEVolume += volume;
+			m_SEVolume = min(m_SEVolume, 1.0f);
 		}
 		void BGMVolumeDown(float volume) {
 			m_BGMVolume -= volume;
+			m_BGMVolume = max(m_BGMVolume, 0);
 		}
 		void BGMVolumeUp(float volume) {
 			m_BGMVolume += volume;
+			m_BGMVolume = min(m_BGMVolume, 1.0f);
 		}
 	};
 
