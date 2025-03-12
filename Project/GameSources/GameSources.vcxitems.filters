@@ -13,6 +13,9 @@
     <Filter Include="Sound">
       <UniqueIdentifier>{17070322-e32c-47ea-a580-768fa1d55ae8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="TitleScene">
+      <UniqueIdentifier>{dd7a3a79-da0e-4500-ad8d-3e4eaf0051aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -50,6 +53,8 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
       <Filter>Headers</Filter>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
+      <Filter>TitleScene</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -88,6 +93,8 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
       <Filter>Sources</Filter>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
+      <Filter>TitleScene</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
