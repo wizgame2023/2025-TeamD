@@ -15,7 +15,7 @@ namespace basecross{
 	}
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
-		//RegisterSound(L"BOMB_SD", L"Bomb.wav");
+		RegisterSound(L"TEST", L"CheckPoint.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";

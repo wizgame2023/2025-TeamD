@@ -1,6 +1,6 @@
 /*!
 @file Project.h
-@brief コンテンツ用のヘッダをまとめる
+@brief 繧ｳ繝ｳ繝�繝ｳ繝�逕ｨ縺ｮ繝倥ャ繝繧偵∪縺ｨ繧√ｋ
 */
 
 #pragma once
@@ -17,4 +17,6 @@
 #include "GameStage_Munakata.h"
 #include "GameStage_Kamata.h"
 #include "GameStage_Satou.h"
+#include "TitleStage.h"
+#include "Sprite.h"
 
