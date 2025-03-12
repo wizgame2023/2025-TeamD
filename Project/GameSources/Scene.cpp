@@ -36,7 +36,7 @@ namespace basecross {
 			//最初のアクティブステージの設定
 			ResetActiveStage<TitleStage>();
 		}
-		else if (event->m_MsgStr == L"ToGameStage") {
+		if (event->m_MsgStr == L"ToGameStage") {
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>();
 		}
@@ -44,6 +44,11 @@ namespace basecross {
 			//最初のアクティブステージの設定
 			ResetActiveStage<GameStageK>();
 		}
+		if (event->m_MsgStr == L"ToGameStageSatou") {
+			//最初のアクティブステージの設定
+			ResetActiveStage<GameStageS>();
+		}
+
 	}
 
 }
