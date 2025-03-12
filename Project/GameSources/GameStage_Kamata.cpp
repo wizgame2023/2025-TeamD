@@ -26,12 +26,33 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
+	void GameStageK::CreatePlayer()
+	{
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		//オブジェクトの作成
+		for (auto v : vec) {
+			AddGameObject<Player>(v[0], v[1], v[2]);
+		}
 
+	}
+
+	void GameStageK::CreateEnemy()
+	{
+	}
 
 	void GameStageK::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
+			AddGameObject<FixedBox>();
+			CreatePlayer();
 		}
 		catch (...) {
 			throw;
