@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<Camera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -32,6 +32,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
 
 		app->RegisterTexture(L"POSE_TITLE",uiPath +  L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -41,6 +42,8 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+
+		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
 	}
 	/// <summary>
@@ -141,6 +144,8 @@ namespace basecross {
 		for (auto v : vec) {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
+		auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+		camera->SetTarget(player->GetComponent<Transform>());
 		SetSharedGameObject(L"Player", player);
 	}
 	/// <summary>
@@ -151,22 +156,7 @@ namespace basecross {
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(5.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(0.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(-5.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(0.0f, 1.0f, 5.0f),
+				Vec3(20.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
@@ -195,7 +185,7 @@ namespace basecross {
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
 			CreatePlayer();
-			//CreateEnemy();
+			CreateEnemy();
 			RegisterObjects();
 		}
 		catch (...) {
