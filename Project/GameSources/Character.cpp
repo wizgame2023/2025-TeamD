@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "Project.h"
-#include "Character.h"
 
 namespace basecross{
 
@@ -24,29 +23,34 @@ namespace basecross{
 
 
 	FixedBox::FixedBox(const shared_ptr<Stage>& stage):
-		GameObject(stage)
+		Object(stage)
 	{
 	}
 	FixedBox::~FixedBox(){}
 
 	void FixedBox::OnCreate()
 	{
-		//初期位置の設定
-		auto ptr = AddComponent<Transform>();
-		ptr->SetPosition(Vec3(0));
-		ptr->SetRotation(Vec3(0));
-		ptr->SetScale(Vec3(50.0f,0.5f,50.0f));
+		//ここでm_Transformの中身取得してくれる
+		Object::OnCreate();
+		//操作系
+		SetPosition(Vec3());
+		SetScale(Vec3(1.0f));
+		SetRotation(Vec3());
 
+
+		Wicth_FixedBox = true;
+		
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
-		ptrColl->SetFixed(true);
+		ptrColl->SetFixed(Wicth_FixedBox);
 
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
-
+	}
+	shared_ptr<Object> FixedBox::Create() {
+		return GetStage()->AddGameObject<FixedBox>();
 	}
 
 	Wall::Wall(const shared_ptr<Stage>& stage) :
@@ -57,6 +61,7 @@ namespace basecross{
 
 	void Wall::OnCreate()
 	{
+		Wicth_Wall = true;
 		//初期位置の設定
 		auto ptr = AddComponent<Transform>();
 		ptr->SetPosition(Vec3(0.0f, 0.0f,5.0f));
@@ -66,7 +71,7 @@ namespace basecross{
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
-		ptrColl->SetFixed(true);
+		ptrColl->SetFixed(Wicth_Wall);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");

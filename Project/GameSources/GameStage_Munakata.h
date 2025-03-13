@@ -19,6 +19,7 @@ namespace basecross {
 		void CreateSoundTest();
 		void CreatePlayer();
 		void CreateEnemy();
+		void RegisterObjects();
 		bool m_IsPose;
 	public:
 		//\’z‚Æ”jŠü

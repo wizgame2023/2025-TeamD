@@ -123,6 +123,9 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
+	/// <summary>
+	/// プレイヤー作成
+	/// </summary>
 	void GameStageM::CreatePlayer()
 	{
 		shared_ptr<GameObject> player;
@@ -140,7 +143,9 @@ namespace basecross {
 		}
 		SetSharedGameObject(L"Player", player);
 	}
-
+	/// <summary>
+	/// 敵作成
+	/// </summary>
 	void GameStageM::CreateEnemy()
 	{
 		//配列の初期化
@@ -174,6 +179,12 @@ namespace basecross {
 		}
 
 	}
+	void GameStageM::RegisterObjects() {
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
+		builder->Register<FixedBox>(L"cube");
+
+		builder->LoadCsv();
+	}
 	void GameStageM::OnCreate() {
 		try {
 			//ビューとライトの作成
@@ -184,8 +195,8 @@ namespace basecross {
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
 			CreatePlayer();
-			CreateEnemy();
-			AddGameObject<FixedBox>();
+			//CreateEnemy();
+			RegisterObjects();
 		}
 		catch (...) {
 			throw;
