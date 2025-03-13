@@ -15,12 +15,16 @@ namespace basecross{
 
 		float m_EffectiveRange;
 		shared_ptr<Transform> m_Transform;
+		float m_ZoneElapsedTime;
+
 	public:
 		Ballet(const shared_ptr<Stage>& stage,Vec3 position,float speed,Vec3 direction,float range);
 		~Ballet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
+
+		void ZoneSpeedSet();
 	};
 }
 //end basecross
