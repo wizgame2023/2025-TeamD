@@ -81,6 +81,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Tube.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -133,9 +135,11 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp">
       <Filter>Ballet</Filter>
-    </ClInclude>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Tube.cpp" />
   </ItemGroup>
 </Project>

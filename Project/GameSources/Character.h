@@ -22,6 +22,8 @@ namespace basecross{
 		virtual void OnUpdate() override;
 		virtual void OnUpdate2() override;
 		virtual void OnDraw() override;
+
+		virtual void Dead(){}
 	};
 
 	class FixedBox : public Object

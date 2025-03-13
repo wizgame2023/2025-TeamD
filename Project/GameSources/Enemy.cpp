@@ -49,7 +49,7 @@ namespace basecross {
 
 		if (m_HP <= 0)
 		{
-			GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
+			Dead();
 		}
 	}
 
@@ -65,6 +65,13 @@ namespace basecross {
 		Vec3 offset = intruderPosition - position;
 		offset = offset.normalize();
 		return offset;
+	}
+	float Enemy::GetDistanceToIntruder() {
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		return offset.length();
 	}
 
 	void Enemy::ZoneSpeedSet()
@@ -124,6 +131,9 @@ namespace basecross {
 	void Enemy::OnDraw()
 	{
 		Character::OnDraw();
+	}
+	void Enemy::Dead() {
+		GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
