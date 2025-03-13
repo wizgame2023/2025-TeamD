@@ -20,6 +20,7 @@ namespace basecross {
 		~Mob();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void OnUpdate2();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 	private:
 

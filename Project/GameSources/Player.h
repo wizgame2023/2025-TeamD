@@ -1,6 +1,6 @@
 /*!
 @file Player.h
-@brief プレイヤーなど
+@brief 繝励Ξ繧､繝､繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -10,7 +10,7 @@ namespace basecross {
 	class Character;
 	class Player : public Character
 	{
-		//入力ハンドラー
+		//蜈･蜉帙ワ繝ｳ繝峨Λ繝ｼ
 		Vec3 m_Position;
 		Vec3 m_Rotation;
 		Vec3 m_Scale;

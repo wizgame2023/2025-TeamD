@@ -21,5 +21,6 @@
 #include "Sprite.h"
 #include "Mob.h"
 #include "Ballet.h"
+#include "FollowCamera.h"
 #include "StageBuilder.h"
 

@@ -20,6 +20,7 @@ namespace basecross{
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+		virtual void OnUpdate2() override;
 		virtual void OnDraw() override;
 	};
 
