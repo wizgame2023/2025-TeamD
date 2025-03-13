@@ -10,7 +10,8 @@ namespace basecross{
 
 	
 	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
-		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range)
+		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
+		m_ZoneElapsedTime(1.0f)
 	{
 	}
 	Ballet::~Ballet(){}
@@ -33,8 +34,9 @@ namespace basecross{
 	}
 	void Ballet::OnUpdate() {
 		float elapsed = App::GetApp()->GetElapsedTime();
+		ZoneSpeedSet();
 		Vec3 position = m_Transform->GetPosition();
-		position += m_Speed * m_Direction * elapsed;
+		position += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 		m_Transform->SetPosition(position);
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
@@ -44,9 +46,21 @@ namespace basecross{
 
 	void Ballet::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"Player")) {
+			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->PlayerHit();
 			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
 		}
 	}
-
+	void Ballet::ZoneSpeedSet()
+	{
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
 }
 //end basecross

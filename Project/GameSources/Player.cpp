@@ -103,19 +103,23 @@ namespace basecross {
 		{
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				m_PlayerStateNum = PlayerState::ZONE;
+				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
+				{
+					m_PlayerStateNum += PlayerState::ZONE;
+				}
 			}
 		}
 		else {
 			m_EnergyCharge += 0.01f;
 		}
 
-		if (m_PlayerStateNum == PlayerState::ZONE)
+		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f)
 			{
-				m_PlayerStateNum = PlayerState::NORMAL;
+				m_PlayerStateNum -= PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
 				m_EnergyCharge = 0;
 			}
@@ -129,15 +133,17 @@ namespace basecross {
 		wstringstream wss(L"");
 		wss << L"\nZoneCharge : "
 			<< m_EnergyCharge
+			<< L"\HP : "
+			<< m_HP
 			<< endl;
 		scene->SetDebugString(wss.str());
 	}
 
 	void Player::PlayerHit()
 	{
-		if (m_PlayerStateNum == PlayerState::GUARD)
+		if ((m_PlayerStateNum & PlayerState::GUARD)	!= 0)
 		{
-			
+			m_HP -= 0;
 		}
 		else {
 			m_HP -= 1;
@@ -147,6 +153,16 @@ namespace basecross {
 	Vec3 Player::GetForward()
 	{
 		return GetComponent<Transform>()->GetForward();
+	}
+
+	int Player::GetStates()
+	{
+		return m_PlayerStateNum;
+	}
+
+	int Player::GetPlayerHP()
+	{
+		return m_HP;
 	}
 
 	void Player::OnCreate()
@@ -160,7 +176,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -181,12 +197,22 @@ namespace basecross {
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		MovePlayer();
 		ZoneActivation();
 		Debug();
-
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			m_PlayerStateNum += PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(0, 0, 0, 0));
+		}
+		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			m_PlayerStateNum -= PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
@@ -205,8 +231,8 @@ namespace basecross {
 		m_HitRotation(forward),
 		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
 		m_FlyingTime(1.0f),
-		m_totalTime(0.0f),
-		m_speed(12.0f)
+		m_TotalTime(0.0f),
+		m_Speed(12.0f)
 	{
 	}
 
@@ -237,25 +263,26 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-		if (player->m_PlayerStateNum != Player::PlayerState::ZONE) {
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_speed = 12.0f;
+			m_Speed = 12.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_speed = 24.0f;
+			m_Speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
-		if (m_FlyingTime > m_totalTime)
+		if (m_FlyingTime > m_TotalTime)
 		{
-			hitPosition += m_speed * m_HitRotation * elapsedTime;
+			hitPosition += m_Speed * m_HitRotation * elapsedTime;
 		}
 		else {
 			SetDrawActive(false);
 			SetUpdateActive(false);
 		}
 		GetComponent<Transform>()->SetPosition(hitPosition);
-		m_totalTime += elapsedTime;
+		m_TotalTime += elapsedTime;
 	}
 }
 //end basecross

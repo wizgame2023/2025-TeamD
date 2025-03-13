@@ -24,7 +24,7 @@ namespace basecross {
 		float elapsed = App::GetApp()->GetElapsedTime();
 
 		if (m_Intruder != nullptr) {
-			m_BalletInterval -= elapsed;
+			m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 			if (m_BalletInterval <= 0) {
 				Vec3 direction = GetDirectionToIntruder();
 				GetStage()->AddGameObject<Ballet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);

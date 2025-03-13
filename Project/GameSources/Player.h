@@ -20,12 +20,12 @@ namespace basecross {
 		int m_PlayerStateNum;
 		enum PlayerState
 		{
-			NORMAL = 0x00001f, // 2進数 : (0000 0000 0000 0001)
-			WALK = 0x00002f, // 2進数 : (0000 0000 0000 0010)
-			RUN = 0x00004f, // 2進数 : (0000 0000 0000 0100)
-			GUARD = 0x00008f, // 2進数 : (0000 0000 0000 1000)
-			PUNCH = 0x00010f, // 2進数 : (0000 0000 0001 0000)
-			ZONE = 0x00020f, // 2進数 : (0000 0000 0010 0000)
+			NORMAL = 0b00000001,
+			WALK   = 0b00000010,
+			RUN    = 0b00000100,
+			GUARD  = 0b00001000,
+			PUNCH  = 0b00010000,
+			ZONE   = 0b00100000,
 		};
 
 		Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
@@ -40,6 +40,8 @@ namespace basecross {
 		void Debug();
 		void PlayerHit();
 		Vec3 GetForward();
+		int GetStates();
+		int GetPlayerHP();
 	};
 
 	class HitSphere : public GameObject
@@ -48,8 +50,8 @@ namespace basecross {
 		Vec3 m_HitRotation;
 		Vec3 m_HitScale;
 		float m_FlyingTime;
-		float m_totalTime;
-		float m_speed;
+		float m_TotalTime;
+		float m_Speed;
 	public:
 		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward);
 		~HitSphere() {};
