@@ -56,12 +56,15 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
       <Filter>Headers</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
       <Filter>TitleScene</Filter>
-      </ClInclude>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
       <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h">
+      <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -100,12 +103,15 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
       <Filter>Sources</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
       <Filter>TitleScene</Filter>
-      </ClCompile>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
       <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -19,4 +19,5 @@
 #include "GameStage_Satou.h"
 #include "TitleStage.h"
 #include "Sprite.h"
+#include "FollowCamera.h"
 

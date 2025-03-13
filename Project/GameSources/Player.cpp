@@ -125,12 +125,12 @@ namespace basecross {
 
 	void Player::Debug()
 	{
-		auto scene = App::GetApp()->GetScene<Scene>();
-		wstringstream wss(L"");
-		wss << L"\nZoneCharge : "
-			<< m_EnergyCharge
-			<< endl;
-		scene->SetDebugString(wss.str());
+		//auto scene = App::GetApp()->GetScene<Scene>();
+		//wstringstream wss(L"");
+		//wss << L"\nZoneCharge : "
+		//	<< m_EnergyCharge
+		//	<< endl;
+		//scene->SetDebugString(wss.str());
 	}
 
 
