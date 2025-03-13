@@ -44,6 +44,7 @@ namespace basecross {
 	}
 	void Enemy::OnUpdate()
 	{
+		ZoneSpeedSet();
 		if (m_HP <= 0)
 		{
 			GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
@@ -57,6 +58,19 @@ namespace basecross {
 		offset = offset.normalize();
 		return offset;
 	}
+
+	void Enemy::ZoneSpeedSet()
+	{
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
+
 	void Enemy::OnDraw()
 	{
 		Character::OnDraw();
