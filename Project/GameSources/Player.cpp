@@ -133,6 +133,21 @@ namespace basecross {
 		scene->SetDebugString(wss.str());
 	}
 
+	void Player::PlayerHit()
+	{
+		if (m_PlayerStateNum == PlayerState::GUARD)
+		{
+			
+		}
+		else {
+			m_HP -= 1;
+		}
+	}
+
+	Vec3 Player::GetForward()
+	{
+		return GetComponent<Transform>()->GetForward();
+	}
 
 	void Player::OnCreate()
 	{
@@ -176,7 +191,7 @@ namespace basecross {
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
 			Vec3 forward = GetComponent<Transform>()->GetForward();
-			GetStage()->AddGameObject<HitSphere>(m_Position, forward);
+			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward);
 		}
 	}
 	void Player::OnDraw()
@@ -184,11 +199,11 @@ namespace basecross {
 		Character::OnDraw();
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation) :
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward) :
 		GameObject(stage),
 		m_HitPosition(position),
-		m_HitRotation(rotation),
-		m_HitScale(Vec3(1, 1, 1)),
+		m_HitRotation(forward),
+		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
 		m_FlyingTime(1.0f),
 		m_totalTime(0.0f),
 		m_speed(12.0f)
@@ -206,6 +221,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 		//ï`âÊê›íË
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
@@ -226,7 +242,7 @@ namespace basecross {
 			m_speed = 12.0f;
 		}
 		else {
-			m_FlyingTime = 1.0f;
+			m_FlyingTime = 0.5f;
 			m_speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
