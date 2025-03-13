@@ -8,6 +8,8 @@
 
 namespace basecross {
 	class Enemy;
+	class Tube;
+
 	class Mob : public Enemy
 	{
 		float m_BalletSpeed;
@@ -15,11 +17,14 @@ namespace basecross {
 		float m_MuzzleOffset;
 		float m_BalletInterval;
 		const float MAX_BALLET_INTERVAL;
+		shared_ptr<Tube> m_SearchEffect;
+		void DrawSearchRange();
 	public:
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		~Mob();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 	private:
 

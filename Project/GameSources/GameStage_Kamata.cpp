@@ -32,7 +32,7 @@ namespace basecross {
 		//”z—ñ‚Ì‰Šú‰»
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(3.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
@@ -49,7 +49,7 @@ namespace basecross {
 		//”z—ñ‚Ì‰Šú‰»
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},

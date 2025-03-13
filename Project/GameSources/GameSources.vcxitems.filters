@@ -60,6 +60,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
@@ -75,6 +78,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h">
       <Filter>Ballet</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Tube.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -110,6 +118,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Sound</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>
@@ -125,5 +136,10 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp">
       <Filter>Ballet</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp">
+      <Filter>Sources</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Tube.cpp" />
   </ItemGroup>
 </Project>
