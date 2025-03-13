@@ -103,7 +103,10 @@ namespace basecross {
 		{
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				m_PlayerStateNum += PlayerState::ZONE;
+				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
+				{
+					m_PlayerStateNum += PlayerState::ZONE;
+				}
 			}
 		}
 		else {
@@ -138,7 +141,7 @@ namespace basecross {
 
 	void Player::PlayerHit()
 	{
-		if ((m_PlayerStateNum & PlayerState::GUARD) == 1)
+		if ((m_PlayerStateNum & PlayerState::GUARD)	!= 0)
 		{
 			m_HP -= 0;
 		}
@@ -157,6 +160,11 @@ namespace basecross {
 		return m_PlayerStateNum;
 	}
 
+	int Player::GetPlayerHP()
+	{
+		return m_HP;
+	}
+
 	void Player::OnCreate()
 	{
 		m_HP = 5;
@@ -168,7 +176,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -189,18 +197,21 @@ namespace basecross {
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		MovePlayer();
 		ZoneActivation();
 		Debug();
-		if (cntlVec[0].wButtons & XINPUT_GAMEPAD_RIGHT_THUMB)
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			m_PlayerStateNum += PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(0, 0, 0, 0));
 		}
-		else
+		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			m_PlayerStateNum -= PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
@@ -220,8 +231,8 @@ namespace basecross {
 		m_HitRotation(forward),
 		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
 		m_FlyingTime(1.0f),
-		m_totalTime(0.0f),
-		m_speed(12.0f)
+		m_TotalTime(0.0f),
+		m_Speed(12.0f)
 	{
 	}
 
@@ -255,23 +266,23 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_speed = 12.0f;
+			m_Speed = 12.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_speed = 24.0f;
+			m_Speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
-		if (m_FlyingTime > m_totalTime)
+		if (m_FlyingTime > m_TotalTime)
 		{
-			hitPosition += m_speed * m_HitRotation * elapsedTime;
+			hitPosition += m_Speed * m_HitRotation * elapsedTime;
 		}
 		else {
 			SetDrawActive(false);
 			SetUpdateActive(false);
 		}
 		GetComponent<Transform>()->SetPosition(hitPosition);
-		m_totalTime += elapsedTime;
+		m_TotalTime += elapsedTime;
 	}
 }
 //end basecross

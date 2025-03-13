@@ -18,6 +18,8 @@ namespace basecross {
 
 		shared_ptr<Character> m_Intruder;
 		shared_ptr<Transform> m_Transform;
+
+		float m_ZoneElapsedTime;
 	public:
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		virtual ~Enemy();
@@ -30,6 +32,8 @@ namespace basecross {
 			m_Intruder = character;
 		}
 		Vec3 GetDirectionToIntruder();
+		void ZoneSpeedSet();
+
 	private:
 
 	};

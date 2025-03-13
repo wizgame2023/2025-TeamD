@@ -54,9 +54,11 @@ namespace basecross {
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
 		};
+		auto& player = GetSharedGameObject<Player>(L"Player", false);
 		//オブジェクトの作成
 		for (auto v : vec) {
-			AddGameObject<Enemy>(v[0], v[2]);
+			auto mob = AddGameObject<Mob>(v[0], v[2]);
+			mob->SetIntruder(player);
 		}
 
 	}
