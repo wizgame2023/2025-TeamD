@@ -32,7 +32,7 @@ namespace basecross {
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(3.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
@@ -49,14 +49,16 @@ namespace basecross {
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
 		};
+		auto& player = GetSharedGameObject<Player>(L"Player", false);
 		//オブジェクトの作成
 		for (auto v : vec) {
-			AddGameObject<Enemy>(v[0], v[1], v[2]);
+			auto mob = AddGameObject<Mob>(v[0], v[2]);
+			mob->SetIntruder(player);
 		}
 
 	}

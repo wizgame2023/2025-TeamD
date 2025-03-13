@@ -1,0 +1,66 @@
+/*!
+@file Character.cpp
+@brief キャラクターなど実体
+*/
+
+#include "stdafx.h"
+#include "Project.h"
+
+namespace basecross{
+
+	
+	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
+		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
+		m_ZoneElapsedTime(1.0f)
+	{
+	}
+	Ballet::~Ballet(){}
+
+	void Ballet::OnCreate()
+	{
+		//初期位置の設定
+		m_Transform = AddComponent<Transform>();
+		m_Transform->SetPosition(m_Position);
+		m_Transform->SetRotation(Vec3(0));
+		m_Transform->SetScale(Vec3(0.1f));
+
+		//CollisionSphere衝突判定を付ける
+		auto ptrColl = AddComponent<CollisionSphere>();
+		ptrColl->SetDrawActive(true);//debug
+
+		//描画設定
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+	}
+	void Ballet::OnUpdate() {
+		float elapsed = App::GetApp()->GetElapsedTime();
+		ZoneSpeedSet();
+		Vec3 position = m_Transform->GetPosition();
+		position += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
+		m_Transform->SetPosition(position);
+
+		if ((m_Position - position).length() > m_EffectiveRange) {
+			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+		}
+	}
+
+	void Ballet::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		if (other->FindTag(L"Player")) {
+			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->PlayerHit();
+			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+		}
+	}
+	void Ballet::ZoneSpeedSet()
+	{
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
+}
+//end basecross

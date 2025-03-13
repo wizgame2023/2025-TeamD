@@ -13,18 +13,18 @@ namespace basecross{
 		int m_HP;
 
 		Character(const shared_ptr<Stage>& stage) :
-			GameObject(stage) 
+			GameObject(stage) ,m_HP(0)
 		{};
-		~Character() {};
+		virtual ~Character() {};
 
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
+		virtual void OnUpdate2() override;
 		virtual void OnDraw() override;
 	};
 
 	class FixedBox : public GameObject
 	{
-		bool Wicth_FixedBox;
 	public:
 		FixedBox(const shared_ptr<Stage>& stage);
 		~FixedBox();
@@ -34,7 +34,6 @@ namespace basecross{
 
 	class Wall : public GameObject
 	{
-		bool Wicth_Wall;
 	public:
 		Wall(const shared_ptr<Stage>& stage);
 		~Wall();

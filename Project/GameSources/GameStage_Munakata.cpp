@@ -12,7 +12,7 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStageM::CreateViewLight() {
-		const Vec3 eye(0.0f, 5.0f, -5.0f);
+		const Vec3 eye(0.0f, 10.0f, -10.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
@@ -25,6 +25,9 @@ namespace basecross {
 		//デフォルトのライティングを指定
 		PtrMultiLight->SetDefaultLighting();
 	}
+	/// <summary>
+	/// リソースの作成
+	/// </summary>
 	void GameStageM::CreateResource() {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
@@ -40,11 +43,14 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
 
 	}
+	/// <summary>
+	/// ポーズメニューの作成
+	/// </summary>
 	void GameStageM::CreatePose() {
 		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f,150.0f,0.0f), Vec2(200,50),
 			[](shared_ptr<Stage> stage) {
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		//やめる
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
@@ -69,6 +75,9 @@ namespace basecross {
 		ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
 		ClosePose();
 	}
+	/// <summary>
+	/// サウンドテストメニューの作成
+	/// </summary>
 	void GameStageM::CreateSoundTest() {
 		//SE
 		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
@@ -99,14 +108,56 @@ namespace basecross {
 
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
+	/// <summary>
+	/// ポーズ画面を閉じる
+	/// </summary>
 	void GameStageM::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
+	/// <summary>
+	/// ポーズ画面を開く
+	/// </summary>
 	void GameStageM::OpenPose() {
 		m_IsPose = true;
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
+	}
+	void GameStageM::CreatePlayer()
+	{
+		shared_ptr<GameObject> player;
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		//オブジェクトの作成
+		for (auto v : vec) {
+			player = AddGameObject<Player>(v[0], v[1], v[2]);
+		}
+		SetSharedGameObject(L"Player", player);
+	}
+
+	void GameStageM::CreateEnemy()
+	{
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		auto& player = GetSharedGameObject<Player>(L"Player", false);
+		//オブジェクトの作成
+		for (auto v : vec) {
+			auto mob = AddGameObject<Mob>(v[0], v[2]);
+			mob->SetIntruder(player);
+		}
+
 	}
 	void GameStageM::OnCreate() {
 		try {
@@ -116,6 +167,10 @@ namespace basecross {
 			CreateResource();
 			CreatePose();
 			CreateSoundTest();
+			ButtonManager::instance->CloseAll();
+			CreatePlayer();
+			CreateEnemy();
+			AddGameObject<FixedBox>();
 		}
 		catch (...) {
 			throw;

@@ -1,6 +1,6 @@
 /*!
 @file Player.cpp
-@brief ƒvƒŒƒCƒ„[‚È‚ÇÀ‘Ì
+@brief ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -23,7 +23,7 @@ namespace basecross {
 
 	Vec2 Player::GetInputState() const {
 		Vec2 ret;
-		//ƒRƒ“ƒgƒ[ƒ‰‚Ìæ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		ret.x = 0.0f;
 		ret.y = 0.0f;
@@ -32,7 +32,7 @@ namespace basecross {
 			ret.x = cntlVec[0].fThumbLX;
 			ret.y = cntlVec[0].fThumbLY;
 		}
-		//ƒL[ƒ{[ƒh‚Ìæ“¾(ƒL[ƒ{[ƒh—Dæ)
+		//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å–å¾—(ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å„ªå…ˆ)
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (KeyState.m_bPushKeyTbl['W']) { ret.y = 1.0f; }
 		if (KeyState.m_bPushKeyTbl['S']) { ret.y = -1.0f; }
@@ -45,7 +45,7 @@ namespace basecross {
 
 	Vec3 Player::GetMoveVector() {
 		Vec3 angle(0, 0, 0);
-		//“ü—Í‚Ìæ“¾
+		//å…¥åŠ›ã®å–å¾—
 		float moveX = GetInputState().x;
 		float moveZ = GetInputState().y;
 
@@ -53,28 +53,28 @@ namespace basecross {
 			auto ptrTransform = GetComponent<Transform>();
 			auto ptrCamera = OnGetDrawCamera();
 
-			//is•ûŒü‚ÌŒü‚«‚ğŒvZ
+			//é€²è¡Œæ–¹å‘ã®å‘ãã‚’è¨ˆç®—
 			auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
 			front.y = 0;
 			front.normalize();
-			//is•ûŒüŒü‚«‚©‚ç‚ÌŠp“x‚ğZo
+			//é€²è¡Œæ–¹å‘å‘ãã‹ã‚‰ã®è§’åº¦ã‚’ç®—å‡º
 			float frontAngle = atan2(front.z, front.x);
 
-			//ƒRƒ“ƒgƒ[ƒ‰‚ÌŒü‚«ŒvZ
+			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å‘ãè¨ˆç®—
 			Vec2 moveVec(moveX, moveZ);
 			float moveSize = moveVec.length();
-			//ƒRƒ“ƒgƒ[ƒ‰‚ÌŒü‚«‚©‚çŠp“x‚ğŒvZ
+			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å‘ãã‹ã‚‰è§’åº¦ã‚’è¨ˆç®—
 			float cntlAngle = atan2(-moveX, moveZ);
-			//ƒg[ƒ^ƒ‹‚ÌŠp“x‚ğZo
+			//ãƒˆãƒ¼ã‚¿ãƒ«ã®è§’åº¦ã‚’ç®—å‡º
 			float totalAngle = frontAngle + cntlAngle;
 
-			//Šp“x‚©‚çƒxƒNƒgƒ‹‚ğì¬
+			//è§’åº¦ã‹ã‚‰ãƒ™ã‚¯ãƒˆãƒ«ã‚’ä½œæˆ
 			angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
-			//³‹K‰»‚·‚é
+			//æ­£è¦åŒ–ã™ã‚‹
 			angle.normalize();
-			//ˆÚ“®ƒTƒCƒY‚ğİ’èB
+			//ç§»å‹•ã‚µã‚¤ã‚ºã‚’è¨­å®šã€‚
 			angle *= moveSize;
-			//Y²‚Í•Ï‰»‚³‚¹‚È‚¢
+			//Yè»¸ã¯å¤‰åŒ–ã•ã›ãªã„
 			angle.y = 0;
 		}
 		return angle;
@@ -88,7 +88,7 @@ namespace basecross {
 			pos += angle * elapsedTime * 6.0f;
 			GetComponent<Transform>()->SetPosition(pos);
 		}
-		//‰ñ“]‚ÌŒvZ
+		//å›è»¢ã®è¨ˆç®—
 		if (angle.length() > 0.0f) {
 			auto utilPtr = GetBehavior<UtilBehavior>();
 			utilPtr->RotToHead(angle, 1.0f);
@@ -103,19 +103,23 @@ namespace basecross {
 		{
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
 			{
-				m_PlayerStateNum = PlayerState::ZONE;
+				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
+				{
+					m_PlayerStateNum += PlayerState::ZONE;
+				}
 			}
 		}
 		else {
 			m_EnergyCharge += 0.01f;
 		}
 
-		if (m_PlayerStateNum == PlayerState::ZONE)
+		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f)
 			{
-				m_PlayerStateNum = PlayerState::NORMAL;
+				m_PlayerStateNum -= PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
 				m_EnergyCharge = 0;
 			}
@@ -133,31 +137,56 @@ namespace basecross {
 		//scene->SetDebugString(wss.str());
 	}
 
+	void Player::PlayerHit()
+	{
+		if ((m_PlayerStateNum & PlayerState::GUARD)	!= 0)
+		{
+			m_HP -= 0;
+		}
+		else {
+			m_HP -= 1;
+		}
+	}
+
+	Vec3 Player::GetForward()
+	{
+		return GetComponent<Transform>()->GetForward();
+	}
+
+	int Player::GetStates()
+	{
+		return m_PlayerStateNum;
+	}
+
+	int Player::GetPlayerHP()
+	{
+		return m_HP;
+	}
 
 	void Player::OnCreate()
 	{
 		m_HP = 5;
-		//‰ŠúˆÊ’u‚Ìİ’è
+		//åˆæœŸä½ç½®ã®è¨­å®š
 		auto ptr = AddComponent<Transform>();
 		ptr->SetPosition(m_Position);
 		ptr->SetRotation(m_Rotation);
 		ptr->SetScale(m_Scale);
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//d—Í‚ğ‚Â‚¯‚é
+		//é‡åŠ›ã‚’ã¤ã‘ã‚‹
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		AddTag(L"Player");
@@ -166,17 +195,27 @@ namespace basecross {
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		//ƒRƒ“ƒgƒ[ƒ‰ƒ`ƒFƒbƒN‚µ‚Ä“ü—Í‚ª‚ ‚ê‚ÎƒRƒ}ƒ“ƒhŒÄ‚Ño‚µ
+		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒã‚§ãƒƒã‚¯ã—ã¦å…¥åŠ›ãŒã‚ã‚Œã°ã‚³ãƒãƒ³ãƒ‰å‘¼ã³å‡ºã—
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		MovePlayer();
 		ZoneActivation();
 		Debug();
-
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			m_PlayerStateNum += PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(0, 0, 0, 0));
+		}
+		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
+		{
+			m_PlayerStateNum -= PlayerState::GUARD;
+			ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
 			Vec3 forward = GetComponent<Transform>()->GetForward();
-			GetStage()->AddGameObject<HitSphere>(m_Position, forward);
+			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward);
 		}
 	}
 	void Player::OnDraw()
@@ -184,14 +223,14 @@ namespace basecross {
 		Character::OnDraw();
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation) :
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward) :
 		GameObject(stage),
 		m_HitPosition(position),
-		m_HitRotation(rotation),
-		m_HitScale(Vec3(1, 1, 1)),
+		m_HitRotation(forward),
+		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
 		m_FlyingTime(1.0f),
-		m_totalTime(0.0f),
-		m_speed(12.0f)
+		m_TotalTime(0.0f),
+		m_Speed(12.0f)
 	{
 	}
 
@@ -202,17 +241,18 @@ namespace basecross {
 		ptr->SetRotation(m_HitRotation);
 		ptr->SetScale(m_HitScale);
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		ptrColl->SetAfterCollision(AfterCollision::None);
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
 	}
@@ -221,25 +261,26 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-		if (player->m_PlayerStateNum != Player::PlayerState::ZONE) {
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_speed = 12.0f;
+			m_Speed = 12.0f;
 		}
 		else {
-			m_FlyingTime = 1.0f;
-			m_speed = 24.0f;
+			m_FlyingTime = 0.5f;
+			m_Speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
-		if (m_FlyingTime > m_totalTime)
+		if (m_FlyingTime > m_TotalTime)
 		{
-			hitPosition += m_speed * m_HitRotation * elapsedTime;
+			hitPosition += m_Speed * m_HitRotation * elapsedTime;
 		}
 		else {
 			SetDrawActive(false);
 			SetUpdateActive(false);
 		}
 		GetComponent<Transform>()->SetPosition(hitPosition);
-		m_totalTime += elapsedTime;
+		m_TotalTime += elapsedTime;
 	}
 }
 //end basecross
