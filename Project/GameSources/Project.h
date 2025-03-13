@@ -19,4 +19,6 @@
 #include "GameStage_Satou.h"
 #include "TitleStage.h"
 #include "Sprite.h"
+#include "Mob.h"
+#include "Ballet.h"
 

@@ -17,6 +17,8 @@ namespace basecross {
 		void CreateResource();
 		void CreatePose();
 		void CreateSoundTest();
+		void CreatePlayer();
+		void CreateEnemy();
 		bool m_IsPose;
 	public:
 		//\’z‚Æ”jŠü

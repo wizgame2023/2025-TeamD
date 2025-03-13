@@ -40,6 +40,7 @@ namespace basecross{
 		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(true);
 
 		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -47,5 +48,31 @@ namespace basecross{
 
 
 	}
+
+	Wall::Wall(const shared_ptr<Stage>& stage) :
+		GameObject(stage)
+	{
+	}
+	Wall::~Wall() {}
+
+	void Wall::OnCreate()
+	{
+		//‰ŠúˆÊ’u‚Ìİ’è
+		auto ptr = AddComponent<Transform>();
+		ptr->SetPosition(Vec3(0.0f, 0.0f,5.0f));
+		ptr->SetRotation(Vec3(0));
+		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
+
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(true);
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+
+	}
+
 }
 //end basecross
