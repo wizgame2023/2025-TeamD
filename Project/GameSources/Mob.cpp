@@ -17,6 +17,9 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
+		//デバック用
+		auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
+		line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 	void Mob::OnUpdate()
 	{
@@ -24,13 +27,19 @@ namespace basecross {
 		float elapsed = App::GetApp()->GetElapsedTime();
 
 		if (m_Intruder != nullptr) {
-			m_BalletInterval -= elapsed * m_ZoneElapsedTime;
-			if (m_BalletInterval <= 0) {
-				Vec3 direction = GetDirectionToIntruder();
-				GetStage()->AddGameObject<Ballet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
-				m_BalletInterval = MAX_BALLET_INTERVAL;
+			if (m_IntruderAlert)
+			{
+				m_BalletInterval -= elapsed * m_ZoneElapsedTime;
+				if (m_BalletInterval <= 0) {
+					Vec3 direction = GetDirectionToIntruder();
+					GetStage()->AddGameObject<Ballet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
+					m_BalletInterval = MAX_BALLET_INTERVAL;
+				}
 			}
 		}
+	}
+	void Mob::OnUpdate2()
+	{
 	}
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{

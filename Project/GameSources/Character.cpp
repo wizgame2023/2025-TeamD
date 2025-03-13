@@ -17,6 +17,10 @@ namespace basecross{
 	{
 		GameObject::OnUpdate();
 	}
+	void Character::OnUpdate2()
+	{
+		GameObject::OnUpdate2();
+	}
 	void Character::OnDraw()
 	{
 		GameObject::OnDraw();
