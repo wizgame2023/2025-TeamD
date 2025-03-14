@@ -29,12 +29,14 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnUpdate2();
 		virtual void OnDraw();
+		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		void SetIntruder(const shared_ptr<Character>& character) {
 			m_Intruder = character;
 		}
 		Vec3 GetDirectionToIntruder();
+		float GetDistanceToIntruder();
 		void ZoneSpeedSet();
 		void SearchRange();
 		Vec3 RotateVector(const Vec3& vector, double angle_degrees);
