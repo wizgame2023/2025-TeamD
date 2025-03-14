@@ -17,9 +17,9 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
-		//デバック用
-		auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
-		line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
+		////デバック用
+		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
+		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 	}
 	void Mob::OnUpdate()
 	{

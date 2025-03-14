@@ -129,17 +129,19 @@ namespace basecross {
 
 	void Player::Debug()
 	{
-		//auto scene = App::GetApp()->GetScene<Scene>();
-		//wstringstream wss(L"");
-		//wss << L"\nZoneCharge : "
-		//	<< m_EnergyCharge
-		//	<< endl;
-		//scene->SetDebugString(wss.str());
+		auto scene = App::GetApp()->GetScene<Scene>();
+		wstringstream wss(L"");
+		wss << L"\nZoneCharge : "
+			<< m_EnergyCharge
+			<< L"\nHP"
+			<< m_HP
+			<< endl;
+		scene->SetDebugString(wss.str());
 	}
 
 	void Player::PlayerHit()
 	{
-		if ((m_PlayerStateNum & PlayerState::GUARD)	!= 0)
+		if ((m_PlayerStateNum & PlayerState::GUARD) != 0)
 		{
 			m_HP -= 0;
 		}
@@ -201,6 +203,7 @@ namespace basecross {
 		MovePlayer();
 		ZoneActivation();
 		Debug();
+
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
 		{
 			m_PlayerStateNum += PlayerState::GUARD;
@@ -211,6 +214,7 @@ namespace basecross {
 			m_PlayerStateNum -= PlayerState::GUARD;
 			ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		}
+
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_Position = GetComponent<Transform>()->GetPosition();
@@ -282,6 +286,7 @@ namespace basecross {
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
 	}
+
 }
 //end basecross
 
