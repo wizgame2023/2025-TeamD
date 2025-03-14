@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief â€œGâ€šÃˆâ€šÃ‡Å½Ã€â€˜ÃŒ
 */
 
 #include "stdafx.h"
@@ -17,9 +17,10 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
-		//ƒfƒoƒbƒN—p
-		auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
-		line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
+		////Æ’fÆ’oÆ’bÆ’Nâ€”p
+		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
+		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
+		DrawSearchRange();
 	}
 	void Mob::OnUpdate()
 	{
@@ -36,10 +37,27 @@ namespace basecross {
 					m_BalletInterval = MAX_BALLET_INTERVAL;
 				}
 			}
+
 		}
 	}
-	void Mob::OnUpdate2()
-	{
+	void Mob::Dead() {
+		GetStage()->RemoveGameObject<Tube>(m_SearchEffect);
+		Enemy::Dead();
+	}
+	void Mob::DrawSearchRange() {
+		m_SearchEffect = GetStage()->AddGameObject<Tube>(L"SEARCH_RANGE");
+		m_SearchEffect->SetHeight(0.0f);
+		m_SearchEffect->SetTopRadius(0.0f);
+		m_SearchEffect->SetBottomRadius(10.0f);
+		m_SearchEffect->SetTopColor(1.0f, 0.0f, 0.0f, 1.0f);
+		m_SearchEffect->SetBottomColor(1.0f, 0.0f, 0.0f, 1.0f);
+		m_SearchEffect->SetLoops({ 5.0f,1.0f });
+		m_SearchEffect->SetScrollPerSecond({ 0.0f,1.0f });
+		m_SearchEffect->SetTracking(GetThis<Mob>());
+		m_SearchEffect->SetTrackingDiff(Vec3(0.0f, -0.4f, 0.0f));
+		auto effectTrans = m_SearchEffect->GetComponent<Transform>();
+		effectTrans->SetPosition(m_Transform->GetPosition());
+		effectTrans->SetScale(Vec3(1.0f));
 	}
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
