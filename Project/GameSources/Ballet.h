@@ -6,7 +6,7 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	class Ballet : public GameObject
 	{
 		Vec3 m_Position;
@@ -18,7 +18,7 @@ namespace basecross{
 		float m_ZoneElapsedTime;
 
 	public:
-		Ballet(const shared_ptr<Stage>& stage,Vec3 position,float speed,Vec3 direction,float range);
+		Ballet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
 		~Ballet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;

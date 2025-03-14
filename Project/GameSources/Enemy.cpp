@@ -91,10 +91,15 @@ namespace basecross {
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetWorldPosition();
 		Vec3 forward = GetComponent<Transform>()->GetForward();
 		Vec3 position = m_Transform->GetPosition();
-		float searchDistance = 2.5f;
-
-		if (IsWithinDetectionRange((forward + position), target, 30.0)) {
-			m_IntruderAlert = true;
+		float searchDistance = 5.0f;
+		if ((position - target).length() < searchDistance)
+		{
+			if (IsWithinDetectionRange((forward + position), target, 30.0)) {
+				m_IntruderAlert = true;
+			}
+			else {
+				m_IntruderAlert = false;
+			}
 		}
 		else {
 			m_IntruderAlert = false;
