@@ -12,11 +12,11 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStageK::CreateViewLight() {
-		const Vec3 eye(0.0f, 10.0f, -10.0f);
+		const Vec3 eye(0.0f, 5.0f, -10.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<Camera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -42,6 +42,9 @@ namespace basecross {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
 		SetSharedGameObject(L"Player", player);
+		auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+		//見るもの
+		camera->SetTarget(player->GetComponent<Transform>());
 	}
 
 	void GameStageK::CreateEnemy()
@@ -49,7 +52,7 @@ namespace basecross {
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(5.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
@@ -62,12 +65,18 @@ namespace basecross {
 		}
 
 	}
+	void GameStageK::RegisterObjects() {
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
+		builder->Register<FixedBox>(L"cube");
+
+		builder->LoadCsv();
+	}
 
 	void GameStageK::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			AddGameObject<FixedBox>();
+			RegisterObjects();
 			CreatePlayer();
 			CreateEnemy();
 		}
