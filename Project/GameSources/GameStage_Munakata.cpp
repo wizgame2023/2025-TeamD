@@ -177,6 +177,13 @@ namespace basecross {
 
 		builder->LoadCsv();
 	}
+	void GameStageM::SetAllGameObjectActive(bool flag) {
+		for (auto& obj : GetGameObjectVec()) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
+				obj->SetUpdateActive(flag);
+			}
+		}
+	}
 	void GameStageM::OnCreate() {
 		try {
 			//ビューとライトの作成
@@ -207,9 +214,8 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"TEST");
 			}
 		}
-		if (m_IsPose) {
-			
-		}
+		
+		SetAllGameObjectActive(!m_IsPose);
 	}
 
 }

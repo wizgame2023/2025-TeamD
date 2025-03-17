@@ -31,13 +31,9 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		AddTag(L"Bullet");
-
-		auto group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
-		group->IntoGroup(GetThis<GameObject>());
 	}
 
 	void Bullet::OnUpdate() {
-
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -47,22 +43,6 @@ namespace basecross {
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-			SetDrawActive(false);
-			auto col = GetComponent<CollisionSphere>();
-			col->SetUpdateActive(false);
-			if (m_EndPosition == Vec3()) {
-				m_EndPosition = position;
-			}
-			if (m_EndPosition != m_LineEndPosition) {
-				if (moveAmount.length() > (position - m_LineEndPosition).length()) {
-					moveAmount = position - m_LineEndPosition;
-				}
-				m_LineEndPosition += moveAmount;
-			}
-			else {
-				GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-			}
-			return;
 		}
 		else {
 			position += moveAmount;

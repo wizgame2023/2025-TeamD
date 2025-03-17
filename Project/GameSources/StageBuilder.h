@@ -43,7 +43,8 @@ namespace basecross{
 			Name,
 			Position,
 			Scale,
-			Rotation
+			Rotation,
+			Color
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;

@@ -1,12 +1,12 @@
 /*!
 @file Character.h
-@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«
+@brief ∆íL∆í∆í∆í‚Ä∞∆íN∆í^¬Å[‚Äö√à‚Äö√á
 */
 
 #pragma once
 #include "stdafx.h"
 namespace basecross{
-	class Ballet;
+	class Bullet;
 	class LineCube : public GameObject {
 	public:
 		LineCube(shared_ptr<Stage>& stage) : GameObject(stage){}
@@ -19,7 +19,9 @@ namespace basecross{
 	};
 	class ForecastLine : public GameObject
 	{
-		weak_ptr<Bullet> m_Ballet;
+
+		weak_ptr<GameObject> m_Launcher;
+
 		shared_ptr<LineCube> m_BalletLine;
 		shared_ptr<LineCube> m_Forecast;
 
@@ -28,8 +30,8 @@ namespace basecross{
 		float m_Length;
 		bool m_IsLaunched;
 	public:
-		ForecastLine(const shared_ptr<Stage>& stage) :
-			GameObject(stage),m_Direction(Vec3()),m_StartPosition(Vec3()),m_Length(0),m_IsLaunched(false)
+		ForecastLine(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& launcher) :
+			GameObject(stage),m_Direction(Vec3()),m_StartPosition(Vec3()),m_Length(0),m_IsLaunched(false),m_Launcher(launcher)
 		{};
 		virtual ~ForecastLine() {};
 

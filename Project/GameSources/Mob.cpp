@@ -22,7 +22,7 @@ namespace basecross {
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		DrawSearchRange();
-		m_Line = GetStage()->AddGameObject<ForecastLine>();
+		m_Line = GetStage()->AddGameObject<ForecastLine>(GetThis<Mob>());
 	}
 	void Mob::OnUpdate()
 	{
@@ -39,9 +39,9 @@ namespace basecross {
 
 					auto ballet = GetStage()->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
 					m_BalletInterval = MAX_BALLET_INTERVAL;
-
+					
 					m_Line->SetBallet(ballet);
-					m_Line = GetStage()->AddGameObject<ForecastLine>();
+					m_Line = GetStage()->AddGameObject<ForecastLine>(GetThis<Mob>());
 				}
 			}
 			if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
@@ -51,6 +51,8 @@ namespace basecross {
 				m_Line->SetDrawActive(false);
 			}
 		}
+
+		
 	}
 	void Mob::Dead() {
 		GetStage()->RemoveGameObject<Tube>(m_SearchEffect);
