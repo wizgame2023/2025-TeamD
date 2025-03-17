@@ -7,16 +7,16 @@ namespace basecross {
 	{
 		//頂点データ
 		m_vertices.clear();
-		m_vertices.reserve((m_angle/* / 2*/ + 1) * 2);
-		for (int i = 0; i <= m_angle/* / 2*/; i++)
+		m_vertices.reserve((m_VerticesSize/* / 2*/ + 1) * 2);
+		for (int i = 0; i <= m_VerticesSize/* / 2*/; i++)
 		{
 			Vec3 position; //頂点座標
 			VertexPositionColorTexture vtx; //1頂点のデータ
 
 			//上下の頂点の共通データ
-			float rad = XMConvertToRadians(360.0f * i / m_angle);
+			float rad = XMConvertToRadians(360.0f * i / m_VerticesSize);
 			
-			float u = m_loops.x * static_cast<float>(i) / static_cast<float>(m_angle);
+			float u = m_loops.x * static_cast<float>(i) / static_cast<float>(m_VerticesSize);
 			float v = m_loops.y;
 
 			
@@ -31,7 +31,6 @@ namespace basecross {
 			vtx = VertexPositionColorTexture(position, m_bottomColor, Vec2(u, v));//v座標を最大値にする
 			m_vertices.push_back(vtx);
 
-			
 		}
 
 		//頂点インデックス(頂点を繋げる順番)
@@ -41,8 +40,8 @@ namespace basecross {
 		};
 
 		m_indices.clear();
-		m_indices.reserve(m_angle/* / 2*/ * baseIndices.size() );
-		for (int i = 0; i < m_angle/* / 2*/; i++)
+		m_indices.reserve(m_VerticesSize/* / 2*/ * baseIndices.size() );
+		for (int i = 0; i < m_VerticesSize/* / 2*/; i++)
 		{
 			//baseIndicesの数ループ
 			for (auto baseIndex : baseIndices)
@@ -134,5 +133,54 @@ namespace basecross {
 
 		}
 		m_drawComp->UpdateVertices(m_vertices);
+	}
+
+	void Fan::InitializeVertices()
+	{
+		//頂点データ
+		m_vertices.clear();
+		m_vertices.reserve((m_VerticesSize/* / 2*/ + 1) * 2);
+		for (int i = 0; i <= m_VerticesSize/* / 2*/; i++)
+		{
+			Vec3 position; //頂点座標
+			VertexPositionColorTexture vtx; //1頂点のデータ
+
+			//上下の頂点の共通データ
+			float rad = XMConvertToRadians(360.0f * i / m_VerticesSize);
+
+			float u = m_loops.x * static_cast<float>(i) / static_cast<float>(m_VerticesSize);
+			float v = m_loops.y;
+
+
+			//上の円の頂点
+			position = Vec3(cosf(rad), 0.0f, sinf(rad)) * m_topRadius + Vec3(0.0f, m_height, 0.0f);//Y座標をm_height分ずらす
+			position = RotatePosition(position);
+			vtx = VertexPositionColorTexture(position, m_topColor, Vec2(u, 0.0f));
+			m_vertices.push_back(vtx);
+
+			position = Vec3(cosf(rad), 0.0f, sinf(rad)) * m_bottomRadius;
+			position = RotatePosition(position);
+			vtx = VertexPositionColorTexture(position, m_bottomColor, Vec2(u, v));//v座標を最大値にする
+			m_vertices.push_back(vtx);
+
+
+		}
+
+		//頂点インデックス(頂点を繋げる順番)
+		const vector<uint16_t> baseIndices = {
+			2,1,0,
+			3,1,2,
+		};
+
+		m_indices.clear();
+		m_indices.reserve(m_VerticesSize/* / 2*/ * baseIndices.size());
+		for (int i = 0; i < m_VerticesSize/* / 2*/; i++)
+		{
+			//baseIndicesの数ループ
+			for (auto baseIndex : baseIndices)
+			{
+				m_indices.push_back(baseIndex + (2 * i));
+			}
+		}
 	}
 }

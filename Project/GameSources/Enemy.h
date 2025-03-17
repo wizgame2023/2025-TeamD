@@ -8,6 +8,8 @@
 
 namespace basecross {
 	class Character;
+	class ForecastLine;
+
 	class Enemy : public Character
 	{
 	protected:
@@ -39,26 +41,13 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		void ZoneSpeedSet();
 		void SearchRange();
-		Vec3 RotateVector(const Vec3& vector, double angle_degrees);
-		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
-
-		double DotProduct(const Vec3& v1, const Vec3& v2) {
-			return v1.x * v2.x + v1.z * v2.z;
-		}
-
-		double Magnitude(const Vec3& v) {
-			return std::sqrt(v.x * v.x + v.z * v.z);
-		}
-
-		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double detection_angle_degrees);
-
 	private:
 
 	};
 
-//--------------------------------------------------------------------------------------
-//	class LineObject : public GameObject; //線を描画するオブジェクト
-//--------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------
+	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//--------------------------------------------------------------------------------------
 	class LineObject : public GameObject {
 	private:
 		Vec3 m_StartPos;
@@ -75,6 +64,9 @@ namespace basecross {
 		weak_ptr<Character> m_MainObject;
 		weak_ptr<Character> m_Object;
 
+		Vec2 m_StartSize;
+		Vec2 m_EndSize;
+
 	public:
 		LineObject(const shared_ptr<Stage>& stage);
 		LineObject(const shared_ptr<Stage>& stage, const shared_ptr<Character>& player, const shared_ptr<Character>& enemy);
@@ -89,6 +81,13 @@ namespace basecross {
 		Vec3 GetEndPos();
 		Vec3 GetDirec();
 		Vec3 LinePos(Vec3 pos);
+
+		void SetStartSize(Vec2 size) {
+			m_StartSize = size;
+		}
+		void SetEndSize(Vec2 size) {
+			m_EndSize = size;
+		}
 	};
 
 
