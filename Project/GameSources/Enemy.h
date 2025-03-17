@@ -75,6 +75,8 @@ namespace basecross {
 		weak_ptr<Character> m_MainObject;
 		weak_ptr<Character> m_Object;
 
+		Vec2 m_StartSize;
+		Vec2 m_EndSize;
 	public:
 		LineObject(const shared_ptr<Stage>& stage);
 		LineObject(const shared_ptr<Stage>& stage, const shared_ptr<Character>& player, const shared_ptr<Character>& enemy);
@@ -89,6 +91,13 @@ namespace basecross {
 		Vec3 GetEndPos();
 		Vec3 GetDirec();
 		Vec3 LinePos(Vec3 pos);
+
+		void SetStartSize(Vec2 size) {
+			m_StartSize = size;
+		}
+		void SetEndSize(Vec2 size) {
+			m_EndSize = size;
+		}
 	};
 
 

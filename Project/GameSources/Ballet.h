@@ -1,15 +1,18 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief Æ’LÆ’Æ’Æ’â€°Æ’NÆ’^Â[â€šÃˆâ€šÃ‡
 */
 
 #pragma once
 #include "stdafx.h"
 
-namespace basecross {
+namespace basecross{
+	class LineObject;
 	class Ballet : public GameObject
 	{
 		Vec3 m_Position;
+		Vec3 m_EndPosition;
+		Vec3 m_LineEndPosition;
 		float m_Speed;
 		Vec3 m_Direction;
 
@@ -17,9 +20,11 @@ namespace basecross {
 		shared_ptr<Transform> m_Transform;
 		float m_ZoneElapsedTime;
 
+		shared_ptr<LineObject> m_Line;
+		float m_LineLength;
 	public:
-		Ballet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
-		~Ballet();
+		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
+		~Bullet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);

@@ -42,6 +42,7 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 	}
+
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
@@ -91,7 +92,7 @@ namespace basecross {
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetWorldPosition();
 		Vec3 forward = GetComponent<Transform>()->GetForward();
 		Vec3 position = m_Transform->GetPosition();
-		float searchDistance = 5.0f;
+		float searchDistance = 10.0f;
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange((forward + position), target, 30.0)) {
@@ -153,7 +154,7 @@ namespace basecross {
 //--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
-		GameObject(stage)
+		LineObject(stage,nullptr,nullptr)
 	{
 	}
 	LineObject::LineObject(const shared_ptr<Stage>& stage,
@@ -167,10 +168,13 @@ namespace basecross {
 		m_StartPos(Vec3(0.0f)),
 		m_EndPos(Vec3(0.0f)),
 		m_StartColor(Col4(1.0f)),
-		m_EndColor(Col4(1.0f))
+		m_EndColor(Col4(1.0f)),
+		m_StartSize(Vec2()),
+		m_EndSize(Vec2())
 	{
 	}
 	void LineObject::OnCreate() {
+		
 		//線を構成する2点
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
@@ -214,10 +218,9 @@ namespace basecross {
 	//頂点の更新
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
-			{m_StartPos, m_StartColor},
-			{m_EndPos, m_EndColor}
+			{m_StartPos,m_StartColor},
+			{m_EndPos,m_EndColor}
 		};
-
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 

@@ -16,6 +16,7 @@ namespace basecross {
 		void CreateViewLight();
 		void CreatePlayer();
 		void CreateEnemy();
+		void CreateResource();
 		void RegisterObjects();
 	public:
 		//\’z‚Æ”jŠü

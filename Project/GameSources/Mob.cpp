@@ -33,7 +33,7 @@ namespace basecross {
 				m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 				if (m_BalletInterval <= 0) {
 					Vec3 direction = GetDirectionToIntruder();
-					GetStage()->AddGameObject<Ballet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
+					GetStage()->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
 					m_BalletInterval = MAX_BALLET_INTERVAL;
 				}
 			}
