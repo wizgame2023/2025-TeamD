@@ -155,7 +155,7 @@ namespace basecross {
 			Vec3 target = targetVector->GetComponent<Transform>()->GetPosition();
 			if ((position - target).length() < searchDistance)
 			{
-				if (IsWithinDetectionRange(position, target, 30.0)) {
+				if (IsWithinDetectionRange(position, target, 90.0)) {
 					Vec3 rot = RotateTowardsTarget(position, target);
 					float rad = atan2f(rot.x, rot.z);
 					GetComponent<Transform>()->SetRotation(0, rad, 0);
