@@ -34,6 +34,7 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
+		wstring modelPath = mediaPath + L"Models/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -45,7 +46,6 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-
 	}
 
 	void GameStageK::CreatePlayer()

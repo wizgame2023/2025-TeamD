@@ -155,9 +155,9 @@ namespace basecross {
 			Vec3 target = targetVector->GetComponent<Transform>()->GetPosition();
 			if ((position - target).length() < searchDistance)
 			{
-				if (IsWithinDetectionRange((forward + position), target, 45.0)) {
+				if (IsWithinDetectionRange(position, target, 90.0)) {
 					Vec3 rot = RotateTowardsTarget(position, target);
-					float rad = atan2f(-rot.z, rot.x);
+					float rad = atan2f(rot.x, rot.z);
 					GetComponent<Transform>()->SetRotation(0, rad, 0);
 				}
 			}
@@ -173,9 +173,9 @@ namespace basecross {
 		};
 
 		// ベクトルを正規化
-		Vec3 normalized_direction = direction.normalize();
+		Vec3 normalizedDirection = direction.normalize();
 
-		return normalized_direction; // 向きベクトルを返却
+		return normalizedDirection; // 向きベクトルを返却
 	}
 
 	shared_ptr<GameObject> Player::BulletSearch()
@@ -195,14 +195,12 @@ namespace basecross {
 
 				if (sharedObject != nullptr)
 				{
-					sharedObject->GetComponent<BcPNTStaticDraw>()->SetDiffuse(Col4(1, 1, 1, 1));
 					Vec3 position = GetComponent<Transform>()->GetPosition();
 					Vec3 vec0 = nearBullet->GetComponent<Transform>()->GetPosition();
 					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
 					if ((vec1 - position).length() < (vec0 - position).length())
 					{
 						nearBullet = sharedObject;
-						nearBullet->GetComponent<BcPNTStaticDraw>()->SetDiffuse(Col4(0, 0, 0, 0));
 					}
 				}
 			}
@@ -219,6 +217,12 @@ namespace basecross {
 			<< m_EnergyCharge
 			<< L"\nHP"
 			<< m_HP
+			<< L"\nx"
+			<< m_Rotation.x
+			<< L"\ny"
+			<< m_Rotation.y
+			<< L"\nz"
+			<< m_Rotation.z
 			<< endl;
 		scene->SetDebugString(wss.str());
 	}
@@ -258,7 +262,6 @@ namespace basecross {
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
-
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
@@ -278,6 +281,8 @@ namespace basecross {
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		ZoneActivation();
 		Debug();
+
+		m_Rotation = GetComponent<Transform>()->GetRotation();
 
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
