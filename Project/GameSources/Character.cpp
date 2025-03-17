@@ -25,6 +25,30 @@ namespace basecross{
 		GameObject::OnDraw();
 	}
 
+	double Character::AngleBetweenVectors(const Vec3& v1, const Vec3& v2)
+	{
+		double dot_prod = DotProduct(v1, v2);
+		double mag_v1 = Magnitude(v1);
+		double mag_v2 = Magnitude(v2);
+		return std::acos(dot_prod / (mag_v1 * mag_v2));
+	}
+
+	bool Character::IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle)
+	{
+		double angleresult = AngleBetweenVectors(direction, target);
+		double detection_angle_radians = angle * XM_PI / 180.0;
+		return angleresult <= detection_angle_radians;
+	}
+
+	double Character::DotProduct(const Vec3& v1, const Vec3& v2)
+	{
+		return v1.x * v2.x + v1.z * v2.z;
+	}
+
+	double Character::Magnitude(const Vec3& v)
+	{
+		return std::sqrt(v.x * v.x + v.z * v.z);
+	}
 
 	FixedBox::FixedBox(const shared_ptr<Stage>& stage):
 		Object(stage)

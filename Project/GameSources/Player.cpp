@@ -46,7 +46,6 @@ namespace basecross {
 		return ret;
 	}
 
-
 	Vec3 Player::GetMoveVector() {
 		Vec3 angle(0, 0, 0);
 		//入力の取得
@@ -145,6 +144,73 @@ namespace basecross {
 
 	}
 
+	void Player::SearchRange()
+	{
+		Vec3 forward = GetComponent<Transform>()->GetForward();
+		Vec3 position = GetComponent<Transform>()->GetPosition();
+		float searchDistance = 10.0f;
+		auto targetVector = BulletSearch();
+		if (targetVector != nullptr)
+		{
+			Vec3 target = targetVector->GetComponent<Transform>()->GetPosition();
+			if ((position - target).length() < searchDistance)
+			{
+				if (IsWithinDetectionRange((forward + position), target, 45.0)) {
+					Vec3 rot = RotateTowardsTarget(position, target);
+					float rad = atan2f(-rot.z, rot.x);
+					GetComponent<Transform>()->SetRotation(0, rad, 0);
+				}
+			}
+		}
+	}
+
+	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
+		// 目標方向ベクトルを計算
+		Vec3 direction = {
+			target.x - object.x,
+			target.y - object.y,
+			target.z - object.z
+		};
+
+		// ベクトルを正規化
+		Vec3 normalized_direction = direction.normalize();
+
+		return normalized_direction; // 向きベクトルを返却
+	}
+
+	shared_ptr<GameObject> Player::BulletSearch()
+	{
+		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		auto target = bulletGroup->GetGroupVector();
+		shared_ptr<GameObject> nearBullet = nullptr;
+		for (auto vec : target)
+		{
+			auto sharedObject = vec.lock();
+			if (nearBullet == nullptr)
+			{
+				nearBullet = sharedObject;
+			}
+			else if (nearBullet != nullptr)
+			{
+
+				if (sharedObject != nullptr)
+				{
+					sharedObject->GetComponent<BcPNTStaticDraw>()->SetDiffuse(Col4(1, 1, 1, 1));
+					Vec3 position = GetComponent<Transform>()->GetPosition();
+					Vec3 vec0 = nearBullet->GetComponent<Transform>()->GetPosition();
+					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
+					if ((vec1 - position).length() < (vec0 - position).length())
+					{
+						nearBullet = sharedObject;
+						nearBullet->GetComponent<BcPNTStaticDraw>()->SetDiffuse(Col4(0, 0, 0, 0));
+					}
+				}
+			}
+		}
+		return nearBullet;
+	}
+
+
 	void Player::Debug()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
@@ -216,6 +282,7 @@ namespace basecross {
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_ParryJudge = true;
+			SearchRange();
 			m_Position = GetComponent<Transform>()->GetPosition();
 			Vec3 forward = GetComponent<Transform>()->GetForward();
 			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward, GetThis<GameObject>());

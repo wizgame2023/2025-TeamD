@@ -8,7 +8,7 @@
 
 namespace basecross{
 	class LineObject;
-	class Ballet : public GameObject
+	class Bullet : public GameObject
 	{
 		Vec3 m_Position;
 		Vec3 m_EndPosition;
