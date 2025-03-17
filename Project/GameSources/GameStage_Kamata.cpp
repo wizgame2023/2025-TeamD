@@ -26,6 +26,28 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
+/// <summary>
+/// リソースの作成
+/// </summary>
+	void GameStageK::CreateResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
+
+		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
+		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
+		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
+		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
+		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+
+		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+
+	}
+
 	void GameStageK::CreatePlayer()
 	{
 		shared_ptr<GameObject> player;
@@ -77,6 +99,7 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			RegisterObjects();
+			CreateResource();
 			CreatePlayer();
 			CreateEnemy();
 		}

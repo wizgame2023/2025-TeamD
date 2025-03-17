@@ -83,6 +83,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Tube.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ForecastLine.h" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +145,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Tube.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ForecastLine.cpp" />
   </ItemGroup>
 </Project>

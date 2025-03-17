@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief â€œGâ€šÃˆâ€šÃ‡Å½Ã€â€˜ÃŒ
 */
 
 #include "stdafx.h"
@@ -17,7 +17,7 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
-		////ƒfƒoƒbƒN—p
+		////Æ’fÆ’oÆ’bÆ’Nâ€”p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
@@ -36,8 +36,9 @@ namespace basecross {
 				m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 				if (m_BalletInterval <= 0) {
 					Vec3 direction = GetDirectionToIntruder();
+
 					auto ballet = GetStage()->AddGameObject<Ballet>(m_Transform->GetPosition() + direction * m_MuzzleOffset,m_BalletSpeed,direction, m_BalletRange);
-					m_BalletInterval = MAX_BALLET_INTERVAL ;
+					m_BalletInterval = MAX_BALLET_INTERVAL;
 
 					m_Line->SetBallet(ballet);
 					m_Line = GetStage()->AddGameObject<ForecastLine>();

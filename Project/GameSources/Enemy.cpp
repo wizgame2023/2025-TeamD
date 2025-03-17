@@ -42,6 +42,7 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 	}
+
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();

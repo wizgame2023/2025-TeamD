@@ -1,39 +1,38 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
-
+namespace basecross {
 	
 	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
 		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
 		m_ZoneElapsedTime(1.0f),m_EndPosition(Vec3(0)),m_LineEndPosition(Vec3())
 	{
 	}
-	Ballet::~Ballet(){}
+	Bullet::~Bullet() {}
 
-	void Ballet::OnCreate()
+	void Bullet::OnCreate()
 	{
-		//‰ŠúˆÊ’u‚Ìİ’è
+		//åˆæœŸä½ç½®ã®è¨­å®š
 		m_Transform = AddComponent<Transform>();
 		m_Transform->SetPosition(m_Position);
 		m_Transform->SetRotation(Vec3(0));
 		m_Transform->SetScale(Vec3(0.1f));
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		AddTag(L"Bullet");
 	}
 	void Ballet::OnUpdate() {
-
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -50,14 +49,12 @@ namespace basecross{
 		}
 	}
 
-	void Ballet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"Player")) {
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->PlayerHit();
-			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player")) {
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}
-	void Ballet::ZoneSpeedSet()
+	void Bullet::ZoneSpeedSet()
 	{
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
