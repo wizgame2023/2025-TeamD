@@ -43,6 +43,8 @@ namespace basecross {
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+
+
 		}
 		else {
 			position += moveAmount;

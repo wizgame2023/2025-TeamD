@@ -18,6 +18,8 @@ namespace basecross {
 		void CreateEnemy();
 		void CreateCamera();
 		void CreateWall();
+		void CreateResource();
+		void RegisterObjects();
 
 	public:
 		//\’z‚Æ”jŠü
