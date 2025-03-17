@@ -30,17 +30,17 @@ namespace basecross {
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
 		AddTag(L"Bullet");
 
 		auto group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		group->IntoGroup(GetThis<GameObject>());
 	}
+  
 	void Bullet::OnUpdate() {
 		m_Line = GetStage()->AddGameObject<LineObject>();
 		m_Line->SetLineColor(Col4(0.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 0.0f, 1.0f));
 		m_Line->SetLinePosition(m_Position, m_Position);
-
+    
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -73,13 +73,6 @@ namespace basecross {
 			position += moveAmount;
 			m_Transform->SetPosition(position);
 		}
-		if ((m_Position - position).length() > m_LineLength) {
-			m_LineEndPosition = position - moveAmount.normalize() * m_LineLength;
-		}
-		else {
-			m_LineEndPosition = m_Position;
-		}
-		m_Line->SetLinePosition(position, m_LineEndPosition);
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {

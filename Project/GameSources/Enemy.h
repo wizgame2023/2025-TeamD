@@ -8,6 +8,8 @@
 
 namespace basecross {
 	class Character;
+	class ForecastLine;
+
 	class Enemy : public Character
 	{
 	protected:
@@ -43,9 +45,9 @@ namespace basecross {
 
 	};
 
-//--------------------------------------------------------------------------------------
-//	class LineObject : public GameObject; //線を描画するオブジェクト
-//--------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------
+	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//--------------------------------------------------------------------------------------
 	class LineObject : public GameObject {
 	private:
 		Vec3 m_StartPos;
@@ -64,6 +66,7 @@ namespace basecross {
 
 		Vec2 m_StartSize;
 		Vec2 m_EndSize;
+
 	public:
 		LineObject(const shared_ptr<Stage>& stage);
 		LineObject(const shared_ptr<Stage>& stage, const shared_ptr<Character>& player, const shared_ptr<Character>& enemy);
