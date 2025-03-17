@@ -12,7 +12,7 @@ namespace basecross {
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStageM::CreateViewLight() {
-		const Vec3 eye(0.0f, 10.0f, -10.0f);
+		const Vec3 eye(0.0f, 30.0f, -30.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
@@ -145,7 +145,9 @@ namespace basecross {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
 		auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-		camera->SetTarget(player->GetComponent<Transform>());
+		if (camera != nullptr) {
+			camera->SetTarget(player->GetComponent<Transform>());
+		}
 		SetSharedGameObject(L"Player", player);
 	}
 	/// <summary>
@@ -174,6 +176,13 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 
 		builder->LoadCsv();
+	}
+	void GameStageM::SetAllGameObjectActive(bool flag) {
+		for (auto& obj : GetGameObjectVec()) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
+				obj->SetUpdateActive(flag);
+			}
+		}
 	}
 	void GameStageM::OnCreate() {
 		try {
@@ -205,6 +214,8 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"TEST");
 			}
 		}
+		
+		SetAllGameObjectActive(!m_IsPose);
 	}
 
 }

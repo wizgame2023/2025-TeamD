@@ -24,6 +24,10 @@ namespace basecross{
 		virtual void OnDraw() override;
 
 		virtual void Dead(){}
+		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
+		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
+		double DotProduct(const Vec3& v1, const Vec3& v2);
+		double Magnitude(const Vec3& v);
 	};
 
 	class FixedBox : public Object

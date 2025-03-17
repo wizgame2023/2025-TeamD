@@ -10,6 +10,7 @@
 namespace basecross{
 	void Object::OnCreate() {
 		m_Transform = GetComponent<Transform>();
+		AddTag(L"Object");
 	}
 	void StageBuilder::OnCreate() {
 		m_Stage = GetStage();
