@@ -4,6 +4,7 @@
 namespace basecross {
 	class Tube : public GameObject
 	{
+	protected :
 		std::vector<VertexPositionColorTexture> m_vertices;
 		std::vector<uint16_t> m_indices;
 
@@ -11,7 +12,7 @@ namespace basecross {
 		float m_height;
 		float m_topRadius;
 		float m_bottomRadius;
-		int m_angle;
+		int m_VerticesSize;
 		Vec2 m_loops;
 		Col4 m_topColor;
 		Col4 m_bottomColor;
@@ -28,8 +29,7 @@ namespace basecross {
 		bool m_isTracking = false;
 		bool m_isTrackingCamera = false;
 
-	protected :
-		void InitializeVertices();
+		virtual void InitializeVertices();
 		Vec3 RotatePosition(Vec3 position);
 
 	public:
@@ -46,7 +46,7 @@ namespace basecross {
 			m_height(30.0f),
 			m_topRadius(0.0f),
 			m_bottomRadius(20.0f),
-			m_angle(angles),
+			m_VerticesSize(angles),
 			m_loops(50.0f, 50.0f),
 			m_topColor(0.0f, 0.3f, 1.0f, 1.0f),
 			m_bottomColor(0.0f, 0.3f, 1.0f, 0.0f),
@@ -168,5 +168,23 @@ namespace basecross {
 		{
 			m_drawComp->SetBlendState(state);
 		}
+	};
+
+	class Fan : public Tube {
+		float m_Angle;
+	protected:
+		virtual void InitializeVertices();
+
+	public:
+		Fan(const std::shared_ptr<Stage>& stage,float angle) :
+			Fan(stage, 36,angle)
+		{
+		}
+		Fan(const std::shared_ptr<Stage>& stage, int veticesSize, float angle) :
+			Tube(stage, L"", veticesSize),m_Angle(angle)
+		{
+		}
+
+		
 	};
 }
