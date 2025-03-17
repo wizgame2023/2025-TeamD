@@ -7,10 +7,10 @@
 #include "Project.h"
 
 namespace basecross {
-	
-	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
-		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
-		m_ZoneElapsedTime(1.0f),m_EndPosition(Vec3(0)),m_LineEndPosition(Vec3())
+
+	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
+		GameObject(stage), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
+		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3())
 	{
 	}
 	Bullet::~Bullet() {}
@@ -32,7 +32,7 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		AddTag(L"Bullet");
 	}
-	void Ballet::OnUpdate() {
+	void Bullet::OnUpdate() {
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -41,7 +41,7 @@ namespace basecross {
 		moveAmount += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
-			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 		else {
 			position += moveAmount;

@@ -20,6 +20,7 @@ namespace basecross {
 		void CreatePlayer();
 		void CreateEnemy();
 		void RegisterObjects();
+		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
 	public:
 		//\’z‚Æ”jŠü
