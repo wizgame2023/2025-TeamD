@@ -51,6 +51,9 @@ namespace basecross {
 		Vec3 GetForward();
 		int GetStates();
 		int GetPlayerHP();
+		void SearchRange();
+		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
+		shared_ptr<GameObject> BulletSearch();
 	};
 
 	class HitSphere : public GameObject

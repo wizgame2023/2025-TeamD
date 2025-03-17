@@ -71,6 +71,7 @@ namespace basecross {
 
 	void GameStageK::CreateEnemy()
 	{
+		CreateSharedObjectGroup(L"BulletGroup");
 		//”z—ñ‚Ì‰Šú‰»
 		vector< vector<Vec3> > vec = {
 			{
