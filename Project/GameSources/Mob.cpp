@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief â€œGâ€šÃˆâ€šÃ‡Å½Ã€â€˜ÃŒ
 */
 
 #include "stdafx.h"
@@ -17,10 +17,9 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
-		////ƒfƒoƒbƒN—p
+		////Æ’fÆ’oÆ’bÆ’Nâ€”p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
-
 		DrawSearchRange();
 	}
 	void Mob::OnUpdate()
