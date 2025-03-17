@@ -8,7 +8,7 @@
 
 namespace basecross {
 	
-	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
+	Bullet::Bullet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
 		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
 		m_ZoneElapsedTime(1.0f),m_LineLength(2.0f),m_EndPosition(Vec3(0)),m_LineEndPosition(Vec3())
 	{
@@ -62,7 +62,7 @@ namespace basecross {
 			}
 			else {
 				GetStage()->RemoveGameObject<LineObject>(m_Line);
-				GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+				GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 			}
 			return;
 		}

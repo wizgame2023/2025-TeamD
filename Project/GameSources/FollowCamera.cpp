@@ -33,7 +33,7 @@ namespace basecross {
 		//ˆÊ’u
 		m_Position = m_PlayerTransform->GetPosition();
 		m_Eye = m_Position + m_Direction * 5.0f;
-		m_Eye.y = 3.0f;
+		m_Eye.y = m_Position.y + 2.0f;
 		//Ž©•ª‚ÌˆÊ’u
 		SetEye(m_Eye);
 		//Œ©‚Ä‚¢‚é‚Æ‚±‚ë
