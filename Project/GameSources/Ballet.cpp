@@ -7,10 +7,10 @@
 #include "Project.h"
 
 namespace basecross {
-	
-	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
-		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
-		m_ZoneElapsedTime(1.0f),m_EndPosition(Vec3(0)),m_LineEndPosition(Vec3())
+
+	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
+		GameObject(stage), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
+		m_ZoneElapsedTime(1.0f), m_LineLength(2.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3())
 	{
 	}
 	Bullet::~Bullet() {}
@@ -31,8 +31,16 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		AddTag(L"Bullet");
+
+		auto group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		group->IntoGroup(GetThis<GameObject>());
 	}
-	void Ballet::OnUpdate() {
+  
+	void Bullet::OnUpdate() {
+		m_Line = GetStage()->AddGameObject<LineObject>();
+		m_Line->SetLineColor(Col4(0.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 0.0f, 1.0f));
+		m_Line->SetLinePosition(m_Position, m_Position);
+    
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -41,7 +49,25 @@ namespace basecross {
 		moveAmount += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
-			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+			SetDrawActive(false);
+			auto col = GetComponent<CollisionSphere>();
+			col->SetUpdateActive(false);
+			if (m_EndPosition == Vec3()) {
+				m_EndPosition = position;
+			}
+			if (m_EndPosition != m_LineEndPosition) {
+				if (moveAmount.length() > (position - m_LineEndPosition).length()) {
+					moveAmount = position - m_LineEndPosition;
+				}
+				m_LineEndPosition += moveAmount;
+				m_Line->SetLinePosition(position, m_LineEndPosition);
+			}
+			else {
+				GetStage()->RemoveGameObject<LineObject>(m_Line);
+				GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+			}
+			return;
 		}
 		else {
 			position += moveAmount;

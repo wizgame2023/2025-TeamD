@@ -41,19 +41,6 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		void ZoneSpeedSet();
 		void SearchRange();
-		Vec3 RotateVector(const Vec3& vector, double angle_degrees);
-		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
-
-		double DotProduct(const Vec3& v1, const Vec3& v2) {
-			return v1.x * v2.x + v1.z * v2.z;
-		}
-
-		double Magnitude(const Vec3& v) {
-			return std::sqrt(v.x * v.x + v.z * v.z);
-		}
-
-		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double detection_angle_degrees);
-
 	private:
 
 	};
