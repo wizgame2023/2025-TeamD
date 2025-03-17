@@ -24,3 +24,4 @@
 #include "FollowCamera.h"
 #include "StageBuilder.h"
 #include "Tube.h"
+#include "ForecastLine.h"

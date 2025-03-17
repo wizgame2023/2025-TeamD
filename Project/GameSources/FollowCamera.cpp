@@ -32,8 +32,8 @@ namespace basecross {
 		m_Direction = Vec3(cos(m_Angle),0.0f,sin(m_Angle));
 		//ˆÊ’u
 		m_Position = m_PlayerTransform->GetPosition();
-		m_Eye = m_Position + m_Direction * 5.0f;
-		m_Eye.y = 3.0f;
+		m_Eye = m_Position + m_Direction * 10.0f;
+		m_Eye.y = 5.0f;
 		//Ž©•ª‚ÌˆÊ’u
 		SetEye(m_Eye);
 		//Œ©‚Ä‚¢‚é‚Æ‚±‚ë
