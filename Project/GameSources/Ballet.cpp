@@ -6,17 +6,17 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
-	
-	Ballet::Ballet(const shared_ptr<Stage>& stage,Vec3 position, float speed, Vec3 direction,float range):
-		GameObject(stage),m_Position(position),m_Speed(speed),m_Direction(direction),m_EffectiveRange(range),
+
+	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
+		GameObject(stage), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
 		m_ZoneElapsedTime(1.0f)
 	{
 	}
-	Ballet::~Ballet(){}
+	Bullet::~Bullet() {}
 
-	void Ballet::OnCreate()
+	void Bullet::OnCreate()
 	{
 		//èâä˙à íuÇÃê›íË
 		m_Transform = AddComponent<Transform>();
@@ -31,8 +31,10 @@ namespace basecross{
 		//ï`âÊê›íË
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+
+		AddTag(L"Bullet");
 	}
-	void Ballet::OnUpdate() {
+	void Bullet::OnUpdate() {
 		float elapsed = App::GetApp()->GetElapsedTime();
 		ZoneSpeedSet();
 		Vec3 position = m_Transform->GetPosition();
@@ -40,18 +42,16 @@ namespace basecross{
 		m_Transform->SetPosition(position);
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
-			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}
 
-	void Ballet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"Player")) {
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->PlayerHit();
-			GetStage()->RemoveGameObject<Ballet>(GetThis<Ballet>());
+	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player")) {
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}
-	void Ballet::ZoneSpeedSet()
+	void Bullet::ZoneSpeedSet()
 	{
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();

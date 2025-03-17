@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 namespace basecross {
-	class Ballet : public GameObject
+	class Bullet : public GameObject
 	{
 		Vec3 m_Position;
 		float m_Speed;
@@ -18,8 +18,8 @@ namespace basecross {
 		float m_ZoneElapsedTime;
 
 	public:
-		Ballet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
-		~Ballet();
+		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
+		~Bullet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);

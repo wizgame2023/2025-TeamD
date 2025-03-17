@@ -12,9 +12,13 @@ namespace basecross {
 		m_Position(position),
 		m_Rotation(rotation),
 		m_Scale(scale),
+		m_MoveSpeed(6.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
-		m_ZoneTime(0.0f)
+		m_ZoneTime(0.0f),
+		m_ParryTime(30.0f),
+		m_ParryJudge(false),
+		m_BoostTime(1.0f)
 	{
 	}
 	Player::~Player()
@@ -80,18 +84,32 @@ namespace basecross {
 		return angle;
 	}
 
-	void Player::MovePlayer() {
+	void Player::MovePlayer(const float Speed) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto angle = GetMoveVector();
 		if (angle.length() > 0.0f) {
 			auto pos = GetComponent<Transform>()->GetPosition();
-			pos += angle * elapsedTime * 6.0f;
+			pos += angle * elapsedTime * Speed;
 			GetComponent<Transform>()->SetPosition(pos);
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
 			auto utilPtr = GetBehavior<UtilBehavior>();
 			utilPtr->RotToHead(angle, 1.0f);
+		}
+	}
+
+	void Player::BoostMove(const float Speed, const Vec3 Angle) {
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		if (Angle.length() > 0.0f) {
+			auto pos = GetComponent<Transform>()->GetPosition();
+			pos += Angle * elapsedTime * Speed;
+			GetComponent<Transform>()->SetPosition(pos);
+		}
+		//回転の計算
+		if (Angle.length() > 0.0f) {
+			auto utilPtr = GetBehavior<UtilBehavior>();
+			utilPtr->RotToHead(Angle, 1.0f);
 		}
 	}
 
@@ -139,17 +157,6 @@ namespace basecross {
 		scene->SetDebugString(wss.str());
 	}
 
-	void Player::PlayerHit()
-	{
-		if ((m_PlayerStateNum & PlayerState::GUARD) != 0)
-		{
-			m_HP -= 0;
-		}
-		else {
-			m_HP -= 1;
-		}
-	}
-
 	Vec3 Player::GetForward()
 	{
 		return GetComponent<Transform>()->GetForward();
@@ -194,44 +201,94 @@ namespace basecross {
 		AddTag(L"Player");
 
 	}
+
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
-		MovePlayer();
 		ZoneActivation();
 		Debug();
 
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			m_PlayerStateNum += PlayerState::GUARD;
-			ptrDraw->SetDiffuse(Col4(0, 0, 0, 0));
-		}
-		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER)
-		{
-			m_PlayerStateNum -= PlayerState::GUARD;
-			ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
-		}
-
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
+			m_ParryJudge = true;
 			m_Position = GetComponent<Transform>()->GetPosition();
 			Vec3 forward = GetComponent<Transform>()->GetForward();
-			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward);
+			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward, GetThis<GameObject>());
 		}
+
+		if (m_ParryJudge == true)
+		{
+			m_ParryTime--;
+			if (m_ParryTime <= 0.0f)
+			{
+				m_ParryJudge = false;
+			}
+		}
+
+		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
+		{
+			m_BoostTime -= elapsedTime;
+			if (m_BoostTime >= 0.0f)
+			{
+				BoostMove(6.0f * 3.0f, m_BoostAngle);
+			}
+			else {
+				m_PlayerStateNum += PlayerState::NORMAL;
+				m_PlayerStateNum -= PlayerState::DASH;
+			}
+		}
+		else {
+			m_BoostTime = 1.0f;
+			MovePlayer(6.0f);
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+			{
+				m_BoostAngle = GetMoveVector();
+				m_PlayerStateNum -= PlayerState::NORMAL;
+				m_PlayerStateNum += PlayerState::DASH;
+			}
+		}
+
 	}
+
 	void Player::OnDraw()
 	{
 		Character::OnDraw();
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward) :
+	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
+	{
+		if (other->FindTag(L"Bullet"))
+		{
+			if (m_ParryJudge == true)
+			{
+				if (m_ParryTime <= 30 && m_ParryTime > 15)
+				{
+					m_HP -= 0;
+				}
+				else if (m_ParryTime <= 15 && m_ParryTime > 0)
+				{
+					m_HP -= 1;
+				}
+			}
+			else {
+				m_HP -= 2;
+			}
+			m_ParryJudge = false;
+			m_ParryTime = 30.0f;
+		}
+	}
+
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player) :
 		GameObject(stage),
 		m_HitPosition(position),
 		m_HitRotation(forward),
-		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
+		m_Player(player),
+		m_HitScale(Vec3(1.0f, 1.0f, 1.0f)),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
@@ -249,10 +306,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->SetAfterCollision(AfterCollision::None);
-		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		ptrColl->SetAfterCollision(AfterCollision::Auto);
 
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
@@ -280,11 +334,19 @@ namespace basecross {
 			hitPosition += m_Speed * m_HitRotation * elapsedTime;
 		}
 		else {
-			SetDrawActive(false);
-			SetUpdateActive(false);
+			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
+	}
+
+	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
+	{
+		if (other->FindTag(L"Bullet"))
+		{
+			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->OnCollisionEnter(other);
+		}
 	}
 
 }
