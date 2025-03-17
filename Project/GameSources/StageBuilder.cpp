@@ -14,7 +14,7 @@ namespace basecross{
 	void StageBuilder::OnCreate() {
 		m_Stage = GetStage();
 		wstring path = App::GetApp()->GetDataDirWString() + L"Levels/";
-		m_Csv.SetFileName(path + L"level.csv");
+		m_Csv.SetFileName(path + m_CsvFileName);
 		m_Csv.ReadCsv();
 	}
 	void StageBuilder::LoadCsv() {

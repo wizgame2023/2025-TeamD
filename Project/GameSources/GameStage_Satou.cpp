@@ -58,10 +58,13 @@ namespace basecross {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			AddGameObject<FixedBox>();
-			CreateWall();
+			//AddGameObject<FixedBox>();
+			//CreateWall();
 			CreatePlayer();
+			auto builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+			builder->Register<FixedBox>(L"cube");
 
+			builder->LoadCsv();
 		}
 		catch (...) {
 			throw;
