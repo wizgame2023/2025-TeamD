@@ -19,7 +19,7 @@ namespace basecross{
 	};
 	class ForecastLine : public GameObject
 	{
-		weak_ptr<Ballet> m_Ballet;
+		weak_ptr<Bullet> m_Ballet;
 		shared_ptr<LineCube> m_BalletLine;
 		shared_ptr<LineCube> m_Forecast;
 
@@ -38,7 +38,7 @@ namespace basecross{
 
 		void SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength);
 
-		void SetBallet(const shared_ptr<Ballet> ballet) {
+		void SetBallet(const shared_ptr<Bullet> ballet) {
 			m_Ballet = ballet;
 		}
 		void Destroy();
