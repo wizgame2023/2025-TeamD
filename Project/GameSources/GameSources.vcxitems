@@ -15,6 +15,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h" />
@@ -36,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp" />
