@@ -16,6 +16,8 @@ namespace basecross {
 		m_Draw->SetSamplerState(SamplerState::LinearWrap);
 		m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
 		SetAlphaActive(true);
+
+		AddTag(L"Line");
 	}
 	void ForecastLine::OnCreate()
 	{
@@ -35,12 +37,69 @@ namespace basecross {
 		m_StartPosition = startPosition;
 		m_Length = maxLength;
 	}
+	bool ForecastLine::CheckDistanceToObject(Vec3 position) {
+		float startDistanceSq = (position - m_StartPosition).lengthSqr();
+		float endDistanceSq = (position - (m_StartPosition + m_Direction * m_Length)).lengthSqr();
+		float lengthSq = m_Length * m_Length;
+		if (startDistanceSq > lengthSq || endDistanceSq > lengthSq) {
+			return false;
+		}
+		return true;
+	}
+	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
+		if (!GetDrawActive()) return false;
+		shared_ptr<GameObject> launcher = m_Launcher.lock();
+
+		Vec3 intersectPosition;
+		Vec3 newIntersectPosition;
+		TRIANGLE triangle;
+		size_t triangleIndex;
+		bool isHit = false;
+
+		for (auto& obj : GetStage()->GetGameObjectVec()) {
+			if (obj->FindTag(L"Bullet")) continue;
+			if (obj->FindTag(L"Line")) continue;
+			if (obj == launcher) continue;
+
+			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
+			if (!CheckDistanceToObject(objPosition)) continue;
+
+			bool isHitting = false;
+			auto draw = obj->GetComponent<SmBaseDraw>(false);
+			if (draw != nullptr) {
+				isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
+			}
+			else {
+				auto bcDraw = obj->GetComponent<BcBaseDraw>(false);
+				if (bcDraw != nullptr) {
+					isHitting = bcDraw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
+				}
+			}
+			if (isHitting) {
+				if (!isHit) {
+					intersectPosition = newIntersectPosition;
+					isHit = true;
+				}
+				else {
+					if ((intersectPosition - m_StartPosition).length() > (newIntersectPosition - m_StartPosition).length()) {
+						intersectPosition = newIntersectPosition;
+					}
+				}
+			}
+		}
+		hitPoint = intersectPosition;
+	}
 	void ForecastLine::OnUpdate()
 	{
 		float forecastSize = m_Length;
+		Vec3 intersectPosition;
+		
+		if (CheckRayCast(intersectPosition)) {
+			forecastSize = (intersectPosition - m_StartPosition).length();
+		}
 		float balletDistance = 0.0f;
 
-		auto ballet = m_Ballet.lock();
+		auto ballet = m_Bullet.lock();
 		if (ballet != nullptr) {
 			m_IsLaunched = true;
 			Vec3 direction = ballet->GetComponent<Transform>()->GetPosition() - m_StartPosition;

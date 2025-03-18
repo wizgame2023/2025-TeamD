@@ -6,7 +6,7 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	class LineObject;
 	class Bullet : public GameObject
 	{

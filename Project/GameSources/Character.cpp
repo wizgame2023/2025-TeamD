@@ -6,23 +6,11 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Character::OnCreate()
 	{
-		GameObject::OnCreate();
-	}
-	void Character::OnUpdate()
-	{
-		GameObject::OnUpdate();
-	}
-	void Character::OnUpdate2()
-	{
-		GameObject::OnUpdate2();
-	}
-	void Character::OnDraw()
-	{
-		GameObject::OnDraw();
+		Object::OnCreate();
 	}
 
 	double Character::AngleBetweenVectors(const Vec3& v1, const Vec3& v2)
@@ -50,11 +38,11 @@ namespace basecross{
 		return std::sqrt(v.x * v.x + v.z * v.z);
 	}
 
-	FixedBox::FixedBox(const shared_ptr<Stage>& stage):
+	FixedBox::FixedBox(const shared_ptr<Stage>& stage) :
 		Object(stage)
 	{
 	}
-	FixedBox::~FixedBox(){}
+	FixedBox::~FixedBox() {}
 
 	void FixedBox::OnCreate()
 	{
@@ -67,7 +55,7 @@ namespace basecross{
 
 
 		Wicth_FixedBox = true;
-		
+
 		//CollisionSphereè’ìÀîªíËÇïtÇØÇÈ
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
@@ -77,10 +65,6 @@ namespace basecross{
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 	}
-	shared_ptr<Object> FixedBox::Create() {
-		return GetStage()->AddGameObject<FixedBox>();
-	}
-
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)
 	{
@@ -92,7 +76,7 @@ namespace basecross{
 		Wicth_Wall = true;
 		//èâä˙à íuÇÃê›íË
 		auto ptr = AddComponent<Transform>();
-		ptr->SetPosition(Vec3(0.0f, 0.0f,5.0f));
+		ptr->SetPosition(Vec3(0.0f, 0.0f, 5.0f));
 		ptr->SetRotation(Vec3(0));
 		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
 

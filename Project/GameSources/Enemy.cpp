@@ -8,22 +8,14 @@
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage),
-		m_Position(position),
-		m_Rotation(Vec3()),
-		m_Scale(scale){}
-
+		Character(stage,position,Vec3(),scale){}
 	Enemy::~Enemy()
 	{
 	}
 	void Enemy::OnCreate()
 	{
+		Character::OnCreate();
 		m_HP = 3;
-		//‰ŠúˆÊ’u‚Ìİ’è
-		m_Transform = AddComponent<Transform>();
-		m_Transform->SetPosition(m_Position);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(m_Scale);
 
 		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -54,10 +46,6 @@ namespace basecross {
 		}
 	}
 
-	void Enemy::OnUpdate2()
-	{
-		Character::OnUpdate2();
-	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
 		Vec3 position = m_Transform->GetPosition();
@@ -77,7 +65,7 @@ namespace basecross {
 
 	void Enemy::ZoneSpeedSet()
 	{
-		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_ZoneElapsedTime = 1.0f;
@@ -90,7 +78,7 @@ namespace basecross {
 	void Enemy::SearchRange()
 	{
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetWorldPosition();
-		Vec3 forward = GetComponent<Transform>()->GetForward();
+		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
 		float searchDistance = 10.0f;
 		if ((position - target).length() < searchDistance)
@@ -108,13 +96,8 @@ namespace basecross {
 			m_IntruderAlert = false;
 		}
 	}
-
-	void Enemy::OnDraw()
-	{
-		Character::OnDraw();
-	}
 	void Enemy::Dead() {
-		GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
+		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{

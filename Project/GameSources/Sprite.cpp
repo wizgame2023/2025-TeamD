@@ -388,8 +388,8 @@ namespace basecross{
 		return sprite;
 	}
 	void ButtonManager::OnCreate() {
-		instance = GetThis<ButtonManager>();
 		AddTag(L"Manager");
+		instance = GetThis<ButtonManager>();
 	}
 	void ButtonManager::OnUpdate() {
 		if (!m_IsActive) return;
