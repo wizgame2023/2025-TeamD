@@ -28,6 +28,8 @@ namespace basecross {
 
 	void GameStageS::CreatePlayer()
 	{
+		shared_ptr<GameObject> player;
+
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
@@ -42,17 +44,56 @@ namespace basecross {
 			auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
 			//見るもの
 			camera->SetTarget(player->GetComponent<Transform>());
+			SetSharedGameObject(L"Player", player);
+
 		}
 
+	}
+
+	void GameStageS::CreateResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
+
+		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
+		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
+		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
+		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
+		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+
+		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
 	}
-	void GameStageS::CreateCamera()
-	{
-	}		
 
 	void GameStageS::CreateEnemy()
 	{
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(-5.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		auto& player = GetSharedGameObject<Player>(L"Player", false);
+		//オブジェクトの作成
+		for (auto v : vec) {
+			auto mob = AddGameObject<Mob>(v[0], v[2]);
+			mob->SetIntruder(player);
+		}
+
 	}
+	void GameStageS::RegisterObjects() {
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+		builder->Register<FixedBox>(L"cube");
+
+		builder->LoadCsv();
+	}
+
 
 	void GameStageS::OnCreate() {
 		try {
@@ -60,11 +101,14 @@ namespace basecross {
 			CreateViewLight();
 			//AddGameObject<FixedBox>();
 			//CreateWall();
+			CreateResource();
 			CreatePlayer();
-			auto builder = AddGameObject<StageBuilder>(L"levelMap.csv");
-			builder->Register<FixedBox>(L"cube");
+			CreateEnemy();
+			RegisterObjects();
+			//auto builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+			//builder->Register<FixedBox>(L"cube");
 
-			builder->LoadCsv();
+			//builder->LoadCsv();
 		}
 		catch (...) {
 			throw;
