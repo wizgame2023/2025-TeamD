@@ -42,7 +42,7 @@ namespace basecross {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
 
-		SetSharedGameObject(L"Player", player);
+		//SetSharedGameObject(L"Player", player);
 
 	}
 
@@ -84,7 +84,7 @@ namespace basecross {
 
 	}
 	void GameStageS::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
