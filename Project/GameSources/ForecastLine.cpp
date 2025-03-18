@@ -81,7 +81,7 @@ namespace basecross {
 		}
 		float balletDistance = 0.0f;
 
-		auto ballet = m_Ballet.lock();
+		auto ballet = m_Bullet.lock();
 		if (ballet != nullptr) {
 			m_IsLaunched = true;
 			Vec3 direction = ballet->GetComponent<Transform>()->GetPosition() - m_StartPosition;

@@ -48,12 +48,14 @@ namespace basecross{
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;
-
+		
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Object>> m_Builders;
+
+		float m_Scale;
 	public:
-		StageBuilder(const shared_ptr<Stage>& stage,const wstring& fileName) :
-			GameObject(stage),m_CsvFileName(fileName)
+		StageBuilder(const shared_ptr<Stage>& stage,const wstring& fileName,const float scale = 1.0f) :
+			GameObject(stage),m_CsvFileName(fileName),m_Scale(scale)
 		{};
 		virtual ~StageBuilder() {};
 		virtual void OnCreate()override;

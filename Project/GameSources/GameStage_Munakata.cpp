@@ -149,6 +149,7 @@ namespace basecross {
 			camera->SetTarget(player->GetComponent<Transform>());
 		}
 		SetSharedGameObject(L"Player", player);
+		CreateSharedObjectGroup(L"BulletGroup");
 	}
 	/// <summary>
 	/// “Gì¬
@@ -172,7 +173,7 @@ namespace basecross {
 
 	}
 	void GameStageM::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv",2.0f);
 		builder->Register<FixedBox>(L"cube");
 
 		builder->LoadCsv();

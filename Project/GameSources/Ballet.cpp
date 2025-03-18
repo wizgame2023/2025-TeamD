@@ -51,7 +51,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player")) {
+		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player") || other->FindTag(L"Object")) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}

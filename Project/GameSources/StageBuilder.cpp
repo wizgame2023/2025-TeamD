@@ -33,8 +33,8 @@ namespace basecross{
 			Vec3 rotation = WstrToVec3(objInfo[InfoData::Rotation]);
 			
 			auto obj = m_Builders[objInfo[InfoData::Name]]->Create();
-			obj->SetPosition(position);
-			obj->SetScale(scale);
+			obj->SetPosition(position * m_Scale);
+			obj->SetScale(scale * m_Scale);
 			obj->SetRotation(rotation);
 		}
 	}
