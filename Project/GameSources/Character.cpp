@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Character::OnCreate()
 	{
@@ -50,11 +50,11 @@ namespace basecross{
 		return std::sqrt(v.x * v.x + v.z * v.z);
 	}
 
-	FixedBox::FixedBox(const shared_ptr<Stage>& stage):
+	FixedBox::FixedBox(const shared_ptr<Stage>& stage) :
 		Object(stage)
 	{
 	}
-	FixedBox::~FixedBox(){}
+	FixedBox::~FixedBox() {}
 
 	void FixedBox::OnCreate()
 	{
@@ -67,7 +67,7 @@ namespace basecross{
 
 
 		Wicth_FixedBox = true;
-		
+
 		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
@@ -92,7 +92,7 @@ namespace basecross{
 		Wicth_Wall = true;
 		//‰ŠúˆÊ’u‚Ìİ’è
 		auto ptr = AddComponent<Transform>();
-		ptr->SetPosition(Vec3(0.0f, 0.0f,5.0f));
+		ptr->SetPosition(Vec3(0.0f, 0.0f, 5.0f));
 		ptr->SetRotation(Vec3(0));
 		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
 

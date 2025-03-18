@@ -7,6 +7,8 @@
 #include "Project.h"
 
 namespace basecross {
+	Player::Player(const shared_ptr<Stage>& stage) : Player(stage,Vec3(),Vec3(),Vec3(1.0f)){}
+
 	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
 		Character(stage),
 		m_Position(position),
@@ -325,6 +327,9 @@ namespace basecross {
 	void Player::OnDraw()
 	{
 		Character::OnDraw();
+	}
+	shared_ptr<Object> Player::Create() {
+		return GetStage()->AddGameObject<Player>();
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)

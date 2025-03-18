@@ -6,15 +6,15 @@
 #pragma once
 #include "stdafx.h"
 #include "StageBuilder.h"
-namespace basecross{
-	
-	class Character : public GameObject
+namespace basecross {
+
+	class Character : public Object
 	{
 	public:
 		int m_HP;
 
 		Character(const shared_ptr<Stage>& stage) :
-			GameObject(stage) ,m_HP(0)
+			Object(stage), m_HP(0)
 		{};
 		virtual ~Character() {};
 
@@ -23,7 +23,7 @@ namespace basecross{
 		virtual void OnUpdate2() override;
 		virtual void OnDraw() override;
 
-		virtual void Dead(){}
+		virtual void Dead() {}
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);

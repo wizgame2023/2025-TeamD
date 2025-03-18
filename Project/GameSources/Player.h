@@ -33,12 +33,13 @@ namespace basecross {
 			ZONE   = 0b00010000,
 			DASH   = 0b00100000,
 		};
-
+		Player(const shared_ptr<Stage>& stage);
 		Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
 		~Player();
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnDraw();
+		virtual shared_ptr<Object> Create()override;
 
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
