@@ -209,25 +209,35 @@ namespace basecross {
 	}
 
 	void GameStageK::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
 		builder->Register<FixedBox>(L"cube");
+		builder->Register<Player>(L"player");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
 	void GameStageK::OnCreate() {
 		try {
 			//ビューとライトの作成
-			SetPhysicsActive(true);
 			CreateViewLight();
-			AddGameObject<ButtonManager>();
 			CreateResource();
+			RegisterObjects();
+			CreateSharedObjectGroup(L"BulletGroup");
+			AddGameObject<ButtonManager>();
+
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
-			CreatePlayer();
-			CreateEnemy();
-			CreateBossEnemy();
-			RegisterObjects();
+			//CreatePlayer();
+			//CreateEnemy();
+
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+				if (camera != nullptr) {
+					camera->SetTarget(player->GetComponent<Transform>());
+				}
+			}
 		}
 		catch (...) {
 			throw;
