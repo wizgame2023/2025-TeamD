@@ -9,7 +9,13 @@
 
 namespace basecross{
 	void Object::OnCreate() {
+		m_Stage = GetStage();
+
 		m_Transform = GetComponent<Transform>();
+		SetPosition(Vec3(0,1,0));
+		SetScale(m_Scale);
+		SetRotation(m_Rotation);
+
 		AddTag(L"Object");
 	}
 	void StageBuilder::OnCreate() {
@@ -37,6 +43,7 @@ namespace basecross{
 			obj->SetScale(scale * m_Scale);
 			obj->SetRotation(rotation);
 		}
+		m_Builders.clear();
 	}
 }
 //end basecross

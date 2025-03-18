@@ -12,16 +12,14 @@ namespace basecross {
 	{
 	public:
 		int m_HP;
-
+		Character(const shared_ptr<Stage>& stage,Vec3 position,Vec3 rotation,Vec3 scale) : 
+			Object(stage,position,rotation,scale),m_HP(0){}
 		Character(const shared_ptr<Stage>& stage) :
-			Object(stage), m_HP(0)
+			Character(stage,Vec3(),Vec3(),Vec3(1.0f))
 		{};
 		virtual ~Character() {};
 
 		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-		virtual void OnUpdate2() override;
-		virtual void OnDraw() override;
 
 		virtual void Dead() {}
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
@@ -37,7 +35,6 @@ namespace basecross {
 		FixedBox(const shared_ptr<Stage>& stage);
 		~FixedBox();
 		virtual void OnCreate() override;
-		virtual shared_ptr<Object> Create()override;
 	};
 
 	class Wall : public GameObject

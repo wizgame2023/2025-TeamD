@@ -11,9 +11,6 @@ namespace basecross {
 	class Player : public Character
 	{
 		//入力ハンドラー
-		Vec3 m_Position;
-		Vec3 m_Rotation;
-		Vec3 m_Scale;
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
@@ -39,7 +36,6 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnDraw();
-		virtual shared_ptr<Object> Create()override;
 
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 

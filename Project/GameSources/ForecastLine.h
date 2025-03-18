@@ -25,6 +25,7 @@ namespace basecross{
 		shared_ptr<LineCube> m_BalletLine;
 		shared_ptr<LineCube> m_Forecast;
 		weak_ptr<Bullet> m_Bullet;
+
 		Vec3 m_Direction;
 		Vec3 m_StartPosition;
 		float m_Length;
@@ -38,6 +39,8 @@ namespace basecross{
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 
+		bool CheckRayCast(Vec3& hitPoint);
+		bool CheckDistanceToObject(Vec3 position);
 		void SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength);
 
 		void SetBallet(const shared_ptr<Bullet> ballet) {

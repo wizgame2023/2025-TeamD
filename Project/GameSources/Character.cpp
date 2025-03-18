@@ -10,19 +10,7 @@ namespace basecross {
 
 	void Character::OnCreate()
 	{
-		GameObject::OnCreate();
-	}
-	void Character::OnUpdate()
-	{
-		GameObject::OnUpdate();
-	}
-	void Character::OnUpdate2()
-	{
-		GameObject::OnUpdate2();
-	}
-	void Character::OnDraw()
-	{
-		GameObject::OnDraw();
+		Object::OnCreate();
 	}
 
 	double Character::AngleBetweenVectors(const Vec3& v1, const Vec3& v2)
@@ -77,10 +65,6 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 	}
-	shared_ptr<Object> FixedBox::Create() {
-		return GetStage()->AddGameObject<FixedBox>();
-	}
-
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)
 	{
