@@ -144,10 +144,7 @@ namespace basecross {
 		for (auto v : vec) {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
-		auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-		if (camera != nullptr) {
-			camera->SetTarget(player->GetComponent<Transform>());
-		}
+		
 		SetSharedGameObject(L"Player", player);
 	}
 	/// <summary>
@@ -172,8 +169,10 @@ namespace basecross {
 
 	}
 	void GameStageM::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv",1.0f);
 		builder->Register<FixedBox>(L"cube");
+		builder->Register<Player>(L"player");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
@@ -188,14 +187,24 @@ namespace basecross {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			AddGameObject<ButtonManager>();
 			CreateResource();
+			RegisterObjects();
+			CreateSharedObjectGroup(L"BulletGroup");
+			AddGameObject<ButtonManager>();
+			
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
-			CreatePlayer();
-			CreateEnemy();
-			RegisterObjects();
+			//CreatePlayer();
+			//CreateEnemy();
+			
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+				if (camera != nullptr) {
+					camera->SetTarget(player->GetComponent<Transform>());
+				}
+			}
 		}
 		catch (...) {
 			throw;

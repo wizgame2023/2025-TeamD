@@ -13,13 +13,7 @@ namespace basecross {
 	class Enemy : public Character
 	{
 	protected:
-		//“ü—Íƒnƒ“ƒhƒ‰[
-		Vec3 m_Position;
-		Vec3 m_Rotation;
-		Vec3 m_Scale;
-
 		shared_ptr<Character> m_Intruder;
-		shared_ptr<Transform> m_Transform;
 
 		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
@@ -29,8 +23,6 @@ namespace basecross {
 		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
-		virtual void OnUpdate2();
-		virtual void OnDraw();
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 

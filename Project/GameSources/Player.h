@@ -11,9 +11,6 @@ namespace basecross {
 	class Player : public Character
 	{
 		//入力ハンドラー
-		Vec3 m_Position;
-		Vec3 m_Rotation;
-		Vec3 m_Scale;
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
@@ -33,7 +30,7 @@ namespace basecross {
 			ZONE   = 0b00010000,
 			DASH   = 0b00100000,
 		};
-
+		Player(const shared_ptr<Stage>& stage);
 		Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
 		~Player();
 		virtual void OnCreate();
