@@ -31,6 +31,9 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		AddTag(L"Bullet");
+
+		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		group->IntoGroup(GetThis<Bullet>());
 	}
 
 	void Bullet::OnUpdate() {
@@ -43,8 +46,6 @@ namespace basecross {
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-
-
 		}
 		else {
 			position += moveAmount;
@@ -53,7 +54,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player")) {
+		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player") || other->FindTag(L"Object")) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}

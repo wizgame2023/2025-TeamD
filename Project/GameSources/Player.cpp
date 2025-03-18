@@ -7,11 +7,10 @@
 #include "Project.h"
 
 namespace basecross {
+	Player::Player(const shared_ptr<Stage>& stage) : Player(stage,Vec3(),Vec3(),Vec3(1.0f)){}
+
 	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
-		Character(stage),
-		m_Position(position),
-		m_Rotation(rotation),
-		m_Scale(scale),
+		Character(stage,position,rotation,scale),
 		m_MoveSpeed(6.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
@@ -53,11 +52,10 @@ namespace basecross {
 		float moveZ = GetInputState().y;
 
 		if (moveX + moveZ != 0) {
-			auto ptrTransform = GetComponent<Transform>();
 			auto ptrCamera = OnGetDrawCamera();
 
 			//進行方向の向きを計算
-			auto front = ptrTransform->GetPosition() - ptrCamera->GetEye();
+			auto front = GetPosition() - ptrCamera->GetEye();
 			front.y = 0;
 			front.normalize();
 			//進行方向向きからの角度を算出
@@ -87,9 +85,9 @@ namespace basecross {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto angle = GetMoveVector();
 		if (angle.length() > 0.0f) {
-			auto pos = GetComponent<Transform>()->GetPosition();
+			auto pos = GetPosition();
 			pos += angle * elapsedTime * Speed;
-			GetComponent<Transform>()->SetPosition(pos);
+			SetPosition(pos);
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
@@ -101,9 +99,9 @@ namespace basecross {
 	void Player::BoostMove(const float Speed, const Vec3 Angle) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		if (Angle.length() > 0.0f) {
-			auto pos = GetComponent<Transform>()->GetPosition();
+			auto pos = GetPosition();
 			pos += Angle * elapsedTime * Speed;
-			GetComponent<Transform>()->SetPosition(pos);
+			SetPosition(pos);
 		}
 		//回転の計算
 		if (Angle.length() > 0.0f) {
@@ -146,8 +144,8 @@ namespace basecross {
 
 	void Player::SearchRange()
 	{
-		Vec3 forward = GetComponent<Transform>()->GetForward();
-		Vec3 position = GetComponent<Transform>()->GetPosition();
+		Vec3 forward = m_Transform->GetForward();
+		Vec3 position = m_Transform->GetPosition();
 		float searchDistance = 10.0f;
 		auto targetVector = BulletSearch();
 		if (targetVector != nullptr)
@@ -158,7 +156,7 @@ namespace basecross {
 				if (IsWithinDetectionRange(position, target, 90.0)) {
 					Vec3 rot = RotateTowardsTarget(position, target);
 					float rad = atan2f(rot.x, rot.z);
-					GetComponent<Transform>()->SetRotation(0, rad, 0);
+					SetRotation(Vec3(0, rad, 0));
 				}
 			}
 		}
@@ -180,7 +178,7 @@ namespace basecross {
 
 	shared_ptr<GameObject> Player::BulletSearch()
 	{
-		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		auto bulletGroup = m_Stage->GetSharedObjectGroup(L"BulletGroup");
 		auto target = bulletGroup->GetGroupVector();
 		shared_ptr<GameObject> nearBullet = nullptr;
 		for (auto vec : target)
@@ -195,7 +193,7 @@ namespace basecross {
 
 				if (sharedObject != nullptr)
 				{
-					Vec3 position = GetComponent<Transform>()->GetPosition();
+					Vec3 position = m_Transform->GetPosition();
 					Vec3 vec0 = nearBullet->GetComponent<Transform>()->GetPosition();
 					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
 					if ((vec1 - position).length() < (vec0 - position).length())
@@ -229,7 +227,7 @@ namespace basecross {
 
 	Vec3 Player::GetForward()
 	{
-		return GetComponent<Transform>()->GetForward();
+		return m_Transform->GetForward();
 	}
 
 	int Player::GetStates()
@@ -244,12 +242,8 @@ namespace basecross {
 
 	void Player::OnCreate()
 	{
+		Character::OnCreate();
 		m_HP = 5;
-		//初期位置の設定
-		auto ptr = AddComponent<Transform>();
-		ptr->SetPosition(m_Position);
-		ptr->SetRotation(m_Rotation);
-		ptr->SetScale(m_Scale);
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -269,6 +263,9 @@ namespace basecross {
 
 		AddTag(L"Player");
 
+		
+		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
+		
 	}
 
 	void Player::OnUpdate()
@@ -288,9 +285,9 @@ namespace basecross {
 		{
 			m_ParryJudge = true;
 			SearchRange();
-			m_Position = GetComponent<Transform>()->GetPosition();
-			Vec3 forward = GetComponent<Transform>()->GetForward();
-			GetStage()->AddGameObject<HitSphere>(m_Position + forward / 2, forward, GetThis<GameObject>());
+			m_Position = GetPosition();
+			Vec3 forward =m_Transform->GetForward();
+			m_Stage->AddGameObject<HitSphere>(m_Position + forward / 2, forward, GetThis<GameObject>());
 		}
 
 		if (m_ParryJudge == true)
