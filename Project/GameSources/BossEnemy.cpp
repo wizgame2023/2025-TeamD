@@ -7,6 +7,8 @@
 #include "Project.h"
 
 namespace basecross {
+	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
+
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale)
 	{
@@ -33,7 +35,10 @@ namespace basecross {
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+
+		auto bossEnemyLegLeft = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), 1.0f);
+		auto bossEnemyLegRight = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), -1.0f);
 
 	}
 	void BossEnemy::OnUpdate()
@@ -51,8 +56,10 @@ namespace basecross {
 		return m_Transform->GetPosition();;
 	}
 
-	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale, const shared_ptr<Enemy>& enemy, const float& direction) :
-		Enemy(stage, position, scale),
+	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
+
+	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position, const shared_ptr<Enemy>& enemy, const float& direction) :
+		Enemy(stage, position, Vec3(1.0f, 3.0f, 1.0f)),
 		m_Enemy(enemy),
 		m_Direction(direction)
 	{
@@ -67,7 +74,7 @@ namespace basecross {
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(m_Position.x + m_Direction, m_Position.y - 1.5f, m_Position.z);
 		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(Vec3(1.0f, 3.0f, 1.f));
+		m_Transform->SetScale(Vec3(1.0f, 3.0f, 1.0f));
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
@@ -79,11 +86,15 @@ namespace basecross {
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 	}
 	void BossEnemyLeg::OnUpdate()
 	{
+	}
+	void BossEnemyLeg::Dead()
+	{
+		Enemy::Dead();
 	}
 }
 //end basecross

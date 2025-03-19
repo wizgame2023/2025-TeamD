@@ -33,6 +33,8 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		void ZoneSpeedSet();
 		void SearchRange();
+
+		Vec3 GetPosition();
 	private:
 
 	};

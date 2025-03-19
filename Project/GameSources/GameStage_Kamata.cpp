@@ -34,6 +34,7 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
+		wstring modelPath = mediaPath + L"Models/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -43,9 +44,12 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -127,67 +131,7 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
-	/// <summary>
-	/// プレイヤー作成
-	/// </summary>
-	void GameStageK::CreatePlayer()
-	{
-		shared_ptr<GameObject> player;
-		//配列の初期化
-		vector< vector<Vec3> > vec = {
-			{
-				Vec3(0.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-		};
-		//オブジェクトの作成
-		for (auto v : vec) {
-			player = AddGameObject<Player>(v[0], v[1], v[2]);
-		}
-		auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-		if (camera != nullptr) {
-			camera->SetTarget(player->GetComponent<Transform>());
-		}
-		SetSharedGameObject(L"Player", player);
-	}
-	/// <summary>
-	/// 敵作成
-	/// </summary>
-	void GameStageK::CreateEnemy()
-	{
-		CreateSharedObjectGroup(L"BulletGroup");
-		//配列の初期化
-		vector< vector<Vec3> > vec = {
-			{
-				Vec3(20.0f, 1.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(22.0f, 1.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(20.0f, 1.0f, 2.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(10.0f, 1.0f, 2.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-			{
-				Vec3(5.0f, 1.0f, 2.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-		};
-		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//オブジェクトの作成
-		for (auto v : vec) {
-			auto mob = AddGameObject<Mob>(v[0], v[1]);
-			mob->SetIntruder(player);
-		}
 
-	}
 	void GameStageK::CreateBossEnemy()
 	{
 		vector< vector<Vec3> > vec = {
@@ -202,14 +146,12 @@ namespace basecross {
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
-			auto bossEnemyLegLeft = AddGameObject<BossEnemyLeg>(v[0], v[2], bossEnemy, 1.0f);
-			auto bossEnemyLegRight = AddGameObject<BossEnemyLeg>(v[0], v[2], bossEnemy, -1.0f);
 			bossEnemy->SetIntruder(player);
 		}
 	}
 
 	void GameStageK::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
@@ -218,19 +160,17 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
+			CreateSharedObjectGroup(L"BulletGroup");
+			CreateSharedObjectGroup(L"EnemyGroup");
+
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();
-			CreateSharedObjectGroup(L"BulletGroup");
 			AddGameObject<ButtonManager>();
-
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
-			//CreatePlayer();
-			//CreateEnemy();
-
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -238,6 +178,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
+
 		}
 		catch (...) {
 			throw;

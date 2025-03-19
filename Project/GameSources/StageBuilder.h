@@ -63,9 +63,15 @@ namespace basecross{
 		}
 		void SetRotation(Vec3 rotation) {
 			Vec3 radRotation = Vec3(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z));
+			m_Rotation = radRotation;
 			m_Transform->SetRotation(radRotation);
 		}
-
+		void RotateY(float degree) {
+			m_Rotation.y = XMConvertToRadians(degree);
+			Quat q = Quat();
+			q = Quat(0.0f, sin(m_Rotation.y / 2.0f), 0.0f, cos(m_Rotation.y / 2.0f));
+			m_Transform->SetQuaternion(q);
+		}
 		Vec3 GetPosition() {
 			return m_Transform->GetPosition();
 		}

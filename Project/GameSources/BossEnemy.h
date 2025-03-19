@@ -11,7 +11,7 @@ namespace basecross {
 	class BossEnemy : public Enemy
 	{
 	public:
-
+		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
 		);
 		~BossEnemy();
@@ -28,10 +28,12 @@ namespace basecross {
 		shared_ptr<Enemy> m_Enemy;
 		float m_Direction;
 	public:
-		BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale, const shared_ptr<Enemy>& enemy ,const float& direction);
+		BossEnemyLeg(const shared_ptr<Stage>& stage);
+		BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position,  const shared_ptr<Enemy>& enemy ,const float& direction);
 		~BossEnemyLeg();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void Dead();
 	};
 }
 //end basecross
