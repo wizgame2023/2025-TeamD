@@ -29,7 +29,6 @@ namespace basecross {
 	void GameStageS::CreatePlayer()
 	{
 		shared_ptr<GameObject> player;
-
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
@@ -40,13 +39,10 @@ namespace basecross {
 		};
 		//オブジェクトの作成
 		for (auto v : vec) {
-			auto player = AddGameObject<Player>(v[0], v[1], v[2]);
-			auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-			//見るもの
-			camera->SetTarget(player->GetComponent<Transform>());
-			SetSharedGameObject(L"Player", player);
-
+			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
+
+		//SetSharedGameObject(L"Player", player);
 
 	}
 
@@ -88,8 +84,10 @@ namespace basecross {
 
 	}
 	void GameStageS::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
+		builder->Register<Player>(L"player");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
@@ -99,17 +97,25 @@ namespace basecross {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			//AddGameObject<FixedBox>();
-			//CreateWall();
+			CreateSharedObjectGroup(L"BulletGroup");
 			CreateResource();
-			CreatePlayer();
-			CreateEnemy();
+			//CreatePlayer();
+			//CreateEnemy();
 			RegisterObjects();
 			//auto builder = AddGameObject<StageBuilder>(L"levelMap.csv");
 			//builder->Register<FixedBox>(L"cube");
 
 			//builder->LoadCsv();
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+				if (camera != nullptr) {
+					camera->SetTarget(player->GetComponent<Transform>());
+				}
+			}
+
 		}
+
 		catch (...) {
 			throw;
 		}
