@@ -13,7 +13,7 @@ namespace basecross {
 		m_Direction(Vec3(0)),
 		m_Eye(Vec3(0)),
 		m_Position(Vec3(0)),
-		m_Angle(0),
+		m_Angle(-XM_PIDIV2),
 		m_RotateSpeed(XMConvertToRadians(180))
 	{
 	}

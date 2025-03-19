@@ -63,7 +63,7 @@ namespace basecross {
 
 		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
 	}
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)

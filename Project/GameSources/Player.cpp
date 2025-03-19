@@ -7,17 +7,18 @@
 #include "Project.h"
 
 namespace basecross {
-	Player::Player(const shared_ptr<Stage>& stage) : Player(stage,Vec3(),Vec3(),Vec3(1.0f)){}
+	Player::Player(const shared_ptr<Stage>& stage) : Player(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
 
 	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
-		Character(stage,position,rotation,scale),
+		Character(stage, position, rotation, scale),
 		m_MoveSpeed(6.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
 		m_ZoneTime(0.0f),
 		m_ParryTime(30.0f),
 		m_ParryJudge(false),
-		m_BoostTime(1.0f)
+		m_BoostTime(1.0f),
+		m_BulletDire(Vec3(0))
 	{
 	}
 	Player::~Player()
@@ -45,7 +46,7 @@ namespace basecross {
 		return ret;
 	}
 
-	Vec3 Player::GetMoveVector() {
+	Vec3 Player::GetMoveVector(float& rot) {
 		Vec3 angle(0, 0, 0);
 		//入力の取得
 		float moveX = GetInputState().x;
@@ -54,36 +55,51 @@ namespace basecross {
 		if (moveX + moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 
-			//進行方向の向きを計算
-			auto front = GetPosition() - ptrCamera->GetEye();
-			front.y = 0;
-			front.normalize();
-			//進行方向向きからの角度を算出
-			float frontAngle = atan2(front.z, front.x);
 
-			//コントローラの向き計算
-			Vec2 moveVec(moveX, moveZ);
-			float moveSize = moveVec.length();
-			//コントローラの向きから角度を計算
-			float cntlAngle = atan2(-moveX, moveZ);
-			//トータルの角度を算出
-			float totalAngle = frontAngle + cntlAngle;
 
-			//角度からベクトルを作成
-			angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
-			//正規化する
+
+			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
+			float movemove = atan2f(-moveZ, moveX);
+			float fRotate = movemove - angleY - XM_PIDIV2;
+
+			angle = Vec3(cos(fRotate), 0.0f, -sin(fRotate));
+
+			float rotate = fRotate + XM_PIDIV2;
 			angle.normalize();
-			//移動サイズを設定。
-			angle *= moveSize;
-			//Y軸は変化させない
-			angle.y = 0;
+			rot = rotate;
+
+			//
+			////進行方向の向きを計算
+			//auto front = GetPosition() - ptrCamera->GetEye();
+			//front.y = 0;
+			//front.normalize();
+			////進行方向向きからの角度を算出
+			//float frontAngle = atan2(front.z, front.x);
+
+			////コントローラの向き計算
+			//Vec2 moveVec(moveX, moveZ);
+			//float moveSize = moveVec.length();
+			////コントローラの向きから角度を計算
+			//float cntlAngle = atan2(-moveX, moveZ);
+			////トータルの角度を算出
+			//float totalAngle = frontAngle + cntlAngle;
+			//rot = XMConvertToDegrees(totalAngle);
+			////角度からベクトルを作成
+			//angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
+			////正規化する
+			//angle.normalize();
+			////移動サイズを設定。
+			//angle *= moveSize;
+			////Y軸は変化させない
+			//angle.y = 0;
 		}
 		return angle;
 	}
 
 	void Player::MovePlayer(const float Speed) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto angle = GetMoveVector();
+		float rot;
+		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
 			auto pos = GetPosition();
 			pos += angle * elapsedTime * Speed;
@@ -91,13 +107,17 @@ namespace basecross {
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
-			auto utilPtr = GetBehavior<UtilBehavior>();
-			utilPtr->RotToHead(angle, 1.0f);
+			//auto utilPtr = GetBehavior<UtilBehavior>();
+			//utilPtr->RotToHead(angle, 1.0f);
+			SetRotation(Vec3( 0,XMConvertToDegrees(rot),0));
+			m_BulletDire = GetForward();
+
 		}
 	}
 
-	void Player::BoostMove(const float Speed, const Vec3 Angle) {
+	void Player::BoostMove(const float Speed, const Vec3 Angle, const float& rot) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
+
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
 			pos += Angle * elapsedTime * Speed;
@@ -105,8 +125,9 @@ namespace basecross {
 		}
 		//回転の計算
 		if (Angle.length() > 0.0f) {
-			auto utilPtr = GetBehavior<UtilBehavior>();
-			utilPtr->RotToHead(Angle, 1.0f);
+			//auto utilPtr = GetBehavior<UtilBehavior>();
+			//utilPtr->RotToHead(Angle, 1.0f);
+			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
 		}
 	}
 
@@ -147,16 +168,31 @@ namespace basecross {
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
 		float searchDistance = 10.0f;
-		auto targetVector = BulletSearch();
-		if (targetVector != nullptr)
+		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
+		auto targetBulletVector = ObjectSearch(bulletGroup);
+		auto targetEnemyVector = ObjectSearch(enemyGroup);
+		if (targetEnemyVector != nullptr)
 		{
-			Vec3 target = targetVector->GetComponent<Transform>()->GetPosition();
-			if ((position - target).length() < searchDistance)
+			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
+			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
-				if (IsWithinDetectionRange(position, target, 90.0)) {
-					Vec3 rot = RotateTowardsTarget(position, target);
-					float rad = atan2f(rot.x, rot.z);
-					SetRotation(Vec3(0, rad, 0));
+				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
+					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
+					float rotate = atan2f(rot.x, rot.z) ;
+					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+				}
+			}
+			else if (targetBulletVector != nullptr)
+			{
+				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
+				if ((position - targetbullert).length() < searchDistance)
+				{
+					if (IsWithinDetectionRange(position, targetbullert, 90.0)) {
+						Vec3 rot = RotateTowardsTarget(position, targetbullert);
+						float rotate = atan2f(rot.x, rot.z);
+						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+					}
 				}
 			}
 		}
@@ -176,36 +212,34 @@ namespace basecross {
 		return normalizedDirection; // 向きベクトルを返却
 	}
 
-	shared_ptr<GameObject> Player::BulletSearch()
+	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group)
 	{
-		auto bulletGroup = m_Stage->GetSharedObjectGroup(L"BulletGroup");
-		auto target = bulletGroup->GetGroupVector();
-		shared_ptr<GameObject> nearBullet = nullptr;
+		auto target = group->GetGroupVector();
+		shared_ptr<GameObject> nearObject = nullptr;
 		for (auto vec : target)
 		{
 			auto sharedObject = vec.lock();
-			if (nearBullet == nullptr)
+			if (nearObject == nullptr)
 			{
-				nearBullet = sharedObject;
+				nearObject = sharedObject;
 			}
-			else if (nearBullet != nullptr)
+			else if (nearObject != nullptr)
 			{
 
 				if (sharedObject != nullptr)
 				{
 					Vec3 position = m_Transform->GetPosition();
-					Vec3 vec0 = nearBullet->GetComponent<Transform>()->GetPosition();
+					Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
 					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
 					if ((vec1 - position).length() < (vec0 - position).length())
 					{
-						nearBullet = sharedObject;
+						nearObject = sharedObject;
 					}
 				}
 			}
 		}
-		return nearBullet;
+		return nearObject;
 	}
-
 
 	void Player::Debug()
 	{
@@ -251,7 +285,22 @@ namespace basecross {
 		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"01");
+		
+		//auto ptrDraw = AddComponent<PNTBoneModelDraw>();
+		//Mat4x4 meshMat;
+		//meshMat.affineTransformation(
+		//	Vec3(.4f, .4f, .4f), //(.1f, .1f, .1f),
+		//	Vec3(0.0f, 0.0f, 0.0f),
+		//	Vec3(0.0f, XM_PI, 0.0f),
+		//	Vec3(0.0f, -XM_PIDIV2, 0.0f)
+		//);
+
+		//ptrDraw->SetMeshResource(L"PLAYER");
+		//ptrDraw->SetMeshToTransformMatrix(meshMat);
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		//ptrDraw->SetOwnShadowActive(true);
 
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -263,31 +312,33 @@ namespace basecross {
 
 		AddTag(L"Player");
 
-		
+
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
-		
+
+		line = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
+		fline = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
 	}
 
 	void Player::OnUpdate()
 	{
+		//line->SetLine(Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y)), GetPosition(), 2.0f);
+		fline->SetLine(m_Transform->GetForward(), GetPosition(), 2.0f);
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
 		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		ZoneActivation();
 		Debug();
 
-		m_Rotation = GetComponent<Transform>()->GetRotation();
-
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
 			m_ParryJudge = true;
 			SearchRange();
 			m_Position = GetPosition();
-			Vec3 forward =m_Transform->GetForward();
-			m_Stage->AddGameObject<HitSphere>(m_Position + forward / 2, forward, GetThis<GameObject>());
+			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
+			Vec3 forward = GetForward();
+			m_Stage->AddGameObject<HitSphere>(m_Position + forward , forward, GetThis<GameObject>());
 		}
 
 		if (m_ParryJudge == true)
@@ -298,13 +349,14 @@ namespace basecross {
 				m_ParryJudge = false;
 			}
 		}
+		float rot;
 
 		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 		{
 			m_BoostTime -= elapsedTime;
 			if (m_BoostTime >= 0.0f)
 			{
-				BoostMove(6.0f * 3.0f, m_BoostAngle);
+				BoostMove(6.0f * 3.0f, m_BoostAngle, rot);
 			}
 			else {
 				m_PlayerStateNum += PlayerState::NORMAL;
@@ -316,7 +368,7 @@ namespace basecross {
 			MovePlayer(6.0f);
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
-				m_BoostAngle = GetMoveVector();
+				m_BoostAngle = GetMoveVector(rot);
 				m_PlayerStateNum -= PlayerState::NORMAL;
 				m_PlayerStateNum += PlayerState::DASH;
 			}
@@ -357,7 +409,7 @@ namespace basecross {
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
-		m_HitScale(Vec3(1.0f, 1.0f, 1.0f)),
+		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
@@ -411,10 +463,11 @@ namespace basecross {
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
+		if (other->FindTag(L"Bullet") || other->FindTag(L"Object"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);
+			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}
 
