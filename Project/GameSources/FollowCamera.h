@@ -27,5 +27,9 @@ namespace basecross {
 			m_PlayerTransform = playerTransform;
 		}
 
+		float GetAngle() const
+		{
+			return m_Angle;
+		}
 	};
 }
