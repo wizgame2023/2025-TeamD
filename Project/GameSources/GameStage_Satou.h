@@ -23,6 +23,8 @@ namespace basecross {
 		void RegisterObjects();
 		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
+
+		shared_ptr<NumberSprite> m_ProtoHpNumber;
 	public:
 		//ç\ízÇ∆îjä¸
 		GameStageS() : GameStage(), m_IsPose(false) {}
