@@ -1,12 +1,9 @@
 using JetBrains.Annotations;
-using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
-using Unity.Hierarchy;
 using UnityEditor;
 using UnityEngine;
 
-[ExecuteAlways]
 public class ConvertCSV : MonoBehaviour
 {
     public string saveName;
@@ -23,24 +20,19 @@ public class ConvertCSV : MonoBehaviour
     GameObject player = null;
     List<GameObject> enemies = new List<GameObject>();
 
-    public GameObject k;
+    public Mesh defaultMesh;
+    public Material defaultMaterial;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Convert();
+      
+        //Convert();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (!Application.isPlaying)
-        {
-            if (Input.GetKeyDown(KeyCode.O))
-            {
-                //Convert();
-            }
-            
-        }
+      
     }
     bool IsFileExist()
     {
@@ -56,6 +48,17 @@ public class ConvertCSV : MonoBehaviour
             }
         }
     }
+    void WriteLoadDate(StreamWriter fs, GameObject obj,bool isChara)
+    {
+        if (isChara)
+        {
+            fs.Write("Chara");
+        }
+        else
+        {
+            fs.Write("Object");
+        }
+    }
     void WriteTransform(StreamWriter fs, GameObject obj)
     {
         fs.Write(obj.transform.position.x + "_" + obj.transform.position.y + "_" + obj.transform.position.z);
@@ -65,11 +68,6 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
 
         fs.Write(obj.transform.rotation.eulerAngles.x + "_" + obj.transform.rotation.eulerAngles.y + "_" + obj.transform.rotation.eulerAngles.z);
-    }
-    void WriteMaterial(StreamWriter fs, GameObject obj)
-    {
-        var material = obj.GetComponent<MeshRenderer>().material;
-        fs.Write(material.color.r + "_" + material.color.g + "_" + material.color.b + "_" + material.color.a);
     }
     void WriteEnemy(StreamWriter fs)
     {
@@ -84,9 +82,9 @@ public class ConvertCSV : MonoBehaviour
             fs.Write(",");
             WriteTransform(fs, enemy);
             fs.Write(",");
-            WriteMaterial(fs, enemy);
-            fs.Write(",");
             fs.Write(hp);
+            fs.Write(",");
+            WriteLoadDate(fs, enemy,true);
             fs.Write("\n");
             count++;
         }
@@ -125,9 +123,9 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
         WriteTransform(fs, obj);
         fs.Write(",");
-        WriteMaterial(fs, obj);
-        fs.Write(",");
         fs.Write(hp);
+        fs.Write(",");
+        WriteLoadDate(fs, obj, true);
         fs.Write("\n");
         count++;
         return true;
@@ -143,14 +141,17 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
         WriteTransform(fs, obj);
         fs.Write(",");
-        WriteMaterial(fs, obj);
+        WriteLoadDate(fs, obj, false);
         fs.Write("\n");
         count++;
         return true;
     }
-    void Convert()
+    public void Convert()
     {
         count = 0;
+        enemies.Clear();
+        player = null;
+
         List<GameObject> objs = new List<GameObject>();
         for (int i = 0; i < stage.transform.childCount; i++)
         {
@@ -182,10 +183,73 @@ public class ConvertCSV : MonoBehaviour
         Debug.Log("‘‚«ž‚Ý‚ªŠ®—¹‚µ‚Ü‚µ‚½");
     }
 
-
-    private void OnRenderObject()
+    public void InputCSV()
     {
-        //EditorApplication.QueuePlayerLoopUpdate();
-        SceneView.RepaintAll();
+        List<string> line = new List<string>();
+        using (StreamReader fs = new StreamReader(filePath + "/" + saveName + ".csv", System.Text.Encoding.GetEncoding(ENCODE_TEXT)))
+        {
+            while(fs.Peek() != -1)
+            {
+                line.Add(fs.ReadLine());
+            }
+            DestroyObject();
+
+            foreach (var str in line)
+            {
+                string[] date = str.Split(',');
+
+                string name = date[0];
+                string[] positionStr = date[1].Split("_");
+                string[] scaleStr = date[2].Split("_");
+                string[] rotationStr = date[3].Split("_");
+                string[] InfoStr = date[date.Length - 1].Split("_");
+
+                Vector3 position = new Vector3(float.Parse(positionStr[0]), float.Parse(positionStr[1]), float.Parse(positionStr[2]));
+                Vector3 scale = new Vector3(float.Parse(scaleStr[0]), float.Parse(scaleStr[1]), float.Parse(scaleStr[2]));
+                Vector3 rotation = new Vector3(float.Parse(rotationStr[0]), float.Parse(rotationStr[1]), float.Parse(rotationStr[2]));
+
+                var obj = new GameObject(name);
+                var filter = obj.AddComponent<MeshFilter>();
+                filter.mesh = defaultMesh;
+                var renderer = obj.AddComponent<MeshRenderer>();
+                renderer.material = defaultMaterial;
+                if (InfoStr[0] == "Chara")
+                {
+                    var comp = obj.AddComponent<CharacterDate>();
+                    comp.className = name;
+                }
+                else
+                {
+                    var comp = obj.AddComponent<ClassName>();
+                    comp.className = name;
+                }
+                obj.transform.parent = stage.transform;
+
+                obj.transform.position = position;
+                obj.transform.localScale = scale;
+                obj.transform.eulerAngles = rotation;
+            }
+            
+        }
+
+        EditorApplication.delayCall -= InputCSV;
+    }
+
+    public void DestroyObject()
+    {
+        List<GameObject> objs = new List<GameObject>();
+        for (int i = 0; i < stage.transform.childCount; i++)
+        {
+            objs.Add(stage.transform.GetChild(i).gameObject);
+        }
+        foreach (var obj in objs)
+        {
+            DestroyImmediate(obj);
+        }
+        //var charaDates = FindObjectsByType<CharacterDate>(FindObjectsSortMode.InstanceID);
+        //foreach (var obj in charaDates)
+        //{
+        //    DestroyImmediate(obj);
+        //}
     }
 }
