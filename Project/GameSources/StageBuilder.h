@@ -74,12 +74,15 @@ namespace basecross{
 			m_Transform->SetQuaternion(q);
 		}
 		Vec3 GetPosition() {
+			m_Position = m_Transform->GetPosition();
 			return m_Position;
 		}
 		Vec3 GetScale() {
+			m_Scale = m_Transform->GetScale();
 			return m_Scale;
 		}
 		Vec3 GetRotation() {
+			m_Rotation = m_Transform->GetRotation();
 			return m_Rotation;
 		}
 	};

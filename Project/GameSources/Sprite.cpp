@@ -237,7 +237,7 @@ namespace basecross{
 
 	}
 
-	void BCNumber::OnCreate() {
+	void NumberSprite::OnCreate() {
 		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
 		float sizeX = m_Size.x / m_DisplayDigit;
 		m_Numbers.reserve(m_DisplayDigit);
@@ -253,11 +253,11 @@ namespace basecross{
 		trans->SetPosition(0,0,0);
 	}
 
-	void BCNumber::OnUpdate() {
+	void NumberSprite::OnUpdate() {
 		
 	}
 
-	vector<Vec2> BCNumber::GetUV(int displayDigit) {
+	vector<Vec2> NumberSprite::GetUV(int displayDigit) {
 		float uvX = 1.0f / m_CutNum;
 
 		vector<Vec2> uv = {
@@ -270,7 +270,7 @@ namespace basecross{
 		return uv;
 	}
 
-	void BCNumber::UpdateNumber(int number) {
+	void NumberSprite::UpdateNumber(int number) {
 		m_DisplayNumber = number;
 		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
 		for (auto& sprite : m_Numbers) {
