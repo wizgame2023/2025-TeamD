@@ -21,6 +21,7 @@ namespace basecross {
 		float m_ShotRandomInterval;
 		shared_ptr<Tube> m_SearchEffect;
 		shared_ptr<ForecastLine> m_Line;
+		shared_ptr<ForecastLine> m_fLine;
 		void DrawSearchRange();
 	public:
 		Mob(const shared_ptr<Stage>& stage);
