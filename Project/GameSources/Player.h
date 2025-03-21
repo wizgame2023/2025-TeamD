@@ -47,7 +47,7 @@ namespace basecross {
 		Vec2 GetInputState() const;
 		Vec3 GetMoveVector(float& rot);
 		void MovePlayer(const float Speed);
-		void BoostMove(const float Speed, const Vec3 Angle, const float& rot);
+		void BoostMove(const float Speed, const Vec3 Angle);
 		void ZoneActivation();
 		void Debug();
 		Vec3 GetForward();
