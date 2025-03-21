@@ -55,9 +55,6 @@ namespace basecross {
 		if (moveX + moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 
-
-
-
 			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
 			float movemove = atan2f(-moveZ, moveX);
 			float fRotate = movemove - angleY - XM_PIDIV2;
@@ -67,31 +64,6 @@ namespace basecross {
 			float rotate = fRotate + XM_PIDIV2;
 			angle.normalize();
 			rot = rotate;
-
-			//
-			////進行方向の向きを計算
-			//auto front = GetPosition() - ptrCamera->GetEye();
-			//front.y = 0;
-			//front.normalize();
-			////進行方向向きからの角度を算出
-			//float frontAngle = atan2(front.z, front.x);
-
-			////コントローラの向き計算
-			//Vec2 moveVec(moveX, moveZ);
-			//float moveSize = moveVec.length();
-			////コントローラの向きから角度を計算
-			//float cntlAngle = atan2(-moveX, moveZ);
-			////トータルの角度を算出
-			//float totalAngle = frontAngle + cntlAngle;
-			//rot = XMConvertToDegrees(totalAngle);
-			////角度からベクトルを作成
-			//angle = Vec3(cos(totalAngle), 0, sin(totalAngle));
-			////正規化する
-			//angle.normalize();
-			////移動サイズを設定。
-			//angle *= moveSize;
-			////Y軸は変化させない
-			//angle.y = 0;
 		}
 		return angle;
 	}
@@ -115,19 +87,12 @@ namespace basecross {
 		}
 	}
 
-	void Player::BoostMove(const float Speed, const Vec3 Angle, const float& rot) {
+	void Player::BoostMove(const float Speed, const Vec3 Angle) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
 			pos += Angle * elapsedTime * Speed;
 			SetPosition(pos);
-		}
-		//回転の計算
-		if (Angle.length() > 0.0f) {
-			//auto utilPtr = GetBehavior<UtilBehavior>();
-			//utilPtr->RotToHead(Angle, 1.0f);
-			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
 		}
 	}
 
@@ -135,7 +100,7 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (m_EnergyCharge > 1.0)
+		if (m_EnergyCharge >= 1.0)
 		{
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B)
 			{
@@ -144,9 +109,7 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ZONE;
 				}
 			}
-		}
-		else {
-			m_EnergyCharge += 0.01f;
+			m_EnergyCharge = 1.0f;
 		}
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
@@ -321,7 +284,6 @@ namespace basecross {
 
 	void Player::OnUpdate()
 	{
-		//line->SetLine(Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y)), GetPosition(), 2.0f);
 		fline->SetLine(m_Transform->GetForward(), GetPosition(), 2.0f);
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
@@ -356,7 +318,7 @@ namespace basecross {
 			m_BoostTime -= elapsedTime;
 			if (m_BoostTime >= 0.0f)
 			{
-				BoostMove(6.0f * 3.0f, m_BoostAngle, rot);
+				BoostMove(6.0f * 3.0f, m_BoostAngle);
 			}
 			else {
 				m_PlayerStateNum += PlayerState::NORMAL;
@@ -364,11 +326,11 @@ namespace basecross {
 			}
 		}
 		else {
-			m_BoostTime = 1.0f;
+			m_BoostTime = 0.2f;
 			MovePlayer(6.0f);
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
-				m_BoostAngle = GetMoveVector(rot);
+				m_BoostAngle = GetForward();;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 				m_PlayerStateNum += PlayerState::DASH;
 			}
@@ -390,17 +352,24 @@ namespace basecross {
 				if (m_ParryTime <= 30 && m_ParryTime > 15)
 				{
 					m_HP -= 0;
+					m_EnergyCharge += 0.2;
 				}
 				else if (m_ParryTime <= 15 && m_ParryTime > 0)
 				{
 					m_HP -= 1;
+					m_EnergyCharge += 0.1;
 				}
 			}
 			else {
 				m_HP -= 2;
+				m_EnergyCharge += 0.2;
 			}
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;
+		}
+		if (other->FindTag(L"Enemy"))
+		{
+			m_EnergyCharge += 0.1;
 		}
 	}
 
@@ -464,6 +433,12 @@ namespace basecross {
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"Bullet") || other->FindTag(L"Object"))
+		{
+			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->OnCollisionEnter(other);
+			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
+		}
+		if (other->FindTag(L"Enemy"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);

@@ -1,6 +1,6 @@
 /*!
 @file Enemy.h
-@brief �G�Ȃ�
+@brief “G‚È‚Ç
 */
 
 #pragma once
@@ -13,6 +13,7 @@ namespace basecross {
 
 	class Mob : public Enemy
 	{
+	public:
 		float m_BalletSpeed;
 		float m_BalletRange;
 		float m_MuzzleOffset;
@@ -20,6 +21,7 @@ namespace basecross {
 		const float MAX_BALLET_INTERVAL;
 		float m_ShotRandomInterval;
 		shared_ptr<ForecastLine> m_Line;
+
 		shared_ptr<SharpFan> m_SearchFan;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
@@ -31,6 +33,17 @@ namespace basecross {
 
 		virtual void Dead()override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
+
+		shared_ptr<Stage> GetStage();
+		shared_ptr<Transform> GetTransfrom();
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<Mob>());
+			m_currentState->Enter();
+		}
+
 	private:
 
 	};

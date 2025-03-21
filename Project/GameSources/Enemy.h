@@ -9,6 +9,7 @@
 namespace basecross {
 	class Character;
 	class ForecastLine;
+	class EnemyState;
 
 	class Enemy : public Character
 	{
@@ -17,6 +18,9 @@ namespace basecross {
 
 		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
+
+		unique_ptr<EnemyState> m_currentState;  //現在のステート
+		unique_ptr<EnemyState> m_nextState;     //次のステート
 
 	public:
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -35,6 +39,7 @@ namespace basecross {
 		void SearchRange();
 
 		Vec3 GetPosition();
+		bool GetIntruderAlert();
 	private:
 
 	};
