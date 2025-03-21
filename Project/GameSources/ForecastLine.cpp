@@ -88,6 +88,7 @@ namespace basecross {
 			}
 		}
 		hitPoint = intersectPosition;
+		return isHit;
 	}
 	void ForecastLine::OnUpdate()
 	{
