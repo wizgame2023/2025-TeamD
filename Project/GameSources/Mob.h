@@ -19,10 +19,8 @@ namespace basecross {
 		float m_BalletInterval;
 		const float MAX_BALLET_INTERVAL;
 		float m_ShotRandomInterval;
-		shared_ptr<Tube> m_SearchEffect;
 		shared_ptr<ForecastLine> m_Line;
-		shared_ptr<ForecastLine> m_fLine;
-		void DrawSearchRange();
+		shared_ptr<SharpFan> m_SearchFan;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
