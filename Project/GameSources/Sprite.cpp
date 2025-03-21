@@ -9,7 +9,6 @@
 namespace basecross{
 
 	void Sprite::OnCreate() {
-		//CutAnimationUv(m_cutUV);
 		for (int y = 0; y < m_cutUV.y; y++) {
 			for (int x = 0; x < m_cutUV.x; x++) {
 				m_AnimationUV.push_back({
@@ -24,23 +23,6 @@ namespace basecross{
 		if (m_UseIndex == -1 || m_UseIndex >= m_AnimationUV.size()) {
 			m_UseIndex = static_cast<int>(m_AnimationUV.size()) - 1;
 		}
-		//CreateVertex(m_Size, m_AnimationUV[0]);
-		/*if (m_IsUseCenterSprite) {
-			m_Vertices = {
-				{Vec3(-m_Size.x / 2.0f, m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][0]},
-				{Vec3(m_Size.x / 2.0f, m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][1]},
-				{Vec3(-m_Size.x / 2.0f, -m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][2]},
-				{Vec3(m_Size.x / 2.0f, -m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][3]}
-			};
-		}
-		else {
-			m_Vertices = {
-				{Vec3(0, 0, 0),Col4(1,1,1,1), m_AnimationUV[0][0]},
-				{Vec3(m_Size.x, 0, 0),Col4(1,1,1,1), m_AnimationUV[0][1]},
-				{Vec3(0, -m_Size.y, 0),Col4(1,1,1,1), m_AnimationUV[0][2]},
-				{Vec3(m_Size.x, -m_Size.y, 0),Col4(1,1,1,1), m_AnimationUV[0][3]}
-			};
-		}*/
 		CreateVertex(m_Size, m_AnimationUV[0]);
 		vector<uint16_t> indices = { 
 			0, 1, 2,
@@ -58,7 +40,6 @@ namespace basecross{
 
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(m_Pos);
-		//GetComponent<Transform>()->SetRotation(m_rot);
 
 		m_ScreenSize = Vec2(1280, 800);
 
@@ -166,23 +147,6 @@ namespace basecross{
 	void Sprite::UpdateSize(Vec2 size) {
 		if (m_Draw) { 
 			m_Size = size;
-			//CreateVertex(m_Size, m_AnimationUV[m_UseIndex]);
-			/*if (m_IsUseCenterSprite) {
-				m_Vertices = {
-					{Vec3(-m_Size.x / 2.0f, m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][0]},
-					{Vec3(m_Size.x / 2.0f, m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][1]},
-					{Vec3(-m_Size.x / 2.0f, -m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][2]},
-					{Vec3(m_Size.x / 2.0f, -m_Size.y / 2.0f, 0),Col4(1,1,1,1), m_AnimationUV[0][3]}
-				};
-			}
-			else {
-				m_Vertices = {
-					{Vec3(0, 0, 0),Col4(1,1,1,1), m_AnimationUV[0][0]},
-					{Vec3(m_Size.x, 0, 0),Col4(1,1,1,1), m_AnimationUV[0][1]},
-					{Vec3(0, -m_Size.y, 0),Col4(1,1,1,1), m_AnimationUV[0][2]},
-					{Vec3(m_Size.x, -m_Size.y, 0),Col4(1,1,1,1), m_AnimationUV[0][3]}
-				};
-			}*/
 			if (m_IsAnimation) {
 				CreateVertex(m_Size, m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
 			}
