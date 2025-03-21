@@ -7,16 +7,17 @@
 #include "Project.h"
 
 namespace basecross {
-	Mob::Mob(const shared_ptr<Stage>& stage) : Mob(stage,Vec3(),Vec3(1.0f)){}
+	Mob::Mob(const shared_ptr<Stage>& stage) : Mob(stage, Vec3(), Vec3(1.0f)) {}
 
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage,position,scale),
-		m_BalletInterval(0.5f),MAX_BALLET_INTERVAL(0.5f),m_ShotRandomInterval(0.0f),
-		m_BalletSpeed(20.0f),m_MuzzleOffset(1.5f),
+		Enemy(stage, position, scale),
+		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
+		m_BalletSpeed(20.0f), m_MuzzleOffset(1.5f),
 		m_BalletRange(10.0f)
-	{}
+	{
+	}
 
-	Mob::~Mob(){}
+	Mob::~Mob() {}
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
@@ -24,6 +25,8 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
+		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
+		m_currentState->Enter();
 
 		////ƒfƒoƒbƒN—p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
@@ -35,6 +38,7 @@ namespace basecross {
 	}
 	void Mob::OnUpdate()
 	{
+		m_currentState->Execute();
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 		if (m_BalletInterval < 0) {
@@ -75,7 +79,6 @@ namespace basecross {
 	}
 	void Mob::AsyncUpdate()
 	{
-		double angle = 45.0;
 		StartAsync();
 		Enemy::OnUpdate();
 
@@ -86,15 +89,15 @@ namespace basecross {
 			{
 				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= 0 && m_ShotRandomInterval <= 0) {
-					Vec3 direction = GetDirectionToIntruder();
+					//Vec3 direction = GetDirectionToIntruder();
 
-					auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * m_MuzzleOffset, m_BalletSpeed, direction, m_BalletRange);
-					m_BalletInterval = MAX_BALLET_INTERVAL;
+					//auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * m_MuzzleOffset, m_BalletSpeed, direction, m_BalletRange);
+					//m_BalletInterval = MAX_BALLET_INTERVAL;
 
-					m_Line->SetBallet(ballet);
-					m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
+					//m_Line->SetBallet(ballet);
+					//m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
 
-					m_ShotRandomInterval = Util::RandZeroToOne() * (MAX_BALLET_INTERVAL * 0.5f);
+					//m_ShotRandomInterval = Util::RandZeroToOne() * (MAX_BALLET_INTERVAL * 0.5f);
 				}
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
@@ -104,9 +107,10 @@ namespace basecross {
 				}
 			}
 			else {
+
 				m_Line->SetDrawActive(false);
 			}
-			
+
 
 			/*if(GetDistanceToIntruder() < )*/
 		}
@@ -137,5 +141,17 @@ namespace basecross {
 	{
 		Enemy::OnCollisionEnter(other);
 	}
+
+	shared_ptr<Stage> Mob::GetStage()
+	{
+		return m_Stage;
+	}
+
+	shared_ptr<Transform> Mob::GetTransfrom()
+	{
+		return m_Transform;
+	}
+
+
 }
 //end basecross

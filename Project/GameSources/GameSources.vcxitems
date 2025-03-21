@@ -25,11 +25,13 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Munakata.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Satou.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
@@ -48,10 +50,12 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Munakata.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Satou.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />

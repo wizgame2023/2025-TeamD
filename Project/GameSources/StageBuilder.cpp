@@ -44,6 +44,7 @@ namespace basecross{
 			obj->SetRotation(rotation);
 		}
 		m_Builders.clear();
+		
 	}
 }
 //end basecross

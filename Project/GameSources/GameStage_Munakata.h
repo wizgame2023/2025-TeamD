@@ -7,7 +7,8 @@
 #include "stdafx.h"
 
 namespace basecross {
-
+	class NumberSprite;
+	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -22,9 +23,11 @@ namespace basecross {
 		void RegisterObjects();
 		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
+
+		shared_ptr<NumberSprite> m_ProtoHpNumber;
 	public:
 		//構築と破棄
-		GameStageM() :GameStage(),m_IsPose(false) {}
+		GameStageM() :GameStage(), m_IsPose(false) {}
 		virtual ~GameStageM() {}
 		//初期化
 		virtual void OnCreate()override;
