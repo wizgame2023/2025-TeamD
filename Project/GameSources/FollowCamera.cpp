@@ -29,7 +29,7 @@ namespace basecross {
 
 
 		//方向
-		m_Direction = Vec3(cos(m_Angle),0.0f,sin(m_Angle));
+		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
 
