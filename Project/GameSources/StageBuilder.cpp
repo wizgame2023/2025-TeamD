@@ -28,6 +28,7 @@ namespace basecross{
 		auto& csvVec = m_Csv.GetCsvVec();
 
 		vector<wstring> objInfo = {};
+		map<wstring, shared_ptr<RootPointer>> rootPointers;
 		for (auto& info : csvVec) {
 			objInfo.clear();
 			Util::WStrToTokenVector(objInfo, info, L',');
@@ -42,8 +43,31 @@ namespace basecross{
 			obj->SetPosition(position * m_Scale);
 			obj->SetScale(scale * m_Scale);
 			obj->SetRotation(rotation);
+
+			wstring dateType = objInfo[objInfo.size() - 1];
+			if (dateType == L"Pointer") {
+				auto pointer = static_pointer_cast<RootPointer>(obj);
+				if (obj != nullptr) {
+					pointer->SetPointerNumber(objInfo[5]);
+					rootPointers.emplace(objInfo[4], pointer);
+				}
+			}
 		}
 		m_Builders.clear();
+		
+		for (auto& pointer : rootPointers) {
+			wstring numbers = pointer.second->GetPointerNumber();
+			vector<wstring> number = {};
+			Util::WStrToTokenVector(number, numbers, L'_');
+			for (auto& num : number) {
+				if (num != L"") {
+					if (rootPointers.find(num) != end(rootPointers)) {
+						pointer.second->AddPointer(rootPointers[num]);
+					}
+				}
+			}
+
+		}
 	}
 }
 //end basecross

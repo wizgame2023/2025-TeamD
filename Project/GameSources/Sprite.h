@@ -219,7 +219,7 @@ namespace basecross{
 	//	数値表示クラス																												
 	//																																
 	//----------------------------------------------------------
-	class BCNumber : public GameObject {
+	class NumberSprite : public GameObject {
 		vector<shared_ptr<Sprite>> m_Numbers;
 		int m_CutNum;
 		int m_DisplayNumber;
@@ -231,15 +231,15 @@ namespace basecross{
 
 		vector<Vec2> GetUV(int displayDigit);
 	public:
-		BCNumber(const shared_ptr<Stage>& ptr,const wstring& texKey) : BCNumber(ptr,texKey,Vec3(0,0,0),Vec2(200,100),8){}
-		BCNumber(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size,int displayDigit) : BCNumber(ptr, texKey, pos, size, displayDigit,10) {}
-		BCNumber(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, int displayDigit,int cutNum) : 
+		NumberSprite(const shared_ptr<Stage>& ptr,const wstring& texKey) : NumberSprite(ptr,texKey,Vec3(0,0,0),Vec2(200,100),8){}
+		NumberSprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size,int displayDigit) : NumberSprite(ptr, texKey, pos, size, displayDigit,10) {}
+		NumberSprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, int displayDigit,int cutNum) : 
 			GameObject(ptr) ,
 			m_TexKey(texKey),
 			m_Pos(pos),m_Size(size),
 			m_DisplayDigit(displayDigit),m_DisplayNumber(1234), m_CutNum(cutNum)
 		{}
-		virtual ~BCNumber(){}
+		virtual ~NumberSprite(){}
 
 		virtual void OnCreate();
 		virtual void OnUpdate();

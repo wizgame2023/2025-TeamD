@@ -170,21 +170,4 @@ namespace basecross {
 		}
 	};
 
-	class Fan : public Tube {
-		float m_Angle;
-	protected:
-		virtual void InitializeVertices();
-
-	public:
-		Fan(const std::shared_ptr<Stage>& stage,float angle) :
-			Fan(stage, 36,angle)
-		{
-		}
-		Fan(const std::shared_ptr<Stage>& stage, int veticesSize, float angle) :
-			Tube(stage, L"", veticesSize),m_Angle(angle)
-		{
-		}
-
-		
-	};
 }
