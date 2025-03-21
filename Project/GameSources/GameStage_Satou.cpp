@@ -26,31 +26,15 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
-	void GameStageS::CreatePlayer()
-	{
-		shared_ptr<GameObject> player;
-		//配列の初期化
-		vector< vector<Vec3> > vec = {
-			{
-				Vec3(0.0f, 1.0f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.0f, 1.0f, 1.0f)
-			},
-		};
-		//オブジェクトの作成
-		for (auto v : vec) {
-			player = AddGameObject<Player>(v[0], v[1], v[2]);
-		}
-
-		//SetSharedGameObject(L"Player", player);
-
-	}
-
+	/// <summary>
+	/// リソースの作成
+	/// </summary>
 	void GameStageS::CreateResource() {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
+		wstring modelPath = mediaPath + L"Models/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -60,14 +44,16 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
 	}
-
 	/// <summary>
-/// ポーズメニューの作成
-/// </summary>
+	/// ポーズメニューの作成
+	/// </summary>
 	void GameStageS::CreatePose() {
 		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
@@ -146,12 +132,34 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 
+	void GameStageS::CreatePlayer()
+	{
+		shared_ptr<GameObject> player;
+		//配列の初期化
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(0.0f, 1.0f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.0f, 1.0f, 1.0f)
+			},
+		};
+		//オブジェクトの作成
+		for (auto v : vec) {
+			player = AddGameObject<Player>(v[0], v[1], v[2]);
+		}
+
+		SetSharedGameObject(L"Player", player);
+	}
+
+	/// <summary>
+	/// 敵作成
+	/// </summary>
 	void GameStageS::CreateEnemy()
 	{
 		//配列の初期化
 		vector< vector<Vec3> > vec = {
 			{
-				Vec3(-5.0f, 1.0f, 0.0f),
+				Vec3(20.0f, 1.0f, 0.0f),
 				Vec3(0.0f, 0.0f, 0.0f),
 				Vec3(1.0f, 1.0f, 1.0f)
 			},
@@ -164,8 +172,27 @@ namespace basecross {
 		}
 
 	}
+
+	void GameStageS::CreateBossEnemy()
+	{
+		vector< vector<Vec3> > vec = {
+			{
+				Vec3(0.0f,3.5f, 0.0f),
+				Vec3(0.0f, 0.0f, 0.0f),
+				Vec3(1.5f, 1.5f, 1.5f)
+			},
+		};
+		auto& player = GetSharedGameObject<Player>(L"Player", false);
+		//オブジェクトの作成
+		for (auto v : vec) {
+			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
+			SetSharedGameObject(L"BossBody", bossEnemy);
+			bossEnemy->SetIntruder(player);
+		}
+	}
+
 	void GameStageS::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
@@ -184,23 +211,17 @@ namespace basecross {
 
 	void GameStageS::OnCreate() {
 		try {
+			CreateSharedObjectGroup(L"BulletGroup");
+			CreateSharedObjectGroup(L"EnemyGroup");
+
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();
-			CreateSharedObjectGroup(L"BulletGroup");
-			CreateSharedObjectGroup(L"EnemyGroup");
 			AddGameObject<ButtonManager>();
-
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
-			//CreatePlayer();
-			//CreateEnemy();
-			//auto builder = AddGameObject<StageBuilder>(L"levelMap.csv");
-			//builder->Register<FixedBox>(L"cube");
-
-			//builder->LoadCsv();
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -210,11 +231,11 @@ namespace basecross {
 			}
 
 		}
-
 		catch (...) {
 			throw;
 		}
 	}
+
 	void GameStageS::OnUpdate() {
 		auto& app = App::GetApp();
 
@@ -227,13 +248,9 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"TEST");
 			}
 		}
+		if (m_IsPose) {
 
-		SetAllGameObjectActive(!m_IsPose);
+		}
 	}
-
-	void GameStageS::CreateWall() {
-		AddGameObject<Wall>();
-	}
-
 }
 //end basecross
