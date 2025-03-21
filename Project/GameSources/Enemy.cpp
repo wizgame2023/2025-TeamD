@@ -33,6 +33,10 @@ namespace basecross {
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+
+		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
+		group->IntoGroup(GetThis<Enemy>());
+
 	}
 
 	void Enemy::OnUpdate()
@@ -96,6 +100,12 @@ namespace basecross {
 			m_IntruderAlert = false;
 		}
 	}
+
+	Vec3 Enemy::GetPosition()
+	{
+		return m_Transform->GetPosition();
+	}
+
 	void Enemy::Dead() {
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
