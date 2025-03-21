@@ -25,7 +25,8 @@ namespace basecross {
 	{
 		double angleresult = AngleBetweenVectors(direction, target);
 		double detection_angle_radians = angle * XM_PI / 180.0;
-		return angleresult <= detection_angle_radians;
+		double minas_detection_angle_radians = -angle * XM_PI / 180.0;
+		return angleresult <= detection_angle_radians && angleresult >= minas_detection_angle_radians;
 	}
 
 	double Character::DotProduct(const Vec3& v1, const Vec3& v2)
