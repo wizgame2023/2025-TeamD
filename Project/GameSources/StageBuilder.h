@@ -94,8 +94,6 @@ namespace basecross{
 			Position,
 			Scale,
 			Rotation,
-			Color,
-			Hp
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;
