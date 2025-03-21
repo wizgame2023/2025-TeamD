@@ -12,16 +12,19 @@ namespace basecross {
 	{
 	public:
 		int m_HP;
-		Character(const shared_ptr<Stage>& stage,Vec3 position,Vec3 rotation,Vec3 scale) : 
-			Object(stage,position,rotation,scale),m_HP(0){}
+		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
+			Object(stage, position, rotation, scale), m_HP(0) {
+		}
 		Character(const shared_ptr<Stage>& stage) :
-			Character(stage,Vec3(),Vec3(),Vec3(1.0f))
-		{};
+			Character(stage, Vec3(), Vec3(), Vec3(1.0f))
+		{
+		};
 		virtual ~Character() {};
 
 		virtual void OnCreate() override;
 
 		virtual void Dead() {}
+
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
@@ -46,6 +49,6 @@ namespace basecross {
 		virtual void OnCreate() override;
 
 	};
-
 }
+
 //end basecross

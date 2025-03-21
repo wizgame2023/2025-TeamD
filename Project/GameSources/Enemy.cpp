@@ -8,7 +8,8 @@
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage,position,Vec3(),scale){}
+		Character(stage, position, Vec3(), scale) {
+	}
 	Enemy::~Enemy()
 	{
 	}
@@ -43,7 +44,6 @@ namespace basecross {
 	{
 		ZoneSpeedSet();
 		SearchRange();
-
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -81,13 +81,14 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		Vec3 target = m_Intruder->GetComponent<Transform>()->GetWorldPosition();
-		Vec3 forward = m_Transform->GetForward();
+		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
+		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
+		forword.normalize();
 		float searchDistance = 10.0f;
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange((forward + position), target, 30.0)) {
+			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
 				//プレイヤーの方向をゆっくり向く
 
 				m_IntruderAlert = true;
@@ -117,12 +118,12 @@ namespace basecross {
 		}
 	}
 
-//--------------------------------------------------------------------------------------
-//	class LineObject : public GameObject; //線を描画するオブジェクト
-//--------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------
+	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
-		LineObject(stage,nullptr,nullptr)
+		LineObject(stage, nullptr, nullptr)
 	{
 	}
 	LineObject::LineObject(const shared_ptr<Stage>& stage,
@@ -142,7 +143,7 @@ namespace basecross {
 	{
 	}
 	void LineObject::OnCreate() {
-		
+
 		//線を構成する2点
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
