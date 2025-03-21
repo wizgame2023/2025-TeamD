@@ -9,7 +9,14 @@
 
 namespace basecross{
 	void Object::OnCreate() {
+		m_Stage = GetStage();
+
 		m_Transform = GetComponent<Transform>();
+		SetPosition(Vec3(0,1,0));
+		SetScale(m_Scale);
+		SetRotation(m_Rotation);
+
+		AddTag(L"Object");
 	}
 	void StageBuilder::OnCreate() {
 		m_Stage = GetStage();
@@ -32,10 +39,11 @@ namespace basecross{
 			Vec3 rotation = WstrToVec3(objInfo[InfoData::Rotation]);
 			
 			auto obj = m_Builders[objInfo[InfoData::Name]]->Create();
-			obj->SetPosition(position);
-			obj->SetScale(scale);
+			obj->SetPosition(position * m_Scale);
+			obj->SetScale(scale * m_Scale);
 			obj->SetRotation(rotation);
 		}
+		m_Builders.clear();
 	}
 }
 //end basecross

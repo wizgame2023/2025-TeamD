@@ -8,22 +8,15 @@
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage),
-		m_Position(position),
-		m_Rotation(Vec3()),
-		m_Scale(scale){}
-
+		Character(stage, position, Vec3(), scale) {
+	}
 	Enemy::~Enemy()
 	{
 	}
 	void Enemy::OnCreate()
 	{
+		Character::OnCreate();
 		m_HP = 3;
-		//初期位置の設定
-		m_Transform = AddComponent<Transform>();
-		m_Transform->SetPosition(m_Position);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(m_Scale);
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -41,23 +34,22 @@ namespace basecross {
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+
+		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
+		group->IntoGroup(GetThis<Enemy>());
+
 	}
 
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
 		SearchRange();
-
 		if (m_HP <= 0)
 		{
 			Dead();
 		}
 	}
 
-	void Enemy::OnUpdate2()
-	{
-		Character::OnUpdate2();
-	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
 		Vec3 position = m_Transform->GetPosition();
@@ -77,7 +69,7 @@ namespace basecross {
 
 	void Enemy::ZoneSpeedSet()
 	{
-		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_ZoneElapsedTime = 1.0f;
@@ -89,13 +81,14 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		Vec3 target = m_Intruder->GetComponent<Transform>()->GetWorldPosition();
-		Vec3 forward = GetComponent<Transform>()->GetForward();
+		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
+		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
+		forword.normalize();
 		float searchDistance = 10.0f;
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange((forward + position), target, 30.0)) {
+			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
 				//プレイヤーの方向をゆっくり向く
 
 				m_IntruderAlert = true;
@@ -109,12 +102,18 @@ namespace basecross {
 		}
 	}
 
-	void Enemy::OnDraw()
+	Vec3 Enemy::GetPosition()
 	{
-		Character::OnDraw();
+		return m_Transform->GetPosition();
 	}
+
+	bool Enemy::GetIntruderAlert()
+	{
+		return m_IntruderAlert;
+	}
+
 	void Enemy::Dead() {
-		GetStage()->RemoveGameObject<Enemy>(GetThis<Enemy>());
+		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
@@ -124,12 +123,12 @@ namespace basecross {
 		}
 	}
 
-//--------------------------------------------------------------------------------------
-//	class LineObject : public GameObject; //線を描画するオブジェクト
-//--------------------------------------------------------------------------------------
+	//--------------------------------------------------------------------------------------
+	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
-		LineObject(stage,nullptr,nullptr)
+		LineObject(stage, nullptr, nullptr)
 	{
 	}
 	LineObject::LineObject(const shared_ptr<Stage>& stage,
@@ -149,7 +148,7 @@ namespace basecross {
 	{
 	}
 	void LineObject::OnCreate() {
-		
+
 		//線を構成する2点
 		m_Vertices = {
 			{m_StartPos, m_StartColor},

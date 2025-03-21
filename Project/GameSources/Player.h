@@ -8,12 +8,10 @@
 
 namespace basecross {
 	class Character;
+	class ForecastLine;
 	class Player : public Character
 	{
 		//入力ハンドラー
-		Vec3 m_Position;
-		Vec3 m_Rotation;
-		Vec3 m_Scale;
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
@@ -21,6 +19,10 @@ namespace basecross {
 		bool m_ParryJudge;
 		float m_BoostTime;
 		Vec3 m_BoostAngle;
+		Vec3 m_BulletDire;
+
+		shared_ptr<ForecastLine> line;
+		shared_ptr<ForecastLine> fline;
 
 	public:
 		int m_PlayerStateNum;
@@ -33,7 +35,7 @@ namespace basecross {
 			ZONE   = 0b00010000,
 			DASH   = 0b00100000,
 		};
-
+		Player(const shared_ptr<Stage>& stage);
 		Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
 		~Player();
 		virtual void OnCreate();
@@ -43,7 +45,7 @@ namespace basecross {
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;
-		Vec3 GetMoveVector();
+		Vec3 GetMoveVector(float& rot);
 		void MovePlayer(const float Speed);
 		void BoostMove(const float Speed, const Vec3 Angle);
 		void ZoneActivation();
@@ -53,7 +55,7 @@ namespace basecross {
 		int GetPlayerHP();
 		void SearchRange();
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
-		shared_ptr<GameObject> BulletSearch();
+		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
 	};
 
 	class HitSphere : public GameObject

@@ -32,12 +32,11 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		AddTag(L"Bullet");
 
-		auto group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
-		group->IntoGroup(GetThis<GameObject>());
+		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+		group->IntoGroup(GetThis<Bullet>());
 	}
 
 	void Bullet::OnUpdate() {
-
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
@@ -47,22 +46,6 @@ namespace basecross {
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-			SetDrawActive(false);
-			auto col = GetComponent<CollisionSphere>();
-			col->SetUpdateActive(false);
-			if (m_EndPosition == Vec3()) {
-				m_EndPosition = position;
-			}
-			if (m_EndPosition != m_LineEndPosition) {
-				if (moveAmount.length() > (position - m_LineEndPosition).length()) {
-					moveAmount = position - m_LineEndPosition;
-				}
-				m_LineEndPosition += moveAmount;
-			}
-			else {
-				GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-			}
-			return;
 		}
 		else {
 			position += moveAmount;
@@ -71,7 +54,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player")) {
+		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player") || other->FindTag(L"Object")) {
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}

@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
+@brief ç¹§ï½·ç¹ï½¼ç¹ï½³èž³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -13,13 +13,13 @@ namespace basecross {
 		m_Direction(Vec3(0)),
 		m_Eye(Vec3(0)),
 		m_Position(Vec3(0)),
-		m_Angle(0),
+		m_Angle(-XM_PIDIV2),
 		m_RotateSpeed(XMConvertToRadians(180))
 	{
 	}
 
 	void FollowCamera::OnUpdate() {
-		//ƒRƒ“ƒgƒ[ƒ‰‚ÌŽæ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (cntlVec.bConnected) {
@@ -28,15 +28,17 @@ namespace basecross {
 		}
 
 
-		//•ûŒü
+		//æ–¹å‘
 		m_Direction = Vec3(cos(m_Angle),0.0f,sin(m_Angle));
-		//ˆÊ’u
+		//ä½ç½®
 		m_Position = m_PlayerTransform->GetPosition();
-		m_Eye = m_Position + m_Direction * 10.0f;
-		m_Eye.y = 5.0f;
-		//Ž©•ª‚ÌˆÊ’u
+
+		m_Eye = m_Position + m_Direction * 5.0f;
+		m_Eye.y = m_Position.y + 2.0f;
+
+		//è‡ªåˆ†ã®ä½ç½®
 		SetEye(m_Eye);
-		//Œ©‚Ä‚¢‚é‚Æ‚±‚ë
+		//è¦‹ã¦ã„ã‚‹ã¨ã“ã‚
 		SetAt(m_PlayerTransform->GetPosition());
 		LogCamera();
 

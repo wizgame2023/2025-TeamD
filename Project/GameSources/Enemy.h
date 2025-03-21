@@ -9,28 +9,24 @@
 namespace basecross {
 	class Character;
 	class ForecastLine;
+	class EnemyState;
 
 	class Enemy : public Character
 	{
 	protected:
-		//入力ハンドラー
-		Vec3 m_Position;
-		Vec3 m_Rotation;
-		Vec3 m_Scale;
-
 		shared_ptr<Character> m_Intruder;
-		shared_ptr<Transform> m_Transform;
 
 		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
+
+		unique_ptr<EnemyState> m_currentState;  //現在のステート
+		unique_ptr<EnemyState> m_nextState;     //次のステート
 
 	public:
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
-		virtual void OnUpdate2();
-		virtual void OnDraw();
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
@@ -41,6 +37,9 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		void ZoneSpeedSet();
 		void SearchRange();
+
+		Vec3 GetPosition();
+		bool GetIntruderAlert();
 	private:
 
 	};

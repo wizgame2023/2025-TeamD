@@ -18,6 +18,12 @@ namespace basecross {
 		void CreateEnemy();
 		void CreateCamera();
 		void CreateWall();
+		void CreateResource();
+		void RegisterObjects();
+		void CreatePose();
+		void CreateSoundTest();
+		void SetAllGameObjectActive(bool flag);
+		bool m_IsPose;
 
 	public:
 		//\’z‚Æ”jŠü
@@ -25,6 +31,10 @@ namespace basecross {
 		virtual ~GameStageS() {}
 		//‰Šú‰»
 		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
+		void ClosePose();
+		void OpenPose();
 	};
 
 
