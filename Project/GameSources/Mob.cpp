@@ -31,6 +31,7 @@ namespace basecross {
 
 		DrawSearchRange();
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
+		m_fLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
 	}
 	void Mob::OnUpdate()
 	{
@@ -74,12 +75,14 @@ namespace basecross {
 	}
 	void Mob::AsyncUpdate()
 	{
+		double angle = 45.0;
 		StartAsync();
 		Enemy::OnUpdate();
 
 		if (m_Intruder != nullptr) {
 			m_Line->SetLine(GetDirectionToIntruder(), m_Transform->GetPosition(), 10.0f);
-			if (m_IntruderAlert)
+			m_fLine->SetLine(m_Transform->GetForward(), m_Transform->GetPosition(), 2.0f);
+			if (Enemy::m_IntruderAlert)
 			{
 				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= 0 && m_ShotRandomInterval <= 0) {
