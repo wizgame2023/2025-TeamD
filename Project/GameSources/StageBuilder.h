@@ -94,8 +94,6 @@ namespace basecross{
 			Position,
 			Scale,
 			Rotation,
-			Color,
-			Hp
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;
@@ -121,7 +119,7 @@ namespace basecross{
 
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
-			return stoi(data);
+			return stof(data);
 		}
 
 		Vec3 WstrToVec3(const wstring& data) {

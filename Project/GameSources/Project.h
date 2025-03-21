@@ -29,3 +29,4 @@
 #include "Tube.h"
 #include "ForecastLine.h"
 #include "SharpFan.h"
+#include "RootPointer.h"
