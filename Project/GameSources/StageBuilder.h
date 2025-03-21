@@ -117,7 +117,7 @@ namespace basecross{
 
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
-			return stoi(data);
+			return stof(data);
 		}
 
 		Vec3 WstrToVec3(const wstring& data) {
