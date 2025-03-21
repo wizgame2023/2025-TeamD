@@ -107,6 +107,11 @@ namespace basecross {
 		return m_Transform->GetPosition();
 	}
 
+	bool Enemy::GetIntruderAlert()
+	{
+		return m_IntruderAlert;
+	}
+
 	void Enemy::Dead() {
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}

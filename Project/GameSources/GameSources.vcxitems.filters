@@ -87,6 +87,9 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ForecastLine.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
   </ItemGroup>
   <ItemGroup>
@@ -150,6 +153,9 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ForecastLine.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
   </ItemGroup>
 </Project>
