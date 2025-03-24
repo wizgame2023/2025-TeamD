@@ -25,6 +25,8 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
+		auto draw = GetComponent<BcPNTStaticDraw>();
+		draw->SetDiffuse(Col4(1, 0, 0, 1));
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
@@ -32,7 +34,6 @@ namespace basecross {
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 	}
@@ -51,6 +52,7 @@ namespace basecross {
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
 		AsyncUpdate();
+
 		/*if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate);
 			updateThread.join();
@@ -62,21 +64,9 @@ namespace basecross {
 		Enemy::OnUpdate();
 
 		if (m_Intruder != nullptr) {
-			m_Line->SetLine(GetDirectionToIntruder(), m_Transform->GetPosition(), 10.0f);
 			if (Enemy::m_IntruderAlert)
 			{
 				m_Line->SetDrawActive(true);
-				if (m_BalletInterval <= 0 && m_ShotRandomInterval <= 0) {
-					//Vec3 direction = GetDirectionToIntruder();
-
-					//auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * m_MuzzleOffset, m_BalletSpeed, direction, m_BalletRange);
-					//m_BalletInterval = MAX_BALLET_INTERVAL;
-
-					//m_Line->SetBallet(ballet);
-					//m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Mob>());
-
-					//m_ShotRandomInterval = Util::RandZeroToOne() * (MAX_BALLET_INTERVAL * 0.5f);
-				}
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
 				}

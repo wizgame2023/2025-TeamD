@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Project.h"
-#include "Tube.h"
 
 namespace basecross {
 
@@ -22,13 +21,13 @@ namespace basecross {
 
 			float u = 1.0f / static_cast<float>(m_VerticesSize) * static_cast<float>(i);
 			float v = 2.0f;
-			
+
 			Vec3 position = Vec3(0.0f, 0.0f, 0.0f);
 			if (m_Vertices.size() != 0) {
 				newVertices.push_back(VertexPositionColorTexture(position, Col4(1.0f, 0.0f, 0.0f, 1.0f), m_Vertices[2 * i].textureCoordinate));
 			}
 			else {
-				newVertices.push_back(VertexPositionColorTexture(position, Col4(1.0f, 0.0f, 0.0f, 1.0f), Vec2(u,0)));
+				newVertices.push_back(VertexPositionColorTexture(position, Col4(1.0f, 0.0f, 0.0f, 1.0f), Vec2(u, 0)));
 			}
 
 			position = Vec3(cos(rad), 0.0f, sin(rad)) * m_Radius;

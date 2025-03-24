@@ -47,8 +47,8 @@ namespace basecross {
 		return true;
 	}
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
-		if (!GetDrawActive()) return false;
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
+		m_NearestHitObject.reset();
 
 		Vec3 intersectPosition;
 		Vec3 newIntersectPosition;
@@ -66,6 +66,7 @@ namespace basecross {
 
 			bool isHitting = false;
 			auto draw = obj->GetComponent<SmBaseDraw>(false);
+			//draw->GetMeshResource()->GetVerteces()
 			if (draw != nullptr) {
 				isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
 			}
@@ -78,11 +79,13 @@ namespace basecross {
 			if (isHitting) {
 				if (!isHit) {
 					intersectPosition = newIntersectPosition;
+					m_NearestHitObject = obj;
 					isHit = true;
 				}
 				else {
 					if ((intersectPosition - m_StartPosition).length() > (newIntersectPosition - m_StartPosition).length()) {
 						intersectPosition = newIntersectPosition;
+						m_NearestHitObject = obj;
 					}
 				}
 			}
@@ -94,9 +97,10 @@ namespace basecross {
 	{
 		float forecastSize = m_Length;
 		Vec3 intersectPosition;
-		
-		if (CheckRayCast(intersectPosition)) {
-			forecastSize = (intersectPosition - m_StartPosition).length();
+		if (GetDrawActive() && m_IsRay) {
+			if (CheckRayCast(intersectPosition)) {
+				forecastSize = (intersectPosition - m_StartPosition).length();
+			}
 		}
 		float balletDistance = 0.0f;
 

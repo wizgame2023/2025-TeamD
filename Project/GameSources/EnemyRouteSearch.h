@@ -7,6 +7,7 @@
 #include "stdafx.h"
 #include "StageBuilder.h"
 namespace basecross {
+	class RootPointer;
 	class Navigate : public GameObject {
 		enum State {
 			NONE,

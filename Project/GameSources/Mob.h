@@ -20,7 +20,6 @@ namespace basecross {
 		float m_BalletInterval;
 		const float MAX_BALLET_INTERVAL;
 		float m_ShotRandomInterval;
-		shared_ptr<ForecastLine> m_Line;
 
 		shared_ptr<SharpFan> m_SearchFan;
 	public:
@@ -43,7 +42,6 @@ namespace basecross {
 			m_currentState = make_unique<NextState>(GetThis<Mob>());
 			m_currentState->Enter();
 		}
-
 	private:
 
 	};

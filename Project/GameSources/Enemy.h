@@ -15,7 +15,7 @@ namespace basecross {
 	{
 	protected:
 		shared_ptr<Character> m_Intruder;
-
+		
 		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
 
@@ -40,6 +40,8 @@ namespace basecross {
 
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
+
+		shared_ptr<ForecastLine> m_Line;
 	private:
 
 	};
