@@ -151,7 +151,7 @@ namespace basecross {
 	}
 
 	void GameStageK::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv");
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
