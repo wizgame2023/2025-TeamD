@@ -120,6 +120,8 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
+		m_Line->Destroy();
+
 		auto gameStage = static_pointer_cast<GameStage>(m_Stage);
 		if (gameStage != nullptr) {
 			gameStage->EliminateEnemy();

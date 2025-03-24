@@ -25,7 +25,7 @@ namespace basecross {
 		void AddPointer(const shared_ptr<RootPointer> pointer) {
 			m_RootPointer.push_back(pointer);
 		}
-
+		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 	};
 }

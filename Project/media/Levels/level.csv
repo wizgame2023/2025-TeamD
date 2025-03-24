@@ -17,11 +17,6 @@ cube,-4.63_0_-1.4,1_1_5.42,0_20.13_0,Untagged,Object
 cube,0_-1_0,50_1_50,0_0_0,Untagged,Object
 player,22.53_0.18_-23.88,1_1_1,0_0_0,Untagged,0,Chara
 mob,22.53_0_6.17,1_1_1,0_0_0,Enemy,0,Chara
-mob,12.44_0_-8.05,1_1_1,0_0_0,Enemy,0,Chara
-mob,-8.4_0_14.6,1_1_1,0_0_0,Enemy,0,Chara
-mob,-1.92_0_-15.88,1_1_1,0_0_0,Enemy,0,Chara
-mob,-14.13_0_-13.26,1_1_1,0_0_0,Enemy,0,Chara
-mob,-14.3_0_-2.4,1_1_1,0_0_0,Enemy,0,Chara
 pointer,15_0_15,1_1_1,0_0_0,Untagged,0,4_5_,Pointer
 pointer,18_0_15,1_1_1,0_0_0,Untagged,1,3_,Pointer
 pointer,21_0_15,1_1_1,0_0_0,Untagged,2,4_6_,Pointer
