@@ -266,6 +266,7 @@ public class ConvertCSV : MonoBehaviour
                 string[] positionStr = date[1].Split("_");
                 string[] scaleStr = date[2].Split("_");
                 string[] rotationStr = date[3].Split("_");
+                string tag = date[4];
                 string[] InfoStr = date[date.Length - 1].Split("_");
 
                 Vector3 position = new Vector3(float.Parse(positionStr[0]), float.Parse(positionStr[1]), float.Parse(positionStr[2]));
@@ -273,6 +274,7 @@ public class ConvertCSV : MonoBehaviour
                 Vector3 rotation = new Vector3(float.Parse(rotationStr[0]), float.Parse(rotationStr[1]), float.Parse(rotationStr[2]));
 
                 var obj = new GameObject(name);
+                obj.transform.tag = tag;
                 var filter = obj.AddComponent<MeshFilter>();
                 filter.mesh = defaultMesh;
                 var renderer = obj.AddComponent<MeshRenderer>();
@@ -291,8 +293,8 @@ public class ConvertCSV : MonoBehaviour
                 {
                     var comp = obj.AddComponent<RootPointer>();
                     comp.className = name;
-                    comp.number = int.Parse(date[4]);
-                    comp.loadPointer = date[5];
+                    comp.number = int.Parse(date[5]);
+                    comp.loadPointer = date[6];
                     pointers.Add(obj);
                 }
                     obj.transform.parent = stage.transform;
