@@ -1,11 +1,20 @@
 using JetBrains.Annotations;
+using NUnit.Framework;
 using System.Collections.Generic;
 using System.IO;
+using Unity.Hierarchy;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.Analytics;
 
 public class ConvertCSV : MonoBehaviour
 {
+    enum CS
+    {
+        Object,
+        Chara,
+        Pointer
+    }
     public string saveName;
     public string filePath;
 
@@ -19,7 +28,8 @@ public class ConvertCSV : MonoBehaviour
 
     GameObject player = null;
     List<GameObject> enemies = new List<GameObject>();
-
+    List<GameObject> pointers = new List<GameObject>();
+    int pointerCount = 0;
     public Mesh defaultMesh;
     public Material defaultMaterial;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -44,19 +54,61 @@ public class ConvertCSV : MonoBehaviour
         {
             if (!WriteCharaDate(fs, obj))
             {
+                if (!GetPointer(fs, obj))
+                {
 
+                }
             }
         }
     }
-    void WriteLoadDate(StreamWriter fs, GameObject obj,bool isChara)
+    void WriteLoadDate(StreamWriter fs, GameObject obj,CS cs)
     {
-        if (isChara)
+        switch (cs)
         {
-            fs.Write("Chara");
+            case CS.Object:
+                fs.Write("Object");
+                break;
+            case CS.Chara:
+                fs.Write("Chara");
+                break;
+            case CS.Pointer:
+                fs.Write("Pointer");
+                break;
         }
-        else
+    }
+    bool GetPointer(StreamWriter fs,GameObject obj)
+    {
+        var comp = obj.GetComponent<RootPointer>();
+        if (comp == null) return false;
+        comp.number = pointerCount;
+        pointerCount++;
+        pointers.Add(obj);
+        return true;
+    }
+    void WritePointer(StreamWriter fs)
+    {
+        foreach (var obj in pointers)
         {
-            fs.Write("Object");
+            var comp = obj.GetComponent<RootPointer>();
+            if (comp == null) continue;
+            string name = comp.className;
+            int number = comp.number;
+            var movePointer = comp.pointer;
+
+            fs.Write(name);
+            fs.Write(",");
+            WriteTransform(fs, obj);
+            fs.Write(",");
+            fs.Write(number);
+            fs.Write(",");
+            foreach(var movePoint in movePointer)
+            {
+                fs.Write(movePoint.GetComponent<RootPointer>().number);
+                fs.Write("_");
+            }
+            fs.Write(",");
+            WriteLoadDate(fs, obj, CS.Pointer);
+            fs.Write("\n");
         }
     }
     void WriteTransform(StreamWriter fs, GameObject obj)
@@ -84,7 +136,7 @@ public class ConvertCSV : MonoBehaviour
             fs.Write(",");
             fs.Write(hp);
             fs.Write(",");
-            WriteLoadDate(fs, enemy,true);
+            WriteLoadDate(fs, enemy,CS.Chara);
             fs.Write("\n");
             count++;
         }
@@ -125,7 +177,7 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
         fs.Write(hp);
         fs.Write(",");
-        WriteLoadDate(fs, obj, true);
+        WriteLoadDate(fs, obj, CS.Chara);
         fs.Write("\n");
         count++;
         return true;
@@ -141,7 +193,7 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
         WriteTransform(fs, obj);
         fs.Write(",");
-        WriteLoadDate(fs, obj, false);
+        WriteLoadDate(fs, obj, CS.Object);
         fs.Write("\n");
         count++;
         return true;
@@ -149,7 +201,9 @@ public class ConvertCSV : MonoBehaviour
     public void Convert()
     {
         count = 0;
+        pointerCount = 0;
         enemies.Clear();
+        pointers.Clear();
         player = null;
 
         List<GameObject> objs = new List<GameObject>();
@@ -172,6 +226,7 @@ public class ConvertCSV : MonoBehaviour
                 }
             }
             WriteEnemy(fs);
+            WritePointer(fs);
         }
         if(player == null)
         {
@@ -185,6 +240,11 @@ public class ConvertCSV : MonoBehaviour
 
     public void InputCSV()
     {
+        count = 0;
+        pointerCount = 0;
+        enemies.Clear();
+        player = null;
+
         List<string> line = new List<string>();
         using (StreamReader fs = new StreamReader(filePath + "/" + saveName + ".csv", System.Text.Encoding.GetEncoding(ENCODE_TEXT)))
         {
@@ -228,9 +288,15 @@ public class ConvertCSV : MonoBehaviour
                 obj.transform.position = position;
                 obj.transform.localScale = scale;
                 obj.transform.eulerAngles = rotation;
+
+                count++;
             }
             
         }
+
+        Debug.Log("読み込んだオブジェクト数 : " + count);
+        Debug.Log("ファイル名 : " + saveName + ".csv");
+        Debug.Log("読み込みが完了しました");
 
         EditorApplication.delayCall -= InputCSV;
     }
@@ -246,10 +312,5 @@ public class ConvertCSV : MonoBehaviour
         {
             DestroyImmediate(obj);
         }
-        //var charaDates = FindObjectsByType<CharacterDate>(FindObjectsSortMode.InstanceID);
-        //foreach (var obj in charaDates)
-        //{
-        //    DestroyImmediate(obj);
-        //}
     }
 }
