@@ -21,9 +21,6 @@ namespace basecross {
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
 
-		shared_ptr<ForecastLine> line;
-		shared_ptr<ForecastLine> fline;
-
 	public:
 		int m_PlayerStateNum;
 		enum PlayerState
@@ -41,7 +38,7 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnDraw();
-
+		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;

@@ -277,14 +277,10 @@ namespace basecross {
 
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
-
-		line = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
-		fline = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
 	}
 
 	void Player::OnUpdate()
 	{
-		fline->SetLine(m_Transform->GetForward(), GetPosition(), 2.0f);
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		float spped = 0.0f;
@@ -342,6 +338,10 @@ namespace basecross {
 	{
 		Character::OnDraw();
 	}
+	void Player::Dead() {
+		SetPosition(Vec3(0, 2, 0));
+		m_HP = 5;
+	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
@@ -363,6 +363,10 @@ namespace basecross {
 			else {
 				m_HP -= 2;
 				m_EnergyCharge += 0.2;
+			}
+			m_HP = max(m_HP, 0);
+			if (m_HP <= 0) {
+				Dead();
 			}
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;

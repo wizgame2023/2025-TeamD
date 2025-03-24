@@ -26,7 +26,7 @@ namespace basecross {
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
-
+		ptrColl->SetAfterCollision(AfterCollision::None);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");

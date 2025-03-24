@@ -8,6 +8,8 @@
 
 namespace basecross{
 	class Object;
+	class RootPointer;
+
 	class Instance : public GameObject{
 	public:
 		Instance(const shared_ptr<Stage>& stage) : GameObject(stage){}
@@ -94,6 +96,11 @@ namespace basecross{
 			Position,
 			Scale,
 			Rotation,
+			Tag
+		};
+		enum PointerDate {
+			Number = 5, 
+			ConnectNumber = 6
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;
@@ -116,6 +123,8 @@ namespace basecross{
 		}
 
 		void LoadCsv();
+		shared_ptr<Object> CreateObject(vector<wstring> date);
+		void RegisterRootPoint(map<wstring, shared_ptr<RootPointer>> pointer);
 
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;

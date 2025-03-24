@@ -29,40 +29,66 @@ namespace basecross{
 
 		vector<wstring> objInfo = {};
 		map<wstring, shared_ptr<RootPointer>> rootPointers;
+		int enemyCount = 0;
 		for (auto& info : csvVec) {
 			objInfo.clear();
 			Util::WStrToTokenVector(objInfo, info, L',');
 
 			if (m_Builders.find(objInfo[InfoData::Name]) == end(m_Builders)) continue;
 
-			Vec3 position = WstrToVec3(objInfo[InfoData::Position]);
-			Vec3 scale = WstrToVec3(objInfo[InfoData::Scale]);
-			Vec3 rotation = WstrToVec3(objInfo[InfoData::Rotation]);
+			auto obj = CreateObject(objInfo);
 			
-			auto obj = m_Builders[objInfo[InfoData::Name]]->Create();
-			obj->SetPosition(position * m_Scale);
-			obj->SetScale(scale * m_Scale);
-			obj->SetRotation(rotation);
-
 			wstring dateType = objInfo[objInfo.size() - 1];
 			if (dateType == L"Pointer") {
 				auto pointer = static_pointer_cast<RootPointer>(obj);
 				if (obj != nullptr) {
-					pointer->SetPointerNumber(objInfo[5]);
-					rootPointers.emplace(objInfo[4], pointer);
+					pointer->SetPointerNumber(objInfo[PointerDate::ConnectNumber]);
+					rootPointers.emplace(objInfo[PointerDate::Number], pointer);
 				}
+			}
+
+			if (objInfo[InfoData::Tag] == L"Enemy") {
+				enemyCount++;
 			}
 		}
 		m_Builders.clear();
+		auto gameStage = static_pointer_cast<GameStage>(GetStage());
+		if (gameStage != nullptr) {
+			gameStage->SetMaxEnemyCount(enemyCount);
+		}
+		RegisterRootPoint(rootPointers);
 		
-		for (auto& pointer : rootPointers) {
-			wstring numbers = pointer.second->GetPointerNumber();
+	}
+	/// <summary>
+	/// オブジェクトの生成
+	/// </summary>
+	/// <param name="date">オブジェクトの文字列データ</param>
+	/// <returns>生成したオブジェクト</returns>
+	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
+		Vec3 position = WstrToVec3(date[InfoData::Position]);
+		Vec3 scale = WstrToVec3(date[InfoData::Scale]);
+		Vec3 rotation = WstrToVec3(date[InfoData::Rotation]);
+
+		auto obj = m_Builders[date[InfoData::Name]]->Create();
+		obj->SetPosition(position * m_Scale);
+		obj->SetScale(scale * m_Scale);
+		obj->SetRotation(rotation);
+
+		return obj;
+	}
+	/// <summary>
+	/// 経路探索用のポインターの登録
+	/// </summary>
+	/// <param name="pointer">登録するポインターのmap</param>
+	void StageBuilder::RegisterRootPoint(map<wstring, shared_ptr<RootPointer>> pointer) {
+		for (auto& point : pointer) {
+			wstring numbers = point.second->GetPointerNumber();
 			vector<wstring> number = {};
 			Util::WStrToTokenVector(number, numbers, L'_');
 			for (auto& num : number) {
 				if (num != L"") {
-					if (rootPointers.find(num) != end(rootPointers)) {
-						pointer.second->AddPointer(rootPointers[num]);
+					if (pointer.find(num) != end(pointer)) {
+						point.second->AddPointer(pointer[num]);
 					}
 				}
 			}

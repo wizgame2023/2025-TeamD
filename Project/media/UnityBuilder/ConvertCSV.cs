@@ -120,6 +120,9 @@ public class ConvertCSV : MonoBehaviour
         fs.Write(",");
 
         fs.Write(obj.transform.rotation.eulerAngles.x + "_" + obj.transform.rotation.eulerAngles.y + "_" + obj.transform.rotation.eulerAngles.z);
+        fs.Write(",");
+
+        fs.Write(obj.transform.tag);
     }
     void WriteEnemy(StreamWriter fs)
     {
@@ -243,6 +246,7 @@ public class ConvertCSV : MonoBehaviour
         count = 0;
         pointerCount = 0;
         enemies.Clear();
+        pointers.Clear();
         player = null;
 
         List<string> line = new List<string>();
@@ -278,18 +282,43 @@ public class ConvertCSV : MonoBehaviour
                     var comp = obj.AddComponent<CharacterDate>();
                     comp.className = name;
                 }
-                else
+                else if(InfoStr[0] == "Object")
                 {
                     var comp = obj.AddComponent<ClassName>();
                     comp.className = name;
                 }
-                obj.transform.parent = stage.transform;
+                else if(InfoStr[0] == "Pointer")
+                {
+                    var comp = obj.AddComponent<RootPointer>();
+                    comp.className = name;
+                    comp.number = int.Parse(date[4]);
+                    comp.loadPointer = date[5];
+                    pointers.Add(obj);
+                }
+                    obj.transform.parent = stage.transform;
 
                 obj.transform.position = position;
                 obj.transform.localScale = scale;
                 obj.transform.eulerAngles = rotation;
 
                 count++;
+            }
+            foreach (var obj in pointers)
+            {
+                RootPointer rootPointer = obj.GetComponent<RootPointer>();
+                string[] numbers = rootPointer.loadPointer.Split("_");
+                foreach (var point in pointers)
+                {
+                    foreach(var number in numbers)
+                    {
+                        if(number == "") continue;
+                        RootPointer otherPointer = point.GetComponent<RootPointer>();
+                        if(otherPointer.number == int.Parse(number))
+                        {
+                            rootPointer.pointer.Add(point);
+                        }
+                    }
+                }
             }
             
         }
