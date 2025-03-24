@@ -46,8 +46,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
-		app->RegisterResource(L"PLAYER", modelMesh);
+		
 	}
 	/// <summary>
 	/// ステージ読み込み設定
