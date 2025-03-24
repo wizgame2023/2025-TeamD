@@ -30,9 +30,10 @@ namespace basecross{
 		Vec3 m_StartPosition;
 		float m_Length;
 		bool m_IsLaunched;
+		bool m_IsRay;
 	public:
-		ForecastLine(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& launcher) :
-			GameObject(stage),m_Direction(Vec3()),m_StartPosition(Vec3()),m_Length(0),m_IsLaunched(false),m_Launcher(launcher)
+		ForecastLine(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& launcher,const bool& isRay = true) :
+			GameObject(stage),m_Direction(Vec3()),m_StartPosition(Vec3()),m_Length(0),m_IsLaunched(false),m_Launcher(launcher),m_IsRay(isRay)
 		{};
 		virtual ~ForecastLine() {};
 

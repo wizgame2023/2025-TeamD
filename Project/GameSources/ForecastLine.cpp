@@ -97,7 +97,7 @@ namespace basecross {
 	{
 		float forecastSize = m_Length;
 		Vec3 intersectPosition;
-		if (GetDrawActive()) {
+		if (GetDrawActive() && m_IsRay) {
 			if (CheckRayCast(intersectPosition)) {
 				forecastSize = (intersectPosition - m_StartPosition).length();
 			}
