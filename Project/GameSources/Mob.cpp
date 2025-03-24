@@ -87,7 +87,6 @@ namespace basecross {
 	}
 	void Mob::Dead() {
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
-		m_Line->Destroy();
 		Enemy::Dead();
 	}
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)

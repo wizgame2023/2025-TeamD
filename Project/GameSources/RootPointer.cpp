@@ -7,7 +7,10 @@
 #include "Project.h"
 
 namespace basecross {
-
+	void RootPointer::OnCreate() {
+		auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
+		group->IntoGroup(GetThis<RootPointer>());
+	}
 	void RootPointer::OnUpdate() {
 		if (m_RootPointer.size() > m_Line.size()) {
 			int offset = m_RootPointer.size() - m_Line.size();
