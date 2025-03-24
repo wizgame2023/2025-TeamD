@@ -59,7 +59,7 @@ namespace basecross{
 			}
 		}
 		m_Builders.clear();
-		auto gameStage = static_pointer_cast<GameStageM>(GetStage());
+		auto gameStage = static_pointer_cast<GameStage>(GetStage());
 		if (gameStage != nullptr) {
 			gameStage->SetMaxEnemyCount(enemyCount);
 		}
