@@ -66,6 +66,7 @@ namespace basecross {
 
 			bool isHitting = false;
 			auto draw = obj->GetComponent<SmBaseDraw>(false);
+			//draw->GetMeshResource()->GetVerteces()
 			if (draw != nullptr) {
 				isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
 			}

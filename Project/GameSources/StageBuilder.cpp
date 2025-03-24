@@ -29,6 +29,7 @@ namespace basecross{
 
 		vector<wstring> objInfo = {};
 		map<wstring, shared_ptr<RootPointer>> rootPointers;
+		int enemyCount = 0;
 		for (auto& info : csvVec) {
 			objInfo.clear();
 			Util::WStrToTokenVector(objInfo, info, L',');
@@ -52,9 +53,17 @@ namespace basecross{
 					rootPointers.emplace(objInfo[4], pointer);
 				}
 			}
+
+			if (objInfo[InfoData::Name] == L"mob") {
+				enemyCount++;
+			}
 		}
 		m_Builders.clear();
-		
+		auto gameStage = static_pointer_cast<GameStageM>(GetStage());
+		if (gameStage != nullptr) {
+			gameStage->SetMaxEnemyCount(enemyCount);
+		}
+
 		for (auto& pointer : rootPointers) {
 			wstring numbers = pointer.second->GetPointerNumber();
 			vector<wstring> number = {};

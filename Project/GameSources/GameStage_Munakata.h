@@ -13,6 +13,9 @@ namespace basecross {
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStageM : public GameStage {
+		int m_MaxEnemyCount;
+		int m_EnemyCount;
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
@@ -25,6 +28,10 @@ namespace basecross {
 		bool m_IsPose;
 
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
+
+		float GetClearRate() {
+			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
+		}
 	public:
 		//構築と破棄
 		GameStageM() :GameStage(), m_IsPose(false) {}
@@ -35,6 +42,14 @@ namespace basecross {
 
 		void ClosePose();
 		void OpenPose();
+
+		void SetMaxEnemyCount(int count) {
+			m_MaxEnemyCount = count;
+			m_EnemyCount = count;
+		}
+		void EliminateEnemy() {
+			m_EnemyCount--;
+		}
 	};
 
 

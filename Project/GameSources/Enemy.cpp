@@ -113,6 +113,10 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
+		auto gameStage = static_pointer_cast<GameStageM>(m_Stage);
+		if (gameStage != nullptr) {
+			gameStage->EliminateEnemy();
+		}
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)

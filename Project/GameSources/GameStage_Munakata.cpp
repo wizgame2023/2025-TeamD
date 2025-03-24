@@ -206,8 +206,6 @@ namespace basecross {
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
-			//CreatePlayer();
-			//CreateEnemy();
 			
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
@@ -247,7 +245,7 @@ namespace basecross {
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
-			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
+			m_ProtoHpNumber->UpdateNumber(static_cast<int>(GetClearRate()));
 		}
 	}
 
