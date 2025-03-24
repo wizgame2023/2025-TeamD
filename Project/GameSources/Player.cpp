@@ -300,7 +300,7 @@ namespace basecross {
 			m_Position = GetPosition();
 			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
 			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(m_Position + forward , forward, GetThis<GameObject>());
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
 		}
 
 		if (m_ParryJudge == true)
@@ -412,11 +412,11 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 12.0f;
+			m_Speed = 6.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_Speed = 24.0f;
+			m_Speed = 12.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)

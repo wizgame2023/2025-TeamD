@@ -19,7 +19,11 @@ namespace basecross {
 		void CreateSoundTest();
 		void CreateBossEnemy();
 		void RegisterObjects();
+		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
+
+		shared_ptr<NumberSprite> m_ProtoHpNumber;
+
 	public:
 		//ç\ízÇ∆îjä¸
 		GameStageK() : GameStage(), m_IsPose(false) {}
