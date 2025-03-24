@@ -38,6 +38,7 @@ namespace basecross {
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>());
 	}
 
 	void Enemy::OnUpdate()
@@ -81,6 +82,8 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
+		m_Line->SetLine(GetDirectionToIntruder(), m_Transform->GetPosition(), 10.0f);
+		m_Line->CheckRayCast(Vec3());
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
@@ -90,8 +93,12 @@ namespace basecross {
 		{
 			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
 				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ð‚ä‚Á‚­‚èŒü‚­
-
-				m_IntruderAlert = true;
+				if (m_Line->CheckHitObjectTag(L"Player")) {
+					m_IntruderAlert = true;
+				}
+				else {
+					m_IntruderAlert = false;
+				}
 			}
 			else {
 				m_IntruderAlert = false;
@@ -113,7 +120,7 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
-		auto gameStage = static_pointer_cast<GameStageM>(m_Stage);
+		auto gameStage = static_pointer_cast<GameStage>(m_Stage);
 		if (gameStage != nullptr) {
 			gameStage->EliminateEnemy();
 		}

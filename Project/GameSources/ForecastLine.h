@@ -19,12 +19,12 @@ namespace basecross{
 	};
 	class ForecastLine : public GameObject
 	{
-
 		weak_ptr<GameObject> m_Launcher;
 
 		shared_ptr<LineCube> m_BalletLine;
 		shared_ptr<LineCube> m_Forecast;
 		weak_ptr<Bullet> m_Bullet;
+		weak_ptr<GameObject> m_NearestHitObject;
 
 		Vec3 m_Direction;
 		Vec3 m_StartPosition;
@@ -42,7 +42,13 @@ namespace basecross{
 		bool CheckRayCast(Vec3& hitPoint);
 		bool CheckDistanceToObject(Vec3 position);
 		void SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength);
-
+		bool CheckHitObjectTag(const wstring& tag) {
+			shared_ptr<GameObject> obj = m_NearestHitObject.lock();
+			if (obj != nullptr) {
+				return obj->FindTag(tag);
+			}
+			return false;
+		}
 		void SetBallet(const shared_ptr<Bullet> ballet) {
 			m_Bullet = ballet;
 		}
