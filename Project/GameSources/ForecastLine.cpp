@@ -27,10 +27,10 @@ namespace basecross {
 		m_Forecast = GetStage()->AddGameObject<LineCube>();
 
 		m_BalletLine->m_Transform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
-		m_BalletLine->m_Draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f,1.0f));
+		m_BalletLine->m_Draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
 		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
 		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
-		
+
 	}
 	/// <summary>
 	/// ラインの設定
@@ -65,54 +65,26 @@ namespace basecross {
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		m_NearestHitObject.reset();
-
-		Vec3 intersectPosition;
-		Vec3 newIntersectPosition;
-		TRIANGLE triangle;
-		size_t triangleIndex;
-		bool isHit = false;
-
+		vector<wstring> excludeTags = { L"Bullet",L"Line" };
+		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
-			if (obj->FindTag(L"Bullet")) continue;
-			if (obj->FindTag(L"Line")) continue;
 			if (obj == launcher) continue;
-
 			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
 			if (!CheckDistanceToObject(objPosition)) continue;
-
-			bool isHitting = false;
-			auto draw = obj->GetComponent<SmBaseDraw>(false);
-			//draw->GetMeshResource()->GetVerteces()
-			if (draw != nullptr) {
-				isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
-			}
-			else {
-				auto bcDraw = obj->GetComponent<BcBaseDraw>(false);
-				if (bcDraw != nullptr) {
-					isHitting = bcDraw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
-				}
-			}
-			if (isHitting) {
-				if (!isHit) {
-					intersectPosition = newIntersectPosition;
-					m_NearestHitObject = obj;
-					isHit = true;
-				}
-				else {
-					if ((intersectPosition - m_StartPosition).length() > (newIntersectPosition - m_StartPosition).length()) {
-						intersectPosition = newIntersectPosition;
-						m_NearestHitObject = obj;
-					}
-				}
-			}
+			RayCast::HitTest(hit,m_StartPosition, m_Direction, m_Length, obj, excludeTags);
 		}
-		hitPoint = intersectPosition;
-		return isHit;
+		if (hit.m_Object != nullptr) {
+			m_NearestHitObject = hit.m_Object;
+			hitPoint = hit.m_HitPosition;
+			return true;
+		}
+		return false;
 	}
 	void ForecastLine::OnUpdate()
 	{
 		float forecastSize = m_Length;
 		Vec3 intersectPosition;
+		m_NearestHitObject.reset();
 		if (GetDrawActive() && m_IsRay) {
 			if (CheckRayCast(intersectPosition)) {
 				forecastSize = (intersectPosition - m_StartPosition).length();
@@ -157,6 +129,53 @@ namespace basecross {
 		GetStage()->RemoveGameObject<LineCube>(m_BalletLine);
 		GetStage()->RemoveGameObject<LineCube>(m_Forecast);
 		GetStage()->RemoveGameObject<ForecastLine>(GetThis<ForecastLine>());
+	}
+	/// <summary>
+	/// レイキャスト処理
+	/// </summary>
+	/// <param name="hit">結果</param>
+	/// <param name="startPosition">発射位置</param>
+	/// <param name="direction">発射方向</param>
+	/// <param name="length">長さ</param>
+	/// <param name="object">調べるオブジェクト</param>
+	/// <param name="excludeTags">除外するタグ</param>
+	/// <returns>当たったか</returns>
+	bool RayCast::HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
+		RayCastHit newResult = RayCastHit();
+		if (object == nullptr) return false;
+
+		bool isExclude = false;
+		for (auto& tag : excludeTags) {
+			if (object->FindTag(tag)) {
+				isExclude = true;
+				break;
+			}
+		}
+		if (isExclude) return false;
+		bool isHit = false;
+		auto draw = object->GetComponent<SmBaseDraw>(false);
+		if (draw != nullptr) {
+			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
+		}
+		else {
+			auto bcDraw = object->GetComponent<BcBaseDraw>(false);
+			if (bcDraw != nullptr) {
+				isHit = bcDraw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
+			}
+		}
+
+		if (isHit) {
+			if (hit.m_Object == nullptr) {
+				hit.m_Object = object;
+				hit = newResult;
+			}
+			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
+				hit.m_Object = object;
+				hit = newResult;
+			}
+			return true;
+		}
+		return false;
 	}
 }
 //end basecross

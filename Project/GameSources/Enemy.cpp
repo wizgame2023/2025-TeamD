@@ -38,7 +38,7 @@ namespace basecross {
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>());
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(),false);
 
 		auto navi = AddComponent<Navigate>();
 
@@ -47,13 +47,14 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
-		SearchRange();
 		if (m_HP <= 0)
 		{
 			Dead();
 		}
 	}
-
+	void Enemy::AsyncUpdate() {
+		SearchRange();
+	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
 		Vec3 position = m_Transform->GetPosition();
@@ -85,13 +86,17 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		m_Line->SetLine(GetDirectionToIntruder(), m_Transform->GetPosition(), 10.0f);
-		m_Line->CheckRayCast(Vec3());
+		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
+		float searchDistance = 10.0f;
+		if (GetDistanceToIntruder() < searchDistance) {
+			m_Line->CheckRayCast(Vec3());
+		}
+		
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		float searchDistance = 10.0f;
+		
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
