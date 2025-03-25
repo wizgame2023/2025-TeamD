@@ -29,7 +29,6 @@ namespace basecross {
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			CreateModelResource();
-
 			SoundManager::Instance().RegisterSounds();
 		}
 		catch (...) {
