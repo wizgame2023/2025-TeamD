@@ -91,8 +91,8 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -159,7 +159,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp" />
   </ItemGroup>
 </Project>

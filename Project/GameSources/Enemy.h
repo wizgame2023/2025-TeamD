@@ -14,7 +14,6 @@ namespace basecross {
 	class Enemy : public Character
 	{
 	protected:
-		shared_ptr<Character> m_Intruder;
 		
 		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
@@ -23,6 +22,8 @@ namespace basecross {
 		unique_ptr<EnemyState> m_nextState;     //次のステート
 
 	public:
+		shared_ptr<Character> m_Intruder;
+
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		virtual ~Enemy();
 		virtual void OnCreate();

@@ -141,6 +141,7 @@ namespace basecross {
 			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
 				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
+					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					float rotate = atan2f(rot.x, rot.z) ;
 					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -152,6 +153,7 @@ namespace basecross {
 				if ((position - targetbullert).length() < searchDistance)
 				{
 					if (IsWithinDetectionRange(position, targetbullert, 90.0)) {
+						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						float rotate = atan2f(rot.x, rot.z);
 						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -240,7 +242,7 @@ namespace basecross {
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 5;
+		m_HP = 20;
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -296,7 +298,7 @@ namespace basecross {
 			m_Position = GetPosition();
 			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
 			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(m_Position + forward , forward, GetThis<GameObject>());
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
 		}
 
 		if (m_ParryJudge == true)
