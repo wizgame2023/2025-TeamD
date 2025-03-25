@@ -141,6 +141,7 @@ namespace basecross {
 			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
 				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
+					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					float rotate = atan2f(rot.x, rot.z) ;
 					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -152,6 +153,7 @@ namespace basecross {
 				if ((position - targetbullert).length() < searchDistance)
 				{
 					if (IsWithinDetectionRange(position, targetbullert, 90.0)) {
+						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						float rotate = atan2f(rot.x, rot.z);
 						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -240,7 +242,7 @@ namespace basecross {
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 5;
+		m_HP = 20;
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -416,11 +418,11 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 6.0f;
+			m_Speed = 12.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_Speed = 12.0f;
+			m_Speed = 24.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)

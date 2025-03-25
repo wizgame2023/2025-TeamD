@@ -8,7 +8,9 @@
 #include "StageBuilder.h"
 namespace basecross {
 	class RootPointer;
-	class Navigate : public GameObject {
+	class Navigate : public Component {
+	public:
+
 		enum State {
 			NONE,
 			OPEN,
@@ -49,11 +51,8 @@ namespace basecross {
 			X, Z
 		};
 
-	public:
-		Navigate(const shared_ptr<Stage>& stage, const shared_ptr<RootPointer>& points, const float& MapWidth, const float& MapHeight);
+		Navigate(const shared_ptr<GameObject>& GameObjectPtr);
 		~Navigate();
-
-		virtual void OnCreate();
 
 		void SetTargetPosition(Vec3 StartPos, Vec3 newTargetPosition);
 		void AStarAlgorithm(Vec3 start, Vec3 goal);
@@ -68,6 +67,9 @@ namespace basecross {
 			float tolerance = 0.1f;
 			return (std::abs(a.x - b.x) < tolerance && std::abs(a.z - b.z) < tolerance);
 		}
+		virtual void OnUpdate()override {}
+		virtual void OnDraw()override {}
+
 	};
 }
 

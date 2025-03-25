@@ -82,7 +82,6 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)Tube.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -93,6 +92,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -150,7 +150,6 @@
       <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Tube.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
@@ -161,5 +160,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp" />
   </ItemGroup>
 </Project>

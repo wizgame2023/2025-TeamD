@@ -39,6 +39,9 @@ namespace basecross {
 		group->IntoGroup(GetThis<Enemy>());
 
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>());
+
+		auto navi = AddComponent<Navigate>();
+
 	}
 
 	void Enemy::OnUpdate()

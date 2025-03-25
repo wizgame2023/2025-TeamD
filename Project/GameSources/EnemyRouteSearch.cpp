@@ -8,21 +8,15 @@
 #include "EnemyRouteSearch.h"
 
 namespace basecross {
-	Navigate::Navigate(const shared_ptr<Stage>& stage, const shared_ptr<RootPointer>& points, const float& MapWidth, const float& MapHeight) :
-		GameObject(stage),
-		m_Points(points),
-		m_MapWidth(MapWidth),
-		m_MapHeight(MapHeight)
+	Navigate::Navigate(const shared_ptr<GameObject>& GameObjectPtr) :
+	Component(GameObjectPtr)
 	{
-		cellData.resize(MapHeight, vector<Data>(MapWidth));
+		cellData.resize(55.0f, vector<Data>(55.0f));
+		m_MapWidth = 55.0f;
+		m_MapHeight = 55.0f;
 	}
 	Navigate::~Navigate()
 	{
-	}
-	void Navigate::OnCreate()
-	{
-		Dire dire = Z; //c‰¡‚Ç‚Á‚¿‚ÉˆÚ“®‚·‚é‚©(true : XŽ² false : YŽ²)
-		m_RootPointer = m_Points->m_RootPointer;
 	}
 
 	void Navigate::SetTargetPosition(Vec3 StartPos,Vec3 newTargetPosition)

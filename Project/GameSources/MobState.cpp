@@ -13,6 +13,7 @@ namespace basecross {
 	{
 		m_Stage = m_Enemy->GetStage();
 		m_Transform = m_Enemy->GetTransfrom();
+		m_Player = m_Enemy->m_Intruder;
 	}
 
 
@@ -42,6 +43,13 @@ namespace basecross {
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert == true)
 		{
+			Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
+			Vec3 position = m_Transform->GetPosition();
+
+			Vec3 rot = position - target;
+			rot.normalize();
+			float rotate = atan2f(-rot.x, -rot.z);
+			m_Transform->SetRotation(Vec3(0, rotate, 0));
 			if (m_Enemy->m_BalletInterval <= 0 && m_Enemy->m_ShotRandomInterval <= 0) {
 				Vec3 direction = m_Enemy->GetDirectionToIntruder();
 

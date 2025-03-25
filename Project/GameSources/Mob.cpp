@@ -69,6 +69,7 @@ namespace basecross {
 				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
+	
 				}
 				else {
 					m_Line->SetDrawActive(false);
