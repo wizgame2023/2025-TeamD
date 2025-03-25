@@ -1,26 +1,35 @@
 
 /*!
 @file Scene.cpp
-@brief ƒV[ƒ“À‘Ì
+@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
+	void Scene::CreateModelResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring modelPath = mediaPath + L"Models/";
+
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
+	}
 	//--------------------------------------------------------------------------------------
-	///	ƒQ[ƒ€ƒV[ƒ“
 	//--------------------------------------------------------------------------------------
-	void Scene::OnCreate(){
+	void Scene::OnCreate() {
 		try {
-			//ƒNƒŠƒA‚·‚éF‚ğİ’è
 			Col4 Col;
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
 			SetClearColor(Col);
-			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
-			//‚±‚ê‚É‚æ‚èŠeƒXƒe[ƒW‚âƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStage");
+
+			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
+			//ã“ã‚Œã«ã‚ˆã‚Šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			CreateModelResource();
+			SoundManager::Instance().RegisterSounds();
 		}
 		catch (...) {
 			throw;
@@ -31,10 +40,24 @@ namespace basecross{
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
-		if (event->m_MsgStr == L"ToGameStage") {
-			//Å‰‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
-			ResetActiveStage<GameStage>();
+		if (event->m_MsgStr == L"ToTitleStage") {
+			ResetActiveStage<TitleStage>();
 		}
+		else if (event->m_MsgStr == L"ToGameStage") {
+			//æ¬¡ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			ResetActiveStage<GameStage>();
+    }
+		else if (event->m_MsgStr == L"ToGameStageM") {
+			ResetActiveStage<GameStageM>();
+		}
+		else if (event->m_MsgStr == L"ToGameStageKamata") {
+			ResetActiveStage<GameStageK>();
+		}
+		else if (event->m_MsgStr == L"ToGameStageSatou") {
+			//æœ€åˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			ResetActiveStage<GameStageS>();
+		}
+
 	}
 
 }

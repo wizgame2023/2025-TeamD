@@ -39,6 +39,8 @@ namespace basecross{
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
+
+		void CreateModelResource();
 	};
 
 }

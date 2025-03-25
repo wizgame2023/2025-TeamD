@@ -8,42 +8,41 @@
 
 namespace basecross {
 	class NumberSprite;
+	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
-	class GameStage : public Stage {
-		bool m_IsPose;
+	class GameStageM : public GameStage {
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
-		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
-		void RegisterObjects();
-		void CreateBossEnemy();
-
 		void CreatePose();
 		void CreateSoundTest();
-
-		void ClosePose();
-		void OpenPose();
+		void CreatePlayer();
+		void CreateEnemy();
+		void RegisterObjects();
 		void SetAllGameObjectActive(bool flag);
+		bool m_IsPose;
+
+		shared_ptr<NumberSprite> m_ProtoHpNumber;
+
 		float GetClearRate() {
-			if (m_MaxEnemyCount <= 0) return 100.0f;
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
-
-		
 	public:
 		//構築と破棄
-		GameStage() :Stage(),m_IsPose(false),m_MaxEnemyCount(0),m_EnemyCount(0) {}
-		virtual ~GameStage() {}
+		GameStageM() :GameStage(), m_IsPose(false) {}
+		virtual ~GameStageM() {}
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-		virtual void OnDestroy()override;
+
+		void ClosePose();
+		void OpenPose();
+
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;
 			m_EnemyCount = count;
