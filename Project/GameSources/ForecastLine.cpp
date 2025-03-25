@@ -66,15 +66,11 @@ namespace basecross {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		vector<wstring> excludeTags = { L"Bullet",L"Line" };
 		RayCastHit hit = RayCastHit();
-		RayCastHit newHit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
 			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
 			if (!CheckDistanceToObject(objPosition)) continue;
-			
-			hit = RayCast::HitTest(m_StartPosition, m_Direction, m_Length, obj, excludeTags);
-
-			
+			RayCast::HitTest(hit,m_StartPosition, m_Direction, m_Length, obj, excludeTags);
 		}
 		if (hit.m_Object != nullptr) {
 			m_NearestHitObject = hit.m_Object;
@@ -82,47 +78,6 @@ namespace basecross {
 			return true;
 		}
 		return false;
-		
-
-		//Vec3 intersectPosition;
-		//Vec3 newIntersectPosition;
-		//TRIANGLE triangle;
-		//size_t triangleIndex;
-		//bool isHit = false;
-		//for (auto& obj : GetStage()->GetGameObjectVec()) {
-		//	if (obj->FindTag(L"Bullet")) continue;
-		//	if (obj->FindTag(L"Line")) continue;
-		//	if (obj == launcher) continue;
-		//	Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
-		//	if (!CheckDistanceToObject(objPosition)) continue;
-		//	bool isHitting = false;
-		//	auto draw = obj->GetComponent<SmBaseDraw>(false);
-		//	//draw->GetMeshResource()->GetVerteces()
-		//	if (draw != nullptr) {
-		//		isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
-		//	}
-		//	else {
-		//		auto bcDraw = obj->GetComponent<BcBaseDraw>(false);
-		//		if (bcDraw != nullptr) {
-		//			isHitting = bcDraw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
-		//		}
-		//	}
-		//	if (isHitting) {
-		//		if (!isHit) {
-		//			intersectPosition = newIntersectPosition;
-		//			m_NearestHitObject = obj;
-		//			isHit = true;
-		//		}
-		//		else {
-		//			if ((intersectPosition - m_StartPosition).length() > (newIntersectPosition - m_StartPosition).length()) {
-		//				intersectPosition = newIntersectPosition;
-		//				m_NearestHitObject = obj;
-		//			}
-		//		}
-		//	}
-		//}
-		//hitPoint = intersectPosition;
-		//return isHit;
 	}
 	void ForecastLine::OnUpdate()
 	{
@@ -175,10 +130,9 @@ namespace basecross {
 		GetStage()->RemoveGameObject<ForecastLine>(GetThis<ForecastLine>());
 	}
 
-	RayCastHit RayCast::HitTest(const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
-		RayCastHit result = RayCastHit();
+	bool RayCast::HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
 		RayCastHit newResult = RayCastHit();
-		if (object == nullptr) result;
+		if (object == nullptr) return false;
 
 		bool isExclude = false;
 		for (auto& tag : excludeTags) {
@@ -187,7 +141,7 @@ namespace basecross {
 				break;
 			}
 		}
-		if (isExclude) return result;
+		if (isExclude) return false;
 		bool isHit = false;
 		auto draw = object->GetComponent<SmBaseDraw>(false);
 		if (draw != nullptr) {
@@ -201,10 +155,17 @@ namespace basecross {
 		}
 
 		if (isHit) {
-			result.m_Object = object;
-			result = newResult;
+			if (hit.m_Object == nullptr) {
+				hit.m_Object = object;
+				hit = newResult;
+			}
+			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
+				hit.m_Object = object;
+				hit = newResult;
+			}
+			return true;
 		}
-		return result;
+		return false;
 	}
 }
 //end basecross

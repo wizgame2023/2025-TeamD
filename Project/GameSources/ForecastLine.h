@@ -77,7 +77,7 @@ namespace basecross {
 	};
 	class RayCast {
 	public:
-		static RayCastHit HitTest(const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {});
+		static bool HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {});
 
 	};
 }
