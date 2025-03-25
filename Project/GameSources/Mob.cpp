@@ -34,12 +34,19 @@ namespace basecross {
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
+		auto navi = AddComponent<Navigate>();
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 	}
 	void Mob::OnUpdate()
 	{
 		m_currentState->Execute();
+		//auto navi = GetComponent<Navigate>();
+		//navi->SetTargetPosition(Vec3(0, 0, 0));
+		//navi->SetTargetPosition(m_Transform->GetPosition());
+		//auto pos = navi->GetPoint();
+		//GetComponent<Transform>()->SetPosition(pos);
+
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 		if (m_BalletInterval < 0) {

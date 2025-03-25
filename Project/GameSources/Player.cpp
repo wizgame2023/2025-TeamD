@@ -438,13 +438,12 @@ namespace basecross {
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet") || other->FindTag(L"Object"))
+		if (other->FindTag(L"Bullet"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);
-			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
-		if (other->FindTag(L"Enemy"))
+		if (other->FindTag(L"Enemy") || other->FindTag(L"Object"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);

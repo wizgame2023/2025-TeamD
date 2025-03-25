@@ -47,7 +47,7 @@ namespace basecross {
 
 	void TitleStage::OnPushA() {
 		//ƒ{ƒ^ƒ“‚ð‰Ÿ‚³‚ê‚½‚çtrue
-		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
+		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStage");
 	}
 
 }

@@ -11,84 +11,125 @@ namespace basecross {
 	Navigate::Navigate(const shared_ptr<GameObject>& GameObjectPtr) :
 	Component(GameObjectPtr)
 	{
-		cellData.resize(55.0f, vector<Data>(55.0f));
-		m_MapWidth = 55.0f;
-		m_MapHeight = 55.0f;
+		m_MapWidth  = 100.0f;
+		m_MapHeight = 100.0f;
+		m_CellData.resize(m_MapWidth / 10.0f,vector<Data>(m_MapHeight / 10.0f));
 	}
 	Navigate::~Navigate()
 	{
 	}
 
-	void Navigate::SetTargetPosition(Vec3 StartPos,Vec3 newTargetPosition)
+	void Navigate::SetTargetPosition(Vec3 newTargetPosition)
 	{
 		m_TargetPosition = newTargetPosition;
-		AStarAlgorithm(StartPos, newTargetPosition);
+		AStarAlgorithm( newTargetPosition);
 	}
 
-	void Navigate::AStarAlgorithm(Vec3 start, Vec3 goal)
+	void Navigate::AStarAlgorithm(Vec3 goal)
 	{
-		for (float y = 0; y < m_MapHeight; ++y) {
-			for (float x = 0; x < m_MapWidth; ++x) {
-				cellData[y][x] = Data();
-			}
-		}
-
-		cellData[start.z][start.x].m_State = State::CLOSE;
-		std::vector<Vec3> OpenSet;
-		OpenSet.push_back(start);
-
-		cellData[start.z][start.x].m_State = State::OPEN;
-		cellData[start.z][start.x].m_DistanceToStart = 0.0f;
-		cellData[start.z][start.x].m_DistanceToGoal = Heuristic(start, goal);
-		cellData[start.z][start.x].m_TotalDistance = cellData[start.z][start.x].m_DistanceToGoal;
-
-		while (!OpenSet.empty())
+		while (m_Index != goal)
 		{
-			auto& current = *std::min_element(OpenSet.begin(), OpenSet.end(),
-				[&](const Vec3& a, const Vec3& b) {
-				int aX = static_cast<int>(a.x);
-				int aZ = static_cast<int>(a.z);
-				int bX = static_cast<int>(b.x);
-				int bZ = static_cast<int>(b.z);
-				return cellData[bZ][aX].m_TotalDistance < cellData[bZ][bX].m_TotalDistance;
-				});
-		
-
-			OpenSet.erase(std::remove(OpenSet.begin(), OpenSet.end(), current), OpenSet.end());
-			int currentX = static_cast<int>(current.x);
-			int currentZ = static_cast<int>(current.z);
-
-			for (int dx = -1; dx <= 1; dx++)
+			OpenCell(m_Index);
+			Vec3 min = Vec3(-1.0f, -1.0f, -1.0f);
+			int updateNum = 0;
+			for (int z = 0; z < m_CellData.size(); z++)
 			{
-				for (int dz = -1; dz <= 1; dz++)
+				for (int x = 0; x < m_CellData.max_size(); x++)
 				{
-					if (dx == 0 && dz == 0) continue;
-					if (dx != 0 && dz != 0) continue;
-
-					int neighborX = currentX + dx;
-					int neighborZ = currentZ + dz;
-					Vec3 neighborNode = Vec3(neighborX, 0.0f, neighborZ );
-
-					// マップの範囲内か確認
-					if (neighborX >= 0 && neighborX < m_MapWidth && neighborZ >= 0 && neighborZ < m_MapHeight)
+					if (m_CellData[x][z].m_State == State::OPEN)
 					{
-						float newDistanceToStart = cellData[currentZ][currentX].m_DistanceToStart + 1.0f;
-						float newDistanceToGoal = Heuristic(neighborNode, goal);
-						float newTotalDistance = newDistanceToStart + newDistanceToGoal;
-
-						// まだ探索していないか、またはより良いパスが見つかった場合
-						if (cellData[neighborZ][neighborX].m_State == State::NONE || newTotalDistance < cellData[neighborZ][neighborX].m_TotalDistance) {
-							OpenSet.push_back(neighborNode);
-							cellData[neighborZ][neighborX].m_State = State::OPEN;
-							cellData[neighborZ][neighborX].m_DistanceToStart = newDistanceToStart;
-							cellData[neighborZ][neighborX].m_DistanceToGoal = newDistanceToGoal;
-							cellData[neighborZ][neighborX].m_TotalDistance = newTotalDistance;
-							cellData[neighborZ][neighborX].m_ParentPosition = current;
+						updateNum++;
+						if (min == Vec3(-1, -1, -1))
+						{
+							min = Vec3(x, 0, z);
+						}
+						else if (m_CellData[min.x][min.z].m_TotalDistance > m_CellData[x][z].m_TotalDistance)
+						{
+							min = Vec3(x, 0, z);
 						}
 					}
 				}
 			}
+
+			m_Index = min;
 		}
+
+		while (m_Index != m_StartPosition)
+		{
+			points.push(m_Index);
+			m_Index = m_CellData[m_Index.x][m_Index.z].m_ParentPosition;
+			m_HalfPosition = points.top();
+		}
+	}
+	void Navigate::OpenCell(Vec3 index)
+	{
+		float x = 5.0f;
+		float z = 5.0f;
+		vector<Vec3> openIndex
+		{
+			Vec3(index.x + x, index.y, index.z),
+			Vec3(index.x - x, index.y, index.z),
+			Vec3(index.x, index.y, index.z + z),
+			Vec3(index.x, index.y, index.z - z)
+		};
+
+		for (int i = 0; i < openIndex.max_size(); i++)
+		{
+			if (UpdateDistance(openIndex[i]))
+			{
+				m_CellData[openIndex[i].x][openIndex[i].z].m_ParentPosition = index;
+			}
+		}
+	}
+
+
+	bool Navigate::UpdateDistance(Vec3 index)
+	{
+		if (index.x >= m_MapWidth || index.x < 0) return false; // 幅の範囲外
+		if (index.y >= m_MapHeight || index.y < 0) return false; // 高さの範囲外	
+
+		Data& cellDate = m_CellData[index.x][index.z];
+
+
+		//// セルが壁またはプレイヤーによってブロックされているか確認
+		//// MasterData がシングルトンで、tileDate と playerCell が 2 次元配列であると仮定
+		//if (MasterData::GetInstance()->tileDate[index.y][index.x].isEnable ||
+		//	MasterData::GetInstance()->playerCell[index.y][index.x] != 0)
+		//{
+		//	// セルが壁の場合、通過を避けるために大きな totalDistance を設定
+		//	usingCellDate.totalDistance = 10000.0f;
+		//	return false; // 壁であるため、距離が更新されなかったことを示す
+		//}
+
+		if (cellDate.m_State != State::CLOSE)
+		{
+			if (cellDate.m_State != State::NONE)
+			{
+				cellDate.m_State = State::OPEN;
+				float distanceX = std::abs(m_TargetPosition.x - index.x);
+				float distanceZ = std::abs(m_TargetPosition.z - index.z);
+
+				cellDate.SetDistance(distanceX, distanceZ);
+
+				return true;
+			}
+			else {
+				float goalDistance = std::abs(m_TargetPosition.z - index.z);
+				float startDistance = std::abs(m_TargetPosition.x - index.x);
+
+				float newDistance = goalDistance + startDistance;
+				if (cellDate.m_TotalDistance > newDistance)
+				{
+					cellDate.SetDistance(startDistance, goalDistance);
+
+					return true;
+				}
+				else {
+					return false;
+				}
+			}
+		}
+		return false;
 	}
 }
 //end basecross
