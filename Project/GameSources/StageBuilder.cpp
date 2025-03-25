@@ -29,6 +29,7 @@ namespace basecross{
 
 		vector<wstring> objInfo = {};
 		map<wstring, shared_ptr<RootPointer>> rootPointers;
+
 		int enemyCount = 0;
 		for (auto& info : csvVec) {
 			objInfo.clear();

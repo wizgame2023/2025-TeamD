@@ -9,6 +9,14 @@
 
 namespace basecross {
 
+	void Scene::CreateModelResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring modelPath = mediaPath + L"Models/";
+
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
+	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	void Scene::OnCreate() {
@@ -19,8 +27,8 @@ namespace basecross {
 
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
-
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 		}
 		catch (...) {
