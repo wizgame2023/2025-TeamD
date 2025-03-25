@@ -12,7 +12,7 @@ namespace basecross {
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
-		m_BalletSpeed(20.0f), m_MuzzleOffset(1.5f),
+		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f)
 	{
 	}
@@ -36,13 +36,13 @@ namespace basecross {
 
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
+		
 	}
 	void Mob::OnUpdate()
 	{
 		Enemy::OnUpdate();
-
 		if (m_IsEndAsyncUpdate) {
-			auto updateThread = thread(&Mob::AsyncUpdate,GetThis<Mob>());
+			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 			updateThread.join();
 		}
 		float elapsed = App::GetApp()->GetElapsedTime();
@@ -57,8 +57,6 @@ namespace basecross {
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
 		//AsyncUpdate();
-
-		
 	}
 	void Mob::AsyncUpdate()
 	{

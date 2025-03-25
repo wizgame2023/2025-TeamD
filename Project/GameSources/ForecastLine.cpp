@@ -64,6 +64,7 @@ namespace basecross {
 	/// <returns>衝突したかどうか</returns>
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
+		m_NearestHitObject.reset();
 		vector<wstring> excludeTags = { L"Bullet",L"Line" };
 		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
@@ -129,7 +130,16 @@ namespace basecross {
 		GetStage()->RemoveGameObject<LineCube>(m_Forecast);
 		GetStage()->RemoveGameObject<ForecastLine>(GetThis<ForecastLine>());
 	}
-
+	/// <summary>
+	/// レイキャスト処理
+	/// </summary>
+	/// <param name="hit">結果</param>
+	/// <param name="startPosition">発射位置</param>
+	/// <param name="direction">発射方向</param>
+	/// <param name="length">長さ</param>
+	/// <param name="object">調べるオブジェクト</param>
+	/// <param name="excludeTags">除外するタグ</param>
+	/// <returns>当たったか</returns>
 	bool RayCast::HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
 		RayCastHit newResult = RayCastHit();
 		if (object == nullptr) return false;

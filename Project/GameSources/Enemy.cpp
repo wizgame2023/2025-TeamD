@@ -86,11 +86,12 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		m_Line->SetLine(GetDirectionToIntruder(), m_Transform->GetPosition(), 10.0f);
+		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
 		if (GetDistanceToIntruder() < searchDistance) {
 			m_Line->CheckRayCast(Vec3());
 		}
+		
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
