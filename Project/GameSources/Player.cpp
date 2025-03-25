@@ -355,6 +355,7 @@ namespace basecross {
 				{
 					m_HP -= 0;
 					m_EnergyCharge += 0.2;
+					SoundManager::Instance().PlaySE(L"TEST");
 				}
 				else if (m_ParryTime <= 15 && m_ParryTime > 0)
 				{
@@ -409,6 +410,7 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
+		SoundManager::Instance().PlaySE(L"ATTACK");
 	}
 
 	void HitSphere::OnUpdate()

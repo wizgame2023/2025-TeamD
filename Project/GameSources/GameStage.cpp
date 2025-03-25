@@ -40,6 +40,10 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SEVolume.png");
+		app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
+		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
+		app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
@@ -50,7 +54,7 @@ namespace basecross {
 	/// ステージ読み込み設定
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
@@ -75,13 +79,13 @@ namespace basecross {
 		//再開
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStageM>(stage);
+				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
 		//サウンド
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStageM>(stage);
+				auto currentStage = static_pointer_cast<GameStage>(stage);
 				ButtonManager::instance->Close(L"POSE");
 				ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
 			});
@@ -95,7 +99,7 @@ namespace basecross {
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
+		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"SE_VOLUME", L"SE_VOLUME_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 				if (press & XINPUT_GAMEPAD_DPAD_UP) {
@@ -106,14 +110,14 @@ namespace basecross {
 				}
 			});
 		//BGM
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"BGM_VOLUME", L"BGM_VOLUME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
+					SoundManager::Instance().BGMVolumeUp(0.1f);
 				}
 				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
+					SoundManager::Instance().BGMVolumeDown(0.1f);
 				}
 			});
 
@@ -176,7 +180,6 @@ namespace basecross {
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();
-
 			AddGameObject<ButtonManager>();
 
 			CreatePose();
@@ -215,7 +218,7 @@ namespace basecross {
 				OpenPose();
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				SoundManager::Instance().PlaySE(L"TEST");
+				
 			}
 		}
 
