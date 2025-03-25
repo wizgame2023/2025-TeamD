@@ -28,6 +28,7 @@ namespace basecross {
 		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void AsyncUpdate()override;
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 

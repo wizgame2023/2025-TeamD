@@ -6,7 +6,7 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Sprite::OnCreate() {
 		for (int y = 0; y < m_cutUV.y; y++) {
@@ -24,7 +24,7 @@ namespace basecross{
 			m_UseIndex = static_cast<int>(m_AnimationUV.size()) - 1;
 		}
 		CreateVertex(m_Size, m_AnimationUV[0]);
-		vector<uint16_t> indices = { 
+		vector<uint16_t> indices = {
 			0, 1, 2,
 			2, 1, 3
 		};
@@ -91,7 +91,7 @@ namespace basecross{
 					}
 				}
 			}
-			
+
 			UpdateUV(m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
 
 			m_AnimationTimer = 0.0f;
@@ -145,7 +145,7 @@ namespace basecross{
 		m_Transform->SetScale(size);
 	}
 	void Sprite::UpdateSize(Vec2 size) {
-		if (m_Draw) { 
+		if (m_Draw) {
 			m_Size = size;
 			if (m_IsAnimation) {
 				CreateVertex(m_Size, m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
@@ -206,19 +206,19 @@ namespace basecross{
 		float sizeX = m_Size.x / m_DisplayDigit;
 		m_Numbers.reserve(m_DisplayDigit);
 		for (int i = 0; i < m_DisplayDigit; i++) {
-			shared_ptr<Sprite> number = GetStage()->AddGameObject<Sprite>(m_TexKey, Vec3(m_Pos.x + i * sizeX,m_Pos.y,m_Pos.z), Vec2(sizeX, m_Size.y));//ObjectFactory::Create<Sprite>(GetStage(), m_TexKey, Vec3(0,0,0)/*m_Pos + i * sizeX*/, Vec2(sizeX, m_Size.y));
+			shared_ptr<Sprite> number = GetStage()->AddGameObject<Sprite>(m_TexKey, Vec3(m_Pos.x + i * sizeX, m_Pos.y, m_Pos.z), Vec2(sizeX, m_Size.y));//ObjectFactory::Create<Sprite>(GetStage(), m_TexKey, Vec3(0,0,0)/*m_Pos + i * sizeX*/, Vec2(sizeX, m_Size.y));
 			int singleDigit = m_DisplayNumber / digits % 10;
-			
+
 			number->UpdateUV(GetUV(singleDigit));
 			digits /= 10;
 			m_Numbers.push_back(number);
 		}
 		auto trans = GetComponent<Transform>();
-		trans->SetPosition(0,0,0);
+		trans->SetPosition(0, 0, 0);
 	}
 
 	void NumberSprite::OnUpdate() {
-		
+
 	}
 
 	vector<Vec2> NumberSprite::GetUV(int displayDigit) {
@@ -310,7 +310,7 @@ namespace basecross{
 		ButtonManager::instance->Register(m_BelongGroup, GetThis<SpriteButton>());
 	}
 	void SpriteButton::OnUpdate() {
-		
+
 		if (m_AddFunction != nullptr) {
 			m_AddFunction(GetThis<SpriteButton>());
 		}
@@ -331,18 +331,18 @@ namespace basecross{
 
 	shared_ptr<ButtonManager> ButtonManager::instance = nullptr;
 
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage,const wstring& group,const wstring& defaultTex,const wstring& selectedTex,Vec3 pos,Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size,func);
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size, func);
 	}
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage,group,defaultTex,L"",selectedColor,pos,size,func);
+		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, func);
 	}
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
 		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
 		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
 		if (selectedTex != L"" && button == nullptr) {
-			button = sprite->AddComponent<SpriteButton>(defaultTex, group,selectedTex);
+			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedTex);
 		}
 		if (selectedColor != Col4() && button == nullptr) {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedColor);
@@ -447,7 +447,7 @@ namespace basecross{
 				groupMovementAmount.second -= movementAmount;
 			}
 		}
-		
+
 	}
 
 	void ButtonManager::OnDestroy() {
@@ -466,7 +466,7 @@ namespace basecross{
 	}
 
 
-	void Board::OnCreate() {		
+	void Board::OnCreate() {
 		m_Draw = AddComponent<PNTStaticDraw>();
 		m_Draw->SetMeshResource(L"DEFAULT_SQUARE");
 		if (m_TexKey != L"") {
@@ -479,6 +479,6 @@ namespace basecross{
 		m_Trans->SetScale(m_Size);
 	}
 
-	
+
 }
 //end basecross

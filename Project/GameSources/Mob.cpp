@@ -39,7 +39,12 @@ namespace basecross {
 	}
 	void Mob::OnUpdate()
 	{
-		m_currentState->Execute();
+		Enemy::OnUpdate();
+
+		if (m_IsEndAsyncUpdate) {
+			auto updateThread = thread(&Mob::AsyncUpdate,GetThis<Mob>());
+			updateThread.join();
+		}
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 		if (m_BalletInterval < 0) {
@@ -51,17 +56,15 @@ namespace basecross {
 		}
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
-		AsyncUpdate();
+		//AsyncUpdate();
 
-		/*if (m_IsEndAsyncUpdate) {
-			auto updateThread = thread(&Mob::AsyncUpdate);
-			updateThread.join();
-		}*/
+		
 	}
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
-		Enemy::OnUpdate();
+		Enemy::AsyncUpdate();
+		m_currentState->Execute();
 
 		if (m_Intruder != nullptr) {
 			if (Enemy::m_IntruderAlert)
@@ -69,7 +72,6 @@ namespace basecross {
 				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
-	
 				}
 				else {
 					m_Line->SetDrawActive(false);
