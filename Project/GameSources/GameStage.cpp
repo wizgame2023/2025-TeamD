@@ -199,6 +199,8 @@ namespace basecross {
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
+
+			SoundManager::Instance().PlayBGM(L"BGM");
 		}
 		catch (...) {
 			throw;
@@ -227,5 +229,8 @@ namespace basecross {
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
 	}
 
+	void GameStage::OnDestroy() {
+		SoundManager::Instance().StopAll();
+	}
 }
 //end basecross
