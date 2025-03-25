@@ -6,16 +6,18 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	SoundManager& SoundManager::Instance() {
 		static SoundManager instance;
-		
+
 		return instance;
 	}
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
 		RegisterSound(L"TEST", L"CheckPoint.wav");
+		RegisterSound(L"BGM", L"StageBGM.wav");
+		RegisterSound(L"ATTACK", L"attack.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
@@ -25,7 +27,7 @@ namespace basecross{
 	}
 	void SoundManager::PlayLoopSE(const wstring& key, const float volume) {
 		if (find(m_SoundKeys.begin(), m_SoundKeys.end(), key) != m_SoundKeys.end()) {
-			auto se = m_Audio->Start(key, XAUDIO2_LOOP_INFINITE,volume * m_SEVolume);
+			auto se = m_Audio->Start(key, XAUDIO2_LOOP_INFINITE, volume * m_SEVolume);
 			m_PlayingSE.insert(pair<wstring, shared_ptr<SoundItem>>(key, se));
 		}
 	}
@@ -64,6 +66,11 @@ namespace basecross{
 			int result = MessageBox(NULL, L"Key Not Found. key : ", L"ERROR", MB_OK);
 		}
 		return m_Bgm;
+	}
+	void SoundManager::SetBGMVolume() {
+		if (m_Bgm != nullptr) {
+			m_Bgm->m_SourceVoice->SetVolume(m_BGMVolume);
+		}
 	}
 	void SoundManager::StopBGM() {
 		if (m_Audio == nullptr) {

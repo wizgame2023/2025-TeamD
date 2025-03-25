@@ -41,13 +41,18 @@ namespace basecross {
 	void TitleStage::OnUpdate() {
 		m_InputHandler.PushHandle(GetThis<TitleStage>());
 		auto& app = App::GetApp();
-		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		if (Which) OnPushA();
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (cntlVec.bConnected) {
+			if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_A) {
+				OnPushA();
+			}
+		}
+		
 	}
 
 	void TitleStage::OnPushA() {
 		//ƒ{ƒ^ƒ“‚ð‰Ÿ‚³‚ê‚½‚çtrue
-		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
+		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStage");
 	}
 
 }
