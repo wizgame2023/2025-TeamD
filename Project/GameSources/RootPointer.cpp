@@ -7,12 +7,16 @@
 #include "Project.h"
 
 namespace basecross {
-
+	void RootPointer::OnCreate() {
+		Object::OnCreate();
+		auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
+		group->IntoGroup(GetThis<RootPointer>());
+	}
 	void RootPointer::OnUpdate() {
 		if (m_RootPointer.size() > m_Line.size()) {
 			int offset = m_RootPointer.size() - m_Line.size();
 			for (int i = 0; i < offset; i++) {
-				auto line = m_Stage->AddGameObject<ForecastLine>(GetThis<RootPointer>());
+				auto line = m_Stage->AddGameObject<ForecastLine>(GetThis<RootPointer>(), false);
 				m_Line.push_back(line);
 			}
 		}

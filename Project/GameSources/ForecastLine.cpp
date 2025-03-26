@@ -32,11 +32,22 @@ namespace basecross {
 		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 		
 	}
+	/// <summary>
+	/// ラインの設定
+	/// </summary>
+	/// <param name="direction">方向</param>
+	/// <param name="startPosition">初期位置</param>
+	/// <param name="maxLength">長さ</param>
 	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength) {
 		m_Direction = direction;
 		m_StartPosition = startPosition;
 		m_Length = maxLength;
 	}
+	/// <summary>
+	/// オブジェクトとの距離を基に判別するかどうか
+	/// </summary>
+	/// <param name="position">オブジェクトの位置</param>
+	/// <returns></returns>
 	bool ForecastLine::CheckDistanceToObject(Vec3 position) {
 		float startDistanceSq = (position - m_StartPosition).lengthSqr();
 		float endDistanceSq = (position - (m_StartPosition + m_Direction * m_Length)).lengthSqr();
@@ -46,9 +57,14 @@ namespace basecross {
 		}
 		return true;
 	}
+	/// <summary>
+	/// レイキャスト処理
+	/// </summary>
+	/// <param name="hitPoint">衝突地点</param>
+	/// <returns>衝突したかどうか</returns>
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
-		if (!GetDrawActive()) return false;
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
+		m_NearestHitObject.reset();
 
 		Vec3 intersectPosition;
 		Vec3 newIntersectPosition;
@@ -66,6 +82,7 @@ namespace basecross {
 
 			bool isHitting = false;
 			auto draw = obj->GetComponent<SmBaseDraw>(false);
+			//draw->GetMeshResource()->GetVerteces()
 			if (draw != nullptr) {
 				isHitting = draw->HitTestStaticMeshSegmentTriangles(m_StartPosition, m_StartPosition + m_Direction * m_Length, newIntersectPosition, triangle, triangleIndex);
 			}
@@ -78,11 +95,13 @@ namespace basecross {
 			if (isHitting) {
 				if (!isHit) {
 					intersectPosition = newIntersectPosition;
+					m_NearestHitObject = obj;
 					isHit = true;
 				}
 				else {
 					if ((intersectPosition - m_StartPosition).length() > (newIntersectPosition - m_StartPosition).length()) {
 						intersectPosition = newIntersectPosition;
+						m_NearestHitObject = obj;
 					}
 				}
 			}
@@ -94,9 +113,10 @@ namespace basecross {
 	{
 		float forecastSize = m_Length;
 		Vec3 intersectPosition;
-		
-		if (CheckRayCast(intersectPosition)) {
-			forecastSize = (intersectPosition - m_StartPosition).length();
+		if (GetDrawActive() && m_IsRay) {
+			if (CheckRayCast(intersectPosition)) {
+				forecastSize = (intersectPosition - m_StartPosition).length();
+			}
 		}
 		float balletDistance = 0.0f;
 
@@ -130,6 +150,9 @@ namespace basecross {
 		m_Forecast->SetDrawActive(GetDrawActive());
 
 	}
+	/// <summary>
+	/// ラインの削除
+	/// </summary>
 	void ForecastLine::Destroy() {
 		GetStage()->RemoveGameObject<LineCube>(m_BalletLine);
 		GetStage()->RemoveGameObject<LineCube>(m_Forecast);

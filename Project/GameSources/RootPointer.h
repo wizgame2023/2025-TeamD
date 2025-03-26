@@ -11,9 +11,9 @@ namespace basecross {
 
 	class RootPointer : public Object {
 		wstring m_RootPointerNumber;
-		vector<shared_ptr<RootPointer>> m_RootPointer;
 		vector<shared_ptr<ForecastLine>> m_Line;
 	public:
+		vector<shared_ptr<RootPointer>> m_RootPointer;
 		RootPointer(const shared_ptr<Stage>& stage) : Object(stage){}
 		virtual ~RootPointer(){}
 		void SetPointerNumber(const wstring& number) {
@@ -25,7 +25,7 @@ namespace basecross {
 		void AddPointer(const shared_ptr<RootPointer> pointer) {
 			m_RootPointer.push_back(pointer);
 		}
-
+		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 	};
 }

@@ -141,6 +141,7 @@ namespace basecross {
 			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
 				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
+					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					float rotate = atan2f(rot.x, rot.z) ;
 					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -152,6 +153,7 @@ namespace basecross {
 				if ((position - targetbullert).length() < searchDistance)
 				{
 					if (IsWithinDetectionRange(position, targetbullert, 90.0)) {
+						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						float rotate = atan2f(rot.x, rot.z);
 						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
@@ -240,7 +242,7 @@ namespace basecross {
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 5;
+		m_HP = 20;
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -277,14 +279,10 @@ namespace basecross {
 
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
-
-		line = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
-		fline = m_Stage->AddGameObject<ForecastLine>(GetThis<Player>());
 	}
 
 	void Player::OnUpdate()
 	{
-		fline->SetLine(m_Transform->GetForward(), GetPosition(), 2.0f);
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		float spped = 0.0f;
@@ -300,7 +298,7 @@ namespace basecross {
 			m_Position = GetPosition();
 			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
 			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(m_Position + forward , forward, GetThis<GameObject>());
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
 		}
 
 		if (m_ParryJudge == true)
@@ -342,6 +340,10 @@ namespace basecross {
 	{
 		Character::OnDraw();
 	}
+	void Player::Dead() {
+		SetPosition(Vec3(0, 2, 0));
+		m_HP = 5;
+	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
@@ -353,6 +355,7 @@ namespace basecross {
 				{
 					m_HP -= 0;
 					m_EnergyCharge += 0.2;
+					SoundManager::Instance().PlaySE(L"TEST");
 				}
 				else if (m_ParryTime <= 15 && m_ParryTime > 0)
 				{
@@ -363,6 +366,10 @@ namespace basecross {
 			else {
 				m_HP -= 2;
 				m_EnergyCharge += 0.2;
+			}
+			m_HP = max(m_HP, 0);
+			if (m_HP <= 0) {
+				Dead();
 			}
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;
@@ -403,6 +410,7 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
+		SoundManager::Instance().PlaySE(L"ATTACK");
 	}
 
 	void HitSphere::OnUpdate()

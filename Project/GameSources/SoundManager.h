@@ -17,6 +17,8 @@ namespace basecross{
 		float m_SEVolume;
 		float m_BGMVolume;
 
+		void SetBGMVolume();
+
 		SoundManager() : m_SEVolume(1.0f),m_BGMVolume(1.0f) {}
 	public:
 		
@@ -50,10 +52,12 @@ namespace basecross{
 		void BGMVolumeDown(float volume) {
 			m_BGMVolume -= volume;
 			m_BGMVolume = max(m_BGMVolume, 0);
+			SetBGMVolume();
 		}
 		void BGMVolumeUp(float volume) {
 			m_BGMVolume += volume;
 			m_BGMVolume = min(m_BGMVolume, 1.0f);
+			SetBGMVolume();
 		}
 	};
 

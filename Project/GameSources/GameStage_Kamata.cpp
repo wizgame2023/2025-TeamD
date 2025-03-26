@@ -44,6 +44,9 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
 		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
+		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
+
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
@@ -151,12 +154,20 @@ namespace basecross {
 	}
 
 	void GameStageK::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv");
+		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
+		builder->Register<RootPointer>(L"pointer");
 
 		builder->LoadCsv();
+	}
+	void GameStageK::SetAllGameObjectActive(bool flag) {
+		for (auto& obj : GetGameObjectVec()) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
+				obj->SetUpdateActive(flag);
+			}
+		}
 	}
 	void GameStageK::OnCreate() {
 		try {
@@ -167,10 +178,15 @@ namespace basecross {
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();
+
 			AddGameObject<ButtonManager>();
+			
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
+			//CreatePlayer();
+			//CreateEnemy();
+
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -179,6 +195,13 @@ namespace basecross {
 				}
 			}
 
+			m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
+			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
+			sprite->SetDiffuse(Col4(1, 0, 0, 1));
+			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
+			sprite->SetDiffuse(Col4(1, 0, 0, 1));
+			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
+			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		}
 		catch (...) {
 			throw;
@@ -197,8 +220,12 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"TEST");
 			}
 		}
-		if (m_IsPose) {
 
+		SetAllGameObjectActive(!m_IsPose);
+
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
 		}
 	}
 }
