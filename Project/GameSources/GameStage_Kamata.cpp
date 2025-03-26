@@ -50,9 +50,6 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
-		app->RegisterResource(L"PLAYER", modelMesh);
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -171,37 +168,7 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
-			CreateSharedObjectGroup(L"BulletGroup");
-			CreateSharedObjectGroup(L"EnemyGroup");
-
-			//ビューとライトの作成
-			CreateViewLight();
-			CreateResource();
-			RegisterObjects();
-
-			AddGameObject<ButtonManager>();
-			
-			CreatePose();
-			CreateSoundTest();
-			ButtonManager::instance->CloseAll();
-			//CreatePlayer();
-			//CreateEnemy();
-
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-				if (camera != nullptr) {
-					camera->SetTarget(player->GetComponent<Transform>());
-				}
-			}
-
-			m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
+			GameStage::OnCreate();
 		}
 		catch (...) {
 			throw;
@@ -212,21 +179,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				OpenPose();
-			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				SoundManager::Instance().PlaySE(L"TEST");
-			}
-		}
-
-		SetAllGameObjectActive(!m_IsPose);
-
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
-		}
+		GameStage::OnUpdate();
 	}
 }
 	//end basecross

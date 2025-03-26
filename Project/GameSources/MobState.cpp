@@ -24,6 +24,7 @@ namespace basecross {
 	}
 	void MobSearch::Execute()
 	{
+		
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert == true)
 		{
@@ -57,6 +58,7 @@ namespace basecross {
 				m_Enemy->m_BalletInterval = m_Enemy->MAX_BALLET_INTERVAL;
 
 				m_Enemy->m_Line->SetBallet(ballet);
+				m_Enemy->m_Line->SetDrawActive(true);
 				m_Enemy->m_Line = m_Stage->AddGameObject<ForecastLine>(m_Enemy);
 
 				m_Enemy->m_ShotRandomInterval = Util::RandZeroToOne() * (m_Enemy->MAX_BALLET_INTERVAL * 0.5f);

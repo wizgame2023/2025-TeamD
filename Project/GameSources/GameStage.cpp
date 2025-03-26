@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief ç¹§ï½²ç¹ï½¼ç¹ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¸è³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -9,20 +9,22 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ç¹§ï½²ç¹ï½¼ç¹ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¸ç¹§ï½¯ç¹ï½©ç¹§ï½¹è³æ»‰ï½½
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
+
+		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ç¹æ§­Îç¹âˆšÎ›ç¹§ï½¤ç¹åŒ»ï¿½è´æ‡ˆï¿½
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ç¹ï¿½ãƒµç¹§ï½©ç¹ï½«ç¹åŒ»ï¿½ç¹ï½©ç¹§ï½¤ç¹ï¿½ã…ç¹ï½³ç¹§ï½°ç¹§å‘ˆæ¬ è³
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -51,7 +53,7 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// ƒXƒe[ƒW“Ç‚İ‚İİ’è
+	/// ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¸éš±ï½­ç¸ºï½¿éœï½¼ç¸ºï½¿éšªï½­è³
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
@@ -63,26 +65,26 @@ namespace basecross {
 		builder->LoadCsv();
 	}
 	/// <summary>
-	/// ƒ|[ƒYƒƒjƒ…[‚Ìì¬
+	/// ç¹æ˜´ï¿½ç¹§ï½ºç¹ï½¡ç¹ä¹Î—ç¹ï½¼ç¸ºï½®è´æ‡ˆï¿½
 	/// </summary>
 	void GameStage::CreatePose() {
-		//ƒ^ƒCƒgƒ‹
+		//ç¹§ï½¿ç¹§ï½¤ç¹åŒ»Î
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//‚â‚ß‚é
+		//ç¹§ï¿½ï½ç¹§
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//ÄŠJ
+		//èœ€åŸ¼å¹•
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
-		//ƒTƒEƒ“ƒh
+		//ç¹§ï½µç¹§ï½¦ç¹ï½³ç¹
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -95,7 +97,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-	/// ƒTƒEƒ“ƒhƒeƒXƒgƒƒjƒ…[‚Ìì¬
+	/// ç¹§ï½µç¹§ï½¦ç¹ï½³ç¹å³¨ãƒ¦ç¹§ï½¹ç¹åŒ»Î“ç¹ä¹Î—ç¹ï½¼ç¸ºï½®è´æ‡ˆï¿½
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -128,14 +130,14 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
+	/// ç¹æ˜´ï¿½ç¹§ï½ºé€•ï½»é«±ï½¢ç¹§å¸å“©ç¸ºå€¥ï½‹
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğŠJ‚­
+	/// ç¹æ˜´ï¿½ç¹§ï½ºé€•ï½»é«±ï½¢ç¹§å¸å¹•ç¸º
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
@@ -143,9 +145,9 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 	/// <summary>
-	/// “o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚Ì•\¦‘€ì
+	/// é€‹ï½»éª­ï½²ç¸ºè¼”ï½Œç¸ºï½¦ç¸ºï¿½ï½‹ç¸ºå¶âˆ‹ç¸ºï½¦ç¸ºï½®ç¹§ï½ªç¹æ‚¶ãšç¹§ï½§ç¹§ï½¯ç¹åŒ»ï¿½é™¦ï½¨é‰ï½ºè¬«å ºï½½
 	/// </summary>
-	/// <param name="flag">•\¦ONOFF</param>
+	/// <param name="flag">é™¦ï½¨é‰ï½ºONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
@@ -163,7 +165,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//ƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ç¹§ï½ªç¹æ‚¶ãšç¹§ï½§ç¹§ï½¯ç¹åŒ»ï¿½è´æ‡ˆï¿½
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -176,7 +178,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ç¹è–™Î—ç¹ï½¼ç¸ºï½¨ç¹ï½©ç¹§ï½¤ç¹åŒ»ï¿½è´æ‡ˆï¿½
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();

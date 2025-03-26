@@ -12,7 +12,7 @@ namespace basecross {
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
-		m_BalletSpeed(20.0f), m_MuzzleOffset(1.5f),
+		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f)
 	{
 	}
@@ -34,12 +34,20 @@ namespace basecross {
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
+		auto navi = AddComponent<Navigate>();
+		navi->SetTargetPosition(Vec3(0, m_Position.y, 0));
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
+		
 	}
 	void Mob::OnUpdate()
 	{
 		m_currentState->Execute();
+		Enemy::OnUpdate();
+		if (m_IsEndAsyncUpdate) {
+			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
+			updateThread.join();
+		}
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 		if (m_BalletInterval < 0) {
@@ -51,17 +59,18 @@ namespace basecross {
 		}
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
-		AsyncUpdate();
-
-		/*if (m_IsEndAsyncUpdate) {
-			auto updateThread = thread(&Mob::AsyncUpdate);
-			updateThread.join();
-		}*/
+		//AsyncUpdate();
 	}
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Enemy::OnUpdate();
+		Vec3 currntPosition = m_Transform->GetPosition();
+		auto navi = GetComponent<Navigate>();
+
+		Enemy::AsyncUpdate();
+		m_currentState->Execute();
 
 		if (m_Intruder != nullptr) {
 			if (Enemy::m_IntruderAlert)
@@ -69,7 +78,6 @@ namespace basecross {
 				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
-	
 				}
 				else {
 					m_Line->SetDrawActive(false);
@@ -78,6 +86,11 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
+
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
+				//SetPosition(currntPosition);
+
 			}
 
 
