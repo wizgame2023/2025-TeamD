@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStageS>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -211,25 +211,7 @@ namespace basecross {
 
 	void GameStageS::OnCreate() {
 		try {
-			CreateSharedObjectGroup(L"BulletGroup");
-			CreateSharedObjectGroup(L"EnemyGroup");
-
-			//ビューとライトの作成
-			CreateViewLight();
-			CreateResource();
-			RegisterObjects();
-			AddGameObject<ButtonManager>();
-			CreatePose();
-			CreateSoundTest();
-			ButtonManager::instance->CloseAll();
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-				if (camera != nullptr) {
-					camera->SetTarget(player->GetComponent<Transform>());
-				}
-			}
-
+			GameStage::OnCreate();
 		}
 		catch (...) {
 			throw;
@@ -240,17 +222,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				OpenPose();
-			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				SoundManager::Instance().PlaySE(L"TEST");
-			}
-		}
-		if (m_IsPose) {
-
-		}
+		GameStage::OnUpdate();
 	}
 }
 //end basecross

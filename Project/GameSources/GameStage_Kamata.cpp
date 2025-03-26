@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStageK>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
