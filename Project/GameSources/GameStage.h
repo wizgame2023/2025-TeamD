@@ -31,17 +31,19 @@ namespace basecross {
 		void OpenPose();
 		void SetAllGameObjectActive(bool flag);
 		float GetClearRate() {
+			if (m_MaxEnemyCount <= 0) return 100.0f;
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
 
 		
 	public:
 		//\’z‚Æ”jŠü
-		GameStage() :Stage(),m_IsPose(false) {}
+		GameStage() :Stage(),m_IsPose(false),m_MaxEnemyCount(0),m_EnemyCount(0) {}
 		virtual ~GameStage() {}
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDestroy()override;
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;
 			m_EnemyCount = count;
