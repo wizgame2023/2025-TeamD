@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇÀ‘Ì
+@brief æ•µãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -18,21 +18,21 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//d—Í‚ğ‚Â‚¯‚é
+		//é‡åŠ›ã‚’ã¤ã‘ã‚‹
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -41,7 +41,6 @@ namespace basecross {
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(),false);
 
 		auto navi = AddComponent<Navigate>();
-
 	}
 
 	void Enemy::OnUpdate()
@@ -100,7 +99,7 @@ namespace basecross {
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
-				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğ‚ä‚Á‚­‚èŒü‚­
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’ã‚†ã£ãã‚Šå‘ã
 				if (m_Line->CheckHitObjectTag(L"Player")) {
 					m_IntruderAlert = true;
 				}
@@ -145,7 +144,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //ü‚ğ•`‰æ‚·‚éƒIƒuƒWƒFƒNƒg
+	//	class LineObject : public GameObject; //ç·šã‚’æç”»ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -170,22 +169,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//ü‚ğ\¬‚·‚é2“_
+		//ç·šã‚’æ§‹æˆã™ã‚‹2ç‚¹
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//n“_‚ÆI“_‚ğ‚Â‚È‚®ƒCƒ“ƒfƒbƒNƒX
+		//å§‹ç‚¹ã¨çµ‚ç‚¹ã‚’ã¤ãªãã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		m_Indices = {
 			0,1
 		};
 
-		//•`‰æ
-		m_Draw = AddComponent<PCStaticDraw>(); //ˆÊ’u‚ÆF‚Ì‚İ
-		m_Draw->SetOriginalMeshUse(true); //©ì‚µ‚½ƒƒbƒVƒ…‚ğg—p
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //ƒƒbƒVƒ…‚Ìì¬
-		auto meshResoure = m_Draw->GetMeshResource(); //ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğæ“¾‚µAƒvƒŠƒ~ƒeƒBƒuƒ|ƒƒW[i’¸“_—˜—p•û–@j‚ğ•ÏX‚·‚é
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ƒ|ƒŠƒSƒ“‚Å‚Í‚È‚­—Åü‚ğ•\¦
+		//æç”»
+		m_Draw = AddComponent<PCStaticDraw>(); //ä½ç½®ã¨è‰²ã®ã¿
+		m_Draw->SetOriginalMeshUse(true); //è‡ªä½œã—ãŸãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ç”¨
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
+		auto meshResoure = m_Draw->GetMeshResource(); //ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’å–å¾—ã—ã€ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒãƒ­ã‚¸ãƒ¼ï¼ˆé ‚ç‚¹åˆ©ç”¨æ–¹æ³•ï¼‰ã‚’å¤‰æ›´ã™ã‚‹
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ãƒãƒªã‚´ãƒ³ã§ã¯ãªãç¨œç·šã‚’è¡¨ç¤º
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -210,7 +209,7 @@ namespace basecross {
 		}
 	}
 
-	//’¸“_‚ÌXV
+	//é ‚ç‚¹ã®æ›´æ–°
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -219,7 +218,7 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//’¸“_‚Ìİ’è
+	//é ‚ç‚¹ã®è¨­å®š
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -229,7 +228,7 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//ü‚ÌF‚Ìİ’è
+	//ç·šã®è‰²ã®è¨­å®š
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;

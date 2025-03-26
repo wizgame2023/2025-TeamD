@@ -24,6 +24,7 @@ namespace basecross {
 	}
 	void MobSearch::Execute()
 	{
+		
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert == true)
 		{

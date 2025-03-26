@@ -34,12 +34,15 @@ namespace basecross {
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
+		auto navi = AddComponent<Navigate>();
+		navi->SetTargetPosition(Vec3(0, m_Position.y, 0));
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 		
 	}
 	void Mob::OnUpdate()
 	{
+		m_currentState->Execute();
 		Enemy::OnUpdate();
 		if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
@@ -61,6 +64,11 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Enemy::OnUpdate();
+		Vec3 currntPosition = m_Transform->GetPosition();
+		auto navi = GetComponent<Navigate>();
+
 		Enemy::AsyncUpdate();
 		m_currentState->Execute();
 
@@ -78,6 +86,11 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
+
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
+				//SetPosition(currntPosition);
+
 			}
 
 
