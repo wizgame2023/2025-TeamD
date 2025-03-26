@@ -25,6 +25,8 @@ namespace basecross {
 		shared_ptr<LineCube> m_Forecast;
 		weak_ptr<Bullet> m_Bullet;
 		weak_ptr<GameObject> m_NearestHitObject;
+		CRITICAL_SECTION m_CriticalSection;
+		HANDLE m_hThread;
 
 		Vec3 m_Direction;
 		Vec3 m_StartPosition;
@@ -77,7 +79,7 @@ namespace basecross {
 	};
 	class RayCast {
 	public:
-		static bool HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {});
+		static bool HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {},const bool& isDebug = false);
 
 	};
 }

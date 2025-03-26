@@ -40,6 +40,8 @@ namespace basecross{
 		shared_ptr<Stage> m_Stage;
 
 		bool m_IsEndAsyncUpdate;
+
+		mutex m_Mutex;
 	public :
 		Object(const shared_ptr<Stage>& stage,Vec3 position,Vec3 rotation, Vec3 scale) :
 			GameObject(stage),m_Position(position),m_Scale(scale),m_Rotation(rotation),m_IsEndAsyncUpdate(true){}

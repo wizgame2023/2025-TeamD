@@ -41,9 +41,10 @@ namespace basecross {
 	void Mob::OnUpdate()
 	{
 		Enemy::OnUpdate();
+		AsyncUpdate();
 		if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
-			updateThread.join();
+			updateThread.detach();
 		}
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
@@ -61,6 +62,7 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+
 		Enemy::AsyncUpdate();
 		m_currentState->Execute();
 

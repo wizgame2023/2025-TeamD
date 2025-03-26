@@ -31,6 +31,8 @@ namespace basecross {
 		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
 		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
+		InitializeCriticalSection(&m_CriticalSection);
+		//m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ForecastLine::ThreadFunc, this, 0, nullptr);
 	}
 	/// <summary>
 	/// ラインの設定
@@ -71,7 +73,7 @@ namespace basecross {
 			if (obj == launcher) continue;
 			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
 			if (!CheckDistanceToObject(objPosition)) continue;
-			RayCast::HitTest(hit,m_StartPosition, m_Direction, m_Length, obj, excludeTags);
+			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags);
 		}
 		if (hit.m_Object != nullptr) {
 			m_NearestHitObject = hit.m_Object;
@@ -140,7 +142,7 @@ namespace basecross {
 	/// <param name="object">調べるオブジェクト</param>
 	/// <param name="excludeTags">除外するタグ</param>
 	/// <returns>当たったか</returns>
-	bool RayCast::HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
+	bool RayCast::HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags,const bool& isDebug) {
 		RayCastHit newResult = RayCastHit();
 		if (object == nullptr) return false;
 
@@ -156,6 +158,7 @@ namespace basecross {
 		auto draw = object->GetComponent<SmBaseDraw>(false);
 		if (draw != nullptr) {
 			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
+			
 		}
 		else {
 			auto bcDraw = object->GetComponent<BcBaseDraw>(false);
