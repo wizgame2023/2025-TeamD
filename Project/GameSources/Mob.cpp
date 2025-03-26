@@ -35,17 +35,13 @@ namespace basecross {
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 
 		auto navi = AddComponent<Navigate>();
+		navi->SetTargetPosition(Vec3(0, m_Position.y, 0));
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 	}
 	void Mob::OnUpdate()
 	{
 		m_currentState->Execute();
-		//auto navi = GetComponent<Navigate>();
-		//navi->SetTargetPosition(Vec3(0, 0, 0));
-		//navi->SetTargetPosition(m_Transform->GetPosition());
-		//auto pos = navi->GetPoint();
-		//GetComponent<Transform>()->SetPosition(pos);
 
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
@@ -68,7 +64,10 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Enemy::OnUpdate();
+		Vec3 currntPosition = m_Transform->GetPosition();
+		auto navi = GetComponent<Navigate>();
 
 		if (m_Intruder != nullptr) {
 			if (Enemy::m_IntruderAlert)
@@ -85,6 +84,11 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
+
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
+				SetPosition(currntPosition);
+
 			}
 
 
