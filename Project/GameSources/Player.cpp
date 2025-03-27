@@ -342,7 +342,7 @@ namespace basecross {
 	}
 	void Player::Dead() {
 		SetPosition(Vec3(0, 2, 0));
-		m_HP = 5;
+		m_HP = 1000;
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)

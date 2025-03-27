@@ -721,15 +721,32 @@ namespace basecross{
 	class Board : public GameObject {
 		shared_ptr<PNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
+
 		Vec3 m_StartPos;
 		Vec3 m_Size;
-
+		Vec3 m_Offset;
 		wstring m_TexKey;
+		bool m_IsBillBoard;
+
+		vector<VertexPositionNormalTexture> m_Vertices;
 	public:
-		Board(shared_ptr<Stage>& ptr, const wstring& key,Vec3 pos, Vec3 size) : GameObject(ptr),m_TexKey(key), m_StartPos(pos), m_Size(size) {}
+		Board(shared_ptr<Stage>& ptr, const wstring& key,Vec3 pos, Vec3 size,const bool& isBillBoard = false) : 
+			GameObject(ptr),
+			m_TexKey(key), m_StartPos(pos),m_Offset(Vec3()), m_Size(size), m_IsBillBoard(isBillBoard) { }
 		virtual ~Board() {}
 
 		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
+		void SetOffset(Vec3 offset) {
+			m_Offset = offset;
+		}
+		shared_ptr<PNTStaticDraw> GetDraw() {
+			return m_Draw;
+		}
+		vector<VertexPositionNormalTexture> GetVertices() {
+			return m_Vertices;
+		}
 	};
 }
 //end basecross

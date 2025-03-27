@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief 敵など実体
+@brief 謨ｵ縺ｪ縺ｩ螳滉ｽ
 */
 
 #include "stdafx.h"
@@ -18,28 +18,28 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
-		//CollisionSphere衝突判定を付ける
+		//CollisionSphere陦晉ｪ∝愛螳壹ｒ莉倥￠繧
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
-		//描画設定
+		//謠冗判險ｭ螳
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//重力をつける
+		//驥榊鴨繧偵▽縺代ｋ
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//影をつける（シャドウマップを描画する）
+		//蠖ｱ繧偵▽縺代ｋ�医す繝｣繝峨え繝槭ャ繝励ｒ謠冗判縺吶ｋ�
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//影の形（メッシュ）を設定
+		//蠖ｱ縺ｮ蠖｢�医Γ繝�す繝･�峨ｒ險ｭ螳
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(),false);
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
 		auto navi = AddComponent<Navigate>();
 	}
@@ -47,6 +47,7 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
+
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -91,15 +92,23 @@ namespace basecross {
 		if (GetDistanceToIntruder() < searchDistance) {
 			m_Line->CheckRayCast(Vec3());
 		}
-		
+
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
+				m_Position = GetPosition();
+				m_Position -= forword * 0.05f;
+				SetPosition(m_Position);
+			}
+		}
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
+
+			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//プレイヤーの方向をゆっくり向く
 				if (m_Line->CheckHitObjectTag(L"Player")) {
 					m_IntruderAlert = true;
@@ -145,7 +154,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//	class LineObject : public GameObject; //邱壹ｒ謠冗判縺吶ｋ繧ｪ繝悶ず繧ｧ繧ｯ繝
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -170,22 +179,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//線を構成する2点
+		//邱壹ｒ讒区�縺吶ｋ2轤ｹ
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//始点と終点をつなぐインデックス
+		//蟋狗せ縺ｨ邨らせ繧偵▽縺ｪ縺舌う繝ｳ繝�ャ繧ｯ繧ｹ
 		m_Indices = {
 			0,1
 		};
 
-		//描画
-		m_Draw = AddComponent<PCStaticDraw>(); //位置と色のみ
-		m_Draw->SetOriginalMeshUse(true); //自作したメッシュを使用
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //メッシュの作成
-		auto meshResoure = m_Draw->GetMeshResource(); //メッシュリソースを取得し、プリミティブポロジー（頂点利用方法）を変更する
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ポリゴンではなく稜線を表示
+		//謠冗判
+		m_Draw = AddComponent<PCStaticDraw>(); //菴咲ｽｮ縺ｨ濶ｲ縺ｮ縺ｿ
+		m_Draw->SetOriginalMeshUse(true); //閾ｪ菴懊＠縺溘Γ繝�す繝･繧剃ｽｿ逕ｨ
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //繝｡繝�す繝･縺ｮ菴懈�
+		auto meshResoure = m_Draw->GetMeshResource(); //繝｡繝�す繝･繝ｪ繧ｽ繝ｼ繧ｹ繧貞叙蠕励＠縲√�繝ｪ繝溘ユ繧｣繝悶�繝ｭ繧ｸ繝ｼ�磯らせ蛻ｩ逕ｨ譁ｹ豕包ｼ峨ｒ螟画峩縺吶ｋ
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //繝昴Μ繧ｴ繝ｳ縺ｧ縺ｯ縺ｪ縺冗ｨ懃ｷ壹ｒ陦ｨ遉ｺ
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -210,7 +219,7 @@ namespace basecross {
 		}
 	}
 
-	//頂点の更新
+	//鬆らせ縺ｮ譖ｴ譁ｰ
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -219,7 +228,7 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//頂点の設定
+	//鬆らせ縺ｮ險ｭ螳
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -229,7 +238,7 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//線の色の設定
+	//邱壹�濶ｲ縺ｮ險ｭ螳
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;
