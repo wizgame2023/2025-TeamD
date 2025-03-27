@@ -35,8 +35,7 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateTitle() {
-		auto m_TitleSprite = AddGameObject<Sprite> (L"TITLESPRITE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1028.0f, 800.0f), Vec2(1.0f, 1.0f), true);
-
+		auto m_TitleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1028.0f, 800.0f), Vec2(1.0f, 1.0f), true);
 	}
 
 	void TitleStage::OnCreate() {
@@ -62,7 +61,7 @@ namespace basecross {
 				OnPushA();
 			}
 		}
-		
+
 	}
 
 	void TitleStage::OnPushA() {
