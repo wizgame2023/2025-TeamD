@@ -45,10 +45,9 @@ namespace basecross {
 		{
 			Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
 			Vec3 position = m_Transform->GetPosition();
-
-			Vec3 rot = position - target;
+			Vec3 rot = target - position;
 			rot.normalize();
-			float rotate = atan2f(-rot.x, -rot.z);
+			float rotate = atan2f(rot.x, rot.z);
 			m_Transform->SetRotation(Vec3(0, rotate, 0));
 			if (m_Enemy->m_BalletInterval <= 0 && m_Enemy->m_ShotRandomInterval <= 0) {
 				Vec3 direction = m_Enemy->GetDirectionToIntruder();

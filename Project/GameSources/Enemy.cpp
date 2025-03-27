@@ -38,7 +38,7 @@ namespace basecross {
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(),false);
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
 		auto navi = AddComponent<Navigate>();
 
@@ -47,6 +47,7 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
+
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -91,15 +92,22 @@ namespace basecross {
 		if (GetDistanceToIntruder() < searchDistance) {
 			m_Line->CheckRayCast(Vec3());
 		}
-		
+
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
+				m_Position = GetPosition();
+				m_Position -= forword * 0.05f;
+				SetPosition(m_Position);
+			}
+		}
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
+			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ð‚ä‚Á‚­‚èŒü‚­
 				if (m_Line->CheckHitObjectTag(L"Player")) {
 					m_IntruderAlert = true;

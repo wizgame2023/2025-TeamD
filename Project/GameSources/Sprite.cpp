@@ -434,7 +434,7 @@ namespace basecross {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;
+				movementAmount *= 30.0f;//ˆÚ“®‘¬“x
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
 				}
@@ -464,11 +464,12 @@ namespace basecross {
 			}
 		}
 	}
-
-
 	void Board::OnCreate() {
 		m_Draw = AddComponent<PNTStaticDraw>();
-		m_Draw->SetMeshResource(L"DEFAULT_SQUARE");
+		m_Draw->SetOriginalMeshUse(true);
+		vector<uint16_t> indices = {};
+		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
+		m_Draw->CreateOriginalMesh(m_Vertices, indices);
 		if (m_TexKey != L"") {
 			m_Draw->SetTextureResource(m_TexKey);
 		}
@@ -477,6 +478,28 @@ namespace basecross {
 		m_Trans = GetComponent<Transform>();
 		m_Trans->SetPosition(m_StartPos);
 		m_Trans->SetScale(m_Size);
+	}
+	void Board::OnUpdate() {
+		if (!m_IsBillBoard) return;
+		
+		Vec3 defUp = Vec3(0, 1, 0);
+		auto camera = OnGetDrawCamera();
+		Vec3 eye = camera->GetEye();
+		Vec3 at = camera->GetAt();
+
+		Vec3 temp = at - eye;
+		Vec2 tempVec2(temp.x, temp.z);
+		if (length(tempVec2) < 0.1f) {
+			defUp = bsm::Vec3(0, 0, 1.0f);
+		}
+		temp.normalize();
+		Mat4x4 rotMatrix = static_cast<Mat4x4>(XMMatrixLookAtLH(Vec3(0, 0, 0), temp, defUp));
+		rotMatrix = inverse(rotMatrix);
+		Quat Qt = rotMatrix.quatInMatrix();
+		Qt.normalize();
+		
+		m_Trans->SetQuaternion(Qt);
+
 	}
 
 

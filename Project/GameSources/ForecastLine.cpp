@@ -31,8 +31,7 @@ namespace basecross {
 		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
 		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
-		InitializeCriticalSection(&m_CriticalSection);
-		//m_hThread = (HANDLE)_beginthreadex(nullptr, 0, ForecastLine::ThreadFunc, this, 0, nullptr);
+		//InitializeCriticalSection(&m_CriticalSection);
 	}
 	/// <summary>
 	/// ラインの設定
@@ -40,10 +39,12 @@ namespace basecross {
 	/// <param name="direction">方向</param>
 	/// <param name="startPosition">初期位置</param>
 	/// <param name="maxLength">長さ</param>
-	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength) {
+	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength, const Col4& color) {
 		m_Direction = direction;
+		m_Direction.y = 0.0f;
 		m_StartPosition = startPosition;
 		m_Length = maxLength;
+		m_DefaultColor = color;
 	}
 	/// <summary>
 	/// オブジェクトとの距離を基に判別するかどうか
@@ -73,8 +74,9 @@ namespace basecross {
 			if (obj == launcher) continue;
 			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
 			if (!CheckDistanceToObject(objPosition)) continue;
-			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags);
+			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags,true);
 		}
+
 		if (hit.m_Object != nullptr) {
 			m_NearestHitObject = hit.m_Object;
 			hitPoint = hit.m_HitPosition;
@@ -110,6 +112,8 @@ namespace basecross {
 
 		auto& balletTransform = m_BalletLine->m_Transform;
 		auto& forecastTransform = m_Forecast->m_Transform;
+		auto& balletDraw = m_BalletLine->m_Draw;
+		auto& forecastDraw = m_Forecast->m_Draw;
 
 		balletTransform->SetRotation(Vec3(0, rad, 0));
 		forecastTransform->SetRotation(Vec3(0, rad, 0));
@@ -119,6 +123,8 @@ namespace basecross {
 
 		balletTransform->SetPosition(m_StartPosition + m_Direction * balletDistance / 2.0f);
 		forecastTransform->SetPosition(m_StartPosition + m_Direction * (balletDistance + forecastSize / 2.0f));
+
+		forecastDraw->SetDiffuse(m_DefaultColor);
 
 		m_BalletLine->SetDrawActive(GetDrawActive());
 		m_Forecast->SetDrawActive(GetDrawActive());
@@ -145,7 +151,6 @@ namespace basecross {
 	bool RayCast::HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags,const bool& isDebug) {
 		RayCastHit newResult = RayCastHit();
 		if (object == nullptr) return false;
-
 		bool isExclude = false;
 		for (auto& tag : excludeTags) {
 			if (object->FindTag(tag)) {
@@ -155,16 +160,14 @@ namespace basecross {
 		}
 		if (isExclude) return false;
 		bool isHit = false;
+		Vec3 endPosition = startPosition + direction * length;
 		auto draw = object->GetComponent<SmBaseDraw>(false);
+		auto bcDraw = object->GetComponent<BcBaseDraw>(false);
 		if (draw != nullptr) {
-			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-			
+			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, endPosition, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
 		}
-		else {
-			auto bcDraw = object->GetComponent<BcBaseDraw>(false);
-			if (bcDraw != nullptr) {
-				isHit = bcDraw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-			}
+		else if (bcDraw != nullptr) {
+			isHit = bcDraw->HitTestStaticMeshSegmentTriangles(startPosition, endPosition, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
 		}
 
 		if (isHit) {
@@ -173,6 +176,7 @@ namespace basecross {
 				hit = newResult;
 			}
 			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
+				
 				hit.m_Object = object;
 				hit = newResult;
 			}
