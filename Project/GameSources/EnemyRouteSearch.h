@@ -42,7 +42,7 @@ namespace basecross {
 		Navigate(const std::shared_ptr<GameObject>& GameObjectPtr);
 		~Navigate() override;
 
-		void SetTargetPosition(Vec3 newTargetPosition);
+		void SetTargetPosition(Vec3 Position);
 
 		float Heuristic(Vec3 a, Vec3 b)
 		{
@@ -55,25 +55,24 @@ namespace basecross {
 			return (std::abs(a.x - b.x) < tolerance && std::abs(a.z - b.z) < tolerance);
 		}
 
-		void SetStartPosition(const Vec3& startPosition)
-		{
-			m_StartPosition = startPosition;
-		}
+		Vec3 GetAStarForword(const Vec3 Position);
 
-		Vec3 GetAStarForword(Vec3 Position);
+		Vec3 GetBefperePosition() {
+			return m_BeforeTarget;
+		}
 
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
 	private:
-		void AStarAlgorithm(Vec3 goal);
-		void OpenCell(Vec3 index);
+		void AStarAlgorithm(Vec3 index, Vec3 goal);
+		Vec3 OpenCell(Vec3 index);
 		bool UpdateDistance(Vec3 index);
-
 		bool m_DireChange;
 		float m_MapWidth;
 		float m_MapHeight;
-		std::vector<std::vector<Data>> m_CellData;
+		vector<shared_ptr <GameObject>> m_CellData;
+		Vec3 m_BeforeTarget;
 		Dire m_Dire;
 		Vec3 m_TargetPosition;
 		Vec3 m_Index;
@@ -81,7 +80,7 @@ namespace basecross {
 		Vec3 m_HalfPosition;
 		std::stack<Vec3> points;
 		// セルのサイズ
-		float m_CellSize = 10.0f;
+		float m_CellSize = 5.0f;
 
 		// デバッグ用 (A*アルゴリズムの実行を制御)
 		bool m_debug_pause = false;		
