@@ -20,6 +20,7 @@ namespace basecross {
 		float m_BalletInterval;
 		const float MAX_BALLET_INTERVAL;
 		float m_ShotRandomInterval;
+		Vec3 m_Before = Vec3(0);
 
 		shared_ptr<SharpFan> m_SearchFan;
 		shared_ptr<HPBar> m_HpBar;

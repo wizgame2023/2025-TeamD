@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇÀ‘Ì
+@brief è¬¨ï½µç¸ºï½ªç¸ºï½©è³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -18,21 +18,22 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereé™¦æ™‰ï½ªâˆæ„›è³å£¹ï½’è‰å€¥ï¿ ç¹§
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		ptrColl->AddExcludeCollisionTag(L"Mob");
+		//è¬ å†—åˆ¤éšªï½­è³
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//d—Í‚ğ‚Â‚¯‚é
+		//é©¥æ¦Šé´¨ç¹§åµâ–½ç¸ºä»£ï½‹
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//è –ï½±ç¹§åµâ–½ç¸ºä»£ï½‹ï¿½åŒ»ã™ç¹ï½£ç¹å³¨ãˆç¹æ§­ãƒ£ç¹åŠ±ï½’è¬ å†—åˆ¤ç¸ºå¶ï½‹ï¿½
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//è –ï½±ç¸ºï½®è –ï½¢ï¿½åŒ»Î“ç¹ï¿½ã™ç¹ï½¥ï¿½å³¨ï½’éšªï½­è³
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -41,7 +42,6 @@ namespace basecross {
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
 		auto navi = AddComponent<Navigate>();
-
 	}
 
 	void Enemy::OnUpdate()
@@ -107,8 +107,9 @@ namespace basecross {
 		}
 		if ((position - target).length() < searchDistance)
 		{
+
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğ‚ä‚Á‚­‚èŒü‚­
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’ã‚†ã£ãã‚Šå‘ã
 				if (m_Line->CheckHitObjectTag(L"Player")) {
 					m_IntruderAlert = true;
 				}
@@ -153,7 +154,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //ü‚ğ•`‰æ‚·‚éƒIƒuƒWƒFƒNƒg
+	//	class LineObject : public GameObject; //é‚±å£¹ï½’è¬ å†—åˆ¤ç¸ºå¶ï½‹ç¹§ï½ªç¹æ‚¶ãšç¹§ï½§ç¹§ï½¯ç¹
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -178,22 +179,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//ü‚ğ\¬‚·‚é2“_
+		//é‚±å£¹ï½’è®’åŒºï¿½ç¸ºå¶ï½‹2è½¤ï½¹
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//n“_‚ÆI“_‚ğ‚Â‚È‚®ƒCƒ“ƒfƒbƒNƒX
+		//èŸ‹ç‹—ã›ç¸ºï½¨é‚¨ã‚‰ã›ç¹§åµâ–½ç¸ºï½ªç¸ºèˆŒã†ç¹ï½³ç¹ï¿½ãƒ£ç¹§ï½¯ç¹§ï½¹
 		m_Indices = {
 			0,1
 		};
 
-		//•`‰æ
-		m_Draw = AddComponent<PCStaticDraw>(); //ˆÊ’u‚ÆF‚Ì‚İ
-		m_Draw->SetOriginalMeshUse(true); //©ì‚µ‚½ƒƒbƒVƒ…‚ğg—p
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //ƒƒbƒVƒ…‚Ìì¬
-		auto meshResoure = m_Draw->GetMeshResource(); //ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğæ“¾‚µAƒvƒŠƒ~ƒeƒBƒuƒ|ƒƒW[i’¸“_—˜—p•û–@j‚ğ•ÏX‚·‚é
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ƒ|ƒŠƒSƒ“‚Å‚Í‚È‚­—Åü‚ğ•\¦
+		//è¬ å†—åˆ¤
+		m_Draw = AddComponent<PCStaticDraw>(); //è´å’²ï½½ï½®ç¸ºï½¨æ¿¶ï½²ç¸ºï½®ç¸ºï½¿
+		m_Draw->SetOriginalMeshUse(true); //é–¾ï½ªè´æ‡Šï¼ ç¸ºæº˜Î“ç¹ï¿½ã™ç¹ï½¥ç¹§å‰ƒï½½ï½¿é€•ï½¨
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //ç¹ï½¡ç¹ï¿½ã™ç¹ï½¥ç¸ºï½®è´æ‡ˆï¿½
+		auto meshResoure = m_Draw->GetMeshResource(); //ç¹ï½¡ç¹ï¿½ã™ç¹ï½¥ç¹ï½ªç¹§ï½½ç¹ï½¼ç¹§ï½¹ç¹§è²å™è •åŠ±ï¼ ç¸²âˆšï¿½ç¹ï½ªç¹æº˜ãƒ¦ç¹§ï½£ç¹æ‚¶ï¿½ç¹ï½­ç¹§ï½¸ç¹ï½¼ï¿½ç£¯ã‚‰ã›è›»ï½©é€•ï½¨è­ï½¹è±•åŒ…ï½¼å³¨ï½’èŸç”»å³©ç¸ºå¶ï½‹
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ç¹æ˜´Îœç¹§ï½´ç¹ï½³ç¸ºï½§ç¸ºï½¯ç¸ºï½ªç¸ºå†—ï½¨æ‡ƒï½·å£¹ï½’é™¦ï½¨é‰ï½º
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -218,7 +219,7 @@ namespace basecross {
 		}
 	}
 
-	//’¸“_‚ÌXV
+	//é¬†ã‚‰ã›ç¸ºï½®è­–ï½´è­ï½°
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -227,7 +228,7 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//’¸“_‚Ìİ’è
+	//é¬†ã‚‰ã›ç¸ºï½®éšªï½­è³
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -237,7 +238,7 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//ü‚ÌF‚Ìİ’è
+	//é‚±å£¹ï¿½æ¿¶ï½²ç¸ºï½®éšªï½­è³
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;

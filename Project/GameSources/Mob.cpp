@@ -33,9 +33,10 @@ namespace basecross {
 		////ƒfƒoƒbƒN—p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
-
-
+		auto navi = AddComponent<Navigate>();
+		navi->SetTargetPosition(GetPosition());
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
+
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(),Vec3(0,1,0));
 		m_HpBar->SetMaxHp(3);
 		m_HpBar->SetCurrentHp(m_HP);
@@ -62,16 +63,16 @@ namespace basecross {
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
 		m_HpBar->SetCurrentHp(m_HP);
-		//float raminingHp = (float)m_HP / 3.0f;
-		//m_HpBar->GetComponent<Transform>()->SetScale(Vec3(raminingHp, 0.09f, 1));
-
-		//m_HpBar->GetComponent<Transform>()->SetPosition(GetPosition() + Vec3(0, 1, 0));
-		
-		//AsyncUpdate();
 	}
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+
+		Vec3 none = Vec3(0);
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 currntPosition = m_Transform->GetPosition();
+		auto navi = GetComponent<Navigate>();
+
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 		
@@ -89,12 +90,18 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
+
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				if (halfPos != Vec3(0))
+				{
+					currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
+					SetPosition(currntPosition);
+				}
+				else {
+					navi->SetTargetPosition(GetPosition());
+				}
 			}
-
-
-			/*if(GetDistanceToIntruder() < )*/
 		}
-
 		EndAsync();
 	}
 	void Mob::Dead() {
