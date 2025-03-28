@@ -13,7 +13,8 @@ namespace basecross {
 		Enemy(stage, position, scale),
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
 		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
-		m_BalletRange(10.0f)
+		m_BalletRange(10.0f), m_IntervalStart(false),
+		m_KnockBackInterval(2.0f)
 	{
 	}
 
@@ -66,13 +67,31 @@ namespace basecross {
 	{
 		AsyncUpdate();
 		Enemy::OnUpdate();
+		auto draw = GetComponent<BcPNTStaticDraw>();
 
 		/*if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 			updateThread.detach();
 		}*/
 		float elapsed = App::GetApp()->GetElapsedTime();
-		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
+		if (m_IntervalStart == true)
+		{
+			draw->SetDiffuse(Col4(1, 0, 0, 1));
+
+			m_BalletInterval -= elapsed * m_ZoneElapsedTime;
+		}
+		else {
+			m_KnockBackInterval -= elapsed * m_ZoneElapsedTime;
+			draw->SetDiffuse(Col4(1, 1, 1, 1));
+
+			if (m_KnockBackInterval < 0)
+			{
+				m_BalletInterval = 0.5f;
+				m_KnockBackInterval = 2.0f;
+				m_IntervalStart = true;
+
+			}
+		}
 		if (m_BalletInterval < 0) {
 			m_BalletInterval = 0;
 			m_ShotRandomInterval -= elapsed * m_ZoneElapsedTime;
@@ -134,6 +153,10 @@ namespace basecross {
 	}
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
+		if (other->FindTag(L"HitJudge"))
+		{
+			m_IntervalStart = false;
+		}
 		Enemy::OnCollisionEnter(other);
 	}
 

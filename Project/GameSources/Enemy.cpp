@@ -42,7 +42,6 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
-
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -131,6 +130,17 @@ namespace basecross {
 		return m_IntruderAlert;
 	}
 
+	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 pos = GetPosition();
+		Vec3 vec = hitPos - pos;
+		vec.normalize();
+		pos += -vec * 10.0f * elapsedTime;
+		SetPosition(pos);
+	}
+
 	void Enemy::Dead() {
 		m_Line->Destroy();
 
@@ -145,6 +155,7 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			m_HP -= 1;
+			KnockBackTime(other);
 		}
 	}
 
@@ -185,8 +196,8 @@ namespace basecross {
 		m_Draw = AddComponent<PCStaticDraw>();
 		m_Draw->SetOriginalMeshUse(true);
 		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
-		auto meshResoure = m_Draw->GetMeshResource(); 
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); 
+		auto meshResoure = m_Draw->GetMeshResource();
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
