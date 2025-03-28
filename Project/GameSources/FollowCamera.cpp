@@ -11,7 +11,8 @@ namespace basecross {
 	bool CameraCollision::m_Hit = false;
 
 	CameraCollision::CameraCollision(const shared_ptr<Stage>& StagePtr)
-		:GameObject(StagePtr), m_GetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_TargetPosition(Vec3(0.0f, 0.0f, 0.0f)) {}
+		:GameObject(StagePtr), m_GetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_TargetPosition(Vec3(0.0f, 0.0f, 0.0f)) {
+	}
 
 	void CameraCollision::OnCreate() {
 		m_Collision = AddComponent<CollisionSphere>();
@@ -63,13 +64,13 @@ namespace basecross {
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Min.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Max.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
-			
+
 			return m_GetPosition;
 		}
 	}
 
 	Vec3 CameraCollision::GetCompareVertex(Vec2 verx, Vec2 very) {
-		float m_Side, m_Beside ;
+		float m_Side, m_Beside;
 		Vec2 target = Vec2(m_TargetPosition.x, m_TargetPosition.z);
 		Vec2 get = Vec2(m_GetPosition.x, m_GetPosition.z);
 		float dar = Cross(very - verx, target - get);
@@ -122,7 +123,7 @@ namespace basecross {
 			float stickX = cntlVec.fThumbRX;
 			m_Angle -= m_RotateSpeed * elapsed * stickX;
 		}
-		
+
 
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
@@ -132,7 +133,7 @@ namespace basecross {
 		m_Eye = m_Position + m_Direction * 5.0f;
 		m_Eye.y = m_Position.y + 2.0f;
 
-		 m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
+		m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		//自分の位置
 		SetEye(m_Eye);
 		//見ているところ

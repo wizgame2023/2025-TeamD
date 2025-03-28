@@ -26,11 +26,25 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting();
 	}
 
+	void TitleStage::CreateResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
+		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title.png");
+
+	}
+
+	void TitleStage::CreateTitle() {
+		auto m_TitleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1028.0f, 800.0f), Vec2(1.0f, 1.0f), true);
+	}
+
 	void TitleStage::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
 			OnUpdate();
+			CreateResource();
+			CreateTitle();
 			Which = false;
 		}
 		catch (...) {
@@ -47,7 +61,7 @@ namespace basecross {
 				OnPushA();
 			}
 		}
-		
+
 	}
 
 	void TitleStage::OnPushA() {
