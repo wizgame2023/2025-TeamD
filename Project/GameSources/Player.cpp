@@ -19,7 +19,8 @@ namespace basecross {
 		m_ParryJudge(false),
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
-		m_Attacktime(1.0f)
+		m_Attacktime(1.0f),
+		m_DamageInterval(3.0f)
 	{
 	}
 	Player::~Player()
@@ -289,6 +290,7 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto draw = GetComponent<BcPNTStaticDraw>();
 		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
@@ -299,11 +301,20 @@ namespace basecross {
 			m_ParryTime--;
 			if (m_ParryTime <= 0.0f)
 			{
-				m_ParryJudge = false;
+				//m_ParryJudge = false;
 			}
 		}
-		float rot;
-
+		if (m_DamageIntervalStart)
+		{
+			m_DamageInterval -= elapsedTime;
+			draw->SetDiffuse(Col4(1, 0, 0, 1));
+			if (m_DamageInterval <= 0.0f)
+			{
+				draw->SetDiffuse(Col4(1, 1, 1, 1));
+				m_DamageIntervalStart = false;
+				m_DamageInterval = 3.0f;
+			}
+		}
 		if ((m_PlayerStateNum & PlayerState::DASH) != 0 )
 		{
 			m_BoostTime -= elapsedTime;
@@ -371,23 +382,28 @@ namespace basecross {
 	{
 		if (other->FindTag(L"Bullet"))
 		{
-			if (m_ParryJudge == true)
+			if (m_DamageIntervalStart == false)
 			{
-				if (m_ParryTime <= 30 && m_ParryTime > 15)
+				if (m_ParryJudge == true)
 				{
-					m_HP -= 0;
+					if (m_ParryTime <= 30 && m_ParryTime > 15)
+					{
+						m_HP -= 0;
+						m_EnergyCharge += 0.2;
+						SoundManager::Instance().PlaySE(L"TEST");
+					}
+					else if (m_ParryTime <= 15 && m_ParryTime > 0)
+					{
+						m_HP -= 1;
+						m_DamageIntervalStart = true;
+						m_EnergyCharge += 0.1;
+					}
+				}
+				else {
+					m_HP -= 2;
+					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
-					SoundManager::Instance().PlaySE(L"TEST");
 				}
-				else if (m_ParryTime <= 15 && m_ParryTime > 0)
-				{
-					m_HP -= 1;
-					m_EnergyCharge += 0.1;
-				}
-			}
-			else {
-				m_HP -= 2;
-				m_EnergyCharge += 0.2;
 			}
 			m_HP = max(m_HP, 0);
 			if (m_HP <= 0) {
