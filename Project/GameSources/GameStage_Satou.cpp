@@ -47,6 +47,10 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		//ƒ‚ƒfƒ‹ŠÖŒW
+		app->RegisterTexture(L"BUILDING_MODEL", modelPath + L"kari.bmf");
+		app->RegisterTexture(L"BUILDING_SPRITE", modelPath + L"karibulild.png");
+		app->RegisterTexture(L"ENEMY_MODEL", modelPath + L"testtetet.bmf");
 
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
