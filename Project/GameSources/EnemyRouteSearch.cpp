@@ -15,7 +15,7 @@ namespace basecross {
         m_MapHeight = 100.0f;
         //セルのサイズを10x10とする
         auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-        auto pointers =  pointerGroup->GetGroupVector();
+        auto pointers = pointerGroup->GetGroupVector();
         for (auto point : pointers)
         {
             auto shObj = point.lock();
@@ -32,31 +32,10 @@ namespace basecross {
     {
     }
 
-    void Navigate::SetTargetPosition(Vec3 Position)
+    void Navigate::SetTargetPosition(const Vec3& Position, const Vec3& target)
     {
-        auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-        auto pointers = pointerGroup->GetGroupVector();
-        shared_ptr<GameObject> nearObject = nullptr;
-        for (auto& point : pointers)
-        {
-            auto shObj = point.lock();
-            Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
-            Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
-
-            if (nearObject == nullptr)
-            {
-                nearObject = shObj;
-                break;
-            }
-            auto shPtr = dynamic_pointer_cast<RootPointer>(nearObject);
-            wstring number =  shPtr->GetPointerNumber();
-            if ((Position - vec1).length() < (Position - vec0).length() && (m_BeforeTarget - vec1).length() > 2.0f)
-            {
-                nearObject = shObj;
-            }
-        }
-        Vec3 pos = nearObject->GetComponent<Transform>()->GetPosition();
-        AStarAlgorithm(Position, pos);
+        m_TargetPosition = target;
+        AStarAlgorithm(Position, target);
     }
 
     Vec3 Navigate::GetAStarForword(const Vec3 Position)
@@ -88,10 +67,11 @@ namespace basecross {
                 }
             }
         }
-        if ((Position - m_TargetPosition).length() < 1.5f)
+        if ((Position - m_TargetPosition).length() < 3.0f)
         {
+            m_Index = m_TargetPosition;
             m_DireChange = false;
-            m_BeforeTarget = m_TargetPosition; 
+            m_BeforeTarget = m_TargetPosition;
             return Vec3(0, 0, 0);
         }
         return Vec3(0, 0, 0);
@@ -100,15 +80,14 @@ namespace basecross {
     void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
     {
         // 開始位置をA*アルゴリズムの開始点として設定
-        m_Index = index ;
+        m_Index = index;
 
         // 開始ノードの距離を初期化
         // 現在のノードの周囲のセルをOPENにする
-        Vec3 target =  OpenCell(m_Index);
-        if (index != target && m_BeforeTarget != target)
+        if (index != goal && m_BeforeTarget != goal)
         {
             m_DireChange = true;
-            m_TargetPosition = target;
+            m_TargetPosition = goal;
         }
         else {
             return;
@@ -120,7 +99,7 @@ namespace basecross {
     {
         Vec3 currentIndex = Vec3(0);
         for (int i = 0; i < m_CellData.size(); i++)
-        { 
+        {
             Vec3 pos = m_CellData[i]->GetComponent<Transform>()->GetPosition();
 
             if (currentIndex == Vec3(0))
@@ -132,7 +111,7 @@ namespace basecross {
                 currentIndex = pos;
             }
         }
-        if(UpdateDistance(currentIndex));  // ここでは更新だけを行う。OPENリストへの追加はAStarAlgorithmで行う。
+        if (UpdateDistance(currentIndex));  // ここでは更新だけを行う。OPENリストへの追加はAStarAlgorithmで行う。
         {
             return currentIndex;
         }
@@ -141,7 +120,7 @@ namespace basecross {
     bool Navigate::UpdateDistance(Vec3 index)
     {
 
-        return true; 
+        return true;
     }
 }
 //end basecross

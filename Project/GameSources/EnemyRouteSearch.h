@@ -42,7 +42,7 @@ namespace basecross {
 		Navigate(const std::shared_ptr<GameObject>& GameObjectPtr);
 		~Navigate() override;
 
-		void SetTargetPosition(Vec3 Position);
+		void SetTargetPosition(const Vec3& Position, const Vec3& target);
 
 		float Heuristic(Vec3 a, Vec3 b)
 		{
@@ -79,6 +79,8 @@ namespace basecross {
 		Vec3 m_StartPosition;  // 開始位置を記憶する
 		Vec3 m_HalfPosition;
 		std::stack<Vec3> points;
+		shared_ptr<GameObject> m_NearObject = nullptr;
+
 		// セルのサイズ
 		float m_CellSize = 5.0f;
 
