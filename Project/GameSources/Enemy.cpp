@@ -51,11 +51,6 @@ namespace basecross {
 
 
 		auto shadowPtr = AddComponent<Shadowmap>();
-
-		auto ptrGra = AddComponent<Gravity>();
-
-		auto shadowPtr = AddComponent<Shadowmap>();
-
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");

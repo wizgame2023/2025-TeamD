@@ -131,10 +131,10 @@ namespace basecross {
 				auto navi = GetComponent<Navigate>();
 
 				Vec3 halfPos = navi->GetAStarForword(currntPosition);
-				if (halfPos == Vec3(1, 0, 0))  SetRotation(Vec3(0, 0, 0));
+				if (halfPos == Vec3(1, 0, 0))  SetRotation(Vec3(0, 90, 0));
 				if (halfPos == Vec3(-1, 0, 0)) SetRotation(Vec3(0, 270, 0));
-				if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 180, 0));
-				if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 90, 0));
+				if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 0, 0));
+				if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 180, 0));
 
 				if (halfPos != Vec3(0))
 				{
