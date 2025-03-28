@@ -271,7 +271,7 @@ namespace basecross {
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		//ptrDraw->SetOwnShadowActive(true);
-
+		
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -296,6 +296,21 @@ namespace basecross {
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		ZoneActivation();
 		Debug();
+
+    //デバッグ用
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
+			m_Stage->AddGameObject<CrushAttack>(GetPosition() + Vec3(0,0,1), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
+		}
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			m_ParryJudge = true;
+			SearchRange();
+			m_Position = GetPosition();
+			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
+			Vec3 forward = GetForward();
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
+		}
+
 		if (m_ParryJudge == true)
 		{
 			m_ParryTime--;

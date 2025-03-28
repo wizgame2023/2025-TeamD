@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ÉrÉÖÅ[ÇÃÉJÉÅÉâÇÃê›íË
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStageM>());
+		auto PtrCamera = ObjectFactory::Create<Camera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -90,10 +90,10 @@ namespace basecross {
 			[](shared_ptr<Stage> stage) {
 				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
+					SoundManager::Instance().BGMVolumeUp(0.1f);
 				}
 				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
+					SoundManager::Instance().BGMVolumeDown(0.1f);
 				}
 			});
 
@@ -180,6 +180,7 @@ namespace basecross {
 		try {
 			CreateResource();
 			GameStage::OnCreate();
+			
 		}
 		catch (...) {
 			throw;

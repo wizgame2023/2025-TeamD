@@ -109,7 +109,7 @@ namespace basecross{
 		
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Instance>> m_Builders;
-
+		vector<wstring> m_InfoNames;
 		float m_Scale;
 
 	public:
@@ -127,7 +127,7 @@ namespace basecross{
 		void LoadCsv();
 		shared_ptr<Object> CreateObject(vector<wstring> date);
 		void RegisterRootPoint(map<wstring, shared_ptr<RootPointer>> pointer);
-
+		int GetInfoIndex(const wstring& infoName);
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
 			return stof(data);
