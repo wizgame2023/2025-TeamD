@@ -8,6 +8,9 @@
 
 namespace basecross {
 
+	//--------------------------------------------------------------------------------------
+	//	ゲームステージクラス実体
+	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
@@ -19,7 +22,10 @@ namespace basecross {
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
+
+		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
+		//デフォルトのライティングを指定
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -48,6 +54,7 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
+	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
@@ -58,22 +65,30 @@ namespace basecross {
 
 		builder->LoadCsv();
 	}
-	/// <summary>
+
+	/// </summary>
+	/// ポーズメニューの作成
 	/// </summary>
 	void GameStage::CreatePose() {
+		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
+
+		//やめる
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
+		//再開
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
+
+		//サウンド
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -86,6 +101,8 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
+
+	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -118,12 +135,14 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
+	/// ポーズ画面を閉じる
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
+	/// ポーズ画面を開く
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
@@ -131,6 +150,7 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 	/// <summary>
+	/// プレイヤー作成
 	/// </summary>
 	/// <param name="flag">陦ｨ遉ｺONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
@@ -150,6 +170,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
+		//オブジェクトの作成
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -162,6 +183,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
+			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();

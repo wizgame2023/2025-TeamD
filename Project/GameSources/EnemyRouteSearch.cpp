@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -13,7 +13,7 @@ namespace basecross {
     {
         m_MapWidth = 100.0f;
         m_MapHeight = 100.0f;
-        //ƒZƒ‹‚ÌƒTƒCƒY‚ğ10x10‚Æ‚·‚é
+        //ã‚»ãƒ«ã®ã‚µã‚¤ã‚ºã‚’10x10ã¨ã™ã‚‹
         auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
         auto pointers = pointerGroup->GetGroupVector();
         for (auto point : pointers)
@@ -21,7 +21,7 @@ namespace basecross {
             auto shObj = point.lock();
             m_CellData.push_back(shObj);
         }
-        // ŠJnˆÊ’u‚Ì‰Šú‰» (—á: ƒ}ƒbƒv‚Ì’†S)
+        // é–‹å§‹ä½ç½®ã®åˆæœŸåŒ– (ä¾‹: ãƒãƒƒãƒ—ã®ä¸­å¿ƒ)
         m_StartPosition = Vec3(m_MapWidth / 2.0f, 0.0f, m_MapHeight / 2.0f);
         m_Index = m_StartPosition;
         m_DireChange = true;
@@ -34,8 +34,10 @@ namespace basecross {
 
     void Navigate::SetTargetPosition(const Vec3& Position, const Vec3& target)
     {
+
         m_TargetPosition = target;
         AStarAlgorithm(Position, target);
+
     }
 
     Vec3 Navigate::GetAStarForword(const Vec3 Position)
@@ -81,11 +83,11 @@ namespace basecross {
 
     void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
     {
-        // ŠJnˆÊ’u‚ğA*ƒAƒ‹ƒSƒŠƒYƒ€‚ÌŠJn“_‚Æ‚µ‚Äİ’è
+        // é–‹å§‹ä½ç½®ã‚’A*ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®é–‹å§‹ç‚¹ã¨ã—ã¦è¨­å®š
         m_Index = index;
 
-        // ŠJnƒm[ƒh‚Ì‹——£‚ğ‰Šú‰»
-        // Œ»İ‚Ìƒm[ƒh‚ÌüˆÍ‚ÌƒZƒ‹‚ğOPEN‚É‚·‚é
+        // é–‹å§‹ãƒãƒ¼ãƒ‰ã®è·é›¢ã‚’åˆæœŸåŒ–
+        // ç¾åœ¨ã®ãƒãƒ¼ãƒ‰ã®å‘¨å›²ã®ã‚»ãƒ«ã‚’OPENã«ã™ã‚‹
         if (index != goal && m_BeforeTarget != goal)
         {
             m_DireChange = true;
@@ -113,7 +115,7 @@ namespace basecross {
                 currentIndex = pos;
             }
         }
-        if (UpdateDistance(currentIndex));  // ‚±‚±‚Å‚ÍXV‚¾‚¯‚ğs‚¤BOPENƒŠƒXƒg‚Ö‚Ì’Ç‰Á‚ÍAStarAlgorithm‚Ås‚¤B
+        if (UpdateDistance(currentIndex));  // ã“ã“ã§ã¯æ›´æ–°ã ã‘ã‚’è¡Œã†ã€‚OPENãƒªã‚¹ãƒˆã¸ã®è¿½åŠ ã¯AStarAlgorithmã§è¡Œã†ã€‚
         {
             return currentIndex;
         }

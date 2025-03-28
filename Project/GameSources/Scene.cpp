@@ -14,7 +14,13 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
 
+		//モデル関係
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
+		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
+
+		app->RegisterResource(L"OBJECT", modelBuild);
+		app->RegisterResource(L"MOB", modelEnemy);
 		app->RegisterResource(L"PLAYER", modelMesh);
 	}
 	//--------------------------------------------------------------------------------------
@@ -28,7 +34,7 @@ namespace basecross {
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 		}

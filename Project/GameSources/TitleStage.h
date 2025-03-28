@@ -16,6 +16,8 @@ namespace basecross {
 		InputHandler<TitleStage> m_InputHandler;
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
+		void CreateResource();
+		void CreateTitle();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 
 	public:
