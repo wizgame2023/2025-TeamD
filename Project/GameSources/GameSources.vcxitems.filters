@@ -43,6 +43,9 @@
     <Filter Include="Line">
       <UniqueIdentifier>{1595b870-0b71-4a88-bb7b-f053f86bd02e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Attack">
+      <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -126,6 +129,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ForecastLine.h">
       <Filter>Line</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h">
+      <Filter>Attack</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -208,6 +214,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ForecastLine.cpp">
       <Filter>Line</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp">
+      <Filter>Attack</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

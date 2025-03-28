@@ -9,7 +9,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	繧ｲ繝ｼ繝繧ｹ繝��繧ｸ繧ｯ繝ｩ繧ｹ螳滉ｽ
+	//	
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
@@ -22,9 +22,7 @@ namespace basecross {
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//繝槭Ν繝√Λ繧､繝医�菴懈�
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//繝�ヵ繧ｩ繝ｫ繝医�繝ｩ繧､繝�ぅ繝ｳ繧ｰ繧呈欠螳
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -53,38 +51,39 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// 繧ｹ繝��繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ險ｭ螳
+	/// Unityから読み込むオブジェクトの登録
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
 		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
+		
 	}
 	/// <summary>
-	/// 繝昴�繧ｺ繝｡繝九Η繝ｼ縺ｮ菴懈�
+	/// ポーズ画面の作成
 	/// </summary>
 	void GameStage::CreatePose() {
-		//繧ｿ繧､繝医Ν
+		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//繧�ａ繧
+		//やめる
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//蜀埼幕
+		//再開
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
-		//繧ｵ繧ｦ繝ｳ繝
+		//サウンドテスト
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -97,7 +96,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-	/// 繧ｵ繧ｦ繝ｳ繝峨ユ繧ｹ繝医Γ繝九Η繝ｼ縺ｮ菴懈�
+	/// サウンドテストの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -130,14 +129,14 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// 繝昴�繧ｺ逕ｻ髱｢繧帝哩縺倥ｋ
+	/// ポーズを閉じる
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
-	/// 繝昴�繧ｺ逕ｻ髱｢繧帝幕縺
+	/// ポーズを開く
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
@@ -145,9 +144,9 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 	/// <summary>
-	/// 逋ｻ骭ｲ縺輔ｌ縺ｦ縺�ｋ縺吶∋縺ｦ縺ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝医�陦ｨ遉ｺ謫堺ｽ
+	/// オブジェクトの描画をONOFF
 	/// </summary>
-	/// <param name="flag">陦ｨ遉ｺONOFF</param>
+	/// <param name="flag">描画ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
@@ -165,7 +164,6 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//繧ｪ繝悶ず繧ｧ繧ｯ繝医�菴懈�
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -178,7 +176,6 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
-			//繝薙Η繝ｼ縺ｨ繝ｩ繧､繝医�菴懈�
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();

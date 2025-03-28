@@ -18,12 +18,12 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
-		//CollisionSphere陦晉ｪ∝愛螳壹ｒ莉倥￠繧
+		
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
-		//謠冗判險ｭ螳
+		
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
@@ -31,9 +31,9 @@ namespace basecross {
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//蠖ｱ繧偵▽縺代ｋ�医す繝｣繝峨え繝槭ャ繝励ｒ謠冗判縺吶ｋ�
+		
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//蠖ｱ縺ｮ蠖｢�医Γ繝�す繝･�峨ｒ險ｭ螳
+		
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -41,7 +41,7 @@ namespace basecross {
 
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
-		auto navi = AddComponent<Navigate>();
+		//auto navi = AddComponent<Navigate>();
 	}
 
 	void Enemy::OnUpdate()
@@ -193,7 +193,7 @@ namespace basecross {
 		m_Draw = AddComponent<PCStaticDraw>(); //菴咲ｽｮ縺ｨ濶ｲ縺ｮ縺ｿ
 		m_Draw->SetOriginalMeshUse(true); //閾ｪ菴懊＠縺溘Γ繝�す繝･繧剃ｽｿ逕ｨ
 		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //繝｡繝�す繝･縺ｮ菴懈�
-		auto meshResoure = m_Draw->GetMeshResource(); //繝｡繝�す繝･繝ｪ繧ｽ繝ｼ繧ｹ繧貞叙蠕励＠縲√�繝ｪ繝溘ユ繧｣繝悶�繝ｭ繧ｸ繝ｼ�磯らせ蛻ｩ逕ｨ譁ｹ豕包ｼ峨ｒ螟画峩縺吶ｋ
+		auto meshResoure = m_Draw->GetMeshResource();
 		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //繝昴Μ繧ｴ繝ｳ縺ｧ縺ｯ縺ｪ縺冗ｨ懃ｷ壹ｒ陦ｨ遉ｺ
 	}
 	void LineObject::OnUpdate() {
@@ -219,7 +219,6 @@ namespace basecross {
 		}
 	}
 
-	//鬆らせ縺ｮ譖ｴ譁ｰ
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -228,7 +227,6 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//鬆らせ縺ｮ險ｭ螳
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -238,7 +236,6 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//邱壹�濶ｲ縺ｮ險ｭ螳
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;

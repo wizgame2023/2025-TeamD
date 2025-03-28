@@ -1,20 +1,13 @@
-using JetBrains.Annotations;
-using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using System.IO;
-using Unity.Hierarchy;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.Analytics;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class ConvertCSV : MonoBehaviour
 {
-    enum CS
-    {
-        Object,
-        Chara,
-        Pointer
-    }
+    
     public string saveName;
     public string filePath;
 
@@ -25,6 +18,11 @@ public class ConvertCSV : MonoBehaviour
 
     int count = 0;
     const string ENCODE_TEXT = "Shift_JIS";
+    readonly List<string> LOAD_OBJECT = new List<string> { "name", "position", "scale", "rotation","tag","collision","type" };
+    readonly List<string> LOAD_CHARA = new List<string> { "name", "position", "scale", "rotation", "tag", "hp", "type" };
+    readonly List<string> LOAD_CHARA_CONDITION = new List<string> { "name", "position", "scale", "rotation", "tag","hp","time","defeat", "type" };
+    readonly List<string> LOAD_POINTER = new List<string> { "name", "position", "scale", "rotation", "tag","number","connect","type" };
+
 
     GameObject player = null;
     List<GameObject> enemies = new List<GameObject>();
@@ -32,48 +30,44 @@ public class ConvertCSV : MonoBehaviour
     int pointerCount = 0;
     public Mesh defaultMesh;
     public Material defaultMaterial;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    string GetObjectType(GameObject obj)
     {
-      
-        //Convert();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-      
-    }
-    bool IsFileExist()
-    {
-        return File.Exists(filePath + "/" + saveName + ".csv");
+        if (obj.GetComponent<ClassName>() != null)
+        {
+            return "Object";
+        }
+        else if (obj.GetComponent<CharacterDate>() != null)
+        {
+            return "Chara";
+        }
+        else if (obj.GetComponent<RootPointer>() != null)
+        {
+            return "Pointer";
+        }
+        return "";
     }
     void WriteDate(StreamWriter fs, GameObject obj)
     {
-        if (!WriteStageDate(fs, obj))
+        string type = GetObjectType(obj);
+        switch (type)
         {
-            if (!WriteCharaDate(fs, obj))
-            {
-                if (!GetPointer(fs, obj))
-                {
-
-                }
-            }
+            case "Object":
+                WriteStageDate(fs, obj);
+                break;
+            case "Chara":
+                WriteCharaDate(fs, obj);
+                break;
+            case "Pointer":
+                GetPointer(fs, obj);
+                break;
         }
     }
-    void WriteLoadDate(StreamWriter fs, GameObject obj,CS cs)
+    void WriteDateType(StreamWriter fs, List<string> loadType)
     {
-        switch (cs)
+        foreach (var type in loadType)
         {
-            case CS.Object:
-                fs.Write("Object");
-                break;
-            case CS.Chara:
-                fs.Write("Chara");
-                break;
-            case CS.Pointer:
-                fs.Write("Pointer");
-                break;
+            fs.Write(type);
+            fs.Write("_");
         }
     }
     bool GetPointer(StreamWriter fs,GameObject obj)
@@ -97,7 +91,7 @@ public class ConvertCSV : MonoBehaviour
 
             fs.Write(name);
             fs.Write(",");
-            WriteTransform(fs, obj);
+            WriteDefaultInfo(fs, obj);
             fs.Write(",");
             fs.Write(number);
             fs.Write(",");
@@ -107,11 +101,13 @@ public class ConvertCSV : MonoBehaviour
                 fs.Write("_");
             }
             fs.Write(",");
-            WriteLoadDate(fs, obj, CS.Pointer);
+            fs.Write(GetObjectType(obj));
+            fs.Write(",");
+            WriteDateType(fs, LOAD_POINTER);
             fs.Write("\n");
         }
     }
-    void WriteTransform(StreamWriter fs, GameObject obj)
+    void WriteDefaultInfo(StreamWriter fs, GameObject obj)
     {
         fs.Write(obj.transform.position.x + "_" + obj.transform.position.y + "_" + obj.transform.position.z);
         fs.Write(",");
@@ -128,19 +124,7 @@ public class ConvertCSV : MonoBehaviour
     {
         foreach (var enemy in enemies)
         {
-            var comp = enemy.GetComponent<CharacterDate>();
-            if (comp == null) return;
-            string name = comp.className;
-            float hp = comp.hp;
-
-            fs.Write(name);
-            fs.Write(",");
-            WriteTransform(fs, enemy);
-            fs.Write(",");
-            fs.Write(hp);
-            fs.Write(",");
-            WriteLoadDate(fs, enemy,CS.Chara);
-            fs.Write("\n");
+            WriteCharacterDate(fs, enemy);
             count++;
         }
     }
@@ -155,12 +139,12 @@ public class ConvertCSV : MonoBehaviour
         }
         return false;
     }
-    bool WriteCharaDate(StreamWriter fs, GameObject obj)
+    bool CheckEnemy(GameObject obj)
     {
         var comp = obj.GetComponent<CharacterDate>();
         if (comp == null) return false;
         string name = comp.className;
-        if(name != playerName)
+        if (name != playerName)
         {
             if (FindEnemy(name))
             {
@@ -168,22 +152,55 @@ public class ConvertCSV : MonoBehaviour
                 return true;
             }
         }
-        else
+        return false;
+    }
+    bool WriteCharaDate(StreamWriter fs, GameObject obj)
+    {
+        var comp = obj.GetComponent<CharacterDate>();
+        if (comp == null) return false;
+        if(!CheckEnemy(obj))
         {
             player = obj;
         }
+        else
+        {
+            return true;
+        }
+        WriteCharacterDate(fs, obj);
+        count++;
+        return true;
+    }
+    void WriteCharacterDate(StreamWriter fs, GameObject obj)
+    {
+        var comp = obj.GetComponent<CharacterDate>();
+        if (comp == null) return;
+        string name = comp.className;
         float hp = comp.hp;
 
         fs.Write(name);
         fs.Write(",");
-        WriteTransform(fs, obj);
+        WriteDefaultInfo(fs, obj);
         fs.Write(",");
         fs.Write(hp);
         fs.Write(",");
-        WriteLoadDate(fs, obj, CS.Chara);
+        if (comp.isConditional)
+        {
+            fs.Write(comp.time);
+            fs.Write(",");
+            fs.Write(comp.defeatEnemyCount);
+            fs.Write(",");
+        }
+        fs.Write(GetObjectType(obj));
+        fs.Write(",");
+        if(comp.isConditional)
+        {
+            WriteDateType(fs, LOAD_CHARA_CONDITION);
+        }
+        else
+        {
+            WriteDateType(fs, LOAD_CHARA);
+        }
         fs.Write("\n");
-        count++;
-        return true;
     }
     bool WriteStageDate(StreamWriter fs,GameObject obj)
     {
@@ -191,12 +208,23 @@ public class ConvertCSV : MonoBehaviour
         if (nameComp == null) return false;
 
         string name = nameComp.className;
-        
+        var collisionComp = obj.GetComponent<Collider>();
         fs.Write(name);
         fs.Write(",");
-        WriteTransform(fs, obj);
+        WriteDefaultInfo(fs, obj);
         fs.Write(",");
-        WriteLoadDate(fs, obj, CS.Object);
+        if (collisionComp == null)
+        {
+            fs.Write("true");
+        }
+        else
+        {
+            fs.Write("false");
+        }
+        fs.Write(",");
+        fs.Write(GetObjectType(obj));
+        fs.Write(",");
+        WriteDateType(fs, LOAD_OBJECT);
         fs.Write("\n");
         count++;
         return true;
@@ -261,13 +289,14 @@ public class ConvertCSV : MonoBehaviour
             foreach (var str in line)
             {
                 string[] date = str.Split(',');
+                string[] dateNames = date[date.Length - 1].Split("_");
 
-                string name = date[0];
-                string[] positionStr = date[1].Split("_");
-                string[] scaleStr = date[2].Split("_");
-                string[] rotationStr = date[3].Split("_");
-                string tag = date[4];
-                string[] InfoStr = date[date.Length - 1].Split("_");
+                string name = date[Array.IndexOf(dateNames,"name")];
+                string[] positionStr = date[Array.IndexOf(dateNames, "position")].Split("_");
+                string[] scaleStr = date[Array.IndexOf(dateNames, "scale")].Split("_");
+                string[] rotationStr = date[Array.IndexOf(dateNames, "rotation")].Split("_");
+                string tag = date[Array.IndexOf(dateNames, "tag")];
+                string type = date[Array.IndexOf(dateNames, "type")];
 
                 Vector3 position = new Vector3(float.Parse(positionStr[0]), float.Parse(positionStr[1]), float.Parse(positionStr[2]));
                 Vector3 scale = new Vector3(float.Parse(scaleStr[0]), float.Parse(scaleStr[1]), float.Parse(scaleStr[2]));
@@ -279,22 +308,30 @@ public class ConvertCSV : MonoBehaviour
                 filter.mesh = defaultMesh;
                 var renderer = obj.AddComponent<MeshRenderer>();
                 renderer.material = defaultMaterial;
-                if (InfoStr[0] == "Chara")
+                if (type == "Chara")
                 {
                     var comp = obj.AddComponent<CharacterDate>();
                     comp.className = name;
+                    comp.hp = int.Parse(date[Array.IndexOf(dateNames, "hp")]);
+                    int index = Array.IndexOf(dateNames, "time");
+                    if(index != -1)
+                    {
+                        comp.isConditional = true;
+                        comp.time = int.Parse(date[index]);
+                        comp.defeatEnemyCount = int.Parse(date[Array.IndexOf(dateNames, "defeat")]);
+                    }
                 }
-                else if(InfoStr[0] == "Object")
+                else if(type == "Object")
                 {
                     var comp = obj.AddComponent<ClassName>();
                     comp.className = name;
                 }
-                else if(InfoStr[0] == "Pointer")
+                else if(type == "Pointer")
                 {
                     var comp = obj.AddComponent<RootPointer>();
                     comp.className = name;
-                    comp.number = int.Parse(date[5]);
-                    comp.loadPointer = date[6];
+                    comp.number = int.Parse(date[Array.IndexOf(dateNames, "number")]);
+                    comp.loadPointer = date[Array.IndexOf(dateNames, "connect")];
                     pointers.Add(obj);
                 }
                     obj.transform.parent = stage.transform;
