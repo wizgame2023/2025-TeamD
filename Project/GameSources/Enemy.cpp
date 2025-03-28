@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief 謨ｵ縺ｪ縺ｩ螳滉ｽ
+@brief
 */
 
 #include "stdafx.h"
@@ -17,23 +17,36 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		m_HP = 3;
-
-		
+    
+		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
-		
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//驥榊鴨繧偵▽縺代ｋ
+		//描画設定
+		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"MOB");
+
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.3f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		//ptrDraw->SetOwnShadowActive(true);
+
 		auto ptrGra = AddComponent<Gravity>();
 
-
-		
 		auto shadowPtr = AddComponent<Shadowmap>();
-		
+
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -47,7 +60,6 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
-
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -136,6 +148,17 @@ namespace basecross {
 		return m_IntruderAlert;
 	}
 
+	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 pos = GetPosition();
+		Vec3 vec = hitPos - pos;
+		vec.normalize();
+		pos += -vec * 10.0f * elapsedTime;
+		SetPosition(pos);
+	}
+
 	void Enemy::Dead() {
 		m_Line->Destroy();
 
@@ -150,11 +173,12 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			m_HP -= 1;
+			KnockBackTime(other);
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //邱壹ｒ謠冗判縺吶ｋ繧ｪ繝悶ず繧ｧ繧ｯ繝
+	//	class LineObject : public GameObject; 
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -179,22 +203,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//邱壹ｒ讒区�縺吶ｋ2轤ｹ
+
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//蟋狗せ縺ｨ邨らせ繧偵▽縺ｪ縺舌う繝ｳ繝�ャ繧ｯ繧ｹ
+
 		m_Indices = {
 			0,1
 		};
 
-		//謠冗判
-		m_Draw = AddComponent<PCStaticDraw>(); //菴咲ｽｮ縺ｨ濶ｲ縺ｮ縺ｿ
-		m_Draw->SetOriginalMeshUse(true); //閾ｪ菴懊＠縺溘Γ繝�す繝･繧剃ｽｿ逕ｨ
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //繝｡繝�す繝･縺ｮ菴懈�
-		auto meshResoure = m_Draw->GetMeshResource();
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //繝昴Μ繧ｴ繝ｳ縺ｧ縺ｯ縺ｪ縺冗ｨ懃ｷ壹ｒ陦ｨ遉ｺ
+		m_Draw = AddComponent<PCStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_Draw->GetMeshResource(); 
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); 
+
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();

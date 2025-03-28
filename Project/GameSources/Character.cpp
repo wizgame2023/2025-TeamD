@@ -66,6 +66,18 @@ namespace basecross {
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
+		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
+		//ptrDraw->SetMeshResource(L"OBJECT");
+		//Mat4x4 meshMat;
+		//meshMat.affineTransformation(
+		//	Vec3(0.5f, 0.4f, 0.5f), //サイズ
+		//	Vec3(0.0f, 0.0f, 0.0f), //回転軸
+		//	Vec3(0.0f, 0.0f, 0.0f), //回転
+		//	Vec3(0.0f, -0.5f, 0.0f) //ポジション
+		//);
+		//ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+
 	}
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)

@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -13,15 +13,15 @@ namespace basecross {
     {
         m_MapWidth = 100.0f;
         m_MapHeight = 100.0f;
-        //ƒZƒ‹‚ÌƒTƒCƒY‚ğ10x10‚Æ‚·‚é
+        //ã‚»ãƒ«ã®ã‚µã‚¤ã‚ºã‚’10x10ã¨ã™ã‚‹
         auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-        auto pointers =  pointerGroup->GetGroupVector();
+        auto pointers = pointerGroup->GetGroupVector();
         for (auto point : pointers)
         {
             auto shObj = point.lock();
             m_CellData.push_back(shObj);
         }
-        // ŠJnˆÊ’u‚Ì‰Šú‰» (—á: ƒ}ƒbƒv‚Ì’†S)
+        // é–‹å§‹ä½ç½®ã®åˆæœŸåŒ– (ä¾‹: ãƒãƒƒãƒ—ã®ä¸­å¿ƒ)
         m_StartPosition = Vec3(m_MapWidth / 2.0f, 0.0f, m_MapHeight / 2.0f);
         m_Index = m_StartPosition;
         m_DireChange = true;
@@ -32,31 +32,12 @@ namespace basecross {
     {
     }
 
-    void Navigate::SetTargetPosition(Vec3 Position)
+    void Navigate::SetTargetPosition(const Vec3& Position, const Vec3& target)
     {
-        auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-        auto pointers = pointerGroup->GetGroupVector();
-        shared_ptr<GameObject> nearObject = nullptr;
-        for (auto& point : pointers)
-        {
-            auto shObj = point.lock();
-            Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
-            Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
 
-            if (nearObject == nullptr)
-            {
-                nearObject = shObj;
-                break;
-            }
-            auto shPtr = dynamic_pointer_cast<RootPointer>(nearObject);
-            wstring number =  shPtr->GetPointerNumber();
-            if ((Position - vec1).length() < (Position - vec0).length() && (m_BeforeTarget - vec1).length() > 2.0f)
-            {
-                nearObject = shObj;
-            }
-        }
-        Vec3 pos = nearObject->GetComponent<Transform>()->GetPosition();
-        AStarAlgorithm(Position, pos);
+        m_TargetPosition = target;
+        AStarAlgorithm(Position, target);
+
     }
 
     Vec3 Navigate::GetAStarForword(const Vec3 Position)
@@ -64,34 +45,37 @@ namespace basecross {
         if (m_DireChange)
         {
             m_Dire = std::abs(Position.x - m_TargetPosition.x) > std::abs(Position.y - m_TargetPosition.y) ? Dire::X : Dire::Z;
-
-            if (m_Dire == Dire::X)
+            if ((Position - m_TargetPosition).length() >= 0.5f)
             {
-                if (m_TargetPosition.x < Position.x)
+                if (m_Dire == Dire::X)
                 {
-                    return Vec3(-1, 0, 0);
+                    if (m_TargetPosition.x < Position.x)
+                    {
+                        return Vec3(-1, 0, 0);
+                    }
+                    else if (m_TargetPosition.x > Position.x)
+                    {
+                        return Vec3(1, 0, 0);
+                    }
                 }
-                else if (m_TargetPosition.x > Position.x)
+                else if (m_Dire == Dire::Z)
                 {
-                    return Vec3(1, 0, 0);
-                }
-            }
-            else if (m_Dire == Dire::Z)
-            {
-                if (m_TargetPosition.z < Position.z)
-                {
-                    return Vec3(0, 0, -1);
-                }
-                else if (m_TargetPosition.z > Position.z)
-                {
-                    return Vec3(0, 0, 1);
+                    if (m_TargetPosition.z < Position.z)
+                    {
+                        return Vec3(0, 0, -1);
+                    }
+                    else if (m_TargetPosition.z > Position.z)
+                    {
+                        return Vec3(0, 0, 1);
+                    }
                 }
             }
         }
-        if ((Position - m_TargetPosition).length() < 1.5f)
+        if ((Position - m_TargetPosition).length() < 0.5f)
         {
+            m_Index = m_TargetPosition;
             m_DireChange = false;
-            m_BeforeTarget = m_TargetPosition; 
+            m_BeforeTarget = m_TargetPosition;
             return Vec3(0, 0, 0);
         }
         return Vec3(0, 0, 0);
@@ -99,16 +83,15 @@ namespace basecross {
 
     void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
     {
-        // ŠJnˆÊ’u‚ğA*ƒAƒ‹ƒSƒŠƒYƒ€‚ÌŠJn“_‚Æ‚µ‚Äİ’è
-        m_Index = index ;
+        // é–‹å§‹ä½ç½®ã‚’A*ã‚¢ãƒ«ã‚´ãƒªã‚ºãƒ ã®é–‹å§‹ç‚¹ã¨ã—ã¦è¨­å®š
+        m_Index = index;
 
-        // ŠJnƒm[ƒh‚Ì‹——£‚ğ‰Šú‰»
-        // Œ»İ‚Ìƒm[ƒh‚ÌüˆÍ‚ÌƒZƒ‹‚ğOPEN‚É‚·‚é
-        Vec3 target =  OpenCell(m_Index);
-        if (index != target && m_BeforeTarget != target)
+        // é–‹å§‹ãƒãƒ¼ãƒ‰ã®è·é›¢ã‚’åˆæœŸåŒ–
+        // ç¾åœ¨ã®ãƒãƒ¼ãƒ‰ã®å‘¨å›²ã®ã‚»ãƒ«ã‚’OPENã«ã™ã‚‹
+        if (index != goal && m_BeforeTarget != goal)
         {
             m_DireChange = true;
-            m_TargetPosition = target;
+            m_TargetPosition = goal;
         }
         else {
             return;
@@ -120,7 +103,7 @@ namespace basecross {
     {
         Vec3 currentIndex = Vec3(0);
         for (int i = 0; i < m_CellData.size(); i++)
-        { 
+        {
             Vec3 pos = m_CellData[i]->GetComponent<Transform>()->GetPosition();
 
             if (currentIndex == Vec3(0))
@@ -132,7 +115,7 @@ namespace basecross {
                 currentIndex = pos;
             }
         }
-        if(UpdateDistance(currentIndex));  // ‚±‚±‚Å‚ÍXV‚¾‚¯‚ğs‚¤BOPENƒŠƒXƒg‚Ö‚Ì’Ç‰Á‚ÍAStarAlgorithm‚Ås‚¤B
+        if (UpdateDistance(currentIndex));  // ã“ã“ã§ã¯æ›´æ–°ã ã‘ã‚’è¡Œã†ã€‚OPENãƒªã‚¹ãƒˆã¸ã®è¿½åŠ ã¯AStarAlgorithmã§è¡Œã†ã€‚
         {
             return currentIndex;
         }
@@ -141,7 +124,7 @@ namespace basecross {
     bool Navigate::UpdateDistance(Vec3 index)
     {
 
-        return true; 
+        return true;
     }
 }
 //end basecross

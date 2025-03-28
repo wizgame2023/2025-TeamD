@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ螳滉ｽ
+@brief
 */
 
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	
+	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
@@ -18,11 +18,12 @@ namespace basecross {
 
 		//ビューのカメラの設定
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
+		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
+		//デフォルトのライティングを指定
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -51,7 +52,7 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// Unityから読み込むオブジェクトの登録
+	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
@@ -63,9 +64,9 @@ namespace basecross {
 		builder->LoadCsv();
 		
 	}
-	/// <summary>
-	/// ポーズ画面の作成
 	/// </summary>
+	/// ポーズメニューの作成
+	/// <summary>
 	void GameStage::CreatePose() {
 		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
@@ -96,7 +97,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-	/// サウンドテストの作成
+	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -129,14 +130,14 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// ポーズを閉じる
+	/// ポーズ画面を閉じる
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
-	/// ポーズを開く
+	/// ポーズ画面を開く
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
@@ -164,6 +165,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
+		//オブジェクトの作成
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -176,6 +178,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
+			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();

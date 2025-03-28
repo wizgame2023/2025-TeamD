@@ -16,8 +16,13 @@ namespace basecross {
 		float m_EnergyCharge;
 		float m_ZoneTime;
 		float m_ParryTime;
-		bool m_ParryJudge;
+		float m_TotalTime;
 		float m_BoostTime;
+		float m_Attacktime;
+		float m_DamageInterval;
+		bool m_ParryJudge;
+		bool m_DamageIntervalStart;
+
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
 
