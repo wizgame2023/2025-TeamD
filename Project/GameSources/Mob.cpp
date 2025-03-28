@@ -47,13 +47,17 @@ namespace basecross {
 				m_NearPoint = shObj;
 			}
 			Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
+			if ((vec1 - m_Position).length() < (vec0 - m_Position).length())
+			{
+				m_NearPoint = shObj;
+			}
 		}
 		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
 
 		navi->SetTargetPosition(GetPosition(), pos);
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
-		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(),Vec3(0,1,0));
+		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, 1, 0));
 		m_HpBar->SetMaxHp(3);
 		m_HpBar->SetCurrentHp(m_HP);
 		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
@@ -62,7 +66,7 @@ namespace basecross {
 	{
 		AsyncUpdate();
 		Enemy::OnUpdate();
-		
+
 		/*if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 			updateThread.detach();
@@ -90,7 +94,7 @@ namespace basecross {
 
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
-		
+
 
 		if (m_Intruder != nullptr) {
 			if (Enemy::m_IntruderAlert)
@@ -105,7 +109,7 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
-		auto navi = GetComponent<Navigate>();
+				auto navi = GetComponent<Navigate>();
 
 				Vec3 halfPos = navi->GetAStarForword(currntPosition);
 				if (halfPos != Vec3(0))
@@ -114,6 +118,8 @@ namespace basecross {
 					SetPosition(currntPosition);
 				}
 				else {
+					Vec3 before = m_NearPoint->GetComponent<Transform>()->GetPosition();
+					SetPosition(before);
 					Vec3 pos = RootNaviGate();
 					navi->SetTargetPosition(GetPosition(), pos);
 				}
