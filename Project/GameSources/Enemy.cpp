@@ -18,17 +18,44 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
+
+		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
+
+		//描画設定
+		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
+
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		ptrDraw->SetMeshResource(L"MOB");
+
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.3f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		//ptrDraw->SetOwnShadowActive(true);
+
+
 
 		auto ptrGra = AddComponent<Gravity>();
 
 
 		auto shadowPtr = AddComponent<Shadowmap>();
+
+		auto ptrGra = AddComponent<Gravity>();
+
+		auto shadowPtr = AddComponent<Shadowmap>();
+
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -174,19 +201,23 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
+
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
+
 		m_Indices = {
 			0,1
 		};
+
 
 		m_Draw = AddComponent<PCStaticDraw>();
 		m_Draw->SetOriginalMeshUse(true);
 		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
 		auto meshResoure = m_Draw->GetMeshResource(); 
 		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); 
+
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -211,6 +242,7 @@ namespace basecross {
 		}
 	}
 
+
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -227,6 +259,7 @@ namespace basecross {
 
 		VerticesUpdate();
 	}
+
 
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
