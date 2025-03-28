@@ -40,14 +40,14 @@ namespace basecross {
         for (auto& point : pointers)
         {
             auto shObj = point.lock();
-            Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
             Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
 
             if (nearObject == nullptr)
             {
                 nearObject = shObj;
                 break;
-            }
+            }           
+            Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
             auto shPtr = dynamic_pointer_cast<RootPointer>(nearObject);
             wstring number =  shPtr->GetPointerNumber();
             if ((Position - vec1).length() < (Position - vec0).length() && (m_BeforeTarget - vec1).length() > 2.0f)
