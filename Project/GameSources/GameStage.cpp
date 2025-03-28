@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ゲームステージ実体
+@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ螳滉ｽ
 */
 
 #include "stdafx.h"
@@ -9,20 +9,22 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ゲームステージクラス実体
+	//	繧ｲ繝ｼ繝繧ｹ繝��繧ｸ繧ｯ繝ｩ繧ｹ螳滉ｽ
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
+
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//マルチライトの作成
+		//繝槭Ν繝√Λ繧､繝医�菴懈�
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//デフォルトのライティングを指定
+		//繝�ヵ繧ｩ繝ｫ繝医�繝ｩ繧､繝�ぅ繝ｳ繧ｰ繧呈欠螳
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -51,7 +53,7 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// ステージ読み込み設定
+	/// 繧ｹ繝��繧ｸ隱ｭ縺ｿ霎ｼ縺ｿ險ｭ螳
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
@@ -63,26 +65,26 @@ namespace basecross {
 		builder->LoadCsv();
 	}
 	/// <summary>
-	/// ポーズメニューの作成
+	/// 繝昴�繧ｺ繝｡繝九Η繝ｼ縺ｮ菴懈�
 	/// </summary>
 	void GameStage::CreatePose() {
-		//タイトル
+		//繧ｿ繧､繝医Ν
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//やめる
+		//繧�ａ繧
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//再開
+		//蜀埼幕
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
-		//サウンド
+		//繧ｵ繧ｦ繝ｳ繝
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -95,7 +97,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-	/// サウンドテストメニューの作成
+	/// 繧ｵ繧ｦ繝ｳ繝峨ユ繧ｹ繝医Γ繝九Η繝ｼ縺ｮ菴懈�
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -128,14 +130,14 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// ポーズ画面を閉じる
+	/// 繝昴�繧ｺ逕ｻ髱｢繧帝哩縺倥ｋ
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
-	/// ポーズ画面を開く
+	/// 繝昴�繧ｺ逕ｻ髱｢繧帝幕縺
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
@@ -143,9 +145,9 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 	/// <summary>
-	/// 登録されているすべてのオブジェクトの表示操作
+	/// 逋ｻ骭ｲ縺輔ｌ縺ｦ縺�ｋ縺吶∋縺ｦ縺ｮ繧ｪ繝悶ず繧ｧ繧ｯ繝医�陦ｨ遉ｺ謫堺ｽ
 	/// </summary>
-	/// <param name="flag">表示ONOFF</param>
+	/// <param name="flag">陦ｨ遉ｺONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
@@ -163,7 +165,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//オブジェクトの作成
+		//繧ｪ繝悶ず繧ｧ繧ｯ繝医�菴懈�
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -176,7 +178,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
-			//ビューとライトの作成
+			//繝薙Η繝ｼ縺ｨ繝ｩ繧､繝医�菴懈�
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();

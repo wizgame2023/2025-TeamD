@@ -36,16 +36,21 @@ namespace basecross {
 		auto navi = AddComponent<Navigate>();
 		navi->SetTargetPosition(GetPosition());
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
-		AddTag(L"Mob");
+
+		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(),Vec3(0,1,0));
+		m_HpBar->SetMaxHp(3);
+		m_HpBar->SetCurrentHp(m_HP);
+		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
 	}
 	void Mob::OnUpdate()
 	{
-		m_currentState->Execute();
+		AsyncUpdate();
 		Enemy::OnUpdate();
-		if (m_IsEndAsyncUpdate) {
+		
+		/*if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
-			updateThread.join();
-		}
+			updateThread.detach();
+		}*/
 		float elapsed = App::GetApp()->GetElapsedTime();
 		m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 		if (m_BalletInterval < 0) {
@@ -57,23 +62,24 @@ namespace basecross {
 		}
 		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		m_SearchFan->SetPosition(GetPosition());
-		//AsyncUpdate();
+		m_HpBar->SetCurrentHp(m_HP);
 	}
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Enemy::OnUpdate();
 		Vec3 currntPosition = m_Transform->GetPosition();
 		auto navi = GetComponent<Navigate>();
-		Enemy::AsyncUpdate();
+
 		m_currentState->Execute();
+		Enemy::AsyncUpdate();
+		
 
 		if (m_Intruder != nullptr) {
 			if (Enemy::m_IntruderAlert)
 			{
-				m_Line->SetDrawActive(true);
 				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
 					m_Line->SetDrawActive(true);
 				}
@@ -100,6 +106,7 @@ namespace basecross {
 	}
 	void Mob::Dead() {
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
+		m_HpBar->Destroy();
 		Enemy::Dead();
 	}
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)

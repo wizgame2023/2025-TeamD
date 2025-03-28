@@ -10,7 +10,7 @@ namespace basecross {
 	class Enemy;
 	class Tube;
 	class ForecastLine;
-
+	class HPBar;
 	class Mob : public Enemy
 	{
 	public:
@@ -23,6 +23,7 @@ namespace basecross {
 		Vec3 m_Before = Vec3(0);
 
 		shared_ptr<SharpFan> m_SearchFan;
+		shared_ptr<HPBar> m_HpBar;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);

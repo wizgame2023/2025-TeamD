@@ -30,3 +30,4 @@
 #include "SharpFan.h"
 #include "RootPointer.h"
 #include "Menu.h"
+#include "HPBar.h"

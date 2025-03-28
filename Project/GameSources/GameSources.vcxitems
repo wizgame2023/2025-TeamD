@@ -25,6 +25,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Kamata.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Munakata.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Satou.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HPBar.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
@@ -52,6 +53,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Kamata.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Munakata.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Satou.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HPBar.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
