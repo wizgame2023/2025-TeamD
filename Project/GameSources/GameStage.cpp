@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ螳滉ｽ
+@brief
 */
 
 #include "stdafx.h"
@@ -22,6 +22,7 @@ namespace basecross {
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
+
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -64,7 +65,8 @@ namespace basecross {
 
 		builder->LoadCsv();
 	}
-	/// <summary>
+
+	/// </summary>
 	/// ポーズメニューの作成
 	/// </summary>
 	void GameStage::CreatePose() {
@@ -73,6 +75,7 @@ namespace basecross {
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
+
 		//やめる
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
@@ -84,6 +87,7 @@ namespace basecross {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
+
 		//サウンド
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
@@ -97,6 +101,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
+
 	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {

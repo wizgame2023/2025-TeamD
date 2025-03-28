@@ -11,6 +11,7 @@ namespace basecross {
 	class Tube;
 	class ForecastLine;
 	class HPBar;
+	class RootPointer;
 	class Mob : public Enemy
 	{
 	public:
@@ -24,6 +25,9 @@ namespace basecross {
 
 		shared_ptr<SharpFan> m_SearchFan;
 		shared_ptr<HPBar> m_HpBar;
+		shared_ptr<GameObject> m_NearPoint;
+		vector<shared_ptr <GameObject>> m_PointData;
+
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -34,9 +38,20 @@ namespace basecross {
 
 		virtual void Dead()override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
-
+		Vec3 RootNaviGate();
 		shared_ptr<Stage> GetStage();
 		shared_ptr<Transform> GetTransfrom();
+		float GetZoomTime() {
+			return m_ZoneElapsedTime;
+		}
+		shared_ptr<GameObject> GetNearPoint()
+		{
+			return m_NearPoint;
+		}
+		vector<shared_ptr <GameObject>> GetPointData()
+		{
+			return m_PointData;
+		}
 		template <class NextState>
 		void ChangeState() {
 			m_currentState->Exit();

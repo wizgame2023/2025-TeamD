@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief 謨ｵ縺ｪ縺ｩ螳滉ｽ
+@brief
 */
 
 #include "stdafx.h"
@@ -18,14 +18,17 @@ namespace basecross {
 		Character::OnCreate();
 		m_HP = 3;
 
+
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
+
 		//描画設定
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
 
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"MOB");
@@ -43,13 +46,16 @@ namespace basecross {
 		//ptrDraw->SetOwnShadowActive(true);
 
 
-		//重力設定
+
 		auto ptrGra = AddComponent<Gravity>();
 
 
-		//シャドウマップの設定
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//メッシュ設定
+
+		auto ptrGra = AddComponent<Gravity>();
+
+		auto shadowPtr = AddComponent<Shadowmap>();
+
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -170,7 +176,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //邱壹ｒ謠冗判縺吶ｋ繧ｪ繝悶ず繧ｧ繧ｯ繝
+	//	class LineObject : public GameObject; 
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -195,22 +201,23 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//ポジション設定
+
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//インデックス
+
 		m_Indices = {
 			0,1
 		};
 
-		//描画
-		m_Draw = AddComponent<PCStaticDraw>(); //ドローを呼び出す
-		m_Draw->SetOriginalMeshUse(true); //メッシュがほしいかどうか？
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //メッシュの場所
-		auto meshResoure = m_Draw->GetMeshResource(); //アロー演算子に入れる
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //
+
+		m_Draw = AddComponent<PCStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_Draw->GetMeshResource(); 
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); 
+
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -235,7 +242,7 @@ namespace basecross {
 		}
 	}
 
-	//ラインのアップデート
+
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -244,7 +251,6 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//ラインのポジション
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -254,7 +260,7 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//ラインカラー
+
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;
