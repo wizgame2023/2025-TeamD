@@ -35,23 +35,8 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 
-		app->RegisterTexture(L"POSE_TITLE",uiPath +  L"BackToTitle.png");
-		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
-		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
-		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
-		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
-		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
-		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
-		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
-		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
-
-		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
-
-		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
-		app->RegisterResource(L"PLAYER", modelMesh);
+		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"EnemyHp.png");
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -193,6 +178,7 @@ namespace basecross {
 	}
 	void GameStageM::OnCreate() {
 		try {
+			CreateResource();
 			GameStage::OnCreate();
 		}
 		catch (...) {
