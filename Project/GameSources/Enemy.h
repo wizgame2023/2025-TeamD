@@ -43,6 +43,8 @@ namespace basecross {
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
 
+		void KnockBackTime(shared_ptr<GameObject>& other);
+
 		shared_ptr<ForecastLine> m_Line;
 	private:
 

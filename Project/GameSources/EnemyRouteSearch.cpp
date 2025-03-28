@@ -45,31 +45,33 @@ namespace basecross {
         if (m_DireChange)
         {
             m_Dire = std::abs(Position.x - m_TargetPosition.x) > std::abs(Position.y - m_TargetPosition.y) ? Dire::X : Dire::Z;
-
-            if (m_Dire == Dire::X)
+            if ((Position - m_TargetPosition).length() >= 0.5f)
             {
-                if (m_TargetPosition.x < Position.x)
+                if (m_Dire == Dire::X)
                 {
-                    return Vec3(-1, 0, 0);
+                    if (m_TargetPosition.x < Position.x)
+                    {
+                        return Vec3(-1, 0, 0);
+                    }
+                    else if (m_TargetPosition.x > Position.x)
+                    {
+                        return Vec3(1, 0, 0);
+                    }
                 }
-                else if (m_TargetPosition.x > Position.x)
+                else if (m_Dire == Dire::Z)
                 {
-                    return Vec3(1, 0, 0);
-                }
-            }
-            else if (m_Dire == Dire::Z)
-            {
-                if (m_TargetPosition.z < Position.z)
-                {
-                    return Vec3(0, 0, -1);
-                }
-                else if (m_TargetPosition.z > Position.z)
-                {
-                    return Vec3(0, 0, 1);
+                    if (m_TargetPosition.z < Position.z)
+                    {
+                        return Vec3(0, 0, -1);
+                    }
+                    else if (m_TargetPosition.z > Position.z)
+                    {
+                        return Vec3(0, 0, 1);
+                    }
                 }
             }
         }
-        if ((Position - m_TargetPosition).length() < 3.0f)
+        if ((Position - m_TargetPosition).length() < 0.5f)
         {
             m_Index = m_TargetPosition;
             m_DireChange = false;

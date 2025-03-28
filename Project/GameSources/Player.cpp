@@ -18,7 +18,8 @@ namespace basecross {
 		m_ParryTime(30.0f),
 		m_ParryJudge(false),
 		m_BoostTime(1.0f),
-		m_BulletDire(Vec3(0))
+		m_BulletDire(Vec3(0)),
+		m_Attacktime(1.0f)
 	{
 	}
 	Player::~Player()
@@ -81,7 +82,7 @@ namespace basecross {
 		if (angle.length() > 0.0f) {
 			//auto utilPtr = GetBehavior<UtilBehavior>();
 			//utilPtr->RotToHead(angle, 1.0f);
-			SetRotation(Vec3( 0,XMConvertToDegrees(rot),0));
+			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
 			m_BulletDire = GetForward();
 
 		}
@@ -89,11 +90,14 @@ namespace basecross {
 
 	void Player::BoostMove(const float Speed, const Vec3 Angle) {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_TotalTime += elapsedTime;
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
-			pos += Angle * elapsedTime * Speed;
-			SetPosition(pos);
+			pos += Angle * Speed;
+			auto boost = Lerp::CalculateLerp(GetPosition(), pos, 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
+			SetPosition(boost);
 		}
+		m_TotalTime = 0;
 	}
 
 	void Player::ZoneActivation()
@@ -143,7 +147,7 @@ namespace basecross {
 				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					float rotate = atan2f(rot.x, rot.z) ;
+					float rotate = atan2f(rot.x, rot.z);
 					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
 				}
 			}
@@ -252,14 +256,14 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");
-		
+
 		//auto ptrDraw = AddComponent<PNTBoneModelDraw>();
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
 		//	Vec3(.4f, .4f, .4f), //(.1f, .1f, .1f),
-		//	Vec3(0.0f, 0.0f, 0.0f),
+		//	Vec3(0.0f, 90.0f, 0.0f),
 		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, -XM_PIDIV2, 0.0f)
+		//	Vec3(0.0f, 0, 0.0f)
 		//);
 
 		//ptrDraw->SetMeshResource(L"PLAYER");
@@ -290,17 +294,6 @@ namespace basecross {
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		ZoneActivation();
 		Debug();
-
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			m_ParryJudge = true;
-			SearchRange();
-			m_Position = GetPosition();
-			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
-			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
-		}
-
 		if (m_ParryJudge == true)
 		{
 			m_ParryTime--;
@@ -311,7 +304,7 @@ namespace basecross {
 		}
 		float rot;
 
-		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
+		if ((m_PlayerStateNum & PlayerState::DASH) != 0 )
 		{
 			m_BoostTime -= elapsedTime;
 			if (m_BoostTime >= 0.0f)
@@ -323,14 +316,43 @@ namespace basecross {
 				m_PlayerStateNum -= PlayerState::DASH;
 			}
 		}
+		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
+		{
+			m_Attacktime -= elapsedTime;
+			if (m_Attacktime >= 0.0f)
+			{
+				Vec3 forward = GetForward();
+				BoostMove(3.0f, forward);
+			}
+			else {
+				m_PlayerStateNum -= PlayerState::ATTACK;
+				m_PlayerStateNum += PlayerState::NORMAL;
+			}
+
+		}
 		else {
 			m_BoostTime = 0.2f;
+			m_Attacktime = 0.2f;
+
 			MovePlayer(6.0f);
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
 				m_BoostAngle = GetForward();;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 				m_PlayerStateNum += PlayerState::DASH;
+			}
+
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+			{
+				m_ParryJudge = true;
+				SearchRange();
+				m_Position = GetPosition();
+				Vec3 forward = GetForward();
+				BoostMove(15.0f, forward);
+				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.1f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
+
+				m_PlayerStateNum += PlayerState::ATTACK;
+				m_PlayerStateNum -= PlayerState::NORMAL;
 			}
 		}
 
