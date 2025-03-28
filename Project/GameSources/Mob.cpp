@@ -34,7 +34,23 @@ namespace basecross {
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
 		auto navi = AddComponent<Navigate>();
-		navi->SetTargetPosition(GetPosition());
+
+		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
+		auto pointers = pointerGroup->GetGroupVector();
+		for (auto& point : pointers)
+		{
+			auto shObj = point.lock();
+			Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
+			m_PointData.push_back(shObj);
+			if (m_NearPoint == nullptr)
+			{
+				m_NearPoint = shObj;
+			}
+			Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
+		}
+		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
+
+		navi->SetTargetPosition(GetPosition(), pos);
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(),Vec3(0,1,0));
@@ -71,7 +87,6 @@ namespace basecross {
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = m_Transform->GetPosition();
-		auto navi = GetComponent<Navigate>();
 
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
@@ -90,6 +105,7 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
+		auto navi = GetComponent<Navigate>();
 
 				Vec3 halfPos = navi->GetAStarForword(currntPosition);
 				if (halfPos != Vec3(0))
@@ -98,7 +114,8 @@ namespace basecross {
 					SetPosition(currntPosition);
 				}
 				else {
-					navi->SetTargetPosition(GetPosition());
+					Vec3 pos = RootNaviGate();
+					navi->SetTargetPosition(GetPosition(), pos);
 				}
 			}
 		}
@@ -112,6 +129,38 @@ namespace basecross {
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		Enemy::OnCollisionEnter(other);
+	}
+
+	Vec3 Mob::RootNaviGate()
+	{
+		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
+		auto pointers = pointerGroup->GetGroupVector();
+		for (auto& point : pointers)
+		{
+			auto shObj = point.lock();
+			Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
+			auto shPtr = dynamic_pointer_cast<RootPointer>(m_NearPoint);
+			wstring number = shPtr->GetPointerNumber();
+			if (number == L"0_")
+			{
+				m_NearPoint = m_PointData[2];
+				break;
+			}
+			else if (number == L"1_") {
+				m_NearPoint = m_PointData[3];
+				break;
+			}
+			else if (number == L"2_") {
+				m_NearPoint = m_PointData[0];
+				break;
+			}
+			else if (number == L"3_") {
+				m_NearPoint = m_PointData[1];
+				break;
+			}
+		}
+		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
+		return pos;
 	}
 
 	shared_ptr<Stage> Mob::GetStage()
