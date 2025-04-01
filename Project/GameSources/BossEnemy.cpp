@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale)
+		Enemy(stage, position, scale),m_IsAppearance(false),m_ConditionTime(0.0f),m_ConditionDefeat(100)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -43,8 +43,23 @@ namespace basecross {
 	}
 	void BossEnemy::OnUpdate()
 	{
-		//m_Position = m_Transform->GetPosition();
-		Enemy::OnUpdate();
+		SetDrawActive(m_IsAppearance);
+		float elapsed = App::GetApp()->GetElapsedTime();
+		if (!m_IsAppearance) {
+			m_ConditionTime -= elapsed;
+			if (m_ConditionTime < 0) {
+				m_ConditionTime = 0;
+				m_IsAppearance = true;
+			}
+
+			int defeatCount = m_Stage->GetDefeatEnemyCount();
+			if (defeatCount < m_ConditionDefeat) {
+				m_IsAppearance = true;
+			}
+		}
+		else {
+			Enemy::OnUpdate();
+		}
 	}
 	void BossEnemy::Dead()
 	{
