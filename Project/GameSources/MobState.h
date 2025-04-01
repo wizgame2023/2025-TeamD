@@ -46,7 +46,7 @@ namespace basecross {
 	class MobAlert : public EnemyState
 	{
 		bool m_IntruderAlert;
-		
+
 	public:
 		MobAlert(shared_ptr<Enemy>& enemy) :
 			EnemyState(enemy)
@@ -58,5 +58,38 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
+
+	class BossSearch : public EnemyState
+	{
+		bool m_IntruderAlert;
+
+	public:
+		BossSearch(shared_ptr<Enemy>& enemy) :
+			EnemyState(enemy)
+		{
+		}
+
+	private:
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
+	};
+	class BossAttack : public EnemyState
+	{
+		bool m_IntruderAlert;
+
+	public:
+		BossAttack(shared_ptr<Enemy>& enemy) :
+			EnemyState(enemy)
+		{
+		}
+
+	private:
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
+	};
+
+
 }
 //end basecross

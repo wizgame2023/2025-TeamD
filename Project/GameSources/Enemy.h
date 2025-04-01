@@ -15,13 +15,13 @@ namespace basecross {
 	{
 	protected:
 		
-		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
 
 		unique_ptr<EnemyState> m_currentState;  //現在のステート
 		unique_ptr<EnemyState> m_nextState;     //次のステート
 
-	public:
+	public:	
+		float m_ZoneElapsedTime;
 		shared_ptr<Character> m_Intruder;
 
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
