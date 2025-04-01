@@ -456,7 +456,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();

@@ -14,7 +14,8 @@ namespace basecross {
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
 		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
-		m_KnockBackInterval(2.0f)
+		m_KnockBackInterval(2.0f),
+		m_NearPoint(nullptr)
 	{
 	}
 
@@ -39,6 +40,7 @@ namespace basecross {
 
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
+		Vec3 pos;
 		for (auto& point : pointers)
 		{
 			auto shObj = point.lock();
@@ -54,7 +56,7 @@ namespace basecross {
 				m_NearPoint = shObj;
 			}
 		}
-		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
+		pos =  m_NearPoint->GetComponent<Transform>()->GetPosition();
 
 		navi->SetTargetPosition(GetPosition(), pos);
 
