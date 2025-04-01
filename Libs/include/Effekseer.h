@@ -640,7 +640,7 @@ public:
 
 	RefPtr<T>& operator=(const RefPtr<T>& o)
 	{
-		SafeAddRef(o.ptr_);
+		SafeAddRef(o.ptr_);	
 		SafeRelease(ptr_);
 		ptr_ = o.ptr_;
 		return *this;
