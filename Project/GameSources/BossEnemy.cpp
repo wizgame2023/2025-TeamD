@@ -37,13 +37,10 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
-		//auto bossEnemyLegLeft = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), 1.0f);
-		//auto bossEnemyLegRight = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), -1.0f);
 
 	}
 	void BossEnemy::OnUpdate()
 	{
-		//m_Position = m_Transform->GetPosition();
 		Enemy::OnUpdate();
 	}
 	void BossEnemy::Dead()

@@ -46,6 +46,15 @@ namespace basecross {
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
 		shared_ptr<ForecastLine> m_Line;
+
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<Enemy>());
+			m_currentState->Enter();
+		}
+
 	private:
 
 	};

@@ -20,7 +20,7 @@ namespace basecross {
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
-		m_DamageInterval(3.0f)
+		m_DamageInterval(0.5f)
 	{
 	}
 	Player::~Player()

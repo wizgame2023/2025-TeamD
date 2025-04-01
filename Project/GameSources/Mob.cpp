@@ -29,7 +29,7 @@ namespace basecross {
 		}
 		auto draw = GetComponent<BcPNTStaticDraw>();
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
-		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
+		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
 
 		////ƒfƒoƒbƒN—p
