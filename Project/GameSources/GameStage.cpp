@@ -18,11 +18,9 @@ namespace basecross {
 
 		//ビューのカメラの設定
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -57,25 +55,24 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
 		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
+		
 	}
-
 	/// </summary>
 	/// ポーズメニューの作成
-	/// </summary>
+	/// <summary>
 	void GameStage::CreatePose() {
 		//タイトル
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-
 		//やめる
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
@@ -87,8 +84,7 @@ namespace basecross {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
-
-		//サウンド
+		//サウンドテスト
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -101,7 +97,6 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-
 	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
@@ -150,9 +145,9 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(L"POSE");
 	}
 	/// <summary>
-	/// プレイヤー作成
+	/// オブジェクトの描画をONOFF
 	/// </summary>
-	/// <param name="flag">陦ｨ遉ｺONOFF</param>
+	/// <param name="flag">描画ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {

@@ -34,6 +34,7 @@ namespace basecross {
 		////ƒfƒoƒbƒN—p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
+    
 		auto navi = AddComponent<Navigate>();
 
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
@@ -56,6 +57,7 @@ namespace basecross {
 		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
 
 		navi->SetTargetPosition(GetPosition(), pos);
+
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, 1, 0));
@@ -136,12 +138,14 @@ namespace basecross {
 				if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 0, 0));
 				if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 180, 0));
 
+
 				if (halfPos != Vec3(0))
 				{
 					currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
 					SetPosition(currntPosition);
 				}
 				else {
+
 					Vec3 before = m_NearPoint->GetComponent<Transform>()->GetPosition();
 					SetPosition(before);
 					Vec3 pos = RootNaviGate();
