@@ -9,7 +9,7 @@
 
 namespace basecross {
 	void Object::OnCreate() {
-		m_Stage = GetStage();
+		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
 		SetPosition(Vec3(0, 1, 0));
@@ -53,6 +53,14 @@ namespace basecross {
 
 			if (objInfo[GetInfoIndex(L"tag")] == L"Enemy") {
 				enemyCount++;
+				int timeIndex = GetInfoIndex(L"time");
+				int defeatIndex = GetInfoIndex(L"defeat");
+				if (timeIndex != -1 && defeatIndex != -1) {
+					auto boss = static_pointer_cast<BossEnemy>(obj);
+					if (!boss) {
+						boss->SetCondition(/*WstrToFlt(objInfo[timeIndex])*/0, WstrToFlt(objInfo[defeatIndex]));
+					}
+				}
 			}
 		}
 		m_Builders.clear();

@@ -37,7 +37,7 @@ namespace basecross{
 		Vec3 m_Rotation;
 
 		shared_ptr<Transform> m_Transform;
-		shared_ptr<Stage> m_Stage;
+		shared_ptr<GameStage> m_Stage;
 
 		bool m_IsEndAsyncUpdate;
 
