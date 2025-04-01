@@ -154,8 +154,8 @@ namespace basecross {
 		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		builder->Register<Mob>(L"mob");
 		builder->Register<RootPointer>(L"pointer");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
