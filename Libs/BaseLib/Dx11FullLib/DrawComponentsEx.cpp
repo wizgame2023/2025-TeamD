@@ -741,7 +741,16 @@ namespace basecross {
 			v *= WorldMat;
 		}
 	}
+	/*float GetDistancePointToLine(const Vec3& point, const Vec3& start, const Vec3& end) {
+		Vec3 ab = { end.x - start.x, end.y - start.y, end.z - start.z };
+		Vec3 ap = { point.x - start.x, point.y - start.y, point.z - start.z };
+		float ab_ap = ab.x * ap.x + ab.y * ap.y + ab.z * ap.z;
+		float ab_ab = ab.x * ab.x + ab.y * ab.y + ab.z * ab.z;
+		float t = max(0.0, min(1.0, ab_ap / ab_ab));
 
+		Vec3 closest = { start.x + t * ab.x, start.y + t * ab.y, start.z + t * ab.z };
+		return (point - closest).length();
+	}*/
 	bool BcBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_BcDrawObject.m_TempPositions);
@@ -754,6 +763,13 @@ namespace basecross {
 				//ŽOŠpŒ`‚ª–³Œø‚È‚çŽŸ‚É‚¤‚Â‚é
 				continue;
 			}
+			/*if (pImpl->m_BcDrawObject.m_TempPositions.size() > 5000) {
+				if (GetDistancePointToLine(tri.m_A, StartPos, EndPos) > 0.1f &&
+					GetDistancePointToLine(tri.m_B, StartPos, EndPos) > 0.1f &&
+					GetDistancePointToLine(tri.m_C, StartPos, EndPos) > 0.1f) {
+					continue;
+				}
+			}*/
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
