@@ -44,9 +44,7 @@ namespace basecross {
 		//ptrDraw->SetOwnShadowActive(true);
 
 		auto ptrGra = AddComponent<Gravity>();
-
 		auto shadowPtr = AddComponent<Shadowmap>();
-
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -216,8 +214,8 @@ namespace basecross {
 		m_Draw = AddComponent<PCStaticDraw>();
 		m_Draw->SetOriginalMeshUse(true);
 		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
-		auto meshResoure = m_Draw->GetMeshResource(); 
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); 
+		auto meshResoure = m_Draw->GetMeshResource();
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 	}
 	void LineObject::OnUpdate() {

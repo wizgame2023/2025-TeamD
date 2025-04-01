@@ -11,7 +11,7 @@ namespace basecross {
 	bool CameraCollision::m_Hit = false;
 
 	CameraCollision::CameraCollision(const shared_ptr<Stage>& StagePtr)
-		:GameObject(StagePtr), m_GetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_TargetPosition(Vec3(0.0f, 0.0f, 0.0f)) {
+		:GameObject(StagePtr), m_GetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_TargetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_CameraPos(Vec3(0.0f, 0.0f, 0.0f)) {
 	}
 
 	void CameraCollision::OnCreate() {
@@ -65,14 +65,28 @@ namespace basecross {
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Max.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
 
-			return m_GetPosition;
+			if (m_CameraPos == Vec3(0.0f)) {
+				m_CameraPos = m_GetPosition;
+			}
+			if ((m_CameraPos - m_GetPosition).length() < 12.5f)
+			{
+				m_CameraPos = m_GetPosition;
+				return m_GetPosition;
+			}
+			else{ 
+				return m_CameraPos; 
+			}
+
+			return m_CameraPos;
 		}
+
 	}
 
 	Vec3 CameraCollision::GetCompareVertex(Vec2 verx, Vec2 very) {
 		float m_Side, m_Beside;
 		Vec2 target = Vec2(m_TargetPosition.x, m_TargetPosition.z);
 		Vec2 get = Vec2(m_GetPosition.x, m_GetPosition.z);
+		Vec2 afterget = Vec2(0.0f,0.0f);
 		float dar = Cross(very - verx, target - get);
 		if (dar == 0.0f) return m_GetPosition;
 		m_Side = Cross(get - verx, target - get) / dar;

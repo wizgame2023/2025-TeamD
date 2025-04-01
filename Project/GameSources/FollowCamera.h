@@ -12,7 +12,8 @@ namespace basecross {
 	{
 		Vec3 m_GetPosition;
 		Vec3 m_TargetPosition;
-
+		Vec3 m_CameraPos;
+		
 		static bool m_Hit;
 		bool m_Point;
 

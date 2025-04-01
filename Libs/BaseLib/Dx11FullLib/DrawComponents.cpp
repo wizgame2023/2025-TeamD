@@ -1809,7 +1809,7 @@ namespace basecross {
 			v *= WorldMat;
 		}
 	}
-
+	
 	bool SmBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_SmDrawObject.m_TempPositions);
@@ -1822,6 +1822,7 @@ namespace basecross {
 				//ŽOŠpŒ`‚ª–³Œø‚È‚çŽŸ‚É‚¤‚Â‚é
 				continue;
 			}
+			
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
