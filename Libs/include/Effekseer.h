@@ -4465,9 +4465,9 @@ public:
 		\~English	A time to play from middle
 		\~Japanese	途中から再生するための時間
 	*/
-	virtual Handle Play(const EffectRef& effect, const Vector3D& position, int32_t startFrame = 0) = 0;
-
+	virtual Handle Play(const EffectRef& effect, const Vector3D& position, int32_t startFrame) = 0;
 	/**
+
 		@brief
 		\~English	Get a camera's culling mask to show all effects
 		\~Japanese	全てのエフェクトを表示するためのカメラのカリングマスクを取得する。
