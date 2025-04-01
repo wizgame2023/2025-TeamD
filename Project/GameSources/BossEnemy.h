@@ -10,6 +10,9 @@ namespace basecross {
 	class Enemy;
 	class BossEnemy : public Enemy
 	{
+		bool m_IsAppearance;
+		float m_ConditionTime;
+		int m_ConditionDefeat;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -19,6 +22,11 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void Dead();
 
+		void SetCondition(float time, int defeatCount) {
+			m_IsAppearance = false;
+			m_ConditionDefeat = defeatCount;
+			m_ConditionTime = time;
+		}
 		Vec3 GetPosition();
 
 	};
