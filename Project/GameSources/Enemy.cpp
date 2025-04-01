@@ -17,8 +17,7 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		m_HP = 3;
-
-
+    
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
@@ -28,7 +27,6 @@ namespace basecross {
 		//描画設定
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
 
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"MOB");
@@ -45,7 +43,6 @@ namespace basecross {
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		//ptrDraw->SetOwnShadowActive(true);
 
-
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
@@ -55,13 +52,12 @@ namespace basecross {
 
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
-		auto navi = AddComponent<Navigate>();
+		//auto navi = AddComponent<Navigate>();
 	}
 
 	void Enemy::OnUpdate()
 	{
 		ZoneSpeedSet();
-
 		if (m_HP <= 0)
 		{
 			Dead();
@@ -150,6 +146,17 @@ namespace basecross {
 		return m_IntruderAlert;
 	}
 
+	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 pos = GetPosition();
+		Vec3 vec = hitPos - pos;
+		vec.normalize();
+		pos += -vec * 10.0f * elapsedTime;
+		SetPosition(pos);
+	}
+
 	void Enemy::Dead() {
 		m_Line->Destroy();
 
@@ -164,6 +171,7 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			m_HP -= 1;
+			KnockBackTime(other);
 		}
 	}
 
@@ -203,7 +211,6 @@ namespace basecross {
 			0,1
 		};
 
-
 		m_Draw = AddComponent<PCStaticDraw>();
 		m_Draw->SetOriginalMeshUse(true);
 		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
@@ -234,7 +241,6 @@ namespace basecross {
 		}
 	}
 
-
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -251,7 +257,6 @@ namespace basecross {
 
 		VerticesUpdate();
 	}
-
 
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;

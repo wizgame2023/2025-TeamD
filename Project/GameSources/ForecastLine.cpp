@@ -74,7 +74,7 @@ namespace basecross {
 			if (obj == launcher) continue;
 			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
 			if (!CheckDistanceToObject(objPosition)) continue;
-			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags,true);
+			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags, true);
 		}
 
 		if (hit.m_Object != nullptr) {
@@ -148,7 +148,7 @@ namespace basecross {
 	/// <param name="object">調べるオブジェクト</param>
 	/// <param name="excludeTags">除外するタグ</param>
 	/// <returns>当たったか</returns>
-	bool RayCast::HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags,const bool& isDebug) {
+	bool RayCast::HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags, const bool& isDebug) {
 		RayCastHit newResult = RayCastHit();
 		if (object == nullptr) return false;
 		bool isExclude = false;
@@ -176,7 +176,7 @@ namespace basecross {
 				hit = newResult;
 			}
 			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
-				
+
 				hit.m_Object = object;
 				hit = newResult;
 			}
