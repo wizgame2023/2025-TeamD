@@ -5,10 +5,13 @@
 
 #pragma once
 #include "stdafx.h"
+
 namespace basecross {
 	struct Line {
 		Vec3 m_Start;
 		Vec3 m_End;
+
+		Line(Vec3 start, Vec3 end) : m_Start(start), m_End(end) {}
 	};
 	struct RayCastHit {
 		shared_ptr<GameObject> m_Object;
