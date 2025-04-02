@@ -190,11 +190,11 @@ namespace basecross {
 			m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
-			m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-		}		
+		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		//{
+		//	m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+		//	m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		//}		
 		GameStage::OnUpdate();
 
 	}
