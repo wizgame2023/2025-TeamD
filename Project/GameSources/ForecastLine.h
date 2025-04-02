@@ -25,9 +25,6 @@ namespace basecross {
 		shared_ptr<LineCube> m_Forecast;
 		weak_ptr<Bullet> m_Bullet;
 		weak_ptr<GameObject> m_NearestHitObject;
-		//CRITICAL_SECTION m_CriticalSection;
-		//HANDLE m_hThread;
-
 
 		Vec3 m_Direction;
 		Vec3 m_StartPosition;
