@@ -55,7 +55,7 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
@@ -218,9 +218,6 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				OpenPose();
 			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-
-			}
 		}
 
 		SetAllGameObjectActive(!m_IsPose);
@@ -231,6 +228,20 @@ namespace basecross {
 
 	void GameStage::OnDestroy() {
 		SoundManager::Instance().StopAll();
+	}
+
+	void GameStage::OnEvent(const shared_ptr<Event>& event) {
+		auto& msg = event->m_MsgStr;
+
+		if (msg == L"DefeatBoss") {
+			GameClear();
+		}
+		else if (msg == L"AppaerBoss") {
+			
+		}
+		else if (msg == L"DeadPlayer") {
+			GameOver();
+		}
 	}
 }
 //end basecross

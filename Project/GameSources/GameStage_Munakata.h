@@ -15,6 +15,8 @@ namespace basecross {
 	class GameStageM : public GameStage {
 		shared_ptr<Sprite> m_PlayerHpBar;
 		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+		shared_ptr<Sprite> m_PlayerEnergyBar;
+		shared_ptr<Sprite> m_PlayerEnergyBarBackGround;
 
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
