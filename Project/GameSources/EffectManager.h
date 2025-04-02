@@ -24,14 +24,16 @@ namespace basecross {
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
 	class EfkEffect : public ObjectInterface, public ShapeInterface {
-	public:	
 		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
 		Effekseer::Handle m_handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
+		float m_TotalTime;
 
 
 		Effekseer::EffectRef m_Effect;
+	public:	
+
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	コンスラトクタ

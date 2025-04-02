@@ -49,7 +49,8 @@ namespace basecross {
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
-		app->RegisterTexture(L"HP_BAR", uiPath + L"EnemyHp.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
@@ -229,6 +230,10 @@ namespace basecross {
 
 
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
+	}
+
+	void GameStage::OnDraw()
+	{
 	}
 
 	void GameStage::OnDestroy() {

@@ -8,7 +8,6 @@
 #include "EffectManager.h"
 
 namespace basecross {
-
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
@@ -32,8 +31,12 @@ namespace basecross {
 
 	void EfkEffect::OnUpdate()
 	{
+		auto elps = App::GetApp()->GetElapsedTime();
+		m_TotalTime += elps;
+
 		// エフェクトの更新処理を行う
 		m_Manager->Update();
+		m_renderer->SetTime(elps);
 
 	}
 
@@ -76,14 +79,14 @@ namespace basecross {
 
 	void EfkEffect::CreateEffectInterface()
 	{
-		
+
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();
 		// 描画用インスタンスの生成
-		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 2000);
+		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 8000);
 		// エフェクト管理用インスタンスの生成
-		m_Manager = Effekseer::Manager::Create(2000);
+		m_Manager = Effekseer::Manager::Create(8000);
 
 		// 描画用インスタンスから描画機能を設定
 		m_Manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
@@ -96,6 +99,8 @@ namespace basecross {
 		// 独自拡張可能、現在はファイルから読み込んでいる。
 		m_Manager->SetTextureLoader(m_renderer->CreateTextureLoader());
 		m_Manager->SetModelLoader(m_renderer->CreateModelLoader());
+		m_Manager->SetMaterialLoader(m_renderer->CreateMaterialLoader());
+		m_Manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
 	}
 
 	void EfkEffect::RegisterResource(const wstring& Key, const  wstring& FileName)
@@ -108,10 +113,10 @@ namespace basecross {
 					L"Effect::RegisterResource()"
 				);
 			}
-			m_Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
+			auto Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
 			map<wstring, Effekseer::EffectRef>::iterator it;
 			for (it = m_ResMap.begin(); it != m_ResMap.end(); it++) {
-				if (it->second == m_Effect)
+				if (it->second == Effect)
 				{
 					if (it->first == Key)
 					{
@@ -139,7 +144,7 @@ namespace basecross {
 				);
 			}
 			else {
-				m_ResMap[Key] = m_Effect;
+				m_ResMap[Key] = Effect;
 
 			}
 		}
