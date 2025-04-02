@@ -20,7 +20,7 @@ namespace basecross {
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
-		m_DamageInterval(3.0f)
+		m_DamageInterval(0.5f)
 	{
 	}
 	Player::~Player()
@@ -451,7 +451,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->SetAfterCollision(AfterCollision::Auto);
+		ptrColl->SetAfterCollision(AfterCollision::None);
 
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();

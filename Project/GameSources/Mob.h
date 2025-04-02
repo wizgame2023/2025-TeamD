@@ -55,13 +55,6 @@ namespace basecross {
 		{
 			return m_PointData;
 		}
-		template <class NextState>
-		void ChangeState() {
-			m_currentState->Exit();
-			m_currentState.reset();
-			m_currentState = make_unique<NextState>(GetThis<Mob>());
-			m_currentState->Enter();
-		}
 	private:
 
 	};

@@ -14,7 +14,8 @@ namespace basecross {
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
 		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
-		m_KnockBackInterval(2.0f)
+		m_KnockBackInterval(2.0f),
+		m_NearPoint(nullptr)
 	{
 	}
 
@@ -28,7 +29,7 @@ namespace basecross {
 		}
 		auto draw = GetComponent<BcPNTStaticDraw>();
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
-		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
+		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
 
 		////ƒfƒoƒbƒN—p
@@ -37,6 +38,7 @@ namespace basecross {
 
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
+
 		if (pointers.size() != 0) {
 			auto navi = AddComponent<Navigate>();
 
@@ -55,8 +57,8 @@ namespace basecross {
 					m_NearPoint = shObj;
 				}
 			}
-			Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
 
+			Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
 			navi->SetTargetPosition(GetPosition(), pos);
 		}
 
