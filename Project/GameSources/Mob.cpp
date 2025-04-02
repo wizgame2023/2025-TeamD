@@ -79,11 +79,7 @@ namespace basecross {
 		/*if (m_IsEndAsyncUpdate) {
 			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 			updateThread.detach();
-<<<<<<< Updated upstream
 		}*/
-=======
-		}
->>>>>>> Stashed changes
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (m_IntervalStart == true)
 		{
@@ -116,19 +112,11 @@ namespace basecross {
 	}
 	void Mob::AsyncUpdate()
 	{
-		m_Mutex.lock();
 		StartAsync();
-<<<<<<< Updated upstream
-
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = m_Transform->GetPosition();
 
-=======
-		m_Mutex.unlock();
-
-		Enemy::AsyncUpdate();
->>>>>>> Stashed changes
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
@@ -170,13 +158,7 @@ namespace basecross {
 				}
 			}
 		}
-<<<<<<< Updated upstream
-=======
-
-		m_Mutex.lock();
->>>>>>> Stashed changes
 		EndAsync();
-		m_Mutex.unlock();
 	}
 	void Mob::Dead() {
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);

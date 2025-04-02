@@ -99,14 +99,7 @@ namespace basecross {
 	{
 		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
-<<<<<<< Updated upstream
 
-=======
-		if (GetDistanceToIntruder() < searchDistance) {
-			
-		}
-		m_Line->CheckRayCast(Vec3());
->>>>>>> Stashed changes
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
