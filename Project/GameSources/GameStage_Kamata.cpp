@@ -35,6 +35,7 @@ namespace basecross {
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -116,6 +117,10 @@ namespace basecross {
 
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
+	void GameStageK::OnPushA()
+	{
+		m_Effect->PlayEffect(L"Test", Vec3(0), 0);
+	}
 	/// <summary>
 	/// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
 	/// </summary>
@@ -154,8 +159,8 @@ namespace basecross {
 		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		builder->Register<Mob>(L"mob");
 		builder->Register<RootPointer>(L"pointer");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
@@ -168,6 +173,11 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
+			auto mediaPath = App::GetApp()->GetDataDirWString();
+			wstring effectPath = mediaPath + L"Effekt/";
+			m_Effect = ObjectFactory::Create<EfkEffect>();
+			m_Effect->CreateEffectInterface();
+			m_Effect->RegisterResource(L"Test", effectPath + L"flash.efk");
 			GameStage::OnCreate();
 		}
 		catch (...) {
@@ -177,6 +187,8 @@ namespace basecross {
 
 	void GameStageK::OnUpdate() {
 		auto& app = App::GetApp();
+		auto& camera = GetView()->GetTargetCamera();
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();

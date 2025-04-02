@@ -7,12 +7,12 @@
 #include "Project.h"
 
 
-namespace basecross{
+namespace basecross {
 	void Object::OnCreate() {
-		m_Stage = GetStage();
+		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
-		SetPosition(Vec3(0,1,0));
+		SetPosition(Vec3(0, 1, 0));
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);
 
@@ -41,7 +41,7 @@ namespace basecross{
 			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;
 
 			auto obj = CreateObject(objInfo);
-			
+
 			wstring dateType = objInfo[GetInfoIndex(L"type")];
 			if (dateType == L"Pointer") {
 				auto pointer = static_pointer_cast<RootPointer>(obj);
@@ -53,6 +53,14 @@ namespace basecross{
 
 			if (objInfo[GetInfoIndex(L"tag")] == L"Enemy") {
 				enemyCount++;
+				int timeIndex = GetInfoIndex(L"time");
+				int defeatIndex = GetInfoIndex(L"defeat");
+				if (timeIndex != -1 && defeatIndex != -1) {
+					auto boss = static_pointer_cast<BossEnemy>(obj);
+					if (boss) {
+						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), 1/*WstrToFlt(objInfo[defeatIndex])*/);
+					}
+				}
 			}
 		}
 		m_Builders.clear();
@@ -61,7 +69,6 @@ namespace basecross{
 			gameStage->SetMaxEnemyCount(enemyCount);
 		}
 		RegisterRootPoint(rootPointers);
-		
 	}
 	/// <summary>
 	/// オブジェクトの生成
@@ -101,7 +108,7 @@ namespace basecross{
 	}
 
 	int StageBuilder::GetInfoIndex(const wstring& infoName) {
-		
+
 		auto it = find(m_InfoNames.begin(), m_InfoNames.end(), infoName);
 		if (it != m_InfoNames.end()) {
 			int index = distance(m_InfoNames.begin(), it);

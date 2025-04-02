@@ -14,7 +14,8 @@ namespace basecross {
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
 		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
-		m_KnockBackInterval(2.0f)
+		m_KnockBackInterval(2.0f),
+		m_NearPoint(nullptr)
 	{
 	}
 
@@ -28,45 +29,49 @@ namespace basecross {
 		}
 		auto draw = GetComponent<BcPNTStaticDraw>();
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
-		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
+		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
 
 		////ƒfƒoƒbƒN—p
 		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
 		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
-    
-		auto navi = AddComponent<Navigate>();
 
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
-		for (auto& point : pointers)
-		{
-			auto shObj = point.lock();
-			Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
-			m_PointData.push_back(shObj);
-			if (m_NearPoint == nullptr)
-			{
-				m_NearPoint = shObj;
-			}
-			Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
-			if ((vec1 - m_Position).length() < (vec0 - m_Position).length())
-			{
-				m_NearPoint = shObj;
-			}
-		}
-		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
 
-		navi->SetTargetPosition(GetPosition(), pos);
+		if (pointers.size() != 0) {
+			auto navi = AddComponent<Navigate>();
+
+			for (auto& point : pointers)
+			{
+				auto shObj = point.lock();
+				Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
+				m_PointData.push_back(shObj);
+				if (m_NearPoint == nullptr)
+				{
+					m_NearPoint = shObj;
+				}
+				Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
+				if ((vec1 - m_Position).length() < (vec0 - m_Position).length())
+				{
+					m_NearPoint = shObj;
+				}
+			}
+
+			Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
+			navi->SetTargetPosition(GetPosition(), pos);
+		}
 
 		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
-		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, 1, 0));
+		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, GetScale().y / 2.0f, 0));
 		m_HpBar->SetMaxHp(3);
 		m_HpBar->SetCurrentHp(m_HP);
 		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
 	}
 	void Mob::OnUpdate()
 	{
+		//m_HpBar->SetColor(Col4(1, 1, 1, 1));
 		AsyncUpdate();
 		Enemy::OnUpdate();
 		auto draw = GetComponent<BcPNTStaticDraw>();
@@ -108,7 +113,6 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
-
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = m_Transform->GetPosition();
@@ -130,26 +134,27 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
-				auto navi = GetComponent<Navigate>();
+				auto navi = GetComponent<Navigate>(false);
+				if (navi) {
+					Vec3 halfPos = navi->GetAStarForword(currntPosition);
+					if (halfPos == Vec3(1, 0, 0))  SetRotation(Vec3(0, 90, 0));
+					if (halfPos == Vec3(-1, 0, 0)) SetRotation(Vec3(0, 270, 0));
+					if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 0, 0));
+					if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 180, 0));
 
-				Vec3 halfPos = navi->GetAStarForword(currntPosition);
-				if (halfPos == Vec3(1, 0, 0))  SetRotation(Vec3(0, 90, 0));
-				if (halfPos == Vec3(-1, 0, 0)) SetRotation(Vec3(0, 270, 0));
-				if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 0, 0));
-				if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 180, 0));
 
+					if (halfPos != Vec3(0))
+					{
+						currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
+						SetPosition(currntPosition);
+					}
+					else {
 
-				if (halfPos != Vec3(0))
-				{
-					currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
-					SetPosition(currntPosition);
-				}
-				else {
-
-					Vec3 before = m_NearPoint->GetComponent<Transform>()->GetPosition();
-					SetPosition(before);
-					Vec3 pos = RootNaviGate();
-					navi->SetTargetPosition(GetPosition(), pos);
+						Vec3 before = m_NearPoint->GetComponent<Transform>()->GetPosition();
+						SetPosition(before);
+						Vec3 pos = RootNaviGate();
+						navi->SetTargetPosition(GetPosition(), pos);
+					}
 				}
 			}
 		}

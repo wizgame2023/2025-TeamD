@@ -15,13 +15,13 @@ namespace basecross {
 	{
 	protected:
 		
-		float m_ZoneElapsedTime;
 		bool m_IntruderAlert;
 
 		unique_ptr<EnemyState> m_currentState;  //現在のステート
 		unique_ptr<EnemyState> m_nextState;     //次のステート
 
-	public:
+	public:	
+		float m_ZoneElapsedTime;
 		shared_ptr<Character> m_Intruder;
 
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -46,6 +46,15 @@ namespace basecross {
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
 		shared_ptr<ForecastLine> m_Line;
+
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<Enemy>());
+			m_currentState->Enter();
+		}
+
 	private:
 
 	};

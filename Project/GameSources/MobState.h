@@ -12,12 +12,12 @@ namespace basecross {
 
 	class EnemyState {
 	protected:
-		shared_ptr<Mob> m_Enemy;
+		shared_ptr<Enemy> m_Enemy;
 		shared_ptr<Stage> m_Stage;
 		shared_ptr<Transform> m_Transform;
 		shared_ptr<Character> m_Player;
 	public:
-		EnemyState(shared_ptr<Mob>& enemy) :
+		EnemyState(shared_ptr<Enemy>& enemy) :
 			m_Enemy(enemy)
 		{}
 		virtual ~EnemyState() {}
@@ -32,7 +32,7 @@ namespace basecross {
 	{
 		bool m_IntruderAlert;
 	public:
-		MobSearch(shared_ptr<Mob>& enemy) :
+		MobSearch(shared_ptr<Enemy>& enemy) :
 			EnemyState(enemy)
 		{
 		}
@@ -46,9 +46,9 @@ namespace basecross {
 	class MobAlert : public EnemyState
 	{
 		bool m_IntruderAlert;
-		
+
 	public:
-		MobAlert(shared_ptr<Mob>& enemy) :
+		MobAlert(shared_ptr<Enemy>& enemy) :
 			EnemyState(enemy)
 		{
 		}
@@ -58,5 +58,38 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
+
+	class BossSearch : public EnemyState
+	{
+		bool m_IntruderAlert;
+
+	public:
+		BossSearch(shared_ptr<Enemy>& enemy) :
+			EnemyState(enemy)
+		{
+		}
+
+	private:
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
+	};
+	class BossAttack : public EnemyState
+	{
+		bool m_IntruderAlert;
+
+	public:
+		BossAttack(shared_ptr<Enemy>& enemy) :
+			EnemyState(enemy)
+		{
+		}
+
+	private:
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
+	};
+
+
 }
 //end basecross

@@ -5,7 +5,7 @@
 
 #pragma once
 
-
+#include "EffectManager.h"
 #include "ProjectShader.h"
 #include "ProjectBehavior.h"
 #include "Scene.h"
@@ -32,3 +32,4 @@
 #include "Menu.h"
 #include "HPBar.h"
 #include "AttakCollision.h"
+#include "RayCast.h"

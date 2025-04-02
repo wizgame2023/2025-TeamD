@@ -51,6 +51,9 @@ namespace basecross {
 		void EliminateEnemy() {
 			m_EnemyCount--;
 		}
+		int GetDefeatEnemyCount() {
+			return m_MaxEnemyCount - m_EnemyCount;
+		}
 	};
 
 

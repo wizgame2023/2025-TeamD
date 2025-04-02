@@ -1,0 +1,90 @@
+/*!
+@file EffectManager.h
+@brief Effectなど
+*/
+
+#pragma once
+#include "stdafx.h"
+
+#pragma once
+
+#include "stdafx.h"
+
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
+
+#pragma comment(lib, "Effekseer.lib" )
+#pragma comment(lib, "EffekseerRendererDX11.lib" )
+
+
+namespace basecross {
+
+	//--------------------------------------------------------------------------------------
+	///	Effekseerエフェクトのエフェクト
+	//--------------------------------------------------------------------------------------
+	class EfkEffect : public ObjectInterface, public ShapeInterface {
+		wstring m_FileName;
+		wstring m_Key;
+		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
+		Effekseer::Handle m_handle;
+		Effekseer::ManagerRef m_Manager;
+		EffekseerRendererDX11::RendererRef m_renderer;
+
+	public:
+		Effekseer::EffectRef m_Effect;
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	コンスラトクタ
+		@param[in]	iface	インターフェイス
+		@param[in]	filename	エフェクトファイル名
+		*/
+		//--------------------------------------------------------------------------------------
+		EfkEffect();
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	デストラクタ
+		*/
+		//--------------------------------------------------------------------------------------
+		virtual ~EfkEffect();
+
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	初期化
+		@return	なし
+		*/
+		//--------------------------------------------------------------------------------------
+		virtual void OnCreate() override;
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	更新処理
+		@return	なし
+		*/
+		//--------------------------------------------------------------------------------------
+		virtual void OnUpdate()override;
+		//--------------------------------------------------------------------------------------
+		/*!
+		@brief	描画処理。
+		@return	なし
+		*/
+		//--------------------------------------------------------------------------------------
+		virtual void OnDraw()override;
+
+
+		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
+		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
+		void PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);
+		void CreateEffectInterface();
+		void RegisterResource(const wstring& Key, const  wstring& FileName);
+
+		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
+		void AddLocation(const bsm::Vec3& Location);
+		void SetLocation(const bsm::Vec3& Location);
+		void SetRotation(const bsm::Vec3& Rotation, const float angle);
+		void SetScale(const bsm::Vec3& Scale);
+		void SetAllColor(const bsm::Col4 color);
+		void StopEffect();
+
+	};
+}
+//end basecross

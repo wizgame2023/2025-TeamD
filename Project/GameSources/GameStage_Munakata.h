@@ -7,12 +7,15 @@
 #include "stdafx.h"
 
 namespace basecross {
-	class NumberSprite;
+	class Sprite;
 	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStageM : public GameStage {
+		shared_ptr<Sprite> m_PlayerHpBar;
+		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 

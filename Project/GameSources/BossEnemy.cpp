@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale)
+		Enemy(stage, position, scale),m_IsAppearance(false),m_ConditionTime(0.0f),m_ConditionDefeat(100)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -18,12 +18,8 @@ namespace basecross {
 	}
 	void BossEnemy::OnCreate()
 	{
+		Object::OnCreate();
 		m_HP = 3;
-		//初期位置の設定
-		m_Transform = AddComponent<Transform>();
-		m_Transform->SetPosition(m_Position);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(m_Scale);
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
@@ -37,14 +33,44 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
-		//auto bossEnemyLegLeft = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), 1.0f);
-		//auto bossEnemyLegRight = GetStage()->AddGameObject<BossEnemyLeg>(m_Position, GetThis<Enemy>(), -1.0f);
 
 	}
 	void BossEnemy::OnUpdate()
 	{
-		//m_Position = m_Transform->GetPosition();
 		Enemy::OnUpdate();
+		SetDrawActive(m_IsAppearance);
+		float elapsed = App::GetApp()->GetElapsedTime();
+		if (!m_IsAppearance) {
+			m_ConditionTime -= elapsed;
+			if (m_ConditionTime < 0) {
+				m_ConditionTime = 0;
+				m_IsAppearance = true;
+			}
+
+			int defeatCount = m_Stage->GetDefeatEnemyCount();
+			if (defeatCount >= m_ConditionDefeat) {
+				m_IsAppearance = true;
+			}
+		}
+		else {
+			Enemy::OnUpdate();
+
+			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+			if (device.bConnected) {
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN) {
+
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP) {
+					m_Stage->AddGameObject<CrushAttack>(GetPosition() + m_Transform->GetForward(), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {
+
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT) {
+
+				}
+			}
+		}
 	}
 	void BossEnemy::Dead()
 	{
