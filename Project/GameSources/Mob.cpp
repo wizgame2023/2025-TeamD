@@ -113,7 +113,6 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
-
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = m_Transform->GetPosition();

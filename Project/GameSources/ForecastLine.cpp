@@ -55,12 +55,7 @@ namespace basecross {
 		auto transform = obj->GetComponent<Transform>();
 		Vec3 position = transform->GetPosition();
 		Vec3 scale = transform->GetScale();
-		float lengthSq = (Vec3(scale.x,0.0f,scale.z).length()) * (Vec3(scale.x, 0.0f, scale.z).length());
-		float startDistanceSq = (position - m_StartPosition).lengthSqr();
-		float endDistanceSq = (position - (m_StartPosition + m_Direction * m_Length)).lengthSqr();
-		//float lengthSq = m_Length * m_Length;
-		//if (startDistanceSq > lengthSq || endDistanceSq > lengthSq) {
-		float length = GetDistancePointToLine(position, m_StartPosition, (m_StartPosition + m_Direction * m_Length));
+		float length = RayCast::CalcDistancePointToLine(position, m_StartPosition, (m_StartPosition + m_Direction * m_Length));
 		Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
 		if(length > h.length()){
 			return false;
@@ -79,9 +74,6 @@ namespace basecross {
 		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
-			if (obj->FindTag(L"Player")) {
-				int a = 10;
-			}
 			if (!CheckDistanceToObject(obj)) continue;
 			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags, true);
 		}
@@ -146,52 +138,6 @@ namespace basecross {
 		GetStage()->RemoveGameObject<LineCube>(m_BalletLine);
 		GetStage()->RemoveGameObject<LineCube>(m_Forecast);
 		GetStage()->RemoveGameObject<ForecastLine>(GetThis<ForecastLine>());
-	}
-	/// <summary>
-	/// レイキャスト処理
-	/// </summary>
-	/// <param name="hit">結果</param>
-	/// <param name="startPosition">発射位置</param>
-	/// <param name="direction">発射方向</param>
-	/// <param name="length">長さ</param>
-	/// <param name="object">調べるオブジェクト</param>
-	/// <param name="excludeTags">除外するタグ</param>
-	/// <returns>当たったか</returns>
-	bool RayCast::HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags, const bool& isDebug) {
-		RayCastHit newResult = RayCastHit();
-		if (object == nullptr) return false;
-		bool isExclude = false;
-		for (auto& tag : excludeTags) {
-			if (object->FindTag(tag)) {
-				isExclude = true;
-				break;
-			}
-		}
-		if (isExclude) return false;
-		bool isHit = false;
-		Vec3 endPosition = startPosition + direction * length;
-		auto draw = object->GetComponent<SmBaseDraw>(false);
-		auto bcDraw = object->GetComponent<BcBaseDraw>(false);
-		if (draw != nullptr) {
-			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, endPosition, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}
-		else if (bcDraw != nullptr) {
-			isHit = bcDraw->HitTestStaticMeshSegmentTriangles(startPosition, endPosition, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}
-
-		if (isHit) {
-			if (hit.m_Object == nullptr) {
-				hit.m_Object = object;
-				hit = newResult;
-			}
-			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
-
-				hit.m_Object = object;
-				hit = newResult;
-			}
-			return true;
-		}
-		return false;
 	}
 }
 //end basecross

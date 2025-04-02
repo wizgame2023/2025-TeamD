@@ -126,7 +126,7 @@ namespace basecross {
 		::SetCursorPos(m_centerX, m_centerY);
 		m_HitCollision = false;
 
-		m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
+		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
 	}
 
 	void FollowCamera::OnUpdate() {
@@ -146,8 +146,22 @@ namespace basecross {
 
 		m_Eye = m_Position + m_Direction * 5.0f;
 		m_Eye.y = m_Position.y + 2.0f;
-
-		m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
+		RayCastHit hit;
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player"};
+		for (auto& obj : m_Stage->GetGameObjectVec()) {
+			auto transform = obj->GetComponent<Transform>();
+			Vec3 position = transform->GetPosition();
+			Vec3 scale = transform->GetScale();
+			float length = RayCast::CalcDistancePointToLine(position, m_PlayerTransform->GetPosition(), m_Eye);
+			Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
+			if (length < h.length()) {
+				RayCast::HitTest(hit, m_PlayerTransform->GetPosition(), m_Direction, 5.0f, obj, excludeTags);
+			}
+		}
+		if (hit.m_Object != nullptr) {
+			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
+		}
+		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		//自分の位置
 		SetEye(m_Eye);
 		//見ているところ
