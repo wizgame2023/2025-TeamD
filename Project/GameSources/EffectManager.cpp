@@ -11,25 +11,25 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EfkEffect::EfkEffect() :
+	EffectManeger::EffectManeger() :
 		ObjectInterface(),
 		m_handle(-1),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
 	}
-	EfkEffect::~EfkEffect() {
+	EffectManeger::~EffectManeger() {
 		// 先にエフェクト管理用インスタンスを破棄
 		m_Manager.Reset();
 		// 次に描画用インスタンスを破棄
 		m_renderer.Reset();
 	}
 
-	void EfkEffect::OnCreate() {
+	void EffectManeger::OnCreate() {
 		CreateEffectInterface();
 	}
 
-	void EfkEffect::OnUpdate()
+	void EffectManeger::OnUpdate()
 	{
 		auto elps = App::GetApp()->GetElapsedTime();
 		m_TotalTime += elps;
@@ -40,7 +40,7 @@ namespace basecross {
 
 	}
 
-	void EfkEffect::OnDraw()
+	void EffectManeger::OnDraw()
 	{
 		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
@@ -52,7 +52,7 @@ namespace basecross {
 		m_renderer->EndRendering();
 	}
 
-	void EfkEffect::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
+	void EffectManeger::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
 	{
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -61,7 +61,7 @@ namespace basecross {
 		}
 	}
 
-	void EfkEffect::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
+	void EffectManeger::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
 	{
 		Effekseer::Matrix44 v, p;
 		Mat4x4ToMatrix44(view, v);
@@ -70,14 +70,14 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	void EfkEffect::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme)
+	void EffectManeger::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
 		int32_t Freme = freme;
 		m_Effect = GetEffectResource(Key);
 		m_handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
-	void EfkEffect::CreateEffectInterface()
+	void EffectManeger::CreateEffectInterface()
 	{
 
 		auto Dev = App::GetApp()->GetDeviceResources();
@@ -103,7 +103,7 @@ namespace basecross {
 		m_Manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
 	}
 
-	void EfkEffect::RegisterResource(const wstring& Key, const  wstring& FileName)
+	void EffectManeger::RegisterResource(const wstring& Key, const  wstring& FileName)
 	{
 		try {
 			if (Key == L"") {
@@ -153,7 +153,7 @@ namespace basecross {
 		}
 	}
 
-	Effekseer::EffectRef EfkEffect::GetEffectResource(const wstring& Key) const
+	Effekseer::EffectRef EffectManeger::GetEffectResource(const wstring& Key) const
 	{
 		if (Key == L"") {
 			throw BaseException(
@@ -180,34 +180,34 @@ namespace basecross {
 
 	}
 
-	void EfkEffect::AddLocation(const bsm::Vec3& Location) {
+	void EffectManeger::AddLocation(const bsm::Vec3& Location) {
 		if (m_handle != -1) {
 			m_Manager->AddLocation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
 		}
 	}
 
 
-	void EfkEffect::SetRotation(const bsm::Vec3& Location, const float angle)
+	void EffectManeger::SetRotation(const bsm::Vec3& Location, const float angle)
 	{
 		m_Manager->SetRotation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EfkEffect::SetLocation(const bsm::Vec3& Location) {
+	void EffectManeger::SetLocation(const bsm::Vec3& Location) {
 		m_Manager->SetLocation(m_handle, Location.x, Location.y, Location.z);
 	}
 
-	void EfkEffect::SetScale(const bsm::Vec3& Scale)
+	void EffectManeger::SetScale(const bsm::Vec3& Scale)
 	{
 		m_Manager->SetScale(m_handle, Scale.x, Scale.y, Scale.z);
 	}
 
-	void EfkEffect::SetAllColor(const bsm::Col4 Color)
+	void EffectManeger::SetAllColor(const bsm::Col4 Color)
 	{
 		auto color = Col4(Color) * 255;
 		m_Manager->SetAllColor(m_handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
 	}
 
-	void EfkEffect::StopEffect() {
+	void EffectManeger::StopEffect() {
 		if (m_handle != -1) {
 			m_Manager->StopEffect(m_handle);
 		}

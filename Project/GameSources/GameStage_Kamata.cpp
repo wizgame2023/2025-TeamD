@@ -173,7 +173,7 @@ namespace basecross {
 
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			wstring effectPath = mediaPath + L"Effekt\\";
-			m_Effect = ObjectFactory::Create<EfkEffect>();
+			m_Effect = ObjectFactory::Create<EffectManeger>();
 			m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 			m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 			GameStage::OnCreate();

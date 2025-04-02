@@ -23,7 +23,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	class EfkEffect : public ObjectInterface, public ShapeInterface {
+	class EffectManeger : public ObjectInterface, public ShapeInterface {
 		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
 		Effekseer::Handle m_handle;
 		Effekseer::ManagerRef m_Manager;
@@ -41,13 +41,13 @@ namespace basecross {
 		@param[in]	filename	エフェクトファイル名
 		*/
 		//--------------------------------------------------------------------------------------
-		EfkEffect();
+		EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	デストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~EfkEffect();
+		virtual ~EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	初期化
