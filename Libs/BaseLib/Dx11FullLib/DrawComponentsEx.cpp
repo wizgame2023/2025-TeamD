@@ -742,7 +742,7 @@ namespace basecross {
 		}
 	}
 
-	/*float GetDistancePointToLine(const Vec3& point, const Vec3& start, const Vec3& end) {
+	/*float GetDistancePointToLine(const Vec3& point,const Vec3& start,const Vec3& end) {
 		Vec3 ab = { end.x - start.x, end.y - start.y, end.z - start.z };
 		Vec3 ap = { point.x - start.x, point.y - start.y, point.z - start.z };
 		float ab_ap = ab.x * ap.x + ab.y * ap.y + ab.z * ap.z;
@@ -751,7 +751,6 @@ namespace basecross {
 
 		Vec3 closest = { start.x + t * ab.x, start.y + t * ab.y, start.z + t * ab.z };
 		return (point - closest).length();
-
 	}*/
 	bool BcBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
@@ -766,11 +765,20 @@ namespace basecross {
 				continue;
 			}
 
-
 			/*if (pImpl->m_BcDrawObject.m_TempPositions.size() > 5000) {
-				if (GetDistancePointToLine(tri.m_A, StartPos, EndPos) > 0.1f &&
-					GetDistancePointToLine(tri.m_B, StartPos, EndPos) > 0.1f &&
-					GetDistancePointToLine(tri.m_C, StartPos, EndPos) > 0.1f) {
+				float distance = (tri.m_B - tri.m_A).length();
+				float newDistance = (tri.m_C - tri.m_A).length();
+				if (distance < newDistance) {
+					distance = newDistance;
+				}
+				newDistance = (tri.m_C - tri.m_B).length();
+				if (distance < newDistance) {
+					distance = newDistance;
+				}
+				distance /= 1.5f;
+				if (GetDistancePointToLine(tri.m_A, StartPos, EndPos) > distance &&
+					GetDistancePointToLine(tri.m_B, StartPos, EndPos) > distance &&
+					GetDistancePointToLine(tri.m_C, StartPos, EndPos) > distance) {
 					continue;
 				}
 			}*/

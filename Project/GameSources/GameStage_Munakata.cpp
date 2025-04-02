@@ -35,8 +35,8 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 
-		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
-		app->RegisterTexture(L"HP_BAR", uiPath + L"EnemyHp.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -180,7 +180,11 @@ namespace basecross {
 		try {
 			CreateResource();
 			GameStage::OnCreate();
-			
+			m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+			m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+			m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+			m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
 		}
 		catch (...) {
 			throw;
@@ -192,6 +196,14 @@ namespace basecross {
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();
+
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			float currentHp = player->GetHP();
+			float maxHp = player->GetMaxHP();
+			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+		}
+
 	}
 
 }

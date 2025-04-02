@@ -47,7 +47,7 @@ namespace basecross {
 		virtual void OnUpdate() override;
 
 		bool CheckRayCast(Vec3& hitPoint);
-		bool CheckDistanceToObject(Vec3 position);
+		bool CheckDistanceToObject(const shared_ptr<GameObject>& obj);
 		void SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength,const Col4& color = Col4(1,0,0,1));
 		bool CheckHitObjectTag(const wstring& tag) {
 			shared_ptr<GameObject> obj = m_NearestHitObject.lock();
@@ -55,6 +55,16 @@ namespace basecross {
 				return obj->FindTag(tag);
 			}
 			return false;
+		}
+		float GetDistancePointToLine(const Vec3& point, const Vec3& start, const Vec3& end) {
+			Vec2 startToPoint = Vec2(point.x - start.x,point.z - start.z);
+			Vec2 startToEnd = Vec2(end.x - start.x, end.z - start.z);
+			Vec2 endToStart = Vec2(start.x - end.x, start.z - end.z);
+			Vec2 endToPoint = Vec2(point.x - end.x, point.z - end.z);
+			if (startToPoint.dot(startToEnd) < 0.0) return startToPoint.length();
+			if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
+			return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
+			//(end - start).x * (point - start).y - (end - start).y * (point - start).x;
 		}
 		void SetBallet(const shared_ptr<Bullet> ballet) {
 			m_Bullet = ballet;
@@ -84,7 +94,6 @@ namespace basecross {
 		
 	public:
 		static bool HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {},const bool& isDebug = false);
-
 	};
 }
 //end basecross
