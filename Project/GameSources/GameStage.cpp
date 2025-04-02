@@ -48,6 +48,8 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
+		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}

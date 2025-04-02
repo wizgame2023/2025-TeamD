@@ -117,10 +117,6 @@ namespace basecross {
 
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
-	void GameStageK::OnPushA()
-	{
-		m_Effect->PlayEffect(L"Test", Vec3(0), 0);
-	}
 	/// <summary>
 	/// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
 	/// </summary>
@@ -176,8 +172,7 @@ namespace basecross {
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			wstring effectPath = mediaPath + L"Effekt/";
 			m_Effect = ObjectFactory::Create<EfkEffect>();
-			m_Effect->CreateEffectInterface();
-			m_Effect->RegisterResource(L"Test", effectPath + L"flash.efk");
+			m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 			GameStage::OnCreate();
 		}
 		catch (...) {
@@ -186,12 +181,18 @@ namespace basecross {
 	}
 
 	void GameStageK::OnUpdate() {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
 		auto& camera = GetView()->GetTargetCamera();
 		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-
+		m_Effect->OnUpdate();
+		m_Effect->OnDraw();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			m_Effect->PlayEffect(L"Test", Vec3(0, 1, 0), 0);
+		}
 	}
 }
 	//end basecross

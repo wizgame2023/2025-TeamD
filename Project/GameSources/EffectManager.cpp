@@ -12,7 +12,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EfkEffect::EfkEffect():
+	EfkEffect::EfkEffect() :
 		ObjectInterface(),
 		m_handle(-1),
 		m_renderer(nullptr),
@@ -20,9 +20,14 @@ namespace basecross {
 	{
 	}
 	EfkEffect::~EfkEffect() {
+		// 先にエフェクト管理用インスタンスを破棄
+		m_Manager.Reset();
+		// 次に描画用インスタンスを破棄
+		m_renderer.Reset();
 	}
 
 	void EfkEffect::OnCreate() {
+		CreateEffectInterface();
 	}
 
 	void EfkEffect::OnUpdate()
@@ -62,11 +67,11 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	void EfkEffect::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float fremeconst)
+	void EfkEffect::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
-		int32_t Freme = fremeconst;
-		Effekseer::EffectRef effect = GetEffectResource(Key);
-		m_handle = m_Manager->Play(effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
+		int32_t Freme = freme;
+		m_Effect = GetEffectResource(Key);
+		m_handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
 	void EfkEffect::CreateEffectInterface()
@@ -103,10 +108,10 @@ namespace basecross {
 					L"Effect::RegisterResource()"
 				);
 			}
-			 auto Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
+			m_Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
 			map<wstring, Effekseer::EffectRef>::iterator it;
 			for (it = m_ResMap.begin(); it != m_ResMap.end(); it++) {
-				if (it->second == Effect)
+				if (it->second == m_Effect)
 				{
 					if (it->first == Key)
 					{
@@ -134,13 +139,15 @@ namespace basecross {
 				);
 			}
 			else {
-				m_ResMap[Key] = Effect;
+				m_ResMap[Key] = m_Effect;
+
 			}
 		}
 		catch (...) {
 			throw;
 		}
 	}
+
 	Effekseer::EffectRef EfkEffect::GetEffectResource(const wstring& Key) const
 	{
 		if (Key == L"") {
