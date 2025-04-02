@@ -20,7 +20,8 @@ namespace basecross {
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
-		m_DamageInterval(0.5f)
+		m_DamageInterval(0.5f),
+		m_BoostInterval(1.0F)
 	{
 	}
 	Player::~Player()
@@ -147,7 +148,7 @@ namespace basecross {
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
 			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
-				if (IsWithinDetectionRange(position, targetEnemy, 90.0)) {
+				if (IsWithinDetectionRange(position, targetEnemy, 45.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					float rotate = atan2f(rot.x, rot.z);
@@ -159,7 +160,7 @@ namespace basecross {
 				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
 				if ((position - targetbullert).length() < searchDistance)
 				{
-					if (IsWithinDetectionRange(position, targetbullert, 90.0)) {
+					if (IsWithinDetectionRange(position, targetbullert, 45.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						float rotate = atan2f(rot.x, rot.z);
@@ -339,6 +340,7 @@ namespace basecross {
 			else {
 				m_PlayerStateNum += PlayerState::NORMAL;
 				m_PlayerStateNum -= PlayerState::DASH;
+				m_BoostInterval = 1.0f;
 			}
 		}
 		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
@@ -358,13 +360,16 @@ namespace basecross {
 		else {
 			m_BoostTime = 0.2f;
 			m_Attacktime = 0.2f;
-
+			m_BoostInterval -= elapsedTime;
 			MovePlayer(6.0f);
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
 				m_BoostAngle = GetForward();;
-				m_PlayerStateNum -= PlayerState::NORMAL;
-				m_PlayerStateNum += PlayerState::DASH;
+				if (m_BoostInterval <= 0.0f)
+				{
+					m_PlayerStateNum -= PlayerState::NORMAL;
+					m_PlayerStateNum += PlayerState::DASH;
+				}
 			}
 
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)

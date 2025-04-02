@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 namespace basecross {
-	class EfkEffect;
+	class EffectManeger;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace basecross {
 		bool m_IsPose;
 
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<EfkEffect> m_Effect;
+		shared_ptr<EffectManeger> m_Effect;
 	public:
 		//構築と破棄
 		GameStageK(const wstring& file) : GameStage(file), m_IsPose(false) {}
@@ -31,8 +31,8 @@ namespace basecross {
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
 
-		void OnPushA();
 		void ClosePose();
 		void OpenPose();
 	};

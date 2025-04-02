@@ -46,6 +46,7 @@ namespace basecross {
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		void SetMaxEnemyCount(int count) {
