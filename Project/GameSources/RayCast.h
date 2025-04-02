@@ -34,8 +34,8 @@ namespace basecross {
 	class RayCast {
 
 	public:
-		static bool HitTest(RayCastHit& hit, const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
-		static float CalcDistancePointToLine(const Vec3& point, const Vec3& start, const Vec3& end);
+		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
+		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
 	};
 }
 //end basecross
