@@ -62,6 +62,8 @@ namespace basecross {
 				m_Enemy->m_Line = m_Stage->AddGameObject<ForecastLine>(m_Enemy);
 
 				mob->m_ShotRandomInterval = Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f);
+
+				SoundManager::Instance().PlaySE(L"SE_SHOT");
 			}
 		}
 		else {

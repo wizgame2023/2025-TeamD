@@ -191,6 +191,8 @@ namespace basecross {
 
 			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
 			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
+
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
 			throw;

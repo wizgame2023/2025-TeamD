@@ -15,9 +15,24 @@ namespace basecross {
 	}
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
-		RegisterSound(L"TEST", L"CheckPoint.wav");
-		RegisterSound(L"BGM", L"StageBGM.wav");
-		RegisterSound(L"ATTACK", L"attack.wav");
+		//BGM
+		//RegisterSound(L"BGM_GAME_NORMAL", L"BGM/StageBGM.wav");
+		RegisterSound(L"BGM_GAME_BOSS", L"BGM/Boss.wav");
+		RegisterSound(L"BGM_GAME_PINCH", L"BGM/Pinch.wav");
+		RegisterSound(L"BGM_TITLE", L"BGM/Title.wav");
+		//RegisterSound(L"BGM_RESULT", L"BGM/StageBGM.wav");
+		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
+		//SE
+		RegisterSound(L"SE_GUARD", L"SE/AttackVoice.wav");
+		RegisterSound(L"SE_RUN", L"SE/Run_2.wav");
+		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit_3.wav");
+		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit.wav");
+		RegisterSound(L"SE_SHOT", L"SE/RifleShot.wav");
+		RegisterSound(L"SE_USE_ULT", L"SE/UltUse.wav");
+		RegisterSound(L"SE_WALK_ENEMY", L"SE/EnemyHit.wav");
+		RegisterSound(L"SE_WALK_PLAYER", L"SE/PlayerWalk.wav");
+		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice_3.wav");
+		RegisterSound(L"SE_ACCEPT", L"SE/AttackVoice.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
@@ -70,6 +85,15 @@ namespace basecross {
 	void SoundManager::SetBGMVolume() {
 		if (m_Bgm != nullptr) {
 			m_Bgm->m_SourceVoice->SetVolume(m_BGMVolume);
+		}
+	}
+	void SoundManager::PauseBGM(bool flag) {
+		if (m_Bgm != nullptr) {
+			m_Bgm->m_SourceVoice->Stop(XAUDIO2_PLAY_TAILS);
+		
+			if(!flag){
+				m_Bgm->m_SourceVoice->Start();
+			}
 		}
 	}
 	void SoundManager::StopBGM() {

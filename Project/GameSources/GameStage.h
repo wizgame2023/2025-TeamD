@@ -36,8 +36,8 @@ namespace basecross {
 			if (m_MaxEnemyCount <= 0) return 100.0f;
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
-		void GameOver();
-		void GameClear();
+		void GameOver(){}
+		void GameClear(){}
 		
 	public:
 		//\’z‚Æ”jŠü

@@ -182,6 +182,7 @@ namespace basecross {
 		{
 			m_HP -= 1;
 			KnockBackTime(other);
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}
 
