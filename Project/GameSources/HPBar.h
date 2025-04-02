@@ -26,6 +26,7 @@ namespace basecross {
 		virtual ~HPBar() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
 		void SetMaxHp(float maxHp) {
 			m_MaxHp = maxHp;
 		}
@@ -34,6 +35,9 @@ namespace basecross {
 		}
 		void SetOffset(Vec3 offset) {
 			m_Offset = offset;
+		}
+		void SetColor(Col4 color) {
+			m_HpBar->SetColor(color);
 		}
 		void Destroy();
 	};

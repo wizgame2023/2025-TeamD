@@ -62,7 +62,7 @@ namespace basecross {
 		builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
 		builder->LoadCsv();
-		
+
 	}
 	/// </summary>
 	/// ポーズメニューの作成
@@ -195,8 +195,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-
-			m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
+			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			m_ProtoScoreNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 297.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
@@ -226,10 +225,6 @@ namespace basecross {
 
 		SetAllGameObjectActive(!m_IsPose);
 
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
-		}
 
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
 	}

@@ -744,6 +744,9 @@ namespace basecross{
 		shared_ptr<PNTStaticDraw> GetDraw() {
 			return m_Draw;
 		}
+		void SetColor(Col4 color) {
+			m_Draw->SetDiffuse(color);
+		}
 		vector<VertexPositionNormalTexture> GetVertices() {
 			return m_Vertices;
 		}
