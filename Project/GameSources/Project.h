@@ -5,7 +5,7 @@
 
 #pragma once
 
-
+#include "EffectManager.h"
 #include "ProjectShader.h"
 #include "ProjectBehavior.h"
 #include "Scene.h"
@@ -21,7 +21,6 @@
 #include "TitleStage.h"
 #include "Sprite.h"
 #include "MobState.h"
-#include "BossState.h"
 #include "Mob.h"
 #include "BossEnemy.h"
 #include "Ballet.h"
