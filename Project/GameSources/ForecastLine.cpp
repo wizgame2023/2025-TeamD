@@ -55,7 +55,7 @@ namespace basecross {
 		auto transform = obj->GetComponent<Transform>();
 		Vec3 position = transform->GetPosition();
 		Vec3 scale = transform->GetScale();
-		float length = RayCast::CalcDistancePointToLine(position, m_StartPosition, (m_StartPosition + m_Direction * m_Length));
+		float length = RayCast::CalcDistancePointToLine(position,Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
 		Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
 		if(length > h.length()){
 			return false;
@@ -75,7 +75,7 @@ namespace basecross {
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
 			if (!CheckDistanceToObject(obj)) continue;
-			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags, true);
+			RayCast::HitTest(hit, Line(m_StartPosition,(m_StartPosition + m_Direction * m_Length)), obj, excludeTags, true);
 		}
 
 		if (hit.m_Object != nullptr) {
