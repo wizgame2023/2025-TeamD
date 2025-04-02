@@ -132,6 +132,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h">
       <Filter>Attack</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h">
       <Filter>Enemy</Filter>
     </ClInclude>
@@ -222,6 +223,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp">
       <Filter>Attack</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
