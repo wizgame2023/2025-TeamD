@@ -48,6 +48,9 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
+		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
@@ -55,7 +58,7 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
@@ -218,9 +221,6 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				OpenPose();
 			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-
-			}
 		}
 
 		SetAllGameObjectActive(!m_IsPose);
@@ -229,8 +229,26 @@ namespace basecross {
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
 	}
 
+	void GameStage::OnDraw()
+	{
+	}
+
 	void GameStage::OnDestroy() {
 		SoundManager::Instance().StopAll();
+	}
+
+	void GameStage::OnEvent(const shared_ptr<Event>& event) {
+		auto& msg = event->m_MsgStr;
+
+		if (msg == L"DefeatBoss") {
+			GameClear();
+		}
+		else if (msg == L"AppaerBoss") {
+			
+		}
+		else if (msg == L"DeadPlayer") {
+			GameOver();
+		}
 	}
 }
 //end basecross

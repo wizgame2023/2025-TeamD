@@ -18,6 +18,7 @@ namespace basecross {
 		float m_ParryTime;
 		float m_TotalTime;
 		float m_BoostTime;
+		float m_BoostInterval;
 		float m_Attacktime;
 		float m_DamageInterval;
 		bool m_ParryJudge;
@@ -54,6 +55,7 @@ namespace basecross {
 		void Debug();
 		Vec3 GetForward();
 		int GetStates();
+		float GetEnergy();
 		void SearchRange();
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);

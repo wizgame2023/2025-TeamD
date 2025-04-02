@@ -34,7 +34,7 @@ namespace basecross {
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 		}
@@ -52,17 +52,17 @@ namespace basecross {
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
 			//次のアクティブステージの設定
-			ResetActiveStage<GameStage>();
+			ResetActiveStage<GameStage>(L"level.csv");
     }
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>();
+			ResetActiveStage<GameStageM>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>();
+			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>();
+			ResetActiveStage<GameStageS>(L"levelMap.csv");
 		}
 
 	}
