@@ -343,7 +343,7 @@ namespace basecross {
 	bool BcBaseDraw::GetMultiMeshIsDraw(size_t index) const {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"インデックスがマルチメッシュのメッシュ数を超えてます",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::GetMultiMeshIsDraw()"
 			);
@@ -353,7 +353,7 @@ namespace basecross {
 	void BcBaseDraw::SetMultiMeshIsDraw(size_t index, bool b) {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"インデックスがマルチメッシュのメッシュ数を超えてます",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::SetMultiMeshIsDraw()"
 			);
@@ -500,7 +500,7 @@ namespace basecross {
 		if (whichLight < 0 || whichLight >= BcDrawObject::MaxDirectionalLights)
 		{
 			throw BaseException(
-				L"ライトのインデックスが範囲外です",
+				L"",
 				L"if (whichLight < 0 || whichLight >= Impl::MaxDirectionalLights)",
 				L"Bc3DDraw::ValidateLightIndex()"
 			);
@@ -712,7 +712,7 @@ namespace basecross {
 	vector< bsm::Mat4x4 >& BcBaseDraw::GetVecMultiLocalBones(size_t index) {
 		if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index) {
 			throw BaseException(
-				L"インデックスが上限を超えてます",
+				L"",
 				L"if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index)",
 				L"BcBaseDraw::GetVecMultiLocalBones"
 			);

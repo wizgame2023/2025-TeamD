@@ -55,7 +55,7 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"levelMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");

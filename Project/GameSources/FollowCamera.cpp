@@ -73,11 +73,11 @@ namespace basecross {
 				m_CameraPos = m_GetPosition;
 				return m_GetPosition;
 			}
-			else{ 
-				return m_CameraPos; 
+			else {
+				return m_CameraPos;
 			}
 
-			return m_CameraPos;
+			return m_GetPosition;
 		}
 
 	}
@@ -86,7 +86,21 @@ namespace basecross {
 		float m_Side, m_Beside;
 		Vec2 target = Vec2(m_TargetPosition.x, m_TargetPosition.z);
 		Vec2 get = Vec2(m_GetPosition.x, m_GetPosition.z);
-		Vec2 afterget = Vec2(0.0f,0.0f);
+		Vec2 afterget = /*Vec2(0.0f, 0.0f);*/ Vec2(m_CameraPos.x, m_CameraPos.z);
+		if (afterget == Vec2(0.0f)) {
+			afterget = get;
+		}
+		if ((afterget - get).length() < 12.5f)
+		{
+			afterget = get;
+			//return m_GetPosition;
+		}
+		Vec2 closeget = afterget;
+		float crossget = Cross(very - verx, target - closeget);
+		//else {
+		//	return m_CameraPos;
+		//}
+
 		float dar = Cross(very - verx, target - get);
 		if (dar == 0.0f) return m_GetPosition;
 		m_Side = Cross(get - verx, target - get) / dar;
@@ -96,7 +110,6 @@ namespace basecross {
 		}
 		Vec3 anser(verx.x + m_Side * (very - verx).x, m_GetPosition.y, verx.y + m_Side * (very - verx).y);
 		return anser;
-
 	}
 
 	float CameraCollision::Cross(Vec2 crox, Vec2 croy) {
