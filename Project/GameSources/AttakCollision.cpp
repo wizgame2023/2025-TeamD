@@ -26,7 +26,6 @@ namespace basecross {
 
 			GetStage()->RemoveGameObject<AttackCollision>(GetThis<AttackCollision>());
 		}
-		
 	}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
@@ -41,6 +40,17 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
+	}
+
+	void Missile::ContactStage(shared_ptr<GameObject>& object) {
+		Vec3 scale = m_Transform->GetScale();
+		m_Transform->SetScale(scale * 2.0f);
+
+		m_ExistenceTime = 0.5f;
+	}
+	void Missile::OnUpdate() {
+		AttackCollision::OnUpdate();
+
 	}
 }
 //end basecross

@@ -239,15 +239,10 @@ namespace basecross {
 		return m_PlayerStateNum;
 	}
 
-	int Player::GetPlayerHP()
-	{
-		return m_HP;
-	}
-
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 20;
+		InitHP(20);
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -299,7 +294,7 @@ namespace basecross {
 
     //デバッグ用
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-			m_Stage->AddGameObject<CrushAttack>(GetPosition() + Vec3(0,0,1), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
+			
 		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
@@ -390,7 +385,7 @@ namespace basecross {
 	}
 	void Player::Dead() {
 		SetPosition(Vec3(0, 2, 0));
-		m_HP = 1000;
+		InitHP(1000);
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)

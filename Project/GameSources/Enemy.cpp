@@ -16,7 +16,7 @@ namespace basecross {
 	void Enemy::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 3;
+		InitHP(3);
     
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -51,7 +51,7 @@ namespace basecross {
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
-
+		AddTag(L"Enemy");
 		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
 		//auto navi = AddComponent<Navigate>();
@@ -101,9 +101,6 @@ namespace basecross {
 	{
 		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
-		if (GetDistanceToIntruder() < searchDistance) {
-			m_Line->CheckRayCast(Vec3());
-		}
 
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
@@ -122,12 +119,7 @@ namespace basecross {
 
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//プレイヤーの方向をゆっくり向く
-				if (m_Line->CheckHitObjectTag(L"Player")) {
-					m_IntruderAlert = true;
-				}
-				else {
-					m_IntruderAlert = false;
-				}
+				m_IntruderAlert = true;
 			}
 			else {
 				m_IntruderAlert = false;
@@ -135,6 +127,13 @@ namespace basecross {
 		}
 		else {
 			m_IntruderAlert = false;
+		}
+
+		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
+			m_Line->CheckRayCast(Vec3());
+			if (!m_Line->CheckHitObjectTag(L"Player")) {
+				m_IntruderAlert = false;
+			}
 		}
 	}
 
@@ -165,6 +164,17 @@ namespace basecross {
 		auto gameStage = static_pointer_cast<GameStage>(m_Stage);
 		if (gameStage != nullptr) {
 			gameStage->EliminateEnemy();
+		}
+		auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+		auto& groupVec = group->GetGroupVectors();
+		for (int i = 0; i < groupVec.size(); i++) {
+			auto obj = groupVec[i].lock();
+			if (obj != nullptr) {
+				if (obj == GetThis<GameObject>()) {
+					groupVec.erase(groupVec.begin() + i);
+					break;
+				}
+			}
 		}
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}

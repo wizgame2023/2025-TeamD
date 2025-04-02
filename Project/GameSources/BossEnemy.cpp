@@ -18,12 +18,8 @@ namespace basecross {
 	}
 	void BossEnemy::OnCreate()
 	{
+		Object::OnCreate();
 		m_HP = 3;
-		//初期位置の設定
-		m_Transform = AddComponent<Transform>();
-		m_Transform->SetPosition(m_Position);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(m_Scale);
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
@@ -53,12 +49,28 @@ namespace basecross {
 			}
 
 			int defeatCount = m_Stage->GetDefeatEnemyCount();
-			if (defeatCount < m_ConditionDefeat) {
+			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
 			}
 		}
 		else {
 			Enemy::OnUpdate();
+
+			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+			if (device.bConnected) {
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN) {
+
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP) {
+					m_Stage->AddGameObject<CrushAttack>(GetPosition() + m_Transform->GetForward(), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {
+
+				}
+				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT) {
+
+				}
+			}
 		}
 	}
 	void BossEnemy::Dead()
