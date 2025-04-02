@@ -57,8 +57,8 @@ namespace basecross {
 				int defeatIndex = GetInfoIndex(L"defeat");
 				if (timeIndex != -1 && defeatIndex != -1) {
 					auto boss = static_pointer_cast<BossEnemy>(obj);
-					if (!boss) {
-						boss->SetCondition(/*WstrToFlt(objInfo[timeIndex])*/0, WstrToFlt(objInfo[defeatIndex]));
+					if (boss) {
+						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), 1/*WstrToFlt(objInfo[defeatIndex])*/);
 					}
 				}
 			}

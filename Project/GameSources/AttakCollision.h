@@ -31,12 +31,14 @@ namespace basecross {
 			}
 			if (Other->FindTag(L"Stage")) {
 				ContactObjectEffect();
+				ContactStage(Other);
 			}
 		}
 		virtual void LoopEffect(){}
 		virtual void ContactObjectEffect(){}
 		virtual void ContactPlayerEffect(){}
 		virtual void ContactPlayer(shared_ptr<GameObject>& player){}
+		virtual void ContactStage(shared_ptr<GameObject>& object){}
 
 		virtual float GetDamage() {
 			return m_Damage;
@@ -51,6 +53,17 @@ namespace basecross {
 		virtual~CrushAttack(){}
 
 		virtual void ContactPlayer(shared_ptr<GameObject>& player);
+	};
+
+	class Missile : public AttackCollision {
+		float m_ExplodePower;
+		Vec3 m_Target;
+	public:
+		Missile(const shared_ptr<Stage>& stage,const Vec3 target, Vec3 position, Vec3 size, float damage, float time,float power) : 
+			AttackCollision(stage,position,size,damage,time),m_Target(target),m_ExplodePower(power){ }
+		virtual ~Missile(){}
+		virtual void OnUpdate()override;
+		virtual void ContactStage(shared_ptr<GameObject>& object)override;
 	};
 }
 

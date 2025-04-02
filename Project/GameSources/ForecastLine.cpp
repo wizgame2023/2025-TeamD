@@ -51,11 +51,18 @@ namespace basecross {
 	/// </summary>
 	/// <param name="position">オブジェクトの位置</param>
 	/// <returns></returns>
-	bool ForecastLine::CheckDistanceToObject(Vec3 position) {
+	bool ForecastLine::CheckDistanceToObject(const shared_ptr<GameObject>& obj) {
+		auto transform = obj->GetComponent<Transform>();
+		Vec3 position = transform->GetPosition();
+		Vec3 scale = transform->GetScale();
+		float lengthSq = (Vec3(scale.x,0.0f,scale.z).length()) * (Vec3(scale.x, 0.0f, scale.z).length());
 		float startDistanceSq = (position - m_StartPosition).lengthSqr();
 		float endDistanceSq = (position - (m_StartPosition + m_Direction * m_Length)).lengthSqr();
-		float lengthSq = m_Length * m_Length;
-		if (startDistanceSq > lengthSq || endDistanceSq > lengthSq) {
+		//float lengthSq = m_Length * m_Length;
+		//if (startDistanceSq > lengthSq || endDistanceSq > lengthSq) {
+		float length = GetDistancePointToLine(position, m_StartPosition, (m_StartPosition + m_Direction * m_Length));
+		Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
+		if(length > h.length()){
 			return false;
 		}
 		return true;
@@ -68,12 +75,14 @@ namespace basecross {
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		m_NearestHitObject.reset();
-		vector<wstring> excludeTags = { L"Bullet",L"Line" };
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy"};
 		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
-			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
-			if (!CheckDistanceToObject(objPosition)) continue;
+			if (obj->FindTag(L"Player")) {
+				int a = 10;
+			}
+			if (!CheckDistanceToObject(obj)) continue;
 			RayCast::HitTest(hit, m_StartPosition, m_Direction, m_Length, obj, excludeTags, true);
 		}
 
