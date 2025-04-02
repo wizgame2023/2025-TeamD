@@ -23,16 +23,17 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	class EfkEffect : public ObjectInterface, public ShapeInterface {
-		wstring m_FileName;
-		wstring m_Key;
+	class EffectManeger : public ObjectInterface, public ShapeInterface {
 		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
 		Effekseer::Handle m_handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
+		float m_TotalTime;
 
-	public:
+
 		Effekseer::EffectRef m_Effect;
+	public:	
+
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	コンスラトクタ
@@ -40,14 +41,13 @@ namespace basecross {
 		@param[in]	filename	エフェクトファイル名
 		*/
 		//--------------------------------------------------------------------------------------
-		EfkEffect();
+		EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	デストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~EfkEffect();
-
+		virtual ~EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	初期化
@@ -76,7 +76,11 @@ namespace basecross {
 		void PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);
 		void CreateEffectInterface();
 		void RegisterResource(const wstring& Key, const  wstring& FileName);
-
+		Effekseer::ManagerRef GetEffectInterface()
+		{
+			return m_Manager;
+		}
+		
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(const bsm::Vec3& Location);
 		void SetLocation(const bsm::Vec3& Location);

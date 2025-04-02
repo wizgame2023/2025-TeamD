@@ -43,6 +43,7 @@ namespace basecross {
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;
