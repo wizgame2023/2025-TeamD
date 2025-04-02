@@ -18,6 +18,7 @@ namespace basecross {
 		float m_ParryTime;
 		float m_TotalTime;
 		float m_BoostTime;
+		float m_BoostInterval;
 		float m_Attacktime;
 		float m_DamageInterval;
 		bool m_ParryJudge;
