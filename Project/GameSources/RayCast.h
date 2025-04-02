@@ -36,6 +36,8 @@ namespace basecross {
 	public:
 		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
 		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
+		static float CalcDistancePoi(const Vec3& point, const Line& line);
+
 	};
 }
 //end basecross
