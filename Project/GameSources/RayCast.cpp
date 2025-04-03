@@ -58,26 +58,30 @@ namespace basecross {
 	/// <param name="start">線分の始点</param>
 	/// <param name="end">線分の終点</param>
 	/// <returns>最短距離</returns>
-	float RayCast::CalcDistancePointToLine(const Vec3& point,const Line& line) {
-		Vec2 startToPoint = Vec2(point.x - line.m_Start.x, point.z - line.m_Start.z);
-		Vec2 startToEnd = Vec2(line.m_End.x - line.m_Start.x, line.m_End.z - line.m_Start.z);
-		Vec2 endToStart = Vec2(line.m_Start.x - line.m_End.x, line.m_Start.z - line.m_End.z);
-		Vec2 endToPoint = Vec2(point.x - line.m_End.x, point.z - line.m_End.z);
-		if (startToPoint.dot(startToEnd) < 0.0) return startToPoint.length();
-		if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
-		return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
-	}
+	//float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
+	//	Vec2 startToPoint = Vec2(point.x - line.m_Start.x, point.z - line.m_Start.z);
+	//	Vec2 startToEnd = Vec2(line.m_End.x - line.m_Start.x, line.m_End.z - line.m_Start.z);
+	//	Vec2 endToStart = Vec2(line.m_Start.x - line.m_End.x, line.m_Start.z - line.m_End.z);
+	//	Vec2 endToPoint = Vec2(point.x - line.m_End.x, point.z - line.m_End.z);
+	//	if (startToPoint.dot(startToEnd) < 0.0) return startToPoint.length();
+	//	if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
+	//	return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
+	//}
 
 	float RayCast::CalcDistancePoi(const Vec3& point, const Line& line) {
-		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);
-		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);
+		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);//始点
+		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);//終点
 		Vec3 endToStr = Vec3(line.m_Start.x - line.m_End.x, line.m_Start.y - line.m_End.y, line.m_Start.z - line.m_End.z);
 		Vec3 endToPoi = Vec3(point.x - line.m_End.x, point.y - line.m_End.y, point.z - line.m_End.z);
 		if (startToPoi.dot(startToE) < 0.0) return startToPoi.length();
 		if (endToPoi.dot(endToStr) < 0.0) return endToPoi.length();
-		return abs(startToE.x * startToPoi.y * startToE.z - startToE.y * startToPoi.x * startToPoi.z) / startToE.length();
-		//return abs(startToE.y * startToPoi.z - startToE.z * startToPoi.y) / startToE.length();
-		//return abs(startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
+		//return abs(startToE.x * startToPoi.y * startToPoi.z - startToE.y * startToPoi.x * startToPoi.z) / startToE.length();//外積
+		//return abs(startToPoi.x * startToE.x + startToPoi.y *  startToE.y  + startToPoi.z * startToE.z);//内積
+		Vec3 product;
+		product.z = (startToE.x * startToPoi.y - startToE.y * startToPoi.x) / startToE.length();
+		product.y = (startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
+		product.x = (startToE.y * startToPoi.z - startToE.z * startToPoi.y) / startToE.length();
+		return abs(product.x + product.y + product.z);
 	}
 
 }

@@ -166,11 +166,11 @@ namespace basecross {
 			auto transform = obj->GetComponent<Transform>();
 			Vec3 position = transform->GetPosition();
 			Vec3 scale = transform->GetScale();
-			/*float length = RayCast::CalcDistancePointToLine(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
-				Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
-				if (length < h.length()) {
-				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
-			}*/
+			//float length = RayCast::CalcDistancePointToLine(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
+			//	Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
+			//	if (length < h.length()) {
+			//	RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
+			//}
 			float leng = RayCast::CalcDistancePoi(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
 			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (leng < lengths.length()) {

@@ -222,12 +222,12 @@ namespace basecross {
 				OpenPose();
 			}
 		}
-
 		SetAllGameObjectActive(!m_IsPose);
 
 
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
 	}
+
 
 	void GameStage::OnDraw()
 	{
