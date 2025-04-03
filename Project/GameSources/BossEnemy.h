@@ -13,6 +13,9 @@ namespace basecross {
 		bool m_IsAppearance;
 		float m_ConditionTime;
 		int m_ConditionDefeat;
+
+		shared_ptr<ForecastLine> m_BossLine;
+
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
