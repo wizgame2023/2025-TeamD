@@ -14,7 +14,7 @@ namespace basecross {
 	protected:
 		shared_ptr<Enemy> m_Enemy;
 		shared_ptr<Stage> m_Stage;
-		shared_ptr<Transform> m_Transform;
+		shared_ptr<Transform> m_BoneTransform;
 		shared_ptr<Character> m_Player;
 	public:
 		EnemyState(shared_ptr<Enemy>& enemy) :

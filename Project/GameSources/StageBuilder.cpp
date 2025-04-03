@@ -11,7 +11,7 @@ namespace basecross {
 	void Object::OnCreate() {
 		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
-		m_Transform = GetComponent<Transform>();
+		m_BoneTransform = GetComponent<Transform>();
 		SetPosition(Vec3(0, 1, 0));
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);

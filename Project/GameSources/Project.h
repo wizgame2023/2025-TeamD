@@ -33,3 +33,4 @@
 #include "HPBar.h"
 #include "AttakCollision.h"
 #include "RayCast.h"
+#include "BoneCollision.h"

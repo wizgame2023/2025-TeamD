@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
@@ -47,6 +48,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />

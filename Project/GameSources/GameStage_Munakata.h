@@ -8,6 +8,7 @@
 
 namespace basecross {
 	class Sprite;
+	class NumberSprite;
 	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
@@ -18,6 +19,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_PlayerEnergyBar;
 		shared_ptr<Sprite> m_PlayerEnergyBarBackGround;
 
+		shared_ptr<NumberSprite> m_Fps;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 

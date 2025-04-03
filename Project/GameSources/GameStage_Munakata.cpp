@@ -192,6 +192,7 @@ namespace basecross {
 			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
 			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
 
+			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 201.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
@@ -214,7 +215,8 @@ namespace basecross {
 			float currentEnergy = player->GetEnergy();
 			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
 		}
-
+		float elpased = app->GetStepTimer().GetFramesPerSecond();
+		m_Fps->UpdateNumber(elpased);
 	}
 
 }

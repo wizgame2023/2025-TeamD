@@ -742,20 +742,10 @@ namespace basecross {
 		}
 	}
 
-	/*float CalcDistancePointToLine(const Vec3& point,const Vec3& start,const Vec3& end) {
-		Vec3 ab = { end.x - start.x, end.y - start.y, end.z - start.z };
-		Vec3 ap = { point.x - start.x, point.y - start.y, point.z - start.z };
-		float ab_ap = ab.x * ap.x + ab.y * ap.y + ab.z * ap.z;
-		float ab_ab = ab.x * ab.x + ab.y * ab.y + ab.z * ab.z;
-		float t = max(0.0, min(1.0, ab_ap / ab_ab));
-
-		Vec3 closest = { start.x + t * ab.x, start.y + t * ab.y, start.z + t * ab.z };
-		return (point - closest).length();
-	}*/
 	bool BcBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_BcDrawObject.m_TempPositions);
-		for (size_t i = 0; i < pImpl->m_BcDrawObject.m_TempPositions.size(); i += 3) {
+		for (size_t i = 0,size = pImpl->m_BcDrawObject.m_TempPositions.size(); i < size; i += 3) {
 			TRIANGLE tri;
 			tri.m_A = pImpl->m_BcDrawObject.m_TempPositions[i];
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
@@ -765,23 +755,6 @@ namespace basecross {
 				continue;
 			}
 
-			/*if (pImpl->m_BcDrawObject.m_TempPositions.size() > 5000) {
-				float distance = (tri.m_B - tri.m_A).length();
-				float newDistance = (tri.m_C - tri.m_A).length();
-				if (distance < newDistance) {
-					distance = newDistance;
-				}
-				newDistance = (tri.m_C - tri.m_B).length();
-				if (distance < newDistance) {
-					distance = newDistance;
-				}
-				distance /= 1.5f;
-				if (CalcDistancePointToLine(tri.m_A, StartPos, EndPos) > distance &&
-					CalcDistancePointToLine(tri.m_B, StartPos, EndPos) > distance &&
-					CalcDistancePointToLine(tri.m_C, StartPos, EndPos) > distance) {
-					continue;
-				}
-			}*/
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {

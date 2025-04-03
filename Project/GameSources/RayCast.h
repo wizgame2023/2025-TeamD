@@ -12,6 +12,13 @@ namespace basecross {
 		Vec3 m_End;
 
 		Line(Vec3 start, Vec3 end) : m_Start(start), m_End(end) {}
+
+		Vec3 GetDirection() const{
+			return m_End - m_Start;
+		}
+		float GetLength() const{
+			return GetDirection().length();
+		}
 	};
 	struct RayCastHit {
 		shared_ptr<GameObject> m_Object;
@@ -35,7 +42,10 @@ namespace basecross {
 
 	public:
 		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
-		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
+		static float CalcDistanceXZPointToLine(const Vec3& point, const Line& line);
+		static float CalcDistance3DPointToLine(const Vec3& point, const Line& line);
+		static 	bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
+
 	};
 }
 //end basecross

@@ -12,7 +12,7 @@ namespace basecross {
 	void EnemyState::Enter()
 	{
 		m_Stage = m_Enemy->GetStage();
-		m_Transform = m_Enemy->GetComponent<Transform>();
+		m_BoneTransform = m_Enemy->GetComponent<Transform>();
 		m_Player = m_Enemy->m_Intruder;
 	}
 
@@ -45,16 +45,16 @@ namespace basecross {
 		if (m_IntruderAlert == true)
 		{
 			Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
-			Vec3 position = m_Transform->GetPosition();
+			Vec3 position = m_BoneTransform->GetPosition();
 			Vec3 rot = target - position;
 			rot.normalize();
 			float rotate = atan2f(rot.x, rot.z);
-			m_Transform->SetRotation(Vec3(0, rotate, 0));
+			m_BoneTransform->SetRotation(Vec3(0, rotate, 0));
 			auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
 			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
 				Vec3 direction = m_Enemy->GetDirectionToIntruder();
 
-				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
+				auto ballet = m_Stage->AddGameObject<Bullet>(m_BoneTransform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
 				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
 				m_Enemy->m_Line->SetBallet(ballet);
@@ -82,7 +82,7 @@ namespace basecross {
 		auto navi = boss->GetComponent<Navigate>();
 		auto player = boss->m_Intruder;
 		Vec3 playerPos = player->GetPosition();
-		navi->SetTargetPosition(m_Transform->GetPosition(), playerPos);
+		navi->SetTargetPosition(m_BoneTransform->GetPosition(), playerPos);
 		Execute();
 	}
 	void BossSearch::Execute()
@@ -92,15 +92,15 @@ namespace basecross {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = boss->GetPosition();
 		Vec3 halfPos = navi->GetAStarForword(currntPosition);
-		if (halfPos == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
-		if (halfPos == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
-		if (halfPos == Vec3(0, 0, 1))  m_Transform->SetRotation(Vec3(0, 0, 0));
-		if (halfPos == Vec3(0, 0, -1)) m_Transform->SetRotation(Vec3(0, 180, 0));
+		if (halfPos == Vec3(1, 0, 0))  m_BoneTransform->SetRotation(Vec3(0, 90, 0));
+		if (halfPos == Vec3(-1, 0, 0)) m_BoneTransform->SetRotation(Vec3(0, 270, 0));
+		if (halfPos == Vec3(0, 0, 1))  m_BoneTransform->SetRotation(Vec3(0, 0, 0));
+		if (halfPos == Vec3(0, 0, -1)) m_BoneTransform->SetRotation(Vec3(0, 180, 0));
 
 		if (halfPos != Vec3(0))
 		{
 			currntPosition += halfPos * 6.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
-			m_Transform->SetPosition(currntPosition);
+			m_BoneTransform->SetPosition(currntPosition);
 		}
 		else {
 			m_Enemy->ChangeState<BossAttack>();
@@ -119,7 +119,7 @@ namespace basecross {
 	}
 	void BossAttack::Execute()
 	{
-		m_Stage->AddGameObject<AttackCollision>(m_Transform->GetPosition() + m_Transform->GetForward(), Vec3(3.0f, 1.5f, 3.0f), 3.0f, 1.0f);
+		m_Stage->AddGameObject<AttackCollision>(m_BoneTransform->GetPosition() + m_BoneTransform->GetForward(), Vec3(3.0f, 1.5f, 3.0f), 3.0f, 1.0f);
 	}
 	void BossAttack::Exit()
 	{

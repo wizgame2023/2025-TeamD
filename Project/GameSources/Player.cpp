@@ -137,8 +137,8 @@ namespace basecross {
 
 	void Player::SearchRange()
 	{
-		Vec3 forward = m_Transform->GetForward();
-		Vec3 position = m_Transform->GetPosition();
+		Vec3 forward = m_BoneTransform->GetForward();
+		Vec3 position = m_BoneTransform->GetPosition();
 		float searchDistance = 10.0f;
 		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -153,7 +153,7 @@ namespace basecross {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					float rotate = atan2f(rot.x, rot.z);
-					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+					m_BoneTransform->SetRotation(Vec3(0.0f, rotate, 0.0f));
 				}
 			}
 			else if (targetBulletVector != nullptr)
@@ -165,7 +165,7 @@ namespace basecross {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						float rotate = atan2f(rot.x, rot.z);
-						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+						m_BoneTransform->SetRotation(Vec3(0.0f, rotate, 0.0f));
 					}
 				}
 			}
@@ -202,7 +202,7 @@ namespace basecross {
 
 				if (sharedObject != nullptr)
 				{
-					Vec3 position = m_Transform->GetPosition();
+					Vec3 position = m_BoneTransform->GetPosition();
 					Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
 					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
 					if ((vec1 - position).length() < (vec0 - position).length())
@@ -235,7 +235,7 @@ namespace basecross {
 
 	Vec3 Player::GetForward()
 	{
-		return m_Transform->GetForward();
+		return m_BoneTransform->GetForward();
 	}
 
 	int Player::GetStates()
@@ -258,21 +258,27 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");
+		
 
-		//auto ptrDraw = AddComponent<PNTBoneModelDraw>();
+		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
-		//	Vec3(.4f, .4f, .4f), //(.1f, .1f, .1f),
+		//	Vec3(0.09f), //(.1f, .1f, .1f),
 		//	Vec3(0.0f, 90.0f, 0.0f),
 		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, 0, 0.0f)
+		//	Vec3(0.0f, -1.0f, 0.0f)
 		//);
 
-		//ptrDraw->SetMeshResource(L"PLAYER");
+		//ptrDraw->SetMeshResource(L"DEBUG");
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		////SetDrawActive(false);
 		//ptrDraw->SetOwnShadowActive(true);
-		
+		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
+		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		//
+		//auto bone = AddComponent<BonePosition>(L"Chara.txt");
+		//bone->CreateBone();
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -291,7 +297,8 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcPNTStaticDraw>();
+		auto draw = GetComponent<BcBaseDraw>();
+		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());

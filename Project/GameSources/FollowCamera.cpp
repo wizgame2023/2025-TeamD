@@ -144,8 +144,8 @@ namespace basecross {
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
 
-		m_Eye = m_Position + m_Direction * 5.0f;
-		m_Eye.y = m_Position.y + 2.0f;
+		m_Eye = m_Position + m_Direction * 2.0f;
+		m_Eye.y = m_Position.y + 0.5f;
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player"};
 		for (auto& obj : m_Stage->GetGameObjectVec()) {
@@ -153,8 +153,8 @@ namespace basecross {
 			auto transform = obj->GetComponent<Transform>();
 			Vec3 position = transform->GetPosition();
 			Vec3 scale = transform->GetScale();
-			float length = RayCast::CalcDistancePointToLine(position,Line(m_PlayerTransform->GetPosition(),m_Eye));
-			Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
+			float length = RayCast::CalcDistanceXZPointToLine(position,Line(m_PlayerTransform->GetPosition(),m_Eye));
+			Vec3 h = Vec3(scale.x, 0, scale.z) / 2.0f;
 			if (length < h.length()) {
 				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
 			}

@@ -30,16 +30,16 @@ namespace basecross {
 		};
 
 
-		m_Draw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
+		m_BoneDraw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
 		if (m_TexKey != L"") {
-			m_Draw->SetTextureResource(m_TexKey);
+			m_BoneDraw->SetTextureResource(m_TexKey);
 		}
 		SetAlphaActive(true);
-		m_Draw->SetSamplerState(SamplerState::LinearWrap);
-		m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
+		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 1));
 
-		m_Transform = GetComponent<Transform>();
-		m_Transform->SetPosition(m_Pos);
+		m_BoneTransform = GetComponent<Transform>();
+		m_BoneTransform->SetPosition(m_Pos);
 
 		m_ScreenSize = Vec2(1280, 800);
 
@@ -50,7 +50,7 @@ namespace basecross {
 			Animation();
 		}
 		//î•ñXV
-		m_Pos = m_Transform->GetPosition();
+		m_Pos = m_BoneTransform->GetPosition();
 	}
 	void Sprite::Animation() {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
@@ -117,13 +117,13 @@ namespace basecross {
 	}
 	void Sprite::UpdateUV(vector<Vec2> uv) {
 		if (uv.empty()) return;
-		if (m_Draw) {
+		if (m_BoneDraw) {
 			for (int i = 0; i < m_Vertices.size(); i++)
 			{
 				m_Vertices[i].textureCoordinate = uv[i];
 			}
 
-			m_Draw->UpdateVertices(m_Vertices);
+			m_BoneDraw->UpdateVertices(m_Vertices);
 		}
 	}
 	void Sprite::CutAnimationUv(Vec2 cut) {
@@ -142,10 +142,10 @@ namespace basecross {
 		m_IsAnimation = true;
 	}
 	void Sprite::UpdateSize(Vec3 size) {
-		m_Transform->SetScale(size);
+		m_BoneTransform->SetScale(size);
 	}
 	void Sprite::UpdateSize(Vec2 size) {
-		if (m_Draw) {
+		if (m_BoneDraw) {
 			m_Size = size;
 			if (m_IsAnimation) {
 				CreateVertex(m_Size, m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
@@ -153,18 +153,18 @@ namespace basecross {
 			else {
 				CreateVertex(m_Size, m_AnimationUV[0]);
 			}
-			m_Draw->UpdateVertices(m_Vertices);
+			m_BoneDraw->UpdateVertices(m_Vertices);
 		}
 	}
 
 	void Sprite::SetPos(Vec3 pos) {
-		m_Transform->SetPosition(pos);
+		m_BoneTransform->SetPosition(pos);
 	}
 	void Sprite::SetDiffuse(Col4 color) {
-		m_Draw->SetDiffuse(color);
+		m_BoneDraw->SetDiffuse(color);
 	}
 	Col4 Sprite::GetDiffuse() {
-		return m_Draw->GetDiffuse();
+		return m_BoneDraw->GetDiffuse();
 	}
 	void Sprite::ScreenCenter(const Vec2 diff) {
 		Vec3 newPos = Vec3();
@@ -174,7 +174,7 @@ namespace basecross {
 		else {
 
 		}
-		m_Transform->SetPosition(newPos);
+		m_BoneTransform->SetPosition(newPos);
 	}
 	void Sprite::ScreenTop(const Vec2 diff) {
 
@@ -247,14 +247,14 @@ namespace basecross {
 
 
 	void SpriteAction::OnCreate() {
-		m_Draw = GetGameObject()->GetComponent<SpriteBaseDraw>();
+		m_BoneDraw = GetGameObject()->GetComponent<SpriteBaseDraw>();
 		m_Trans = GetGameObject()->GetComponent<Transform>();
 	}
 
 	void SpriteFlash::OnUpdate() {
-		if (m_Draw != nullptr && IsPlay()) {
+		if (m_BoneDraw != nullptr && IsPlay()) {
 			float elapsed = App::GetApp()->GetElapsedTime();
-			Col4 color = m_Draw->GetDiffuse();
+			Col4 color = m_BoneDraw->GetDiffuse();
 			color.w += m_FlashSpeed * elapsed;
 			if (color.w < 0 || color.w > 1) {
 				m_FlashSpeed *= -1;
@@ -265,7 +265,7 @@ namespace basecross {
 					color.w = 1;
 				}
 			}
-			m_Draw->SetDiffuse(color);
+			m_BoneDraw->SetDiffuse(color);
 		}
 	}
 	void SpriteScaling::OnCreate() {
@@ -285,12 +285,12 @@ namespace basecross {
 	}
 
 	void SpriteFade::OnUpdate() {
-		if (m_Draw != nullptr && IsPlay()) {
+		if (m_BoneDraw != nullptr && IsPlay()) {
 			float elapsed = App::GetApp()->GetElapsedTime();
 			if (!m_IsFadeOut) {
 				elapsed *= -1;
 			}
-			Col4 color = m_Draw->GetDiffuse();
+			Col4 color = m_BoneDraw->GetDiffuse();
 			if (!IsFinish()) {
 				color.w += elapsed * m_FadeSpeed;
 			}
@@ -301,7 +301,7 @@ namespace basecross {
 			else {
 				m_IsFinished = false;
 			}
-			m_Draw->SetDiffuse(color);
+			m_BoneDraw->SetDiffuse(color);
 		}
 	}
 	void SpriteButton::OnCreate() {
@@ -465,13 +465,13 @@ namespace basecross {
 		}
 	}
 	void Board::OnCreate() {
-		m_Draw = AddComponent<PNTStaticDraw>();
-		m_Draw->SetOriginalMeshUse(true);
+		m_BoneDraw = AddComponent<PNTStaticDraw>();
+		m_BoneDraw->SetOriginalMeshUse(true);
 		vector<uint16_t> indices = {};
 		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
-		m_Draw->CreateOriginalMesh(m_Vertices, indices);
+		m_BoneDraw->CreateOriginalMesh(m_Vertices, indices);
 		if (m_TexKey != L"") {
-			m_Draw->SetTextureResource(m_TexKey);
+			m_BoneDraw->SetTextureResource(m_TexKey);
 		}
 		SetAlphaActive(true);
 

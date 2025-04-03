@@ -85,9 +85,9 @@ namespace basecross{
 		//頂点
 		vector<VertexPositionColorTexture> m_Vertices;
 		//描画コンポーネント
-		shared_ptr<PCTSpriteDraw> m_Draw;
+		shared_ptr<PCTSpriteDraw> m_BoneDraw;
 		//位置コンポーネント
-		shared_ptr<Transform> m_Transform;
+		shared_ptr<Transform> m_BoneTransform;
 		//スクリーンサイズ
 		Vec2 m_ScreenSize;
 		//アニメーションマップ
@@ -265,7 +265,7 @@ namespace basecross{
 	class SpriteAction : public Component {
 		bool m_IsPlay;
 	protected:
-		shared_ptr<SpriteBaseDraw> m_Draw;
+		shared_ptr<SpriteBaseDraw> m_BoneDraw;
 		shared_ptr<Transform> m_Trans;
 	public:
 		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr),m_IsPlay(true){}
@@ -356,12 +356,12 @@ namespace basecross{
 		void FadeOut() {
 			m_IsFadeOut = true;
 			m_IsFinished = false;
-			m_Draw->SetDiffuse(Col4(1, 1, 1, 0));
+			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 0));
 		}
 		void FadeIn() {
 			m_IsFadeOut = false;
 			m_IsFinished = false;
-			m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
+			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 1));
 		}
 		bool IsFinish() {
 			return m_IsFinished;
@@ -719,7 +719,7 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class Board : public GameObject {
-		shared_ptr<PNTStaticDraw> m_Draw;
+		shared_ptr<PNTStaticDraw> m_BoneDraw;
 		shared_ptr<Transform> m_Trans;
 
 		Vec3 m_StartPos;
@@ -742,10 +742,10 @@ namespace basecross{
 			m_Offset = offset;
 		}
 		shared_ptr<PNTStaticDraw> GetDraw() {
-			return m_Draw;
+			return m_BoneDraw;
 		}
 		void SetColor(Col4 color) {
-			m_Draw->SetDiffuse(color);
+			m_BoneDraw->SetDiffuse(color);
 		}
 		vector<VertexPositionNormalTexture> GetVertices() {
 			return m_Vertices;
