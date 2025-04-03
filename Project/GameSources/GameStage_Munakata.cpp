@@ -185,6 +185,12 @@ namespace basecross {
 
 			m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
 			m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
+
+			m_PlayerEnergyBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
+			m_PlayerEnergyBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
+			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
 		}
 		catch (...) {
 			throw;
@@ -202,6 +208,9 @@ namespace basecross {
 			float currentHp = player->GetHP();
 			float maxHp = player->GetMaxHP();
 			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+
+			float currentEnergy = player->GetEnergy();
+			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
 		}
 
 	}

@@ -26,7 +26,7 @@ namespace basecross {
 		shared_ptr<EffectManeger> m_Effect;
 	public:
 		//\’z‚Æ”jŠü
-		GameStageK() : GameStage(), m_IsPose(false) {}
+		GameStageK(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ~GameStageK() {}
 		//‰Šú‰»
 		virtual void OnCreate()override;

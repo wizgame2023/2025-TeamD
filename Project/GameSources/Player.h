@@ -57,7 +57,9 @@ namespace basecross {
 		void Debug();
 		Vec3 GetForward();
 		int GetStates();
-		Vec3 SearchRange();
+		float GetEnergy();
+		void SearchRange();
+
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);

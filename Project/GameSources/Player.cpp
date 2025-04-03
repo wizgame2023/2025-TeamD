@@ -113,6 +113,7 @@ namespace basecross {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
 				{
 					m_PlayerStateNum += PlayerState::ZONE;
+					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -127,6 +128,7 @@ namespace basecross {
 				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
 				m_EnergyCharge = 0;
+				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			}
 		}
 
@@ -263,7 +265,9 @@ namespace basecross {
 	{
 		return m_PlayerStateNum;
 	}
-
+	float Player::GetEnergy() {
+		return m_EnergyCharge;
+	}
 	void Player::OnCreate()
 	{
 		Character::OnCreate();

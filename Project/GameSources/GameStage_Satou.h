@@ -34,7 +34,7 @@ namespace basecross {
 
 	public:
 		//\’z‚Æ”jŠü
-		GameStageS() : GameStage(), m_IsPose(false) {}
+		GameStageS(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ~GameStageS() {}
 		//‰Šú‰»
 		virtual void OnCreate()override;
