@@ -42,9 +42,10 @@ namespace basecross {
 
 	public:
 		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
-		static float CalcDistanceXZPointToLine(const Vec3& point, const Line& line);
-		static float CalcDistance3DPointToLine(const Vec3& point, const Line& line);
 		static 	bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
+
+		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
+		static float CalcDistancePoi(const Vec3& point, const Line& line);
 
 	};
 }

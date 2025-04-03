@@ -60,7 +60,7 @@ namespace basecross {
 	/// <param name="start">線分の始点</param>
 	/// <param name="end">線分の終点</param>
 	/// <returns>最短距離</returns>
-	float RayCast::CalcDistanceXZPointToLine(const Vec3& point, const Line& line) {
+	float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
 		Vec2 startToPoint = Vec2(point.x - line.m_Start.x, point.z - line.m_Start.z);
 		Vec2 startToEnd = Vec2(line.m_End.x - line.m_Start.x, line.m_End.z - line.m_Start.z);
 		Vec2 endToStart = Vec2(line.m_Start.x - line.m_End.x, line.m_Start.z - line.m_End.z);
@@ -69,18 +69,6 @@ namespace basecross {
 		if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
 		return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
 	}
-	float RayCast::CalcDistance3DPointToLine(const Vec3& point, const Line& line) {
-		Vec3 startToEnd = line.m_End - line.m_Start;
-		Vec3 startToPoint = point - line.m_Start;
-
-		float innerP = dot(startToEnd, startToPoint);
-		float innerL = dot(startToEnd, startToEnd);
-		float t = max(0.0f, min(1.0f, innerP / innerL));
-		Vec3 projection = { line.m_Start.x + t * startToEnd.x, line.m_Start.y + t * startToEnd.y,line.m_Start.z + t * startToEnd.z };
-
-		return (point - projection).length();
-	}
-
 	bool RayCast::HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object) {
 		vector<Vec3> tempPositions;
 		auto smDraw = object->GetComponent<SmBaseDraw>(false);
@@ -128,6 +116,18 @@ namespace basecross {
 			}
 		}
 		return false;
+	}
+
+	float RayCast::CalcDistancePoi(const Vec3& point, const Line& line) {
+		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);
+		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);
+		Vec3 endToStr = Vec3(line.m_Start.x - line.m_End.x, line.m_Start.y - line.m_End.y, line.m_Start.z - line.m_End.z);
+		Vec3 endToPoi = Vec3(point.x - line.m_End.x, point.y - line.m_End.y, point.z - line.m_End.z);
+		if (startToPoi.dot(startToE) < 0.0) return startToPoi.length();
+		if (endToPoi.dot(endToStr) < 0.0) return endToPoi.length();
+		return abs(startToE.x * startToPoi.y * startToE.z - startToE.y * startToPoi.x * startToPoi.z) / startToE.length();
+		//return abs(startToE.y * startToPoi.z - startToE.z * startToPoi.y) / startToE.length();
+		//return abs(startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
 	}
 }
 //end basecross
