@@ -32,10 +32,6 @@ namespace basecross {
 		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
 
-		////ƒfƒoƒbƒN—p
-		//auto line = GetStage()->AddGameObject<LineObject>(m_Intruder, GetThis<Character>());
-		//line->SetLineColor(Col4(1.0f, 0.0f, 0.0f, 1.0f), Col4(0.0f, 0.0f, 1.0f, 1.0f));
-
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
 
@@ -52,7 +48,9 @@ namespace basecross {
 					m_NearPoint = shObj;
 				}
 				Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
-				if ((vec1 - m_Position).length() < (vec0 - m_Position).length())
+				auto obj = dynamic_pointer_cast<RootPointer>(shObj);
+				wstring num =  obj->GetPointerNumber();
+				if ((vec1 - m_Position).length() < (vec0 - m_Position).length() && num != L"")
 				{
 					m_NearPoint = shObj;
 				}

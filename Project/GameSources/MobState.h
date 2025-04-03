@@ -77,10 +77,11 @@ namespace basecross {
 	class BossAttack : public EnemyState
 	{
 		bool m_IntruderAlert;
-
+		float m_ChangeTime;
 	public:
 		BossAttack(shared_ptr<Enemy>& enemy) :
-			EnemyState(enemy)
+			EnemyState(enemy),
+			m_ChangeTime(1.0f)
 		{
 		}
 

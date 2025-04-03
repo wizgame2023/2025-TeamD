@@ -132,7 +132,7 @@ namespace basecross {
 
 	}
 
-	void Player::SearchRange()
+	Vec3 Player::SearchRange()
 	{
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
@@ -144,13 +144,16 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance / 3.0f)
+			if ((position - targetEnemy).length() < searchDistance / 3.0f )
 			{
-				if (IsWithinDetectionRange(position, targetEnemy, 45.0)) {
+				if (IsWithinDetectionRange(forward, targetEnemy - position , 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					float rotate = atan2f(rot.x, rot.z);
-					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+					m_Target->GetComponent<Transform>()->SetPosition(targetEnemy);
+					return rot;
+				}
+				else {
+					return Vec3();
 				}
 			}
 			else if (targetBulletVector != nullptr)
@@ -158,14 +161,26 @@ namespace basecross {
 				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
 				if ((position - targetbullert).length() < searchDistance)
 				{
-					if (IsWithinDetectionRange(position, targetbullert, 45.0)) {
+					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
-						float rotate = atan2f(rot.x, rot.z);
-						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+						m_Target->GetComponent<Transform>()->SetPosition(targetbullert);
+						return rot;
+					}
+					else {
+						return Vec3();
 					}
 				}
+				else {
+					return Vec3();
+				}
 			}
+			else {
+				return Vec3();
+			}
+		}
+		else {
+			return Vec3();
 		}
 	}
 
@@ -181,6 +196,15 @@ namespace basecross {
 		Vec3 normalizedDirection = direction.normalize();
 
 		return normalizedDirection; // 向きベクトルを返却
+	}
+
+	void Player::AimRock(Vec3 rot)
+	{
+		if (rot != Vec3())
+		{
+			float rotate = atan2f(rot.x, rot.z);
+			SetRotation(Vec3(0.0f, XMConvertToDegrees(rotate), 0.0f));
+		}
 	}
 
 	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group)
@@ -278,6 +302,7 @@ namespace basecross {
 
 		AddTag(L"Player");
 
+		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -293,28 +318,7 @@ namespace basecross {
 		ZoneActivation();
 		Debug();
 
-    //デバッグ用
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-			
-		}
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			m_ParryJudge = true;
-			SearchRange();
-			m_Position = GetPosition();
-			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
-			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
-		}
-
-		if (m_ParryJudge == true)
-		{
-			m_ParryTime--;
-			if (m_ParryTime <= 0.0f)
-			{
-				//m_ParryJudge = false;
-			}
-		}
+		//デバッグ用
 		if (m_DamageIntervalStart)
 		{
 			m_DamageInterval -= elapsedTime;
@@ -323,7 +327,7 @@ namespace basecross {
 			{
 				draw->SetDiffuse(Col4(1, 1, 1, 1));
 				m_DamageIntervalStart = false;
-				m_DamageInterval = 3.0f;
+				m_DamageInterval = 0.5f;
 			}
 		}
 		if ((m_PlayerStateNum & PlayerState::DASH) != 0 )
@@ -356,8 +360,12 @@ namespace basecross {
 		else {
 			m_BoostTime = 0.2f;
 			m_Attacktime = 0.2f;
+
 			m_BoostInterval -= elapsedTime;
+			m_AttackInterval -= elapsedTime;
 			MovePlayer(6.0f);
+			Vec3 rot = SearchRange();
+
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
 				m_BoostAngle = GetForward();;
@@ -371,11 +379,13 @@ namespace basecross {
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 			{
 				m_ParryJudge = true;
-				SearchRange();
+
+				AimRock(rot);
 				m_Position = GetPosition();
 				Vec3 forward = GetForward();
+
 				BoostMove(15.0f, forward);
-				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.1f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
+				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
@@ -473,11 +483,11 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 12.0f;
+			m_Speed = 6.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_Speed = 24.0f;
+			m_Speed = 12.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)
@@ -502,7 +512,7 @@ namespace basecross {
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);
-			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
+			//GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}
 
