@@ -225,8 +225,9 @@ namespace basecross {
 
 		SetAllGameObjectActive(!m_IsPose);
 
+		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
 
-		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
+		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
 	void GameStage::OnDraw()

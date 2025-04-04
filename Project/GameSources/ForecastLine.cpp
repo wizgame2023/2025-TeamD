@@ -55,7 +55,7 @@ namespace basecross {
 		auto transform = obj->GetComponent<Transform>();
 		Vec3 position = transform->GetPosition();
 		Vec3 scale = transform->GetScale();
-		float length = RayCast::CalcDistanceXZPointToLine(position,Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
+		float length = RayCast::CalcDistancePointToLine(position,Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
 		Vec3 halfScale = scale / 2.0f;
 		if(length > halfScale.length()){
 			return false;

@@ -135,6 +135,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -224,5 +225,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
   </ItemGroup>
 </Project>

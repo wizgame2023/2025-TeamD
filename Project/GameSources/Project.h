@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "SoundManager.h"
+#include "ScoreManager.h"
 #include "GameStage_Munakata.h"
 #include "GameStage_Kamata.h"
 #include "GameStage_Satou.h"

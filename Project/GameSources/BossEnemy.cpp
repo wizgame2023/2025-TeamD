@@ -47,7 +47,7 @@ namespace basecross {
 				m_IsAppearance = true;
 			}
 
-			int defeatCount = m_Stage->GetDefeatEnemyCount();
+			int defeatCount = ScoreManager::Instance()->GetEliminateEnemyCount();
 			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
 			}
