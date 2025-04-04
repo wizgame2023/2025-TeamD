@@ -73,22 +73,6 @@ namespace basecross {
 			Vec3 currntPosition = GetPosition();
 
 			if (m_Intruder != nullptr) {
-				if (m_IntruderAlert) {
-					Vec3 halfPos = navi->GetAStarForword(currntPosition);
-
-					if (halfPos == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
-					if (halfPos == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
-					if (halfPos == Vec3(0, 0, 1))  m_Transform->SetRotation(Vec3(0, 0, 0));
-					if (halfPos == Vec3(0, 0, -1)) m_Transform->SetRotation(Vec3(0, 180, 0));
-
-					if (halfPos != Vec3(0))
-					{
-						currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
-						SetPosition(currntPosition);
-					}
-
-				}
-				else {
 					Vec3 taregtpoint = navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 					if (taregtpoint == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
 					else if (taregtpoint == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
@@ -100,7 +84,6 @@ namespace basecross {
 						currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
 						SetPosition(currntPosition);
 					}
-				}
 			}
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			if (device.bConnected) {
