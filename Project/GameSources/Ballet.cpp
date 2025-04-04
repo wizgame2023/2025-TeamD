@@ -18,10 +18,10 @@ namespace basecross {
 	void Bullet::OnCreate()
 	{
 		//初期位置の設定
-		m_BoneTransform = AddComponent<Transform>();
-		m_BoneTransform->SetPosition(m_Position);
-		m_BoneTransform->SetRotation(Vec3(0));
-		m_BoneTransform->SetScale(Vec3(0.1f));
+		m_Transform = AddComponent<Transform>();
+		m_Transform->SetPosition(m_Position);
+		m_Transform->SetRotation(Vec3(0));
+		m_Transform->SetScale(Vec3(0.1f));
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -38,7 +38,7 @@ namespace basecross {
 
 	void Bullet::OnUpdate() {
 		float elapsed = App::GetApp()->GetElapsedTime();
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
 
 		ZoneSpeedSet();
@@ -49,7 +49,7 @@ namespace basecross {
 		}
 		else {
 			position += moveAmount;
-			m_BoneTransform->SetPosition(position);
+			m_Transform->SetPosition(position);
 		}
 	}
 

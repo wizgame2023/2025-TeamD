@@ -36,7 +36,7 @@ namespace basecross{
 		Vec3 m_Scale;
 		Vec3 m_Rotation;
 
-		shared_ptr<Transform> m_BoneTransform;
+		shared_ptr<Transform> m_Transform;
 		shared_ptr<GameStage> m_Stage;
 
 		bool m_IsEndAsyncUpdate;
@@ -59,34 +59,34 @@ namespace basecross{
 		}
 		void SetPosition(Vec3 position) {
 			m_Position = position;
-			m_BoneTransform->SetPosition(position);
+			m_Transform->SetPosition(position);
 		}
 		void SetScale(Vec3 scale) {
 			m_Scale = scale;
-			m_BoneTransform->SetScale(scale);
+			m_Transform->SetScale(scale);
 		}
 		void SetRotation(Vec3 degRotation) {
 			Vec3 radRotation = Vec3(XMConvertToRadians(degRotation.x), XMConvertToRadians(degRotation.y), XMConvertToRadians(degRotation.z));
 			m_Rotation = radRotation;
 
-			m_BoneTransform->SetRotation(radRotation);
+			m_Transform->SetRotation(radRotation);
 		}
 		void RotateY(float degree) {
 			m_Rotation.y = XMConvertToRadians(degree);
 			Quat q = Quat();
 			q = q * Quat(0.0f, sin(m_Rotation.y / 2.0f), 0.0f, cos(m_Rotation.y / 2.0f));
-			m_BoneTransform->SetQuaternion(q);
+			m_Transform->SetQuaternion(q);
 		}
 		Vec3 GetPosition() {
-			m_Position = m_BoneTransform->GetPosition();
+			m_Position = m_Transform->GetPosition();
 			return m_Position;
 		}
 		Vec3 GetScale() {
-			m_Scale = m_BoneTransform->GetScale();
+			m_Scale = m_Transform->GetScale();
 			return m_Scale;
 		}
 		Vec3 GetRotation() {
-			m_Rotation = m_BoneTransform->GetRotation();
+			m_Rotation = m_Transform->GetRotation();
 			return m_Rotation;
 		}
 	};

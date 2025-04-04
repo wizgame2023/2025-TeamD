@@ -12,7 +12,7 @@ namespace basecross {
 	void EnemyState::Enter()
 	{
 		m_Stage = m_Enemy->GetStage();
-		m_BoneTransform = m_Enemy->GetComponent<Transform>();
+		m_Transform = m_Enemy->GetComponent<Transform>();
 		m_Player = m_Enemy->m_Intruder;
 	}
 
@@ -45,16 +45,16 @@ namespace basecross {
 		if (m_IntruderAlert == true)
 		{
 			Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
-			Vec3 position = m_BoneTransform->GetPosition();
+			Vec3 position = m_Transform->GetPosition();
 			Vec3 rot = target - position;
 			rot.normalize();
 			float rotate = atan2f(rot.x, rot.z);
-			m_BoneTransform->SetRotation(Vec3(0, rotate, 0));
+			m_Transform->SetRotation(Vec3(0, rotate, 0));
 			auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
 			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
 				Vec3 direction = m_Enemy->GetDirectionToIntruder();
 
-				auto ballet = m_Stage->AddGameObject<Bullet>(m_BoneTransform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
+				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
 				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
 				m_Enemy->m_Line->SetBallet(ballet);

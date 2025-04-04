@@ -9,7 +9,7 @@
 namespace basecross {
 
 	void LineCube::OnCreate() {
-		m_BoneTransform = GetComponent<Transform>();
+		m_Transform = GetComponent<Transform>();
 
 		m_BoneDraw = AddComponent<BcPNTStaticDraw>();
 		m_BoneDraw->SetMeshResource(L"DEFAULT_CUBE");
@@ -26,9 +26,9 @@ namespace basecross {
 		m_BalletLine = GetStage()->AddGameObject<LineCube>();
 		m_Forecast = GetStage()->AddGameObject<LineCube>();
 
-		m_BalletLine->m_BoneTransform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
+		m_BalletLine->m_Transform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
 		m_BalletLine->m_BoneDraw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
-		m_Forecast->m_BoneTransform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
+		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
 		m_Forecast->m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
 		//InitializeCriticalSection(&m_CriticalSection);
@@ -111,8 +111,8 @@ namespace basecross {
 		}
 		float rad = atan2f(-m_Direction.z, m_Direction.x);
 
-		auto& balletTransform = m_BalletLine->m_BoneTransform;
-		auto& forecastTransform = m_Forecast->m_BoneTransform;
+		auto& balletTransform = m_BalletLine->m_Transform;
+		auto& forecastTransform = m_Forecast->m_Transform;
 		auto& balletDraw = m_BalletLine->m_BoneDraw;
 		auto& forecastDraw = m_Forecast->m_BoneDraw;
 

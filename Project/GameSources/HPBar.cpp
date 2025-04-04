@@ -8,12 +8,12 @@
 
 namespace basecross {
 	void HPBar::OnCreate() {
-		m_BoneTransform = GetComponent<Transform>();
+		m_Transform = GetComponent<Transform>();
 
 		m_HpBar = GetStage()->AddGameObject<Board>(L"HP_BAR_E", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
 	}
 	void HPBar::OnUpdate() {
-		m_BoneTransform->SetPosition(m_Target->GetPosition() + m_Offset);
+		m_Transform->SetPosition(m_Target->GetPosition() + m_Offset);
 		float remainingHp = m_CurrentHp / m_MaxHp;
 		auto barTransform = m_HpBar->GetComponent<Transform>();
 		barTransform->SetScale(Vec3(remainingHp, 0.09f, 1.0f));
@@ -24,7 +24,7 @@ namespace basecross {
 
 		Vec3 crossVec = cross(forward, Vec3(0, 1, 0));
 		crossVec = crossVec.normalize();
-		barTransform->SetPosition(m_BoneTransform->GetPosition() + crossVec * 0.5f * (1.0f - remainingHp));
+		barTransform->SetPosition(m_Transform->GetPosition() + crossVec * 0.5f * (1.0f - remainingHp));
 	}
 	void HPBar::Destroy() {
 		GetStage()->RemoveGameObject<Board>(m_HpBar);

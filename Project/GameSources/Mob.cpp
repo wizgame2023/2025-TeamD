@@ -104,7 +104,7 @@ namespace basecross {
 				m_ShotRandomInterval = 0;
 			}
 		}
-		//m_SearchFan->SetForward(m_BoneTransform->GetForword().normalize());
+		//m_SearchFan->SetForward(m_Transform->GetForword().normalize());
 		//m_SearchFan->SetPosition(GetPosition());
 		m_HpBar->SetCurrentHp(m_HP);
 	}
@@ -113,7 +113,7 @@ namespace basecross {
 		StartAsync();
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 currntPosition = m_BoneTransform->GetPosition();
+		Vec3 currntPosition = m_Transform->GetPosition();
 
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
@@ -211,7 +211,7 @@ namespace basecross {
 
 	shared_ptr<Transform> Mob::GetTransfrom()
 	{
-		return m_BoneTransform;
+		return m_Transform;
 	}
 
 

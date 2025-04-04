@@ -58,7 +58,7 @@ namespace basecross {
 		Vec3 GetForward();
 		int GetStates();
 		float GetEnergy();
-		void SearchRange();
+		Vec3 SearchRange();
 
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);

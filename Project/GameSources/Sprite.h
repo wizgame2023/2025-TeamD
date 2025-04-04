@@ -87,7 +87,7 @@ namespace basecross{
 		//描画コンポーネント
 		shared_ptr<PCTSpriteDraw> m_BoneDraw;
 		//位置コンポーネント
-		shared_ptr<Transform> m_BoneTransform;
+		shared_ptr<Transform> m_Transform;
 		//スクリーンサイズ
 		Vec2 m_ScreenSize;
 		//アニメーションマップ
