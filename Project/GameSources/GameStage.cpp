@@ -139,6 +139,7 @@ namespace basecross {
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
+		SoundManager::Instance().PauseBGM(false);
 	}
 	/// <summary>
 	/// ポーズ画面を開く
@@ -147,6 +148,7 @@ namespace basecross {
 		m_IsPose = true;
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
+		SoundManager::Instance().PauseBGM(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -187,7 +189,7 @@ namespace basecross {
 			CreateResource();
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
-
+			ButtonManager::instance->SetSound(L"SE_ACCEPT");
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
@@ -207,8 +209,6 @@ namespace basecross {
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-
-			SoundManager::Instance().PlayBGM(L"BGM");
 		}
 		catch (...) {
 			throw;
@@ -226,8 +226,9 @@ namespace basecross {
 
 		SetAllGameObjectActive(!m_IsPose);
 
+		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
 
-		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
+		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
 	void GameStage::OnDraw()

@@ -4,7 +4,7 @@
 namespace basecross {
 
 	class SharpFan : public GameObject {
-		shared_ptr<PCTStaticDraw> m_Draw;
+		shared_ptr<PCTStaticDraw> m_BoneDraw;
 		shared_ptr<Transform> m_Transform;
 
 		wstring m_TexKey;

@@ -34,6 +34,7 @@ namespace basecross{
 		shared_ptr<SoundItem> PlayBGM(const wstring& key, const float volume = 1.0f);
 		void StopAll();
 		void StopBGM();
+		void PauseBGM(bool flag);
 
 		float GetSEVolume() {
 			return m_SEVolume;

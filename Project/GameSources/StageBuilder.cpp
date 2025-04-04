@@ -64,10 +64,7 @@ namespace basecross {
 			}
 		}
 		m_Builders.clear();
-		auto gameStage = static_pointer_cast<GameStage>(GetStage());
-		if (gameStage != nullptr) {
-			gameStage->SetMaxEnemyCount(enemyCount);
-		}
+		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
 		RegisterRootPoint(rootPointers);
 	}
 	/// <summary>

@@ -8,6 +8,7 @@
 
 namespace basecross {
 	class Sprite;
+	class NumberSprite;
 	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
@@ -18,6 +19,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_PlayerEnergyBar;
 		shared_ptr<Sprite> m_PlayerEnergyBarBackGround;
 
+		shared_ptr<NumberSprite> m_Fps;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 
@@ -39,7 +41,7 @@ namespace basecross {
 		}
 	public:
 		//構築と破棄
-		GameStageM() :GameStage(), m_IsPose(false) {}
+		GameStageM(const wstring& file) :GameStage(file), m_IsPose(false) {}
 		virtual ~GameStageM() {}
 		//初期化
 		virtual void OnCreate()override;

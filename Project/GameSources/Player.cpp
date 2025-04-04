@@ -114,6 +114,7 @@ namespace basecross {
 				{
 					m_PlayerStateNum += PlayerState::ZONE;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
+					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -281,21 +282,27 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");
+		
 
-		//auto ptrDraw = AddComponent<PNTBoneModelDraw>();
+		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
-		//	Vec3(.4f, .4f, .4f), //(.1f, .1f, .1f),
+		//	Vec3(0.09f), //(.1f, .1f, .1f),
 		//	Vec3(0.0f, 90.0f, 0.0f),
 		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, 0, 0.0f)
+		//	Vec3(0.0f, -1.0f, 0.0f)
 		//);
 
-		//ptrDraw->SetMeshResource(L"PLAYER");
+		//ptrDraw->SetMeshResource(L"DEBUG");
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		////SetDrawActive(false);
 		//ptrDraw->SetOwnShadowActive(true);
-		
+		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
+		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		//
+		//auto bone = AddComponent<BonePosition>(L"Chara.txt");
+		//bone->CreateBone();
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -315,7 +322,8 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcPNTStaticDraw>();
+		auto draw = GetComponent<BcBaseDraw>();
+		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
@@ -372,11 +380,12 @@ namespace basecross {
 
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
-				m_BoostAngle = GetForward();;
+				m_BoostAngle = GetForward();
 				if (m_BoostInterval <= 0.0f)
 				{
 					m_PlayerStateNum -= PlayerState::NORMAL;
 					m_PlayerStateNum += PlayerState::DASH;
+					SoundManager::Instance().PlaySE(L"SE_RUN");
 				}
 			}
 
@@ -393,6 +402,8 @@ namespace basecross {
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
+
+				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE",0.5f);
 			}
 		}
 
@@ -419,7 +430,6 @@ namespace basecross {
 					{
 						m_HP -= 0;
 						m_EnergyCharge += 0.2;
-						SoundManager::Instance().PlaySE(L"TEST");
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
@@ -427,11 +437,13 @@ namespace basecross {
 						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
 					}
+					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
 					m_HP -= 2;
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
+					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				}
 			}
 			m_HP = max(m_HP, 0);
@@ -477,7 +489,6 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
-		SoundManager::Instance().PlaySE(L"ATTACK");
 	}
 
 	void HitSphere::OnUpdate()

@@ -23,8 +23,8 @@ cube,28_2_0,55_5_1,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_
 cube,-28_2_0,55_5_1,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,0_2_28,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,0_2_-28,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
-player,0_2_0,0.19_0.19_0.19,0_0_0,Untagged,0,Chara,name_position_scale_rotation_tag_hp_type_
-boss,10.62_2.54_-3.3,0.19_0.19_0.19,0_0_0,Enemy,0,60,10,Chara,name_position_scale_rotation_tag_hp_time_defeat_type_
+player,0_2_0,0.19_0.38_0.19,0_0_0,Untagged,0,Chara,name_position_scale_rotation_tag_hp_type_
+boss,-2.369_1.05_0.02,1.14_1.14_1.14,0_0_0,Enemy,0,60,10,Chara,name_position_scale_rotation_tag_hp_time_defeat_type_
 mob,-10_1_-23,0.19_0.19_0.19,0_149.8312_0,Enemy,0,Chara,name_position_scale_rotation_tag_hp_type_
 mob,-10_1_-24.39,0.19_0.19_0.19,0_0_0,Enemy,0,Chara,name_position_scale_rotation_tag_hp_type_
 mob,-10_1_-25.805,0.19_0.19_0.19,0_0_0,Enemy,0,Chara,name_position_scale_rotation_tag_hp_type_

@@ -60,7 +60,7 @@ namespace basecross {
 			navi->SetTargetPosition(GetPosition(), pos);
 		}
 
-		m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
+		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, GetScale().y / 2.0f, 0));
 		m_HpBar->SetMaxHp(3);
@@ -104,8 +104,8 @@ namespace basecross {
 				m_ShotRandomInterval = 0;
 			}
 		}
-		m_SearchFan->SetForward(m_Transform->GetForword().normalize());
-		m_SearchFan->SetPosition(GetPosition());
+		//m_SearchFan->SetForward(m_Transform->GetForword().normalize());
+		//m_SearchFan->SetPosition(GetPosition());
 		m_HpBar->SetCurrentHp(m_HP);
 	}
 	void Mob::AsyncUpdate()
