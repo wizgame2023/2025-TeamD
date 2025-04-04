@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale),m_IsAppearance(false),m_ConditionTime(0.0f),m_ConditionDefeat(100)
+		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -100,7 +100,6 @@ namespace basecross {
 						currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
 						SetPosition(currntPosition);
 					}
-
 				}
 			}
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
