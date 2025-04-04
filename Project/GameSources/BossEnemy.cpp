@@ -59,7 +59,7 @@ namespace basecross {
 				m_IsAppearance = true;
 			}
 
-			int defeatCount = m_Stage->GetDefeatEnemyCount();
+			int defeatCount = ScoreManager::Instance()->GetEliminateEnemyCount();
 			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
 			}
@@ -109,7 +109,7 @@ namespace basecross {
 
 				}
 				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP) {
-					m_Stage->AddGameObject<CrushAttack>(GetPosition() + m_Transform->GetForward(), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
+					m_Stage->AddGameObject<CrushAttack>(GetPosition() + m_BoneTransform->GetForward(), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
 				}
 				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {
 
@@ -129,7 +129,7 @@ namespace basecross {
 
 	Vec3 BossEnemy::GetPosition()
 	{
-		return m_Transform->GetPosition();;
+		return m_BoneTransform->GetPosition();;
 	}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
@@ -147,10 +147,10 @@ namespace basecross {
 
 	void BossEnemyLeg::OnCreate()
 	{
-		m_Transform = GetComponent<Transform>();
-		m_Transform->SetPosition(m_Position.x + m_Direction, m_Position.y - 1.5f, m_Position.z);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(Vec3(1.0f, 3.0f, 1.0f));
+		m_BoneTransform = GetComponent<Transform>();
+		m_BoneTransform->SetPosition(m_Position.x + m_Direction, m_Position.y - 1.5f, m_Position.z);
+		m_BoneTransform->SetRotation(m_Rotation);
+		m_BoneTransform->SetScale(Vec3(1.0f, 3.0f, 1.0f));
 
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug

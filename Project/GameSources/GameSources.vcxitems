@@ -16,6 +16,7 @@
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
@@ -38,6 +39,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
@@ -47,6 +49,7 @@
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
@@ -68,6 +71,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />

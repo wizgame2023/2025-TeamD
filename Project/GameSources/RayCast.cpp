@@ -28,14 +28,16 @@ namespace basecross {
 		}
 		if (isExclude) return false;
 		bool isHit = false;
-		auto draw = object->GetComponent<SmBaseDraw>(false);
+		isHit = HitTestMeshRayCast(line, newResult, object);
+		/*auto draw = object->GetComponent<SmBaseDraw>(false);
 		auto bcDraw = object->GetComponent<BcBaseDraw>(false);
 		if (draw != nullptr) {
+
 			isHit = draw->HitTestStaticMeshSegmentTriangles(line.m_Start, line.m_End, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
 		}
 		else if (bcDraw != nullptr) {
 			isHit = bcDraw->HitTestStaticMeshSegmentTriangles(line.m_Start, line.m_End, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}
+		}*/
 
 		if (isHit) {
 			if (hit.m_Object == nullptr) {
@@ -58,7 +60,7 @@ namespace basecross {
 	/// <param name="start">線分の始点</param>
 	/// <param name="end">線分の終点</param>
 	/// <returns>最短距離</returns>
-	float RayCast::CalcDistancePointToLine(const Vec3& point,const Line& line) {
+	float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
 		Vec2 startToPoint = Vec2(point.x - line.m_Start.x, point.z - line.m_Start.z);
 		Vec2 startToEnd = Vec2(line.m_End.x - line.m_Start.x, line.m_End.z - line.m_Start.z);
 		Vec2 endToStart = Vec2(line.m_Start.x - line.m_End.x, line.m_Start.z - line.m_End.z);
@@ -66,6 +68,54 @@ namespace basecross {
 		if (startToPoint.dot(startToEnd) < 0.0) return startToPoint.length();
 		if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
 		return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
+	}
+	bool RayCast::HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object) {
+		vector<Vec3> tempPositions;
+		auto smDraw = object->GetComponent<SmBaseDraw>(false);
+		auto bcDraw = object->GetComponent<BcBaseDraw>(false);
+		if (smDraw) {
+			smDraw->GetStaticMeshWorldPositions(tempPositions);
+		}
+		else if (bcDraw) {
+			bcDraw->GetStaticMeshWorldPositions(tempPositions);
+		}
+		if (object->FindTag(L"Player")) {
+			int a = 10;
+		}
+		for (size_t i = 0, size = tempPositions.size(); i < size; i += 3) {
+			TRIANGLE triangle;
+			triangle.m_A = tempPositions[i];
+			triangle.m_B = tempPositions[i + 1];
+			triangle.m_C = tempPositions[i + 2];
+			if (!triangle.IsValid()) {
+				//三角形が無効なら次にうつる
+				continue;
+			}
+			/*Vec3 center = triangle.m_A + triangle.m_B + triangle.m_C;
+			center /= 3.0f;
+
+			float length = (center - triangle.m_A).length();
+
+			float distance = RayCast::CalcDistance3DPointToLine(center, line);
+			if (distance > length) {
+				continue;
+			}*/
+
+			bsm::Vec3 hitPosition;
+			float triangleIndex;
+			if (HitTest::SEGMENT_TRIANGLE(line.m_Start, line.m_End, triangle, hitPosition, triangleIndex)) {
+				auto Len = line.GetLength();
+				Len *= triangleIndex;
+				auto Nomal = line.GetDirection();
+				Nomal.normalize();
+				Nomal *= Len;
+				hit.m_HitPosition = line.m_Start + Nomal;
+				hit.m_Triangle = triangle;
+				hit.m_TriangleIndex = i / 3;
+				return true;
+			}
+		}
+		return false;
 	}
 
 	float RayCast::CalcDistancePoi(const Vec3& point, const Line& line) {
@@ -79,6 +129,5 @@ namespace basecross {
 		//return abs(startToE.y * startToPoi.z - startToE.z * startToPoi.y) / startToE.length();
 		//return abs(startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
 	}
-
 }
 //end basecross

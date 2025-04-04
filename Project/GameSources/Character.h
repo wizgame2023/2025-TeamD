@@ -25,6 +25,13 @@ namespace basecross {
 		virtual void OnCreate() override;
 
 		virtual void Dead() {}
+		virtual void Damage(float damage,const bool& isSound = true){
+			m_HP -= damage;
+			if (m_HP <= 0) {
+				m_HP = 0;
+				Dead();
+			}
+		}
 
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);

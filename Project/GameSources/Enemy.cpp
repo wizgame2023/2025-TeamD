@@ -67,7 +67,7 @@ namespace basecross {
 	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
-		Vec3 position = m_Transform->GetPosition();
+		Vec3 position = m_BoneTransform->GetPosition();
 		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
 
 		Vec3 offset = intruderPosition - position;
@@ -75,7 +75,7 @@ namespace basecross {
 		return offset;
 	}
 	float Enemy::GetDistanceToIntruder() {
-		Vec3 position = m_Transform->GetPosition();
+		Vec3 position = m_BoneTransform->GetPosition();
 		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
 
 		Vec3 offset = intruderPosition - position;
@@ -100,8 +100,8 @@ namespace basecross {
 		float searchDistance = 10.0f;
 
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
-		Vec3 forword = m_Transform->GetForword();
-		Vec3 position = m_Transform->GetPosition();
+		Vec3 forword = m_BoneTransform->GetForword();
+		Vec3 position = m_BoneTransform->GetPosition();
 		forword.normalize();
 		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
@@ -136,7 +136,7 @@ namespace basecross {
 
 	Vec3 Enemy::GetPosition()
 	{
-		return m_Transform->GetPosition();
+		return m_BoneTransform->GetPosition();
 	}
 
 	bool Enemy::GetIntruderAlert()
@@ -158,10 +158,8 @@ namespace basecross {
 	void Enemy::Dead() {
 		m_Line->Destroy();
 
-		auto gameStage = static_pointer_cast<GameStage>(m_Stage);
-		if (gameStage != nullptr) {
-			gameStage->EliminateEnemy();
-		}
+		ScoreManager::Instance()->AddEliminateEnemyCount();
+
 		auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
 		auto& groupVec = group->GetGroupVectors();
 		for (int i = 0; i < groupVec.size(); i++) {
@@ -181,6 +179,7 @@ namespace basecross {
 		{
 			m_HP -= 1;
 			KnockBackTime(other);
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}
 
@@ -220,10 +219,10 @@ namespace basecross {
 			0,1
 		};
 
-		m_Draw = AddComponent<PCStaticDraw>();
-		m_Draw->SetOriginalMeshUse(true);
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
-		auto meshResoure = m_Draw->GetMeshResource();
+		m_BoneDraw = AddComponent<PCStaticDraw>();
+		m_BoneDraw->SetOriginalMeshUse(true);
+		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_BoneDraw->GetMeshResource();
 		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 	}
@@ -255,7 +254,7 @@ namespace basecross {
 			{m_StartPos,m_StartColor},
 			{m_EndPos,m_EndColor}
 		};
-		m_Draw->UpdateVertices(m_Vertices);
+		m_BoneDraw->UpdateVertices(m_Vertices);
 	}
 
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {

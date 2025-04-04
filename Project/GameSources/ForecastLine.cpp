@@ -9,12 +9,12 @@
 namespace basecross {
 
 	void LineCube::OnCreate() {
-		m_Transform = GetComponent<Transform>();
+		m_BoneTransform = GetComponent<Transform>();
 
-		m_Draw = AddComponent<BcPNTStaticDraw>();
-		m_Draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_Draw->SetSamplerState(SamplerState::LinearWrap);
-		m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
+		m_BoneDraw = AddComponent<BcPNTStaticDraw>();
+		m_BoneDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
 		SetAlphaActive(true);
 
 		AddTag(L"Line");
@@ -26,10 +26,10 @@ namespace basecross {
 		m_BalletLine = GetStage()->AddGameObject<LineCube>();
 		m_Forecast = GetStage()->AddGameObject<LineCube>();
 
-		m_BalletLine->m_Transform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
-		m_BalletLine->m_Draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
-		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
-		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_BalletLine->m_BoneTransform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
+		m_BalletLine->m_BoneDraw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
+		m_Forecast->m_BoneTransform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
+		m_Forecast->m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
 		//InitializeCriticalSection(&m_CriticalSection);
 	}
@@ -56,8 +56,8 @@ namespace basecross {
 		Vec3 position = transform->GetPosition();
 		Vec3 scale = transform->GetScale();
 		float length = RayCast::CalcDistancePointToLine(position,Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
-		Vec3 h = Vec3(scale.x, 0.0f, scale.z) / 2.0f;
-		if(length > h.length()){
+		Vec3 halfScale = scale / 2.0f;
+		if(length > halfScale.length()){
 			return false;
 		}
 		return true;
@@ -111,10 +111,10 @@ namespace basecross {
 		}
 		float rad = atan2f(-m_Direction.z, m_Direction.x);
 
-		auto& balletTransform = m_BalletLine->m_Transform;
-		auto& forecastTransform = m_Forecast->m_Transform;
-		auto& balletDraw = m_BalletLine->m_Draw;
-		auto& forecastDraw = m_Forecast->m_Draw;
+		auto& balletTransform = m_BalletLine->m_BoneTransform;
+		auto& forecastTransform = m_Forecast->m_BoneTransform;
+		auto& balletDraw = m_BalletLine->m_BoneDraw;
+		auto& forecastDraw = m_Forecast->m_BoneDraw;
 
 		balletTransform->SetRotation(Vec3(0, rad, 0));
 		forecastTransform->SetRotation(Vec3(0, rad, 0));

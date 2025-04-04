@@ -11,7 +11,7 @@ namespace basecross {
 	class Character;
 	class HPBar : public GameObject
 	{
-		shared_ptr<Transform> m_Transform;
+		shared_ptr<Transform> m_BoneTransform;
 		shared_ptr<Board> m_HpFrame;
 		shared_ptr<Board> m_HpBar;
 		shared_ptr<Character> m_Target;

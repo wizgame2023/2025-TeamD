@@ -14,7 +14,7 @@ namespace basecross {
 		float m_Damage;
 		float m_ExistenceTime;
 		shared_ptr<CollisionObb> m_Collision;
-		shared_ptr<Transform> m_Transform;
+		shared_ptr<Transform> m_BoneTransform;
 	public:
 		AttackCollision(const shared_ptr<Stage>& stage,Vec3 position,Vec3 size,float damage,float time) : 
 			GameObject(stage),
