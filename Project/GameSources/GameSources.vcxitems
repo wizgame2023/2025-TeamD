@@ -14,8 +14,11 @@
     <ProjectCapability Include="SourceItemsFromImports" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
@@ -25,6 +28,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Kamata.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Munakata.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Satou.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HPBar.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
@@ -32,8 +36,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
@@ -41,8 +47,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
@@ -52,14 +61,17 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Kamata.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Munakata.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Satou.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HPBar.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />

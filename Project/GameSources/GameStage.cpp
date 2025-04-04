@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -9,20 +9,21 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+
+		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -47,42 +48,47 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
+		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// ƒXƒe[ƒW“Ç‚İ‚İİ’è
+	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 	/// </summary>
 	void GameStage::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
+		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
+
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		builder->Register<Mob>(L"mob");
 		builder->Register<RootPointer>(L"pointer");
-
+		builder->Register<Mob>(L"mob");
+		builder->Register<BossEnemy>(L"boss");
 		builder->LoadCsv();
+
 	}
-	/// <summary>
-	/// ƒ|[ƒYƒƒjƒ…[‚Ìì¬
 	/// </summary>
+	/// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// <summary>
 	void GameStage::CreatePose() {
-		//ƒ^ƒCƒgƒ‹
+		//ã‚¿ã‚¤ãƒˆãƒ«
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//‚â‚ß‚é
+		//ã‚„ã‚ã‚‹
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//ÄŠJ
+		//å†é–‹
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
 				currentStage->ClosePose();
 			});
-		//ƒTƒEƒ“ƒh
+		//ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆ
 		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				auto currentStage = static_pointer_cast<GameStage>(stage);
@@ -95,7 +101,7 @@ namespace basecross {
 		ClosePose();
 	}
 	/// <summary>
-	/// ƒTƒEƒ“ƒhƒeƒXƒgƒƒjƒ…[‚Ìì¬
+	/// ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		//SE
@@ -128,24 +134,26 @@ namespace basecross {
 		ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
+	/// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‰ã˜ã‚‹
 	/// </summary>
 	void GameStage::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
+		SoundManager::Instance().PauseBGM(false);
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğŠJ‚­
+	/// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‹ã
 	/// </summary>
 	void GameStage::OpenPose() {
 		m_IsPose = true;
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
+		SoundManager::Instance().PauseBGM(true);
 	}
 	/// <summary>
-	/// “o˜^‚³‚ê‚Ä‚¢‚é‚·‚×‚Ä‚ÌƒIƒuƒWƒFƒNƒg‚Ì•\¦‘€ì
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»ã‚’ONOFF
 	/// </summary>
-	/// <param name="flag">•\¦ONOFF</param>
+	/// <param name="flag">æç”»ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
@@ -163,7 +171,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//ƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -176,12 +184,12 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 			CreateViewLight();
 			CreateResource();
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
-
+			ButtonManager::instance->SetSound(L"SE_ACCEPT");
 			CreatePose();
 			CreateSoundTest();
 			ButtonManager::instance->CloseAll();
@@ -193,8 +201,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-
-			m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
+			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			m_ProtoScoreNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 297.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
@@ -202,8 +209,6 @@ namespace basecross {
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-
-			SoundManager::Instance().PlayBGM(L"BGM");
 		}
 		catch (...) {
 			throw;
@@ -217,23 +222,35 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				OpenPose();
 			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				
-			}
 		}
 
 		SetAllGameObjectActive(!m_IsPose);
 
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
-		}
+		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
 
-		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(GetClearRate()));
+		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
+	}
+
+	void GameStage::OnDraw()
+	{
 	}
 
 	void GameStage::OnDestroy() {
 		SoundManager::Instance().StopAll();
+	}
+
+	void GameStage::OnEvent(const shared_ptr<Event>& event) {
+		auto& msg = event->m_MsgStr;
+
+		if (msg == L"DefeatBoss") {
+			GameClear();
+		}
+		else if (msg == L"AppaerBoss") {
+			
+		}
+		else if (msg == L"DeadPlayer") {
+			GameOver();
+		}
 	}
 }
 //end basecross

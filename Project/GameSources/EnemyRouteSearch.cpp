@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief �L�����N�^�[�Ȃǎ���
+@brief キャラクターなど実体
 */
 
 #include "stdafx.h"
@@ -8,87 +8,235 @@
 #include "EnemyRouteSearch.h"
 
 namespace basecross {
-	Navigate::Navigate(const shared_ptr<GameObject>& GameObjectPtr) :
-	Component(GameObjectPtr)
-	{
-		cellData.resize(55.0f, vector<Data>(55.0f));
-		m_MapWidth = 55.0f;
-		m_MapHeight = 55.0f;
-	}
-	Navigate::~Navigate()
-	{
-	}
+    Navigate::Navigate(const std::shared_ptr<GameObject>& GameObjectPtr) :
+        Component(GameObjectPtr)
+    {
+        m_MapWidth = 100.0f;
+        m_MapHeight = 100.0f;
+        //セルのサイズを10x10とする
+        auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
+        auto pointers = pointerGroup->GetGroupVector();
+        for (auto point : pointers)
+        {
+            auto shObj = point.lock();
+            m_CellData.push_back(shObj);
+        }
+        // 開始位置の初期化 (例: マップの中心)
+        m_StartPosition = Vec3(m_MapWidth / 2.0f, 0.0f, m_MapHeight / 2.0f);
+        m_Index = m_StartPosition;
+        m_DireChange = true;
+        m_Dire = Dire::X;
+        m_BeforePosition = Vec3();
+    }
 
-	void Navigate::SetTargetPosition(Vec3 StartPos,Vec3 newTargetPosition)
-	{
-		m_TargetPosition = newTargetPosition;
-		AStarAlgorithm(StartPos, newTargetPosition);
-	}
+    Navigate::~Navigate()
+    {
+    }
 
-	void Navigate::AStarAlgorithm(Vec3 start, Vec3 goal)
-	{
-		for (float y = 0; y < m_MapHeight; ++y) {
-			for (float x = 0; x < m_MapWidth; ++x) {
-				cellData[y][x] = Data();
-			}
-		}
+    void Navigate::SetTargetPosition(const Vec3& Position, const Vec3& target)
+    {
 
-		cellData[start.z][start.x].m_State = State::CLOSE;
-		std::vector<Vec3> OpenSet;
-		OpenSet.push_back(start);
+        m_TargetPosition = target;
+        AStarAlgorithm(Position, target);
 
-		cellData[start.z][start.x].m_State = State::OPEN;
-		cellData[start.z][start.x].m_DistanceToStart = 0.0f;
-		cellData[start.z][start.x].m_DistanceToGoal = Heuristic(start, goal);
-		cellData[start.z][start.x].m_TotalDistance = cellData[start.z][start.x].m_DistanceToGoal;
+    }
 
-		while (!OpenSet.empty())
-		{
-			auto& current = *std::min_element(OpenSet.begin(), OpenSet.end(),
-				[&](const Vec3& a, const Vec3& b) {
-				int aX = static_cast<int>(a.x);
-				int aZ = static_cast<int>(a.z);
-				int bX = static_cast<int>(b.x);
-				int bZ = static_cast<int>(b.z);
-				return cellData[bZ][aX].m_TotalDistance < cellData[bZ][bX].m_TotalDistance;
-				});
-		
+    Vec3 Navigate::GetAStarForword(const Vec3 Position)
+    {
+        if (m_DireChange)
+        {
+            if (m_BeforePosition == Vec3())
+            {
+                m_BeforePosition = Position;
+            }
+            if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
+            {
+                Vec3 rezult = Vec3();
+                m_Dire = std::abs(Position.x - m_TargetPosition.x) > std::abs(Position.z - m_TargetPosition.z) ? Dire::X : Dire::Z;
 
-			OpenSet.erase(std::remove(OpenSet.begin(), OpenSet.end(), current), OpenSet.end());
-			int currentX = static_cast<int>(current.x);
-			int currentZ = static_cast<int>(current.z);
+                //if ((m_BeforePosition - Position).lengthSqr() < 1.0f)
+                //{
+                //    if (m_Dire == Dire::X) m_Dire = Dire::Z;
+                //    else if (m_Dire == Dire::Z) m_Dire = Dire::X;
+                //}
+                if (m_Dire == Dire::X)
+                {
+                    m_BeforePosition = Position;
+                    if (m_TargetPosition.x < Position.x)
+                    {
+                        rezult += Vec3(-1, 0, 0);
+                        if (m_TargetPosition.z < Position.z)
+                        {
+                            rezult += Vec3(0, 0, -1);
+                        }
+                        else if (m_TargetPosition.z > Position.z)
+                        {
+                            rezult += Vec3(0, 0, 1);
+                        }
+                    }
+                    else if (m_TargetPosition.x > Position.x)
+                    {
+                        rezult += Vec3(1, 0, 0);
+                        if (m_TargetPosition.z < Position.z)
+                        {
+                            rezult += Vec3(0, 0, -1);
+                        }
+                        else if (m_TargetPosition.z > Position.z)
+                        {
+                            rezult += Vec3(0, 0, 1);
+                        }
 
-			for (int dx = -1; dx <= 1; dx++)
-			{
-				for (int dz = -1; dz <= 1; dz++)
-				{
-					if (dx == 0 && dz == 0) continue;
-					if (dx != 0 && dz != 0) continue;
+                    }
+                }
+                else if (m_Dire == Dire::Z)
+                {
+                    m_BeforePosition = Position;
+                    if (m_TargetPosition.z < Position.z)
+                    {
+                        rezult += Vec3(0, 0, -1);
+                        if (m_TargetPosition.x < Position.x)
+                        {
+                            rezult += Vec3(-1, 0, 0);
+                        }
+                        else if (m_TargetPosition.x > Position.x)
+                        {
+                            rezult += Vec3(1, 0, 0);
+                        }
 
-					int neighborX = currentX + dx;
-					int neighborZ = currentZ + dz;
-					Vec3 neighborNode = Vec3(neighborX, 0.0f, neighborZ );
+                    }
+                    else if (m_TargetPosition.z > Position.z)
+                    {
+                        rezult += Vec3(0, 0, 1);
+                        if (m_TargetPosition.x < Position.x)
+                        {
+                            rezult += Vec3(-1, 0, 0);
+                        }
+                        else if (m_TargetPosition.x > Position.x)
+                        {
+                            rezult += Vec3(1, 0, 0);
+                        }
 
-					// �}�b�v�͈͓̔����m�F
-					if (neighborX >= 0 && neighborX < m_MapWidth && neighborZ >= 0 && neighborZ < m_MapHeight)
-					{
-						float newDistanceToStart = cellData[currentZ][currentX].m_DistanceToStart + 1.0f;
-						float newDistanceToGoal = Heuristic(neighborNode, goal);
-						float newTotalDistance = newDistanceToStart + newDistanceToGoal;
+                    }
+                }
+                return rezult;
+            }
+            else{
+                m_DireChange = false;
+            }
+        }
+        if ((Position - m_TargetPosition).length() < 1.5f)
+        {
+            m_Index = m_TargetPosition;
+            m_BeforeTarget = m_TargetPosition;
+            return Vec3(0, 0, 0);
+        }
+        return Vec3(0, 0, 0);
+    }
 
-						// �܂��T�����Ă��Ȃ����A�܂��͂��ǂ��p�X�����������ꍇ
-						if (cellData[neighborZ][neighborX].m_State == State::NONE || newTotalDistance < cellData[neighborZ][neighborX].m_TotalDistance) {
-							OpenSet.push_back(neighborNode);
-							cellData[neighborZ][neighborX].m_State = State::OPEN;
-							cellData[neighborZ][neighborX].m_DistanceToStart = newDistanceToStart;
-							cellData[neighborZ][neighborX].m_DistanceToGoal = newDistanceToGoal;
-							cellData[neighborZ][neighborX].m_TotalDistance = newTotalDistance;
-							cellData[neighborZ][neighborX].m_ParentPosition = current;
-						}
-					}
-				}
-			}
-		}
-	}
+    void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
+    {
+        // 開始位置をA*アルゴリズムの開始点として設定
+        m_Index = index;
+
+        // 開始ノードの距離を初期化
+        // 現在のノードの周囲のセルをOPENにする
+        if (index != goal && m_BeforeTarget != goal)
+        {
+            m_DireChange = true;
+            m_TargetPosition = goal;
+        }
+        else {
+            return;
+        }
+    }
+
+
+    Vec3 Navigate::OpenCell(Vec3 index)
+    {
+        Vec3 currentIndex = Vec3(0);
+        for (int i = 0; i < m_CellData.size(); i++)
+        {
+            Vec3 pos = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+
+            if (currentIndex == Vec3(0))
+            {
+                currentIndex = pos;
+            }
+            else if ((index - pos).length() < (index - currentIndex).length() && index != pos && m_BeforeTarget != pos)
+            {
+                currentIndex = pos;
+            }
+        }
+        if (UpdateDistance(currentIndex));  // ここでは更新だけを行う。OPENリストへの追加はAStarAlgorithmで行う。
+        {
+            return currentIndex;
+        }
+    }
+
+    bool Navigate::UpdateDistance(Vec3 index)
+    {
+
+        return true;
+    }
+
+
+    Vec3 Navigate::AvoidBlock(const Vec3& Position, const Vec3& Target)
+    {
+        Vec3 SetPoint = Vec3();
+        Vec3 SetPoint1 = Vec3();
+        auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
+        auto pointers = pointerGroup->GetGroupVector();
+        for (auto& point : pointers)
+        {
+            auto Obj = point.lock();
+            Vec3 pointVec = Obj->GetComponent<Transform>()->GetPosition();
+            if (SetPoint == Vec3())
+            {
+                SetPoint = pointVec;
+            }
+            if ((Target - pointVec).length() < (Target - SetPoint).length())
+            {
+                SetPoint = pointVec;
+            }
+            else if((Target - pointVec).length() < (Target - SetPoint).length())
+            {
+                SetPoint1 = pointVec;
+            }
+        }
+
+        if ((Position - SetPoint).lengthSqr() >= 1.0f)
+        {
+            Vec3 pointTarget = Vec3();
+            m_Dire = std::abs(Position.x - SetPoint.x) > std::abs(Position.z - SetPoint.z) ? Dire::X : Dire::Z;
+            if (m_Dire == Dire::X)
+            {
+                m_BeforePosition = Position;
+                if (SetPoint.x < Position.x)
+                {
+                    pointTarget += Vec3(-1, 0, 0);
+                }
+                else if (SetPoint.x > Position.x)
+                {
+                    pointTarget += Vec3(1, 0, 0);
+                }
+            }
+            else if (m_Dire == Dire::Z)
+            {
+                m_BeforePosition = Position;
+                if (SetPoint.z < Position.z)
+                {
+                    pointTarget += Vec3(0, 0, -1);
+                }
+                else if (SetPoint.z > Position.z)
+                {
+                    pointTarget += Vec3(0, 0, 1);
+                }
+            }
+            return pointTarget;
+        }
+        else {
+            return Vec3(0);
+        }
+    }
 }
 //end basecross

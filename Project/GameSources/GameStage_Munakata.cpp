@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+		auto PtrCamera = ObjectFactory::Create<Camera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -35,30 +35,15 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 
-		app->RegisterTexture(L"POSE_TITLE",uiPath +  L"BackToTitle.png");
-		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
-		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
-		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
-		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
-		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
-		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
-		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
-		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
-
-		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
-
-		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
-		app->RegisterResource(L"PLAYER", modelMesh);
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 	}
 	/// <summary>
 	/// ポーズメニューの作成
 	/// </summary>
 	void GameStageM::CreatePose() {
 		//タイトル
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f,150.0f,0.0f), Vec2(200,50),
+		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<Stage> stage) {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
@@ -81,7 +66,7 @@ namespace basecross {
 				ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
 			});
 
-		ButtonManager::instance->SetInput(L"POSE",InputData(StickMode::LY,1,0.1f));
+		ButtonManager::instance->SetInput(L"POSE", InputData(StickMode::LY, 1, 0.1f));
 		ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
 		ClosePose();
 	}
@@ -105,10 +90,10 @@ namespace basecross {
 			[](shared_ptr<Stage> stage) {
 				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
+					SoundManager::Instance().BGMVolumeUp(0.1f);
 				}
 				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
+					SoundManager::Instance().BGMVolumeDown(0.1f);
 				}
 			});
 
@@ -151,7 +136,7 @@ namespace basecross {
 		for (auto v : vec) {
 			player = AddGameObject<Player>(v[0], v[1], v[2]);
 		}
-		
+
 		SetSharedGameObject(L"Player", player);
 	}
 	/// <summary>
@@ -176,7 +161,7 @@ namespace basecross {
 
 	}
 	void GameStageM::RegisterObjects() {
-		auto& builder = AddGameObject<StageBuilder>(L"level.csv",1.0f);
+		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Mob>(L"mob");
@@ -193,18 +178,45 @@ namespace basecross {
 	}
 	void GameStageM::OnCreate() {
 		try {
+			CreateResource();
 			GameStage::OnCreate();
+			m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+			m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+			m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+			m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
+
+			m_PlayerEnergyBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
+			m_PlayerEnergyBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
+			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
+
+			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 201.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
 			throw;
 		}
 	}
-	
+
 	void GameStageM::OnUpdate() {
 		auto& app = App::GetApp();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();
+
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			float currentHp = player->GetHP();
+			float maxHp = player->GetMaxHP();
+			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+
+			float currentEnergy = player->GetEnergy();
+			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
+		}
+		float elpased = app->GetStepTimer().GetFramesPerSecond();
+		m_Fps->UpdateNumber(elpased);
 	}
 
 }

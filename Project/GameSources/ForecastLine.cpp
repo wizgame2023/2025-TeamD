@@ -11,10 +11,10 @@ namespace basecross {
 	void LineCube::OnCreate() {
 		m_Transform = GetComponent<Transform>();
 
-		m_Draw = AddComponent<BcPNTStaticDraw>();
-		m_Draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_Draw->SetSamplerState(SamplerState::LinearWrap);
-		m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
+		m_BoneDraw = AddComponent<BcPNTStaticDraw>();
+		m_BoneDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
 		SetAlphaActive(true);
 
 		AddTag(L"Line");
@@ -27,10 +27,11 @@ namespace basecross {
 		m_Forecast = GetStage()->AddGameObject<LineCube>();
 
 		m_BalletLine->m_Transform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
-		m_BalletLine->m_Draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
+		m_BalletLine->m_BoneDraw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
 		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
-		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_Forecast->m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
+		//InitializeCriticalSection(&m_CriticalSection);
 	}
 	/// <summary>
 	/// ラインの設定
@@ -38,21 +39,25 @@ namespace basecross {
 	/// <param name="direction">方向</param>
 	/// <param name="startPosition">初期位置</param>
 	/// <param name="maxLength">長さ</param>
-	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength) {
+	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength, const Col4& color) {
 		m_Direction = direction;
+		m_Direction.y = 0.0f;
 		m_StartPosition = startPosition;
 		m_Length = maxLength;
+		m_DefaultColor = color;
 	}
 	/// <summary>
 	/// オブジェクトとの距離を基に判別するかどうか
 	/// </summary>
 	/// <param name="position">オブジェクトの位置</param>
 	/// <returns></returns>
-	bool ForecastLine::CheckDistanceToObject(Vec3 position) {
-		float startDistanceSq = (position - m_StartPosition).lengthSqr();
-		float endDistanceSq = (position - (m_StartPosition + m_Direction * m_Length)).lengthSqr();
-		float lengthSq = m_Length * m_Length;
-		if (startDistanceSq > lengthSq || endDistanceSq > lengthSq) {
+	bool ForecastLine::CheckDistanceToObject(const shared_ptr<GameObject>& obj) {
+		auto transform = obj->GetComponent<Transform>();
+		Vec3 position = transform->GetPosition();
+		Vec3 scale = transform->GetScale();
+		float length = RayCast::CalcDistancePointToLine(position,Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
+		Vec3 halfScale = scale / 2.0f;
+		if(length > halfScale.length()){
 			return false;
 		}
 		return true;
@@ -65,14 +70,14 @@ namespace basecross {
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		m_NearestHitObject.reset();
-		vector<wstring> excludeTags = { L"Bullet",L"Line" };
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy"};
 		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
-			Vec3 objPosition = obj->GetComponent<Transform>()->GetPosition();
-			if (!CheckDistanceToObject(objPosition)) continue;
-			RayCast::HitTest(hit,m_StartPosition, m_Direction, m_Length, obj, excludeTags);
+			if (!CheckDistanceToObject(obj)) continue;
+			RayCast::HitTest(hit, Line(m_StartPosition,(m_StartPosition + m_Direction * m_Length)), obj, excludeTags, true);
 		}
+
 		if (hit.m_Object != nullptr) {
 			m_NearestHitObject = hit.m_Object;
 			hitPoint = hit.m_HitPosition;
@@ -108,6 +113,8 @@ namespace basecross {
 
 		auto& balletTransform = m_BalletLine->m_Transform;
 		auto& forecastTransform = m_Forecast->m_Transform;
+		auto& balletDraw = m_BalletLine->m_BoneDraw;
+		auto& forecastDraw = m_Forecast->m_BoneDraw;
 
 		balletTransform->SetRotation(Vec3(0, rad, 0));
 		forecastTransform->SetRotation(Vec3(0, rad, 0));
@@ -117,6 +124,8 @@ namespace basecross {
 
 		balletTransform->SetPosition(m_StartPosition + m_Direction * balletDistance / 2.0f);
 		forecastTransform->SetPosition(m_StartPosition + m_Direction * (balletDistance + forecastSize / 2.0f));
+
+		forecastDraw->SetDiffuse(m_DefaultColor);
 
 		m_BalletLine->SetDrawActive(GetDrawActive());
 		m_Forecast->SetDrawActive(GetDrawActive());
@@ -129,53 +138,6 @@ namespace basecross {
 		GetStage()->RemoveGameObject<LineCube>(m_BalletLine);
 		GetStage()->RemoveGameObject<LineCube>(m_Forecast);
 		GetStage()->RemoveGameObject<ForecastLine>(GetThis<ForecastLine>());
-	}
-	/// <summary>
-	/// レイキャスト処理
-	/// </summary>
-	/// <param name="hit">結果</param>
-	/// <param name="startPosition">発射位置</param>
-	/// <param name="direction">発射方向</param>
-	/// <param name="length">長さ</param>
-	/// <param name="object">調べるオブジェクト</param>
-	/// <param name="excludeTags">除外するタグ</param>
-	/// <returns>当たったか</returns>
-	bool RayCast::HitTest(RayCastHit& hit,const Vec3& startPosition, const Vec3& direction, float length, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
-		RayCastHit newResult = RayCastHit();
-		if (object == nullptr) return false;
-
-		bool isExclude = false;
-		for (auto& tag : excludeTags) {
-			if (object->FindTag(tag)) {
-				isExclude = true;
-				break;
-			}
-		}
-		if (isExclude) return false;
-		bool isHit = false;
-		auto draw = object->GetComponent<SmBaseDraw>(false);
-		if (draw != nullptr) {
-			isHit = draw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}
-		else {
-			auto bcDraw = object->GetComponent<BcBaseDraw>(false);
-			if (bcDraw != nullptr) {
-				isHit = bcDraw->HitTestStaticMeshSegmentTriangles(startPosition, startPosition + direction * length, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-			}
-		}
-
-		if (isHit) {
-			if (hit.m_Object == nullptr) {
-				hit.m_Object = object;
-				hit = newResult;
-			}
-			else if ((hit.m_HitPosition - startPosition).length() > (newResult.m_HitPosition - startPosition).length()) {
-				hit.m_Object = object;
-				hit = newResult;
-			}
-			return true;
-		}
-		return false;
 	}
 }
 //end basecross

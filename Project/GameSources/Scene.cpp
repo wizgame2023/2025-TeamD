@@ -14,8 +14,16 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
 
+		//モデル関係
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
+		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
+		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
+		auto debugMesh = MeshResource::CreateBoneModelMesh(modelPath, L"DebugChara.bmf");
+
+		app->RegisterResource(L"OBJECT", modelBuild);
+		app->RegisterResource(L"MOB", modelEnemy);
 		app->RegisterResource(L"PLAYER", modelMesh);
+		app->RegisterResource(L"DEBUG", debugMesh);
 	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
@@ -27,7 +35,8 @@ namespace basecross {
 
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 		}
@@ -45,17 +54,17 @@ namespace basecross {
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
 			//次のアクティブステージの設定
-			ResetActiveStage<GameStage>();
+			ResetActiveStage<GameStage>(L"level.csv");
     }
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>();
+			ResetActiveStage<GameStageM>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>();
+			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>();
+			ResetActiveStage<GameStageS>(L"levelMap.csv");
 		}
 
 	}

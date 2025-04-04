@@ -5,7 +5,7 @@
 
 #pragma once
 
-
+#include "EffectManager.h"
 #include "ProjectShader.h"
 #include "ProjectBehavior.h"
 #include "Scene.h"
@@ -15,6 +15,7 @@
 #include "Player.h"
 #include "Enemy.h"
 #include "SoundManager.h"
+#include "ScoreManager.h"
 #include "GameStage_Munakata.h"
 #include "GameStage_Kamata.h"
 #include "GameStage_Satou.h"
@@ -30,3 +31,7 @@
 #include "SharpFan.h"
 #include "RootPointer.h"
 #include "Menu.h"
+#include "HPBar.h"
+#include "AttakCollision.h"
+#include "RayCast.h"
+#include "BoneCollision.h"

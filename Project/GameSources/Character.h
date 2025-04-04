@@ -11,9 +11,10 @@ namespace basecross {
 	class Character : public Object
 	{
 	public:
-		int m_HP;
+		float m_HP;
+		float m_MaxHP;
 		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
-			Object(stage, position, rotation, scale), m_HP(0) {
+			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0) {
 		}
 		Character(const shared_ptr<Stage>& stage) :
 			Character(stage, Vec3(), Vec3(), Vec3(1.0f))
@@ -24,11 +25,29 @@ namespace basecross {
 		virtual void OnCreate() override;
 
 		virtual void Dead() {}
+		virtual void Damage(float damage,const bool& isSound = true){
+			m_HP -= damage;
+			if (m_HP <= 0) {
+				m_HP = 0;
+				Dead();
+			}
+		}
 
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
 		double Magnitude(const Vec3& v);
+
+		void InitHP(int hp) {
+			m_MaxHP = hp;
+			m_HP = hp;
+		}
+		float GetMaxHP() {
+			return m_MaxHP;
+		}
+		float GetHP() {
+			return m_HP;
+		}
 	};
 
 	class FixedBox : public Object

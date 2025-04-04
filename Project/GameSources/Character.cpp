@@ -23,9 +23,10 @@ namespace basecross {
 
 	bool Character::IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle)
 	{
-		double angleresult = AngleBetweenVectors(direction, target);
-		double detection_angle_radians = angle * XM_PI / 180.0;
-		double minas_detection_angle_radians = -angle * XM_PI / 180.0;
+		float angleresult = angleBetweenNormals(direction,target);
+		//AngleBetweenVectors(direction, target);
+		float detection_angle_radians = angle * XM_PI / 180.0;
+		float minas_detection_angle_radians = -angle * XM_PI / 180.0;
 		return angleresult <= detection_angle_radians && angleresult >= minas_detection_angle_radians;
 	}
 
@@ -65,6 +66,18 @@ namespace basecross {
 		//ï`âÊê›íË
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
+		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
+		//ptrDraw->SetMeshResource(L"OBJECT");
+		//Mat4x4 meshMat;
+		//meshMat.affineTransformation(
+		//	Vec3(0.5f, 0.4f, 0.5f), //ÉTÉCÉY
+		//	Vec3(0.0f, 0.0f, 0.0f), //âÒì]é≤
+		//	Vec3(0.0f, 0.0f, 0.0f), //âÒì]
+		//	Vec3(0.0f, -0.5f, 0.0f) //É|ÉWÉVÉáÉì
+		//);
+		//ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+
 	}
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)

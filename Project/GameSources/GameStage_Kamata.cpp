@@ -16,7 +16,7 @@ namespace basecross {
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStageK>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
@@ -35,6 +35,7 @@ namespace basecross {
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -50,9 +51,6 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
-		app->RegisterResource(L"PLAYER", modelMesh);
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -157,8 +155,8 @@ namespace basecross {
 		auto& builder = AddGameObject<StageBuilder>(L"TestKamataMap.csv", 1.0f);
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		builder->Register<Mob>(L"mob");
 		builder->Register<RootPointer>(L"pointer");
+		builder->Register<Mob>(L"mob");
 
 		builder->LoadCsv();
 	}
@@ -171,37 +169,15 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
-			CreateSharedObjectGroup(L"BulletGroup");
-			CreateSharedObjectGroup(L"EnemyGroup");
+			//m_EfkInterface = ObjectFactory::Create<EfkInterface>();
 
-			//ビューとライトの作成
-			CreateViewLight();
-			CreateResource();
-			RegisterObjects();
+			auto mediaPath = App::GetApp()->GetDataDirWString();
+			wstring effectPath = mediaPath + L"Effekt\\";
+			m_Effect = ObjectFactory::Create<EffectManeger>();
+			m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+			m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+			GameStage::OnCreate();
 
-			AddGameObject<ButtonManager>();
-			
-			CreatePose();
-			CreateSoundTest();
-			ButtonManager::instance->CloseAll();
-			//CreatePlayer();
-			//CreateEnemy();
-
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-				if (camera != nullptr) {
-					camera->SetTarget(player->GetComponent<Transform>());
-				}
-			}
-
-			m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		}
 		catch (...) {
 			throw;
@@ -209,24 +185,25 @@ namespace basecross {
 	}
 
 	void GameStageK::OnUpdate() {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
+			m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				OpenPose();
-			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				SoundManager::Instance().PlaySE(L"TEST");
-			}
-		}
+		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		//{
+		//	m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+		//	m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		//}		
+		GameStage::OnUpdate();
 
-		SetAllGameObjectActive(!m_IsPose);
+	}
+	void GameStageK::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
 
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			m_ProtoHpNumber->UpdateNumber(player->GetPlayerHP());
-		}
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_Effect->OnDraw();
 	}
 }
 	//end basecross

@@ -12,9 +12,9 @@ namespace basecross {
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
+
+		wstring m_MapFileName;
 		bool m_IsPose;
-		int m_MaxEnemyCount;
-		int m_EnemyCount;
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
 		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
@@ -30,27 +30,19 @@ namespace basecross {
 		void ClosePose();
 		void OpenPose();
 		void SetAllGameObjectActive(bool flag);
-		float GetClearRate() {
-			if (m_MaxEnemyCount <= 0) return 100.0f;
-			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
-		}
-
+		void GameOver(){}
+		void GameClear(){}
 		
 	public:
 		//構築と破棄
-		GameStage() :Stage(),m_IsPose(false),m_MaxEnemyCount(0),m_EnemyCount(0) {}
+		GameStage(const wstring& file) :Stage(),m_MapFileName(file), m_IsPose(false){}
 		virtual ~GameStage() {}
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
-		void SetMaxEnemyCount(int count) {
-			m_MaxEnemyCount = count;
-			m_EnemyCount = count;
-		}
-		void EliminateEnemy() {
-			m_EnemyCount--;
-		}
+		virtual void OnEvent(const shared_ptr<Event>& event)override;
 	};
 
 

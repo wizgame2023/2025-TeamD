@@ -37,9 +37,11 @@ namespace basecross{
 		Vec3 m_Rotation;
 
 		shared_ptr<Transform> m_Transform;
-		shared_ptr<Stage> m_Stage;
+		shared_ptr<GameStage> m_Stage;
 
 		bool m_IsEndAsyncUpdate;
+
+		mutex m_Mutex;
 	public :
 		Object(const shared_ptr<Stage>& stage,Vec3 position,Vec3 rotation, Vec3 scale) :
 			GameObject(stage),m_Position(position),m_Scale(scale),m_Rotation(rotation),m_IsEndAsyncUpdate(true){}
@@ -107,7 +109,7 @@ namespace basecross{
 		
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Instance>> m_Builders;
-
+		vector<wstring> m_InfoNames;
 		float m_Scale;
 
 	public:
@@ -125,7 +127,7 @@ namespace basecross{
 		void LoadCsv();
 		shared_ptr<Object> CreateObject(vector<wstring> date);
 		void RegisterRootPoint(map<wstring, shared_ptr<RootPointer>> pointer);
-
+		int GetInfoIndex(const wstring& infoName);
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
 			return stof(data);

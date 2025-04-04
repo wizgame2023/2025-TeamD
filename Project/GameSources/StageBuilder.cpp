@@ -7,12 +7,12 @@
 #include "Project.h"
 
 
-namespace basecross{
+namespace basecross {
 	void Object::OnCreate() {
-		m_Stage = GetStage();
+		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
-		SetPosition(Vec3(0,1,0));
+		SetPosition(Vec3(0, 1, 0));
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);
 
@@ -34,31 +34,38 @@ namespace basecross{
 		for (auto& info : csvVec) {
 			objInfo.clear();
 			Util::WStrToTokenVector(objInfo, info, L',');
+			m_InfoNames.clear();
+			wstring names = objInfo[objInfo.size() - 1];
+			Util::WStrToTokenVector(m_InfoNames, objInfo[objInfo.size() - 1], L'_');
 
-			if (m_Builders.find(objInfo[InfoData::Name]) == end(m_Builders)) continue;
+			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;
 
 			auto obj = CreateObject(objInfo);
-			
-			wstring dateType = objInfo[objInfo.size() - 1];
+
+			wstring dateType = objInfo[GetInfoIndex(L"type")];
 			if (dateType == L"Pointer") {
 				auto pointer = static_pointer_cast<RootPointer>(obj);
 				if (obj != nullptr) {
-					pointer->SetPointerNumber(objInfo[PointerDate::ConnectNumber]);
-					rootPointers.emplace(objInfo[PointerDate::Number], pointer);
+					pointer->SetPointerNumber(objInfo[GetInfoIndex(L"connect")]);
+					rootPointers.emplace(objInfo[GetInfoIndex(L"number")], pointer);
 				}
 			}
 
-			if (objInfo[InfoData::Tag] == L"Enemy") {
+			if (objInfo[GetInfoIndex(L"tag")] == L"Enemy") {
 				enemyCount++;
+				int timeIndex = GetInfoIndex(L"time");
+				int defeatIndex = GetInfoIndex(L"defeat");
+				if (timeIndex != -1 && defeatIndex != -1) {
+					auto boss = static_pointer_cast<BossEnemy>(obj);
+					if (boss) {
+						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), 1/*WstrToFlt(objInfo[defeatIndex])*/);
+					}
+				}
 			}
 		}
 		m_Builders.clear();
-		auto gameStage = static_pointer_cast<GameStage>(GetStage());
-		if (gameStage != nullptr) {
-			gameStage->SetMaxEnemyCount(enemyCount);
-		}
+		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
 		RegisterRootPoint(rootPointers);
-		
 	}
 	/// <summary>
 	/// オブジェクトの生成
@@ -66,11 +73,11 @@ namespace basecross{
 	/// <param name="date">オブジェクトの文字列データ</param>
 	/// <returns>生成したオブジェクト</returns>
 	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
-		Vec3 position = WstrToVec3(date[InfoData::Position]);
-		Vec3 scale = WstrToVec3(date[InfoData::Scale]);
-		Vec3 rotation = WstrToVec3(date[InfoData::Rotation]);
+		Vec3 position = WstrToVec3(date[GetInfoIndex(L"position")]);
+		Vec3 scale = WstrToVec3(date[GetInfoIndex(L"scale")]);
+		Vec3 rotation = WstrToVec3(date[GetInfoIndex(L"rotation")]);
 
-		auto obj = m_Builders[date[InfoData::Name]]->Create();
+		auto obj = m_Builders[date[GetInfoIndex(L"name")]]->Create();
 		obj->SetPosition(position * m_Scale);
 		obj->SetScale(scale * m_Scale);
 		obj->SetRotation(rotation);
@@ -94,6 +101,18 @@ namespace basecross{
 				}
 			}
 
+		}
+	}
+
+	int StageBuilder::GetInfoIndex(const wstring& infoName) {
+
+		auto it = find(m_InfoNames.begin(), m_InfoNames.end(), infoName);
+		if (it != m_InfoNames.end()) {
+			int index = distance(m_InfoNames.begin(), it);
+			return index;
+		}
+		else {
+			return -1;
 		}
 	}
 }

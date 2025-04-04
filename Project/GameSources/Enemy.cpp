@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -16,32 +16,42 @@ namespace basecross {
 	void Enemy::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 3;
-
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		InitHP(3);
+    
+		//CollisionSphereã®è¨­å®š
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		ptrColl->AddExcludeCollisionTag(L"Mob");
+
+		//æç”»è¨­å®š
+		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+		ptrDraw->SetMeshResource(L"MOB");
 
-		//d—Í‚ğ‚Â‚¯‚é
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.3f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		//ptrDraw->SetOwnShadowActive(true);
+
 		auto ptrGra = AddComponent<Gravity>();
-
-
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
+		AddTag(L"Enemy");
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(),false);
-
-		auto navi = AddComponent<Navigate>();
-
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 	}
 
 	void Enemy::OnUpdate()
@@ -88,25 +98,25 @@ namespace basecross {
 	{
 		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
-		if (GetDistanceToIntruder() < searchDistance) {
-			m_Line->CheckRayCast(Vec3());
-		}
-		
+
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
+				m_Position = GetPosition();
+				m_Position -= forword * 0.05f;
+				SetPosition(m_Position);
+			}
+		}
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
-				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğ‚ä‚Á‚­‚èŒü‚­
-				if (m_Line->CheckHitObjectTag(L"Player")) {
-					m_IntruderAlert = true;
-				}
-				else {
-					m_IntruderAlert = false;
-				}
+
+			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
+				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’ã‚†ã£ãã‚Šå‘ã
+				m_IntruderAlert = true;
 			}
 			else {
 				m_IntruderAlert = false;
@@ -114,6 +124,13 @@ namespace basecross {
 		}
 		else {
 			m_IntruderAlert = false;
+		}
+
+		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
+			m_Line->CheckRayCast(Vec3());
+			if (!m_Line->CheckHitObjectTag(L"Player")) {
+				m_IntruderAlert = false;
+			}
 		}
 	}
 
@@ -127,12 +144,32 @@ namespace basecross {
 		return m_IntruderAlert;
 	}
 
+	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 pos = GetPosition();
+		Vec3 vec = hitPos - pos;
+		vec.normalize();
+		pos += -vec * 10.0f * elapsedTime;
+		SetPosition(pos);
+	}
+
 	void Enemy::Dead() {
 		m_Line->Destroy();
 
-		auto gameStage = static_pointer_cast<GameStage>(m_Stage);
-		if (gameStage != nullptr) {
-			gameStage->EliminateEnemy();
+		ScoreManager::Instance()->AddEliminateEnemyCount();
+
+		auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+		auto& groupVec = group->GetGroupVectors();
+		for (int i = 0; i < groupVec.size(); i++) {
+			auto obj = groupVec[i].lock();
+			if (obj != nullptr) {
+				if (obj == GetThis<GameObject>()) {
+					groupVec.erase(groupVec.begin() + i);
+					break;
+				}
+			}
 		}
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 	}
@@ -141,11 +178,13 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			m_HP -= 1;
+			KnockBackTime(other);
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //ü‚ğ•`‰æ‚·‚éƒIƒuƒWƒFƒNƒg
+	//	class LineObject : public GameObject; 
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -170,22 +209,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//ü‚ğ\¬‚·‚é2“_
+
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//n“_‚ÆI“_‚ğ‚Â‚È‚®ƒCƒ“ƒfƒbƒNƒX
+
 		m_Indices = {
 			0,1
 		};
 
-		//•`‰æ
-		m_Draw = AddComponent<PCStaticDraw>(); //ˆÊ’u‚ÆF‚Ì‚İ
-		m_Draw->SetOriginalMeshUse(true); //©ì‚µ‚½ƒƒbƒVƒ…‚ğg—p
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //ƒƒbƒVƒ…‚Ìì¬
-		auto meshResoure = m_Draw->GetMeshResource(); //ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğæ“¾‚µAƒvƒŠƒ~ƒeƒBƒuƒ|ƒƒW[i’¸“_—˜—p•û–@j‚ğ•ÏX‚·‚é
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ƒ|ƒŠƒSƒ“‚Å‚Í‚È‚­—Åü‚ğ•\¦
+		m_BoneDraw = AddComponent<PCStaticDraw>();
+		m_BoneDraw->SetOriginalMeshUse(true);
+		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_BoneDraw->GetMeshResource();
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -210,16 +249,14 @@ namespace basecross {
 		}
 	}
 
-	//’¸“_‚ÌXV
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
 			{m_EndPos,m_EndColor}
 		};
-		m_Draw->UpdateVertices(m_Vertices);
+		m_BoneDraw->UpdateVertices(m_Vertices);
 	}
 
-	//’¸“_‚Ìİ’è
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -229,7 +266,6 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//ü‚ÌF‚Ìİ’è
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;

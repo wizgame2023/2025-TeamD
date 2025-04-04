@@ -23,16 +23,34 @@ namespace basecross {
 		void RegisterObjects();
 		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
+
+		int m_MaxEnemyCount;
+		int m_EnemyCount;
+		shared_ptr<NumberSprite> m_ProtoHpNumber;
+
+		float GetClearRate() {
+			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
+		}
+
 	public:
 		//ç\ízÇ∆îjä¸
-		GameStageS() : GameStage(), m_IsPose(false) {}
+		GameStageS(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ~GameStageS() {}
 		//èâä˙âª
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 
+
 		void ClosePose();
 		void OpenPose();
+
+		void SetMaxEnemyCount(int count) {
+			m_MaxEnemyCount = count;
+			m_EnemyCount = count;
+		}
+		void EliminateEnemy() {
+			m_EnemyCount--;
+		}
 	};
 
 
