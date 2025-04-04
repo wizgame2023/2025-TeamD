@@ -65,26 +65,39 @@ namespace basecross {
 			}
 		}
 		else {
+			StartAsync();
 			AsyncUpdate();
 			Vec3 pos = GetPosition();
 			m_currentState->Execute();
 			auto navi = GetComponent<Navigate>();
 			float elapsedTime = App::GetApp()->GetElapsedTime();
 			Vec3 currntPosition = GetPosition();
+			//if (m_IntruderAlert)
+			//{
+			//	Vec3 halfPos = navi->GetAStarForword(currntPosition);
+			//	if (halfPos != Vec3(0))
+			//	{
+			//		currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
+			//	}
+			//	else
+			//	{
+			//		navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
+			//	}
+			//}
+			//else {
+				Vec3 taregtpoint = navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+				if (taregtpoint != Vec3(0))
+				{
+					currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+				}
+				else
+				{
+					navi->AvoidBlock(currntPosition, m_Intruder->GetPosition());
+				}
+			//}			
+			
+			SetPosition(currntPosition);
 
-			if (m_Intruder != nullptr) {
-					Vec3 taregtpoint = navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
-					if (taregtpoint == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
-					else if (taregtpoint == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
-					else if (taregtpoint == Vec3(0, 0, 1))  m_Transform->SetRotation(Vec3(0, 0, 0));
-					else if (taregtpoint == Vec3(0, 0, -1)) m_Transform->SetRotation(Vec3(0, 180, 0));
-
-					if (taregtpoint != Vec3(0))
-					{
-						currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
-						SetPosition(currntPosition);
-					}
-			}
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			if (device.bConnected) {
 				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN) {
@@ -100,9 +113,8 @@ namespace basecross {
 
 				}
 			}
-
-			EndAsync();
 		}
+		EndAsync();
 	}
 	void BossEnemy::Dead()
 	{

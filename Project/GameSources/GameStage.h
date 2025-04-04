@@ -15,6 +15,8 @@ namespace basecross {
 
 		wstring m_MapFileName;
 		bool m_IsPose;
+		int m_MaxEnemyCount;
+		int m_EnemyCount;
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
 		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
@@ -30,8 +32,12 @@ namespace basecross {
 		void ClosePose();
 		void OpenPose();
 		void SetAllGameObjectActive(bool flag);
-		void GameOver(){}
-		void GameClear(){}
+		float GetClearRate() {
+			if (m_MaxEnemyCount <= 0) return 100.0f;
+			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
+		}
+		void GameOver() {};
+		void GameClear() {};
 		
 	public:
 		//ç\ízÇ∆îjä¸
