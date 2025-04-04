@@ -71,8 +71,8 @@ namespace basecross {
 		if (m_TexKey != L"") {
 			m_BoneDraw->SetTextureResource(m_TexKey);
 		}
-		m_BoneTransform = GetComponent<Transform>();
-		m_BoneTransform->SetPosition(Vec3(-10.0f, 0.1f, 2.0f));
+		m_Transform = GetComponent<Transform>();
+		m_Transform->SetPosition(Vec3(-10.0f, 0.1f, 2.0f));
 	}
 
 	void SharpFan::OnUpdate() {

@@ -56,7 +56,13 @@ namespace basecross {
 			}
 		}
 		void TuningBGM() {
-
+			WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+			if (press & XINPUT_GAMEPAD_DPAD_UP) {
+				SoundManager::Instance().BGMVolumeUp(0.1f);
+			}
+			else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+				SoundManager::Instance().SEVolumeDown(0.1f);
+			}
 		}
 	};
 }

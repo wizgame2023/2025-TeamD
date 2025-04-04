@@ -67,7 +67,7 @@ namespace basecross {
 	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
 		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
 
 		Vec3 offset = intruderPosition - position;
@@ -75,7 +75,7 @@ namespace basecross {
 		return offset;
 	}
 	float Enemy::GetDistanceToIntruder() {
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
 		Vec3 intruderPosition = m_Intruder->GetComponent<Transform>()->GetPosition();
 
 		Vec3 offset = intruderPosition - position;
@@ -100,8 +100,8 @@ namespace basecross {
 		float searchDistance = 10.0f;
 
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
-		Vec3 forword = m_BoneTransform->GetForword();
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 forword = m_Transform->GetForword();
+		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
 		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
@@ -136,7 +136,7 @@ namespace basecross {
 
 	Vec3 Enemy::GetPosition()
 	{
-		return m_BoneTransform->GetPosition();
+		return m_Transform->GetPosition();
 	}
 
 	bool Enemy::GetIntruderAlert()

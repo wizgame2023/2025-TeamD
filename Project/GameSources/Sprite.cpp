@@ -38,8 +38,8 @@ namespace basecross {
 		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
 		m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 1));
 
-		m_BoneTransform = GetComponent<Transform>();
-		m_BoneTransform->SetPosition(m_Pos);
+		m_Transform = GetComponent<Transform>();
+		m_Transform->SetPosition(m_Pos);
 
 		m_ScreenSize = Vec2(1280, 800);
 
@@ -50,7 +50,7 @@ namespace basecross {
 			Animation();
 		}
 		//î•ñXV
-		m_Pos = m_BoneTransform->GetPosition();
+		m_Pos = m_Transform->GetPosition();
 	}
 	void Sprite::Animation() {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
@@ -142,7 +142,7 @@ namespace basecross {
 		m_IsAnimation = true;
 	}
 	void Sprite::UpdateSize(Vec3 size) {
-		m_BoneTransform->SetScale(size);
+		m_Transform->SetScale(size);
 	}
 	void Sprite::UpdateSize(Vec2 size) {
 		if (m_BoneDraw) {
@@ -158,7 +158,7 @@ namespace basecross {
 	}
 
 	void Sprite::SetPos(Vec3 pos) {
-		m_BoneTransform->SetPosition(pos);
+		m_Transform->SetPosition(pos);
 	}
 	void Sprite::SetDiffuse(Col4 color) {
 		m_BoneDraw->SetDiffuse(color);
@@ -174,7 +174,7 @@ namespace basecross {
 		else {
 
 		}
-		m_BoneTransform->SetPosition(newPos);
+		m_Transform->SetPosition(newPos);
 	}
 	void Sprite::ScreenTop(const Vec2 diff) {
 

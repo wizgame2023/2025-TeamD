@@ -5,7 +5,7 @@ namespace basecross {
 
 	class SharpFan : public GameObject {
 		shared_ptr<PCTStaticDraw> m_BoneDraw;
-		shared_ptr<Transform> m_BoneTransform;
+		shared_ptr<Transform> m_Transform;
 
 		wstring m_TexKey;
 		float m_DrawAngle;
@@ -36,7 +36,7 @@ namespace basecross {
 			m_Forward = forward;
 		}
 		void SetPosition(Vec3 position) {
-			m_BoneTransform->SetPosition(position);
+			m_Transform->SetPosition(position);
 		}
 	};
 }

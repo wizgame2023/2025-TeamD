@@ -137,8 +137,8 @@ namespace basecross {
 
 	Vec3 Player::SearchRange()
 	{
-		Vec3 forward = m_BoneTransform->GetForward();
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 forward = m_Transform->GetForward();
+		Vec3 position = m_Transform->GetPosition();
 		float searchDistance = 10.0f;
 		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
@@ -226,7 +226,7 @@ namespace basecross {
 
 				if (sharedObject != nullptr)
 				{
-					Vec3 position = m_BoneTransform->GetPosition();
+					Vec3 position = m_Transform->GetPosition();
 					Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
 					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
 					if ((vec1 - position).length() < (vec0 - position).length())
@@ -259,7 +259,7 @@ namespace basecross {
 
 	Vec3 Player::GetForward()
 	{
-		return m_BoneTransform->GetForward();
+		return m_Transform->GetForward();
 	}
 
 	int Player::GetStates()

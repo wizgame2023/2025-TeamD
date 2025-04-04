@@ -17,7 +17,7 @@ namespace basecross {
 		Vec3 m_Direction;
 
 		float m_EffectiveRange;
-		shared_ptr<Transform> m_BoneTransform;
+		shared_ptr<Transform> m_Transform;
 		float m_ZoneElapsedTime;
 	public:
 		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);

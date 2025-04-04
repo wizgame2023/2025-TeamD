@@ -12,9 +12,9 @@ namespace basecross {
 		m_Collision->SetDrawActive(true);
 		m_Collision->SetAfterCollision(AfterCollision::None);
 
-		m_BoneTransform = GetComponent<Transform>();
-		m_BoneTransform->SetPosition(m_StartPosition);
-		m_BoneTransform->SetScale(m_Size);
+		m_Transform = GetComponent<Transform>();
+		m_Transform->SetPosition(m_StartPosition);
+		m_Transform->SetScale(m_Size);
 
 		LoopEffect();
 	}
@@ -29,7 +29,7 @@ namespace basecross {
 	}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
-		Vec3 position = m_BoneTransform->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
 		Vec3 playerPosition = player->GetComponent<Transform>()->GetPosition();
 
 		Vec3 direction = playerPosition - position;
@@ -43,8 +43,8 @@ namespace basecross {
 	}
 
 	void Missile::ContactStage(shared_ptr<GameObject>& object) {
-		Vec3 scale = m_BoneTransform->GetScale();
-		m_BoneTransform->SetScale(scale * 2.0f);
+		Vec3 scale = m_Transform->GetScale();
+		m_Transform->SetScale(scale * 2.0f);
 
 		m_ExistenceTime = 0.5f;
 	}
