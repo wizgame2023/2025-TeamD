@@ -82,30 +82,21 @@ namespace basecross {
 		auto navi = boss->GetComponent<Navigate>();
 		auto player = boss->m_Intruder;
 		Vec3 playerPos = player->GetPosition();
-		navi->SetTargetPosition(m_BoneTransform->GetPosition(), playerPos);
 		Execute();
 	}
 	void BossSearch::Execute()
 	{
+		auto navi = m_Enemy->GetComponent<Navigate>();
 		auto boss = dynamic_pointer_cast<BossEnemy>(m_Enemy);
-		auto navi = boss->GetComponent<Navigate>();
-		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 currntPosition = boss->GetPosition();
-		Vec3 halfPos = navi->GetAStarForword(currntPosition);
-		if (halfPos == Vec3(1, 0, 0))  m_BoneTransform->SetRotation(Vec3(0, 90, 0));
-		if (halfPos == Vec3(-1, 0, 0)) m_BoneTransform->SetRotation(Vec3(0, 270, 0));
-		if (halfPos == Vec3(0, 0, 1))  m_BoneTransform->SetRotation(Vec3(0, 0, 0));
-		if (halfPos == Vec3(0, 0, -1)) m_BoneTransform->SetRotation(Vec3(0, 180, 0));
-
-		if (halfPos != Vec3(0))
+		auto player = boss->m_Intruder;
+		Vec3 playerPos = player->GetPosition();
+		if ((boss->GetPosition() - playerPos).length() < 1.0f)
 		{
-			currntPosition += halfPos * 6.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
-			m_BoneTransform->SetPosition(currntPosition);
-		}
-		else {
 			m_Enemy->ChangeState<BossAttack>();
 		}
-
+		else {
+			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+		}
 
 	}
 	void BossSearch::Exit()
@@ -115,14 +106,27 @@ namespace basecross {
 	void BossAttack::Enter()
 	{
 		EnemyState::Enter();
+		m_Stage->AddGameObject<AttackCollision>(m_Transform->GetPosition() + m_Transform->GetForward(), Vec3(3.0f, 1.5f, 3.0f), 3.0f, 1.0f);
 		Execute();
 	}
 	void BossAttack::Execute()
 	{
-		m_Stage->AddGameObject<AttackCollision>(m_BoneTransform->GetPosition() + m_BoneTransform->GetForward(), Vec3(3.0f, 1.5f, 3.0f), 3.0f, 1.0f);
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto navi = m_Enemy->GetComponent<Navigate>();
+		m_ChangeTime -= elapsedTime;
+
+		if (m_ChangeTime < 0.0f)
+		{	
+			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+			m_Enemy->ChangeState<BossSearch>();
+			m_ChangeTime = 5.0f;
+		}
+
 	}
 	void BossAttack::Exit()
 	{
 	}
+
 }
+
 //end basecross

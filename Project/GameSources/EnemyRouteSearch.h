@@ -61,6 +61,9 @@ namespace basecross {
 			return m_BeforeTarget;
 		}
 
+		Vec3 AvoidBlock(const Vec3& Position, const Vec3& Target);
+
+
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
@@ -73,6 +76,7 @@ namespace basecross {
 		float m_MapHeight;
 		vector<shared_ptr <GameObject>> m_CellData;
 		Vec3 m_BeforeTarget;
+		Vec3 m_BeforePosition;
 		Dire m_Dire;
 		Vec3 m_TargetPosition;
 		Vec3 m_Index;

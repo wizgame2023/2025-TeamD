@@ -50,9 +50,8 @@ namespace basecross {
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 
-		//auto navi = AddComponent<Navigate>();
+		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 	}
 
 	void Enemy::OnUpdate()
