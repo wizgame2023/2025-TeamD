@@ -15,6 +15,7 @@ namespace basecross {
 		int m_ConditionDefeat;
 
 		shared_ptr<ForecastLine> m_BossLine;
+		shared_ptr<ForecastLine> m_FLine;
 
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);

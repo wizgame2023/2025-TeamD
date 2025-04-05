@@ -19,12 +19,13 @@ namespace basecross {
         for (auto point : pointers)
         {
             auto shObj = point.lock();
-            m_CellData.push_back(shObj);
+            auto Obj = dynamic_pointer_cast<RootPointer>(shObj);
+            m_CellData.push_back(Obj);
         }
         // 開始位置の初期化 (例: マップの中心)
         m_StartPosition = Vec3(m_MapWidth / 2.0f, 0.0f, m_MapHeight / 2.0f);
         m_Index = m_StartPosition;
-        m_DireChange = true;
+        m_DireChange = false;
         m_Dire = Dire::X;
         m_BeforePosition = Vec3();
     }
@@ -45,47 +46,21 @@ namespace basecross {
     {
         if (m_DireChange)
         {
-            if (m_BeforePosition == Vec3())
-            {
-                m_BeforePosition = Position;
-            }
             if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
             {
                 Vec3 rezult = Vec3();
                 m_Dire = std::abs(Position.x - m_TargetPosition.x) > std::abs(Position.z - m_TargetPosition.z) ? Dire::X : Dire::Z;
 
-                //if ((m_BeforePosition - Position).lengthSqr() < 1.0f)
-                //{
-                //    if (m_Dire == Dire::X) m_Dire = Dire::Z;
-                //    else if (m_Dire == Dire::Z) m_Dire = Dire::X;
-                //}
                 if (m_Dire == Dire::X)
                 {
                     m_BeforePosition = Position;
                     if (m_TargetPosition.x < Position.x)
                     {
-                        rezult += Vec3(-1, 0, 0);
-                        if (m_TargetPosition.z < Position.z)
-                        {
-                            rezult += Vec3(0, 0, -1);
-                        }
-                        else if (m_TargetPosition.z > Position.z)
-                        {
-                            rezult += Vec3(0, 0, 1);
-                        }
+                        return Vec3(-1, 0, 0);
                     }
                     else if (m_TargetPosition.x > Position.x)
                     {
-                        rezult += Vec3(1, 0, 0);
-                        if (m_TargetPosition.z < Position.z)
-                        {
-                            rezult += Vec3(0, 0, -1);
-                        }
-                        else if (m_TargetPosition.z > Position.z)
-                        {
-                            rezult += Vec3(0, 0, 1);
-                        }
-
+                        return Vec3(1, 0, 0);
                     }
                 }
                 else if (m_Dire == Dire::Z)
@@ -93,39 +68,19 @@ namespace basecross {
                     m_BeforePosition = Position;
                     if (m_TargetPosition.z < Position.z)
                     {
-                        rezult += Vec3(0, 0, -1);
-                        if (m_TargetPosition.x < Position.x)
-                        {
-                            rezult += Vec3(-1, 0, 0);
-                        }
-                        else if (m_TargetPosition.x > Position.x)
-                        {
-                            rezult += Vec3(1, 0, 0);
-                        }
-
+                        return Vec3(0, 0, -1);
                     }
                     else if (m_TargetPosition.z > Position.z)
                     {
-                        rezult += Vec3(0, 0, 1);
-                        if (m_TargetPosition.x < Position.x)
-                        {
-                            rezult += Vec3(-1, 0, 0);
-                        }
-                        else if (m_TargetPosition.x > Position.x)
-                        {
-                            rezult += Vec3(1, 0, 0);
-                        }
-
+                        return Vec3(0, 0, 1);
                     }
                 }
-                return rezult;
-            }
-            else{
-                m_DireChange = false;
             }
         }
         if ((Position - m_TargetPosition).length() < 1.5f)
         {
+            m_DireChange = false;
+            m_BossPause = false;
             m_Index = m_TargetPosition;
             m_BeforeTarget = m_TargetPosition;
             return Vec3(0, 0, 0);
@@ -140,7 +95,7 @@ namespace basecross {
 
         // 開始ノードの距離を初期化
         // 現在のノードの周囲のセルをOPENにする
-        if (index != goal && m_BeforeTarget != goal)
+        if (index != goal)
         {
             m_DireChange = true;
             m_TargetPosition = goal;
@@ -180,63 +135,63 @@ namespace basecross {
     }
 
 
-    Vec3 Navigate::AvoidBlock(const Vec3& Position, const Vec3& Target)
+    Vec3 Navigate::NextWayPoint(const Vec3& Pos, const Vec3& Target)
+    {
+        float memoryPos = 100000;
+        Vec3 outCome = Vec3();
+        Vec3 nearPoint = Vec3();
+        shared_ptr<RootPointer> nearPointMemory;
+        for (int i = 0; i < m_CellData.size(); i++)
+        {
+            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            if (nearPoint == Vec3())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+            if ((vec - Pos).length() < (nearPoint - Pos).length())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+        }  
+
+        vector<int> num;
+        wstring nearPossible =  nearPointMemory->GetPointerNumber();
+        num = WstrToVecInt(nearPossible);
+        for (int j = 0; j < num.size(); j++)
+        {
+            Vec3 nearPos = nearPointMemory->GetPosition();
+            Vec3 nearPossibleVec = m_CellData[num[j]]->GetComponent<Transform>()->GetPosition();
+            float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
+
+            if (Pos == nearPossibleVec)
+            {
+                continue;
+            }
+            if (memoryPos == 0)
+            {
+                memoryPos = wayPos;
+            }
+            else if (wayPos < memoryPos)
+            {
+                memoryPos = wayPos;
+                outCome = nearPossibleVec;
+            }
+        }
+        return outCome;
+    }
+
+
+    void Navigate::AvoidBlock(const Vec3& Position, const Vec3& Target)
     {
         Vec3 SetPoint = Vec3();
-        Vec3 SetPoint1 = Vec3();
-        auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-        auto pointers = pointerGroup->GetGroupVector();
-        for (auto& point : pointers)
+        Vec3 result = Vec3();
+        if (m_BossPause == false)
         {
-            auto Obj = point.lock();
-            Vec3 pointVec = Obj->GetComponent<Transform>()->GetPosition();
-            if (SetPoint == Vec3())
-            {
-                SetPoint = pointVec;
-            }
-            if ((Target - pointVec).length() < (Target - SetPoint).length())
-            {
-                SetPoint = pointVec;
-            }
-            else if((Target - pointVec).length() < (Target - SetPoint).length())
-            {
-                SetPoint1 = pointVec;
-            }
+            SetPoint = NextWayPoint(Position, Target);
         }
-
-        if ((Position - SetPoint).lengthSqr() >= 1.0f)
-        {
-            Vec3 pointTarget = Vec3();
-            m_Dire = std::abs(Position.x - SetPoint.x) > std::abs(Position.z - SetPoint.z) ? Dire::X : Dire::Z;
-            if (m_Dire == Dire::X)
-            {
-                m_BeforePosition = Position;
-                if (SetPoint.x < Position.x)
-                {
-                    pointTarget += Vec3(-1, 0, 0);
-                }
-                else if (SetPoint.x > Position.x)
-                {
-                    pointTarget += Vec3(1, 0, 0);
-                }
-            }
-            else if (m_Dire == Dire::Z)
-            {
-                m_BeforePosition = Position;
-                if (SetPoint.z < Position.z)
-                {
-                    pointTarget += Vec3(0, 0, -1);
-                }
-                else if (SetPoint.z > Position.z)
-                {
-                    pointTarget += Vec3(0, 0, 1);
-                }
-            }
-            return pointTarget;
-        }
-        else {
-            return Vec3(0);
-        }
+            SetTargetPosition(Position, SetPoint);
     }
 }
 //end basecross

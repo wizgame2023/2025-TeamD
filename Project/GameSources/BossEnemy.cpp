@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale),m_IsAppearance(false),m_ConditionTime(0.0f),m_ConditionDefeat(100)
+		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -38,7 +38,7 @@ namespace basecross {
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
-		navi->SetTargetPosition(m_Transform->GetPosition(), m_Intruder->GetPosition());
+		navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
 		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
@@ -65,44 +65,38 @@ namespace basecross {
 			}
 		}
 		else {
+			StartAsync();
 			AsyncUpdate();
 			Vec3 pos = GetPosition();
 			m_currentState->Execute();
 			auto navi = GetComponent<Navigate>();
 			float elapsedTime = App::GetApp()->GetElapsedTime();
 			Vec3 currntPosition = GetPosition();
-
-			if (m_Intruder != nullptr) {
-				if (m_IntruderAlert) {
-					Vec3 halfPos = navi->GetAStarForword(currntPosition);
-
-					if (halfPos == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
-					if (halfPos == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
-					if (halfPos == Vec3(0, 0, 1))  m_Transform->SetRotation(Vec3(0, 0, 0));
-					if (halfPos == Vec3(0, 0, -1)) m_Transform->SetRotation(Vec3(0, 180, 0));
-
-					if (halfPos != Vec3(0))
-					{
-						currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
-						SetPosition(currntPosition);
-					}
-
+			if (m_IntruderAlert)
+			{
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				if (halfPos != Vec3(0))
+				{
+					currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
 				}
-				else {
-					Vec3 taregtpoint = navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
-					if (taregtpoint == Vec3(1, 0, 0))  m_Transform->SetRotation(Vec3(0, 90, 0));
-					else if (taregtpoint == Vec3(-1, 0, 0)) m_Transform->SetRotation(Vec3(0, 270, 0));
-					else if (taregtpoint == Vec3(0, 0, 1))  m_Transform->SetRotation(Vec3(0, 0, 0));
-					else if (taregtpoint == Vec3(0, 0, -1)) m_Transform->SetRotation(Vec3(0, 180, 0));
-
-					if (taregtpoint != Vec3(0))
-					{
-						currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
-						SetPosition(currntPosition);
-					}
-
+				else
+				{
+					navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
 				}
 			}
+			else {
+			Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
+			if (taregtpoint != Vec3(0))
+			{
+				currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+			}
+			else {
+				navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+			}
+			}			
+			
+			SetPosition(currntPosition);
+
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			if (device.bConnected) {
 				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN) {
@@ -118,9 +112,8 @@ namespace basecross {
 
 				}
 			}
-
-			EndAsync();
 		}
+		EndAsync();
 	}
 	void BossEnemy::Dead()
 	{
