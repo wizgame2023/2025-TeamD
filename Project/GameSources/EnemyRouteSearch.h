@@ -61,7 +61,7 @@ namespace basecross {
 			return m_BeforeTarget;
 		}
 
-		Vec3 AvoidBlock(const Vec3& Position, const Vec3& Target);
+		void AvoidBlock(const Vec3& Position, const Vec3& Target);
 
 
 		virtual void OnUpdate()override {}
@@ -86,21 +86,22 @@ namespace basecross {
 		Vec3 m_HalfPosition;
 		std::stack<Vec3> points;
 		shared_ptr<GameObject> m_NearObject = nullptr;
-		vector<float> m_number;
+		vector<int> m_number;
 		// セルのサイズ
 		float m_CellSize = 5.0f;
 
 		// デバッグ用 (A*アルゴリズムの実行を制御)
 		bool m_debug_pause = false;		
+		bool m_BossPause = false;
 
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return NULL;
 			return stof(data);
 		}
 
-		vector<float> WstrToVec3(const wstring& data) {
+		vector<int> WstrToVecInt(const wstring& data) {
 			vector<wstring> vec3Str = {};
-			vector<float> num = {};
+			vector<int> num = {};
 			Util::WStrToTokenVector(vec3Str, data, L'_');
 			for (int i = 0; i < vec3Str.size(); i++)
 			{

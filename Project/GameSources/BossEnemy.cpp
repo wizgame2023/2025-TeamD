@@ -38,7 +38,7 @@ namespace basecross {
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
-		navi->SetTargetPosition(m_Transform->GetPosition(), m_Intruder->GetPosition());
+		navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
 		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
@@ -72,29 +72,28 @@ namespace basecross {
 			auto navi = GetComponent<Navigate>();
 			float elapsedTime = App::GetApp()->GetElapsedTime();
 			Vec3 currntPosition = GetPosition();
-			//if (m_IntruderAlert)
-			//{
-			//	Vec3 halfPos = navi->GetAStarForword(currntPosition);
-			//	if (halfPos != Vec3(0))
-			//	{
-			//		currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
-			//	}
-			//	else
-			//	{
-			//		navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
-			//	}
-			//}
-			//else {
-				Vec3 taregtpoint = navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
-				if (taregtpoint != Vec3(0))
+			if (m_IntruderAlert)
+			{
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				if (halfPos != Vec3(0))
 				{
-					currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+					currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
 				}
 				else
 				{
-					navi->AvoidBlock(currntPosition, m_Intruder->GetPosition());
+					navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
 				}
-			//}			
+			}
+			else {
+			Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
+			if (taregtpoint != Vec3(0))
+			{
+				currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+			}
+			else {
+				navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+			}
+			}			
 			
 			SetPosition(currntPosition);
 

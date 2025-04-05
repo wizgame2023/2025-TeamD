@@ -25,7 +25,7 @@ namespace basecross {
         // 開始位置の初期化 (例: マップの中心)
         m_StartPosition = Vec3(m_MapWidth / 2.0f, 0.0f, m_MapHeight / 2.0f);
         m_Index = m_StartPosition;
-        m_DireChange = true;
+        m_DireChange = false;
         m_Dire = Dire::X;
         m_BeforePosition = Vec3();
     }
@@ -61,7 +61,6 @@ namespace basecross {
                     else if (m_TargetPosition.x > Position.x)
                     {
                         return Vec3(1, 0, 0);
-
                     }
                 }
                 else if (m_Dire == Dire::Z)
@@ -77,12 +76,11 @@ namespace basecross {
                     }
                 }
             }
-            else {
-                m_DireChange = false;
-            }
         }
         if ((Position - m_TargetPosition).length() < 1.5f)
         {
+            m_DireChange = false;
+            m_BossPause = false;
             m_Index = m_TargetPosition;
             m_BeforeTarget = m_TargetPosition;
             return Vec3(0, 0, 0);
@@ -139,52 +137,61 @@ namespace basecross {
 
     Vec3 Navigate::NextWayPoint(const Vec3& Pos, const Vec3& Target)
     {
-        float memoryPos = 0;
+        float memoryPos = 100000;
         Vec3 outCome = Vec3();
+        Vec3 nearPoint = Vec3();
+        shared_ptr<RootPointer> nearPointMemory;
         for (int i = 0; i < m_CellData.size(); i++)
         {
-            wstring num = m_CellData[i]->GetPointerNumber();
-            vector<shared_ptr<RootPointer>> number = m_CellData[i]->GetRootPointer();
-            
-            vector<Vec3> objVec = {};
-            for (int f = 0; f < number.size(); f++)
+            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            if (nearPoint == Vec3())
             {
-                Vec3 vec = number[f]->GetComponent<Transform>()->GetPosition();
-                objVec.push_back(vec);
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
             }
-
-            for (int j = 0; j < objVec.size(); j++)
+            if ((vec - Pos).length() < (nearPoint - Pos).length())
             {
-                float wayPos = (objVec[j] - Target).length() + (objVec[j] - Pos).length();
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+        }  
 
-                if (Pos == objVec[j])
-                {
-                    continue;
-                }
-                if (memoryPos == 0)
-                {
-                    memoryPos = wayPos;
-                }
-                else if (wayPos < memoryPos)
-                {
-                    memoryPos = wayPos;
-                    outCome = objVec[j];
-                }
+        vector<int> num;
+        wstring nearPossible =  nearPointMemory->GetPointerNumber();
+        num = WstrToVecInt(nearPossible);
+        for (int j = 0; j < num.size(); j++)
+        {
+            Vec3 nearPos = nearPointMemory->GetPosition();
+            Vec3 nearPossibleVec = m_CellData[num[j]]->GetComponent<Transform>()->GetPosition();
+            float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
+
+            if (Pos == nearPossibleVec)
+            {
+                continue;
+            }
+            if (memoryPos == 0)
+            {
+                memoryPos = wayPos;
+            }
+            else if (wayPos < memoryPos)
+            {
+                memoryPos = wayPos;
+                outCome = nearPossibleVec;
             }
         }
         return outCome;
     }
 
 
-    Vec3 Navigate::AvoidBlock(const Vec3& Position, const Vec3& Target)
+    void Navigate::AvoidBlock(const Vec3& Position, const Vec3& Target)
     {
         Vec3 SetPoint = Vec3();
-        Vec3 SetPoint1 = Vec3();
         Vec3 result = Vec3();
-        SetPoint1 = NextWayPoint(Position, Target);
-        SetTargetPosition(Position, SetPoint1);
-        result = GetAStarForword(Position);
-        return result;
+        if (m_BossPause == false)
+        {
+            SetPoint = NextWayPoint(Position, Target);
+        }
+            SetTargetPosition(Position, SetPoint);
     }
 }
 //end basecross

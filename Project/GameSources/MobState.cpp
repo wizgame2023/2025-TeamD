@@ -103,7 +103,7 @@ namespace basecross {
 			m_Enemy->ChangeState<BossAttack>();
 		}
 		else {
-			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
 		}
 
 	}
@@ -125,7 +125,7 @@ namespace basecross {
 
 		if (m_ChangeTime < 0.0f)
 		{	
-			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
 			m_Enemy->ChangeState<BossSearch>();
 			m_ChangeTime = 5.0f;
 		}
