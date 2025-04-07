@@ -218,7 +218,9 @@ namespace basecross {
 	}
 
 	void NumberSprite::OnUpdate() {
-
+		for (auto& number : m_Numbers) {
+			number->SetDrawActive(GetDrawActive());
+		}
 	}
 
 	vector<Vec2> NumberSprite::GetUV(int displayDigit) {
@@ -331,13 +333,20 @@ namespace basecross {
 
 	shared_ptr<ButtonManager> ButtonManager::instance = nullptr;
 
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size, func);
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size,nullptr, func);
 	}
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, func);
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size,nullptr, func);
 	}
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size,object, func);
+	}
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size,object, func);
+	}
+
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
 		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
@@ -348,7 +357,7 @@ namespace basecross {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedColor);
 		}
 
-		button->SetFunction(func);
+		button->SetFunction(func,object);
 		return sprite;
 	}
 	void ButtonManager::OnCreate() {

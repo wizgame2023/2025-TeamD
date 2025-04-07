@@ -47,7 +47,7 @@ namespace basecross {
 		/// 射影行列
 		bsm::Mat4x4 mProj;
 		/// Bone用
-		bsm::Vec4 Bones[3 * 72];
+		bsm::Vec4 Bones[3 * 100];
 		ShadowConstants() {
 			memset(this, 0, sizeof(ShadowConstants));
 		};
@@ -119,7 +119,7 @@ namespace basecross {
 		/// ライト射影行列
 		bsm::Mat4x4 LightProjection;
 		/// Bone配列
-		bsm::Vec4 Bones[3 * 72];
+		bsm::Vec4 Bones[3 * 100];
 		SimpleConstants() {
 			memset(this, 0, sizeof(SimpleConstants));
 			Diffuse = bsm::Col4(1.0f, 1.0f, 1.0f, 1.0f);
