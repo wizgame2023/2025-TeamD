@@ -316,8 +316,13 @@ namespace basecross {
 
 
 		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
-
-		m_Effect = GetTypeStage<GameStageS>()->GetCreateEffect();
+		auto stage = static_pointer_cast<GameStageS>(m_Stage);
+		if (stage) {
+			m_Effect = stage->GetCreateEffect();
+		}
+		else {
+			m_Effect = nullptr;
+		}
 
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
