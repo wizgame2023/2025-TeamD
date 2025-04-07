@@ -171,7 +171,7 @@ namespace basecross {
 			//	if (length < h.length()) {
 			//	RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
 			//}
-			float leng = RayCast::CalcDistancePoi(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
+			float leng = RayCast::CalcDistancePoint(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
 			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (leng < lengths.length()) {
 				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);

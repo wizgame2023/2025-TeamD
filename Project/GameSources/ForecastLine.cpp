@@ -60,7 +60,7 @@ namespace basecross {
 		//if(length > h.length()){
 		//	return false;
 		//}
-		float leng = RayCast::CalcDistancePoi(position, Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
+		float leng = RayCast::CalcDistancePoint(position, Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
 		Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 		if (leng > lengths.length()) {
 
@@ -76,12 +76,12 @@ namespace basecross {
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		m_NearestHitObject.reset();
-		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy"};
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy" };
 		RayCastHit hit = RayCastHit();
 		for (auto& obj : GetStage()->GetGameObjectVec()) {
 			if (obj == launcher) continue;
 			if (!CheckDistanceToObject(obj)) continue;
-			RayCast::HitTest(hit, Line(m_StartPosition,(m_StartPosition + m_Direction * m_Length)), obj, excludeTags, true);
+			RayCast::HitTest(hit, Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)), obj, excludeTags, true);
 		}
 
 		if (hit.m_Object != nullptr) {
