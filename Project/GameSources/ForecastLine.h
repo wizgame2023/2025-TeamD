@@ -14,7 +14,7 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 
-		shared_ptr<BcPNTStaticDraw> m_Draw;
+		shared_ptr<BcPNTStaticDraw> m_BoneDraw;
 		shared_ptr<Transform> m_Transform;
 	};
 	class ForecastLine : public GameObject

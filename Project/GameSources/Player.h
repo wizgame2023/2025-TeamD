@@ -20,6 +20,7 @@ namespace basecross {
 		float m_BoostTime;
 		float m_BoostInterval;
 		float m_Attacktime;
+		float m_AttackInterval;
 		float m_DamageInterval;
 		bool m_ParryJudge;
 		bool m_DamageIntervalStart;
@@ -28,6 +29,7 @@ namespace basecross {
 		Vec3 m_BulletDire;
 		shared_ptr<EffectManeger> m_Effect;
 
+		shared_ptr<GameObject> m_Target;
 	public:
 		int m_PlayerStateNum;
 		enum PlayerState
@@ -57,8 +59,10 @@ namespace basecross {
 		Vec3 GetForward();
 		int GetStates();
 		float GetEnergy();
-		void SearchRange();
+		Vec3 SearchRange();
+
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
+		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
 	};
 

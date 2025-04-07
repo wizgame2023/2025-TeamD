@@ -61,6 +61,9 @@ namespace basecross {
 			return m_BeforeTarget;
 		}
 
+		void AvoidBlock(const Vec3& Position, const Vec3& Target);
+
+
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
@@ -68,11 +71,14 @@ namespace basecross {
 		void AStarAlgorithm(Vec3 index, Vec3 goal);
 		Vec3 OpenCell(Vec3 index);
 		bool UpdateDistance(Vec3 index);
+
+		Vec3 NextWayPoint(const Vec3& s, const Vec3& e);
 		bool m_DireChange;
 		float m_MapWidth;
 		float m_MapHeight;
-		vector<shared_ptr <GameObject>> m_CellData;
+		vector<shared_ptr <RootPointer>> m_CellData;
 		Vec3 m_BeforeTarget;
+		Vec3 m_BeforePosition;
 		Dire m_Dire;
 		Vec3 m_TargetPosition;
 		Vec3 m_Index;
@@ -80,12 +86,33 @@ namespace basecross {
 		Vec3 m_HalfPosition;
 		std::stack<Vec3> points;
 		shared_ptr<GameObject> m_NearObject = nullptr;
-
+		vector<int> m_number;
 		// セルのサイズ
 		float m_CellSize = 5.0f;
 
 		// デバッグ用 (A*アルゴリズムの実行を制御)
 		bool m_debug_pause = false;		
+		bool m_BossPause = false;
+
+		float WstrToFlt(const wstring& data) {
+			if (data == L"") return NULL;
+			return stof(data);
+		}
+
+		vector<int> WstrToVecInt(const wstring& data) {
+			vector<wstring> vec3Str = {};
+			vector<int> num = {};
+			Util::WStrToTokenVector(vec3Str, data, L'_');
+			for (int i = 0; i < vec3Str.size(); i++)
+			{
+				if (WstrToFlt(vec3Str[i]) != NULL)
+				{
+					num.push_back(WstrToFlt(vec3Str[i]));
+				}
+			}
+			return num;
+		}
+
 	};
 }
 

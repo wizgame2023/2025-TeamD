@@ -61,15 +61,15 @@ namespace basecross {
 	}
 	void SharpFan::OnCreate() {
 		InitializeVertex();
-		m_Draw = AddComponent<PCTStaticDraw>();
-		m_Draw->SetOriginalMeshUse(true);
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
-		m_Draw->SetSamplerState(SamplerState::LinearWrap);
-		m_Draw->SetDepthStencilState(DepthStencilState::Read);
-		m_Draw->SetBlendState(BlendState::Additive);
+		m_BoneDraw = AddComponent<PCTStaticDraw>();
+		m_BoneDraw->SetOriginalMeshUse(true);
+		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
+		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_BoneDraw->SetDepthStencilState(DepthStencilState::Read);
+		m_BoneDraw->SetBlendState(BlendState::Additive);
 		SetAlphaActive(true);
 		if (m_TexKey != L"") {
-			m_Draw->SetTextureResource(m_TexKey);
+			m_BoneDraw->SetTextureResource(m_TexKey);
 		}
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(Vec3(-10.0f, 0.1f, 2.0f));
@@ -80,6 +80,6 @@ namespace basecross {
 		for (auto& vertex : m_Vertices) {
 			vertex.textureCoordinate -= 0.01f;
 		}
-		m_Draw->UpdateVertices(m_Vertices);
+		m_BoneDraw->UpdateVertices(m_Vertices);
 	}
 }

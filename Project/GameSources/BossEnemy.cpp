@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale),m_IsAppearance(false),m_ConditionTime(0.0f),m_ConditionDefeat(100)
+		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -18,12 +18,16 @@ namespace basecross {
 	}
 	void BossEnemy::OnCreate()
 	{
-		Object::OnCreate();
+		Enemy::OnCreate();
 		m_HP = 3;
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			SetIntruder(player);
+		}
 
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);//debug
-		ptrColl->SetFixed(true);
+		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
@@ -33,12 +37,20 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
+		auto navi = AddComponent<Navigate>();
+		navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
+		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
+		m_currentState->Enter();
+
+		AddComponent<Gravity>();
+		m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
 	}
 	void BossEnemy::OnUpdate()
 	{
 		Enemy::OnUpdate();
 		SetDrawActive(m_IsAppearance);
+
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (!m_IsAppearance) {
 			m_ConditionTime -= elapsed;
@@ -47,13 +59,43 @@ namespace basecross {
 				m_IsAppearance = true;
 			}
 
-			int defeatCount = m_Stage->GetDefeatEnemyCount();
+			int defeatCount = ScoreManager::Instance()->GetEliminateEnemyCount();
 			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
 			}
 		}
 		else {
-			Enemy::OnUpdate();
+			StartAsync();
+			AsyncUpdate();
+			Vec3 pos = GetPosition();
+			m_currentState->Execute();
+			auto navi = GetComponent<Navigate>();
+			float elapsedTime = App::GetApp()->GetElapsedTime();
+			Vec3 currntPosition = GetPosition();
+			if (m_IntruderAlert)
+			{
+				Vec3 halfPos = navi->GetAStarForword(currntPosition);
+				if (halfPos != Vec3(0))
+				{
+					currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
+				}
+				else
+				{
+					navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
+				}
+			}
+			else {
+			Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
+			if (taregtpoint != Vec3(0))
+			{
+				currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+			}
+			else {
+				navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+			}
+			}			
+			
+			SetPosition(currntPosition);
 
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			if (device.bConnected) {
@@ -71,6 +113,7 @@ namespace basecross {
 				}
 			}
 		}
+		EndAsync();
 	}
 	void BossEnemy::Dead()
 	{

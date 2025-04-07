@@ -114,6 +114,7 @@ namespace basecross {
 				{
 					m_PlayerStateNum += PlayerState::ZONE;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
+					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -134,7 +135,7 @@ namespace basecross {
 
 	}
 
-	void Player::SearchRange()
+	Vec3 Player::SearchRange()
 	{
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
@@ -146,13 +147,16 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance / 3.0f)
+			if ((position - targetEnemy).length() < searchDistance / 3.0f )
 			{
-				if (IsWithinDetectionRange(position, targetEnemy, 45.0)) {
+				if (IsWithinDetectionRange(forward, targetEnemy - position , 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					float rotate = atan2f(rot.x, rot.z);
-					m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+					m_Target->GetComponent<Transform>()->SetPosition(targetEnemy);
+					return rot;
+				}
+				else {
+					return Vec3();
 				}
 			}
 			else if (targetBulletVector != nullptr)
@@ -160,14 +164,26 @@ namespace basecross {
 				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
 				if ((position - targetbullert).length() < searchDistance)
 				{
-					if (IsWithinDetectionRange(position, targetbullert, 45.0)) {
+					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
-						float rotate = atan2f(rot.x, rot.z);
-						m_Transform->SetRotation(Vec3(0.0f, rotate, 0.0f));
+						m_Target->GetComponent<Transform>()->SetPosition(targetbullert);
+						return rot;
+					}
+					else {
+						return Vec3();
 					}
 				}
+				else {
+					return Vec3();
+				}
 			}
+			else {
+				return Vec3();
+			}
+		}
+		else {
+			return Vec3();
 		}
 	}
 
@@ -183,6 +199,15 @@ namespace basecross {
 		Vec3 normalizedDirection = direction.normalize();
 
 		return normalizedDirection; // 向きベクトルを返却
+	}
+
+	void Player::AimRock(Vec3 rot)
+	{
+		if (rot != Vec3())
+		{
+			float rotate = atan2f(rot.x, rot.z);
+			SetRotation(Vec3(0.0f, XMConvertToDegrees(rotate), 0.0f));
+		}
 	}
 
 	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group)
@@ -257,20 +282,28 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");
+		
 
-		//auto ptrDraw = AddComponent<PNTBoneModelDraw>();
+		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
-		//	Vec3(.4f, .4f, .4f), //(.1f, .1f, .1f),
+		//	Vec3(0.09f), //(.1f, .1f, .1f),
 		//	Vec3(0.0f, 90.0f, 0.0f),
 		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, 0, 0.0f)
+		//	Vec3(0.0f, -1.0f, 0.0f)
 		//);
 
-		//ptrDraw->SetMeshResource(L"PLAYER");
+		//ptrDraw->SetMeshResource(L"DEBUG");
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		////SetDrawActive(false);
 		//ptrDraw->SetOwnShadowActive(true);
+
+		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
+		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		//
+		//auto bone = AddComponent<BonePosition>(L"Chara.txt");
+		//bone->CreateBone();
 
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -282,7 +315,11 @@ namespace basecross {
 
 		AddTag(L"Player");
 
+
+		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+
 		m_Effect = GetTypeStage<GameStageS>()->GetCreateEffect();
+
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -291,12 +328,14 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcPNTStaticDraw>();
+		auto draw = GetComponent<BcBaseDraw>();
+		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
 		//コントローラチェックして入力があればコマンド呼び出し
 		//m_InputHandler.PushHandle(GetThis<Player>());
 		ZoneActivation();
 		Debug();
+
 
 	//デバッグ用
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
@@ -326,6 +365,7 @@ namespace basecross {
 				//m_ParryJudge = false;
 			}
 		}
+
 		if (m_DamageIntervalStart)
 		{
 			m_DamageInterval -= elapsedTime;
@@ -334,7 +374,7 @@ namespace basecross {
 			{
 				draw->SetDiffuse(Col4(1, 1, 1, 1));
 				m_DamageIntervalStart = false;
-				m_DamageInterval = 3.0f;
+				m_DamageInterval = 0.5f;
 			}
 		}
 		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
@@ -367,26 +407,33 @@ namespace basecross {
 		else {
 			m_BoostTime = 0.2f;
 			m_Attacktime = 0.2f;
+
 			m_BoostInterval -= elapsedTime;
+			m_AttackInterval -= elapsedTime;
 			MovePlayer(6.0f);
+			Vec3 rot = SearchRange();
+
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 			{
-				m_BoostAngle = GetForward();;
+				m_BoostAngle = GetForward();
 				if (m_BoostInterval <= 0.0f)
 				{
 					m_PlayerStateNum -= PlayerState::NORMAL;
 					m_PlayerStateNum += PlayerState::DASH;
+					SoundManager::Instance().PlaySE(L"SE_RUN");
 				}
 			}
 
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 			{
 				m_ParryJudge = true;
-				SearchRange();
+
+				AimRock(rot);
 				m_Position = GetPosition();
 				Vec3 forward = GetForward();
+
 				BoostMove(15.0f, forward);
-				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.1f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
+				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 
 				float rot;
 				auto angle = GetMoveVector(rot);
@@ -397,6 +444,8 @@ namespace basecross {
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
+
+				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE",0.5f);
 			}
 		}
 
@@ -426,7 +475,6 @@ namespace basecross {
 					{
 						m_HP -= 0;
 						m_EnergyCharge += 0.2;
-						SoundManager::Instance().PlaySE(L"TEST");
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
@@ -434,11 +482,13 @@ namespace basecross {
 						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
 					}
+					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
 					m_HP -= 2;
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
+					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				}
 			}
 			m_HP = max(m_HP, 0);
@@ -484,7 +534,6 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
-		SoundManager::Instance().PlaySE(L"ATTACK");
 	}
 
 	void HitSphere::OnUpdate()
@@ -494,11 +543,11 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 12.0f;
+			m_Speed = 6.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
-			m_Speed = 24.0f;
+			m_Speed = 12.0f;
 		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)
@@ -523,7 +572,7 @@ namespace basecross {
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);
-			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
+			//GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}
 

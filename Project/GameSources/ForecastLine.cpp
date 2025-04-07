@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -11,10 +11,10 @@ namespace basecross {
 	void LineCube::OnCreate() {
 		m_Transform = GetComponent<Transform>();
 
-		m_Draw = AddComponent<BcPNTStaticDraw>();
-		m_Draw->SetMeshResource(L"DEFAULT_CUBE");
-		m_Draw->SetSamplerState(SamplerState::LinearWrap);
-		m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
+		m_BoneDraw = AddComponent<BcPNTStaticDraw>();
+		m_BoneDraw->SetMeshResource(L"DEFAULT_CUBE");
+		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
+		m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 0.1f));
 		SetAlphaActive(true);
 
 		AddTag(L"Line");
@@ -27,18 +27,18 @@ namespace basecross {
 		m_Forecast = GetStage()->AddGameObject<LineCube>();
 
 		m_BalletLine->m_Transform->SetPosition(transform->GetPosition() - Vec3(2.0f, 0.0f, 0.0f));
-		m_BalletLine->m_Draw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
+		m_BalletLine->m_BoneDraw->SetDiffuse(Col4(1.0f, 1.0f, 0.0f, 1.0f));
 		m_Forecast->m_Transform->SetPosition(transform->GetPosition() + Vec3(2.0f, 0.0f, 0.0f));
-		m_Forecast->m_Draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
+		m_Forecast->m_BoneDraw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 
 		//InitializeCriticalSection(&m_CriticalSection);
 	}
 	/// <summary>
-	/// ƒ‰ƒCƒ“‚Ìİ’è
+	/// ãƒ©ã‚¤ãƒ³ã®è¨­å®š
 	/// </summary>
-	/// <param name="direction">•ûŒü</param>
-	/// <param name="startPosition">‰ŠúˆÊ’u</param>
-	/// <param name="maxLength">’·‚³</param>
+	/// <param name="direction">æ–¹å‘</param>
+	/// <param name="startPosition">åˆæœŸä½ç½®</param>
+	/// <param name="maxLength">é•·ã•</param>
 	void ForecastLine::SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength, const Col4& color) {
 		m_Direction = direction;
 		m_Direction.y = 0.0f;
@@ -47,9 +47,9 @@ namespace basecross {
 		m_DefaultColor = color;
 	}
 	/// <summary>
-	/// ƒIƒuƒWƒFƒNƒg‚Æ‚Ì‹——£‚ğŠî‚É”»•Ê‚·‚é‚©‚Ç‚¤‚©
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã®è·é›¢ã‚’åŸºã«åˆ¤åˆ¥ã™ã‚‹ã‹ã©ã†ã‹
 	/// </summary>
-	/// <param name="position">ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u</param>
+	/// <param name="position">ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®</param>
 	/// <returns></returns>
 	bool ForecastLine::CheckDistanceToObject(const shared_ptr<GameObject>& obj) {
 		auto transform = obj->GetComponent<Transform>();
@@ -63,15 +63,16 @@ namespace basecross {
 		float leng = RayCast::CalcDistancePoi(position, Line(m_StartPosition, (m_StartPosition + m_Direction * m_Length)));
 		Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 		if (leng > lengths.length()) {
+
 			return false;
 		}
 		return true;
 	}
 	/// <summary>
-	/// ƒŒƒCƒLƒƒƒXƒgˆ—
+	/// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå‡¦ç†
 	/// </summary>
-	/// <param name="hitPoint">Õ“Ë’n“_</param>
-	/// <returns>Õ“Ë‚µ‚½‚©‚Ç‚¤‚©</returns>
+	/// <param name="hitPoint">è¡çªåœ°ç‚¹</param>
+	/// <returns>è¡çªã—ãŸã‹ã©ã†ã‹</returns>
 	bool ForecastLine::CheckRayCast(Vec3& hitPoint) {
 		shared_ptr<GameObject> launcher = m_Launcher.lock();
 		m_NearestHitObject.reset();
@@ -118,8 +119,8 @@ namespace basecross {
 
 		auto& balletTransform = m_BalletLine->m_Transform;
 		auto& forecastTransform = m_Forecast->m_Transform;
-		auto& balletDraw = m_BalletLine->m_Draw;
-		auto& forecastDraw = m_Forecast->m_Draw;
+		auto& balletDraw = m_BalletLine->m_BoneDraw;
+		auto& forecastDraw = m_Forecast->m_BoneDraw;
 
 		balletTransform->SetRotation(Vec3(0, rad, 0));
 		forecastTransform->SetRotation(Vec3(0, rad, 0));
@@ -137,7 +138,7 @@ namespace basecross {
 
 	}
 	/// <summary>
-	/// ƒ‰ƒCƒ“‚Ìíœ
+	/// ãƒ©ã‚¤ãƒ³ã®å‰Šé™¤
 	/// </summary>
 	void ForecastLine::Destroy() {
 		GetStage()->RemoveGameObject<LineCube>(m_BalletLine);
