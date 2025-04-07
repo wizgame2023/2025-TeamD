@@ -50,7 +50,37 @@ namespace basecross {
 					rootPointers.emplace(objInfo[GetInfoIndex(L"number")], pointer);
 				}
 			}
-
+			if (dateType == L"Chara") {
+				auto chara = static_pointer_cast<Character>(obj);
+				if (chara != nullptr) {
+					float hp = WstrToFlt(objInfo[GetInfoIndex(L"hp")]);
+					chara->InitHP(hp);
+					int regionIndex = GetInfoIndex(L"region");
+					if (regionIndex != -1) {
+						int region = WstrToFlt(objInfo[regionIndex]);
+						//ŒR‘à”Ô†‚Í1ˆÈã
+						if (region > 0) {
+							if (find(m_Regions.begin(), m_Regions.end(), region) == m_Regions.end()) {
+								//region‚ª“o˜^‚³‚ê‚Ä‚¢‚È‚¯‚ê‚Î“o˜^
+								m_Regions.push_back(region);
+							}
+							//map
+							/*
+							* if(m_Regions.find(region) == end(m_Regions)) {
+							*	auto regionObject = GetStage()->AddGameObject<Region>();
+							*	//“G‚ð“o˜^
+							*
+							*	m_Regions.emplace(region,regionObject);
+							* }else{
+							*	auto regionObject = m_Regions[region];
+							*	//“G‚ð“o˜^
+							*
+							* }
+							*/
+						}
+					}
+				}
+			}
 			if (objInfo[GetInfoIndex(L"tag")] == L"Enemy") {
 				enemyCount++;
 				int timeIndex = GetInfoIndex(L"time");
