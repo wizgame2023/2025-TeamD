@@ -433,14 +433,14 @@ namespace basecross {
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
-						m_HP -= 1;
+						Damage(1.0f, true);
 						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
 					}
 					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
-					m_HP -= 2;
+					Damage(1.0f, false);
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
 					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");

@@ -19,7 +19,7 @@ namespace basecross {
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		m_HP = 3;
+		m_HP = 10;
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -85,16 +85,16 @@ namespace basecross {
 				}
 			}
 			else {
-			Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
-			if (taregtpoint != Vec3(0))
-			{
-				currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+				Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
+				if (taregtpoint != Vec3(0))
+				{
+					currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
+				}
+				else {
+					navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+				}
 			}
-			else {
-				navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
-			}
-			}			
-			
+
 			SetPosition(currntPosition);
 
 			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
@@ -123,6 +123,11 @@ namespace basecross {
 	Vec3 BossEnemy::GetPosition()
 	{
 		return m_Transform->GetPosition();;
+	}
+
+	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other)
+	{
+		Enemy::OnCollisionEnter(other);
 	}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
