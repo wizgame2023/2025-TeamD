@@ -110,6 +110,8 @@ namespace basecross{
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Instance>> m_Builders;
 		vector<wstring> m_InfoNames;
+		vector<int> m_Regions;
+		//map<int,Region> m_Regions;
 		float m_Scale;
 
 	public:

@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ゲームステージ
+@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ
 */
 
 #pragma once
@@ -8,8 +8,9 @@
 
 namespace basecross {
 	class NumberSprite;
+	class Menu;
 	//--------------------------------------------------------------------------------------
-	//	ゲームステージクラス
+	//	繧ｲ繝ｼ繝繧ｹ繝��繧ｸ繧ｯ繝ｩ繧ｹ
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 
@@ -20,6 +21,9 @@ namespace basecross {
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
 		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
+		shared_ptr<Menu> m_PauseMenu;
+		shared_ptr<Menu> m_SoundTestMenu;
+		shared_ptr<Menu> m_ResultMenu;
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
@@ -28,6 +32,7 @@ namespace basecross {
 
 		void CreatePose();
 		void CreateSoundTest();
+		void CreateResult();
 
 		void ClosePose();
 		void OpenPose();
@@ -45,9 +50,9 @@ namespace basecross {
 
 	public:
 		//構築と破棄
-		GameStage(const wstring& file) :Stage(),m_MapFileName(file), m_IsPose(false){}
+		GameStage(const wstring& file) : Stage(),m_MapFileName(file), m_IsPose(false){}
 		virtual ~GameStage() {}
-		//初期化
+		//蛻晄悄蛹
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;

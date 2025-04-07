@@ -374,8 +374,9 @@ namespace basecross{
 	//----------------------------------------------------------
 	class SpriteButton : public SpriteAction {
 		shared_ptr<SpriteBaseDraw> m_SpriteDraw;
-		function<void(shared_ptr<Stage>&)> m_Function;
+		function<void(shared_ptr<ObjectInterface>&)> m_Function;
 		function<void(shared_ptr<SpriteButton>&)> m_AddFunction;
+		shared_ptr<ObjectInterface> m_ArgmentObject;
 		bool m_IsSelect;
 		bool m_IsActive;
 		wstring m_BelongGroup;
@@ -425,11 +426,17 @@ namespace basecross{
 			sprite->GetComponent<Transform>()->SetParent(GetGameObject());
 			m_FrontSprite.push_back(sprite);
 		}
-		void SetFunction(function<void(shared_ptr<Stage>&)> func) {
+		void SetFunction(function<void(shared_ptr<ObjectInterface>&)> func,const shared_ptr<ObjectInterface>& object) {
 			m_Function = func;
+			if (object == nullptr) {
+				m_ArgmentObject = GetStage();
+			}
+			else {
+				m_ArgmentObject = object;
+			}
 		}
 		void Func() {
-			m_Function(GetStage());
+			m_Function(m_ArgmentObject);
 		}
 		void Select() {
 			m_IsSelect = true;
@@ -541,9 +548,13 @@ namespace basecross{
 		{}
 		virtual ~ButtonManager(){}
 
-		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,function<void(shared_ptr<Stage>&)> func);
-		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size,function<void(shared_ptr<Stage>&)> func);
-		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex,Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
+
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+
+		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex,Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

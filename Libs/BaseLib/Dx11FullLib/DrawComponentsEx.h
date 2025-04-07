@@ -38,7 +38,7 @@ namespace basecross {
 		bsm::Mat4x4 lightView;
 		bsm::Mat4x4 lightProjection;
 
-		bsm::Vec4 bones[3 * 72];
+		bsm::Vec4 bones[3 * 100];
 
 	};
 

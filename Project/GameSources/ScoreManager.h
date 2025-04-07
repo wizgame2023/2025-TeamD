@@ -29,11 +29,20 @@ namespace basecross{
 		void UpdateTime(float elapsed) {
 			m_Time += elapsed;
 		}
+		float GetTime() {
+			return m_Time;
+		}
 		void AddDamage(float damage) {
 			m_Damage += damage;
 		}
+		float GetDamage() {
+			return m_Damage;
+		}
 		void AddParryCount() {
 			m_ParryCount++;
+		}
+		int GetParryCount() {
+			return m_ParryCount;
 		}
 		void AddEliminateEnemyCount() {
 			m_EliminateEnemyCount++;
