@@ -136,6 +136,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -226,5 +229,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

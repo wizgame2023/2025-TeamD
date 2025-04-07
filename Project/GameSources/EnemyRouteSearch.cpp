@@ -130,7 +130,6 @@ namespace basecross {
 
     bool Navigate::UpdateDistance(Vec3 index)
     {
-
         return true;
     }
 
@@ -191,7 +190,7 @@ namespace basecross {
         {
             SetPoint = NextWayPoint(Position, Target);
         }
-            SetTargetPosition(Position, SetPoint);
+        SetTargetPosition(Position, SetPoint);
     }
 }
 //end basecross

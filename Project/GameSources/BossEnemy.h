@@ -32,6 +32,8 @@ namespace basecross {
 			m_ConditionTime = time;
 		}
 		Vec3 GetPosition();
+		void OnCollisionEnter(shared_ptr<GameObject>& other);
+
 
 	};
 
