@@ -5,7 +5,6 @@
 
 #include "stdafx.h"
 #include "Project.h"
-#include "EnemyManeger.h"
 
 namespace basecross {
 	Legion::Legion() :
