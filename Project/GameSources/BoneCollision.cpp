@@ -54,7 +54,7 @@ namespace basecross {
 	}
 	void Bone::OnCreate() {
 		m_Transform = GetComponent<Transform>();
-		m_Transform->SetScale(Vec3(0.01f));
+		m_Transform->SetScale(Vec3(0.1f));
 
 		auto draw = AddComponent<BcPNStaticDraw>();
 		draw->SetMeshResource(L"DEFAULT_CUBE");
