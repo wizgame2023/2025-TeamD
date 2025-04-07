@@ -37,6 +37,7 @@ namespace basecross {
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -54,6 +55,13 @@ namespace basecross {
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"EnemyHp.png");
 
+		m_Effect = ObjectFactory::Create<EffectManeger>();//作成
+		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+	}
+	shared_ptr <EffectManeger> GameStageS::GetCreateEffect()
+	{
+		return m_Effect;
 	}
 	/// <summary>
 	/// ポーズメニューの作成
@@ -227,10 +235,28 @@ namespace basecross {
 	}
 
 	void GameStageS::OnUpdate() {
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
+		m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		//{
+		//	auto player = GetSharedGameObject<Player>(L"Player", false);
+
+			//m_Effect->PlayEffect(L"Flash", Vec3(1.0f), 0);
+			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		//}
 		GameStage::OnUpdate();
 	}
+
+	void GameStageS::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
+
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_Effect->OnDraw();
+	}
+
 }
 //end basecross

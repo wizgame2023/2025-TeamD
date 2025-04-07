@@ -271,7 +271,7 @@ namespace basecross {
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		//ptrDraw->SetOwnShadowActive(true);
-		
+
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -282,6 +282,7 @@ namespace basecross {
 
 		AddTag(L"Player");
 
+		m_Effect = GetTypeStage<GameStageS>()->GetCreateEffect();
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -297,9 +298,9 @@ namespace basecross {
 		ZoneActivation();
 		Debug();
 
-    //デバッグ用
+	//デバッグ用
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-			
+
 		}
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 		{
@@ -308,7 +309,13 @@ namespace basecross {
 			m_Position = GetPosition();
 			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
 			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x /2, m_Position.y + 0.25f, m_Position.z + forward.z /2), forward, GetThis<GameObject>());
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
+
+			//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z +  0.2f), 0);
+			//m_Effect->SetRotation(Vec3(m_Position * forward),0.0f);
+			//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+			//m_Effect->OnUpdate();
+
 		}
 
 		if (m_ParryJudge == true)
@@ -330,7 +337,7 @@ namespace basecross {
 				m_DamageInterval = 3.0f;
 			}
 		}
-		if ((m_PlayerStateNum & PlayerState::DASH) != 0 )
+		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 		{
 			m_BoostTime -= elapsedTime;
 			if (m_BoostTime >= 0.0f)
@@ -381,6 +388,13 @@ namespace basecross {
 				BoostMove(15.0f, forward);
 				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.1f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
 
+				float rot;
+				auto angle = GetMoveVector(rot);
+
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
+				m_Effect->SetRotation(Vec3(m_Position), 0.0f);
+				m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 			}
@@ -390,6 +404,9 @@ namespace basecross {
 
 	void Player::OnDraw()
 	{
+
+		//m_Effect->OnDraw();
+
 		Character::OnDraw();
 	}
 	void Player::Dead() {

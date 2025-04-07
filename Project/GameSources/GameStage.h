@@ -38,7 +38,10 @@ namespace basecross {
 		}
 		void GameOver();
 		void GameClear();
-		
+
+		shared_ptr<EffectManeger> m_Effect;
+
+
 	public:
 		//\’z‚Æ”jŠü
 		GameStage(const wstring& file) :Stage(),m_MapFileName(file), m_IsPose(false), m_MaxEnemyCount(0), m_EnemyCount(0) {}
