@@ -19,8 +19,8 @@ public class ConvertCSV : MonoBehaviour
     int count = 0;
     const string ENCODE_TEXT = "Shift_JIS";
     readonly List<string> LOAD_OBJECT = new List<string> { "name", "position", "scale", "rotation","tag","collision","type" };
-    readonly List<string> LOAD_CHARA = new List<string> { "name", "position", "scale", "rotation", "tag", "hp", "type" };
-    readonly List<string> LOAD_CHARA_CONDITION = new List<string> { "name", "position", "scale", "rotation", "tag","hp","time","defeat", "type" };
+    readonly List<string> LOAD_CHARA = new List<string> { "name", "position", "scale", "rotation", "tag", "hp","region", "type" };
+    readonly List<string> LOAD_CHARA_CONDITION = new List<string> { "name", "position", "scale", "rotation", "tag","hp","region","time","defeat", "type" };
     readonly List<string> LOAD_POINTER = new List<string> { "name", "position", "scale", "rotation", "tag","number","connect","type" };
 
 
@@ -176,12 +176,15 @@ public class ConvertCSV : MonoBehaviour
         if (comp == null) return;
         string name = comp.className;
         float hp = comp.hp;
+        int region = comp.region;
 
         fs.Write(name);
         fs.Write(",");
         WriteDefaultInfo(fs, obj);
         fs.Write(",");
         fs.Write(hp);
+        fs.Write(",");
+        fs.Write(region);
         fs.Write(",");
         if (comp.isConditional)
         {
@@ -313,6 +316,7 @@ public class ConvertCSV : MonoBehaviour
                     var comp = obj.AddComponent<CharacterDate>();
                     comp.className = name;
                     comp.hp = int.Parse(date[Array.IndexOf(dateNames, "hp")]);
+                    comp.region = int.Parse(date[Array.IndexOf(dateNames, "region")]);
                     int index = Array.IndexOf(dateNames, "time");
                     if(index != -1)
                     {

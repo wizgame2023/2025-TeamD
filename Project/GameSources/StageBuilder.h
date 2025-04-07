@@ -6,25 +6,26 @@
 #pragma once
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	class Object;
 	class RootPointer;
+	class Legion;
 
-	class Instance : public GameObject{
+	class Instance : public GameObject {
 	public:
-		Instance(const shared_ptr<Stage>& stage) : GameObject(stage){}
-		virtual ~Instance(){}
+		Instance(const shared_ptr<Stage>& stage) : GameObject(stage) {}
+		virtual ~Instance() {}
 
 		virtual shared_ptr<Object> Create() {
 			return nullptr;
 		}
 	};
 	template<typename T>
-	class ObjectInstance : public Instance{
+	class ObjectInstance : public Instance {
 		shared_ptr<Stage> m_Stage;
 	public:
-		ObjectInstance(const shared_ptr<Stage>& stage) :Instance(stage), m_Stage(stage){}
-		~ObjectInstance(){}
+		ObjectInstance(const shared_ptr<Stage>& stage) :Instance(stage), m_Stage(stage) {}
+		~ObjectInstance() {}
 
 		virtual shared_ptr<Object> Create() {
 			return m_Stage->AddGameObject<T>();
@@ -42,14 +43,15 @@ namespace basecross{
 		bool m_IsEndAsyncUpdate;
 
 		mutex m_Mutex;
-	public :
-		Object(const shared_ptr<Stage>& stage,Vec3 position,Vec3 rotation, Vec3 scale) :
-			GameObject(stage),m_Position(position),m_Scale(scale),m_Rotation(rotation),m_IsEndAsyncUpdate(true){}
-		Object(const shared_ptr<Stage>& stage) : Object(stage,Vec3(),Vec3(1.0f),Vec3()) {}
+	public:
+		Object(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
+			GameObject(stage), m_Position(position), m_Scale(scale), m_Rotation(rotation), m_IsEndAsyncUpdate(true) {
+		}
+		Object(const shared_ptr<Stage>& stage) : Object(stage, Vec3(), Vec3(1.0f), Vec3()) {}
 
-		virtual ~Object(){}
+		virtual ~Object() {}
 		virtual void OnCreate()override;
-		virtual void AsyncUpdate(){}
+		virtual void AsyncUpdate() {}
 
 		void StartAsync() {
 			m_IsEndAsyncUpdate = false;
@@ -101,23 +103,23 @@ namespace basecross{
 			Tag
 		};
 		enum PointerDate {
-			Number = 5, 
+			Number = 5,
 			ConnectNumber = 6
 		};
 		wstring m_CsvFileName;
 		CsvFile m_Csv;
-		
+
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Instance>> m_Builders;
 		vector<wstring> m_InfoNames;
-		vector<int> m_Regions;
-		//map<int,Region> m_Regions;
+		map<int,Legion> m_Legions;
 		float m_Scale;
 
 	public:
-		StageBuilder(const shared_ptr<Stage>& stage,const wstring& fileName,const float scale = 1.0f) :
-			GameObject(stage),m_CsvFileName(fileName),m_Scale(scale)
-		{};
+		StageBuilder(const shared_ptr<Stage>& stage, const wstring& fileName, const float scale = 1.0f) :
+			GameObject(stage), m_CsvFileName(fileName), m_Scale(scale)
+		{
+		};
 		virtual ~StageBuilder() {};
 		virtual void OnCreate()override;
 

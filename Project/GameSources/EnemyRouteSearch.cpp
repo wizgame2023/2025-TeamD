@@ -140,6 +140,7 @@ namespace basecross {
         Vec3 outCome = Vec3();
         Vec3 nearPoint = Vec3();
         shared_ptr<RootPointer> nearPointMemory;
+        
         for (int i = 0; i < m_CellData.size(); i++)
         {
             Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
@@ -186,6 +187,8 @@ namespace basecross {
     {
         Vec3 SetPoint = Vec3();
         Vec3 result = Vec3();
+        if (m_CellData.size() == 0) return;
+
         if (m_BossPause == false)
         {
             SetPoint = NextWayPoint(Position, Target);
