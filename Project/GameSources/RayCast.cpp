@@ -111,7 +111,7 @@ namespace basecross {
 	//	if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
 	//	return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
 	//}
-	float RayCast::CalcDistancePoi(const Vec3& point, const Line& line) {
+	float RayCast::CalcDistancePoint(const Vec3& point, const Line& line) {
 		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);//始点
 		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);//終点
 		Vec3 endToStr = Vec3(line.m_Start.x - line.m_End.x, line.m_Start.y - line.m_End.y, line.m_Start.z - line.m_End.z);
