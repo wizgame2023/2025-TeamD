@@ -297,11 +297,13 @@ namespace basecross {
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		//ptrDraw->SetOwnShadowActive(true);
+
 		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
 		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
 		//ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//auto bone = AddComponent<BonePosition>(L"a.txt");
 		//bone->CreateBone();
+
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -312,7 +314,11 @@ namespace basecross {
 
 		AddTag(L"Player");
 
+
 		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+
+		m_Effect = GetTypeStage<GameStageS>()->GetCreateEffect();
+
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -329,7 +335,36 @@ namespace basecross {
 		ZoneActivation();
 		Debug();
 
-		//デバッグ用
+
+	//デバッグ用
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
+
+		}
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+		{
+			m_ParryJudge = true;
+			SearchRange();
+			m_Position = GetPosition();
+			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
+			Vec3 forward = GetForward();
+			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
+
+			//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z +  0.2f), 0);
+			//m_Effect->SetRotation(Vec3(m_Position * forward),0.0f);
+			//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+			//m_Effect->OnUpdate();
+
+		}
+
+		if (m_ParryJudge == true)
+		{
+			m_ParryTime--;
+			if (m_ParryTime <= 0.0f)
+			{
+				//m_ParryJudge = false;
+			}
+		}
+
 		if (m_DamageIntervalStart)
 		{
 			m_DamageInterval -= elapsedTime;
@@ -399,6 +434,13 @@ namespace basecross {
 				BoostMove(15.0f, forward);
 				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 
+				float rot;
+				auto angle = GetMoveVector(rot);
+
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
+				m_Effect->SetRotation(Vec3(m_Position), 0.0f);
+				m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 
@@ -410,7 +452,9 @@ namespace basecross {
 
 	void Player::OnDraw()
 	{
-		ComponentDraw();
+		//m_Effect->OnDraw();
+
+		Character::OnDraw();
 	}
 	void Player::Dead() {
 		SetPosition(Vec3(0, 2, 0));
@@ -432,7 +476,7 @@ namespace basecross {
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
-						m_HP -= 1;
+						Damage(1.0f, true);
 						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
 						ScoreManager::Instance()->AddDamage(1);
@@ -441,7 +485,7 @@ namespace basecross {
 					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
-					m_HP -= 2;
+					Damage(1.0f, false);
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
 					ScoreManager::Instance()->AddDamage(2);

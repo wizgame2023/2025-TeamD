@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ç¹§ï½²ç¹ï½¼ç¹ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¸
 */
 
 #pragma once
@@ -10,18 +10,21 @@ namespace basecross {
 	class NumberSprite;
 	class Menu;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ç¹§ï½²ç¹ï½¼ç¹ç¹§ï½¹ç¹ï¿½ï¿½ç¹§ï½¸ç¹§ï½¯ç¹ï½©ç¹§ï½¹
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 
 		wstring m_MapFileName;
 		bool m_IsPose;
+		int m_MaxEnemyCount;
+		int m_EnemyCount;
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
 		shared_ptr<NumberSprite> m_ProtoScoreNumber;
+
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
@@ -34,14 +37,22 @@ namespace basecross {
 		void ClosePose();
 		void OpenPose();
 		void SetAllGameObjectActive(bool flag);
-		void GameOver(){}
-		void GameClear(){}
+		float GetClearRate() {
+			if (m_MaxEnemyCount <= 0) return 100.0f;
+			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
+		}
+
+		void GameOver() {};
+		void GameClear() {};
 		
+
+		shared_ptr<EffectManeger> m_Effect;
+
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		GameStage(const wstring& file) : Stage(),m_MapFileName(file), m_IsPose(false){}
 		virtual ~GameStage() {}
-		//‰Šú‰»
+		//è›»æ™„æ‚„è›¹
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;

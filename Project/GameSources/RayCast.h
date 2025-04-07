@@ -45,7 +45,7 @@ namespace basecross {
 		static 	bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
 
 		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
-		static float CalcDistancePoi(const Vec3& point, const Line& line);
+		static float CalcDistancePoint(const Vec3& point, const Line& line);
 
 	};
 }

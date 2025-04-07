@@ -90,12 +90,20 @@ namespace basecross {
 		auto boss = dynamic_pointer_cast<BossEnemy>(m_Enemy);
 		auto player = boss->m_Intruder;
 		Vec3 playerPos = player->GetPosition();
+
+		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 rot = target - position;
+		rot.normalize();
+		float rotate = atan2f(rot.x, rot.z);
+		m_Transform->SetRotation(Vec3(0, rotate, 0));
+
 		if ((boss->GetPosition() - playerPos).length() < 1.0f)
 		{
 			m_Enemy->ChangeState<BossAttack>();
 		}
 		else {
-			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
 		}
 
 	}
@@ -117,7 +125,7 @@ namespace basecross {
 
 		if (m_ChangeTime < 0.0f)
 		{	
-			navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
 			m_Enemy->ChangeState<BossSearch>();
 			m_ChangeTime = 5.0f;
 		}

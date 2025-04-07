@@ -36,9 +36,10 @@ namespace basecross {
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
+
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
 		}
 		catch (...) {
 			throw;

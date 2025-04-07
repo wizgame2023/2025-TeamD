@@ -27,6 +27,7 @@ namespace basecross {
 
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
+		shared_ptr<EffectManeger> m_Effect;
 
 		shared_ptr<GameObject> m_Target;
 	public:
