@@ -24,12 +24,7 @@ namespace basecross {
 	}
 	void MobSearch::Execute()
 	{
-
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert == true)
-		{
-			m_Enemy->ChangeState<MobAlert>();
-		}
 	}
 	void MobSearch::Exit()
 	{
@@ -41,38 +36,78 @@ namespace basecross {
 	}
 	void MobAlert::Execute()
 	{
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert == true)
-		{
-			Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
-			Vec3 position = m_Transform->GetPosition();
-			Vec3 rot = target - position;
-			rot.normalize();
-			float rotate = atan2f(rot.x, rot.z);
-			m_Transform->SetRotation(Vec3(0, rotate, 0));
-			auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
-			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
-				Vec3 direction = m_Enemy->GetDirectionToIntruder();
+		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 rot = target - position;
+		rot.normalize();
+		float rotate = atan2f(rot.x, rot.z);
+		m_Transform->SetRotation(Vec3(0, rotate, 0));
+		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+		if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
+			Vec3 direction = m_Enemy->GetDirectionToIntruder();
 
-				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
-				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+			auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
+			mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
-				m_Enemy->m_Line->SetBallet(ballet);
-				m_Enemy->m_Line->SetDrawActive(true);
-				m_Enemy->m_Line = m_Stage->AddGameObject<ForecastLine>(m_Enemy);
+			m_Enemy->m_Line->SetBallet(ballet);
+			m_Enemy->m_Line->SetDrawActive(true);
+			m_Enemy->m_Line = m_Stage->AddGameObject<ForecastLine>(m_Enemy);
 
-				mob->m_ShotRandomInterval = Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f);
+			mob->m_ShotRandomInterval = Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f);
 
-				SoundManager::Instance().PlaySE(L"SE_SHOT");
-			}
-		}
-		else {
-			m_Enemy->ChangeState<MobSearch>();
+			SoundManager::Instance().PlaySE(L"SE_SHOT");
 		}
 	}
 	void MobAlert::Exit()
 	{
 	}
+
+	void MobJoinAlert::Enter()
+	{
+		EnemyState::Enter();
+		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		auto navi = enemy->GetComponent<Navigate>();
+		navi->AvoidBlock(enemy->GetPosition(), m_Player->GetPosition());
+		Execute();
+	}
+
+	void MobJoinAlert::Execute()
+	{
+		auto enemy = dynamic_pointer_cast<BossEnemy>(m_Enemy);
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto navi = enemy->GetComponent<Navigate>();
+		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		if (m_IntruderAlert == true)
+		{
+			m_Enemy->ChangeState<MobAlert>();
+		}
+		else {
+			Vec3 currntPosition = enemy->GetPosition();
+			Vec3 taregtpoint = navi->GetAStarForword(enemy->GetPosition());
+			if (taregtpoint != Vec3(0))
+			{
+				currntPosition += taregtpoint * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+			}
+			else {
+				Exit();
+			}
+			enemy->SetPosition(currntPosition);
+		}
+	}
+
+	void MobJoinAlert::Exit()
+	{
+		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		if (m_IntruderAlert == true)
+		{
+			m_Enemy->ChangeState<MobAlert>();
+		}
+		else {
+			Enter();
+		}
+
+	}
+
 
 
 	void BossSearch::Enter()
@@ -98,7 +133,7 @@ namespace basecross {
 		float rotate = atan2f(rot.x, rot.z);
 		m_Transform->SetRotation(Vec3(0, rotate, 0));
 
-		if ((boss->GetPosition() - playerPos).length() < 1.0f)
+		if ((boss->GetPosition() - playerPos).length() < 2.0f)
 		{
 			m_Enemy->ChangeState<BossAttack>();
 		}
@@ -124,7 +159,7 @@ namespace basecross {
 		m_ChangeTime -= elapsedTime;
 
 		if (m_ChangeTime < 0.0f)
-		{	
+		{
 			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
 			m_Enemy->ChangeState<BossSearch>();
 			m_ChangeTime = 5.0f;
