@@ -32,6 +32,7 @@ namespace basecross {
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -53,6 +54,11 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+
+		m_Effect = ObjectFactory::Create<EffectManeger>();
+		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+
 	}
 	/// <summary>
 	/// リソースの作成
@@ -216,12 +222,18 @@ namespace basecross {
 	}
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
+		m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				OpenPose();
 			}
+		}
+
+		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+			m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		}
 
 		SetAllGameObjectActive(!m_IsPose);
@@ -231,8 +243,14 @@ namespace basecross {
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
+
 	void GameStage::OnDraw()
 	{
+		auto& camera = GetView()->GetTargetCamera();
+
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_Effect->OnDraw();
+
 	}
 
 	void GameStage::OnDestroy() {

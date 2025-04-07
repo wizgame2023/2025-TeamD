@@ -35,6 +35,7 @@ namespace basecross {
 
 			//自分自身にイベントを送る
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
+
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 

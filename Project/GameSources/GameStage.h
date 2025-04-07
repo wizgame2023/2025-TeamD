@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸
 */
 
 #pragma once
@@ -9,7 +9,7 @@
 namespace basecross {
 	class NumberSprite;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 
@@ -20,7 +20,7 @@ namespace basecross {
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
 		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
@@ -36,14 +36,18 @@ namespace basecross {
 			if (m_MaxEnemyCount <= 0) return 100.0f;
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
+
 		void GameOver() {};
 		void GameClear() {};
 		
+
+		shared_ptr<EffectManeger> m_Effect;
+
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		GameStage(const wstring& file) :Stage(),m_MapFileName(file), m_IsPose(false){}
 		virtual ~GameStage() {}
-		//‰Šú‰»
+		//åˆæœŸåŒ–
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
