@@ -112,7 +112,7 @@ namespace basecross {
 		shared_ptr<Stage> m_Stage;
 		map<wstring, shared_ptr<Instance>> m_Builders;
 		vector<wstring> m_InfoNames;
-		map<int,Legion> m_Legions;
+		map<int,shared_ptr<Legion>> m_Legions;
 		float m_Scale;
 
 	public:
