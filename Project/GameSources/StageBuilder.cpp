@@ -74,15 +74,15 @@ namespace basecross {
 					//ŒR‘à”Ô†‚Í1ˆÈã
 					if (region > 0) {
 						if (m_Legions.find(region) == end(m_Legions)) {
-							auto regionObject = Legion();
+							auto regionObject = m_Stage->AddGameObject<Legion>();
 							//“G‚ð“o˜^
-							regionObject.IntoEnemyGruop(enemy);
+							regionObject->IntoEnemyGruop(enemy);
 							m_Legions.emplace(region, regionObject);
 						}
 						else {
 							auto& regionObject = m_Legions[region];
 							//“G‚ð“o˜^
-							regionObject.IntoEnemyGruop(enemy);
+							regionObject->IntoEnemyGruop(enemy);
 						}
 					}
 				}
