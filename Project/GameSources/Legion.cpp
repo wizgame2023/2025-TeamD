@@ -7,22 +7,33 @@
 #include "Project.h"
 
 namespace basecross {
-	Legion::Legion() :
-		m_IntruderAlert(false)
+	void Legion::OnCreate()
 	{
 	}
-	void Legion::IntoEnemyGruop(const shared_ptr<Enemy>& enemy)
+	void Legion::OnUpdate()
 	{
-		m_GruopEnemy.push_back(enemy);
-	}
-	void Legion::ReportAlert(const bool& alert)
-	{
-		m_IntruderAlert = alert;
+		for (int i = 0; i < m_GruopEnemy.size(); i++)
+		{
+			auto enemy = m_GruopEnemy[i].lock();
+			ReportAlert(enemy->GetIntruderAlert());
+			if (m_IntruderAlert)
+			{
+				break;
+			}
+		}
+		if (m_IntruderAlert)
+		{
+			for (int i = 0; i < m_GruopEnemy.size(); i++)
+			{
+				auto enemy = m_GruopEnemy[i].lock();
+				ChangeEnemyMove(enemy);
+			}
+		}
 	}
 
-	void Legion::ChangeEnemyMove(const shared_ptr<EnemyState>& state)
+	void Legion::ChangeEnemyMove(const shared_ptr<Enemy>& enemy)
 	{
-
+		enemy->ChangeState<MobJoinAlert>();
 	}
 
 }

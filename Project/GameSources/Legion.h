@@ -9,17 +9,35 @@
 
 namespace basecross {
 	class Enemy;
-	class Legion
+	class EnemyState;
+	class Legion : public Object
 	{
 		bool m_IntruderAlert;
+		int m_LegionNumber;
 		vector<weak_ptr<Enemy>> m_GruopEnemy;
 	public:
-		Legion();
+		Legion(const shared_ptr<Stage>& stage) : Object(stage) {}
 		~Legion() {};
 
-		void IntoEnemyGruop(const shared_ptr<Enemy>& enemy);
-		void ReportAlert(const bool& alert);
-		void ChangeEnemyMove(const shared_ptr<EnemyState>& state);
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
+		void SetLegionNumber(const int& number)
+		{
+			m_LegionNumber = number;
+		}
+
+		void IntoEnemyGruop(const shared_ptr<Enemy>& enemy)
+		{
+			m_GruopEnemy.push_back(enemy);
+		}
+
+		void ReportAlert(const bool& alert)
+		{
+			m_IntruderAlert = alert;
+		}
+
+		void ChangeEnemyMove( const shared_ptr<Enemy>& enemy);
 	};
 }
 //end basecross
