@@ -84,7 +84,6 @@ namespace basecross {
 							//“G‚ð“o˜^
 							regionObject.IntoEnemyGruop(enemy);
 						}
-
 					}
 				}
 			}
