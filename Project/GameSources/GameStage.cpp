@@ -32,6 +32,7 @@ namespace basecross {
 		wstring uiPath = mediaPath + L"UI/";
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -53,6 +54,11 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+
+		m_Effect = ObjectFactory::Create<EffectManeger>();
+		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+
 	}
 	/// <summary>
 	/// リソースの作成
@@ -72,66 +78,19 @@ namespace basecross {
 	/// ポーズメニューの作成
 	/// <summary>
 	void GameStage::CreatePose() {
-		//タイトル
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			});
-		//やめる
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			});
-		//再開
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStage>(stage);
-				currentStage->ClosePose();
-			});
-		//サウンドテスト
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStage>(stage);
-				ButtonManager::instance->Close(L"POSE");
-				ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
-			});
-
-		ButtonManager::instance->SetInput(L"POSE", InputData(StickMode::LY, 1, 0.1f));
-		ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
-		ClosePose();
+		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
 	}
 	/// <summary>
 	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
-		//SE
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"SE_VOLUME", L"SE_VOLUME_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
-				}
-			});
-		//BGM
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"BGM_VOLUME", L"BGM_VOLUME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().BGMVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().BGMVolumeDown(0.1f);
-				}
-			});
-
-		ButtonManager::instance->SetInput(L"SOUND_TEST", InputData(StickMode::LY, 1, 0.1f));
-		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_UP);
-		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_DOWN);
-
-		ButtonManager::instance->Close(L"SOUND_TEST");
+		m_SoundTestMenu = AddGameObject<SoundTestMenu>(L"SOUND_TEST");
+	}
+	/// <summary>
+	/// リザルトメニューの作成
+	/// </summary>
+	void GameStage::CreateResult() {
+		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
 	}
 	/// <summary>
 	/// ポーズ画面を閉じる
@@ -148,7 +107,6 @@ namespace basecross {
 		m_IsPose = true;
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
-		SoundManager::Instance().PauseBGM(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -190,8 +148,9 @@ namespace basecross {
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
 			ButtonManager::instance->SetSound(L"SE_ACCEPT");
-			CreatePose();
 			CreateSoundTest();
+			CreatePose();
+			CreateResult();
 			ButtonManager::instance->CloseAll();
 
 			auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -216,23 +175,49 @@ namespace basecross {
 	}
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-
+		m_Effect->OnUpdate();
+		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				OpenPose();
+				//OpenPose();
+				m_SoundTestMenu->Close();
+				m_PauseMenu->Open();
+			}
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
+				if (m_ResultMenu->IsOpen()) {
+					m_ResultMenu->Close();
+				}
+				else {
+					m_ResultMenu->Open();
+				}
 			}
 		}
 
-		SetAllGameObjectActive(!m_IsPose);
-
+		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			//m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+		}
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()) {
+			SetAllGameObjectActive(false);
+		}
+		else {
+			SetAllGameObjectActive(true);
+			ScoreManager::Instance()->UpdateTime(elapsed);
+		}
 		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
 
 		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
+
 	void GameStage::OnDraw()
 	{
+		auto& camera = GetView()->GetTargetCamera();
+
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_Effect->OnDraw();
+
 	}
 
 	void GameStage::OnDestroy() {

@@ -50,7 +50,13 @@ namespace basecross {
 					rootPointers.emplace(objInfo[GetInfoIndex(L"number")], pointer);
 				}
 			}
-
+			if (dateType == L"Chara") {
+				auto chara = static_pointer_cast<Character>(obj);
+				if (chara != nullptr) {
+					float hp = WstrToFlt(objInfo[GetInfoIndex(L"hp")]);
+					chara->InitHP(hp);
+				}
+			}
 			if (objInfo[GetInfoIndex(L"tag")] == L"Enemy") {
 				enemyCount++;
 				int timeIndex = GetInfoIndex(L"time");
@@ -59,6 +65,25 @@ namespace basecross {
 					auto boss = static_pointer_cast<BossEnemy>(obj);
 					if (boss) {
 						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), 1/*WstrToFlt(objInfo[defeatIndex])*/);
+					}
+				}
+				auto enemy = static_pointer_cast<Enemy>(obj);
+				int regionIndex = GetInfoIndex(L"region");
+				if (regionIndex != -1) {
+					int region = WstrToFlt(objInfo[regionIndex]);
+					//ŒR‘à”Ô†‚Í1ˆÈã
+					if (region > 0) {
+						if (m_Legions.find(region) == end(m_Legions)) {
+							auto regionObject = m_Stage->AddGameObject<Legion>();
+							//“G‚ð“o˜^
+							regionObject->IntoEnemyGruop(enemy);
+							m_Legions.emplace(region, regionObject);
+						}
+						else {
+							auto& regionObject = m_Legions[region];
+							//“G‚ð“o˜^
+							regionObject->IntoEnemyGruop(enemy);
+						}
 					}
 				}
 			}

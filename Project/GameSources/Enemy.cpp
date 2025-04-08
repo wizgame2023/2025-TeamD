@@ -177,7 +177,7 @@ namespace basecross {
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			m_HP -= 1;
+			Damage(1.0f, false);
 			KnockBackTime(other);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}

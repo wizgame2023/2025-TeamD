@@ -26,7 +26,9 @@ namespace basecross {
 
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
+
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
+		shared_ptr<EffectManeger> m_Effect;
 
 		float GetClearRate() {
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
@@ -39,10 +41,12 @@ namespace basecross {
 		//‰Šú‰»
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-
+		virtual void OnDraw()override;
 
 		void ClosePose();
 		void OpenPose();
+
+		shared_ptr <EffectManeger> GetCreateEffect();
 
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;

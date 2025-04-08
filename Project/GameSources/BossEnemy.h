@@ -15,6 +15,7 @@ namespace basecross {
 		int m_ConditionDefeat;
 
 		shared_ptr<ForecastLine> m_BossLine;
+		shared_ptr<ForecastLine> m_FLine;
 
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
@@ -31,6 +32,8 @@ namespace basecross {
 			m_ConditionTime = time;
 		}
 		Vec3 GetPosition();
+		void OnCollisionEnter(shared_ptr<GameObject>& other);
+
 
 	};
 

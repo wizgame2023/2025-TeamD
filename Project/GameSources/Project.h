@@ -21,6 +21,7 @@
 #include "GameStage_Satou.h"
 #include "TitleStage.h"
 #include "Sprite.h"
+#include "Legion.h"
 #include "MobState.h"
 #include "Mob.h"
 #include "BossEnemy.h"
@@ -35,3 +36,4 @@
 #include "AttakCollision.h"
 #include "RayCast.h"
 #include "BoneCollision.h"
+#include "TargetBoard.h"

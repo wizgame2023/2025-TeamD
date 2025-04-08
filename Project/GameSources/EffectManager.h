@@ -83,8 +83,8 @@ namespace basecross {
 		
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(const bsm::Vec3& Location);
-		void SetLocation(const bsm::Vec3& Location);
-		void SetRotation(const bsm::Vec3& Rotation, const float angle);
+		void SetLocation(const bsm::Vec3& Location);//位置
+		void SetRotation(const bsm::Vec3& Rotation, const float angle);//回転(クォータニオン)
 		void SetScale(const bsm::Vec3& Scale);
 		void SetAllColor(const bsm::Col4 color);
 		void StopEffect();

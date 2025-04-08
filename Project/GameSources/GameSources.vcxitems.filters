@@ -28,9 +28,6 @@
     <Filter Include="Root">
       <UniqueIdentifier>{7502858e-1949-4cf9-9ad3-37a1fb1588d8}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sharp">
-      <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Builder">
       <UniqueIdentifier>{39095291-c0e8-456b-97ed-36de95d30957}</UniqueIdentifier>
     </Filter>
@@ -45,6 +42,9 @@
     </Filter>
     <Filter Include="Attack">
       <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sharp">
+      <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -136,6 +136,10 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -226,5 +230,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
   </ItemGroup>
 </Project>

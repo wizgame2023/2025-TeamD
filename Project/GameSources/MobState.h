@@ -59,6 +59,22 @@ namespace basecross {
 		void Exit()override;
 	};
 
+	class MobJoinAlert : public EnemyState
+	{
+		bool m_IntruderAlert;
+
+	public:
+		MobJoinAlert(shared_ptr<Enemy>& enemy) :
+			EnemyState(enemy)
+		{
+		}
+
+	private:
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
+	};
+
 	class BossSearch : public EnemyState
 	{
 		bool m_IntruderAlert;

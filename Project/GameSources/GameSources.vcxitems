@@ -19,6 +19,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h" />
@@ -43,6 +44,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
   </ItemGroup>
@@ -52,6 +54,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp" />
@@ -75,6 +78,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />

@@ -26,12 +26,7 @@ namespace basecross {
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
 		void CreateResource();
-		void CreatePose();
-		void CreateSoundTest();
-		void CreatePlayer();
-		void CreateEnemy();
 		void RegisterObjects();
-		void SetAllGameObjectActive(bool flag);
 		bool m_IsPose;
 
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
