@@ -49,7 +49,7 @@ namespace basecross {
 				}
 				Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
 				auto obj = dynamic_pointer_cast<RootPointer>(shObj);
-				wstring num =  obj->GetPointerNumber();
+				wstring num = obj->GetPointerNumber();
 				if ((vec1 - m_Position).length() < (vec0 - m_Position).length() && num != L"")
 				{
 					m_NearPoint = shObj;
