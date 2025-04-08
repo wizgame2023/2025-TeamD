@@ -153,7 +153,6 @@ namespace basecross {
 				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					m_Target->GetComponent<Transform>()->SetPosition(targetEnemy);
 					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
@@ -169,7 +168,6 @@ namespace basecross {
 					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
-						m_Target->GetComponent<Transform>()->SetPosition(targetbullert);
 						return rot;
 					}
 					else {
@@ -317,7 +315,6 @@ namespace basecross {
 		AddTag(L"Player");
 
 
-		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
 		auto stage = static_pointer_cast<GameStageS>(m_Stage);
 		if (stage != nullptr) {
@@ -344,23 +341,8 @@ namespace basecross {
 		Debug();
 
 
-	//デバッグ用
+		//デバッグ用
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-
-		}
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			m_ParryJudge = true;
-			SearchRange();
-			m_Position = GetPosition();
-			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
-			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
-
-			//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z +  0.2f), 0);
-			//m_Effect->SetRotation(Vec3(m_Position * forward),0.0f);
-			//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
-			//m_Effect->OnUpdate();
 
 		}
 
