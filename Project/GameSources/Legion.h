@@ -37,6 +37,7 @@ namespace basecross {
 			m_IntruderAlert = alert;
 		}
 
+		template<typename T>
 		void ChangeEnemyMove( const shared_ptr<Enemy>& enemy);
 	};
 }

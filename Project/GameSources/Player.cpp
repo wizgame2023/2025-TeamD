@@ -317,8 +317,8 @@ namespace basecross {
 
 		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
 		auto stage = static_pointer_cast<GameStageS>(m_Stage);
-		if (stage) {
-			m_Effect = stage->GetCreateEffect();
+		if (stage != nullptr) {
+			//m_Effect = stage->GetCreateEffect();
 		}
 		else {
 			m_Effect = nullptr;
@@ -442,9 +442,9 @@ namespace basecross {
 				float rot;
 				auto angle = GetMoveVector(rot);
 
-				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
-				m_Effect->SetRotation(Vec3(m_Position), 0.0f);
-				m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+				//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
+				//m_Effect->SetRotation(Vec3(m_Position), 0.0f);
+				//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
