@@ -173,9 +173,9 @@ namespace basecross {
 
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			wstring effectPath = mediaPath + L"Effekt\\";
-			m_Effect = ObjectFactory::Create<EffectManeger>();
-			m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
-			m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+			//m_Effect = ObjectFactory::Create<EffectManeger>();
+			//m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+			//m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 			GameStage::OnCreate();
 
 		}
@@ -187,7 +187,7 @@ namespace basecross {
 	void GameStageK::OnUpdate() {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
-			m_Effect->OnUpdate();
+		///m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
@@ -202,8 +202,8 @@ namespace basecross {
 	{
 		auto& camera = GetView()->GetTargetCamera();
 
-		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		m_Effect->OnDraw();
+		//m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		//m_Effect->OnDraw();
 	}
 }
 	//end basecross
