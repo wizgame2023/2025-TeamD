@@ -144,6 +144,7 @@ namespace basecross {
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		auto targetBulletVector = ObjectSearch(bulletGroup);
 		auto targetEnemyVector = ObjectSearch(enemyGroup);
+		m_TargetBoard->SetTarget(nullptr);
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
@@ -153,6 +154,7 @@ namespace basecross {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					m_Target->GetComponent<Transform>()->SetPosition(targetEnemy);
+					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
 				else {
@@ -316,6 +318,7 @@ namespace basecross {
 
 
 		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
 		auto stage = static_pointer_cast<GameStageS>(m_Stage);
 		if (stage) {
 			m_Effect = stage->GetCreateEffect();
