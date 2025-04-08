@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
 using UnityEngine;
-using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class ConvertCSV : MonoBehaviour
 {
@@ -259,8 +258,8 @@ public class ConvertCSV : MonoBehaviour
                     }
                 }
             }
-            WriteEnemy(fs);
             WritePointer(fs);
+            WriteEnemy(fs);
         }
         if(player == null)
         {
