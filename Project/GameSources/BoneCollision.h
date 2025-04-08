@@ -31,6 +31,12 @@ namespace basecross {
 		shared_ptr<Transform>& GetTransform() {
 			return m_Transform;
 		}
+		Vec3 GetPosition() {
+			return m_Transform->GetPosition();
+		}
+		Quat GetQuartanion() {
+			return m_Transform->GetQuaternion();
+		}
 	};
 	class BonePosition : public Component {
 		wstring m_FileName;
@@ -48,6 +54,9 @@ namespace basecross {
 
 		void CreateBone();
 		
+		int GetBoneSize() {
+			return m_Bones.size();
+		}
 		shared_ptr<Bone>& GetBone(int index) {
 			return m_Bones[index];
 		}

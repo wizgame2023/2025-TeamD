@@ -147,9 +147,9 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance / 3.0f )
+			if ((position - targetEnemy).length() < searchDistance / 3.0f)
 			{
-				if (IsWithinDetectionRange(forward, targetEnemy - position , 90.0)) {
+				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					m_Target->GetComponent<Transform>()->SetPosition(targetEnemy);
@@ -282,27 +282,26 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");
-		
+
 
 		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
-		//	Vec3(0.09f), //(.1f, .1f, .1f),
+		//	Vec3(0.3f,0.15f,0.3f), //(.1f, .1f, .1f),
 		//	Vec3(0.0f, 90.0f, 0.0f),
 		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, -1.0f, 0.0f)
+		//	Vec3(0.0f, -0.0f, 0.0f)
 		//);
-
 		//ptrDraw->SetMeshResource(L"DEBUG");
+		//ptrDraw->SetTextureResource(L"01");
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		////SetDrawActive(false);
 		//ptrDraw->SetOwnShadowActive(true);
 
 		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
 		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
-		//
-		//auto bone = AddComponent<BonePosition>(L"Chara.txt");
+		//ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		//auto bone = AddComponent<BonePosition>(L"a.txt");
 		//bone->CreateBone();
 
 		//重力をつける
@@ -317,8 +316,13 @@ namespace basecross {
 
 
 		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
-
-		m_Effect = GetTypeStage<GameStageS>()->GetCreateEffect();
+		auto stage = static_pointer_cast<GameStageS>(m_Stage);
+		if (stage != nullptr) {
+			//m_Effect = stage->GetCreateEffect();
+		}
+		else {
+			m_Effect = nullptr;
+		}
 
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
@@ -438,14 +442,14 @@ namespace basecross {
 				float rot;
 				auto angle = GetMoveVector(rot);
 
-				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
-				m_Effect->SetRotation(Vec3(m_Position), 0.0f);
-				m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+				//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
+				//m_Effect->SetRotation(Vec3(m_Position), 0.0f);
+				//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 
-				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE",0.5f);
+				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
 			}
 		}
 
@@ -453,7 +457,6 @@ namespace basecross {
 
 	void Player::OnDraw()
 	{
-
 		//m_Effect->OnDraw();
 
 		Character::OnDraw();
@@ -478,16 +481,19 @@ namespace basecross {
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
-						m_HP -= 1;
+						Damage(1.0f, true);
 						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
+						ScoreManager::Instance()->AddDamage(1);
 					}
+					ScoreManager::Instance()->AddParryCount();
 					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
-					m_HP -= 2;
+					Damage(1.0f, false);
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
+					ScoreManager::Instance()->AddDamage(2);
 					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				}
 			}

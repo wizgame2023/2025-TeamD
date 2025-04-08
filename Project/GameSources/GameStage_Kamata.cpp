@@ -57,65 +57,65 @@ namespace basecross {
 	/// </summary>
 	void GameStageK::CreatePose() {
 		//タイトル
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			});
-		//やめる
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
-			});
-		//再開
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStageM>(stage);
-				currentStage->ClosePose();
-			});
-		//サウンド
-		ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				auto currentStage = static_pointer_cast<GameStageM>(stage);
-				ButtonManager::instance->Close(L"POSE");
-				ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
-			});
+		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+		//	});
+		////やめる
+		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+		//	});
+		////再開
+		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		auto currentStage = static_pointer_cast<GameStageM>(stage);
+		//		currentStage->ClosePose();
+		//	});
+		////サウンド
+		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		auto currentStage = static_pointer_cast<GameStageM>(stage);
+		//		ButtonManager::instance->Close(L"POSE");
+		//		ButtonManager::instance->OpenAndUse(L"SOUND_TEST");
+		//	});
 
-		ButtonManager::instance->SetInput(L"POSE", InputData(StickMode::LY, 1, 0.1f));
-		ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
-		ClosePose();
+		//ButtonManager::instance->SetInput(L"POSE", InputData(StickMode::LY, 1, 0.1f));
+		//ButtonManager::instance->AddAcceptButton(L"POSE", XINPUT_GAMEPAD_A);
+		//ClosePose();
 	}
 	/// <summary>
 	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStageK::CreateSoundTest() {
 		//SE
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
-				}
-			});
-		//BGM
-		ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
-			[](shared_ptr<Stage> stage) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
-				}
-			});
+		//ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+		//		if (press & XINPUT_GAMEPAD_DPAD_UP) {
+		//			SoundManager::Instance().SEVolumeUp(0.1f);
+		//		}
+		//		else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+		//			SoundManager::Instance().SEVolumeDown(0.1f);
+		//		}
+		//	});
+		////BGM
+		//ButtonManager::Create(GetThis<Stage>(), L"SOUND_TEST", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+		//	[](shared_ptr<Stage> stage) {
+		//		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+		//		if (press & XINPUT_GAMEPAD_DPAD_UP) {
+		//			SoundManager::Instance().SEVolumeUp(0.1f);
+		//		}
+		//		else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+		//			SoundManager::Instance().SEVolumeDown(0.1f);
+		//		}
+		//	});
 
-		ButtonManager::instance->SetInput(L"SOUND_TEST", InputData(StickMode::LY, 1, 0.1f));
-		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_UP);
-		ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_DOWN);
+		//ButtonManager::instance->SetInput(L"SOUND_TEST", InputData(StickMode::LY, 1, 0.1f));
+		//ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_UP);
+		//ButtonManager::instance->AddAcceptButton(L"SOUND_TEST", XINPUT_GAMEPAD_DPAD_DOWN);
 
-		ButtonManager::instance->Close(L"SOUND_TEST");
+		//ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
 	/// ポーズ画面を閉じる
@@ -173,9 +173,9 @@ namespace basecross {
 
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			wstring effectPath = mediaPath + L"Effekt\\";
-			m_Effect = ObjectFactory::Create<EffectManeger>();
-			m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
-			m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+			//m_Effect = ObjectFactory::Create<EffectManeger>();
+			//m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+			//m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 			GameStage::OnCreate();
 
 		}
@@ -187,7 +187,7 @@ namespace basecross {
 	void GameStageK::OnUpdate() {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
-			m_Effect->OnUpdate();
+		///m_Effect->OnUpdate();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
@@ -202,8 +202,8 @@ namespace basecross {
 	{
 		auto& camera = GetView()->GetTargetCamera();
 
-		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		m_Effect->OnDraw();
+		//m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		//m_Effect->OnDraw();
 	}
 }
 	//end basecross
