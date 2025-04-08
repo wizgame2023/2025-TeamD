@@ -139,6 +139,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h">
       <Filter>Enemy</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -232,5 +233,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp">
       <Filter>Enemy</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
   </ItemGroup>
 </Project>
