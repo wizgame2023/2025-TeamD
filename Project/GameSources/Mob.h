@@ -24,7 +24,7 @@ namespace basecross {
 		float m_ShotRandomInterval;
 		bool m_IntervalStart;
 		Vec3 m_Before = Vec3(0);
-
+		int m_BulletRemain;
 
 		shared_ptr<SharpFan> m_SearchFan;
 		shared_ptr<HPBar> m_HpBar;
