@@ -35,7 +35,7 @@ namespace basecross {
 	void Menu::Close() {
 		for (auto& obj : m_MenuObjects) {
 			obj->SetDrawActive(false);
-			obj->SetUpdateActive(false);
+			//obj->SetUpdateActive(false);
 		}
 		ButtonManager::instance->Close(m_GroupName);
 		SoundManager::Instance().PauseBGM(false);

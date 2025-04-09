@@ -184,12 +184,19 @@ namespace basecross {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
 			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
 					m_ResultMenu->Close();
 				}
 				else {
 					m_ResultMenu->Open();
+					auto camera = GetView()->GetTargetCamera();
+					auto player = GetSharedGameObject<Player>(L"Player", false);
+					if (player != nullptr && camera != nullptr) {
+						auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+						auto view = static_pointer_cast<SingleView>(GetView());
+						view->SetCamera(newCamera);
+					}
 				}
 			}
 		}
@@ -198,7 +205,7 @@ namespace basecross {
 			//m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
 			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		}
-		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen() || m_ResultMenu->IsOpen()) {
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()) {
 			SetAllGameObjectActive(false);
 		}
 		else {
