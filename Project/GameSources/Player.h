@@ -30,6 +30,7 @@ namespace basecross {
 		shared_ptr<EffectManeger> m_Effect;
 
 		shared_ptr<GameObject> m_Target;
+
 	public:
 		int m_PlayerStateNum;
 		enum PlayerState

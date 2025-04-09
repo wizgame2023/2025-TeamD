@@ -44,9 +44,8 @@ namespace basecross {
 
 		void GameOver() {};
 		void GameClear() {};
-		
-
 		shared_ptr<EffectManeger> m_Effect;
+
 
 	public:
 		//構築と破棄
@@ -57,6 +56,8 @@ namespace basecross {
 		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
+		shared_ptr <EffectManeger> GetCreateEffect();
+
 	};
 
 

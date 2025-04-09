@@ -201,6 +201,7 @@ namespace basecross {
 	void GameStageK::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
+		GameStage::OnDraw();
 
 		//m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
 		//m_Effect->OnDraw();
