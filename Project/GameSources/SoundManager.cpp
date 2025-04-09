@@ -26,7 +26,7 @@ namespace basecross {
 		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit_3.wav");
 		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit_2.wav");
 		RegisterSound(L"SE_SHOT", L"SE/RifleShot_3.wav");
-		RegisterSound(L"SE_USE_ULT", L"SE/UltUse.wav");
+		RegisterSound(L"SE_USE_ULT", L"SE/UltUse_3.wav");
 		RegisterSound(L"SE_WALK_ENEMY", L"SE/EnemyWalk.wav");
 		RegisterSound(L"SE_WALK_PLAYER", L"SE/PlayerWalk.wav");
 		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice_3.wav");

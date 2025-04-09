@@ -18,7 +18,7 @@ namespace basecross {
 		Vec3 at = GetAt();
 		Vec3 eye = GetEye();
 
-		Vec3 target = m_Player->GetComponent<Transform>()->GetForward() + Vec3(0,0.1f,0);
+		Vec3 target = m_Player->GetComponent<Transform>()->GetForward() + Vec3(0, 0.1f, 0);
 		Vec3 side = cross(target, Vec3(0, 1, 0));
 		Vec3 offset = target - m_Direction;
 		if (offset.length() < 0.05f) {
