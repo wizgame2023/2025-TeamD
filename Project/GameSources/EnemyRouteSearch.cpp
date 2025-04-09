@@ -140,7 +140,7 @@ namespace basecross {
         Vec3 outCome = Vec3();
         Vec3 nearPoint = Vec3();
         shared_ptr<RootPointer> nearPointMemory;
-        
+
         for (int i = 0; i < m_CellData.size(); i++)
         {
             Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
@@ -154,10 +154,10 @@ namespace basecross {
                 nearPoint = vec;
                 nearPointMemory = m_CellData[i];
             }
-        }  
+        }
 
         vector<int> num;
-        wstring nearPossible =  nearPointMemory->GetPointerNumber();
+        wstring nearPossible = nearPointMemory->GetPointerNumber();
         num = WstrToVecInt(nearPossible);
         for (int j = 0; j < num.size(); j++)
         {
