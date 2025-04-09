@@ -100,7 +100,6 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		m_Enemy = enemy;
 		auto navi = enemy->GetComponent<Navigate>();
 		navi->AvoidBlock(enemy->GetPosition(), m_Player->GetPosition());
 		Execute();
@@ -108,7 +107,6 @@ namespace basecross {
 
 	void MobJoinAlert::Execute()
 	{
-		auto enemy = dynamic_pointer_cast<BossEnemy>(m_Enemy);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto navi = m_Enemy->GetComponent<Navigate>();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
@@ -117,11 +115,11 @@ namespace basecross {
 			m_Enemy->ChangeState<MobAlert>();
 		}
 		else {
-			Vec3 currntPosition = enemy->GetPosition();
-			Vec3 taregtpoint = navi->GetAStarForword(enemy->GetPosition());
+			Vec3 currntPosition = m_Enemy->GetPosition();
+			Vec3 taregtpoint = navi->GetAStarForword(m_Enemy->GetPosition());
 			if (taregtpoint != Vec3(0))
 			{
-				currntPosition += taregtpoint * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+				currntPosition += taregtpoint * 3.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 			}
 			else {
 				m_IntruderAlert = m_Enemy->GetIntruderAlert();
@@ -133,7 +131,7 @@ namespace basecross {
 					Enter();
 				}
 			}
-			enemy->SetPosition(currntPosition);
+			m_Enemy->SetPosition(currntPosition);
 		}
 	}
 
