@@ -15,7 +15,8 @@ namespace basecross {
 		m_BalletSpeed(20.0f), m_MuzzleOffset(0.1f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
-		m_NearPoint(nullptr)
+		m_NearPoint(nullptr),
+		m_BulletRemain(10)
 	{
 	}
 
@@ -34,9 +35,9 @@ namespace basecross {
 
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
+		auto navi = AddComponent<Navigate>();
 
 		if (pointers.size() != 0) {
-			auto navi = AddComponent<Navigate>();
 
 			for (auto& point : pointers)
 			{
@@ -49,7 +50,7 @@ namespace basecross {
 				}
 				Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
 				auto obj = dynamic_pointer_cast<RootPointer>(shObj);
-				wstring num =  obj->GetPointerNumber();
+				wstring num = obj->GetPointerNumber();
 				if ((vec1 - m_Position).length() < (vec0 - m_Position).length() && num != L"")
 				{
 					m_NearPoint = shObj;
@@ -57,7 +58,7 @@ namespace basecross {
 			}
 
 			Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
-			navi->SetTargetPosition(GetPosition(), pos);
+			navi->AvoidBlock(GetPosition(), pos);
 		}
 
 		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
@@ -132,28 +133,6 @@ namespace basecross {
 			else {
 
 				m_Line->SetDrawActive(false);
-				auto navi = GetComponent<Navigate>(false);
-				if (navi) {
-					Vec3 halfPos = navi->GetAStarForword(currntPosition);
-					if (halfPos == Vec3(1, 0, 0))  SetRotation(Vec3(0, 90, 0));
-					if (halfPos == Vec3(-1, 0, 0)) SetRotation(Vec3(0, 270, 0));
-					if (halfPos == Vec3(0, 0, 1))  SetRotation(Vec3(0, 0, 0));
-					if (halfPos == Vec3(0, 0, -1)) SetRotation(Vec3(0, 180, 0));
-
-
-					if (halfPos != Vec3(0))
-					{
-						currntPosition += halfPos * 6.0f * elapsedTime * m_ZoneElapsedTime;
-						SetPosition(currntPosition);
-					}
-					else {
-
-						Vec3 before = m_NearPoint->GetComponent<Transform>()->GetPosition();
-						SetPosition(before);
-						Vec3 pos = RootNaviGate();
-						navi->SetTargetPosition(GetPosition(), pos);
-					}
-				}
 			}
 		}
 		EndAsync();
@@ -163,6 +142,7 @@ namespace basecross {
 		m_HpBar->Destroy();
 		Enemy::Dead();
 	}
+
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"HitJudge"))
@@ -176,6 +156,37 @@ namespace basecross {
 	{
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
+		Vec3 nearPoint = Vec3();
+		Vec3 position = GetPosition();
+		for (auto& point : pointers)
+		{
+			auto obj = point.lock();
+			Vec3 vec = obj->GetComponent<Transform>()->GetPosition();
+			if (nearPoint == Vec3())
+			{
+				nearPoint = vec;
+			}
+			if ((vec - position).length() < (nearPoint - position).length())
+			{
+				nearPoint = vec;
+			}
+		}
+
+		if ((position - nearPoint).length() > 1.0f)
+		{
+			return nearPoint;
+		}
+
+		if (m_NearPoint != nullptr)
+		{
+			Vec3 Target = m_NearPoint->GetComponent<Transform>()->GetPosition();
+
+			if ((position - Target).length() > 1.0f)
+			{
+				return Target;
+			}
+		}
+
 		for (auto& point : pointers)
 		{
 			auto shObj = point.lock();
@@ -213,7 +224,5 @@ namespace basecross {
 	{
 		return m_Transform;
 	}
-
-
 }
 //end basecross

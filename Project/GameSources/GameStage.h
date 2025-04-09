@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ
+@brief 
 */
 
 #pragma once
@@ -10,7 +10,6 @@ namespace basecross {
 	class NumberSprite;
 	class Menu;
 	//--------------------------------------------------------------------------------------
-	//	繧ｲ繝ｼ繝繧ｹ繝��繧ｸ繧ｯ繝ｩ繧ｹ
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 
@@ -44,12 +43,13 @@ namespace basecross {
 
 		void GameOver() {};
 		void GameClear() {};
+
 		shared_ptr<EffectManeger> m_Effect;
 
 
 	public:
 		//構築と破棄
-		GameStage(const wstring& file) : Stage(),m_MapFileName(file), m_IsPose(false){}
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
 		virtual ~GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

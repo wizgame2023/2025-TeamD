@@ -19,7 +19,7 @@ namespace basecross{
 
 		void SetBGMVolume();
 
-		SoundManager() : m_SEVolume(1.0f),m_BGMVolume(1.0f) {}
+		SoundManager() : m_SEVolume(1.0f),m_BGMVolume(0.0f) {}
 	public:
 		
 		virtual ~SoundManager(){}

@@ -52,6 +52,7 @@ namespace basecross {
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
+		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 
@@ -120,7 +121,7 @@ namespace basecross {
 	/// <param name="flag">描画ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
-			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu")) {
 				obj->SetUpdateActive(flag);
 			}
 		}
@@ -167,7 +168,6 @@ namespace basecross {
 				}
 			}
 			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			m_ProtoScoreNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 297.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
@@ -196,11 +196,19 @@ namespace basecross {
 				}
 				else {
 					m_ResultMenu->Open();
+					auto camera = GetView()->GetTargetCamera();
+					auto player = GetSharedGameObject<Player>(L"Player", false);
+					if (player != nullptr && camera != nullptr) {
+						auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+						auto view = static_pointer_cast<SingleView>(GetView());
+						view->SetCamera(newCamera);
+					}
 				}
 			}
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
 			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
@@ -212,9 +220,6 @@ namespace basecross {
 			SetAllGameObjectActive(true);
 			ScoreManager::Instance()->UpdateTime(elapsed);
 		}
-		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
-
-		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
 
