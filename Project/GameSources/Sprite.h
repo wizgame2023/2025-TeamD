@@ -741,7 +741,7 @@ namespace basecross{
 
 		vector<VertexPositionNormalTexture> m_Vertices;
 	public:
-		Board(shared_ptr<Stage>& ptr, const wstring& key,Vec3 pos, Vec3 size,const bool& isBillBoard = false) : 
+		Board(shared_ptr<Stage>& ptr, const wstring& key,Vec3 pos, Vec3 size,const bool& isBillBoard = true) : 
 			GameObject(ptr),
 			m_TexKey(key), m_StartPos(pos),m_Offset(Vec3()), m_Size(size), m_IsBillBoard(isBillBoard) { }
 		virtual ~Board() {}

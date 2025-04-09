@@ -195,8 +195,8 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
-			m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
-			m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
+			//m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()) {
 			SetAllGameObjectActive(false);
