@@ -341,26 +341,10 @@ namespace basecross {
 		Debug();
 
 
-	//デバッグ用
+		//デバッグ用
 		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
 
 		}
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		{
-			m_ParryJudge = true;
-			SearchRange();
-			m_Position = GetPosition();
-			//Vec3 forward = Vec3(cos(m_Rotation.y), 0, sin(m_Rotation.y));
-			Vec3 forward = GetForward();
-			m_Stage->AddGameObject<HitSphere>(Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), forward, GetThis<GameObject>());
-
-			//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z +  0.2f), 0);
-			//m_Effect->SetRotation(Vec3(m_Position * forward),0.0f);
-			//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
-			//m_Effect->OnUpdate();
-
-		}
-
 		if (m_ParryJudge == true)
 		{
 			m_ParryTime--;
