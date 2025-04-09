@@ -115,7 +115,7 @@ namespace basecross {
 	/// <param name="flag">描画ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
-			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager")) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu")) {
 				obj->SetUpdateActive(flag);
 			}
 		}
@@ -162,7 +162,6 @@ namespace basecross {
 				}
 			}
 			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			m_ProtoScoreNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 297.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
 			sprite->SetDiffuse(Col4(1, 0, 0, 1));
 			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
@@ -191,6 +190,13 @@ namespace basecross {
 				}
 				else {
 					m_ResultMenu->Open();
+					auto camera = GetView()->GetTargetCamera();
+					auto player = GetSharedGameObject<Player>(L"Player", false);
+					if (player != nullptr && camera != nullptr) {
+						auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+						auto view = static_pointer_cast<SingleView>(GetView());
+						view->SetCamera(newCamera);
+					}
 				}
 			}
 		}
@@ -206,9 +212,6 @@ namespace basecross {
 			SetAllGameObjectActive(true);
 			ScoreManager::Instance()->UpdateTime(elapsed);
 		}
-		float score = ScoreManager::Instance()->CalculateEliminateEnemyRate();
-
-		m_ProtoScoreNumber->UpdateNumber(static_cast<int>(score));
 	}
 
 
@@ -232,7 +235,7 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
-			
+
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();

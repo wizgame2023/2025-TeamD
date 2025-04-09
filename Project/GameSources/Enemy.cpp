@@ -17,7 +17,7 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		InitHP(3);
-    
+
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug

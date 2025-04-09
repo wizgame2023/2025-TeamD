@@ -37,7 +37,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
-		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
+		
 	}
 	void GameStageM::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
@@ -64,7 +64,7 @@ namespace basecross {
 			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
 			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
 
-			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 201.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
+			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(530.0f, 350.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
