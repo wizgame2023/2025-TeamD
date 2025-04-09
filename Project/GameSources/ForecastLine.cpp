@@ -134,7 +134,7 @@ namespace basecross {
 		forecastDraw->SetDiffuse(m_DefaultColor);
 
 		m_BalletLine->SetDrawActive(GetDrawActive());
-		m_Forecast->SetDrawActive(GetDrawActive());
+		m_Forecast->SetDrawActive(false);
 
 	}
 	/// <summary>
