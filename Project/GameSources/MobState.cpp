@@ -24,7 +24,35 @@ namespace basecross {
 	}
 	void MobSearch::Execute()
 	{
+		auto navi = m_Enemy->GetComponent<Navigate>(false);
+		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		Vec3 currntPosition = m_Enemy->GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		if (navi) {
+			Vec3 halfPos = navi->GetAStarForword(currntPosition);
+			if (halfPos == Vec3(1, 0, 0))  m_Enemy->SetRotation(Vec3(0, 90, 0));
+			if (halfPos == Vec3(-1, 0, 0)) m_Enemy->SetRotation(Vec3(0, 270, 0));
+			if (halfPos == Vec3(0, 0, 1))  m_Enemy->SetRotation(Vec3(0, 0, 0));
+			if (halfPos == Vec3(0, 0, -1)) m_Enemy->SetRotation(Vec3(0, 180, 0));
+
+
+			if (halfPos != Vec3(0))
+			{
+				currntPosition += halfPos * 6.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				m_Enemy->SetPosition(currntPosition);
+			}
+			else {
+
+				Vec3 pos = enemy->RootNaviGate();
+				navi->AvoidBlock(m_Enemy->GetPosition(), pos);
+			}
+		}
+
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		if (m_IntruderAlert)
+		{
+			m_Enemy->ChangeState<MobJoinAlert>();
+		}
 	}
 	void MobSearch::Exit()
 	{
@@ -57,6 +85,12 @@ namespace basecross {
 
 			SoundManager::Instance().PlaySE(L"SE_SHOT");
 		}
+		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		if (m_IntruderAlert == false)
+		{
+			m_Enemy->ChangeState<MobSearch>();
+		}
+
 	}
 	void MobAlert::Exit()
 	{
@@ -66,6 +100,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		m_Enemy = enemy;
 		auto navi = enemy->GetComponent<Navigate>();
 		navi->AvoidBlock(enemy->GetPosition(), m_Player->GetPosition());
 		Execute();
@@ -75,7 +110,7 @@ namespace basecross {
 	{
 		auto enemy = dynamic_pointer_cast<BossEnemy>(m_Enemy);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto navi = enemy->GetComponent<Navigate>();
+		auto navi = m_Enemy->GetComponent<Navigate>();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert == true)
 		{
@@ -89,7 +124,14 @@ namespace basecross {
 				currntPosition += taregtpoint * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
 			}
 			else {
-				Exit();
+				m_IntruderAlert = m_Enemy->GetIntruderAlert();
+				if (m_IntruderAlert == true)
+				{
+					m_Enemy->ChangeState<MobAlert>();
+				}
+				else {
+					Enter();
+				}
 			}
 			enemy->SetPosition(currntPosition);
 		}
@@ -97,14 +139,6 @@ namespace basecross {
 
 	void MobJoinAlert::Exit()
 	{
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert == true)
-		{
-			m_Enemy->ChangeState<MobAlert>();
-		}
-		else {
-			Enter();
-		}
 
 	}
 

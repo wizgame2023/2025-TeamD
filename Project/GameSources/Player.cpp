@@ -341,11 +341,6 @@ namespace basecross {
 		Debug();
 
 
-		//デバッグ用
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-
-		}
-
 		if (m_ParryJudge == true)
 		{
 			m_ParryTime--;
