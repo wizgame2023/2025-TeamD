@@ -115,6 +115,13 @@ namespace basecross {
 			};
 		}
 	}
+	void Sprite::SetVertex(vector<Vec3> positions) {
+		for (int i = 0; i < m_Vertices.size(); i++) {
+			if (positions.size() <= i) break;
+			m_Vertices[i].position = positions[i];
+		}
+		m_BoneDraw->UpdateVertices(m_Vertices);
+	}
 	void Sprite::UpdateUV(vector<Vec2> uv) {
 		if (uv.empty()) return;
 		if (m_BoneDraw) {

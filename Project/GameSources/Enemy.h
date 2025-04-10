@@ -10,6 +10,7 @@ namespace basecross {
 	class Character;
 	class ForecastLine;
 	class EnemyState;
+	class LineCube;
 
 	class Enemy : public Character
 	{
@@ -45,7 +46,7 @@ namespace basecross {
 
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
-		shared_ptr<ForecastLine> m_Line;
+		shared_ptr<LineCube> m_LineCube;
 
 		template <class NextState>
 		void ChangeState() {
