@@ -61,6 +61,12 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 
 	}
+
+	shared_ptr <EffectManeger> GameStage::GetCreateEffect()
+	{
+		return m_Effect;
+	}
+
 	/// <summary>
 	/// リソースの作成
 	/// </summary>
@@ -203,7 +209,9 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
-			//m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
+
+			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
+			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
 			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()) {

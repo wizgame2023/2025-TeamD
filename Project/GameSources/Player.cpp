@@ -315,10 +315,11 @@ namespace basecross {
 		AddTag(L"Player");
 
 
-		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
-		auto stage = static_pointer_cast<GameStageS>(m_Stage);
+		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+		auto stage = static_pointer_cast<GameStage>(m_Stage);
+
 		if (stage != nullptr) {
-			//m_Effect = stage->GetCreateEffect();
+			m_Effect = stage->GetCreateEffect();
 		}
 		else {
 			m_Effect = nullptr;
@@ -418,13 +419,12 @@ namespace basecross {
 
 				BoostMove(15.0f, forward);
 				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
+				float rotate = atan2f(forward.x, forward.z);
 
-				float rot;
-				auto angle = GetMoveVector(rot);
 
-				//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
-				//m_Effect->SetRotation(Vec3(m_Position), 0.0f);
-				//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0);
+				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
+				m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 
 				m_PlayerStateNum += PlayerState::ATTACK;
 				m_PlayerStateNum -= PlayerState::NORMAL;
