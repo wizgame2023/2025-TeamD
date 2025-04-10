@@ -66,11 +66,9 @@ namespace basecross {
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, GetScale().y / 2.0f, 0));
 		m_HpBar->SetMaxHp(3);
 		m_HpBar->SetCurrentHp(m_HP);
-		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
 	}
 	void Mob::OnUpdate()
 	{
-		//m_HpBar->SetColor(Col4(1, 1, 1, 1));
 		AsyncUpdate();
 		Enemy::OnUpdate();
 		auto draw = GetComponent<BcPNTStaticDraw>();
@@ -119,22 +117,6 @@ namespace basecross {
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
-
-		if (m_Intruder != nullptr) {
-			if (Enemy::m_IntruderAlert)
-			{
-				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
-					m_Line->SetDrawActive(true);
-				}
-				else {
-					m_Line->SetDrawActive(false);
-				}
-			}
-			else {
-
-				m_Line->SetDrawActive(false);
-			}
-		}
 		EndAsync();
 	}
 	void Mob::Dead() {

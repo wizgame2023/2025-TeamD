@@ -346,7 +346,7 @@ namespace basecross {
 			m_ParryTime--;
 			if (m_ParryTime <= 0.0f)
 			{
-				//m_ParryJudge = false;
+				m_ParryJudge = false;
 			}
 		}
 

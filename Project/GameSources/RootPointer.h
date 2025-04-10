@@ -7,11 +7,11 @@
 #include "stdafx.h"
 #include "StageBuilder.h"
 namespace basecross {
-	class ForecastLine;
+	class LineCube;
 
 	class RootPointer : public Object {
 		wstring m_RootPointerNumber;
-		vector<shared_ptr<ForecastLine>> m_Line;
+		vector<shared_ptr<LineCube>> m_Line;
 	public:
 		vector<shared_ptr<RootPointer>> m_RootPointer;
 		RootPointer(const shared_ptr<Stage>& stage) : Object(stage){}

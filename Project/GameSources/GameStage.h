@@ -9,6 +9,7 @@
 namespace basecross {
 	class NumberSprite;
 	class Menu;
+	class UltIcon;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
@@ -23,6 +24,8 @@ namespace basecross {
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
+
+		shared_ptr<UltIcon> m_UltIcon;
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();

@@ -133,6 +133,7 @@ namespace basecross{
 		Col4 GetDiffuse();
 
 		void CreateVertex(Vec2 size, vector<Vec2> uv);
+		void SetVertex(vector<Vec3> positions);
 		//----------------------------------------------------------
 		//
 		//	UVëÄçÏ		

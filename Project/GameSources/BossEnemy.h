@@ -13,7 +13,8 @@ namespace basecross {
 		bool m_IsAppearance;
 		float m_ConditionTime;
 		int m_ConditionDefeat;
-
+		
+		//shared_ptr<LineCube> m_Line;
 		shared_ptr<ForecastLine> m_BossLine;
 		shared_ptr<ForecastLine> m_FLine;
 

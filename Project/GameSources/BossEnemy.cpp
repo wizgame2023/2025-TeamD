@@ -44,7 +44,8 @@ namespace basecross {
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
-		m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
+		
+		//m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
 	}
 
 	void BossEnemy::OnUpdate()

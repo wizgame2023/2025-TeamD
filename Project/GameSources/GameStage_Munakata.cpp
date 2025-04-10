@@ -86,9 +86,14 @@ namespace basecross {
 
 			float currentEnergy = player->GetEnergy();
 			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
+
+			/*RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(Vec3(0,1.0f,0), player->GetPosition()), GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });*/
 		}
 		float elpased = app->GetStepTimer().GetFramesPerSecond();
 		m_Fps->UpdateNumber(elpased);
+
+		
 	}
 
 }
