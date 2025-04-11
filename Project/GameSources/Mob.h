@@ -57,6 +57,25 @@ namespace basecross {
 		}
 	private:
 
+		float WstrToFlt(const wstring& data) {
+			if (data == L"") return NULL;
+			return stof(data);
+		}
+
+		vector<int> WstrToVecInt(const wstring& data) {
+			vector<wstring> vec3Str = {};
+			vector<int> num = {};
+			Util::WStrToTokenVector(vec3Str, data, L'_');
+			for (int i = 0; i < vec3Str.size(); i++)
+			{
+				if (WstrToFlt(vec3Str[i]) != NULL)
+				{
+					num.push_back(WstrToFlt(vec3Str[i]));
+				}
+			}
+			return num;
+		}
+
 	};
 }
 //end basecross

@@ -143,6 +143,7 @@ namespace basecross {
 		return m_IntruderAlert;
 	}
 
+
 	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();

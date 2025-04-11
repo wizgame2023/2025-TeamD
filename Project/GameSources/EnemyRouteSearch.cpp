@@ -6,6 +6,8 @@
 #include "stdafx.h"
 #include "Project.h"
 #include "EnemyRouteSearch.h"
+#include <queue>
+#include <unordered_set>
 
 namespace basecross {
     Navigate::Navigate(const std::shared_ptr<GameObject>& GameObjectPtr) :
@@ -46,34 +48,42 @@ namespace basecross {
     {
         if (m_DireChange)
         {
-            if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
+            if (m_NaviPoint.size() != 0)
             {
-                Vec3 rezult = Vec3();
-                m_Dire = std::abs(Position.x - m_TargetPosition.x) > std::abs(Position.z - m_TargetPosition.z) ? Dire::X : Dire::Z;
-
-                if (m_Dire == Dire::X)
+                if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
                 {
-                    m_BeforePosition = Position;
-                    if (m_TargetPosition.x < Position.x)
+                    Vec3 nextPoint = m_NaviPoint.front(); // 次のウェイポイントを取得
+
+                    Vec3 rezult = Vec3();
+                    m_Dire = std::abs(Position.x - nextPoint.x) > std::abs(Position.z - nextPoint.z) ? Dire::X : Dire::Z;
+
+                    if (m_Dire == Dire::X)
                     {
-                        return Vec3(-1, 0, 0);
+                        m_BeforePosition = Position;
+                        if (nextPoint.x < Position.x)
+                        {
+                            return Vec3(-1, 0, 0);
+                        }
+                        else if (nextPoint.x > Position.x)
+                        {
+                            return Vec3(1, 0, 0);
+                        }
                     }
-                    else if (m_TargetPosition.x > Position.x)
+                    else if (m_Dire == Dire::Z)
                     {
-                        return Vec3(1, 0, 0);
+                        m_BeforePosition = Position;
+                        if (nextPoint.z < Position.z)
+                        {
+                            return Vec3(0, 0, -1);
+                        }
+                        else if (nextPoint.z > Position.z)
+                        {
+                            return Vec3(0, 0, 1);
+                        }
                     }
                 }
-                else if (m_Dire == Dire::Z)
-                {
-                    m_BeforePosition = Position;
-                    if (m_TargetPosition.z < Position.z)
-                    {
-                        return Vec3(0, 0, -1);
-                    }
-                    else if (m_TargetPosition.z > Position.z)
-                    {
-                        return Vec3(0, 0, 1);
-                    }
+                else {
+                    m_NaviPoint.erase(m_NaviPoint.begin());
                 }
             }
         }
@@ -88,55 +98,137 @@ namespace basecross {
         return Vec3(0, 0, 0);
     }
 
+    std::vector<Vec3> Navigate::FindPathWithWaypoints(const Vec3& index, const Vec3& goal) {
+        auto heuristic = [](const Vec3& a, const Vec3& b) {
+            return (b - a).length(); // ゴールへの推定距離を計算するヒューリスティクス関数
+            };
+
+        // オープンリスト: 未探索のノードを優先度付きで管理するキュー（ノードインデックスとスコアを保持）
+        auto compare = [](const std::pair<int, float>& a, const std::pair<int, float>& b) {
+            return a.second > b.second; // スコアが小さい順に処理
+            };
+        std::priority_queue<std::pair<int, float>, std::vector<std::pair<int, float>>, decltype(compare)> openList(compare);
+
+        std::vector<bool> visitedNodes(m_CellData.size(), false); // 全ノードを未探索状態で初期化
+
+        // gCosts: 各ノードに到達するためのコストを格納する配列
+        std::vector<float> gCosts(m_CellData.size(), std::numeric_limits<float>::infinity());
+
+        // cameFrom: 各ノードがどのノードから来たのかを追跡する配列（経路復元用）
+        std::vector<int> cameFrom(m_CellData.size(), -1);
+
+        // スタート地点のインデックスを取得
+        int startIndex = GetIndexFromPosition(index); // 独自関数：Vec3からインデックスを取得
+        int goalIndex = GetIndexFromPosition(goal);   // ゴール地点のインデックスを取得
+
+        // 初期状態を設定する
+        openList.emplace(startIndex, 0.0f);            // スタート地点をオープンリストに追加
+        gCosts[startIndex] = 0.0f;                    // スタート地点のg値を0に設定
+
+        // 探索開始
+        while (!openList.empty()) {
+            int current = openList.top().first; // オープンリストの最優先ノードを取得（インデックス）
+            openList.pop(); // オープンリストから取り出し
+
+            // ゴールに到達した場合、経路を復元して返す
+            if (current == goalIndex) {
+                std::vector<Vec3> path;
+                while (current != -1) { // スタート地点まで辿る
+                    path.push_back(m_CellData[current]->GetComponent<Transform>()->GetPosition());
+                    current = cameFrom[current]; // 直前のノードに戻る
+                }
+                reverse(path.begin(), path.end()); // 経路を正しい順序に並べ替え
+                return path; // 最終的な経路を返す
+            }
+
+            // 近隣ノードを取得
+            auto neighbors = GetNeighborsForWaypoints(current);
+
+            for (int neighbor : neighbors) {
+                float tentativeG = gCosts[current] +
+                    (m_CellData[current]->GetComponent<Transform>()->GetPosition() -
+                        m_CellData[neighbor]->GetComponent<Transform>()->GetPosition()).length();
+
+                // 新しいg値が以前の値より小さい場合、または初めて訪問する場合
+                if (tentativeG < gCosts[neighbor]) {
+                    gCosts[neighbor] = tentativeG; // g値を更新
+
+                    // 探索済みかどうかをチェック
+                    if (visitedNodes[current]) {
+                        continue; // 探索済みの場合はスキップ
+                    }
+                    visitedNodes[current] = true; // 探索済みとしてマーク
+
+
+                    float fCost = tentativeG +
+                        heuristic(m_CellData[neighbor]->GetComponent<Transform>()->GetPosition(),
+                            m_CellData[goalIndex]->GetComponent<Transform>()->GetPosition()); // f値を計算
+
+                    openList.emplace(neighbor, fCost); // オープンリストに追加
+                    cameFrom[neighbor] = current;     // 経路情報を更新
+                }
+            }
+        }
+
+        // ゴールに到達できない場合は空の経路を返す
+        return {};
+    }
+
     void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
     {
-        // 開始位置をA*アルゴリズムの開始点として設定
         m_Index = index;
-
-        // 開始ノードの距離を初期化
-        // 現在のノードの周囲のセルをOPENにする
         if (index != goal)
         {
+            m_NaviPoint = FindPathWithWaypoints(index, goal);
             m_DireChange = true;
             m_TargetPosition = goal;
         }
-        else {
-            return;
-        }
     }
 
+    int Navigate::GetIndexFromPosition(const Vec3& position) {
 
-    Vec3 Navigate::OpenCell(Vec3 index)
-    {
-        Vec3 currentIndex = Vec3(0);
+        float memoryPos = 100000000;
+        Vec3 outCome = Vec3();
+        Vec3 nearPoint = Vec3();
+        shared_ptr<RootPointer> nearPointMemory;
+
         for (int i = 0; i < m_CellData.size(); i++)
         {
-            Vec3 pos = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            if (nearPoint == Vec3())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+            if ((vec - position).length() < (nearPoint - position).length())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+        }
 
-            if (currentIndex == Vec3(0))
-            {
-                currentIndex = pos;
-            }
-            else if ((index - pos).length() < (index - currentIndex).length() && index != pos && m_BeforeTarget != pos)
-            {
-                currentIndex = pos;
+        for (int i = 0; i < m_CellData.size(); i++) {
+            if (m_CellData[i]->GetComponent<Transform>()->GetPosition() == nearPoint) {
+                return i;
             }
         }
-        if (UpdateDistance(currentIndex));  // ここでは更新だけを行う。OPENリストへの追加はAStarAlgorithmで行う。
-        {
-            return currentIndex;
-        }
+        return -1; // 該当なしの場合
     }
 
-    bool Navigate::UpdateDistance(Vec3 index)
-    {
-        return true;
+    // WayPoint対応の近隣ノードを取得する関数
+    std::vector<int> Navigate::GetNeighborsForWaypoints(int currentIndex) {
+        std::vector<int> neighbors;
+        auto waypointIndices = WstrToVecInt(m_CellData[currentIndex]->GetPointerNumber());
+        for (int index : waypointIndices) {
+            neighbors.push_back(index);
+        }
+        return neighbors;
     }
 
 
     Vec3 Navigate::NextWayPoint(const Vec3& Pos, const Vec3& Target)
     {
-        float memoryPos = 100000;
+        float memoryPos = 100000000;
         Vec3 outCome = Vec3();
         Vec3 nearPoint = Vec3();
         shared_ptr<RootPointer> nearPointMemory;
@@ -163,13 +255,13 @@ namespace basecross {
         {
             Vec3 nearPos = nearPointMemory->GetPosition();
             Vec3 nearPossibleVec = m_CellData[num[j]]->GetComponent<Transform>()->GetPosition();
-            float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
+           float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
 
-            if (Pos == nearPossibleVec)
+            if (Pos == nearPossibleVec )
             {
                 continue;
             }
-            if (memoryPos == 0)
+            if (memoryPos == 100000000)
             {
                 memoryPos = wayPos;
             }
@@ -189,11 +281,13 @@ namespace basecross {
         Vec3 result = Vec3();
         if (m_CellData.size() == 0) return;
 
-        if (m_BossPause == false)
-        {
-            SetPoint = NextWayPoint(Position, Target);
-        }
-        SetTargetPosition(Position, SetPoint);
+        //if (m_BossPause == false)
+        //{
+        //    
+        //    SetPoint = NextWayPoint(Position, Target);
+
+        //}
+        SetTargetPosition(Position, Target);
     }
 }
 //end basecross

@@ -27,6 +27,11 @@ namespace basecross {
 			m_LegionNumber = number;
 		}
 
+		int GetLegionNumber()
+		{
+			return m_LegionNumber;
+		}
+
 		void IntoEnemyGruop(const shared_ptr<Enemy>& enemy)
 		{
 			m_GruopEnemy.push_back(enemy);
