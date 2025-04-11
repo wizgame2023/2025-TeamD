@@ -20,6 +20,10 @@ namespace basecross {
 	void MobSearch::Enter()
 	{
 		EnemyState::Enter();
+		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		auto navi = enemy->GetComponent<Navigate>(false);
+		Vec3 pos = enemy->RootNaviGate();
+		//navi->AvoidBlock(enemy->GetPosition(), pos);
 		Execute();
 	}
 	void MobSearch::Execute()

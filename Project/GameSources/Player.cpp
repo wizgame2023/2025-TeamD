@@ -346,7 +346,7 @@ namespace basecross {
 			m_ParryTime--;
 			if (m_ParryTime <= 0.0f)
 			{
-				//m_ParryJudge = false;
+				m_ParryJudge = false;
 			}
 		}
 
@@ -379,8 +379,6 @@ namespace basecross {
 			m_Attacktime -= elapsedTime;
 			if (m_Attacktime >= 0.0f)
 			{
-				Vec3 forward = GetForward();
-				BoostMove(3.0f, forward);
 			}
 			else {
 				m_PlayerStateNum -= PlayerState::ATTACK;
@@ -416,7 +414,7 @@ namespace basecross {
 				m_Position = GetPosition();
 				Vec3 forward = GetForward();
 
-				BoostMove(15.0f, forward);
+				//BoostMove(15.0f, forward);
 				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 
 				float rot;

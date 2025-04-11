@@ -142,6 +142,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
+			CreateSharedObjectGroup(L"Legion");
 
 			//ビューとライトの作成
 			CreateViewLight();
@@ -232,7 +233,7 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
-			
+
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();

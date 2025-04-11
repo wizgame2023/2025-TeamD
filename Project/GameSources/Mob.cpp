@@ -30,9 +30,6 @@ namespace basecross {
 		}
 		auto draw = GetComponent<BcPNTStaticDraw>();
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
-		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
-		m_currentState->Enter();
-
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
 		auto navi = AddComponent<Navigate>();
@@ -57,7 +54,7 @@ namespace basecross {
 				}
 			}
 
-			Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
+			Vec3 pos = m_PointData[0]->GetComponent<Transform>()->GetPosition();
 			navi->AvoidBlock(GetPosition(), pos);
 		}
 
@@ -67,6 +64,9 @@ namespace basecross {
 		m_HpBar->SetMaxHp(3);
 		m_HpBar->SetCurrentHp(m_HP);
 		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
+
+		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
+		m_currentState->Enter();
 	}
 	void Mob::OnUpdate()
 	{
@@ -152,67 +152,22 @@ namespace basecross {
 		Enemy::OnCollisionEnter(other);
 	}
 
+
 	Vec3 Mob::RootNaviGate()
 	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
+		auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
+		auto Legions = LegionGroup->GetGroupVector();
+		auto navi = GetComponent<Navigate>();
+		vector<Vec3> path;
+		vector<int> numbers;
 		Vec3 nearPoint = Vec3();
-		Vec3 position = GetPosition();
-		for (auto& point : pointers)
-		{
-			auto obj = point.lock();
-			Vec3 vec = obj->GetComponent<Transform>()->GetPosition();
-			if (nearPoint == Vec3())
-			{
-				nearPoint = vec;
-			}
-			if ((vec - position).length() < (nearPoint - position).length())
-			{
-				nearPoint = vec;
-			}
-		}
+		Vec3 currentPosition = GetPosition();
 
-		if ((position - nearPoint).length() > 1.0f)
-		{
-			return nearPoint;
-		}
-
-		if (m_NearPoint != nullptr)
-		{
-			Vec3 Target = m_NearPoint->GetComponent<Transform>()->GetPosition();
-
-			if ((position - Target).length() > 1.0f)
-			{
-				return Target;
-			}
-		}
-
-		for (auto& point : pointers)
-		{
-			auto shObj = point.lock();
-			Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
-			auto shPtr = dynamic_pointer_cast<RootPointer>(m_NearPoint);
-			wstring number = shPtr->GetPointerNumber();
-			if (number == L"0_")
-			{
-				m_NearPoint = m_PointData[2];
-				break;
-			}
-			else if (number == L"1_") {
-				m_NearPoint = m_PointData[3];
-				break;
-			}
-			else if (number == L"2_") {
-				m_NearPoint = m_PointData[0];
-				break;
-			}
-			else if (number == L"3_") {
-				m_NearPoint = m_PointData[1];
-				break;
-			}
-		}
-		Vec3 pos = m_NearPoint->GetComponent<Transform>()->GetPosition();
-		return pos;
+		m_NearPoint = m_PointData[0];
+		return m_NearPoint->GetComponent<Transform>()->GetPosition();
 	}
 
 	shared_ptr<Stage> Mob::GetStage()
