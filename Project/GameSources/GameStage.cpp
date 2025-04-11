@@ -187,7 +187,6 @@ namespace basecross {
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				//OpenPose();
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
 			}

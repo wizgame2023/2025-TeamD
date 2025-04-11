@@ -66,7 +66,7 @@ namespace basecross {
 			auto transform = obj->GetComponent<Transform>();
 			Vec3 position = transform->GetPosition();
 			Vec3 scale = transform->GetScale();
-			float distance = RayCast::CalcDistancePointToLine(position,line);
+			float distance = RayCast::CalcDistancePointToLine(position, line);
 			Vec3 halfScale = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (distance < halfScale.length()) {
 				/*if (smDraw) {
@@ -92,9 +92,6 @@ namespace basecross {
 		else if (bcDraw) {
 			bcDraw->GetStaticMeshWorldPositions(tempPositions);
 		}
-		if (object->FindTag(L"Player")) {
-			int a = 10;
-		}
 		for (size_t i = 0, size = tempPositions.size(); i < size; i += 3) {
 			TRIANGLE triangle;
 			triangle.m_A = tempPositions[i];
@@ -104,15 +101,7 @@ namespace basecross {
 				//三角形が無効なら次にうつる
 				continue;
 			}
-			/*Vec3 center = triangle.m_A + triangle.m_B + triangle.m_C;
-			center /= 3.0f;
 
-			float length = (center - triangle.m_A).length();
-
-			float distance = RayCast::CalcDistance3DPointToLine(center, line);
-			if (distance > length) {
-				continue;
-			}*/
 
 			bsm::Vec3 hitPosition;
 			float triangleIndex;
@@ -131,19 +120,18 @@ namespace basecross {
 		return false;
 	}
 	float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
-		Vec3 ab = line.GetDirection();
-		Vec3 ap = point - line.m_Start;
-		float abLengthSquared = dot(ab, ab);
+		Vec3 direction = line.GetDirection();
+		Vec3 pointToStart = point - line.m_Start;
+		float abLengthSquared = dot(direction, direction);
 
 		if (abLengthSquared == 0.0) {
-			// a と b が同じ点の場合
-			return length(ap);
+			return length(pointToStart);
 		}
 
-		float t = dot(ap, ab) / abLengthSquared;
+		float t = dot(pointToStart, direction) / abLengthSquared;
 		t = max(0.0, min(1.0, t));
 
-		Vec3 closestPoint = { line.m_Start.x + t * ab.x, line.m_Start.y + t * ab.y,line.m_Start.z + t * ab.z };
+		Vec3 closestPoint = { line.m_Start.x + t * direction.x, line.m_Start.y + t * direction.y,line.m_Start.z + t * direction.z };
 		return length(point - closestPoint);
 	}
 	float RayCast::CalcDistancePoint(const Vec3& point, const Line& line) {

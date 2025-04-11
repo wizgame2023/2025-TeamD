@@ -279,31 +279,28 @@ namespace basecross {
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"01");*/
+
+
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.45f,0.22f,0.45f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 90.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.0f, 0.0f)
+		);
+		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetTextureResource(L"01");
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
 
-
-		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
-		//Mat4x4 meshMat;
-		//meshMat.affineTransformation(
-		//	Vec3(0.3f,0.15f,0.3f), //(.1f, .1f, .1f),
-		//	Vec3(0.0f, 90.0f, 0.0f),
-		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, -0.0f, 0.0f)
-		//);
-		//ptrDraw->SetMeshResource(L"DEBUG");
-		//ptrDraw->SetTextureResource(L"01");
-		//ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
-
-		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
-		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
-		//ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		//auto bone = AddComponent<BonePosition>(L"a.txt");
-		//bone->CreateBone();
-
+		ptrDraw->AddAnimation(L"DEFAULT", 0, 120, true, 60);
+		ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -324,7 +321,6 @@ namespace basecross {
 		else {
 			m_Effect = nullptr;
 		}
-
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
