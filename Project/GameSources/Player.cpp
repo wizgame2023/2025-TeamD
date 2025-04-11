@@ -287,7 +287,7 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.45f,0.22f,0.45f), //(.1f, .1f, .1f),
+			Vec3(0.45f, 0.22f, 0.45f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.0f, 0.0f)
@@ -311,8 +311,7 @@ namespace basecross {
 
 		AddTag(L"Player");
 
-
-		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
 		auto stage = static_pointer_cast<GameStage>(m_Stage);
 
 		if (stage != nullptr) {

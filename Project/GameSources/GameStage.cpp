@@ -49,6 +49,7 @@ namespace basecross {
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
@@ -167,13 +168,10 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			auto sprite = AddGameObject<Sprite>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Vec2(80.0f));
-			//sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION_PANCH", Vec3(347.0f, -228.0f, 0.0f), Vec2(80.0f));
-			//sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			//sprite = AddGameObject<Sprite>(L"ACTION_PANCH", Vec3(499.0f, -228.0f, 0.0f), Vec2(80.0f));
-			//sprite->SetDiffuse(Col4(1, 0, 0, 1));
+			auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
+			icon->SetInput(XINPUT_GAMEPAD_A);
+			icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+			icon->SetInput(XINPUT_GAMEPAD_X);
 			m_UltIcon = AddGameObject<UltIcon>();
 		}
 		catch (...) {
