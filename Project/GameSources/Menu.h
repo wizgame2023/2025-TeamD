@@ -15,11 +15,12 @@ namespace basecross {
 	public:
 		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage), m_GroupName(group), m_IsOpen(false) {}
 		virtual ~Menu() {}
-
+		virtual void OnCreate()override;
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
 		void AddSprite(const shared_ptr<GameObject>& sprite) {
+			sprite->AddTag(L"Menu");
 			m_MenuObjects.push_back(sprite);
 		}
 

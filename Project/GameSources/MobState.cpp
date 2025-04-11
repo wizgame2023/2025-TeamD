@@ -81,10 +81,6 @@ namespace basecross {
 			auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
 			mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
-			m_Enemy->m_Line->SetBallet(ballet);
-			m_Enemy->m_Line->SetDrawActive(true);
-			m_Enemy->m_Line = m_Stage->AddGameObject<ForecastLine>(m_Enemy);
-
 			mob->m_ShotRandomInterval = Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f);
 
 			SoundManager::Instance().PlaySE(L"SE_SHOT");

@@ -46,7 +46,7 @@ namespace basecross {
 		void ClosePose();
 		void OpenPose();
 
-		shared_ptr <EffectManeger> GetCreateEffect();
+		//shared_ptr <EffectManeger> GetCreateEffect();
 
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;

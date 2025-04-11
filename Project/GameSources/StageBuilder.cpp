@@ -77,6 +77,7 @@ namespace basecross {
 							auto regionObject = m_Stage->AddGameObject<Legion>();
 							//“G‚ð“o˜^
 							regionObject->IntoEnemyGruop(enemy);
+							regionObject->SetLegionNumber(region);
 							m_Legions.emplace(region, regionObject);
 						}
 						else {

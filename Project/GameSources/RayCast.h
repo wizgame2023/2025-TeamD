@@ -10,9 +10,11 @@ namespace basecross {
 	struct Line {
 		Vec3 m_Start;
 		Vec3 m_End;
-
+		Line() : m_Start(Vec3()),m_End(Vec3()){}
 		Line(Vec3 start, Vec3 end) : m_Start(start), m_End(end) {}
-
+		Line(Vec3 start, Vec3 direction, float distance) : m_Start(start) {
+			m_End = start + direction * distance;
+		}
 		Vec3 GetDirection() const{
 			return m_End - m_Start;
 		}
@@ -41,7 +43,8 @@ namespace basecross {
 	class RayCast {
 
 	public:
-		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {}, const bool& isDebug = false);
+		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {});
+		static bool HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags = {});
 		static 	bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
 
 		static float CalcDistancePointToLine(const Vec3& point, const Line& line);

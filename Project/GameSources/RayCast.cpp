@@ -16,7 +16,7 @@ namespace basecross {
 	/// <param name="object">調べるオブジェクト</param>
 	/// <param name="excludeTags">除外するタグ</param>
 	/// <returns>当たったか</returns>
-	bool RayCast::HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags, const bool& isDebug) {
+	bool RayCast::HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
 		RayCastHit newResult = RayCastHit();
 		if (object == nullptr) return false;
 		bool isExclude = false;
@@ -29,16 +29,6 @@ namespace basecross {
 		if (isExclude) return false;
 		bool isHit = false;
 		isHit = HitTestMeshRayCast(line, newResult, object);
-		/*auto draw = object->GetComponent<SmBaseDraw>(false);
-		auto bcDraw = object->GetComponent<BcBaseDraw>(false);
-		if (draw != nullptr) {
-
-			isHit = draw->HitTestStaticMeshSegmentTriangles(line.m_Start, line.m_End, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}
-		else if (bcDraw != nullptr) {
-			isHit = bcDraw->HitTestStaticMeshSegmentTriangles(line.m_Start, line.m_End, newResult.m_HitPosition, newResult.m_Triangle, newResult.m_TriangleIndex);
-		}*/
-
 		if (isHit) {
 			if (hit.m_Object == nullptr) {
 				hit.m_Object = object;
@@ -53,7 +43,45 @@ namespace basecross {
 		}
 		return false;
 	}
+	bool RayCast::HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags) {
+		bool isHit = false;
+		for (auto& obj : vec) {
+			/*auto smDraw = obj->GetComponent<SmBaseDraw>(false);
+			auto bcDraw = obj->GetComponent<BcBaseDraw>(false);
+			if (smDraw) {
+				smDraw->SetDiffuse(Col4(1, 1, 1, 1));
+			}
+			else if (bcDraw) {
+				bcDraw->SetDiffuse(Col4(1, 1, 1, 1));
+			}*/
 
+			bool isExclude = false;
+			for (auto& tag : excludeTags) {
+				if (obj->FindTag(tag)) {
+					isExclude = true;
+					break;
+				}
+			}
+			if (isExclude) continue;
+			auto transform = obj->GetComponent<Transform>();
+			Vec3 position = transform->GetPosition();
+			Vec3 scale = transform->GetScale();
+			float distance = RayCast::CalcDistancePointToLine(position,line);
+			Vec3 halfScale = Vec3(scale.x, scale.y, scale.z) / 2.0f;
+			if (distance < halfScale.length()) {
+				/*if (smDraw) {
+					smDraw->SetDiffuse(Col4(1, 0, 0, 1));
+				}
+				else if (bcDraw) {
+					bcDraw->SetDiffuse(Col4(1, 0, 0, 1));
+				}*/
+				if (RayCast::HitTest(hit, line, obj)) {
+					isHit = true;
+				}
+			}
+		}
+		return isHit;
+	}
 	bool RayCast::HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object) {
 		vector<Vec3> tempPositions;
 		auto smDraw = object->GetComponent<SmBaseDraw>(false);
@@ -102,15 +130,22 @@ namespace basecross {
 		}
 		return false;
 	}
-	//float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
-	//	Vec2 startToPoint = Vec2(point.x - line.m_Start.x, point.z - line.m_Start.z);
-	//	Vec2 startToEnd = Vec2(line.m_End.x - line.m_Start.x, line.m_End.z - line.m_Start.z);
-	//	Vec2 endToStart = Vec2(line.m_Start.x - line.m_End.x, line.m_Start.z - line.m_End.z);
-	//	Vec2 endToPoint = Vec2(point.x - line.m_End.x, point.z - line.m_End.z);
-	//	if (startToPoint.dot(startToEnd) < 0.0) return startToPoint.length();
-	//	if (endToPoint.dot(endToStart) < 0.0) return endToPoint.length();
-	//	return abs(startToEnd.x * startToPoint.y - startToEnd.y * startToPoint.x) / startToEnd.length();
-	//}
+	float RayCast::CalcDistancePointToLine(const Vec3& point, const Line& line) {
+		Vec3 ab = line.GetDirection();
+		Vec3 ap = point - line.m_Start;
+		float abLengthSquared = dot(ab, ab);
+
+		if (abLengthSquared == 0.0) {
+			// a と b が同じ点の場合
+			return length(ap);
+		}
+
+		float t = dot(ap, ab) / abLengthSquared;
+		t = max(0.0, min(1.0, t));
+
+		Vec3 closestPoint = { line.m_Start.x + t * ab.x, line.m_Start.y + t * ab.y,line.m_Start.z + t * ab.z };
+		return length(point - closestPoint);
+	}
 	float RayCast::CalcDistancePoint(const Vec3& point, const Line& line) {
 		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);//始点
 		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);//終点

@@ -17,7 +17,7 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		InitHP(3);
-    
+
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
@@ -51,7 +51,6 @@ namespace basecross {
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 	}
 
 	void Enemy::OnUpdate()
@@ -96,7 +95,6 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
 
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
@@ -127,8 +125,9 @@ namespace basecross {
 		}
 
 		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-			m_Line->CheckRayCast(Vec3());
-			if (!m_Line->CheckHitObjectTag(L"Player")) {
+			RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
+			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
 				m_IntruderAlert = false;
 			}
 		}
@@ -157,7 +156,6 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
-		m_Line->Destroy();
 
 		ScoreManager::Instance()->AddEliminateEnemyCount();
 

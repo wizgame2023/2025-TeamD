@@ -9,6 +9,7 @@
 namespace basecross {
 	class NumberSprite;
 	class Menu;
+	class UltIcon;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
@@ -23,6 +24,8 @@ namespace basecross {
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
+
+		shared_ptr<UltIcon> m_UltIcon;
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
@@ -43,19 +46,21 @@ namespace basecross {
 
 		void GameOver() {};
 		void GameClear() {};
-		
 
 		shared_ptr<EffectManeger> m_Effect;
 
+
 	public:
 		//構築と破棄
-		GameStage(const wstring& file) : Stage(),m_MapFileName(file), m_IsPose(false){}
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
 		virtual ~GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
+		shared_ptr <EffectManeger> GetCreateEffect();
+
 	};
 
 

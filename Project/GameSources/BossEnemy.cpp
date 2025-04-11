@@ -44,7 +44,8 @@ namespace basecross {
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
-		m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
+		
+		//m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
 	}
 
 	void BossEnemy::OnUpdate()
@@ -98,21 +99,6 @@ namespace basecross {
 
 			SetPosition(currntPosition);
 
-			auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-			if (device.bConnected) {
-				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_DOWN) {
-
-				}
-				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_UP) {
-					m_Stage->AddGameObject<CrushAttack>(GetPosition() + m_Transform->GetForward(), Vec3(2.0f, 1.0f, 2.0f), 1, 0.5f, 5.0f);
-				}
-				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_RIGHT) {
-
-				}
-				if (device.wPressedButtons & XINPUT_GAMEPAD_DPAD_LEFT) {
-
-				}
-			}
 		}
 		EndAsync();
 	}

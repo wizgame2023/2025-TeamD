@@ -34,6 +34,8 @@ namespace basecross {
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		group->IntoGroup(GetThis<Bullet>());
+
+		m_Line = GetStage()->AddGameObject<LineCube>(0.02f, Col4(1, 1, 0, 1));
 	}
 
 	void Bullet::OnUpdate() {
@@ -45,16 +47,19 @@ namespace basecross {
 		moveAmount += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
+			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 		else {
 			position += moveAmount;
 			m_Transform->SetPosition(position);
+			m_Line->SetLine(Line(position,m_Position));
 		}
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player") || other->FindTag(L"Object")) {
+			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}

@@ -70,7 +70,6 @@ namespace basecross {
 	}
 	void Mob::OnUpdate()
 	{
-		//m_HpBar->SetColor(Col4(1, 1, 1, 1));
 		AsyncUpdate();
 		Enemy::OnUpdate();
 		auto draw = GetComponent<BcPNTStaticDraw>();
@@ -119,22 +118,6 @@ namespace basecross {
 		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
-
-		if (m_Intruder != nullptr) {
-			if (Enemy::m_IntruderAlert)
-			{
-				if (m_BalletInterval <= MAX_BALLET_INTERVAL * 0.2f) {
-					m_Line->SetDrawActive(true);
-				}
-				else {
-					m_Line->SetDrawActive(false);
-				}
-			}
-			else {
-
-				m_Line->SetDrawActive(false);
-			}
-		}
 		EndAsync();
 	}
 	void Mob::Dead() {

@@ -59,10 +59,10 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 	}
-	shared_ptr <EffectManeger> GameStageS::GetCreateEffect()
-	{
-		return m_Effect;
-	}
+	//shared_ptr <EffectManeger> GameStageS::GetCreateEffect()
+	//{
+	//	return m_Effect;
+	//}
 	/// <summary>
 	/// ポーズメニューの作成
 	/// </summary>
