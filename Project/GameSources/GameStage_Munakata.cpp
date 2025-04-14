@@ -37,7 +37,8 @@ namespace basecross {
 
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
-		
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 	}
 	void GameStageM::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);

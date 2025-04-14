@@ -78,10 +78,12 @@ namespace basecross {
 	class BossSearch : public EnemyState
 	{
 		bool m_IntruderAlert;
-
+		vector<Vec3> path;
+		float interval;
+		float maxInterval;
 	public:
 		BossSearch(shared_ptr<Enemy>& enemy) :
-			EnemyState(enemy)
+			EnemyState(enemy),interval(0.0f),maxInterval(1.0f)
 		{
 		}
 

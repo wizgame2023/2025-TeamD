@@ -12,9 +12,10 @@ namespace basecross {
 	class RootPointer : public Object {
 		wstring m_RootPointerNumber;
 		vector<shared_ptr<LineCube>> m_Line;
+		int m_Number;
 	public:
 		vector<shared_ptr<RootPointer>> m_RootPointer;
-		RootPointer(const shared_ptr<Stage>& stage) : Object(stage){}
+		RootPointer(const shared_ptr<Stage>& stage) : Object(stage),m_Number(0){}
 		virtual ~RootPointer(){}
 		void SetPointerNumber(const wstring& number) {
 			m_RootPointerNumber = number;
@@ -25,7 +26,12 @@ namespace basecross {
 		void AddPointer(const shared_ptr<RootPointer> pointer) {
 			m_RootPointer.push_back(pointer);
 		}
-
+		void SetNumber(int number) {
+			m_Number = number;
+		}
+		int GetNumber() {
+			return m_Number;
+		}
 		vector<shared_ptr<RootPointer>> GetRootPointer()
 		{
 			return m_RootPointer;

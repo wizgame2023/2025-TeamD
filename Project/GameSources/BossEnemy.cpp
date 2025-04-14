@@ -38,13 +38,13 @@ namespace basecross {
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
-		navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+		//navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
 		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
-		
+
 		//m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
 	}
 
@@ -68,10 +68,10 @@ namespace basecross {
 		}
 		else {
 			StartAsync();
-			AsyncUpdate();
+			//AsyncUpdate();
 			Vec3 pos = GetPosition();
 			m_currentState->Execute();
-			auto navi = GetComponent<Navigate>();
+			/*auto navi = GetComponent<Navigate>();
 			float elapsedTime = App::GetApp()->GetElapsedTime();
 			Vec3 currntPosition = GetPosition();
 			if (m_IntruderAlert)
@@ -97,7 +97,7 @@ namespace basecross {
 				}
 			}
 
-			SetPosition(currntPosition);
+			SetPosition(currntPosition);*/
 
 		}
 		EndAsync();
