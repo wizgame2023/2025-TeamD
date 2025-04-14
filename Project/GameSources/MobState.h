@@ -74,39 +74,5 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
-
-	class BossSearch : public EnemyState
-	{
-		bool m_IntruderAlert;
-
-	public:
-		BossSearch(shared_ptr<Enemy>& enemy) :
-			EnemyState(enemy)
-		{
-		}
-
-	private:
-		void Enter() override;
-		void Execute()override;
-		void Exit()override;
-	};
-	class BossAttack : public EnemyState
-	{
-		bool m_IntruderAlert;
-		float m_ChangeTime;
-	public:
-		BossAttack(shared_ptr<Enemy>& enemy) :
-			EnemyState(enemy),
-			m_ChangeTime(1.0f)
-		{
-		}
-
-	private:
-		void Enter() override;
-		void Execute()override;
-		void Exit()override;
-	};
-
-
 }
 //end basecross

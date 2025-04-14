@@ -14,10 +14,6 @@ namespace basecross {
 		float m_ConditionTime;
 		int m_ConditionDefeat;
 		
-		//shared_ptr<LineCube> m_Line;
-		shared_ptr<ForecastLine> m_BossLine;
-		shared_ptr<ForecastLine> m_FLine;
-
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -26,6 +22,7 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void Dead();
+		virtual void Damage(float damage, const bool& isSound = true)override;
 
 		void SetCondition(float time, int defeatCount) {
 			m_IsAppearance = false;

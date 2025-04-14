@@ -13,13 +13,15 @@ namespace basecross {
 	protected:
 		float m_Damage;
 		float m_ExistenceTime;
+		float m_Cooldown;
+		float m_Range;
 		shared_ptr<CollisionObb> m_Collision;
 		shared_ptr<Transform> m_Transform;
 	public:
-		AttackCollision(const shared_ptr<Stage>& stage,Vec3 position,Vec3 size,float damage,float time) : 
+		AttackCollision(const shared_ptr<Stage>& stage,Vec3 position,Vec3 size,float damage,float range,float time,float cooldown) : 
 			GameObject(stage),
 			m_StartPosition(position),m_Size(size),
-			m_Damage(damage),m_ExistenceTime(time) {}
+			m_Damage(damage),m_ExistenceTime(time),m_Cooldown(cooldown) ,m_Range(range){}
 		virtual ~AttackCollision() {}
 
 		virtual void OnCreate()override;
@@ -43,13 +45,19 @@ namespace basecross {
 		virtual float GetDamage() {
 			return m_Damage;
 		}
+		float GetCooldown() {
+			return m_Cooldown;
+		}
+		float GetRange() {
+			return m_Range;
+		}
 	};
 
 	class CrushAttack : public AttackCollision {
 		float m_BlowForce;
 	public:
 		CrushAttack(const shared_ptr<Stage>& stage,Vec3 position,Vec3 size,float damage,float time,float force) : 
-			AttackCollision(stage,position,size,damage,time),m_BlowForce(force){}
+			AttackCollision(stage,position,size,damage,1.0f,time,2.0f),m_BlowForce(force){}
 		virtual~CrushAttack(){}
 
 		virtual void ContactPlayer(shared_ptr<GameObject>& player);
@@ -60,7 +68,7 @@ namespace basecross {
 		Vec3 m_Target;
 	public:
 		Missile(const shared_ptr<Stage>& stage,const Vec3 target, Vec3 position, Vec3 size, float damage, float time,float power) : 
-			AttackCollision(stage,position,size,damage,time),m_Target(target),m_ExplodePower(power){ }
+			AttackCollision(stage,position,size,damage,10.0f,time,4.0f),m_Target(target),m_ExplodePower(power){ }
 		virtual ~Missile(){}
 		virtual void OnUpdate()override;
 		virtual void ContactStage(shared_ptr<GameObject>& object)override;

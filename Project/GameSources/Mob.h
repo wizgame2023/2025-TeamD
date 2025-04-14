@@ -9,7 +9,6 @@
 namespace basecross {
 	class Enemy;
 	class Tube;
-	class ForecastLine;
 	class HPBar;
 	class RootPointer;
 	class Mob : public Enemy

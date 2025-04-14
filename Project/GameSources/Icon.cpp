@@ -26,5 +26,30 @@ namespace basecross {
 			Vec2(1,1)
 			});
 	}
+	void NormalIcon::OnCreate() {
+		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(80.0f));
+	}
+	void NormalIcon::OnUpdate() {
+		auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		float elapsed = App::GetApp()->GetElapsedTime();
+		if (device.bConnected) {
+			if (device.wPressedButtons & m_Input) {
+				m_IsPressed = true;
+				m_PressTime = m_MaxPressTime;
+			}
+		}
+
+		if (m_IsPressed) {
+			m_Icon->SetDiffuse(m_PressedColor);
+			m_PressTime -= elapsed;
+			if (m_PressTime <= 0) {
+				m_PressTime = m_MaxPressTime;
+				m_IsPressed = false;
+			}
+		}
+		else {
+			m_Icon->SetDiffuse(m_NormalColor);
+		}
+	}
 }
 //end basecross
