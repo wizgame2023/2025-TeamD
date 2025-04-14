@@ -149,6 +149,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
+			CreateSharedObjectGroup(L"Legion");
 
 			//ビューとライトの作成
 			CreateViewLight();

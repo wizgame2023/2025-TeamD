@@ -43,7 +43,6 @@ namespace basecross {
 
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
-
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
 		shared_ptr<LineCube> m_LineCube;

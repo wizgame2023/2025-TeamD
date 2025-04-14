@@ -9,6 +9,10 @@
 namespace basecross {
 	void Legion::OnCreate()
 	{
+		Object::OnCreate();
+		auto group = GetStage()->GetSharedObjectGroup(L"Legion");
+		group->IntoGroup(GetThis<RootPointer>());
+
 	}
 	void Legion::OnUpdate()
 	{
