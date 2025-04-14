@@ -8,7 +8,6 @@
 
 namespace basecross {
 	class Character;
-	class ForecastLine;
 	class EnemyState;
 	class LineCube;
 
@@ -43,6 +42,7 @@ namespace basecross {
 
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
+		void SetIntruderAlert(bool flag);
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
 		shared_ptr<LineCube> m_LineCube;

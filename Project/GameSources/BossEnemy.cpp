@@ -44,8 +44,6 @@ namespace basecross {
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
-
-		//m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
 	}
 
 	void BossEnemy::OnUpdate()
@@ -105,6 +103,10 @@ namespace basecross {
 	void BossEnemy::Dead()
 	{
 		Enemy::Dead();
+	}
+	void BossEnemy::Damage(float damage, const bool& isSound) {
+		Enemy::Damage(damage, isSound);
+		ChangeState<BossAttack>();
 	}
 
 	Vec3 BossEnemy::GetPosition()
