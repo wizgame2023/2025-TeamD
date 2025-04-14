@@ -173,6 +173,173 @@ namespace basecross {
         // ゴールに到達できない場合は空の経路を返す
         return {};
     }
+    std::vector<Vec3> Navigate::FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal) {
+        
+        vector<shared_ptr<RootPointer>> openPointers;
+        openPointers.reserve(m_CellData.size());
+        vector<bool> isClosed(m_CellData.size(), false);
+        vector<float> gCost(m_CellData.size(),-1.0f);
+        vector<float> hCost(m_CellData.size(),-1.0f);
+        vector<float> tCost(m_CellData.size(),-1.0f);
+        vector<shared_ptr<RootPointer>> parentPointer(m_CellData.size(),nullptr);
+        vector<Vec3> path;
+        int goalIndex = GetIndexFromPosition(goal);
+        auto goalPointer = m_CellData[goalIndex];
+
+        auto current = pointer;
+        int currentNumber = current->GetNumber();
+        gCost[currentNumber] = 0.0f;
+        hCost[currentNumber] = (goalPointer->GetPosition() - current->GetPosition()).length();
+        tCost[currentNumber] = gCost[currentNumber] + hCost[currentNumber];
+
+        bool isGoal = false;
+
+        if (currentNumber == goalIndex) {
+            isGoal = true;
+        }
+        do {
+            isClosed[currentNumber] = true;
+            auto pointers = current->GetRootPointer();
+            for (const auto& pointer : pointers) {
+                int pointNumber = pointer->GetNumber();
+                if (isClosed[pointNumber]) {
+                    continue;
+                }
+
+                float tempG = gCost[currentNumber] + (pointer->GetPosition() - current->GetPosition()).length();
+                float tempH = (goalPointer->GetPosition() - pointer->GetPosition()).length();
+                float tempT = tempG + tempH;
+                if (pointNumber == goalIndex) {
+                    gCost[pointNumber] = tempG;
+                    hCost[pointNumber] = tempH;
+                    tCost[pointNumber] = tempT;
+                    parentPointer[pointNumber] = current;
+                    isGoal = true;
+                    break;
+                }
+                if (parentPointer[pointNumber] != nullptr) {
+                    if (tempT < tCost[pointNumber]) {
+                        gCost[pointNumber] = tempG;
+                        hCost[pointNumber] = tempH;
+                        tCost[pointNumber] =tempT;
+                        parentPointer[pointNumber] = current;
+                    }
+                }
+                else {
+                    gCost[pointNumber] = tempG;
+                    hCost[pointNumber] = tempH;
+                    tCost[pointNumber] = tempT;
+                    parentPointer[pointNumber] = current;
+                    openPointers.emplace_back(pointer);
+                }
+            }
+            
+            if (!isGoal) {
+                shared_ptr<RootPointer> minCostPointer = nullptr;
+                int minIndex = -1;
+                for (int i = 0, size = openPointers.size(); i < size; ++i) {
+                    if (minCostPointer == nullptr) {
+                        minCostPointer = openPointers[i];
+                        minIndex = i;
+                    }
+                    else {
+                        if (tCost[minCostPointer->GetNumber()] > tCost[openPointers[i]->GetNumber()]) {
+                            minCostPointer = openPointers[i];
+                            minIndex = i;
+                        }
+                    }
+                }
+                current = minCostPointer;
+                currentNumber = current->GetNumber();
+                openPointers.erase(openPointers.begin() + minIndex);
+            }
+
+        } while (openPointers.size() > 0 && !isGoal);
+
+        if (!isGoal) {
+            return {};
+        }
+        else {
+            shared_ptr<RootPointer> pathPointer = goalPointer;
+            const int MAX_PATH_COUNT = 1000;
+            do{
+                int number = pathPointer->GetNumber();
+                path.push_back(pathPointer->GetPosition());
+                pathPointer = parentPointer[number];
+                if (path.size() > MAX_PATH_COUNT) {
+                    return {};
+                }
+            } while (pathPointer != nullptr);
+
+            reverse(path.begin(), path.end());
+            return path;
+        }
+        //std::priority_queue<std::pair<int, float>, std::vector<std::pair<int, float>>, decltype(compare)> openList(compare);
+
+        //std::vector<bool> visitedNodes(m_CellData.size(), false); // 全ノードを未探索状態で初期化
+
+        //// gCosts: 各ノードに到達するためのコストを格納する配列
+        //std::vector<float> gCosts(m_CellData.size(), std::numeric_limits<float>::infinity());
+
+        //// cameFrom: 各ノードがどのノードから来たのかを追跡する配列（経路復元用）
+        //std::vector<int> cameFrom(m_CellData.size(), -1);
+
+        //// スタート地点のインデックスを取得
+        //int startIndex = GetIndexFromPosition(index); // 独自関数：Vec3からインデックスを取得
+        //int goalIndex = GetIndexFromPosition(goal);   // ゴール地点のインデックスを取得
+
+        //// 初期状態を設定する
+        //openList.emplace(startIndex, 0.0f);            // スタート地点をオープンリストに追加
+        //gCosts[startIndex] = 0.0f;                    // スタート地点のg値を0に設定
+
+        //// 探索開始
+        //while (!openList.empty()) {
+        //    int current = openList.top().first; // オープンリストの最優先ノードを取得（インデックス）
+        //    openList.pop(); // オープンリストから取り出し
+
+        //    // ゴールに到達した場合、経路を復元して返す
+        //    if (current == goalIndex) {
+        //        std::vector<Vec3> path;
+        //        while (current != -1) { // スタート地点まで辿る
+        //            path.push_back(m_CellData[current]->GetComponent<Transform>()->GetPosition());
+        //            current = cameFrom[current]; // 直前のノードに戻る
+        //        }
+        //        reverse(path.begin(), path.end()); // 経路を正しい順序に並べ替え
+        //        return path; // 最終的な経路を返す
+        //    }
+
+        //    // 近隣ノードを取得
+        //    auto neighbors = GetNeighborsForWaypoints(current);
+
+        //    for (int neighbor : neighbors) {
+        //        float tentativeG = gCosts[current] +
+        //            (m_CellData[current]->GetComponent<Transform>()->GetPosition() -
+        //                m_CellData[neighbor]->GetComponent<Transform>()->GetPosition()).length();
+
+        //        // 新しいg値が以前の値より小さい場合、または初めて訪問する場合
+        //        if (tentativeG < gCosts[neighbor]) {
+        //            gCosts[neighbor] = tentativeG; // g値を更新
+
+        //            // 探索済みかどうかをチェック
+        //            if (visitedNodes[current]) {
+        //                continue; // 探索済みの場合はスキップ
+        //            }
+        //            visitedNodes[current] = true; // 探索済みとしてマーク
+
+
+        //            float fCost = tentativeG +
+        //                heuristic(m_CellData[neighbor]->GetComponent<Transform>()->GetPosition(),
+        //                    m_CellData[goalIndex]->GetComponent<Transform>()->GetPosition()); // f値を計算
+
+        //            openList.emplace(neighbor, fCost); // オープンリストに追加
+        //            cameFrom[neighbor] = current;     // 経路情報を更新
+        //        }
+        //    }
+        //}
+
+        // ゴールに到達できない場合は空の経路を返す
+        return {};
+    }
 
     void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
     {
@@ -184,7 +351,26 @@ namespace basecross {
             m_TargetPosition = goal;
         }
     }
+    shared_ptr<RootPointer> Navigate::GetNearPinter(const Vec3& position) {
+        Vec3 nearPoint = Vec3();
+        shared_ptr<RootPointer> nearPointMemory = nullptr;
 
+        for (int i = 0; i < m_CellData.size(); i++)
+        {
+            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            if (nearPoint == Vec3())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+            if ((vec - position).length() < (nearPoint - position).length())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+        }
+        return nearPointMemory;
+    }
     int Navigate::GetIndexFromPosition(const Vec3& position) {
 
         float memoryPos = 100000000;
@@ -255,9 +441,9 @@ namespace basecross {
         {
             Vec3 nearPos = nearPointMemory->GetPosition();
             Vec3 nearPossibleVec = m_CellData[num[j]]->GetComponent<Transform>()->GetPosition();
-           float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
+            float wayPos = (Target - nearPossibleVec).length() + (Pos - nearPossibleVec).length();
 
-            if (Pos == nearPossibleVec )
+            if (Pos == nearPossibleVec)
             {
                 continue;
             }

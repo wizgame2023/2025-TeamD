@@ -149,29 +149,60 @@ namespace basecross {
 		auto navi = boss->GetComponent<Navigate>();
 		auto player = boss->m_Intruder;
 		Vec3 playerPos = player->GetPosition();
-		Execute();
 	}
 	void BossSearch::Execute()
 	{
-		auto navi = m_Enemy->GetComponent<Navigate>();
-		auto boss = dynamic_pointer_cast<BossEnemy>(m_Enemy);
-		auto player = boss->m_Intruder;
-		Vec3 playerPos = player->GetPosition();
+		auto navigate = m_Enemy->GetComponent<Navigate>(false);
+		float elapsed = App::GetApp()->GetElapsedTime();
+		if (navigate) {
+			if (path.size() == 0) {
+				if (interval <= 0.0f) {
+					auto group = m_Enemy->GetStage()->GetSharedObjectGroup(L"PointerGroup");
+					auto pointers = group->GetGroupVector();
+					int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
+					auto pointer = pointers[rnd].lock();
+					if (pointer != nullptr) {
+						path = navigate->FindPathWithWaypoints2(navigate->GetNearPinter(m_Enemy->GetPosition()), pointer->GetComponent<Transform>()->GetPosition());
+					}
+					interval = maxInterval;
+				}
+				else {
+					interval -= elapsed;
+				}
+			}
+			else {
+				
+				Vec3 pos = m_Enemy->GetPosition();
+				path[0].y = pos.y;
+				Vec3 direction = path[0] - pos;
+				if (direction.length() < 0.1f) {
+					path.erase(path.begin());
+				}
+				direction = direction.normalize();
+				pos += direction * 1.0f * elapsed;
+				m_Enemy->SetPosition(pos);
+			}
 
-		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
-		Vec3 position = m_Transform->GetPosition();
-		Vec3 rot = target - position;
-		rot.normalize();
-		float rotate = atan2f(rot.x, rot.z);
-		m_Transform->SetRotation(Vec3(0, rotate, 0));
+		}
+		//auto navi = m_Enemy->GetComponent<Navigate>();
+		//auto boss = dynamic_pointer_cast<BossEnemy>(m_Enemy);
+		//auto player = boss->m_Intruder;
+		//Vec3 playerPos = player->GetPosition();
 
-		if ((boss->GetPosition() - playerPos).length() < 2.0f)
-		{
-			m_Enemy->ChangeState<BossAttack>();
-		}
-		else {
-			//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
-		}
+		//Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
+		//Vec3 position = m_Transform->GetPosition();
+		//Vec3 rot = target - position;
+		//rot.normalize();
+		//float rotate = atan2f(rot.x, rot.z);
+		//m_Transform->SetRotation(Vec3(0, rotate, 0));
+
+		//if ((boss->GetPosition() - playerPos).length() < 2.0f)
+		//{
+		//	m_Enemy->ChangeState<BossAttack>();
+		//}
+		//else {
+		//	//navi->SetTargetPosition(m_Enemy->GetPosition(), m_Enemy->m_Intruder->GetPosition());
+		//}
 
 	}
 	void BossSearch::Exit()
