@@ -67,11 +67,10 @@ namespace basecross {
 			m_Scale = scale;
 			m_Transform->SetScale(scale);
 		}
-		void SetRotation(Vec3 degRotation) {
-			Vec3 radRotation = Vec3(XMConvertToRadians(degRotation.x), XMConvertToRadians(degRotation.y), XMConvertToRadians(degRotation.z));
-			m_Rotation = radRotation;
+		void SetRotation(Vec3 rotation) {
+			m_Rotation = rotation;
 
-			m_Transform->SetRotation(radRotation);
+			m_Transform->SetRotation(rotation);
 		}
 		void RotateY(float degree) {
 			m_Rotation.y = XMConvertToRadians(degree);
@@ -90,6 +89,9 @@ namespace basecross {
 		Vec3 GetRotation() {
 			m_Rotation = m_Transform->GetRotation();
 			return m_Rotation;
+		}
+		Vec3 GetForward() {
+			return m_Transform->GetForward();
 		}
 	};
 

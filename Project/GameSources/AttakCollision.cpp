@@ -40,6 +40,10 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
+		auto character = static_pointer_cast<Character>(player);
+		if (character) {
+			character->Damage(m_Damage);
+		}
 	}
 
 	void Missile::ContactStage(shared_ptr<GameObject>& object) {

@@ -8,7 +8,6 @@
 
 namespace basecross {
 	class Character;
-	class ForecastLine;
 	class TargetBoard;
 
 	class Player : public Character

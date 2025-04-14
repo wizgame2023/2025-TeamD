@@ -111,7 +111,6 @@ namespace basecross {
 		}
 		if ((position - target).length() < searchDistance)
 		{
-
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//プレイヤーの方向をゆっくり向く
 				m_IntruderAlert = true;
@@ -142,7 +141,10 @@ namespace basecross {
 	{
 		return m_IntruderAlert;
 	}
-
+	void Enemy::SetIntruderAlert(bool flag)
+	{
+		m_IntruderAlert = flag;
+	}
 
 	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
 	{

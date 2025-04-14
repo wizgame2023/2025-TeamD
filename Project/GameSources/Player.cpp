@@ -84,7 +84,7 @@ namespace basecross {
 		if (angle.length() > 0.0f) {
 			//auto utilPtr = GetBehavior<UtilBehavior>();
 			//utilPtr->RotToHead(angle, 1.0f);
-			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
+			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
 
 		}
@@ -206,7 +206,7 @@ namespace basecross {
 		if (rot != Vec3())
 		{
 			float rotate = atan2f(rot.x, rot.z);
-			SetRotation(Vec3(0.0f, XMConvertToDegrees(rotate), 0.0f));
+			SetRotation(Vec3(0.0f, rotate, 0.0f));
 		}
 	}
 

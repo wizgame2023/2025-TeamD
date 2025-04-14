@@ -46,15 +46,6 @@ namespace basecross {
 	bool RayCast::HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags) {
 		bool isHit = false;
 		for (auto& obj : vec) {
-			/*auto smDraw = obj->GetComponent<SmBaseDraw>(false);
-			auto bcDraw = obj->GetComponent<BcBaseDraw>(false);
-			if (smDraw) {
-				smDraw->SetDiffuse(Col4(1, 1, 1, 1));
-			}
-			else if (bcDraw) {
-				bcDraw->SetDiffuse(Col4(1, 1, 1, 1));
-			}*/
-
 			bool isExclude = false;
 			for (auto& tag : excludeTags) {
 				if (obj->FindTag(tag)) {
@@ -69,12 +60,6 @@ namespace basecross {
 			float distance = RayCast::CalcDistancePointToLine(position, line);
 			Vec3 halfScale = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (distance < halfScale.length()) {
-				/*if (smDraw) {
-					smDraw->SetDiffuse(Col4(1, 0, 0, 1));
-				}
-				else if (bcDraw) {
-					bcDraw->SetDiffuse(Col4(1, 0, 0, 1));
-				}*/
 				if (RayCast::HitTest(hit, line, obj)) {
 					isHit = true;
 				}
