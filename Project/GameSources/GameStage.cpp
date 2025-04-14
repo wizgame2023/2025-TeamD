@@ -47,7 +47,7 @@ namespace basecross {
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
 		app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
-		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
+		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
 		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
