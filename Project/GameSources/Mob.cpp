@@ -65,7 +65,7 @@ namespace basecross {
 		m_HpBar->SetCurrentHp(m_HP);
 		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
 
-		m_currentState = make_unique<MobSearch>(GetThis<Enemy>());
+		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 	}
 	void Mob::OnUpdate()
@@ -149,7 +149,7 @@ namespace basecross {
 		Vec3 nearPoint = Vec3();
 		Vec3 currentPosition = GetPosition();
 
-		m_NearPoint = m_PointData[0];
+		m_NearPoint = m_PointData[20];
 		return m_NearPoint->GetComponent<Transform>()->GetPosition();
 	}
 

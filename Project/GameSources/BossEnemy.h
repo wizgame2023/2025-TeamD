@@ -7,6 +7,9 @@
 #include "stdafx.h"
 
 namespace basecross {
+
+	template <typename> class EnemyState;
+
 	class Enemy;
 	class BossEnemy : public Enemy
 	{
@@ -14,6 +17,10 @@ namespace basecross {
 		float m_ConditionTime;
 		int m_ConditionDefeat;
 		
+
+		unique_ptr<EnemyState<BossEnemy>> m_currentState;  //現在のステート
+		unique_ptr<EnemyState<BossEnemy>> m_nextState;     //次のステート
+
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -32,6 +39,13 @@ namespace basecross {
 		Vec3 GetPosition();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<BossEnemy>());
+			m_currentState->Enter();
+		}
 
 	};
 
@@ -47,5 +61,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void Dead();
 	};
+
+
 }
 //end basecross

@@ -9,7 +9,7 @@
 
 namespace basecross {
 	class Enemy;
-	class EnemyState;
+	template<typename> class EnemyState;
 	class Legion : public Object
 	{
 		bool m_IntruderAlert;
@@ -42,8 +42,8 @@ namespace basecross {
 			m_IntruderAlert = alert;
 		}
 
-		template<typename T>
-		void ChangeEnemyMove( const shared_ptr<Enemy>& enemy);
+		//template<typename T>
+		//void ChangeEnemyMove( const shared_ptr<Enemy>& enemy);
 	};
 }
 //end basecross

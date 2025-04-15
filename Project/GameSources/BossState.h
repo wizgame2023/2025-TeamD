@@ -6,6 +6,8 @@
 #pragma once
 #include "stdafx.h"
 #include "MobState.h"
+#include "BossEnemy.h"
+
 namespace basecross {
 	class Enemy;
 	class LineCube;

@@ -9,12 +9,6 @@
 
 namespace basecross {
 
-	void EnemyState::Enter()
-	{
-		m_Stage = m_Enemy->GetStage();
-		m_Transform = m_Enemy->GetComponent<Transform>();
-		m_Player = m_Enemy->m_Intruder;
-	}
 
 
 	void MobSearch::Enter()
@@ -22,6 +16,7 @@ namespace basecross {
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>(false);
+		m_Path = {};
 		Execute();
 	}
 	void MobSearch::Execute()
@@ -33,14 +28,9 @@ namespace basecross {
 		if (navi) {
 			if (m_Path.size() == 0)
 			{
-				auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
-				auto pointers = group->GetGroupVector();
-				int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
-				auto pointer = pointers[rnd].lock();
-				if (pointer != nullptr) {
-					auto point = navi->GetNearPinter(m_Enemy->GetPosition());
-					m_Path = navi->FindPathWithWaypoints(point, pointer->GetComponent<Transform>()->GetPosition());
-				}
+				auto cellpoint = m_Enemy->RootNaviGate();
+				auto point = navi->GetNearPinter(m_Enemy->GetPosition());
+				m_Path = navi->FindPathWithWaypoints(point, cellpoint);
 			}
 			Vec3 pos = m_Enemy->GetPosition();
 			m_Path[0].y = pos.y;
@@ -68,7 +58,6 @@ namespace basecross {
 	}
 	void MobAlert::Enter()
 	{
-		EnemyState::Enter();
 		Execute();
 	}
 	void MobAlert::Execute()
@@ -103,7 +92,6 @@ namespace basecross {
 
 	void MobJoinAlert::Enter()
 	{
-		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
 		navi->AvoidBlock(enemy->GetPosition(), m_Player->GetPosition());

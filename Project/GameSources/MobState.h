@@ -5,10 +5,11 @@
 
 #pragma once
 #include "stdafx.h"
+#include "Mob.h"
 
 namespace basecross {
 	class Enemy;
-	class Mob;
+	//class Mob;
 
 	template <typename T>
 	class EnemyState {
@@ -17,14 +18,19 @@ namespace basecross {
 		shared_ptr<Stage> m_Stage;
 		shared_ptr<Transform> m_Transform;
 		shared_ptr<Character> m_Player;
-		vector<Vec3> m_Path;
 	public:
 		EnemyState(shared_ptr<T>& enemy) :
 			m_Enemy(enemy)
 		{}
 		virtual ~EnemyState() {}
 
-		virtual void Enter();
+		virtual void Enter()
+		{
+			m_Stage = m_Enemy->GetStage();
+			m_Transform = m_Enemy->GetComponent<Transform>();
+			m_Player = m_Enemy->m_Intruder;
+		}
+
 		virtual void Execute() {}
 		virtual void Exit() {}
 
@@ -33,6 +39,8 @@ namespace basecross {
 	class MobSearch : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
+
+		vector<Vec3> m_Path;
 
 	public:
 		MobSearch(shared_ptr<Mob>& enemy) :
