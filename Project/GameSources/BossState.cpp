@@ -21,7 +21,7 @@ namespace basecross {
 				m_Line->SetDrawActive(false);
 				if (interval <= 0.0f) {
 					float rndOparation = Util::RandZeroToOne() * 100.0f;
-					if (rndOparation < 20) {
+					if (rndOparation < 40) {
 						auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
 						auto pointers = group->GetGroupVector();
 						int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
@@ -30,7 +30,7 @@ namespace basecross {
 							m_Path = navigate->FindPathWithWaypoints2(navigate->GetNearPinter(m_Enemy->GetPosition()), pointer->GetComponent<Transform>()->GetPosition());
 						}
 					}
-					else if (rndOparation < 50) {
+					else if (rndOparation < 60) {
 
 					}
 					else {
@@ -77,6 +77,8 @@ namespace basecross {
 	void BossAttack::Enter()
 	{
 		EnemyState::Enter();
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f,0.5f,0.25f,3.0f,1.0f),3.0f);
+		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Enemy->m_Intruder, AttackDate(1.0f, 5.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 	}
 	void BossAttack::Execute()
 	{
@@ -113,9 +115,14 @@ namespace basecross {
 				m_Cooldown -= elapsedTime;
 			}
 			else {
-				if (direction.length() < 0.5f) {
-					auto attack = m_Stage->AddGameObject<CrushAttack>(m_Enemy->GetPosition() + m_Enemy->GetForward() * 0.25, Vec3(0.5f, 0.1f, 0.5f), 3.0f, 0.25f,3.0f);
-					m_Cooldown = attack->GetCooldown();
+				float distance = direction.length();
+				if (distance > 2.0f && distance < m_Gun->GetRange() && m_Gun->GetCooldown() == 0) {
+					m_Gun->Play(position + Vec3(0, 0.1f, 0.0f));
+					m_Cooldown = m_Gun->GetCharaCooldown();
+				}
+				else if (distance < m_Cruch->GetRange() && m_Cruch->GetCooldown() == 0) {
+					m_Cruch->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
+					m_Cooldown = m_Cruch->GetCharaCooldown();
 				}
 				else {
 					direction = direction.normalize();
@@ -125,7 +132,7 @@ namespace basecross {
 					m_Enemy->SetPosition(position);
 				}
 			}
-			
+
 		}
 	}
 	void BossAttack::Exit()
