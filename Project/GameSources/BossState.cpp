@@ -77,7 +77,7 @@ namespace basecross {
 	void BossAttack::Enter()
 	{
 		EnemyState::Enter();
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f,0.5f,0.25f,3.0f,1.0f),3.0f);
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Enemy->m_Intruder, AttackDate(1.0f, 5.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 	}
 	void BossAttack::Execute()
