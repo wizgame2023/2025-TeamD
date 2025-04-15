@@ -144,12 +144,18 @@ namespace basecross {
 		auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
 		auto Legions = LegionGroup->GetGroupVector();
 		auto navi = GetComponent<Navigate>();
-		vector<Vec3> path;
-		vector<int> numbers;
-		Vec3 nearPoint = Vec3();
-		Vec3 currentPosition = GetPosition();
-
-		m_NearPoint = m_PointData[20];
+		shared_ptr<RootPointer> memoryPoint;
+		vector<int> memoryNum;
+		for (auto point : pointers)
+		{
+			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
+			if (m_BeforPoint = m_PointData[rnd])
+			{
+				continue;
+			}
+			m_NearPoint = m_PointData[rnd];
+		}
+		m_BeforPoint = m_NearPoint;
 		return m_NearPoint->GetComponent<Transform>()->GetPosition();
 	}
 

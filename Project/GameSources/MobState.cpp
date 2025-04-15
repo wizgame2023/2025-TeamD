@@ -32,25 +32,27 @@ namespace basecross {
 				auto point = navi->GetNearPinter(m_Enemy->GetPosition());
 				m_Path = navi->FindPathWithWaypoints(point, cellpoint);
 			}
-			Vec3 pos = m_Enemy->GetPosition();
-			m_Path[0].y = pos.y;
-			Vec3 direction = m_Path[0] - pos;
-			if (direction.length() < 0.1f) {
-				m_Path.erase(m_Path.begin());
-			}
 			else {
-				direction = direction.normalize();
-				float rotate = atan2f(direction.x, direction.z);
-				m_Transform->SetRotation(Vec3(0, rotate, 0));
-				pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				Vec3 pos = m_Enemy->GetPosition();
+				m_Path[0].y = pos.y;
+				Vec3 direction = m_Path[0] - pos;
+				if (direction.length() < 0.1f) {
+					m_Path.erase(m_Path.begin());
+				}
+				else {
+					direction = direction.normalize();
+					float rotate = atan2f(direction.x, direction.z);
+					m_Transform->SetRotation(Vec3(0, rotate, 0));
+					pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				}
+				m_Enemy->SetPosition(pos);
 			}
-			m_Enemy->SetPosition(pos);
 		}
 
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert)
 		{
-			m_Enemy->ChangeState<MobJoinAlert>();
+			m_Enemy->ChangeState<MobAlert>();
 		}
 	}
 	void MobSearch::Exit()
@@ -58,6 +60,7 @@ namespace basecross {
 	}
 	void MobAlert::Enter()
 	{
+		EnemyState::Enter();
 		Execute();
 	}
 	void MobAlert::Execute()
@@ -92,39 +95,45 @@ namespace basecross {
 
 	void MobJoinAlert::Enter()
 	{
+		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
-		navi->AvoidBlock(enemy->GetPosition(), m_Player->GetPosition());
 		Execute();
 	}
 
 	void MobJoinAlert::Execute()
 	{
+		auto navi = m_Enemy->GetComponent<Navigate>(false);
+		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		Vec3 currntPosition = m_Enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto navi = m_Enemy->GetComponent<Navigate>();
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert == true)
-		{
-			m_Enemy->ChangeState<MobAlert>();
-		}
-		else {
-			Vec3 currntPosition = m_Enemy->GetPosition();
-			Vec3 taregtpoint = navi->GetAStarForword(m_Enemy->GetPosition());
-			if (taregtpoint != Vec3(0))
+		if (navi) {
+			auto point = navi->GetNearPinter(m_Enemy->GetPosition());
+			auto target = navi->GetNearPinter(m_Player->GetPosition());
+			if (m_Path.size() == 0)
 			{
-				currntPosition += taregtpoint * 3.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				m_Path = navi->FindPathWithWaypoints(point, m_Player->GetPosition());
 			}
 			else {
-				m_IntruderAlert = m_Enemy->GetIntruderAlert();
-				if (m_IntruderAlert == true)
-				{
-					m_Enemy->ChangeState<MobAlert>();
+				Vec3 pos = m_Enemy->GetPosition();
+				m_Path[0].y = pos.y;
+				Vec3 direction = m_Path[0] - pos;
+				if (direction.length() < 0.1f) {
+					m_Path.erase(m_Path.begin());
 				}
 				else {
-					Enter();
+					direction = direction.normalize();
+					float rotate = atan2f(direction.x, direction.z);
+					m_Transform->SetRotation(Vec3(0, rotate, 0));
+					pos += direction * 3.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 				}
+				m_Enemy->SetPosition(pos);
 			}
-			m_Enemy->SetPosition(currntPosition);
+			if ((point->GetPosition() - target->GetPosition()).length() < 1.0f)
+			{
+				m_Enemy->ChangeState<MobAlert>();
+			}
+
 		}
 	}
 
