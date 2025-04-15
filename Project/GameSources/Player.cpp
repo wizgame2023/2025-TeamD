@@ -144,7 +144,7 @@ namespace basecross {
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		auto targetBulletVector = ObjectSearch(bulletGroup);
 		auto targetEnemyVector = ObjectSearch(enemyGroup);
-		m_TargetBoard->SetTarget(nullptr);
+		//m_TargetBoard->SetTarget(nullptr);
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
@@ -153,7 +153,7 @@ namespace basecross {
 				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					m_TargetBoard->SetTarget(targetEnemyVector);
+					//m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
 				else {
