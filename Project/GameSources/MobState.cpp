@@ -22,8 +22,6 @@ namespace basecross {
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>(false);
-		Vec3 pos = enemy->RootNaviGate();
-		//navi->AvoidBlock(enemy->GetPosition(), pos);
 		Execute();
 	}
 	void MobSearch::Execute()
@@ -33,23 +31,30 @@ namespace basecross {
 		Vec3 currntPosition = m_Enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		if (navi) {
-			Vec3 halfPos = navi->GetAStarForword(currntPosition);
-			if (halfPos == Vec3(1, 0, 0))  m_Enemy->SetRotation(Vec3(0, 90, 0));
-			if (halfPos == Vec3(-1, 0, 0)) m_Enemy->SetRotation(Vec3(0, 270, 0));
-			if (halfPos == Vec3(0, 0, 1))  m_Enemy->SetRotation(Vec3(0, 0, 0));
-			if (halfPos == Vec3(0, 0, -1)) m_Enemy->SetRotation(Vec3(0, 180, 0));
-
-
-			if (halfPos != Vec3(0))
+			if (m_Path.size() == 0)
 			{
-				currntPosition += halfPos * 6.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
-				m_Enemy->SetPosition(currntPosition);
+				auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
+				auto pointers = group->GetGroupVector();
+				int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
+				auto pointer = pointers[rnd].lock();
+				if (pointer != nullptr) {
+					auto point = navi->GetNearPinter(m_Enemy->GetPosition());
+					m_Path = navi->FindPathWithWaypoints(point, pointer->GetComponent<Transform>()->GetPosition());
+				}
+			}
+			Vec3 pos = m_Enemy->GetPosition();
+			m_Path[0].y = pos.y;
+			Vec3 direction = m_Path[0] - pos;
+			if (direction.length() < 0.1f) {
+				m_Path.erase(m_Path.begin());
 			}
 			else {
-
-				Vec3 pos = enemy->RootNaviGate();
-				navi->AvoidBlock(m_Enemy->GetPosition(), pos);
+				direction = direction.normalize();
+				float rotate = atan2f(direction.x, direction.z);
+				m_Transform->SetRotation(Vec3(0, rotate, 0));
+				pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 			}
+			m_Enemy->SetPosition(pos);
 		}
 
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
