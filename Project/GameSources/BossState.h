@@ -9,7 +9,7 @@
 namespace basecross {
 	class Enemy;
 	class LineCube;
-	class BossSearch : public EnemyState
+	class BossSearch : public EnemyState<BossEnemy>
 	{
 		bool m_IntruderAlert;
 		vector<Vec3> m_Path;
@@ -17,7 +17,7 @@ namespace basecross {
 		float interval;
 		float maxInterval;
 	public:
-		BossSearch(shared_ptr<Enemy>& enemy) :
+		BossSearch(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),interval(0.0f),maxInterval(1.0f)
 		{
 		}
@@ -27,7 +27,7 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
-	class BossAttack : public EnemyState
+	class BossAttack : public EnemyState<BossEnemy>
 	{
 		bool m_IntruderAlert;
 		float m_ChangeTime;
@@ -35,7 +35,7 @@ namespace basecross {
 
 		Vec3 m_LastInturderPosition;
 	public:
-		BossAttack(shared_ptr<Enemy>& enemy) :
+		BossAttack(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
 			m_ChangeTime(1.0f),m_Cooldown(0.0f),m_LastInturderPosition(Vec3())
 		{
