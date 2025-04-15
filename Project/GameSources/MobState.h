@@ -10,14 +10,16 @@ namespace basecross {
 	class Enemy;
 	class Mob;
 
+	template <typename T>
 	class EnemyState {
 	protected:
-		shared_ptr<Enemy> m_Enemy;
+		shared_ptr<T> m_Enemy;
 		shared_ptr<Stage> m_Stage;
 		shared_ptr<Transform> m_Transform;
 		shared_ptr<Character> m_Player;
+		vector<Vec3> m_Path;
 	public:
-		EnemyState(shared_ptr<Enemy>& enemy) :
+		EnemyState(shared_ptr<T>& enemy) :
 			m_Enemy(enemy)
 		{}
 		virtual ~EnemyState() {}
@@ -28,11 +30,12 @@ namespace basecross {
 
 	};
 
-	class MobSearch : public EnemyState
+	class MobSearch : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
+
 	public:
-		MobSearch(shared_ptr<Enemy>& enemy) :
+		MobSearch(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy)
 		{
 		}
@@ -43,12 +46,12 @@ namespace basecross {
 		void Exit()override;
 	};
 
-	class MobAlert : public EnemyState
+	class MobAlert : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
 
 	public:
-		MobAlert(shared_ptr<Enemy>& enemy) :
+		MobAlert(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy)
 		{
 		}
@@ -59,12 +62,12 @@ namespace basecross {
 		void Exit()override;
 	};
 
-	class MobJoinAlert : public EnemyState
+	class MobJoinAlert : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
 
 	public:
-		MobJoinAlert(shared_ptr<Enemy>& enemy) :
+		MobJoinAlert(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy)
 		{
 		}

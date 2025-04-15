@@ -46,7 +46,7 @@ namespace basecross {
 
 		Navigate(const std::shared_ptr<GameObject>& GameObjectPtr);
 		~Navigate() override;
-		
+
 		void SetTargetPosition(const Vec3& Position, const Vec3& target);
 
 		float Heuristic(Vec3 a, Vec3 b)
@@ -76,12 +76,13 @@ namespace basecross {
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
-		vector<Vec3> FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
 		shared_ptr<RootPointer> GetNearPinter(const Vec3& position);
+		vector<Vec3> FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
+		vector<Vec3> FindPathWithWaypoints(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
+
 	private:
-		vector<Vec3> FindPathWithWaypoints(const Vec3& start, const Vec3& goal);
 		vector<int> GetNeighborsForWaypoints(int current);
-		void AStarAlgorithm(Vec3 index, Vec3 goal);
+		//void AStarAlgorithm(Vec3 index, Vec3 goal);
 		int GetIndexFromPosition(const Vec3& position);
 		Vec3 NextWayPoint(const Vec3& s, const Vec3& e);
 		bool m_DireChange;
@@ -103,7 +104,7 @@ namespace basecross {
 		float m_CellSize = 5.0f;
 
 		// デバッグ用 (A*アルゴリズムの実行を制御)
-		bool m_debug_pause = false;		
+		bool m_debug_pause = false;
 		bool m_BossPause = false;
 
 		float WstrToFlt(const wstring& data) {

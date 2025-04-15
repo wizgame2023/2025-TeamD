@@ -40,8 +40,6 @@ namespace basecross {
     {
 
         m_TargetPosition = target;
-        AStarAlgorithm(Position, target);
-
     }
 
     Vec3 Navigate::GetAStarForword(const Vec3 Position)
@@ -53,34 +51,8 @@ namespace basecross {
                 if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
                 {
                     Vec3 nextPoint = m_NaviPoint.front(); // 次のウェイポイントを取得
-
-                    Vec3 rezult = Vec3();
-                    m_Dire = std::abs(Position.x - nextPoint.x) > std::abs(Position.z - nextPoint.z) ? Dire::X : Dire::Z;
-
-                    if (m_Dire == Dire::X)
-                    {
-                        m_BeforePosition = Position;
-                        if (nextPoint.x < Position.x)
-                        {
-                            return Vec3(-1, 0, 0);
-                        }
-                        else if (nextPoint.x > Position.x)
-                        {
-                            return Vec3(1, 0, 0);
-                        }
-                    }
-                    else if (m_Dire == Dire::Z)
-                    {
-                        m_BeforePosition = Position;
-                        if (nextPoint.z < Position.z)
-                        {
-                            return Vec3(0, 0, -1);
-                        }
-                        else if (nextPoint.z > Position.z)
-                        {
-                            return Vec3(0, 0, 1);
-                        }
-                    }
+                    Vec3 direction = (nextPoint - Position);
+                    return direction.normalize();;
                 }
                 else {
                     m_NaviPoint.erase(m_NaviPoint.begin());
@@ -98,279 +70,388 @@ namespace basecross {
         return Vec3(0, 0, 0);
     }
 
-    std::vector<Vec3> Navigate::FindPathWithWaypoints(const Vec3& index, const Vec3& goal) {
+    std::vector<Vec3> Navigate::FindPathWithWaypoints(const shared_ptr<RootPointer>& pointer, const Vec3& goal) {
         auto heuristic = [](const Vec3& a, const Vec3& b) {
             return (b - a).length(); // ゴールへの推定距離を計算するヒューリスティクス関数
             };
 
-        // オープンリスト: 未探索のノードを優先度付きで管理するキュー（ノードインデックスとスコアを保持）
-        auto compare = [](const std::pair<int, float>& a, const std::pair<int, float>& b) {
-            return a.second > b.second; // スコアが小さい順に処理
-            };
-        std::priority_queue<std::pair<int, float>, std::vector<std::pair<int, float>>, decltype(compare)> openList(compare);
+        std::vector<std::shared_ptr<RootPointer>> openPointers;
+        openPointers.reserve(m_CellData.size()); // 事前にメモリ確保
 
-        std::vector<bool> visitedNodes(m_CellData.size(), false); // 全ノードを未探索状態で初期化
+        std::vector<bool> isClosed(m_CellData.size(), false); // 全ノードを未探索状態で初期化
 
         // gCosts: 各ノードに到達するためのコストを格納する配列
         std::vector<float> gCosts(m_CellData.size(), std::numeric_limits<float>::infinity());
 
+        // 各ノードから目標ノードまでの推定コスト (ヒューリスティックコスト, hCost)
+        std::vector<float> hCosts(m_CellData.size(), std::numeric_limits<float>::infinity());
+
+        // 各ノードの推定総コスト (tCost = gCost + hCost)
+        std::vector<float> tCost(m_CellData.size(), std::numeric_limits<float>::infinity());
+
         // cameFrom: 各ノードがどのノードから来たのかを追跡する配列（経路復元用）
         std::vector<int> cameFrom(m_CellData.size(), -1);
 
-        // スタート地点のインデックスを取得
-        int startIndex = GetIndexFromPosition(index); // 独自関数：Vec3からインデックスを取得
-        int goalIndex = GetIndexFromPosition(goal);   // ゴール地点のインデックスを取得
+        // 各ノードへの最短経路における親ノードを記録 (経路再構築用)
+        std::vector<std::shared_ptr<RootPointer>> parentPointer(m_CellData.size(), nullptr);
 
-        // 初期状態を設定する
-        openList.emplace(startIndex, 0.0f);            // スタート地点をオープンリストに追加
-        gCosts[startIndex] = 0.0f;                    // スタート地点のg値を0に設定
-
-        // 探索開始
-        while (!openList.empty()) {
-            int current = openList.top().first; // オープンリストの最優先ノードを取得（インデックス）
-            openList.pop(); // オープンリストから取り出し
-
-            // ゴールに到達した場合、経路を復元して返す
-            if (current == goalIndex) {
-                std::vector<Vec3> path;
-                while (current != -1) { // スタート地点まで辿る
-                    path.push_back(m_CellData[current]->GetComponent<Transform>()->GetPosition());
-                    current = cameFrom[current]; // 直前のノードに戻る
-                }
-                reverse(path.begin(), path.end()); // 経路を正しい順序に並べ替え
-                return path; // 最終的な経路を返す
-            }
-
-            // 近隣ノードを取得
-            auto neighbors = GetNeighborsForWaypoints(current);
-
-            for (int neighbor : neighbors) {
-                float tentativeG = gCosts[current] +
-                    (m_CellData[current]->GetComponent<Transform>()->GetPosition() -
-                        m_CellData[neighbor]->GetComponent<Transform>()->GetPosition()).length();
-
-                // 新しいg値が以前の値より小さい場合、または初めて訪問する場合
-                if (tentativeG < gCosts[neighbor]) {
-                    gCosts[neighbor] = tentativeG; // g値を更新
-
-                    // 探索済みかどうかをチェック
-                    if (visitedNodes[current]) {
-                        continue; // 探索済みの場合はスキップ
-                    }
-                    visitedNodes[current] = true; // 探索済みとしてマーク
-
-
-                    float fCost = tentativeG +
-                        heuristic(m_CellData[neighbor]->GetComponent<Transform>()->GetPosition(),
-                            m_CellData[goalIndex]->GetComponent<Transform>()->GetPosition()); // f値を計算
-
-                    openList.emplace(neighbor, fCost); // オープンリストに追加
-                    cameFrom[neighbor] = current;     // 経路情報を更新
-                }
-            }
-        }
-
-        // ゴールに到達できない場合は空の経路を返す
-        return {};
-    }
-    std::vector<Vec3> Navigate::FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal) {
-        
-        vector<shared_ptr<RootPointer>> openPointers;
-        openPointers.reserve(m_CellData.size());
-        vector<bool> isClosed(m_CellData.size(), false);
-        vector<float> gCost(m_CellData.size(),-1.0f);
-        vector<float> hCost(m_CellData.size(),-1.0f);
-        vector<float> tCost(m_CellData.size(),-1.0f);
-        vector<shared_ptr<RootPointer>> parentPointer(m_CellData.size(),nullptr);
-        vector<Vec3> path;
+        // 目標位置に対応するノードインデックスとポインタを取得
         int goalIndex = GetIndexFromPosition(goal);
+        // ゴールインデックスが無効な場合は空のパスを返す
+        if (goalIndex < 0 || goalIndex >= m_CellData.size()) {
+            return {};
+        }
         auto goalPointer = m_CellData[goalIndex];
+
 
         auto current = pointer;
         int currentNumber = current->GetNumber();
-        gCost[currentNumber] = 0.0f;
-        hCost[currentNumber] = (goalPointer->GetPosition() - current->GetPosition()).length();
-        tCost[currentNumber] = gCost[currentNumber] + hCost[currentNumber];
 
-        bool isGoal = false;
+        gCosts[currentNumber] = 0.0f;
+        hCosts[currentNumber] = (goalPointer->GetPosition() - current->GetPosition()).length();
+        tCost[currentNumber] = gCosts[currentNumber] + hCosts[currentNumber];
 
+
+        bool isGoal = false; // ゴールに到達したかどうかのフラグ
         if (currentNumber == goalIndex) {
             isGoal = true;
         }
-        do {
-            isClosed[currentNumber] = true;
-            auto pointers = current->GetRootPointer();
-            for (const auto& pointer : pointers) {
-                int pointNumber = pointer->GetNumber();
-                if (isClosed[pointNumber]) {
-                    continue;
-                }
 
-                float tempG = gCost[currentNumber] + (pointer->GetPosition() - current->GetPosition()).length();
-                float tempH = (goalPointer->GetPosition() - pointer->GetPosition()).length();
-                float tempT = tempG + tempH;
-                if (pointNumber == goalIndex) {
-                    gCost[pointNumber] = tempG;
-                    hCost[pointNumber] = tempH;
-                    tCost[pointNumber] = tempT;
-                    parentPointer[pointNumber] = current;
-                    isGoal = true;
-                    break;
-                }
-                if (parentPointer[pointNumber] != nullptr) {
-                    if (tempT < tCost[pointNumber]) {
-                        gCost[pointNumber] = tempG;
-                        hCost[pointNumber] = tempH;
-                        tCost[pointNumber] =tempT;
-                        parentPointer[pointNumber] = current;
-                    }
-                }
-                else {
-                    gCost[pointNumber] = tempG;
-                    hCost[pointNumber] = tempH;
-                    tCost[pointNumber] = tempT;
-                    parentPointer[pointNumber] = current;
-                    openPointers.emplace_back(pointer);
-                }
-            }
-            
-            if (!isGoal) {
-                shared_ptr<RootPointer> minCostPointer = nullptr;
-                int minIndex = -1;
-                for (int i = 0, size = openPointers.size(); i < size; ++i) {
-                    if (minCostPointer == nullptr) {
-                        minCostPointer = openPointers[i];
-                        minIndex = i;
-                    }
-                    else {
-                        if (tCost[minCostPointer->GetNumber()] > tCost[openPointers[i]->GetNumber()]) {
-                            minCostPointer = openPointers[i];
-                            minIndex = i;
-                        }
-                    }
-                }
-                current = minCostPointer;
-                currentNumber = current->GetNumber();
-                openPointers.erase(openPointers.begin() + minIndex);
-            }
-
-        } while (openPointers.size() > 0 && !isGoal);
-
-        if (!isGoal) {
-            return {};
-        }
-        else {
-            shared_ptr<RootPointer> pathPointer = goalPointer;
-            const int MAX_PATH_COUNT = 1000;
-            do{
-                int number = pathPointer->GetNumber();
-                path.push_back(pathPointer->GetPosition());
-                pathPointer = parentPointer[number];
-                if (path.size() > MAX_PATH_COUNT) {
-                    return {};
-                }
-            } while (pathPointer != nullptr);
-
-            reverse(path.begin(), path.end());
-            return path;
-        }
-        //std::priority_queue<std::pair<int, float>, std::vector<std::pair<int, float>>, decltype(compare)> openList(compare);
-
-        //std::vector<bool> visitedNodes(m_CellData.size(), false); // 全ノードを未探索状態で初期化
-
-        //// gCosts: 各ノードに到達するためのコストを格納する配列
-        //std::vector<float> gCosts(m_CellData.size(), std::numeric_limits<float>::infinity());
-
-        //// cameFrom: 各ノードがどのノードから来たのかを追跡する配列（経路復元用）
-        //std::vector<int> cameFrom(m_CellData.size(), -1);
-
-        //// スタート地点のインデックスを取得
-        //int startIndex = GetIndexFromPosition(index); // 独自関数：Vec3からインデックスを取得
-        //int goalIndex = GetIndexFromPosition(goal);   // ゴール地点のインデックスを取得
 
         //// 初期状態を設定する
         //openList.emplace(startIndex, 0.0f);            // スタート地点をオープンリストに追加
         //gCosts[startIndex] = 0.0f;                    // スタート地点のg値を0に設定
 
-        //// 探索開始
-        //while (!openList.empty()) {
-        //    int current = openList.top().first; // オープンリストの最優先ノードを取得（インデックス）
-        //    openList.pop(); // オープンリストから取り出し
+        // 探索開始
+        do {
+            //int current = openList.top().first; // オープンリストの最優先ノードを取得（インデックス）
+            //openList.pop(); // オープンリストから取り出し
 
-        //    // ゴールに到達した場合、経路を復元して返す
-        //    if (current == goalIndex) {
-        //        std::vector<Vec3> path;
-        //        while (current != -1) { // スタート地点まで辿る
-        //            path.push_back(m_CellData[current]->GetComponent<Transform>()->GetPosition());
-        //            current = cameFrom[current]; // 直前のノードに戻る
-        //        }
-        //        reverse(path.begin(), path.end()); // 経路を正しい順序に並べ替え
-        //        return path; // 最終的な経路を返す
-        //    }
+            isClosed[currentNumber] = true; // 探索済みとしてマーク
+            auto neghbors = current->GetRootPointer();
 
-        //    // 近隣ノードを取得
-        //    auto neighbors = GetNeighborsForWaypoints(current);
+            // 近隣ノードを取得
 
-        //    for (int neighbor : neighbors) {
-        //        float tentativeG = gCosts[current] +
-        //            (m_CellData[current]->GetComponent<Transform>()->GetPosition() -
-        //                m_CellData[neighbor]->GetComponent<Transform>()->GetPosition()).length();
+            for (const auto& neighbor : neghbors) {
+                int neigborNumber = neighbor->GetNumber();
+                if (isClosed[neigborNumber]) {
+                    continue;
+                }
 
-        //        // 新しいg値が以前の値より小さい場合、または初めて訪問する場合
-        //        if (tentativeG < gCosts[neighbor]) {
-        //            gCosts[neighbor] = tentativeG; // g値を更新
+                float tempG = gCosts[currentNumber] + (current->GetPosition() - neighbor->GetPosition()).length();
 
-        //            // 探索済みかどうかをチェック
-        //            if (visitedNodes[current]) {
-        //                continue; // 探索済みの場合はスキップ
-        //            }
-        //            visitedNodes[current] = true; // 探索済みとしてマーク
+                float tempH = (goalPointer->GetPosition() - neighbor->GetPosition()).length();
 
+                float tempT = tempG + tempH;
+                // ゴールに到達した場合、経路を復元して返す
+                if (neigborNumber == goalIndex) {
+                    parentPointer[neigborNumber] = current; // ゴールの親を設定
+                    gCosts[neigborNumber] = tempG;           // ゴールのコストを記録 (経路長が必要な場合など)
+                    hCosts[neigborNumber] = tempH;           // （記録は任意）
+                    tCost[neigborNumber] = tempT;           // （記録は任意）
+                    isGoal = true;                           // ゴールフラグを立てる
+                    break;
+                }
 
-        //            float fCost = tentativeG +
-        //                heuristic(m_CellData[neighbor]->GetComponent<Transform>()->GetPosition(),
-        //                    m_CellData[goalIndex]->GetComponent<Transform>()->GetPosition()); // f値を計算
+                bool isOpenList = false;
+                for (const auto& openNode : openPointers) {
+                    if (openNode->GetNumber() == neigborNumber) {
+                        isOpenList = true;
+                        break;
+                    }
+                }
 
-        //            openList.emplace(neighbor, fCost); // オープンリストに追加
-        //            cameFrom[neighbor] = current;     // 経路情報を更新
-        //        }
-        //    }
-        //}
-
-        // ゴールに到達できない場合は空の経路を返す
-        return {};
-    }
-
-    void Navigate::AStarAlgorithm(Vec3 index, Vec3 goal)
-    {
-        m_Index = index;
-        if (index != goal)
-        {
-            m_NaviPoint = FindPathWithWaypoints(index, goal);
-            m_DireChange = true;
-            m_TargetPosition = goal;
-        }
-    }
-    shared_ptr<RootPointer> Navigate::GetNearPinter(const Vec3& position) {
-        Vec3 nearPoint = Vec3();
-        shared_ptr<RootPointer> nearPointMemory = nullptr;
-
-        for (int i = 0; i < m_CellData.size(); i++)
-        {
-            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
-            if (nearPoint == Vec3())
-            {
-                nearPoint = vec;
-                nearPointMemory = m_CellData[i];
+                if (!isOpenList && parentPointer[neigborNumber] == nullptr)
+                {
+                    // コストと親ポインタを設定
+                    gCosts[neigborNumber] = tempG;
+                    hCosts[neigborNumber] = tempH;
+                    tCost[neigborNumber] = tempT;
+                    parentPointer[neigborNumber] = current;
+                    // オープンリストに追加
+                    openPointers.emplace_back(neighbor);
+                }
+                else if (tempT < tCost[neigborNumber])
+                {
+                    // コストと親ポインタを設定
+                    gCosts[neigborNumber] = tempG;
+                    hCosts[neigborNumber] = tempH;
+                    tCost[neigborNumber] = tempT;
+                    parentPointer[neigborNumber] = current;
+                }
             }
-            if ((vec - position).length() < (nearPoint - position).length())
+
+            if (!isGoal && !openPointers.empty())
             {
-                nearPoint = vec;
-                nearPointMemory = m_CellData[i];
+                shared_ptr<RootPointer> minCostPoint = nullptr;
+                int minIndex = -1;
+                float minTCost = std::numeric_limits<float>::infinity();
+
+                for (int i = 0; i < openPointers.size(); ++i) {
+                    int nodeNum = openPointers[i]->GetNumber();
+                    if (tCost[nodeNum] < minTCost) {
+                        minTCost = tCost[nodeNum];
+                        minCostPoint = openPointers[i];
+                        minIndex = i;
+                    }
+                }
+
+                current = minCostPoint;
+                currentNumber = current->GetNumber();
+
+                if (minIndex != -1)
+                {
+                    openPointers.erase(openPointers.begin() + minIndex);
+                }
+                else {
+                    break;
+                }
             }
+            else if (!isGoal && openPointers.empty())
+            {
+                break;
+            }
+
+        } while (!openPointers.empty() && !isGoal);
+
+
+        // ゴールが見つからなかった場合、空のパスを返す
+        if (!isGoal) {
+            // std::cout << "Path not found." << std::endl; // デバッグ用出力
+            return {};
         }
-        return nearPointMemory;
+        else {
+            vector<Vec3> path = {};
+            // ゴールノードから開始して親ポインタを辿って経路を構築
+            std::shared_ptr<RootPointer> pathPointer = goalPointer;
+            const int MAX_PATH_COUNT = 1000; // 無限ループ防止のための最大経路長
+            int count = 0;
+            do {
+                if (pathPointer == nullptr) { // 親が nullptr になるのは開始ノードに到達した時
+                    break;
+                }
+                int number = pathPointer->GetNumber();
+                path.push_back(pathPointer->GetPosition()); // 現在のノード位置をパスに追加
+                pathPointer = parentPointer[number];        // 親ノードへ移動
+                count++;
+                // 無限ループ防止
+                if (count > MAX_PATH_COUNT) {
+                    // std::cerr << "Error: Path reconstruction exceeded MAX_PATH_COUNT." << std::endl;
+                    return {}; // エラーとして空のパスを返す
+                }
+            } while (true); // ループは pathPointer が nullptr になった時に break で抜ける
+
+            // パスはゴールからスタートに向かって構築されたので、逆順にする
+            std::reverse(path.begin(), path.end());
+
+            // 構築されたパスを返す
+            return path;
+        }
+        // 通常、ここには到達しないはず
+        // return {};
     }
+
+    std::vector<Vec3> Navigate::FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal) {
+
+        // オープンリスト: これから評価するノードのリスト
+        std::vector<std::shared_ptr<RootPointer>> openPointers;
+        openPointers.reserve(m_CellData.size()); // 事前にメモリ確保
+
+        // クローズドリスト: 評価済みのノードをマーク (インデックスで管理)
+        std::vector<bool> isClosed(m_CellData.size(), false);
+
+        // 各ノードまでの開始ノードからの実際のコスト (gCost)
+        std::vector<float> gCost(m_CellData.size(), std::numeric_limits<float>::infinity()); // 無限大で初期化 (-1.0f より適切)
+
+        // 各ノードから目標ノードまでの推定コスト (ヒューリスティックコスト, hCost)
+        std::vector<float> hCost(m_CellData.size(), std::numeric_limits<float>::infinity());
+
+        // 各ノードの推定総コスト (tCost = gCost + hCost)
+        std::vector<float> tCost(m_CellData.size(), std::numeric_limits<float>::infinity());
+
+        // 各ノードへの最短経路における親ノードを記録 (経路再構築用)
+        std::vector<std::shared_ptr<RootPointer>> parentPointer(m_CellData.size(), nullptr);
+
+        // 最終的な経路を格納するベクター
+        std::vector<Vec3> path;
+
+        // 目標位置に対応するノードインデックスとポインタを取得
+        int goalIndex = GetIndexFromPosition(goal);
+        // ゴールインデックスが無効な場合は空のパスを返す
+        if (goalIndex < 0 || goalIndex >= m_CellData.size()) {
+            // std::cerr << "Error: Goal position not found or invalid." << std::endl; // エラーログ推奨
+            return {};
+        }
+        auto goalPointer = m_CellData[goalIndex];
+
+        // --- 開始ノードの設定 ---
+        auto current = pointer;
+        int currentNumber = current->GetNumber();
+
+        // 開始ノードのコストを設定
+        gCost[currentNumber] = 0.0f; // 開始地点までのコストは0
+        hCost[currentNumber] = (goalPointer->GetPosition() - current->GetPosition()).length(); // ヒューリスティックコスト(直線距離)
+        tCost[currentNumber] = gCost[currentNumber] + hCost[currentNumber]; // 総コスト
+
+        // 開始ノードをオープンリストに追加（最初のループで処理されるため、直接追加は不要）
+        // openPointers.push_back(current); // この実装ではdo-while開始時にcurrentが設定される
+
+        bool isGoal = false; // ゴールに到達したかどうかのフラグ
+
+        // 開始ノードが既にゴールの場合
+        if (currentNumber == goalIndex) {
+            isGoal = true;
+        }
+
+        // --- A* 探索メインループ ---
+        // オープンリストが空になるか、ゴールが見つかるまで繰り返す
+        do {
+            // 現在のノードを評価済みとしてクローズドリストに追加
+            isClosed[currentNumber] = true;
+
+            // 現在のノードの隣接ノードを取得
+            auto neighbors = current->GetRootPointer();
+
+            // 隣接ノードを順に評価
+            for (const auto& neighbor : neighbors) {
+                int neighborNumber = neighbor->GetNumber();
+
+                // 隣接ノードが既に評価済み(クローズドリストにある)場合はスキップ
+                if (isClosed[neighborNumber]) {
+                    continue;
+                }
+
+                // --- コスト計算 ---
+                // 現在のノードを経由して隣接ノードに到達するコスト (tempG)
+                float costToNeighbor = (neighbor->GetPosition() - current->GetPosition()).length();
+                float tempG = gCost[currentNumber] + costToNeighbor;
+
+                // 隣接ノードからゴールまでのヒューリスティックコスト (tempH)
+                float tempH = (goalPointer->GetPosition() - neighbor->GetPosition()).length();
+
+                // 推定総コスト (tempT)
+                float tempT = tempG + tempH;
+
+                // --- ゴールチェック ---
+                // 隣接ノードがゴールの場合
+                if (neighborNumber == goalIndex) {
+                    parentPointer[neighborNumber] = current; // ゴールの親を設定
+                    gCost[neighborNumber] = tempG;           // ゴールのコストを記録 (経路長が必要な場合など)
+                    hCost[neighborNumber] = tempH;           // （記録は任意）
+                    tCost[neighborNumber] = tempT;           // （記録は任意）
+                    isGoal = true;                           // ゴールフラグを立てる
+                    break; // 隣接ノードのループを抜ける (ゴールが見つかったため)
+                }
+
+                // --- オープンリスト/コスト更新 ---
+                // この隣接ノードが既にオープンリストにあるか、または過去にあったか (parentPointer が設定されているかで判断)
+                // より効率的なのは、オープンリストに存在するかどうかを直接チェックすること
+                bool inOpenList = false;
+                for (const auto& openNode : openPointers) {
+                    if (openNode->GetNumber() == neighborNumber) {
+                        inOpenList = true;
+                        break;
+                    }
+                }
+
+                // まだオープンリストになく、親も設定されていない場合（＝初めて見つけたノード）
+                if (!inOpenList && parentPointer[neighborNumber] == nullptr) {
+                    // コストと親ポインタを設定
+                    gCost[neighborNumber] = tempG;
+                    hCost[neighborNumber] = tempH;
+                    tCost[neighborNumber] = tempT;
+                    parentPointer[neighborNumber] = current;
+                    // オープンリストに追加
+                    openPointers.emplace_back(neighbor);
+                }
+                // 既にオープンリストにあるか、過去にあったノードの場合
+                else if (tempT < tCost[neighborNumber]) {
+                    // 今回計算した経路の方がコストが低い場合 (緩和処理)
+                    // コストと親ポインタを更新
+                    gCost[neighborNumber] = tempG;
+                    hCost[neighborNumber] = tempH;
+                    tCost[neighborNumber] = tempT;
+                    parentPointer[neighborNumber] = current;
+                    // priority_queue を使う場合は、ここで優先度を更新する必要がある
+                }
+            } // 隣接ノードのループ終了
+
+            // ゴールに到達していなければ、次のノードを選択
+            if (!isGoal && !openPointers.empty()) {
+                // --- オープンリストから最小コストのノードを選択 ---
+                // (注: この線形探索は非効率。priority_queue の使用を推奨)
+                std::shared_ptr<RootPointer> minCostPointer = nullptr;
+                int minIndex = -1;
+                float minTCost = std::numeric_limits<float>::infinity();
+
+                for (int i = 0; i < openPointers.size(); ++i) {
+                    int nodeNum = openPointers[i]->GetNumber();
+                    if (tCost[nodeNum] < minTCost) {
+                        minTCost = tCost[nodeNum];
+                        minCostPointer = openPointers[i];
+                        minIndex = i;
+                    }
+                }
+
+                // 最小コストのノードを次のカレントノードに設定
+                current = minCostPointer;
+                currentNumber = current->GetNumber();
+
+                // 選択したノードをオープンリストから削除
+                // (注: vector::erase は非効率。priority_queue なら pop() で済む)
+                if (minIndex != -1) {
+                    openPointers.erase(openPointers.begin() + minIndex);
+                }
+                else {
+                    // ここに来る場合、オープンリストが空か、何らかのエラー
+                    // std::cerr << "Error: Could not find minimum cost node in open list." << std::endl;
+                    break; // ループを抜ける
+                }
+            }
+            else if (!isGoal && openPointers.empty()) {
+                // オープンリストが空になったのにゴールが見つからない場合、ループを終了
+                break;
+            }
+
+        } while (!openPointers.empty() && !isGoal); // ループ条件
+
+        // --- 経路の再構築 ---
+
+        // ゴールが見つからなかった場合、空のパスを返す
+        if (!isGoal) {
+            // std::cout << "Path not found." << std::endl; // デバッグ用出力
+            return {};
+        }
+        else {
+            // ゴールノードから開始して親ポインタを辿って経路を構築
+            std::shared_ptr<RootPointer> pathPointer = goalPointer;
+            const int MAX_PATH_COUNT = 1000; // 無限ループ防止のための最大経路長
+            int count = 0;
+            do {
+                if (pathPointer == nullptr) { // 親が nullptr になるのは開始ノードに到達した時
+                    break;
+                }
+                int number = pathPointer->GetNumber();
+                path.push_back(pathPointer->GetPosition()); // 現在のノード位置をパスに追加
+                pathPointer = parentPointer[number];        // 親ノードへ移動
+                count++;
+                // 無限ループ防止
+                if (count > MAX_PATH_COUNT) {
+                    // std::cerr << "Error: Path reconstruction exceeded MAX_PATH_COUNT." << std::endl;
+                    return {}; // エラーとして空のパスを返す
+                }
+            } while (true); // ループは pathPointer が nullptr になった時に break で抜ける
+
+            // パスはゴールからスタートに向かって構築されたので、逆順にする
+            std::reverse(path.begin(), path.end());
+
+            // 構築されたパスを返す
+            return path;
+        }
+        // 通常、ここには到達しないはず
+        // return {};
+    }
+
     int Navigate::GetIndexFromPosition(const Vec3& position) {
 
         float memoryPos = 100000000;
