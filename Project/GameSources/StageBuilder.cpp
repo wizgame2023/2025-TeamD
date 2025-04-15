@@ -12,7 +12,7 @@ namespace basecross {
 		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
-		SetPosition(Vec3(0, 1, 0));
+		SetPosition(m_Position);
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);
 
@@ -47,7 +47,9 @@ namespace basecross {
 				auto pointer = static_pointer_cast<RootPointer>(obj);
 				if (obj != nullptr) {
 					pointer->SetPointerNumber(objInfo[GetInfoIndex(L"connect")]);
-					rootPointers.emplace(objInfo[GetInfoIndex(L"number")], pointer);
+					wstring number = objInfo[GetInfoIndex(L"number")];
+					pointer->SetNumber(stoi(number));
+					rootPointers.emplace(number, pointer);
 				}
 			}
 			if (dateType == L"Chara") {
@@ -64,7 +66,7 @@ namespace basecross {
 				if (timeIndex != -1 && defeatIndex != -1) {
 					auto boss = static_pointer_cast<BossEnemy>(obj);
 					if (boss) {
-						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), 1/*WstrToFlt(objInfo[defeatIndex])*/);
+						boss->SetCondition(WstrToFlt(objInfo[timeIndex]), WstrToFlt(objInfo[defeatIndex]));
 					}
 				}
 				auto enemy = static_pointer_cast<Enemy>(obj);

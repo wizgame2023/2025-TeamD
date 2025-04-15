@@ -37,7 +37,8 @@ namespace basecross {
 
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
-		
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 	}
 	void GameStageM::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
@@ -86,9 +87,14 @@ namespace basecross {
 
 			float currentEnergy = player->GetEnergy();
 			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
+
+			/*RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(Vec3(0,1.0f,0), player->GetPosition()), GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });*/
 		}
 		float elpased = app->GetStepTimer().GetFramesPerSecond();
 		m_Fps->UpdateNumber(elpased);
+
+		
 	}
 
 }

@@ -8,6 +8,7 @@
 
 namespace basecross {
 	class LineObject;
+	class LineCube;
 	class Bullet : public GameObject
 	{
 		Vec3 m_Position;
@@ -19,6 +20,8 @@ namespace basecross {
 		float m_EffectiveRange;
 		shared_ptr<Transform> m_Transform;
 		float m_ZoneElapsedTime;
+
+		shared_ptr<LineCube> m_Line;
 	public:
 		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
 		~Bullet();

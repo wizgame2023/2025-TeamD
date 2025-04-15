@@ -22,7 +22,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->AddExcludeCollisionTag(L"Mob");
+		ptrColl->AddExcludeCollisionTag(L"Enemy");
 
 		//描画設定
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -51,7 +51,6 @@ namespace basecross {
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 	}
 
 	void Enemy::OnUpdate()
@@ -96,7 +95,6 @@ namespace basecross {
 
 	void Enemy::SearchRange()
 	{
-		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
 
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
@@ -113,7 +111,6 @@ namespace basecross {
 		}
 		if ((position - target).length() < searchDistance)
 		{
-
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//プレイヤーの方向をゆっくり向く
 				m_IntruderAlert = true;
@@ -127,8 +124,9 @@ namespace basecross {
 		}
 
 		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-			m_Line->CheckRayCast(Vec3());
-			if (!m_Line->CheckHitObjectTag(L"Player")) {
+			RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
+			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
 				m_IntruderAlert = false;
 			}
 		}
@@ -143,6 +141,10 @@ namespace basecross {
 	{
 		return m_IntruderAlert;
 	}
+	void Enemy::SetIntruderAlert(bool flag)
+	{
+		m_IntruderAlert = flag;
+	}
 
 	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
 	{
@@ -156,7 +158,6 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
-		m_Line->Destroy();
 
 		ScoreManager::Instance()->AddEliminateEnemyCount();
 

@@ -7,11 +7,13 @@
 #include "stdafx.h"
 
 namespace basecross {
+	template <typename> class EnemyState;
+
 	class Enemy;
 	class Tube;
-	class ForecastLine;
 	class HPBar;
 	class RootPointer;
+
 	class Mob : public Enemy
 	{
 	public:
@@ -30,6 +32,10 @@ namespace basecross {
 		shared_ptr<HPBar> m_HpBar;
 		shared_ptr<GameObject> m_NearPoint;
 		vector<shared_ptr <GameObject>> m_PointData;
+		shared_ptr<GameObject> m_BeforPoint;
+	
+		unique_ptr<EnemyState<Mob>> m_currentState;  //現在のステート
+		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
 	public:
 		Mob(const shared_ptr<Stage>& stage);
@@ -55,7 +61,36 @@ namespace basecross {
 		{
 			return m_PointData;
 		}
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<Mob>());
+			m_currentState->Enter();
+		}
+
+
 	private:
+
+		float WstrToFlt(const wstring& data) {
+			if (data == L"") return NULL;
+			return stof(data);
+		}
+
+		vector<int> WstrToVecInt(const wstring& data) {
+			vector<wstring> vec3Str = {};
+			vector<int> num = {};
+			Util::WStrToTokenVector(vec3Str, data, L'_');
+			for (int i = 0; i < vec3Str.size(); i++)
+			{
+				if (WstrToFlt(vec3Str[i]) != NULL)
+				{
+					num.push_back(WstrToFlt(vec3Str[i]));
+				}
+			}
+			return num;
+		}
+
 
 	};
 }

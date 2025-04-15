@@ -8,17 +8,14 @@
 
 namespace basecross {
 	class Character;
-	class ForecastLine;
-	class EnemyState;
+	template<typename> class EnemyState;
+	class LineCube;
 
 	class Enemy : public Character
 	{
 	protected:
 		
 		bool m_IntruderAlert;
-
-		unique_ptr<EnemyState> m_currentState;  //現在のステート
-		unique_ptr<EnemyState> m_nextState;     //次のステート
 
 	public:	
 		float m_ZoneElapsedTime;
@@ -42,18 +39,10 @@ namespace basecross {
 
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
-
+		void SetIntruderAlert(bool flag);
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
-		shared_ptr<ForecastLine> m_Line;
-
-		template <class NextState>
-		void ChangeState() {
-			m_currentState->Exit();
-			m_currentState.reset();
-			m_currentState = make_unique<NextState>(GetThis<Enemy>());
-			m_currentState->Enter();
-		}
+		shared_ptr<LineCube> m_LineCube;
 
 	private:
 

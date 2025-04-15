@@ -84,7 +84,7 @@ namespace basecross {
 		if (angle.length() > 0.0f) {
 			//auto utilPtr = GetBehavior<UtilBehavior>();
 			//utilPtr->RotToHead(angle, 1.0f);
-			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
+			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
 
 		}
@@ -144,7 +144,7 @@ namespace basecross {
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		auto targetBulletVector = ObjectSearch(bulletGroup);
 		auto targetEnemyVector = ObjectSearch(enemyGroup);
-		m_TargetBoard->SetTarget(nullptr);
+		//m_TargetBoard->SetTarget(nullptr);
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
@@ -153,7 +153,7 @@ namespace basecross {
 				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					m_TargetBoard->SetTarget(targetEnemyVector);
+					//m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
 				else {
@@ -206,7 +206,7 @@ namespace basecross {
 		if (rot != Vec3())
 		{
 			float rotate = atan2f(rot.x, rot.z);
-			SetRotation(Vec3(0.0f, XMConvertToDegrees(rotate), 0.0f));
+			SetRotation(Vec3(0.0f, rotate, 0.0f));
 		}
 	}
 
@@ -279,31 +279,28 @@ namespace basecross {
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"01");*/
+
+
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.45f, 0.22f, 0.45f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 90.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.0f, 0.0f)
+		);
+		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetTextureResource(L"01");
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
 
-
-		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
-		//Mat4x4 meshMat;
-		//meshMat.affineTransformation(
-		//	Vec3(0.3f,0.15f,0.3f), //(.1f, .1f, .1f),
-		//	Vec3(0.0f, 90.0f, 0.0f),
-		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, -0.0f, 0.0f)
-		//);
-		//ptrDraw->SetMeshResource(L"DEBUG");
-		//ptrDraw->SetTextureResource(L"01");
-		//ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
-
-		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
-		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
-		//ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		//auto bone = AddComponent<BonePosition>(L"a.txt");
-		//bone->CreateBone();
-
+		ptrDraw->AddAnimation(L"DEFAULT", 0, 120, true, 60);
+		ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -314,8 +311,7 @@ namespace basecross {
 
 		AddTag(L"Player");
 
-
-		m_Target = GetStage()->AddGameObject<Board>(L"01", Vec3(0, 0, 0), Vec3(1.0f, 1.0f, 1.0f), true);
+		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
 		auto stage = static_pointer_cast<GameStage>(m_Stage);
 
 		if (stage != nullptr) {
@@ -324,7 +320,6 @@ namespace basecross {
 		else {
 			m_Effect = nullptr;
 		}
-
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -347,7 +342,7 @@ namespace basecross {
 			m_ParryTime--;
 			if (m_ParryTime <= 0.0f)
 			{
-				//m_ParryJudge = false;
+				m_ParryJudge = false;
 			}
 		}
 
@@ -380,8 +375,6 @@ namespace basecross {
 			m_Attacktime -= elapsedTime;
 			if (m_Attacktime >= 0.0f)
 			{
-				Vec3 forward = GetForward();
-				BoostMove(3.0f, forward);
 			}
 			else {
 				m_PlayerStateNum -= PlayerState::ATTACK;
@@ -417,7 +410,7 @@ namespace basecross {
 				m_Position = GetPosition();
 				Vec3 forward = GetForward();
 
-				BoostMove(15.0f, forward);
+				//BoostMove(15.0f, forward);
 				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 				float rotate = atan2f(forward.x, forward.z);
 

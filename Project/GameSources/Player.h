@@ -8,7 +8,6 @@
 
 namespace basecross {
 	class Character;
-	class ForecastLine;
 	class TargetBoard;
 
 	class Player : public Character
@@ -32,7 +31,6 @@ namespace basecross {
 		shared_ptr<EffectManeger> m_Effect;
 
 		shared_ptr<TargetBoard> m_TargetBoard;
-		shared_ptr<GameObject> m_Target;
 
 	public:
 		int m_PlayerStateNum;

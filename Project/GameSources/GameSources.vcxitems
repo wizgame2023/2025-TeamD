@@ -18,7 +18,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h" />
@@ -54,7 +56,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp" />

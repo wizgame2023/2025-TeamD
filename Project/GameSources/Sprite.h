@@ -133,6 +133,7 @@ namespace basecross{
 		Col4 GetDiffuse();
 
 		void CreateVertex(Vec2 size, vector<Vec2> uv);
+		void SetVertex(vector<Vec3> positions);
 		//----------------------------------------------------------
 		//
 		//	UV‘€ì		
@@ -245,6 +246,11 @@ namespace basecross{
 		virtual void OnUpdate();
 		
 		void UpdateNumber(int number);
+		void SetDiffuse(Col4 color) {
+			for (auto& number : m_Numbers) {
+				number->SetDiffuse(color);
+			}
+		}
 		void SetActive(bool flag) {
 			for (auto& number : m_Numbers) {
 				number->SetDrawActive(flag);

@@ -141,6 +141,10 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -236,5 +240,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ResultCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

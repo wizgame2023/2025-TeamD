@@ -1,12 +1,15 @@
 /*!
 @file BossEnemy.h
-@brief ƒ{ƒX‚È‚Ç
+@brief Æ’{Æ’Xâ€šÃˆâ€šÃ‡
 */
 
 #pragma once
 #include "stdafx.h"
 
 namespace basecross {
+
+	template <typename> class EnemyState;
+
 	class Enemy;
 	class BossEnemy : public Enemy
 	{
@@ -14,9 +17,13 @@ namespace basecross {
 		float m_ConditionTime;
 		int m_ConditionDefeat;
 
-		shared_ptr<ForecastLine> m_BossLine;
-		shared_ptr<ForecastLine> m_FLine;
+		unique_ptr<EnemyState<BossEnemy>> m_currentState;  
+		unique_ptr<EnemyState<BossEnemy>> m_nextState;   
 
+		//shared_ptr<CrushAttack> m_Cruch;
+		//shared_ptr<MachineGun> m_Gun;
+
+		friend BossAttack;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -25,6 +32,7 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void Dead();
+		virtual void Damage(float damage, const bool& isSound = true)override;
 
 		void SetCondition(float time, int defeatCount) {
 			m_IsAppearance = false;
@@ -34,6 +42,13 @@ namespace basecross {
 		Vec3 GetPosition();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<BossEnemy>());
+			m_currentState->Enter();
+		}
 
 	};
 
@@ -49,5 +64,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void Dead();
 	};
+
+
 }
 //end basecross

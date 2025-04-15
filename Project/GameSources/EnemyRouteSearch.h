@@ -10,6 +10,11 @@ namespace basecross {
 	class RootPointer;
 	class Navigate : public Component {
 	public:
+		// ヘルパー関数: Vec3のハッシュ化 (unordered_mapで利用する場合)
+		std::size_t Vec3HashFunction(const Vec3& v) {
+			std::hash<float> floatHash;
+			return floatHash(v.getX()) ^ (floatHash(v.getY()) << 1) ^ (floatHash(v.getZ()) << 2);
+		}
 
 		// 状態を表すenum
 		enum class State {
@@ -63,20 +68,29 @@ namespace basecross {
 
 		void AvoidBlock(const Vec3& Position, const Vec3& Target);
 
+		vector<Vec3> GetWayPointNavigate()
+		{
+			return m_NaviPoint;
+		}
 
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
-	private:
-		void AStarAlgorithm(Vec3 index, Vec3 goal);
-		Vec3 OpenCell(Vec3 index);
-		bool UpdateDistance(Vec3 index);
+		shared_ptr<RootPointer> GetNearPinter(const Vec3& position);
 
+		vector<Vec3> FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
+		vector<Vec3> FindPathWithWaypoints(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
+
+	private:
+		vector<int> GetNeighborsForWaypoints(int current);
+		//void AStarAlgorithm(Vec3 index, Vec3 goal);
+		int GetIndexFromPosition(const Vec3& position);
 		Vec3 NextWayPoint(const Vec3& s, const Vec3& e);
 		bool m_DireChange;
 		float m_MapWidth;
 		float m_MapHeight;
 		vector<shared_ptr <RootPointer>> m_CellData;
+		vector<Vec3> m_NaviPoint;
 		Vec3 m_BeforeTarget;
 		Vec3 m_BeforePosition;
 		Dire m_Dire;
@@ -91,7 +105,7 @@ namespace basecross {
 		float m_CellSize = 5.0f;
 
 		// デバッグ用 (A*アルゴリズムの実行を制御)
-		bool m_debug_pause = false;		
+		bool m_debug_pause = false;
 		bool m_BossPause = false;
 
 		float WstrToFlt(const wstring& data) {

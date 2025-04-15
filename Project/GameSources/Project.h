@@ -23,6 +23,7 @@
 #include "Sprite.h"
 #include "Legion.h"
 #include "MobState.h"
+#include "BossState.h"
 #include "Mob.h"
 #include "BossEnemy.h"
 #include "Ballet.h"
@@ -38,3 +39,4 @@
 #include "BoneCollision.h"
 #include "TargetBoard.h"
 #include "ResultCamera.h"
+#include "Icon.h"

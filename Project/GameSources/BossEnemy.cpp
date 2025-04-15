@@ -38,13 +38,16 @@ namespace basecross {
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
-		navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
+		//navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
-		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
+		m_currentState = make_unique<BossSearch>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
-		m_BossLine = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), true);
+
+		//m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
+		//m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(1.0f, 5.0f, 2.0f, 10.0f, 2.0f), 20.0f);
+
 	}
 
 	void BossEnemy::OnUpdate()
@@ -67,10 +70,10 @@ namespace basecross {
 		}
 		else {
 			StartAsync();
-			AsyncUpdate();
+			//AsyncUpdate();
 			Vec3 pos = GetPosition();
 			m_currentState->Execute();
-			auto navi = GetComponent<Navigate>();
+			/*auto navi = GetComponent<Navigate>();
 			float elapsedTime = App::GetApp()->GetElapsedTime();
 			Vec3 currntPosition = GetPosition();
 			if (m_IntruderAlert)
@@ -96,7 +99,7 @@ namespace basecross {
 				}
 			}
 
-			SetPosition(currntPosition);
+			SetPosition(currntPosition);*/
 
 		}
 		EndAsync();
@@ -104,6 +107,10 @@ namespace basecross {
 	void BossEnemy::Dead()
 	{
 		Enemy::Dead();
+	}
+	void BossEnemy::Damage(float damage, const bool& isSound) {
+		Enemy::Damage(damage, isSound);
+		ChangeState<BossAttack>();
 	}
 
 	Vec3 BossEnemy::GetPosition()

@@ -47,14 +47,17 @@ namespace basecross {
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
 		app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
-		app->RegisterTexture(L"NUMBER", uiPath + L"TimerNum.png");
-		app->RegisterTexture(L"ACTION", uiPath + L"ActionButton.png");
+		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
+		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
@@ -148,6 +151,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
+			CreateSharedObjectGroup(L"Legion");
 
 			//ビューとライトの作成
 			CreateViewLight();
@@ -167,13 +171,11 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-			//m_ProtoHpNumber = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 393.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			auto sprite = AddGameObject<Sprite>(L"ACTION", Vec3(423.0f, -297.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(347.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
-			sprite = AddGameObject<Sprite>(L"ACTION", Vec3(499.0f, -228.0f, 0.0f), Vec2(72.0f));
-			sprite->SetDiffuse(Col4(1, 0, 0, 1));
+			auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
+			icon->SetInput(XINPUT_GAMEPAD_A);
+			icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+			icon->SetInput(XINPUT_GAMEPAD_X);
+			m_UltIcon = AddGameObject<UltIcon>();
 		}
 		catch (...) {
 			throw;
@@ -186,7 +188,6 @@ namespace basecross {
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
-				//OpenPose();
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
 			}
@@ -219,6 +220,10 @@ namespace basecross {
 		else {
 			SetAllGameObjectActive(true);
 			ScoreManager::Instance()->UpdateTime(elapsed);
+		}
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			m_UltIcon->SetCharge(player->GetEnergy());
 		}
 	}
 
