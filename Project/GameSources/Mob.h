@@ -32,8 +32,8 @@ namespace basecross {
 		shared_ptr<HPBar> m_HpBar;
 		shared_ptr<GameObject> m_NearPoint;
 		vector<shared_ptr <GameObject>> m_PointData;
-
-
+		shared_ptr<GameObject> m_BeforPoint;
+	
 		unique_ptr<EnemyState<Mob>> m_currentState;  //現在のステート
 		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 

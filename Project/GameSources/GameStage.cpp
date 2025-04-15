@@ -56,6 +56,8 @@ namespace basecross {
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
