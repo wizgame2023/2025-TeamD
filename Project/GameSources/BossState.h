@@ -1,13 +1,13 @@
 /*!
 @file MobState.h
-@brief �G�̃X�e�[�g�Ǘ��Ȃ�
+@brief “G‚ÌƒXƒe[ƒgŠÇ—‚È‚Ç
 */
 
 #pragma once
 #include "stdafx.h"
 #include "MobState.h"
 #include "BossEnemy.h"
-
+#include "AttakCollision.h"
 namespace basecross {
 	class Enemy;
 	class LineCube;
@@ -34,6 +34,9 @@ namespace basecross {
 		bool m_IntruderAlert;
 		float m_ChangeTime;
 		float m_Cooldown;
+
+		shared_ptr<CrushAttack> m_Cruch;
+		shared_ptr<MachineGun> m_Gun;
 
 		Vec3 m_LastInturderPosition;
 	public:

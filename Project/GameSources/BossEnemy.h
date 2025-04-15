@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.h
-@brief ƒ{ƒX‚È‚Ç
+@brief Æ’{Æ’Xâ€šÃˆâ€šÃ‡
 */
 
 #pragma once
@@ -16,11 +16,14 @@ namespace basecross {
 		bool m_IsAppearance;
 		float m_ConditionTime;
 		int m_ConditionDefeat;
-		
 
-		unique_ptr<EnemyState<BossEnemy>> m_currentState;  //Œ»İ‚ÌƒXƒe[ƒg
-		unique_ptr<EnemyState<BossEnemy>> m_nextState;     //Ÿ‚ÌƒXƒe[ƒg
+		unique_ptr<EnemyState<BossEnemy>> m_currentState;  
+		unique_ptr<EnemyState<BossEnemy>> m_nextState;   
 
+		//shared_ptr<CrushAttack> m_Cruch;
+		//shared_ptr<MachineGun> m_Gun;
+
+		//friend BossAttack;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
