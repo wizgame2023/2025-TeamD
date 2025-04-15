@@ -30,17 +30,17 @@ namespace basecross {
 			for (int i = 0; i < m_GruopEnemy.size(); i++)
 			{
 				auto enemy = m_GruopEnemy[i].lock();
-				ChangeEnemyMove<MobAlert>(enemy);
+				//ChangeEnemyMove<MobAlert>(enemy);
 			}
 		}
 
 	}
 
-	template<typename T>
-	void Legion::ChangeEnemyMove(const shared_ptr<Enemy>& enemy)
-	{
-		enemy->ChangeState<T>();
-	}
+	//template<typename T>
+	//void Legion::ChangeEnemyMove(const shared_ptr<Enemy>& enemy)
+	//{
+	//	enemy->ChangeState<T>();
+	//}
 
 }
 //end basecross
