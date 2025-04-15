@@ -8,7 +8,7 @@
 
 namespace basecross {
 	class Character;
-	class EnemyState;
+	template<typename> class EnemyState;
 	class LineCube;
 
 	class Enemy : public Character
@@ -16,9 +16,6 @@ namespace basecross {
 	protected:
 		
 		bool m_IntruderAlert;
-
-		unique_ptr<EnemyState> m_currentState;  //現在のステート
-		unique_ptr<EnemyState> m_nextState;     //次のステート
 
 	public:	
 		float m_ZoneElapsedTime;
@@ -46,14 +43,6 @@ namespace basecross {
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
 		shared_ptr<LineCube> m_LineCube;
-
-		template <class NextState>
-		void ChangeState() {
-			m_currentState->Exit();
-			m_currentState.reset();
-			m_currentState = make_unique<NextState>(GetThis<Enemy>());
-			m_currentState->Enter();
-		}
 
 	private:
 

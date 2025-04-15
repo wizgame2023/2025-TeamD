@@ -40,7 +40,7 @@ namespace basecross {
 		auto navi = AddComponent<Navigate>();
 		//navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
-		m_currentState = make_unique<BossSearch>(GetThis<Enemy>());
+		m_currentState = make_unique<BossSearch>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();

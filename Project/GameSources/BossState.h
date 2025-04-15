@@ -1,11 +1,12 @@
 /*!
 @file MobState.h
-@brief �G�̃X�e�[�g�Ǘ��Ȃ�
+@brief “G‚ÌƒXƒe[ƒgŠÇ—‚È‚Ç
 */
 
 #pragma once
 #include "stdafx.h"
 #include "MobState.h"
+#include "BossEnemy.h"
 #include "AttakCollision.h"
 namespace basecross {
 	class Enemy;

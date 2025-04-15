@@ -482,6 +482,30 @@ namespace basecross {
         return -1; // 該当なしの場合
     }
 
+    shared_ptr<RootPointer>  Navigate::GetNearPinter(const Vec3& position) {
+        float memoryPos = 100000000;
+        Vec3 outCome = Vec3();
+        Vec3 nearPoint = Vec3();
+        shared_ptr<RootPointer> nearPointMemory;
+
+        for (int i = 0; i < m_CellData.size(); i++)
+        {
+            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            if (nearPoint == Vec3())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+            if ((vec - position).length() < (nearPoint - position).length())
+            {
+                nearPoint = vec;
+                nearPointMemory = m_CellData[i];
+            }
+        }
+        return nearPointMemory;
+    }
+
+
     // WayPoint対応の近隣ノードを取得する関数
     std::vector<int> Navigate::GetNeighborsForWaypoints(int currentIndex) {
         std::vector<int> neighbors;

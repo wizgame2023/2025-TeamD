@@ -7,10 +7,13 @@
 #include "stdafx.h"
 
 namespace basecross {
+	template <typename> class EnemyState;
+
 	class Enemy;
 	class Tube;
 	class HPBar;
 	class RootPointer;
+
 	class Mob : public Enemy
 	{
 	public:
@@ -29,6 +32,10 @@ namespace basecross {
 		shared_ptr<HPBar> m_HpBar;
 		shared_ptr<GameObject> m_NearPoint;
 		vector<shared_ptr <GameObject>> m_PointData;
+
+
+		unique_ptr<EnemyState<Mob>> m_currentState;  //現在のステート
+		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
 	public:
 		Mob(const shared_ptr<Stage>& stage);
@@ -54,6 +61,15 @@ namespace basecross {
 		{
 			return m_PointData;
 		}
+		template <class NextState>
+		void ChangeState() {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = make_unique<NextState>(GetThis<Mob>());
+			m_currentState->Enter();
+		}
+
+
 	private:
 
 		float WstrToFlt(const wstring& data) {
@@ -74,6 +90,7 @@ namespace basecross {
 			}
 			return num;
 		}
+
 
 	};
 }
