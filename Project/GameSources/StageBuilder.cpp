@@ -12,7 +12,7 @@ namespace basecross {
 		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
-		SetPosition(Vec3(0, 1, 0));
+		SetPosition(m_Position);
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);
 
