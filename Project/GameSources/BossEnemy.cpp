@@ -24,21 +24,28 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-
+		m_Stage->SetSharedGameObject(L"BOSS", GetThis<BossEnemy>());
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetMeshResource(L"MOB");
 
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.6f, 0.6f, 0.6f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.3f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
-		//navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
 
 		m_currentState = make_unique<BossSearch>(GetThis<BossEnemy>());
 		m_currentState->Enter();
@@ -69,40 +76,8 @@ namespace basecross {
 			}
 		}
 		else {
-			StartAsync();
-			//AsyncUpdate();
-			Vec3 pos = GetPosition();
 			m_currentState->Execute();
-			/*auto navi = GetComponent<Navigate>();
-			float elapsedTime = App::GetApp()->GetElapsedTime();
-			Vec3 currntPosition = GetPosition();
-			if (m_IntruderAlert)
-			{
-				Vec3 halfPos = navi->GetAStarForword(currntPosition);
-				if (halfPos != Vec3(0))
-				{
-					currntPosition += halfPos * 3.0f * elapsedTime * m_ZoneElapsedTime;
-				}
-				else
-				{
-					navi->SetTargetPosition(currntPosition, m_Intruder->GetPosition());
-				}
-			}
-			else {
-				Vec3 taregtpoint = navi->GetAStarForword(GetPosition());
-				if (taregtpoint != Vec3(0))
-				{
-					currntPosition += taregtpoint * 3.0f * elapsedTime * m_ZoneElapsedTime;
-				}
-				else {
-					navi->AvoidBlock(GetPosition(), m_Intruder->GetPosition());
-				}
-			}
-
-			SetPosition(currntPosition);*/
-
 		}
-		EndAsync();
 	}
 	void BossEnemy::Dead()
 	{

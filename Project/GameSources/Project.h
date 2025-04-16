@@ -40,3 +40,4 @@
 #include "TargetBoard.h"
 #include "ResultCamera.h"
 #include "Icon.h"
+#include "Timer.h"

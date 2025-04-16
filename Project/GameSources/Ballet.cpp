@@ -53,7 +53,7 @@ namespace basecross {
 		else {
 			position += moveAmount;
 			m_Transform->SetPosition(position);
-			m_Line->SetLine(Line(position,m_Position));
+			m_Line->SetLine(Line(m_Position,position));
 		}
 	}
 
