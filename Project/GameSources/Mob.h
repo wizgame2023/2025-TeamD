@@ -47,6 +47,7 @@ namespace basecross {
 
 		virtual void Dead()override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
+
 		Vec3 RootNaviGate();
 		shared_ptr<Stage> GetStage();
 		shared_ptr<Transform> GetTransfrom();

@@ -135,7 +135,6 @@ namespace basecross {
 		Enemy::OnCollisionEnter(other);
 	}
 
-
 	Vec3 Mob::RootNaviGate()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
