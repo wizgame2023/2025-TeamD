@@ -18,12 +18,10 @@ namespace basecross {
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"HR.bmf");
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
-		auto debugMesh = MeshResource::CreateBoneModelMesh(modelPath, L"z.bmf");
 
 		app->RegisterResource(L"OBJECT", modelBuild);
 		app->RegisterResource(L"MOB", modelEnemy);
 		app->RegisterResource(L"PLAYER", modelMesh);
-		app->RegisterResource(L"DEBUG", debugMesh);
 	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
@@ -56,7 +54,7 @@ namespace basecross {
 		else if (event->m_MsgStr == L"ToGameStage") {
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(L"level.csv");
-    }
+		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
 			ResetActiveStage<GameStageM>(L"level.csv");
 		}

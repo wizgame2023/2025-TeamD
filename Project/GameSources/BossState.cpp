@@ -19,7 +19,7 @@ namespace basecross {
 		if (navigate) {
 			if (m_Path.size() == 0) {
 				m_Line->SetDrawActive(false);
-				if (interval <= 0.0f) {
+				if (m_OperatorIntarval.UpdateTimer()) {
 					float rndOparation = Util::RandZeroToOne() * 100.0f;
 					if (rndOparation < 40) {
 						auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
@@ -40,10 +40,6 @@ namespace basecross {
 						} while (RayCast::HitTestVec(RayCastHit(), Line(m_Enemy->GetPosition(), target), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" }));
 						m_Path.push_back(target);
 					}
-					interval = maxInterval;
-				}
-				else {
-					interval -= elapsed;
 				}
 			}
 			else {
@@ -82,7 +78,6 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime() * m_Enemy->m_ZoneElapsedTime;
 		auto navi = m_Enemy->GetComponent<Navigate>();
-		m_ChangeTime -= elapsedTime;
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 		if (RayCast::HitTestVec(RayCastHit(), Line(position, intruderPosition), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" })) {
@@ -150,12 +145,12 @@ namespace basecross {
 						velocity = direction * 1.0f * elapsedTime;
 					}
 					else {
-						if (Util::RandZeroToOne() > 0.95f) {
-							m_SideStepDirection *= -1;
+						if (m_SideStepTimer.UpdateTimer()) {
+							if (Util::RandZeroToOne() > 0.99f) {
+								m_SideStepDirection *= -1;
+							}
 						}
-						else {
-							velocity = cross(direction, Vec3(0, 1, 0)) * 1.0f * elapsedTime * m_SideStepDirection;
-						}
+						velocity = cross(direction, Vec3(0, 1, 0)) * 1.0f * elapsedTime * m_SideStepDirection;
 					}
 				}
 				position += velocity;

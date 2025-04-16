@@ -70,7 +70,6 @@ namespace basecross {
 		float GetCharaCooldown() {
 			return m_Date.m_CharacterCooldown;
 		}
-
 	};
 	class AttackCollision : public Attack {
 		Vec3 m_Size;
