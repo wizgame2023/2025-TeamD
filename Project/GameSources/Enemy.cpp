@@ -147,21 +147,7 @@ namespace basecross {
 
 	bool Enemy::GetIntruderAlert()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime();
-		if (m_IntruderAlert == false){
-			m_AlertTime -= elapsedTime;
-			if (m_AlertTime < 0.0f)
-			{
-				return false;
-				m_AlertTime = 5.0f;
-			}
-			else {
-				return true;
-			}
-		}
-		else {
-			return true;
-		}
+		return m_IntruderAlert;
 	}
 	void Enemy::SetIntruderAlert(bool flag)
 	{
