@@ -415,7 +415,7 @@ namespace basecross {
 				float rotate = atan2f(forward.x, forward.z);
 
 
-				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0);
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
 				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 
