@@ -53,6 +53,7 @@ namespace basecross {
 		if (m_IntruderAlert)
 		{
 			m_Enemy->ChangeState<MobJoinAlert>();
+			return;
 		}
 	}
 	void MobSearch::Exit()
@@ -83,9 +84,14 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_SHOT");
 		}
 		m_IntruderAlert = mob->GetIntruderAlert();
-		if (m_IntruderAlert == false)
+		if (m_IntruderAlert)
 		{
+			m_Enemy->ChangeState<MobJoinAlert>();
+			return;
+		}
+		else {
 			m_Enemy->ChangeState<MobSearch>();
+			return;
 		}
 
 	}
@@ -98,43 +104,54 @@ namespace basecross {
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
-		Execute();
+		//Execute();
 	}
 
 	void MobJoinAlert::Execute()
 	{
 		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		Vec3 currntPosition = m_Enemy->GetPosition();
+		Vec3 currntPosition = enemy->GetPosition();
+		Vec3 playerPosition = m_Player->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		if (navi) {
-			if (m_Path.size() == 0)
-			{
-				auto point = navi->GetNearPinter(m_Enemy->GetPosition());
-				auto target = navi->GetNearPinter(m_Player->GetPosition());
-				if ((point->GetPosition() - target->GetPosition()).length() < 3.0f)
-				{
-					m_Enemy->ChangeState<MobAlert>();
-				}
+			Vec3 dire = (playerPosition - currntPosition);
+			dire.normalize();
+			float rotate = atan2f(dire.x, dire.z);
+			enemy->SetRotation(Vec3(0, rotate, 0));
 
-				m_Path = navi->FindPathWithWaypoints(point, m_Player->GetPosition());
-			}
-			else {
-				Vec3 pos = m_Enemy->GetPosition();
-				m_Path[0].y = pos.y;
-				Vec3 direction = m_Path[0] - pos;
-				if (direction.length() < 3.0f) {
-					m_Path.erase(m_Path.begin());
+			if (enemy->GetIntruderAlert() == false)
+			{
+				if (m_Path.size() == 0)
+				{
+					auto point = navi->GetNearPinter(enemy->GetPosition());
+					auto target = navi->GetNearPinter(m_Player->GetPosition());
+
+					m_Path = navi->FindPathWithWaypoints(point, m_Player->GetPosition());
 				}
 				else {
-					direction = direction.normalize();
-					float rotate = atan2f(direction.x, direction.z);
-					m_Transform->SetRotation(Vec3(0, rotate, 0));
-					pos += direction * 3.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+					m_Path[0].y = currntPosition.y;
+					Vec3 direction = m_Path[0] - currntPosition;
+					if (direction.length() < 1.5f) {
+						m_Path.erase(m_Path.begin());
+					}
+					else {
+						direction = direction.normalize();
+						float rotate = atan2f(direction.x, direction.z);
+						m_Transform->SetRotation(Vec3(0, rotate, 0));
+						currntPosition += direction * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+					}
 				}
-				m_Enemy->SetPosition(pos);
 			}
-
+			else {
+				currntPosition += dire * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+			}	
+			if ((currntPosition - playerPosition).length() < 5.0f)
+			{
+				enemy->ChangeState<MobAlert>();
+				return;
+			}
+			enemy->SetPosition(currntPosition);
 		}
 	}
 
