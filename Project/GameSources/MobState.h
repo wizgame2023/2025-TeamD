@@ -73,6 +73,7 @@ namespace basecross {
 	class MobJoinAlert : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
+		vector<Vec3> m_Path;
 
 	public:
 		MobJoinAlert(shared_ptr<Mob>& enemy) :

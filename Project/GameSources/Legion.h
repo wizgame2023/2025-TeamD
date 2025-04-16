@@ -9,6 +9,7 @@
 
 namespace basecross {
 	class Enemy;
+	class Mob;
 	template<typename> class EnemyState;
 	class Legion : public Object
 	{
@@ -37,13 +38,18 @@ namespace basecross {
 			m_GruopEnemy.push_back(enemy);
 		}
 
+		vector<weak_ptr<Enemy>> GetEnemyLegionGruop()
+		{
+			return m_GruopEnemy;
+		}
+
 		void ReportAlert(const bool& alert)
 		{
 			m_IntruderAlert = alert;
 		}
 
-		//template<typename T>
-		//void ChangeEnemyMove( const shared_ptr<Enemy>& enemy);
+		template<typename T>
+		void ChangeEnemyMove(const shared_ptr<Mob>& enemy);
 	};
 }
 //end basecross
