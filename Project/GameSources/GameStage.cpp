@@ -62,6 +62,7 @@ namespace basecross {
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
 
 	}
 
