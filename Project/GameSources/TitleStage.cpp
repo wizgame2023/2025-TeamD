@@ -31,18 +31,26 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
 		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title.png");
-
+		app->RegisterTexture(L"STRATA", uiPath + L"StartA.png");
+		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 	}
 
 	void TitleStage::CreateTitle() {
-		auto m_TitleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1028.0f, 800.0f), Vec2(1.0f, 1.0f), true);
+		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(700.0f, 600.0f), Vec2(1.0f, 1.0f), true);
+		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), Vec2(1.0f, 1.0f), true);
+		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(1.0f, 1.0f), true);
+		//点滅設定
+		stratASprite->AddComponent<SpriteFlash>(0.8f);
+		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
+		m_Fade->FadeOut();
+		m_Fade->Stop();
 	}
 
 	void TitleStage::OnCreate() {
 		try {
 			//ビューとライトの作成
 			CreateViewLight();
-			OnUpdate();
+			//OnUpdate();
 			CreateResource();
 			CreateTitle();
 			Which = false;
@@ -61,12 +69,17 @@ namespace basecross {
 				OnPushA();
 			}
 		}
+		if (m_Fade->IsFinish())
+		{
+			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
+		}
 
 	}
 
 	void TitleStage::OnPushA() {
 		//ボタンを押されたらtrue
-		PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
+		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
+		m_Fade->Play();
 	}
 
 }

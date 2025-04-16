@@ -23,7 +23,7 @@ namespace basecross {
 		//shared_ptr<CrushAttack> m_Cruch;
 		//shared_ptr<MachineGun> m_Gun;
 
-		friend BossAttack;
+		friend class BossAttack;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
