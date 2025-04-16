@@ -27,7 +27,7 @@ namespace basecross {
 						int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
 						auto pointer = pointers[rnd].lock();
 						if (pointer != nullptr) {
-							m_Path = navigate->FindPathWithWaypoints2(navigate->GetNearPinter(m_Enemy->GetPosition()), pointer->GetComponent<Transform>()->GetPosition());
+							m_Path = navigate->FindPathWithWaypoints2(navigate->GetNearPointer(m_Enemy->GetPosition()), pointer->GetComponent<Transform>()->GetPosition());
 						}
 					}
 					else if (rndOparation < 60) {

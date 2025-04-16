@@ -454,7 +454,7 @@ namespace basecross {
         return -1; // 該当なしの場合
     }
 
-    shared_ptr<RootPointer>  Navigate::GetNearPinter(const Vec3& position) {
+    shared_ptr<RootPointer>  Navigate::GetNearPointer(const Vec3& position) {
         float memoryPos = 100000000;
         Vec3 outCome = Vec3();
         Vec3 nearPoint = Vec3();

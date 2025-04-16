@@ -75,7 +75,7 @@ namespace basecross {
 		virtual void OnUpdate()override {}
 		virtual void OnDraw()override {}
 
-		shared_ptr<RootPointer> GetNearPinter(const Vec3& position);
+		shared_ptr<RootPointer> GetNearPointer(const Vec3& position);
 
 		vector<Vec3> FindPathWithWaypoints2(const shared_ptr<RootPointer>& pointer, const Vec3& goal);
 		vector<Vec3> FindPathWithWaypoints(const shared_ptr<RootPointer>& pointer, const Vec3& goal);

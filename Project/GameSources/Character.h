@@ -14,6 +14,7 @@ namespace basecross {
 		float m_HP;
 		float m_MaxHP;
 		float m_Speed;
+		float m_AttackDamage;
 
 		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
 			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0),m_Speed(1.0f) {
@@ -56,6 +57,13 @@ namespace basecross {
 		}
 		float GetSpeed() {
 			return m_Speed;
+		}
+
+		void SetAttackDamage(const float& Damage) {
+			m_AttackDamage = Damage;
+		}
+		float GetAttackDamage(){
+			return m_AttackDamage;
 		}
 	};
 
