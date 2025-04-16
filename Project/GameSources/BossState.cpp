@@ -77,8 +77,6 @@ namespace basecross {
 	void BossAttack::Enter()
 	{
 		EnemyState::Enter();
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Enemy->m_Intruder, AttackDate(1.0f, 5.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 	}
 	void BossAttack::Execute()
 	{
@@ -107,30 +105,62 @@ namespace basecross {
 			}
 		}
 		else {
+			auto& gunAttack = m_Enemy->m_Gun;
+			auto& cruchAttack = m_Enemy->m_Cruch;
+
 			m_Enemy->SetIntruderAlert(true);
 
 			m_LastInturderPosition = intruderPosition;
 			Vec3 direction = intruderPosition - position;
-			if (m_Cooldown > 0) {
-				m_Cooldown -= elapsedTime;
-			}
-			else {
+			if (m_CooldownTimer.UpdateTimer()) {
 				float distance = direction.length();
-				if (distance > 2.0f && distance < m_Gun->GetRange() && m_Gun->GetCooldown() == 0) {
-					m_Gun->Play(position + Vec3(0, 0.1f, 0.0f));
-					m_Cooldown = m_Gun->GetCharaCooldown();
-				}
-				else if (distance < m_Cruch->GetRange() && m_Cruch->GetCooldown() == 0) {
-					m_Cruch->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
-					m_Cooldown = m_Cruch->GetCharaCooldown();
+				direction = direction.normalize();
+				Vec3 velocity = Vec3();
+				float rotationY = 0;
+				if (distance > gunAttack->GetRange() / 2.0f && gunAttack->GetCooldown() == 0) {
+					gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
+					m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);
+					//m_Cooldown = gunAttack->GetCharaCooldown();
 				}
 				else {
-					direction = direction.normalize();
-					float rotate = atan2f(direction.x, direction.z);
-					m_Enemy->SetRotation(Vec3(0, rotate, 0));
-					position += direction * 1.0f * elapsedTime;
-					m_Enemy->SetPosition(position);
+					if (cruchAttack->GetCooldown() == 0) {
+						if (distance > cruchAttack->GetRange()) {
+							rotationY = atan2f(direction.x, direction.z);
+							velocity = direction * 1.0f * elapsedTime;
+						}
+						else {
+							cruchAttack->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
+							m_CooldownTimer.SetTime(cruchAttack->GetCharaCooldown(), true);
+						}
+					}
+					else if (gunAttack->GetCooldown() == 0) {
+						if (distance > gunAttack->GetRange() * 0.9f) {
+							rotationY = atan2f(direction.x, direction.z);
+							velocity = direction * 1.0f * elapsedTime;
+						}
+						else {
+							gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
+							m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);
+						}
+					}
 				}
+				if (gunAttack->GetCooldown() != 0 && cruchAttack->GetCooldown() != 0) {
+					rotationY = atan2f(direction.x, direction.z);
+					if (distance > m_NearDistance.length()) {
+						velocity = direction * 1.0f * elapsedTime;
+					}
+					else {
+						if (Util::RandZeroToOne() > 0.95f) {
+							m_SideStepDirection *= -1;
+						}
+						else {
+							velocity = cross(direction, Vec3(0, 1, 0)) * 1.0f * elapsedTime * m_SideStepDirection;
+						}
+					}
+				}
+				position += velocity;
+				m_Enemy->SetPosition(position);
+				m_Enemy->SetRotation(Vec3(0, rotationY, 0));
 			}
 
 		}

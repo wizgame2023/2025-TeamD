@@ -5,7 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
-
+#include "AttakCollision.h"
 namespace basecross {
 
 	template <typename> class EnemyState;
@@ -13,6 +13,8 @@ namespace basecross {
 	class Enemy;
 	class BossEnemy : public Enemy
 	{
+		friend class BossAttack;
+
 		bool m_IsAppearance;
 		float m_ConditionTime;
 		int m_ConditionDefeat;
@@ -20,10 +22,8 @@ namespace basecross {
 		unique_ptr<EnemyState<BossEnemy>> m_currentState;  
 		unique_ptr<EnemyState<BossEnemy>> m_nextState;   
 
-		//shared_ptr<CrushAttack> m_Cruch;
-		//shared_ptr<MachineGun> m_Gun;
-
-		friend BossAttack;
+		shared_ptr<CrushAttack> m_Cruch;
+		shared_ptr<MachineGun> m_Gun;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -34,6 +34,7 @@ namespace basecross {
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
 
+		
 		void SetCondition(float time, int defeatCount) {
 			m_IsAppearance = false;
 			m_ConditionDefeat = defeatCount;

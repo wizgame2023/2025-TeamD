@@ -8,9 +8,11 @@
 #include "MobState.h"
 #include "BossEnemy.h"
 #include "AttakCollision.h"
+#include "Timer.h"
 namespace basecross {
 	class Enemy;
 	class LineCube;
+
 	class BossSearch : public EnemyState<BossEnemy>
 	{
 		bool m_IntruderAlert;
@@ -34,15 +36,16 @@ namespace basecross {
 		bool m_IntruderAlert;
 		float m_ChangeTime;
 		float m_Cooldown;
-
-		shared_ptr<CrushAttack> m_Cruch;
-		shared_ptr<MachineGun> m_Gun;
+		Timer m_CooldownTimer;
 
 		Vec3 m_LastInturderPosition;
+
+		Vec3 m_NearDistance;
+		float m_SideStepDirection;
 	public:
 		BossAttack(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
-			m_ChangeTime(1.0f),m_Cooldown(0.0f),m_LastInturderPosition(Vec3())
+			m_ChangeTime(1.0f),m_Cooldown(0.0f),m_CooldownTimer(Timer(false)), m_LastInturderPosition(Vec3()), m_NearDistance(0.2f), m_SideStepDirection(1.0f)
 		{
 		}
 
