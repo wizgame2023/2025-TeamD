@@ -13,8 +13,10 @@ namespace basecross {
 	public:
 		float m_HP;
 		float m_MaxHP;
+		float m_Speed;
+
 		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
-			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0) {
+			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0),m_Speed(1.0f) {
 		}
 		Character(const shared_ptr<Stage>& stage) :
 			Character(stage, Vec3(), Vec3(), Vec3(1.0f))
@@ -38,6 +40,7 @@ namespace basecross {
 		double DotProduct(const Vec3& v1, const Vec3& v2);
 		double Magnitude(const Vec3& v);
 
+		void Move(const Vec3& direction);
 		void InitHP(int hp) {
 			m_MaxHP = hp;
 			m_HP = hp;
@@ -47,6 +50,12 @@ namespace basecross {
 		}
 		float GetHP() {
 			return m_HP;
+		}
+		void SetSpeed(float speed) {
+			m_Speed = speed;
+		}
+		float GetSpeed() {
+			return m_Speed;
 		}
 	};
 

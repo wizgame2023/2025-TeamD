@@ -108,7 +108,7 @@ namespace basecross {
 		auto obj = m_Builders[date[GetInfoIndex(L"name")]]->Create();
 		obj->SetPosition(position * m_Scale);
 		obj->SetScale(scale * m_Scale);
-		obj->SetRotation(rotation);
+		obj->SetRotation(Vec3(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)));
 
 		return obj;
 	}

@@ -60,11 +60,13 @@ namespace basecross {
 	}
 	void MachineGun::OnUpdate() {
 		Attack::OnUpdate();
+		if (!GetDrawActive()) return;
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (m_ShotInterval < 0) {
 			m_ShotInterval = m_Date.m_MaxExitTime / m_LaunchNum;
-			Vec3 direction = m_Target->GetComponent<Transform>()->GetPosition() - m_Transform->GetPosition();
-			m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * 0.1f, 2.0f, direction, m_Date.m_Range);
+			Vec3 position = m_Transform->GetPosition();
+			Vec3 direction = m_Target->GetComponent<Transform>()->GetPosition() - position;
+			m_Stage->AddGameObject<Bullet>(position + direction * 0.1f, 2.0f, direction, m_Date.m_Range);
 		}
 		else {
 			m_ShotInterval -= elapsed;

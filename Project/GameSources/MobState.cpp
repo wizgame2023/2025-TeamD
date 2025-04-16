@@ -36,7 +36,7 @@ namespace basecross {
 				Vec3 pos = m_Enemy->GetPosition();
 				m_Path[0].y = pos.y;
 				Vec3 direction = m_Path[0] - pos;
-				if (direction.length() < 0.1f) {
+				if (direction.length() < 1.0f) {
 					m_Path.erase(m_Path.begin());
 				}
 				else {
@@ -52,7 +52,7 @@ namespace basecross {
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert)
 		{
-			m_Enemy->ChangeState<MobAlert>();
+			m_Enemy->ChangeState<MobJoinAlert>();
 		}
 	}
 	void MobSearch::Exit()
@@ -82,7 +82,7 @@ namespace basecross {
 
 			SoundManager::Instance().PlaySE(L"SE_SHOT");
 		}
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		m_IntruderAlert = mob->GetIntruderAlert();
 		if (m_IntruderAlert == false)
 		{
 			m_Enemy->ChangeState<MobSearch>();
@@ -108,17 +108,22 @@ namespace basecross {
 		Vec3 currntPosition = m_Enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		if (navi) {
-			auto point = navi->GetNearPinter(m_Enemy->GetPosition());
-			auto target = navi->GetNearPinter(m_Player->GetPosition());
 			if (m_Path.size() == 0)
 			{
+				auto point = navi->GetNearPinter(m_Enemy->GetPosition());
+				auto target = navi->GetNearPinter(m_Player->GetPosition());
+				if ((point->GetPosition() - target->GetPosition()).length() < 3.0f)
+				{
+					m_Enemy->ChangeState<MobAlert>();
+				}
+
 				m_Path = navi->FindPathWithWaypoints(point, m_Player->GetPosition());
 			}
 			else {
 				Vec3 pos = m_Enemy->GetPosition();
 				m_Path[0].y = pos.y;
 				Vec3 direction = m_Path[0] - pos;
-				if (direction.length() < 0.1f) {
+				if (direction.length() < 3.0f) {
 					m_Path.erase(m_Path.begin());
 				}
 				else {
@@ -128,10 +133,6 @@ namespace basecross {
 					pos += direction * 3.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 				}
 				m_Enemy->SetPosition(pos);
-			}
-			if ((point->GetPosition() - target->GetPosition()).length() < 1.0f)
-			{
-				m_Enemy->ChangeState<MobAlert>();
 			}
 
 		}
