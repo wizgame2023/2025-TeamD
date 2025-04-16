@@ -483,10 +483,6 @@ namespace basecross {
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;
 		}
-		if (other->FindTag(L"Enemy"))
-		{
-			m_EnergyCharge += 0.1;
-		}
 	}
 
 	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player) :
@@ -494,7 +490,7 @@ namespace basecross {
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
-		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
+		m_HitScale(Vec3(1.0f)),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
