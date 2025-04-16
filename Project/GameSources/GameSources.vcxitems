@@ -48,6 +48,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
   </ItemGroup>
@@ -85,6 +86,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
