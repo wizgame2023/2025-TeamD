@@ -8,7 +8,7 @@
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage, position, Vec3(), scale) {
+		Character(stage, position, Vec3(), scale){
 	}
 	Enemy::~Enemy()
 	{
@@ -17,7 +17,7 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		InitHP(3);
-
+		m_AlertTime = 5.0f;
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
@@ -96,8 +96,8 @@ namespace basecross {
 	void Enemy::SearchRange()
 	{
 		float searchDistance = 10.0f;
-
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
@@ -132,6 +132,14 @@ namespace basecross {
 		}
 	}
 
+	void Enemy::IntervalEnemy(const Vec3& target)
+	{
+		Vec3 crrentPosition = GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		crrentPosition += target * elapsedTime * m_ZoneElapsedTime;
+		SetPosition(crrentPosition);
+	}
+
 	Vec3 Enemy::GetPosition()
 	{
 		return m_Transform->GetPosition();
@@ -139,7 +147,21 @@ namespace basecross {
 
 	bool Enemy::GetIntruderAlert()
 	{
-		return m_IntruderAlert;
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		if (m_IntruderAlert == false){
+			m_AlertTime -= elapsedTime;
+			if (m_AlertTime < 0.0f)
+			{
+				return false;
+				m_AlertTime = 5.0f;
+			}
+			else {
+				return true;
+			}
+		}
+		else {
+			return true;
+		}
 	}
 	void Enemy::SetIntruderAlert(bool flag)
 	{
