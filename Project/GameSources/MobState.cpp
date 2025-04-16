@@ -29,7 +29,7 @@ namespace basecross {
 			if (m_Path.size() == 0)
 			{
 				auto cellpoint = m_Enemy->RootNaviGate();
-				auto point = navi->GetNearPinter(m_Enemy->GetPosition());
+				auto point = navi->GetNearPointer(m_Enemy->GetPosition());
 				m_Path = navi->FindPathWithWaypoints(point, cellpoint);
 			}
 			else {
@@ -124,8 +124,8 @@ namespace basecross {
 			{
 				if (m_Path.size() == 0)
 				{
-					auto point = navi->GetNearPinter(enemy->GetPosition());
-					auto target = navi->GetNearPinter(m_Player->GetPosition());
+					auto point = navi->GetNearPointer(enemy->GetPosition());
+					auto target = navi->GetNearPointer(m_Player->GetPosition());
 
 					m_Path = navi->FindPathWithWaypoints(point, m_Player->GetPosition());
 				}
