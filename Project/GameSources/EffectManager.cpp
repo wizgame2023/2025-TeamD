@@ -52,6 +52,11 @@ namespace basecross {
 		m_renderer->EndRendering();
 	}
 
+	void EffectManeger::SetEffectSpeed(const float& speed)
+	{
+		m_Manager->SetSpeed(m_handle, speed);
+	}
+
 	void EffectManeger::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
 	{
 		for (int i = 0; i < 4; i++) {

@@ -23,6 +23,8 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 
+		void MobAreaInterval();
+
 		void SetLegionNumber(const int& number)
 		{
 			m_LegionNumber = number;
