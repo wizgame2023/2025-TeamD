@@ -16,29 +16,26 @@ namespace basecross {
 	}
 	void Legion::OnUpdate()
 	{
+		MobAreaInterval();
 		for (int i = 0; i < m_GruopEnemy.size(); i++)
 		{
 			auto enemy = m_GruopEnemy[i].lock();
 			ReportAlert(enemy->GetIntruderAlert());
+			if (m_IntruderAlert == true)
+			{
+				break;
+			}
 		}
-		if (m_IntruderAlert)
+		if (m_IntruderAlert == true)
 		{
-			MobAreaInterval();
 			for (int i = 0; i < m_GruopEnemy.size(); i++)
 			{
 				auto enemy = m_GruopEnemy[i].lock();
 				auto mob = dynamic_pointer_cast<Mob>(enemy);
+				mob->SetIntruderAlert(true);
 				ChangeEnemyMove<MobJoinAlert>(mob);
 			}
 		}
-		//else {
-		//	for (int i = 0; i < m_GruopEnemy.size(); i++)
-		//	{
-		//		auto enemy = m_GruopEnemy[i].lock();
-		//		auto mob = dynamic_pointer_cast<Mob>(enemy);
-		//		ChangeEnemyMove<MobSearch>(mob);
-		//	}
-		//}
 
 	}
 
@@ -46,7 +43,7 @@ namespace basecross {
 	{
 		Vec3 nearEnemyPosition = Vec3();
 		shared_ptr<Enemy> nearEnemy = nullptr;
-		float minDistance = 0.5f; // Mobの一定範囲を定義
+		float minDistance = 1.0f; // Mobの一定範囲を定義
 
 		for (int i = 0; i < m_GruopEnemy.size(); i++)
 		{

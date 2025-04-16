@@ -22,7 +22,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->AddExcludeCollisionTag(L"Enemy");
+		ptrColl->AddExcludeCollisionTag(L"Mob");
 
 		//描画設定
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();

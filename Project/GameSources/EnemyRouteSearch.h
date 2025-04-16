@@ -60,7 +60,6 @@ namespace basecross {
 			return (std::abs(a.x - b.x) < tolerance && std::abs(a.z - b.z) < tolerance);
 		}
 
-		Vec3 GetAStarForword(const Vec3 Position);
 
 		Vec3 GetBefperePosition() {
 			return m_BeforeTarget;

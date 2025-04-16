@@ -39,23 +39,10 @@ namespace basecross {
 			for (auto& point : pointers)
 			{
 				auto shObj = point.lock();
-				Vec3 vec1 = shObj->GetComponent<Transform>()->GetPosition();
 				m_PointData.push_back(shObj);
-				if (m_NearPoint == nullptr)
-				{
-					m_NearPoint = shObj;
-				}
-				Vec3 vec0 = m_NearPoint->GetComponent<Transform>()->GetPosition();
-				auto obj = dynamic_pointer_cast<RootPointer>(shObj);
-				wstring num = obj->GetPointerNumber();
-				if ((vec1 - m_Position).length() < (vec0 - m_Position).length() && num != L"")
-				{
-					m_NearPoint = shObj;
-				}
 			}
-
-			Vec3 pos = m_PointData[0]->GetComponent<Transform>()->GetPosition();
-			navi->AvoidBlock(GetPosition(), pos);
+			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
+			m_NearPoint = m_PointData[rnd];
 		}
 
 		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
@@ -147,8 +134,9 @@ namespace basecross {
 		vector<int> memoryNum;
 		for (auto point : pointers)
 		{
+			auto shObj = point.lock();
 			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
-			if (m_BeforPoint = m_PointData[rnd])
+			if (shObj = m_PointData[rnd])
 			{
 				continue;
 			}
