@@ -10,12 +10,14 @@ namespace basecross {
 
 	class Character : public Object
 	{
-	public:
+	protected:
 		float m_HP;
 		float m_MaxHP;
 		float m_Speed;
 		float m_AttackDamage;
-
+		float m_ZoneElapsedTime;
+	public:
+		
 		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
 			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0),m_Speed(1.0f) {
 		}
@@ -40,7 +42,8 @@ namespace basecross {
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
 		double Magnitude(const Vec3& v);
-
+		void ZoneSpeedSet();
+		inline float GetElpasedTime();
 		void Move(const Vec3& direction);
 		void InitHP(int hp) {
 			m_MaxHP = hp;
