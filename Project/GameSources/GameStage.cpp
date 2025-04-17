@@ -110,6 +110,7 @@ namespace basecross {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 		SoundManager::Instance().PauseBGM(false);
+		//m_Effect->SetEffectPause(false);
 	}
 	/// <summary>
 	/// ポーズ画面を開く
@@ -118,6 +119,7 @@ namespace basecross {
 		m_IsPose = true;
 		ButtonManager::instance->Close(L"SOUND_TEST");
 		ButtonManager::instance->OpenAndUse(L"POSE");
+		//m_Effect->SetEffectPause(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -191,6 +193,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
+				m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
@@ -210,6 +213,7 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			m_Effect->SetEffectPause(false);
 
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);

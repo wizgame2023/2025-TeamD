@@ -71,6 +71,7 @@ namespace basecross {
 		virtual void OnDraw()override;
 
 		void SetEffectSpeed(const float& speed);
+		void SetEffectPause(const bool& pause);
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
 		void PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);

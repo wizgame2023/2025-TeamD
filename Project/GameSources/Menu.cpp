@@ -31,6 +31,7 @@ namespace basecross {
 		ButtonManager::instance->OpenAndUse(m_GroupName);
 		SoundManager::Instance().PauseBGM(true);
 		m_IsOpen = true;
+		//m_Effect->SetEffectPause(true);
 	}
 	void Menu::Close() {
 		for (auto& obj : m_MenuObjects) {
@@ -40,6 +41,7 @@ namespace basecross {
 		ButtonManager::instance->Close(m_GroupName);
 		SoundManager::Instance().PauseBGM(false);
 		m_IsOpen = false;
+		//m_Effect->SetEffectPause(false);
 	}
 
 	void PauseMenu::OnCreate() {
