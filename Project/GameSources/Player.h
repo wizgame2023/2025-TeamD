@@ -25,6 +25,7 @@ namespace basecross {
 		float m_DamageInterval;
 		bool m_ParryJudge;
 		bool m_DamageIntervalStart;
+		bool m_IsGoal;
 
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
@@ -61,6 +62,7 @@ namespace basecross {
 		Vec3 GetForward();
 		int GetStates();
 		float GetEnergy();
+		void SetIsGaol(const bool& goal);
 		Vec3 SearchRange();
 
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);

@@ -32,7 +32,7 @@ namespace basecross {
 
 
 		Effekseer::EffectRef m_Effect;
-	public:	
+	public:
 
 		//--------------------------------------------------------------------------------------
 		/*!
@@ -71,6 +71,7 @@ namespace basecross {
 		virtual void OnDraw()override;
 
 		void SetEffectSpeed(const float& speed);
+		void SetEffectPause(const bool& speed);
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
 		void PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);
@@ -80,7 +81,7 @@ namespace basecross {
 		{
 			return m_Manager;
 		}
-		
+
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(const bsm::Vec3& Location);
 		void SetLocation(const bsm::Vec3& Location);//位置
