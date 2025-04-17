@@ -22,7 +22,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->AddExcludeCollisionTag(L"Enemy");
+		ptrColl->AddExcludeCollisionTag(L"Mob");
 
 		//描画設定
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -186,7 +186,7 @@ namespace basecross {
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			Damage(1.0f, false);
+			Damage(m_Intruder->GetAttackDamage(), false);
 			KnockBackTime(other);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}

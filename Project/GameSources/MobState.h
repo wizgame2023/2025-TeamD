@@ -26,6 +26,7 @@ namespace basecross {
 
 		virtual void Enter()
 		{
+
 			m_Stage = m_Enemy->GetStage();
 			m_Transform = m_Enemy->GetComponent<Transform>();
 			m_Player = m_Enemy->m_Intruder;

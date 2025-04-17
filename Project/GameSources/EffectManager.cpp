@@ -57,6 +57,11 @@ namespace basecross {
 		m_Manager->SetSpeed(m_handle, speed);
 	}
 
+	void EffectManeger::SetEffectPause(const bool& pause)
+	{
+		m_Manager->SetPausedToAllEffects(pause);
+	}
+
 	void EffectManeger::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
 	{
 		for (int i = 0; i < 4; i++) {

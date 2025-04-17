@@ -38,37 +38,9 @@ namespace basecross {
 
     void Navigate::SetTargetPosition(const Vec3& Position, const Vec3& target)
     {
-
         m_TargetPosition = target;
     }
 
-    Vec3 Navigate::GetAStarForword(const Vec3 Position)
-    {
-        if (m_DireChange)
-        {
-            if (m_NaviPoint.size() != 0)
-            {
-                if ((Position - m_TargetPosition).lengthSqr() >= 1.5f)
-                {
-                    Vec3 nextPoint = m_NaviPoint.front(); // 次のウェイポイントを取得
-                    Vec3 direction = (nextPoint - Position);
-                    return direction.normalize();;
-                }
-                else {
-                    m_NaviPoint.erase(m_NaviPoint.begin());
-                }
-            }
-        }
-        if ((Position - m_TargetPosition).length() < 1.5f)
-        {
-            m_DireChange = false;
-            m_BossPause = false;
-            m_Index = m_TargetPosition;
-            m_BeforeTarget = m_TargetPosition;
-            return Vec3(0, 0, 0);
-        }
-        return Vec3(0, 0, 0);
-    }
 
     std::vector<Vec3> Navigate::FindPathWithWaypoints(const shared_ptr<RootPointer>& pointer, const Vec3& goal) {
         auto heuristic = [](const Vec3& a, const Vec3& b) {
@@ -482,7 +454,7 @@ namespace basecross {
         return -1; // 該当なしの場合
     }
 
-    shared_ptr<RootPointer>  Navigate::GetNearPinter(const Vec3& position) {
+    shared_ptr<RootPointer>  Navigate::GetNearPointer(const Vec3& position) {
         float memoryPos = 100000000;
         Vec3 outCome = Vec3();
         Vec3 nearPoint = Vec3();
@@ -490,7 +462,7 @@ namespace basecross {
 
         for (int i = 0; i < m_CellData.size(); i++)
         {
-            Vec3 vec = m_CellData[i]->GetComponent<Transform>()->GetPosition();
+            Vec3 vec = m_CellData[i]->GetPosition();
             if (nearPoint == Vec3())
             {
                 nearPoint = vec;
@@ -572,12 +544,10 @@ namespace basecross {
         Vec3 result = Vec3();
         if (m_CellData.size() == 0) return;
 
-        //if (m_BossPause == false)
-        //{
-        //    
-        //    SetPoint = NextWayPoint(Position, Target);
-
-        //}
+        if (m_BossPause == false)
+        {            
+            SetPoint = NextWayPoint(Position, Target);
+        }
         SetTargetPosition(Position, Target);
     }
 }

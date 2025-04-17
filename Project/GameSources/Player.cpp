@@ -122,12 +122,14 @@ namespace basecross {
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
+			SetAttackDamage(3.0f);
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f)
 			{
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
+				SetAttackDamage(1.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			}
@@ -273,7 +275,7 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		InitHP(20);
-
+		SetAttackDamage(1.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
@@ -415,7 +417,7 @@ namespace basecross {
 				float rotate = atan2f(forward.x, forward.z);
 
 
-				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0);
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
 				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 
@@ -477,10 +479,6 @@ namespace basecross {
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;
 		}
-		if (other->FindTag(L"Enemy"))
-		{
-			m_EnergyCharge += 0.1;
-		}
 	}
 
 	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player) :
@@ -488,7 +486,7 @@ namespace basecross {
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
-		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
+		m_HitScale(Vec3(1.0f)),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
@@ -522,7 +520,7 @@ namespace basecross {
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 6.0f;
+			m_Speed = 8.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
