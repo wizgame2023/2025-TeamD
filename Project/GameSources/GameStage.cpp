@@ -54,6 +54,7 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
+		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
@@ -102,21 +103,27 @@ namespace basecross {
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
 	}
-	/// <summary>
-	/// ポーズ画面を閉じる
-	/// </summary>
-	void GameStage::ClosePose() {
-		m_IsPose = false;
-		ButtonManager::instance->Close(L"POSE");
-		SoundManager::Instance().PauseBGM(false);
-	}
-	/// <summary>
-	/// ポーズ画面を開く
-	/// </summary>
-	void GameStage::OpenPose() {
-		m_IsPose = true;
-		ButtonManager::instance->Close(L"SOUND_TEST");
-		ButtonManager::instance->OpenAndUse(L"POSE");
+	void GameStage::CreateUI() {
+		auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
+		icon->SetInput(XINPUT_GAMEPAD_A);
+		icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		icon->SetInput(XINPUT_GAMEPAD_X);
+		m_UltIcon = AddGameObject<UltIcon>();
+
+		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
+
+		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBar->SetDiffuse(Col4(1, 0, 0, 1));
+
+		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
+		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -163,7 +170,7 @@ namespace basecross {
 			CreatePose();
 			CreateResult();
 			ButtonManager::instance->CloseAll();
-
+			CreateUI();
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -171,11 +178,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-			auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
-			icon->SetInput(XINPUT_GAMEPAD_A);
-			icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-			icon->SetInput(XINPUT_GAMEPAD_X);
-			m_UltIcon = AddGameObject<UltIcon>();
+
 		}
 		catch (...) {
 			throw;
@@ -226,6 +229,27 @@ namespace basecross {
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			m_UltIcon->SetCharge(player->GetEnergy());
+
+			float currentHp = player->GetHP();
+			float maxHp = player->GetMaxHP();
+			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+		}
+		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		if (boss != nullptr) {
+			bool isBossDraw = boss->GetDrawActive();
+			if (isBossDraw) {
+				float currentHp = boss->GetHP();
+				float maxHp = boss->GetMaxHP();
+				m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+			}
+			m_BossHpBar->SetDrawActive(isBossDraw);
+			m_BossHpBarBackGround->SetDrawActive(isBossDraw);
+			m_BossText->SetDrawActive(isBossDraw);
+		}
+		else {
+			m_BossHpBar->SetDrawActive(false);
+			m_BossHpBarBackGround->SetDrawActive(false);
+			m_BossText->SetDrawActive(false);
 		}
 	}
 

@@ -8,6 +8,7 @@
 
 namespace basecross {
 	class NumberSprite;
+	class Sprite;
 	class Menu;
 	class UltIcon;
 	//--------------------------------------------------------------------------------------
@@ -18,14 +19,19 @@ namespace basecross {
 		bool m_IsPose;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
-		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<NumberSprite> m_ProtoScoreNumber;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
 
 		shared_ptr<UltIcon> m_UltIcon;
+		shared_ptr<Sprite> m_PlayerHpBar;
+		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+
+		shared_ptr<Sprite> m_BossHpBar;
+		shared_ptr<Sprite> m_BossHpBarBackGround;
+		shared_ptr<Sprite> m_BossText;
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
@@ -35,9 +41,7 @@ namespace basecross {
 		void CreatePose();
 		void CreateSoundTest();
 		void CreateResult();
-
-		void ClosePose();
-		void OpenPose();
+		void CreateUI();
 		void SetAllGameObjectActive(bool flag);
 		float GetClearRate() {
 			if (m_MaxEnemyCount <= 0) return 100.0f;

@@ -19,7 +19,7 @@ namespace basecross {
 		if (navigate) {
 			if (m_Path.size() == 0) {
 				m_Line->SetDrawActive(false);
-				if (interval <= 0.0f) {
+				if (m_OperatorIntarval.UpdateTimer()) {
 					float rndOparation = Util::RandZeroToOne() * 100.0f;
 					if (rndOparation < 40) {
 						auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
@@ -40,10 +40,6 @@ namespace basecross {
 						} while (RayCast::HitTestVec(RayCastHit(), Line(m_Enemy->GetPosition(), target), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" }));
 						m_Path.push_back(target);
 					}
-					interval = maxInterval;
-				}
-				else {
-					interval -= elapsed;
 				}
 			}
 			else {
@@ -67,25 +63,25 @@ namespace basecross {
 		}
 		m_Enemy->SearchRange();
 		if (m_Enemy->GetIntruderAlert()) {
-			m_Enemy->ChangeState<BossAttack>();
+			m_Enemy->ChangeState<BossHostility>();
 		}
 	}
 	void BossSearch::Exit()
 	{
 		m_Stage->RemoveGameObject<LineCube>(m_Line);
 	}
-	void BossAttack::Enter()
+	void BossHostility::Enter()
 	{
 		EnemyState::Enter();
 	}
-	void BossAttack::Execute()
+	void BossHostility::Execute()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime() * m_Enemy->m_ZoneElapsedTime;
 		auto navi = m_Enemy->GetComponent<Navigate>();
-		m_ChangeTime -= elapsedTime;
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
-		if (RayCast::HitTestVec(RayCastHit(), Line(position, intruderPosition), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" })) {
+		RayCastHit hit;
+		if (RayCast::HitTestVec(hit, Line(position, intruderPosition), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy",L"Player" })) {
 			m_Enemy->SetIntruderAlert(false);
 			if (m_LastInturderPosition != Vec3()) {
 				Vec3 direction = m_LastInturderPosition - position;
@@ -93,15 +89,15 @@ namespace basecross {
 					direction = direction.normalize();
 					float rotate = atan2f(direction.x, direction.z);
 					m_Enemy->SetRotation(Vec3(0, rotate, 0));
-					position += direction * 1.0f * elapsedTime;
+					m_Enemy->Move(direction);
 				}
 				else {
 					m_Enemy->SearchRange();
 					if (!m_Enemy->GetIntruderAlert()) {
 						m_Enemy->ChangeState<BossSearch>();
+						return;
 					}
 				}
-				m_Enemy->SetPosition(position);
 			}
 		}
 		else {
@@ -117,58 +113,158 @@ namespace basecross {
 				direction = direction.normalize();
 				Vec3 velocity = Vec3();
 				float rotationY = 0;
-				if (distance > gunAttack->GetRange() / 2.0f && gunAttack->GetCooldown() == 0) {
-					gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
-					m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);
-					//m_Cooldown = gunAttack->GetCharaCooldown();
+				if (gunAttack->IsInRange(distance) && distance > gunAttack->GetRange() * 0.2f && gunAttack->GetCooldown() == 0) {
+					m_Enemy->ChangeState<BossGun>();
+					return;
+					/*gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
+					m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);*/
 				}
 				else {
 					if (cruchAttack->GetCooldown() == 0) {
-						if (distance > cruchAttack->GetRange()) {
+						m_Enemy->ChangeState<BossCrush>();
+						return;
+						/*if (!cruchAttack->IsInRange(distance)) {
 							rotationY = atan2f(direction.x, direction.z);
-							velocity = direction * 1.0f * elapsedTime;
+							m_Enemy->Move(direction);
 						}
 						else {
 							cruchAttack->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
 							m_CooldownTimer.SetTime(cruchAttack->GetCharaCooldown(), true);
-						}
+						}*/
 					}
 					else if (gunAttack->GetCooldown() == 0) {
-						if (distance > gunAttack->GetRange() * 0.9f) {
+						m_Enemy->ChangeState<BossGun>();
+						return;
+						/*if (!gunAttack->IsInRange(distance)) {
 							rotationY = atan2f(direction.x, direction.z);
-							velocity = direction * 1.0f * elapsedTime;
+							m_Enemy->Move(direction);
 						}
 						else {
-							gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
+							gunAttack->Play(position + Vec3(0, 0.6f, 0.0f));
 							m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);
-						}
+						}*/
 					}
 				}
 				if (gunAttack->GetCooldown() != 0 && cruchAttack->GetCooldown() != 0) {
 					rotationY = atan2f(direction.x, direction.z);
 					if (distance > m_NearDistance.length()) {
-						velocity = direction * 1.0f * elapsedTime;
+						m_Enemy->Move(direction);
 					}
 					else {
-						if (Util::RandZeroToOne() > 0.95f) {
-							m_SideStepDirection *= -1;
+						if (m_SideStepTimer.UpdateTimer()) {
+							if (Util::RandZeroToOne() > 0.95f) {
+								m_SideStepDirection *= -1;
+								m_SideStepTimer.SetTime(0.5f, true);
+							}
 						}
-						else {
-							velocity = cross(direction, Vec3(0, 1, 0)) * 1.0f * elapsedTime * m_SideStepDirection;
-						}
+						m_Enemy->Move(cross(direction, Vec3(0, 1, 0)) * m_SideStepDirection / 5.0f);
 					}
 				}
 				position += velocity;
-				m_Enemy->SetPosition(position);
 				m_Enemy->SetRotation(Vec3(0, rotationY, 0));
 			}
 
 		}
 	}
-	void BossAttack::Exit()
+	void BossHostility::Exit()
 	{
 	}
+	
+	void BossCrush::Enter()
+	{
+		EnemyState::Enter();
+		m_Attack = m_Enemy->m_Cruch;
+	}
+	void BossCrush::Execute()
+	{
+		float elapsed = App::GetApp()->GetElapsedTime();
+		Vec3 position = m_Enemy->GetPosition();
+		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 
+		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		direction = direction.normalize();
+		if (!m_IsFinish) {
+			if (m_Attack->IsInRange(distance) && !m_IsReady) {
+				m_IsReady = true;
+				m_ReadyTimer.SetTime(0.5f, true);
+			}
+			else if (distance > m_Attack->GetRange() * 10.0f && m_Enemy->m_Gun->GetCooldown() == 0) {
+				m_Enemy->ChangeState<BossHostility>();
+				return;
+			}
+			if (m_IsReady) {
+				if (m_ReadyTimer.UpdateTimer()) {
+					m_Attack->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
+					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
+					m_IsFinish = true;
+					m_FinishedForward = m_Enemy->GetForward();
+				}
+			}
+			else {
+				float rotationY = atan2f(direction.x, direction.z);
+				m_Enemy->SetRotation(Vec3(0, rotationY, 0));
+				m_Enemy->Move(direction);
+			}
+		}
+		else {
+			if (m_CooldownTimer.UpdateTimer()) {
+				if (LerpRotatePlayer(direction)) {
+					m_Enemy->ChangeState<BossHostility>();
+				}
+
+			}
+		}
+	}
+	void BossCrush::Exit()
+	{
+
+	}
+	void BossGun::Enter()
+	{
+		EnemyState::Enter();
+		m_Attack = m_Enemy->m_Gun;
+	}
+	void BossGun::Execute()
+	{
+		Vec3 position = m_Enemy->GetPosition();
+		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
+
+		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		if (!m_IsFinish) {
+			if (m_Attack->IsInRange(distance) && !m_IsReady) {
+				m_IsReady = true;
+				m_ReadyTimer.SetTime(0.5f, true);
+			}
+			if (m_IsReady) {
+				if (m_Attack->IsFinish()) {
+					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
+					m_IsFinish = true;
+					m_FinishedForward = m_Enemy->GetForward();
+				}
+				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive()) {
+					m_Attack->Play(position + Vec3(0, 0.6f, 0.0f));
+				}
+			}
+			else {
+				m_Enemy->Move(direction);
+			}
+			float rotationY = atan2f(direction.x, direction.z);
+			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
+		}
+		else {
+			if (m_CooldownTimer.UpdateTimer()) {
+				if (LerpRotatePlayer(direction)) {
+					m_Enemy->ChangeState<BossHostility>();
+				}
+			}
+		}
+	}
+	void BossGun::Exit()
+	{
+
+	}
 }
 
 //end basecross

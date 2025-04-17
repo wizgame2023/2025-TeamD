@@ -295,10 +295,10 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.45f, 0.22f, 0.45f), //(.1f, .1f, .1f),
+			Vec3(0.1f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.0f, 0.0f)
+			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetTextureResource(L"01");
@@ -422,10 +422,9 @@ namespace basecross {
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 					float rotate = atan2f(forward.x, forward.z);
 
-
-					m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0);
-					m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
+				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
+				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
+				m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;

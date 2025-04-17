@@ -7,6 +7,7 @@
 #include "stdafx.h"
 
 namespace basecross {
+	class SpriteFade;
 
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
@@ -19,7 +20,8 @@ namespace basecross {
 		void CreateResource();
 		void CreateTitle();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
-
+		shared_ptr<SpriteFade> m_Fade;
+		//bool m_fade;
 	public:
 		//構築と破棄
 		TitleStage() :Stage() {}
