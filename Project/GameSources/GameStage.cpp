@@ -244,6 +244,11 @@ namespace basecross {
 			m_BossHpBarBackGround->SetDrawActive(isBossDraw);
 			m_BossText->SetDrawActive(isBossDraw);
 		}
+		else {
+			m_BossHpBar->SetDrawActive(false);
+			m_BossHpBarBackGround->SetDrawActive(false);
+			m_BossText->SetDrawActive(false);
+		}
 	}
 
 

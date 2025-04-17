@@ -21,6 +21,9 @@ namespace basecross {
 				m_Timer = 0;
 			}
 		}
+		float GetTime() {
+			return m_Timer;
+		}
 		float GetMaxTime() {
 			return m_MaxTime;
 		}

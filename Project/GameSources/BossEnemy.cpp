@@ -10,7 +10,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100)
+		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_ComboTimer(Timer(1.0f,false)),m_IsStun(false)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -19,7 +19,7 @@ namespace basecross {
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		m_HP = 10;
+		SetSpeed(0.5f);
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -52,8 +52,8 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(1.0f, 5.0f, 2.0f, 10.0f, 2.0f), 20.0f);
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(GetThis<BossEnemy>(),3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
+		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 
 	}
 
@@ -76,7 +76,45 @@ namespace basecross {
 			}
 		}
 		else {
-			m_currentState->Execute();
+			if (!m_IsStun) {
+				m_currentState->Execute();
+				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+				ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+			}
+			else {
+				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+				ptrDraw->SetDiffuse(Col4(0, 0, 0, 1));
+				m_Stun -= elapsed / 2.0f;
+				if (m_Stun < 0) {
+					m_Stun = 0;
+					m_IsStun = false;
+				}
+			}
+			if (m_ComboTimer.UpdateTimer()) {
+				m_ComboCount = 0;
+				m_Stun -= elapsed / 10.0f;
+				m_Stun = max(0, m_Stun);
+			}
+		}
+	}
+	void BossEnemy::AddStun(float stun) {
+		if (!m_IsStun) {
+			m_Stun += stun;
+			if (m_Stun > 1.0f) {
+				m_IsStun = true;
+			}
+		}
+	}
+	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		if (other->FindTag(L"HitJudge")) {
+			Damage(2.0f, false);
+			AddStun(0.01f * (m_ComboCount + 1));
+			if (!m_IsStun) {
+				m_ComboCount++;
+				m_ComboCount = min(4, m_ComboCount);
+				m_ComboTimer.SetTime(1.0f, true);
+			}
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}
 	void BossEnemy::Dead()
@@ -85,17 +123,7 @@ namespace basecross {
 	}
 	void BossEnemy::Damage(float damage, const bool& isSound) {
 		Enemy::Damage(damage, isSound);
-		ChangeState<BossAttack>();
-	}
-
-	Vec3 BossEnemy::GetPosition()
-	{
-		return m_Transform->GetPosition();;
-	}
-
-	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other)
-	{
-		Enemy::OnCollisionEnter(other);
+		ChangeState<BossHostility>();
 	}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
