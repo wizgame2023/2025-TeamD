@@ -136,6 +136,16 @@ namespace basecross {
 			}
 		}
 	}
+	void GameStage::GameClear() {
+		m_ResultMenu->Open();
+		auto camera = GetView()->GetTargetCamera();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr && camera != nullptr) {
+			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+			auto view = static_pointer_cast<SingleView>(GetView());
+			view->SetCamera(newCamera);
+		}
+	}
 	void GameStage::CreateBossEnemy()
 	{
 		vector< vector<Vec3> > vec = {
@@ -193,21 +203,6 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				if (m_ResultMenu->IsOpen()) {
-					m_ResultMenu->Close();
-				}
-				else {
-					m_ResultMenu->Open();
-					auto camera = GetView()->GetTargetCamera();
-					auto player = GetSharedGameObject<Player>(L"Player", false);
-					if (player != nullptr && camera != nullptr) {
-						auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
-						auto view = static_pointer_cast<SingleView>(GetView());
-						view->SetCamera(newCamera);
-					}
-				}
 			}
 		}
 
