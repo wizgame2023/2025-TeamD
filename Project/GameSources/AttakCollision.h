@@ -5,33 +5,35 @@
 
 #pragma once
 #include "stdafx.h"
-#include "StageBuilder.h"
+#include "Timer.h"
 namespace basecross {
+	class Character;
 	struct AttackDate {
+		shared_ptr<Character> m_Owner;
 		float m_Damage;
 		float m_Range;
-		float m_MaxExitTime;
-		float m_ExistenceTime;
-		float m_Cooldown;
-		float m_MaxCooldown;
+		Timer m_ExitTimer;
+		Timer m_CooldownTimer;
 		float m_CharacterCooldown;
 
 		void Reset() {
-			m_ExistenceTime = m_MaxExitTime;
-			m_Cooldown = m_MaxCooldown;
+			m_ExitTimer.SetTime(m_ExitTimer.GetMaxTime(), true);
+			m_CooldownTimer.SetTime(m_CooldownTimer.GetMaxTime(), true);
 		}
-		AttackDate(float damage, float range, float time, float cooldown, float charaCooldown) :
+		AttackDate(const shared_ptr<Character>& owner,float damage, float range, float time, float cooldown, float charaCooldown) :
+			m_Owner(owner),
 			m_Damage(damage),m_Range(range),
-			m_ExistenceTime(0),m_MaxCooldown(cooldown), m_Cooldown(0),
-			m_CharacterCooldown(charaCooldown), m_MaxExitTime(time)
+			m_ExitTimer(Timer(time,false)),m_CooldownTimer(Timer(cooldown,false)),
+			m_CharacterCooldown(charaCooldown)
 		{}
 	};
 	class Attack : public Object {
 	protected:
 		AttackDate m_Date;
+		bool m_IsFinish;
 	public:
 		Attack(const shared_ptr<Stage>& stage, AttackDate date) :
-			Object(stage,Vec3(1000,1000,1000), Vec3(), Vec3(1)),
+			Object(stage,Vec3(1000,1000,1000), Vec3(), Vec3(1)),m_IsFinish(false),
 			m_Date(date) {}
 		virtual ~Attack() {}
 
@@ -62,15 +64,20 @@ namespace basecross {
 			return m_Date.m_Damage;
 		}
 		float GetCooldown() {
-			return m_Date.m_Cooldown;
+			return m_Date.m_CooldownTimer.GetMaxTime() - m_Date.m_CooldownTimer.GetTime();
 		}
 		float GetRange() {
 			return m_Date.m_Range;
 		}
+		bool IsInRange(float distance) {
+			return distance < m_Date.m_Range;
+		}
 		float GetCharaCooldown() {
 			return m_Date.m_CharacterCooldown;
 		}
-
+		bool IsFinish() {
+			return m_IsFinish;
+		}
 	};
 	class AttackCollision : public Attack {
 		Vec3 m_Size;
@@ -93,6 +100,7 @@ namespace basecross {
 		virtual~CrushAttack(){}
 
 		virtual void ContactPlayer(shared_ptr<GameObject>& player);
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
 	};
 	class MachineGun : public Attack {
 		shared_ptr<GameObject> m_Target;

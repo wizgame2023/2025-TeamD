@@ -289,10 +289,10 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.45f, 0.22f, 0.45f), //(.1f, .1f, .1f),
+			Vec3(0.1f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.0f, 0.0f)
+			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetTextureResource(L"01");
