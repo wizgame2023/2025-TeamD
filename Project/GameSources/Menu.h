@@ -7,7 +7,6 @@
 #include "stdafx.h"
 
 namespace basecross {
-	class TargetBoard;
 	class Menu : public GameObject {
 		bool m_IsOpen;
 	protected:
@@ -38,8 +37,7 @@ namespace basecross {
 
 	class PauseMenu : public Menu {
 		shared_ptr<Menu> m_SoundTestMenu;
-		shared_ptr<EffectManeger> m_Effect;
-		shared_ptr<TargetBoard> m_TargetBoard;
+		//shared_ptr<EffectManeger> m_Effect;
 	public:
 		PauseMenu(const shared_ptr<Stage>& stage, const wstring& group, shared_ptr<Menu>& menu) : Menu(stage, group), m_SoundTestMenu(menu) {}
 		virtual ~PauseMenu() {}
