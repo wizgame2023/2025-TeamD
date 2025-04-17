@@ -461,6 +461,10 @@ namespace basecross {
 					{
 						m_HP -= 0;
 						m_EnergyCharge += 0.2;
+						Vec3 forward = GetForward();
+
+						m_Effect->PlayEffect(L"Parry", Vec3(m_Position.x + forward.x / 2, m_Position.y, m_Position.z + forward.z / 2), 25.0f);
+						m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{

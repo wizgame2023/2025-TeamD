@@ -63,6 +63,7 @@ namespace basecross {
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"pari.efk");
 
 	}
 
@@ -103,6 +104,7 @@ namespace basecross {
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
 	}
+
 	void GameStage::CreateUI() {
 		auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
 		icon->SetInput(XINPUT_GAMEPAD_A);
@@ -124,6 +126,24 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+
+	/// <summary>
+	/// ポーズ画面を閉じる
+	/// </summary>
+	void GameStage::ClosePose() {
+		m_IsPose = false;
+		ButtonManager::instance->Close(L"POSE");
+		SoundManager::Instance().PauseBGM(false);
+		//m_Effect->SetEffectPause(false);
+	}
+	/// <summary>
+	/// ポーズ画面を開く
+	/// </summary>
+	void GameStage::OpenPose() {
+		m_IsPose = true;
+		ButtonManager::instance->Close(L"SOUND_TEST");
+		ButtonManager::instance->OpenAndUse(L"POSE");
+		//m_Effect->SetEffectPause(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -193,7 +213,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-/				m_Effect->SetEffectPause(true);
+				m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
@@ -214,6 +234,7 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			m_Effect->SetEffectPause(false);
 
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
