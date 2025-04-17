@@ -169,7 +169,7 @@ namespace basecross {
 	void BossHostility::Exit()
 	{
 	}
-	
+
 	void BossCrush::Enter()
 	{
 		EnemyState::Enter();

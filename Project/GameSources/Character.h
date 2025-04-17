@@ -15,11 +15,11 @@ namespace basecross {
 		float m_MaxHP;
 		float m_Speed;
 		float m_AttackDamage;
-		float m_ZoneElapsedTime;
 	public:
-		
+		float m_ZoneElapsedTime;
+
 		Character(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
-			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0),m_Speed(1.0f) {
+			Object(stage, position, rotation, scale), m_HP(0),m_MaxHP(0),m_Speed(1.0f),m_ZoneElapsedTime(1.0f) {
 		}
 		Character(const shared_ptr<Stage>& stage) :
 			Character(stage, Vec3(), Vec3(), Vec3(1.0f))

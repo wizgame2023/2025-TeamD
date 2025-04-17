@@ -76,9 +76,7 @@ namespace basecross {
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
-			auto pos = GetPosition();
-			pos += angle * elapsedTime * Speed;
-			SetPosition(pos);
+			Move(angle);
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
@@ -276,6 +274,7 @@ namespace basecross {
 		Character::OnCreate();
 		InitHP(20);
 		SetAttackDamage(1.0f);
+		SetSpeed(2.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
