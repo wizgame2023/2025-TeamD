@@ -32,7 +32,7 @@ namespace basecross {
 
 
 		Effekseer::EffectRef m_Effect;
-	public:	
+	public:
 
 		//--------------------------------------------------------------------------------------
 		/*!
@@ -81,7 +81,7 @@ namespace basecross {
 		{
 			return m_Manager;
 		}
-		
+
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(const bsm::Vec3& Location);
 		void SetLocation(const bsm::Vec3& Location);//位置

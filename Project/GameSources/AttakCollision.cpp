@@ -15,20 +15,16 @@ namespace basecross {
 	}
 	void Attack::OnUpdate() {
 		float elapsed = App::GetApp()->GetElapsedTime();
+		m_IsFinish = false;
 		if (GetDrawActive()) {
-			m_Date.m_ExistenceTime -= elapsed;
-			if (m_Date.m_ExistenceTime <= 0) {
+			if (m_Date.m_ExitTimer.UpdateTimer()) {
 				SetDrawActive(false);
+				m_IsFinish = true;
 				m_Transform->SetPosition(Vec3(1000, 1000, 1000));
 			}
 		}
 		else {
-			if (m_Date.m_Cooldown > 0) {
-				m_Date.m_Cooldown -= elapsed;
-			}
-			else {
-				m_Date.m_Cooldown = 0;
-			}
+			m_Date.m_CooldownTimer.UpdateTimer();
 		}
 	}
 
@@ -39,6 +35,7 @@ namespace basecross {
 		m_Collision->SetAfterCollision(AfterCollision::None);
 
 		m_Transform->SetScale(m_Size);
+		AddTag(L"BossAttack");
 	}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
@@ -58,12 +55,21 @@ namespace basecross {
 			character->Damage(m_Date.m_Damage);
 		}
 	}
+	void CrushAttack::OnCollisionEnter(shared_ptr<GameObject>& Other) {
+		Attack::OnCollisionEnter(Other);
+		if (Other->FindTag(L"HitJudge")) {
+			if (m_Date.m_ExitTimer.GetTime() < m_Date.m_ExitTimer.GetMaxTime() / 2.0f) {
+				auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
+				boss->AddStun(0.5f);
+			}
+		}
+	}
 	void MachineGun::OnUpdate() {
 		Attack::OnUpdate();
 		if (!GetDrawActive()) return;
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (m_ShotInterval < 0) {
-			m_ShotInterval = m_Date.m_MaxExitTime / m_LaunchNum;
+			m_ShotInterval = m_Date.m_ExitTimer.GetMaxTime() / m_LaunchNum;
 			Vec3 position = m_Transform->GetPosition();
 			Vec3 direction = m_Target->GetComponent<Transform>()->GetPosition() - position;
 			m_Stage->AddGameObject<Bullet>(position + direction * 0.1f, 2.0f, direction, m_Date.m_Range);
@@ -76,7 +82,7 @@ namespace basecross {
 		Vec3 scale = m_Transform->GetScale();
 		m_Transform->SetScale(scale * 2.0f);
 
-		m_Date.m_ExistenceTime = 0.5f;
+		m_Date.m_ExitTimer.SetTime(0.5f, true);
 	}
 	void Missile::OnUpdate() {
 		Attack::OnUpdate();
