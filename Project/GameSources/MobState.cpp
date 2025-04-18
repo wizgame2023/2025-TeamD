@@ -52,7 +52,7 @@ namespace basecross {
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert)
 		{
-			m_Enemy->ChangeState<MobJoinAlert>();
+			m_Enemy->ChangeState<MobAlert>();
 			return;
 		}
 	}
@@ -104,6 +104,7 @@ namespace basecross {
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
+		m_AlertTime = 10.0f;
 		//Execute();
 	}
 
@@ -122,8 +123,14 @@ namespace basecross {
 
 			if (enemy->GetIntruderAlert() == false)
 			{
+				m_AlertTime -= elapsedTime;
 				if (m_Path.size() == 0)
 				{
+					if (m_AlertTime < 0.0f)
+					{
+						enemy->ChangeState<MobSearch>();
+						return;
+					}
 					auto point = navi->GetNearPointer(enemy->GetPosition());
 					auto target = navi->GetNearPointer(m_Player->GetPosition());
 
@@ -139,19 +146,23 @@ namespace basecross {
 						direction = direction.normalize();
 						float rotate = atan2f(direction.x, direction.z);
 						m_Transform->SetRotation(Vec3(0, rotate, 0));
-						currntPosition += direction * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+						currntPosition += direction * 1.5f * elapsedTime * enemy->m_ZoneElapsedTime;
 					}
 				}
 			}
 			else {
-				currntPosition += dire * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
-			}	
+				if ((currntPosition - playerPosition).length() > 5.0f)
+				{
+					currntPosition += dire * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+				}
+			}
+			enemy->SetPosition(currntPosition);
 			if ((currntPosition - playerPosition).length() < 5.0f)
 			{
+				m_AlertTime = 10.0f;
 				enemy->ChangeState<MobAlert>();
 				return;
 			}
-			enemy->SetPosition(currntPosition);
 		}
 	}
 
