@@ -67,6 +67,10 @@ namespace basecross {
 		void OpenPose();
 		shared_ptr <EffectManeger> GetCreateEffect();
 
+
+		void ClosePose();
+		void OpenPose();
+
 	};
 
 

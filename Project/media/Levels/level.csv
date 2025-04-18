@@ -55,3 +55,12 @@ pointer,-6.12_0.71_11.41,1_1_1,0_0_0,Untagged,27,24_26_,Pointer,name_position_sc
 pointer,-4.06_0.71_-12.06,1_1_1,0_0_0,Untagged,28,15_15_15_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,1.83_0.71_-12.06,1_1_1,0_0_0,Untagged,29,22_22_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 boss,0.6_2.54_-0.22,0.19_0.19_0.19,0_0_0,Enemy,100,0,0,0,Chara,name_position_scale_rotation_tag_hp_region_time_defeat_type_
+mob,-13.8_2.54_-2.2,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,-25.09_2.54_-1.17,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,-13.8_2.54_26.03,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,1.99_2.54_-12.7,0.19_0.19_0.19,0_0_0,Enemy,3,2,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,1.99_2.54_-12.7,0.19_0.19_0.19,0_0_0,Enemy,3,2,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,8.62_2.54_-26.43,0.19_0.19_0.19,0_0_0,Enemy,3,2,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,26_2.54_-3.4,0.19_0.19_0.19,0_0_0,Enemy,3,3,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,26_2.54_6.7,0.19_0.19_0.19,0_0_0,Enemy,3,3,Chara,name_position_scale_rotation_tag_hp_region_type_
+mob,26_2.54_23.2,0.19_0.19_0.19,0_0_0,Enemy,3,3,Chara,name_position_scale_rotation_tag_hp_region_type_

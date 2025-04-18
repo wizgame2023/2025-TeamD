@@ -89,14 +89,6 @@ namespace basecross {
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				m_Position = GetPosition();
-				m_Position -= forword * 0.05f;
-				SetPosition(m_Position);
-			}
-		}
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
@@ -149,7 +141,7 @@ namespace basecross {
 		Vec3 pos = GetPosition();
 		Vec3 vec = hitPos - pos;
 		vec.normalize();
-		pos += -vec * 10.0f * elapsedTime;
+		pos += -vec * 5.0f * elapsedTime;
 		SetPosition(pos);
 	}
 
@@ -216,10 +208,10 @@ namespace basecross {
 			0,1
 		};
 
-		m_BoneDraw = AddComponent<PCStaticDraw>();
-		m_BoneDraw->SetOriginalMeshUse(true);
-		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
-		auto meshResoure = m_BoneDraw->GetMeshResource();
+		m_Draw = AddComponent<PCStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_Draw->GetMeshResource();
 		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 	}
@@ -251,7 +243,7 @@ namespace basecross {
 			{m_StartPos,m_StartColor},
 			{m_EndPos,m_EndColor}
 		};
-		m_BoneDraw->UpdateVertices(m_Vertices);
+		m_Draw->UpdateVertices(m_Vertices);
 	}
 
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {

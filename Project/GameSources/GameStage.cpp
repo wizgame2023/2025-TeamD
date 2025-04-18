@@ -81,7 +81,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
-		builder->Register<Mob>(L"mob");
+		//builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
 		builder->LoadCsv();
 
@@ -128,24 +128,6 @@ namespace basecross {
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
-	/// ポーズ画面を閉じる
-	/// </summary>
-	void GameStage::ClosePose() {
-		m_IsPose = false;
-		ButtonManager::instance->Close(L"POSE");
-		SoundManager::Instance().PauseBGM(false);
-		//m_Effect->SetEffectPause(false);
-	}
-	/// <summary>
-	/// ポーズ画面を開く
-	/// </summary>
-	void GameStage::OpenPose() {
-		m_IsPose = true;
-		ButtonManager::instance->Close(L"SOUND_TEST");
-		ButtonManager::instance->OpenAndUse(L"POSE");
-		//m_Effect->SetEffectPause(true);
-	}
-	/// <summary>
 	/// オブジェクトの描画をONOFF
 	/// </summary>
 	/// <param name="flag">描画ONOFF</param>
@@ -161,7 +143,7 @@ namespace basecross {
 		auto camera = GetView()->GetTargetCamera();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr && camera != nullptr) {
-      player->SetIsGaol(true);
+			player->SetIsGaol(true);
 			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
 			auto view = static_pointer_cast<SingleView>(GetView());
 			view->SetCamera(newCamera);
@@ -224,7 +206,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-        m_Effect->SetEffectPause(true);
+				 m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {

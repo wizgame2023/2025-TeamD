@@ -55,7 +55,7 @@ namespace basecross {
 					direction = direction.normalize();
 					float rotate = atan2f(direction.x, direction.z);
 					m_Transform->SetRotation(Vec3(0, rotate, 0));
-					pos += direction * 1.0f * elapsed;
+					m_Enemy->Move(direction);
 				}
 				m_Enemy->SetPosition(pos);
 			}
@@ -70,6 +70,12 @@ namespace basecross {
 	{
 		m_Stage->RemoveGameObject<LineCube>(m_Line);
 	}
+
+	void BossWarning::Execute()
+	{
+		BossSearch::Execute();
+	}
+
 	void BossHostility::Enter()
 	{
 		EnemyState::Enter();

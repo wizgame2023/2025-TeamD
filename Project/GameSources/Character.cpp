@@ -53,7 +53,7 @@ namespace basecross {
 	}
   
 	inline float Character::GetElpasedTime() {
-		return App::GetApp()->GetElapsedTime() * m_ZoneElapsedTime;
+		return GetElpased() * m_ZoneElapsedTime;
 	}
 
 	void Character::Move(const Vec3& direction) {
