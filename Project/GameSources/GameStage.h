@@ -49,7 +49,7 @@ namespace basecross {
 		}
 
 		void GameOver() {};
-		void GameClear() {};
+		void GameClear();
 
 		shared_ptr<EffectManeger> m_Effect;
 
