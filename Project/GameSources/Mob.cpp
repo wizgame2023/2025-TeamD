@@ -131,12 +131,15 @@ namespace basecross {
 		auto Legions = LegionGroup->GetGroupVector();
 		auto navi = GetComponent<Navigate>();
 		shared_ptr<RootPointer> memoryPoint;
+		shared_ptr<GameObject> memoryRndPoint;
 		vector<int> memoryNum;
+
 		for (auto point : pointers)
 		{
 			auto shObj = point.lock();
 			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
-			if (shObj = m_PointData[rnd])
+			memoryRndPoint = m_PointData[rnd];
+			if (shObj = memoryRndPoint)
 			{
 				continue;
 			}
