@@ -81,7 +81,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
-		builder->Register<Mob>(L"mob");
+		//builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
 		builder->LoadCsv();
 
@@ -126,25 +126,7 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
-	}
 
-	/// <summary>
-	/// ポーズ画面を閉じる
-	/// </summary>
-	void GameStage::ClosePose() {
-		m_IsPose = false;
-		ButtonManager::instance->Close(L"POSE");
-		SoundManager::Instance().PauseBGM(false);
-		//m_Effect->SetEffectPause(false);
-	}
-	/// <summary>
-	/// ポーズ画面を開く
-	/// </summary>
-	void GameStage::OpenPose() {
-		m_IsPose = true;
-		ButtonManager::instance->Close(L"SOUND_TEST");
-		ButtonManager::instance->OpenAndUse(L"POSE");
-		//m_Effect->SetEffectPause(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF

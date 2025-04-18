@@ -12,7 +12,7 @@
 namespace basecross {
 	class Enemy;
 	class LineCube;
-
+	
 	class BossSearch : public EnemyState<BossEnemy>
 	{
 		bool m_IntruderAlert;
@@ -25,10 +25,19 @@ namespace basecross {
 		{
 		}
 
-	private:
 		void Enter() override;
 		void Execute()override;
 		void Exit()override;
+	};
+	class BossWarning : public BossSearch {
+		Vec3 m_StartDirection;
+		Vec3 m_EndDirection;
+	public:
+		BossWarning(shared_ptr<BossEnemy>& enemy) :
+			BossSearch(enemy) {
+		}
+	private:
+		void Execute()override;
 	};
 	class BossHostility : public EnemyState<BossEnemy>
 	{
@@ -47,7 +56,6 @@ namespace basecross {
 		{
 		}
 
-	private:
 		virtual void Enter() override;
 		virtual void Execute()override;
 		virtual void Exit()override;

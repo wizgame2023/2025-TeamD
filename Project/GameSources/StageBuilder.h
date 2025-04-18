@@ -41,11 +41,13 @@ namespace basecross {
 		shared_ptr<GameStage> m_Stage;
 
 		bool m_IsEndAsyncUpdate;
-
+		
 		mutex m_Mutex;
+
+		float m_UpdateSpeed;
 	public:
 		Object(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
-			GameObject(stage), m_Position(position), m_Scale(scale), m_Rotation(rotation), m_IsEndAsyncUpdate(true) {
+			GameObject(stage), m_Position(position), m_Scale(scale), m_Rotation(rotation), m_IsEndAsyncUpdate(true),m_UpdateSpeed(1.0f) {
 		}
 		Object(const shared_ptr<Stage>& stage) : Object(stage, Vec3(), Vec3(1.0f), Vec3()) {}
 
@@ -53,6 +55,9 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void AsyncUpdate() {}
 
+		float GetElpased() {
+			return App::GetApp()->GetElapsedTime() * m_UpdateSpeed;
+		}
 		void StartAsync() {
 			m_IsEndAsyncUpdate = false;
 		}

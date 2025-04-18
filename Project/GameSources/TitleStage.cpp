@@ -36,9 +36,9 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateTitle() {
-		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(700.0f, 600.0f), Vec2(1.0f, 1.0f), true);
-		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), Vec2(1.0f, 1.0f), true);
-		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(1.0f, 1.0f), true);
+		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(700.0f, 600.0f),true);
+		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f),true);
+		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		//“_–ÅÝ’è
 		stratASprite->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);

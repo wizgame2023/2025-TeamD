@@ -7,6 +7,7 @@
 #include "Project.h"
 
 namespace basecross {
+	vector<RayCast> RayCast::m_RayCasts = {};
 
 	/// <summary>
 	/// レイキャスト処理
@@ -28,7 +29,8 @@ namespace basecross {
 		}
 		if (isExclude) return false;
 		bool isHit = false;
-		isHit = HitTestMeshRayCast(line, newResult, object);
+		CreateRayCast(1);
+		isHit = m_RayCasts[0].HitTestMeshRayCast(line, newResult, object);
 		if (isHit) {
 			if (hit.m_Object == nullptr) {
 				hit.m_Object = object;
@@ -133,6 +135,14 @@ namespace basecross {
 		product.y = (startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
 		product.x = (startToE.y * startToPoi.z - startToE.z * startToPoi.y) / startToE.length();
 		return abs(product.x + product.y + product.z);
+	}
+
+	void RayCast::CreateRayCast(int size) {
+		m_RayCasts.clear();
+		m_RayCasts.reserve(size);
+		for (int i = 0; i < size; ++i) {
+			m_RayCasts.emplace_back(RayCast());
+		}
 	}
 }
 //end basecross

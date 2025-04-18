@@ -9,20 +9,15 @@
 namespace basecross {
 
 	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
-		GameObject(stage), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
-		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3())
+		Object(stage,position,Vec3(0),Vec3(0.1f)), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
+		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3()), m_LineLength(5.0f)
 	{
 	}
 	Bullet::~Bullet() {}
 
 	void Bullet::OnCreate()
 	{
-		//初期位置の設定
-		m_Transform = AddComponent<Transform>();
-		m_Transform->SetPosition(m_Position);
-		m_Transform->SetRotation(Vec3(0));
-		m_Transform->SetScale(Vec3(0.1f));
-
+		Object::OnCreate();
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(true);//debug
@@ -35,11 +30,11 @@ namespace basecross {
 		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		group->IntoGroup(GetThis<Bullet>());
 
-		m_Line = GetStage()->AddGameObject<LineCube>(0.02f, Col4(1, 1, 0, 1));
+		m_Line = GetStage()->AddGameObject<BulletLine>(0.02f, Col4(1, 1, 0, 1));
 	}
 
 	void Bullet::OnUpdate() {
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = GetElpased();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
 
@@ -53,7 +48,14 @@ namespace basecross {
 		else {
 			position += moveAmount;
 			m_Transform->SetPosition(position);
-			m_Line->SetLine(Line(m_Position,position));
+			if ((m_Position - position).length() < m_LineLength) {
+				m_Line->SetLine(Line(position, m_Position));
+			}
+			else {
+				Vec3 direction = m_Position - position;
+				direction = direction.normalize();
+				m_Line->SetLine(Line(position,position + direction * m_LineLength));
+			}
 		}
 	}
 
