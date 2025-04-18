@@ -9,8 +9,6 @@
 
 namespace basecross {
 
-
-
 	void MobSearch::Enter()
 	{
 		EnemyState::Enter();
@@ -19,24 +17,25 @@ namespace basecross {
 		m_Path = {};
 		Execute();
 	}
+
 	void MobSearch::Execute()
 	{
 		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		Vec3 currntPosition = m_Enemy->GetPosition();
+		Vec3 currntPosition = enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		if (navi) {
 			if (m_Path.size() == 0)
 			{
-				auto cellpoint = m_Enemy->RootNaviGate();
-				auto point = navi->GetNearPointer(m_Enemy->GetPosition());
+				auto cellpoint = enemy->RootNaviGate();
+				auto point = navi->GetNearPointer(enemy->GetPosition());
 				m_Path = navi->FindPathWithWaypoints(point, cellpoint);
 			}
 			else {
-				Vec3 pos = m_Enemy->GetPosition();
+				Vec3 pos = enemy->GetPosition();
 				m_Path[0].y = pos.y;
 				Vec3 direction = m_Path[0] - pos;
-				if (direction.length() < 1.0f) {
+				if (direction.length() < 0.1f) {
 					m_Path.erase(m_Path.begin());
 				}
 				else {
@@ -45,7 +44,7 @@ namespace basecross {
 					m_Transform->SetRotation(Vec3(0, rotate, 0));
 					pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 				}
-				m_Enemy->SetPosition(pos);
+				enemy->SetPosition(pos);
 			}
 		}
 
@@ -57,13 +56,14 @@ namespace basecross {
 		}
 	}
 	void MobSearch::Exit()
-	{
-	}
+	{}
+
 	void MobAlert::Enter()
 	{
 		EnemyState::Enter();
 		Execute();
 	}
+
 	void MobAlert::Execute()
 	{
 		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
@@ -89,11 +89,6 @@ namespace basecross {
 			m_Enemy->ChangeState<MobJoinAlert>();
 			return;
 		}
-		else {
-			m_Enemy->ChangeState<MobSearch>();
-			return;
-		}
-
 	}
 	void MobAlert::Exit()
 	{
@@ -105,7 +100,6 @@ namespace basecross {
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
 		m_AlertTime = 10.0f;
-		//Execute();
 	}
 
 	void MobJoinAlert::Execute()
@@ -126,11 +120,6 @@ namespace basecross {
 				m_AlertTime -= elapsedTime;
 				if (m_Path.size() == 0)
 				{
-					if (m_AlertTime < 0.0f)
-					{
-						enemy->ChangeState<MobSearch>();
-						return;
-					}
 					auto point = navi->GetNearPointer(enemy->GetPosition());
 					auto target = navi->GetNearPointer(m_Player->GetPosition());
 
@@ -146,18 +135,25 @@ namespace basecross {
 						direction = direction.normalize();
 						float rotate = atan2f(direction.x, direction.z);
 						m_Transform->SetRotation(Vec3(0, rotate, 0));
-						currntPosition += direction * 1.5f * elapsedTime * enemy->m_ZoneElapsedTime;
+						currntPosition += direction * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
+						if (m_AlertTime < 0.0f)
+						{
+							m_AlertTime = 10.0f;
+							enemy->ChangeState<MobSearch>();
+							return;
+						}
 					}
 				}
 			}
 			else {
-				if ((currntPosition - playerPosition).length() > 5.0f)
+				if ((currntPosition - playerPosition).length() > 3.0f)
 				{
 					currntPosition += dire * 3.0f * elapsedTime * enemy->m_ZoneElapsedTime;
 				}
 			}
+
 			enemy->SetPosition(currntPosition);
-			if ((currntPosition - playerPosition).length() < 5.0f)
+			if ((currntPosition - playerPosition).length() < 3.0f)
 			{
 				m_AlertTime = 10.0f;
 				enemy->ChangeState<MobAlert>();

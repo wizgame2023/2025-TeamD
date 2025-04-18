@@ -32,7 +32,6 @@ namespace basecross {
 			{
 				auto enemy = m_GruopEnemy[i].lock();
 				auto mob = dynamic_pointer_cast<Mob>(enemy);
-				mob->SetIntruderAlert(true);
 				ChangeEnemyMove<MobJoinAlert>(mob);
 			}
 		}
@@ -43,7 +42,7 @@ namespace basecross {
 	{
 		Vec3 nearEnemyPosition = Vec3();
 		shared_ptr<Enemy> nearEnemy = nullptr;
-		float minDistance = 1.0f; // Mobの一定範囲を定義
+		float minDistance = 0.5f; // Mobの一定範囲を定義
 
 		for (int i = 0; i < m_GruopEnemy.size(); i++)
 		{
@@ -70,6 +69,7 @@ namespace basecross {
 			}
 		}
 	}
+
 	template<typename T>
 	void Legion::ChangeEnemyMove(const shared_ptr<Mob>& enemy)
 	{
