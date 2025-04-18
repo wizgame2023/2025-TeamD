@@ -11,6 +11,8 @@ namespace basecross {
 		bool m_IsOpen;
 	protected:
 		vector<shared_ptr<GameObject>> m_MenuObjects;
+		shared_ptr<GameStage> m_Stage;
+		shared_ptr<EffectManeger> m_Effect;
 		wstring m_GroupName;
 	public:
 		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage), m_GroupName(group), m_IsOpen(false) {}
@@ -29,6 +31,8 @@ namespace basecross {
 
 		virtual void Close();
 		virtual void Open();
+		
+		void EffeckPause();
 
 		bool IsOpen() {
 			return m_IsOpen;
@@ -37,10 +41,10 @@ namespace basecross {
 
 	class PauseMenu : public Menu {
 		shared_ptr<Menu> m_SoundTestMenu;
-		//shared_ptr<EffectManeger> m_Effect;
 	public:
 		PauseMenu(const shared_ptr<Stage>& stage, const wstring& group, shared_ptr<Menu>& menu) : Menu(stage, group), m_SoundTestMenu(menu) {}
 		virtual ~PauseMenu() {}
+		shared_ptr<GameStage> m_Stage;
 
 		virtual void OnCreate()override;
 		void OpenSoundTest() {

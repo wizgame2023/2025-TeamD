@@ -126,7 +126,6 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
-
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -228,7 +227,7 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
-			m_Effect->SetEffectPause(false);
+			//m_Effect->SetEffectPause(false);
 
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);

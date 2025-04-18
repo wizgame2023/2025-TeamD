@@ -37,10 +37,18 @@ namespace basecross {
 			obj->SetDrawActive(false);
 			//obj->SetUpdateActive(false);
 		}
+		//EffeckPause();
 		ButtonManager::instance->Close(m_GroupName);
 		SoundManager::Instance().PauseBGM(false);
 		m_IsOpen = false;
 	}
+
+	/*void Menu::EffeckPause()
+	{
+		auto GetStage = GetTypeStage<GameStage>();
+		auto Effect = GetStage->GetCreateEffect();
+		Effect->SetEffectPause(false);
+	}*/
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
@@ -63,7 +71,9 @@ namespace basecross {
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
 				menu->Close();
-				//auto Stage = static_pointer_cast<GameStage>(m_Stage);
+				auto getStage = menu->GetTypeStage<GameStage>();
+				auto setEffect = getStage->GetCreateEffect();
+				setEffect->SetEffectPause(false);
 			});
 		AddButton(L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50), menu,
 			[](shared_ptr<ObjectInterface> object) {
