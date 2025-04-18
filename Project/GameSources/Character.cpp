@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -40,10 +40,26 @@ namespace basecross {
 		return std::sqrt(v.x * v.x + v.z * v.z);
 	}
 
+	void Character::ZoneSpeedSet()
+	{
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
+  
+	inline float Character::GetElpasedTime() {
+		return App::GetApp()->GetElapsedTime() * m_ZoneElapsedTime;
+	}
+
 	void Character::Move(const Vec3& direction) {
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = GetElpasedTime();
 		Vec3 position = GetPosition();
-		position += direction * m_Speed * elapsed;
+		position += direction * m_Speed * elapsed * m_ZoneElapsedTime;
 		SetPosition(position);
 	}
 
@@ -55,9 +71,9 @@ namespace basecross {
 
 	void FixedBox::OnCreate()
 	{
-		//‚±‚±‚Åm_Transform‚Ì’†gæ“¾‚µ‚Ä‚­‚ê‚é
+		//ã“ã“ã§m_Transformã®ä¸­èº«å–å¾—ã—ã¦ãã‚Œã‚‹
 		Object::OnCreate();
-		//‘€ìŒn
+		//æ“ä½œç³»
 		SetPosition(Vec3());
 		SetScale(Vec3(1.0f));
 		SetRotation(Vec3());
@@ -65,22 +81,22 @@ namespace basecross {
 
 		Wicth_FixedBox = true;
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(Wicth_FixedBox);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
 		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		//ptrDraw->SetMeshResource(L"OBJECT");
 		//Mat4x4 meshMat;
 		//meshMat.affineTransformation(
-		//	Vec3(0.5f, 0.4f, 0.5f), //ƒTƒCƒY
-		//	Vec3(0.0f, 0.0f, 0.0f), //‰ñ“]²
-		//	Vec3(0.0f, 0.0f, 0.0f), //‰ñ“]
-		//	Vec3(0.0f, -0.5f, 0.0f) //ƒ|ƒWƒVƒ‡ƒ“
+		//	Vec3(0.5f, 0.4f, 0.5f), //ã‚µã‚¤ã‚º
+		//	Vec3(0.0f, 0.0f, 0.0f), //å›è»¢è»¸
+		//	Vec3(0.0f, 0.0f, 0.0f), //å›è»¢
+		//	Vec3(0.0f, -0.5f, 0.0f) //ãƒã‚¸ã‚·ãƒ§ãƒ³
 		//);
 		//ptrDraw->SetMeshToTransformMatrix(meshMat);
 
@@ -95,17 +111,17 @@ namespace basecross {
 	void Wall::OnCreate()
 	{
 		Wicth_Wall = true;
-		//‰ŠúˆÊ’u‚Ìİ’è
+		//åˆæœŸä½ç½®ã®è¨­å®š
 		auto ptr = AddComponent<Transform>();
 		ptr->SetPosition(Vec3(0.0f, 0.0f, 5.0f));
 		ptr->SetRotation(Vec3(0));
 		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(Wicth_Wall);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 

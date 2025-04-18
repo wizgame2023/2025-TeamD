@@ -119,6 +119,7 @@ namespace basecross {
 	}
 	void BossEnemy::Dead()
 	{
+		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
 		Enemy::Dead();
 	}
 	void BossEnemy::Damage(float damage, const bool& isSound) {

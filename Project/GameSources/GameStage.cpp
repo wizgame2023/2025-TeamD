@@ -63,6 +63,7 @@ namespace basecross {
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"pari.efk");
 
 	}
 
@@ -103,6 +104,7 @@ namespace basecross {
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
 	}
+
 	void GameStage::CreateUI() {
 		auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 0.5f), 0.5f);
 		icon->SetInput(XINPUT_GAMEPAD_A);
@@ -124,6 +126,24 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+
+	/// <summary>
+	/// ポーズ画面を閉じる
+	/// </summary>
+	void GameStage::ClosePose() {
+		m_IsPose = false;
+		ButtonManager::instance->Close(L"POSE");
+		SoundManager::Instance().PauseBGM(false);
+		//m_Effect->SetEffectPause(false);
+	}
+	/// <summary>
+	/// ポーズ画面を開く
+	/// </summary>
+	void GameStage::OpenPose() {
+		m_IsPose = true;
+		ButtonManager::instance->Close(L"SOUND_TEST");
+		ButtonManager::instance->OpenAndUse(L"POSE");
+		//m_Effect->SetEffectPause(true);
 	}
 	/// <summary>
 	/// オブジェクトの描画をONOFF
@@ -134,6 +154,17 @@ namespace basecross {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu")) {
 				obj->SetUpdateActive(flag);
 			}
+		}
+	}
+	void GameStage::GameClear() {
+		m_ResultMenu->Open();
+		auto camera = GetView()->GetTargetCamera();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr && camera != nullptr) {
+      player->SetIsGaol(true);
+			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+			auto view = static_pointer_cast<SingleView>(GetView());
+			view->SetCamera(newCamera);
 		}
 	}
 	void GameStage::CreateBossEnemy()
@@ -193,6 +224,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
+        m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
@@ -213,6 +245,7 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			m_Effect->SetEffectPause(false);
 
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
@@ -223,32 +256,33 @@ namespace basecross {
 		}
 		else {
 			SetAllGameObjectActive(true);
-			ScoreManager::Instance()->UpdateTime(elapsed);
-		}
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			m_UltIcon->SetCharge(player->GetEnergy());
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				m_UltIcon->SetCharge(player->GetEnergy());
 
-			float currentHp = player->GetHP();
-			float maxHp = player->GetMaxHP();
-			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
-		}
-		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
-		if (boss != nullptr) {
-			bool isBossDraw = boss->GetDrawActive();
-			if (isBossDraw) {
-				float currentHp = boss->GetHP();
-				float maxHp = boss->GetMaxHP();
-				m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+				float currentHp = player->GetHP();
+				float maxHp = player->GetMaxHP();
+				m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
 			}
-			m_BossHpBar->SetDrawActive(isBossDraw);
-			m_BossHpBarBackGround->SetDrawActive(isBossDraw);
-			m_BossText->SetDrawActive(isBossDraw);
-		}
-		else {
-			m_BossHpBar->SetDrawActive(false);
-			m_BossHpBarBackGround->SetDrawActive(false);
-			m_BossText->SetDrawActive(false);
+			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+			if (boss != nullptr) {
+				ScoreManager::Instance()->UpdateTime(elapsed);
+				bool isBossDraw = boss->GetDrawActive();
+				if (isBossDraw) {
+					float currentHp = boss->GetHP();
+					float maxHp = boss->GetMaxHP();
+					m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+				}
+				m_BossHpBar->SetDrawActive(isBossDraw);
+				m_BossHpBarBackGround->SetDrawActive(isBossDraw);
+				m_BossText->SetDrawActive(isBossDraw);
+			}
+			else {
+				m_BossHpBar->SetDrawActive(false);
+				m_BossHpBarBackGround->SetDrawActive(false);
+				m_BossText->SetDrawActive(false);
+			}
+
 		}
 	}
 

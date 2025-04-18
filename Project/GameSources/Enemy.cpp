@@ -81,18 +81,6 @@ namespace basecross {
 		return offset.length();
 	}
 
-	void Enemy::ZoneSpeedSet()
-	{
-		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
-		int state = player->GetStates();
-		if ((state & Player::PlayerState::ZONE) == 0) {
-			m_ZoneElapsedTime = 1.0f;
-		}
-		else {
-			m_ZoneElapsedTime = 0.2f;
-		}
-	}
-
 	void Enemy::SearchRange()
 	{
 		float searchDistance = 10.0f;

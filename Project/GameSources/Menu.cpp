@@ -44,6 +44,7 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
+
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME_SELECTED", Vec3(0, 0, 0), Vec2(300, 300), true);
 		AddSprite(sprite);
 
@@ -62,6 +63,7 @@ namespace basecross {
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
 				menu->Close();
+				//auto Stage = static_pointer_cast<GameStage>(m_Stage);
 			});
 		AddButton(L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50), menu,
 			[](shared_ptr<ObjectInterface> object) {
