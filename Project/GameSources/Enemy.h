@@ -60,7 +60,7 @@ namespace basecross {
 
 		vector<VertexPositionColor> m_Vertices;
 		vector<uint16_t> m_Indices;
-		shared_ptr<PCStaticDraw> m_BoneDraw;
+		shared_ptr<PCStaticDraw> m_Draw;
 
 		weak_ptr<Character> m_MainObject;
 		weak_ptr<Character> m_Object;

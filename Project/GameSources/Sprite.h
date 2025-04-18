@@ -9,7 +9,7 @@
 namespace basecross{
 
 	struct SpriteAnimation {
-		int m_OrderCount;
+		int m_CurrentOrder;
 		float m_AnimationTime;
 		float m_UpdateInterval;
 		bool m_IsLoop;
@@ -18,15 +18,15 @@ namespace basecross{
 		vector<int> m_Order;
 		void EndAnimation() {
 			if (m_IsReverse) {
-				m_OrderCount = m_Order.size() - 1;
+				m_CurrentOrder = m_Order.size() - 1;
 			}
 			else {
-				m_OrderCount = 0;
+				m_CurrentOrder = 0;
 			}
 		}
 		SpriteAnimation() {
 			m_Order = {};
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = 0;
 			m_UpdateInterval = 0;
 			m_IsLoop = false;
@@ -34,7 +34,7 @@ namespace basecross{
 		}
 		SpriteAnimation(vector<int> order, float time, float interval, const bool isLoop = false, const bool isReverse = false){
 			m_Order = order;
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = time;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
@@ -47,7 +47,7 @@ namespace basecross{
 				order.push_back(i);
 			}
 			m_Order = order;
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = time;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
@@ -85,7 +85,7 @@ namespace basecross{
 		//頂点
 		vector<VertexPositionColorTexture> m_Vertices;
 		//描画コンポーネント
-		shared_ptr<PCTSpriteDraw> m_BoneDraw;
+		shared_ptr<PCTSpriteDraw> m_Draw;
 		//位置コンポーネント
 		shared_ptr<Transform> m_Transform;
 		//スクリーンサイズ
@@ -99,9 +99,6 @@ namespace basecross{
 
 		//アニメーション処理
 		void Animation();
-		void NewAnimation();
-	public:
-		Sprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size,const bool useCenter = false) : Sprite(ptr,texKey,pos,size,{1,1},useCenter,1,-1,false) {}
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUV, const bool useCenter = false, const float changeTime = 0.5f, const int useIndex = -1, const bool isAnimation = true) :
 			GameObject(ptr),
 			m_TexKey(texKey),
@@ -111,8 +108,18 @@ namespace basecross{
 			m_Index(0), m_UseIndex(useIndex),
 			m_IsAnimation(isAnimation),
 			m_AnimationChangeTime(changeTime), m_AnimationTimer(0.0f),
-			m_ScreenSize(0, 0)
-			{}
+			m_ScreenSize(0, 0) {
+		}
+
+	public:
+		Sprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size) : Sprite(ptr, texKey, pos, size, { 1,1 }, false, 1, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv) : Sprite(ptr, texKey, pos, size, cutUv, false, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, int useIndex) : Sprite(ptr, texKey, pos, size, cutUv, false, 0, useIndex, true) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, bool useCenter) : Sprite(ptr, texKey, pos, size, { 1,1 }, useCenter, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv,int useIndex, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, 0, useIndex, true) {}
+
+
 		virtual ~Sprite(){}
 
 		virtual void OnCreate()override;
@@ -139,11 +146,10 @@ namespace basecross{
 		//	UV操作		
 		//																																
 		//----------------------------------------------------------
-		
+		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut,const int& maxIndex = 1024);
 		//UVの切り替え
 		void UpdateUV(vector<Vec2> uv);
 
-		void CutAnimationUv(Vec2 cut);
 		vector<vector<Vec2>> GetUvVec() {
 			return m_AnimationUV;
 		}
@@ -159,6 +165,7 @@ namespace basecross{
 		//	アニメーション操作		
 		//																																
 		//----------------------------------------------------------
+		
 		
 		//前のアニメーションを取得
 		SpriteAnimation GetBeforeAnimation() {
@@ -271,7 +278,7 @@ namespace basecross{
 	class SpriteAction : public Component {
 		bool m_IsPlay;
 	protected:
-		shared_ptr<SpriteBaseDraw> m_BoneDraw;
+		shared_ptr<SpriteBaseDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
 	public:
 		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr),m_IsPlay(true){}
@@ -362,12 +369,12 @@ namespace basecross{
 		void FadeOut() {
 			m_IsFadeOut = true;
 			m_IsFinished = false;
-			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 0));
+			m_Draw->SetDiffuse(Col4(1, 1, 1, 0));
 		}
 		void FadeIn() {
 			m_IsFadeOut = false;
 			m_IsFinished = false;
-			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 1));
+			m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
 		}
 		bool IsFinish() {
 			return m_IsFinished;
@@ -736,7 +743,7 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class Board : public GameObject {
-		shared_ptr<PNTStaticDraw> m_BoneDraw;
+		shared_ptr<PNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
 
 		Vec3 m_StartPos;
@@ -759,10 +766,10 @@ namespace basecross{
 			m_Offset = offset;
 		}
 		shared_ptr<PNTStaticDraw> GetDraw() {
-			return m_BoneDraw;
+			return m_Draw;
 		}
 		void SetColor(Col4 color) {
-			m_BoneDraw->SetDiffuse(color);
+			m_Draw->SetDiffuse(color);
 		}
 		vector<VertexPositionNormalTexture> GetVertices() {
 			return m_Vertices;
