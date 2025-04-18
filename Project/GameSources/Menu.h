@@ -44,6 +44,7 @@ namespace basecross {
 	public:
 		PauseMenu(const shared_ptr<Stage>& stage, const wstring& group, shared_ptr<Menu>& menu) : Menu(stage, group), m_SoundTestMenu(menu) {}
 		virtual ~PauseMenu() {}
+		shared_ptr<GameStage> m_Stage;
 
 		virtual void OnCreate()override;
 		void OpenSoundTest() {
