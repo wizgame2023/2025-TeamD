@@ -39,10 +39,24 @@ namespace basecross {
 	{
 		return std::sqrt(v.x * v.x + v.z * v.z);
 	}
+	void Character::ZoneSpeedSet()
+	{
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
+	inline float Character::GetElpasedTime() {
+		return App::GetApp()->GetElapsedTime() * m_ZoneElapsedTime;
+	}
 	void Character::Move(const Vec3& direction) {
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = GetElpasedTime();
 		Vec3 position = GetPosition();
-		position += direction * m_Speed * elapsed;
+		position += direction * m_Speed * elapsed * m_ZoneElapsedTime;
 		SetPosition(position);
 	}
 	FixedBox::FixedBox(const shared_ptr<Stage>& stage) :

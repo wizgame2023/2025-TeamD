@@ -18,7 +18,6 @@ namespace basecross {
 		bool m_IntruderAlert;
 		float m_AlertTime;
 	public:	
-		float m_ZoneElapsedTime;
 		shared_ptr<Character> m_Intruder;
 
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -34,7 +33,6 @@ namespace basecross {
 		}
 		Vec3 GetDirectionToIntruder();
 		float GetDistanceToIntruder();
-		void ZoneSpeedSet();
 		void SearchRange();
 		void IntervalEnemy(const Vec3& position);
 		Vec3 GetPosition();

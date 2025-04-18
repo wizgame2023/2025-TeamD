@@ -116,33 +116,15 @@ namespace basecross {
 				if (gunAttack->IsInRange(distance) && distance > gunAttack->GetRange() * 0.2f && gunAttack->GetCooldown() == 0) {
 					m_Enemy->ChangeState<BossGun>();
 					return;
-					/*gunAttack->Play(position + Vec3(0, 0.9f, 0.0f));
-					m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);*/
 				}
 				else {
 					if (cruchAttack->GetCooldown() == 0) {
 						m_Enemy->ChangeState<BossCrush>();
 						return;
-						/*if (!cruchAttack->IsInRange(distance)) {
-							rotationY = atan2f(direction.x, direction.z);
-							m_Enemy->Move(direction);
-						}
-						else {
-							cruchAttack->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
-							m_CooldownTimer.SetTime(cruchAttack->GetCharaCooldown(), true);
-						}*/
 					}
 					else if (gunAttack->GetCooldown() == 0) {
 						m_Enemy->ChangeState<BossGun>();
 						return;
-						/*if (!gunAttack->IsInRange(distance)) {
-							rotationY = atan2f(direction.x, direction.z);
-							m_Enemy->Move(direction);
-						}
-						else {
-							gunAttack->Play(position + Vec3(0, 0.6f, 0.0f));
-							m_CooldownTimer.SetTime(gunAttack->GetCharaCooldown(), true);
-						}*/
 					}
 				}
 				if (gunAttack->GetCooldown() != 0 && cruchAttack->GetCooldown() != 0) {
@@ -169,7 +151,7 @@ namespace basecross {
 	void BossHostility::Exit()
 	{
 	}
-	
+
 	void BossCrush::Enter()
 	{
 		EnemyState::Enter();
