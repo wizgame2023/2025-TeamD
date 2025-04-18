@@ -54,7 +54,7 @@ pointer,1.35_0.71_11.41,1_1_1,0_0_0,Untagged,26,17_23_27_,Pointer,name_position_
 pointer,-6.12_0.71_11.41,1_1_1,0_0_0,Untagged,27,24_26_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,-4.06_0.71_-12.06,1_1_1,0_0_0,Untagged,28,15_25_29_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,1.83_0.71_-12.06,1_1_1,0_0_0,Untagged,29,22_28_,Pointer,name_position_scale_rotation_tag_number_connect_type_
-boss,0.6_2.54_-0.22,0.19_0.19_0.19,0_0_0,Untagged,50,0,30,5,Chara,name_position_scale_rotation_tag_hp_region_time_defeat_type_
+boss,0.6_2.54_-0.22,0.19_0.19_0.19,0_0_0,Untagged,50,0,Chara,name_position_scale_rotation_tag_hp_region_type_
 mob,-13.8_2.54_-2.2,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_
 mob,-25.09_2.54_-1.17,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_
 mob,-13.8_2.54_26.03,0.19_0.19_0.19,0_0_0,Enemy,3,1,Chara,name_position_scale_rotation_tag_hp_region_type_

@@ -71,7 +71,7 @@ namespace basecross {
 		}
 		if (m_Fade->IsFinish())
 		{
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageM");
 		}
 
 	}

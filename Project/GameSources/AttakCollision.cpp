@@ -35,6 +35,7 @@ namespace basecross {
 		m_Collision->SetAfterCollision(AfterCollision::None);
 
 		m_Transform->SetScale(m_Size);
+		AddTag(L"BossAttack");
 	}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {

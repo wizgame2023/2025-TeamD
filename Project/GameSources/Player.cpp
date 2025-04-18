@@ -21,7 +21,8 @@ namespace basecross {
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
 		m_DamageInterval(0.5f),
-		m_BoostInterval(1.0F)
+		m_BoostInterval(1.0F),
+		m_IsGoal(false)
 	{
 	}
 	Player::~Player()
@@ -269,6 +270,11 @@ namespace basecross {
 	float Player::GetEnergy() {
 		return m_EnergyCharge;
 	}
+	void Player::SetIsGaol(const bool& goal)
+	{
+		m_IsGoal = goal;
+	}
+
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
@@ -332,107 +338,109 @@ namespace basecross {
 		auto draw = GetComponent<BcBaseDraw>();
 		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
-		//コントローラチェックして入力があればコマンド呼び出し
-		//m_InputHandler.PushHandle(GetThis<Player>());
-		ZoneActivation();
-		Debug();
-
-
-		if (m_ParryJudge == true)
+		if (m_IsGoal == false)
 		{
-			m_ParryTime--;
-			if (m_ParryTime <= 0.0f)
-			{
-				m_ParryJudge = false;
-			}
-		}
+			ZoneActivation();
+			Debug();
 
-		if (m_DamageIntervalStart)
-		{
-			m_DamageInterval -= elapsedTime;
-			draw->SetDiffuse(Col4(1, 0, 0, 1));
-			if (m_DamageInterval <= 0.0f)
-			{
-				draw->SetDiffuse(Col4(1, 1, 1, 1));
-				m_DamageIntervalStart = false;
-				m_DamageInterval = 0.5f;
-			}
-		}
-		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
-		{
-			m_BoostTime -= elapsedTime;
-			if (m_BoostTime >= 0.0f)
-			{
-				BoostMove(6.0f * 3.0f, m_BoostAngle);
-			}
-			else {
-				m_PlayerStateNum += PlayerState::NORMAL;
-				m_PlayerStateNum -= PlayerState::DASH;
-				m_BoostInterval = 1.0f;
-			}
-		}
-		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
-		{
-			m_Attacktime -= elapsedTime;
-			if (m_Attacktime >= 0.0f)
-			{
-			}
-			else {
-				m_PlayerStateNum -= PlayerState::ATTACK;
-				m_PlayerStateNum += PlayerState::NORMAL;
-			}
 
-		}
-		else {
-			m_BoostTime = 0.2f;
-			m_Attacktime = 0.2f;
-
-			m_BoostInterval -= elapsedTime;
-			m_AttackInterval -= elapsedTime;
-			MovePlayer(6.0f);
-			Vec3 rot = SearchRange();
-
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+			if (m_ParryJudge == true)
 			{
-				m_BoostAngle = GetForward();
-				if (m_BoostInterval <= 0.0f)
+				m_ParryTime--;
+				if (m_ParryTime <= 0.0f)
 				{
-					m_PlayerStateNum -= PlayerState::NORMAL;
-					m_PlayerStateNum += PlayerState::DASH;
-					SoundManager::Instance().PlaySE(L"SE_RUN");
+					m_ParryJudge = false;
 				}
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+			if (m_DamageIntervalStart)
 			{
-				m_ParryJudge = true;
+				m_DamageInterval -= elapsedTime;
+				draw->SetDiffuse(Col4(1, 0, 0, 1));
+				if (m_DamageInterval <= 0.0f)
+				{
+					draw->SetDiffuse(Col4(1, 1, 1, 1));
+					m_DamageIntervalStart = false;
+					m_DamageInterval = 0.5f;
+				}
+			}
+			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
+			{
+				m_BoostTime -= elapsedTime;
+				if (m_BoostTime >= 0.0f)
+				{
+					BoostMove(6.0f * 3.0f, m_BoostAngle);
+				}
+				else {
+					m_PlayerStateNum += PlayerState::NORMAL;
+					m_PlayerStateNum -= PlayerState::DASH;
+					m_BoostInterval = 1.0f;
+				}
+			}
+			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
+			{
+				m_Attacktime -= elapsedTime;
+				if (m_Attacktime >= 0.0f)
+				{
+				}
+				else {
+					m_PlayerStateNum -= PlayerState::ATTACK;
+					m_PlayerStateNum += PlayerState::NORMAL;
+				}
 
-				AimRock(rot);
-				m_Position = GetPosition();
-				Vec3 forward = GetForward();
+			}
+			else {
+				m_BoostTime = 0.2f;
+				m_Attacktime = 0.2f;
 
-				//BoostMove(15.0f, forward);
-				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
-				float rotate = atan2f(forward.x, forward.z);
+				m_BoostInterval -= elapsedTime;
+				m_AttackInterval -= elapsedTime;
+				MovePlayer(6.0f);
+				Vec3 rot = SearchRange();
 
+				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+				{
+					m_BoostAngle = GetForward();
+					if (m_BoostInterval <= 0.0f)
+					{
+						m_PlayerStateNum -= PlayerState::NORMAL;
+						m_PlayerStateNum += PlayerState::DASH;
+						SoundManager::Instance().PlaySE(L"SE_RUN");
+					}
+				}
+
+				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+				{
+					m_ParryJudge = true;
+
+					AimRock(rot);
+					m_Position = GetPosition();
+					Vec3 forward = GetForward();
+
+					//BoostMove(15.0f, forward);
+					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
+					float rotate = atan2f(forward.x, forward.z);
 
 				m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
 				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 
-				m_PlayerStateNum += PlayerState::ATTACK;
-				m_PlayerStateNum -= PlayerState::NORMAL;
+					m_PlayerStateNum += PlayerState::ATTACK;
+					m_PlayerStateNum -= PlayerState::NORMAL;
 
-				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
+				}
 			}
+
+		}
+		else {
+
 		}
 
 	}
 
 	void Player::OnDraw()
 	{
-		//m_Effect->OnDraw();
-
 		Character::OnDraw();
 	}
 	void Player::Dead() {
@@ -452,6 +460,10 @@ namespace basecross {
 					{
 						m_HP -= 0;
 						m_EnergyCharge += 0.2;
+						Vec3 forward = GetForward();
+
+						m_Effect->PlayEffect(L"Parry", Vec3(m_Position.x + forward.x / 2, m_Position.y, m_Position.z + forward.z / 2), 25.0f);
+						m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
 					}
 					else if (m_ParryTime <= 15 && m_ParryTime > 0)
 					{
@@ -539,16 +551,14 @@ namespace basecross {
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
+		if (other->FindTag(L"Bullet") || other->FindTag(L"BossAttack"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->OnCollisionEnter(other);
 		}
-		if (other->FindTag(L"Enemy") || other->FindTag(L"Object"))
+		if (other->FindTag(L"Enemy"))
 		{
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->OnCollisionEnter(other);
-			//GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
+			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}
 
