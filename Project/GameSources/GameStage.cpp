@@ -126,6 +126,7 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+	}
 
 	/// <summary>
 	/// ポーズ画面を閉じる
@@ -161,7 +162,7 @@ namespace basecross {
 		auto camera = GetView()->GetTargetCamera();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr && camera != nullptr) {
-      player->SetIsGaol(true);
+			player->SetIsGaol(true);
 			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
 			auto view = static_pointer_cast<SingleView>(GetView());
 			view->SetCamera(newCamera);
@@ -224,7 +225,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-        m_Effect->SetEffectPause(true);
+				 m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
