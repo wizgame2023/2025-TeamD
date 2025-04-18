@@ -39,12 +39,14 @@ namespace basecross {
 	{
 		return std::sqrt(v.x * v.x + v.z * v.z);
 	}
+
 	void Character::Move(const Vec3& direction) {
 		float elapsed = App::GetApp()->GetElapsedTime();
 		Vec3 position = GetPosition();
 		position += direction * m_Speed * elapsed;
 		SetPosition(position);
 	}
+
 	FixedBox::FixedBox(const shared_ptr<Stage>& stage) :
 		Object(stage)
 	{
