@@ -38,6 +38,22 @@ namespace basecross {
 			}
 		}
 
+		virtual float Parry(float damage, const float& ParrySecond) {
+			float parryTime = 30.0f;
+			if (ParrySecond < parryTime)
+			{
+				return 0;
+			}
+			else if (ParrySecond < parryTime / 2)
+			{
+				return damage / 2;
+			}
+			else
+			{
+				return damage;
+			}
+		}
+
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
