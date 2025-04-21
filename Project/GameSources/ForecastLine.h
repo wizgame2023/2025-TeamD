@@ -9,6 +9,7 @@
 namespace basecross {
 	class Bullet;
 	class LineCube : public GameObject {
+	protected:
 		Col4 m_Color;
 		float m_LineSize;
 		Line m_Line;
@@ -23,6 +24,14 @@ namespace basecross {
 		}
 		shared_ptr<BcPNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Transform;
+	};
+	class BulletLine : public LineCube {
+	public:
+		BulletLine(shared_ptr<Stage>& stage, float size, Col4 color) : LineCube(stage,size,color){}
+		virtual ~BulletLine(){}
+
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
 	};
 }
 //end basecross
