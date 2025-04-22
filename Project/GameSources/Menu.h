@@ -31,7 +31,7 @@ namespace basecross {
 
 		virtual void Close();
 		virtual void Open();
-		
+
 		void EffeckPause();
 
 		bool IsOpen() {
@@ -83,6 +83,15 @@ namespace basecross {
 	public:
 		ResultMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group) {}
 		virtual ~ResultMenu() {}
+		virtual void OnCreate()override;
+
+		virtual void Open();
+	};
+
+	class GameOverMenu : public Menu {
+	public:
+		GameOverMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group) {}
+		virtual ~GameOverMenu() {}
 		virtual void OnCreate()override;
 
 		virtual void Open();

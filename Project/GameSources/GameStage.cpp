@@ -59,7 +59,9 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
+		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
 
+		
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
@@ -103,6 +105,10 @@ namespace basecross {
 	/// </summary>
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
+	}
+
+	void GameStage::CreateGameOverMenu() {
+		m_GameOverMenu = AddGameObject<GameOverMenu>(L"GAMEOVER");
 	}
 
 	void GameStage::CreateUI() {
@@ -149,6 +155,16 @@ namespace basecross {
 			view->SetCamera(newCamera);
 		}
 	}
+
+	void GameStage::GameOver() {
+		m_GameOverMenu->Open();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr ) {
+			player->SetIsGaol(true);
+		}
+
+	}
+
 	void GameStage::CreateBossEnemy()
 	{
 		vector< vector<Vec3> > vec = {
@@ -182,6 +198,7 @@ namespace basecross {
 			CreateSoundTest();
 			CreatePose();
 			CreateResult();
+			CreateGameOverMenu();
 			ButtonManager::instance->CloseAll();
 			CreateUI();
 			auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -227,6 +244,12 @@ namespace basecross {
 		}
 
 		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
+			//if (m_ResultMenu->IsOpen()) {
+			//	m_ResultMenu->Open();
+			//}
+			//else {
+			//	m_ResultMenu->Close();
+			//}
 			//m_Effect->SetEffectPause(false);
 
 			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();

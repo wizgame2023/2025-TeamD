@@ -443,8 +443,7 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
-		SetPosition(Vec3(0, 2, 0));
-		InitHP(1000);
+		PostEvent(1.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
