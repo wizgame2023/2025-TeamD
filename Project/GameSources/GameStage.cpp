@@ -51,6 +51,9 @@ namespace basecross {
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
 		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
+		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
+		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
+
 		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");

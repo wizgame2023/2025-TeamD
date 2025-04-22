@@ -527,8 +527,7 @@ namespace basecross {
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
-	{
-	}
+	{}
 
 	void HitSphere::OnCreate()
 	{
