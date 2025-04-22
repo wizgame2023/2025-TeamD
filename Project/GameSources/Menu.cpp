@@ -168,7 +168,7 @@ namespace basecross {
 		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(-100.0f, -250.0f, 0.0f), Vec2(150, 50),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStageM");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
 			});
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
@@ -189,5 +189,41 @@ namespace basecross {
 		parry->UpdateNumber(ScoreManager::Instance()->GetParryCount());
 		damage->UpdateNumber(ScoreManager::Instance()->GetDamage());
 	}
+
+	void GameOverMenu::OnCreate() {
+		Menu::OnCreate();
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"HP_BAR", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
+		//sprite->SetDiffuse(Col4(1, 0, 0, 1));
+		AddSprite(sprite);
+		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
+		//text->SetDiffuse(Col4(0, 0, 0, 1));
+		AddSprite(text);
+
+		//タイトル
+		AddButton(L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+			[](shared_ptr<ObjectInterface> object) {
+				auto stage = static_pointer_cast<Stage>(object);
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+			});
+		//セレクト
+		//AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-50.0f, -250.0f, 0.0f), Vec2(250, 120),
+		//	[](shared_ptr<ObjectInterface> object) {
+
+		//	});
+		//リスタート
+		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
+			[](shared_ptr<ObjectInterface> object) {
+
+			});
+
+		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
+		AddAcceptButton(XINPUT_GAMEPAD_A);
+		Close();
+	}
+	void GameOverMenu::Open() {
+		Menu::Open();
+	}
+
+
 }
 //end basecross

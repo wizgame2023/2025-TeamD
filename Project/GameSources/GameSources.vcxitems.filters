@@ -150,6 +150,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h">
       <Filter>Sprite</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -254,5 +255,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
   </ItemGroup>
 </Project>
