@@ -84,6 +84,7 @@ namespace basecross {
 		builder->Register<RootPointer>(L"pointer");
 		builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
+		builder->Register<Ground>(L"Ground");
 		builder->LoadCsv();
 
 	}

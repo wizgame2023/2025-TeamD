@@ -20,6 +20,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
@@ -61,6 +62,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
