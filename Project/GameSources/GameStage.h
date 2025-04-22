@@ -24,6 +24,7 @@ namespace basecross {
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
+		shared_ptr<Menu> m_GameOverMenu;
 
 		shared_ptr<UltIcon> m_UltIcon;
 		shared_ptr<Sprite> m_PlayerHpBar;
@@ -39,6 +40,7 @@ namespace basecross {
 		void RegisterObjects();
 		void CreateBossEnemy();
 
+		void CreateGameOverMenu();
 		void CreatePose();
 		void CreateSoundTest();
 		void CreateResult();
@@ -49,7 +51,7 @@ namespace basecross {
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
 
-		void GameOver() {};
+		void GameOver();
 		void GameClear();
 
 		shared_ptr<EffectManeger> m_Effect;
@@ -69,7 +71,6 @@ namespace basecross {
 		static int COUNT;
 
 	};
-
 
 }
 //end basecross
