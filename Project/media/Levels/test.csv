@@ -17,7 +17,7 @@ cube,29.60744_8.258015_-2.301214,55_5_1,0_90_0,Untagged,true,Object,name_positio
 cube,-26.39256_8.258015_-2.301214,55_5_1,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,1.607439_8.258015_25.69879,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,1.607439_8.258015_-30.30121,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
-player,1.607439_8.258015_-2.301214,0.19_0.19_0.19,0_0_0,Untagged,0,0,Chara,name_position_scale_rotation_tag_hp_region_type_
+player,1.607439_8.258015_-2.301214,0.19_0.19_0.19,0_0_0,Untagged,50,0,Chara,name_position_scale_rotation_tag_hp_region_type_
 Ground,1.3_6.22_-2.2,560_100_550,0_0_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 pointer,-24.17_6.860003_23.04379,1_1_1,0_0_0,Untagged,0,1_12_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,-15.82_6.860003_23.04379,1_1_1,0_0_0,Untagged,1,0_13_2_,Pointer,name_position_scale_rotation_tag_number_connect_type_
@@ -52,7 +52,7 @@ pointer,6.969999_6.86_-17.06,1_1_1,0_0_0,Untagged,29,20_21_,Pointer,name_positio
 pointer,1.54_6.86_-14.36121,1_1_1,0_0_0,Untagged,30,21_22_32_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,-12.27_6.86_-3.63,1_1_1,0_0_0,Untagged,31,31_22_23_,Pointer,name_position_scale_rotation_tag_number_connect_type_
 pointer,1.78_6.86_-3.71,1_1_1,0_0_0,Untagged,32,30_27_26_17_,Pointer,name_position_scale_rotation_tag_number_connect_type_
-boss,2.207438_8.798015_-2.521214,0.19_0.19_0.19,0_0_0,Untagged,0,0,30,5,Chara,name_position_scale_rotation_tag_hp_region_time_defeat_type_
+boss,2.207438_8.798015_-2.521214,0.19_0.19_0.19,0_0_0,Untagged,100,0,30,5,Chara,name_position_scale_rotation_tag_hp_region_time_defeat_type_
 mob,-12.19256_8.798015_-3.55,0.19_0.19_0.19,0_0_0,Untagged,3,0,Chara,name_position_scale_rotation_tag_hp_region_type_
 mob,-12.8_8.798015_-14.35,0.19_0.19_0.19,0_0_0,Untagged,3,0,Chara,name_position_scale_rotation_tag_hp_region_type_
 mob,-1.192561_8.798015_-15.09121,0.19_0.19_0.19,0_0_0,Untagged,3,0,Chara,name_position_scale_rotation_tag_hp_region_type_
