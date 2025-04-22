@@ -54,6 +54,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnDraw();
 		virtual void Dead();
+		virtual void Damage(bool parry,  float damage);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;
@@ -68,10 +69,10 @@ namespace basecross {
 		float GetDamage();
 		bool GetParry();
 		void SetParryPosition(const Vec3& position);
-		void SetParry(const bool& parry);
 		void SetDamage(const float& damage);
 		void SetIsGaol(const bool& goal);
 		Vec3 SearchRange();
+		void SetCharge(const float& charge);
 
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);
