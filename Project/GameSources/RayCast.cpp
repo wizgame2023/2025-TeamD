@@ -5,7 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
-
+#include <chrono>
 namespace basecross {
 	vector<RayCast> RayCast::m_RayCasts = {};
 
@@ -29,8 +29,7 @@ namespace basecross {
 		}
 		if (isExclude) return false;
 		bool isHit = false;
-		CreateRayCast(1);
-		isHit = m_RayCasts[0].HitTestMeshRayCast(line, newResult, object);
+		isHit = HitTestMeshRayCast(line, newResult, object);
 		if (isHit) {
 			if (hit.m_Object == nullptr) {
 				hit.m_Object = object;
@@ -47,26 +46,34 @@ namespace basecross {
 	}
 	bool RayCast::HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags) {
 		bool isHit = false;
+		chrono::system_clock::time_point start, end;
+		start = chrono::system_clock::now();
 		for (auto& obj : vec) {
-			bool isExclude = false;
-			for (auto& tag : excludeTags) {
-				if (obj->FindTag(tag)) {
-					isExclude = true;
-					break;
-				}
-			}
-			if (isExclude) continue;
 			auto transform = obj->GetComponent<Transform>();
 			Vec3 position = transform->GetPosition();
 			Vec3 scale = transform->GetScale();
+			
 			float distance = RayCast::CalcDistancePointToLine(position, line);
 			Vec3 halfScale = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (distance < halfScale.length()) {
+				bool isExclude = false;
+				for (auto& tag : excludeTags) {
+					if (obj->FindTag(tag)) {
+						isExclude = true;
+						break;
+					}
+				}
+				if (isExclude) continue;
+				GameStage::COUNT++;
 				if (RayCast::HitTest(hit, line, obj)) {
 					isHit = true;
 				}
+				int a = 0;
 			}
 		}
+		end = chrono::system_clock::now();
+		double time = static_cast<double>(chrono::duration_cast<chrono::seconds>(end - start).count() / 1000.0);
+
 		return isHit;
 	}
 	bool RayCast::HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object) {
@@ -88,8 +95,17 @@ namespace basecross {
 				//三角形が無効なら次にうつる
 				continue;
 			}
+			
+			float pToLA = CalcDistancePointToLine(triangle.m_A, line);
+			float pToLB = CalcDistancePointToLine(triangle.m_B, line);
+			float pToLC = CalcDistancePointToLine(triangle.m_C, line);
 
+			
+			float pToL = min(pToLA, min(pToLB, pToLC));
+			float pToP = max(abs(pToL - pToLA), max(abs(pToL - pToLB), abs(pToL - pToLC)));
 
+			
+			if (pToL > pToP) continue;
 			bsm::Vec3 hitPosition;
 			float triangleIndex;
 			if (HitTest::SEGMENT_TRIANGLE(line.m_Start, line.m_End, triangle, hitPosition, triangleIndex)) {
@@ -101,6 +117,9 @@ namespace basecross {
 				hit.m_HitPosition = line.m_Start + Nomal;
 				hit.m_Triangle = triangle;
 				hit.m_TriangleIndex = i / 3;
+				
+				
+
 				return true;
 			}
 		}

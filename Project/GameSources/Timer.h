@@ -14,6 +14,7 @@ namespace basecross {
 	public:
 		Timer(const bool& isReset = true);
 		Timer(float time,const bool& isReset = true);
+		Timer(float time,float firstTime, const bool& isReset = true);
 		~Timer();
 		void SetTime(float time,const bool& isReset = false) {
 			m_MaxTime = time;

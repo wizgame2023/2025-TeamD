@@ -10,7 +10,9 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_ComboTimer(Timer(1.0f,false)),m_IsStun(false)
+		Enemy(stage, position, scale),
+		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -52,9 +54,10 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(GetThis<BossEnemy>(),3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.5f, 0.5f), AttackDate(GetThis<BossEnemy>(),3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 
+		SetPosition(Vec3(100, 100, 100));
 	}
 
 	void BossEnemy::OnUpdate()
@@ -73,6 +76,10 @@ namespace basecross {
 			int defeatCount = ScoreManager::Instance()->GetEliminateEnemyCount();
 			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
+			}
+			if (m_IsAppearance) {
+				SetPosition(m_StartPosition);
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
 			}
 		}
 		else {

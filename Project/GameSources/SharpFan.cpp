@@ -20,7 +20,7 @@ namespace basecross {
 			float rad = startRadius + XMConvertToRadians(m_DrawAngle / m_VerticesSize * i);
 
 			float u = 1.0f / static_cast<float>(m_VerticesSize) * static_cast<float>(i);
-			float v = 2.0f;
+			float v = 1.0f;
 
 			Vec3 position = Vec3(0.0f, 0.0f, 0.0f);
 			if (m_Vertices.size() != 0) {
@@ -77,8 +77,9 @@ namespace basecross {
 
 	void SharpFan::OnUpdate() {
 		InitializeVertex();
+		float elapsed = App::GetApp()->GetElapsedTime();
 		for (auto& vertex : m_Vertices) {
-			vertex.textureCoordinate -= 0.01f;
+			vertex.textureCoordinate -= m_Speed * elapsed;
 		}
 		m_Draw->UpdateVertices(m_Vertices);
 	}

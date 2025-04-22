@@ -41,3 +41,5 @@
 #include "ResultCamera.h"
 #include "Icon.h"
 #include "Timer.h"
+#include "AreaOfEffect.h"
+#include "GameSprite.h"

@@ -443,6 +443,7 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
+		
 		SetPosition(Vec3(0, 2, 0));
 		InitHP(1000);
 	}

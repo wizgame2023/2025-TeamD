@@ -52,19 +52,7 @@ namespace basecross {
 		AddTag(L"Line");
 	}
 	void BulletLine::OnUpdate() {
-		if (m_Line.GetLength() == 0) return;
-		float rad = atan2f(-m_Line.GetDirection().z, m_Line.GetDirection().x);
-		//m_Transform->SetRotation(Vec3(0, rad, 0));
-
-		m_Transform->SetScale(Vec3(m_LineSize, m_Line.GetLength(), m_LineSize));
-
-		m_Transform->SetPosition(m_Line.m_Start + m_Line.GetDirection() / 2.0f);
-
-		auto rotateMatrix = (Mat4x4)XMMatrixLookAtLH(m_Line.m_Start, m_Line.m_End, Vec3(0, 1, 0));
-		rotateMatrix = inverse(rotateMatrix);
-		Quat qt = rotateMatrix.quatInMatrix();
-		qt = Quat(sin(XMConvertToRadians(45)), 0, 0, cos(XMConvertToRadians(45))) * qt;
-		m_Transform->SetQuaternion(qt);
+		LineCube::OnUpdate();
 	}
 }
 //end basecross
