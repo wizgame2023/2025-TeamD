@@ -241,6 +241,40 @@ namespace basecross {
 		return nearObject;
 	}
 
+	float Player::Parry(float damage, const float& ParrySecond)
+	{
+		float parryTime = 5.0f;
+		Vec3 forward = GetForward();
+		if (ParrySecond < parryTime)
+		{
+			m_EnergyCharge += 0.2;
+			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
+			m_Effect->SetScale(Vec3(0.05f, 0.05f, 0.05f));
+			m_Effect->SetEffectSpeed(30.0f);
+			ScoreManager::Instance()->AddParryCount();
+			SoundManager::Instance().PlaySE(L"SE_GUARD");
+			return 0;
+		}
+		else if (ParrySecond < parryTime / 2)
+		{
+			m_EnergyCharge += 0.1;
+			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
+			m_Effect->SetScale(Vec3(0.01f, 0.01f, 0.01f));
+			m_Effect->SetEffectSpeed(30.0f);
+			ScoreManager::Instance()->AddDamage(1);
+			return damage / 2;
+		}
+		else
+		{
+			m_DamageIntervalStart = true;
+			m_EnergyCharge += 0.2;
+			ScoreManager::Instance()->AddDamage(2);
+			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+			return damage;
+		}
+
+	}
+
 	void Player::Debug()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
@@ -274,6 +308,19 @@ namespace basecross {
 	float Player::GetDamage()
 	{
 		return m_Damage;
+	}
+	bool Player::GetParry()
+	{
+		return m_ParryJudge;
+	}
+	void Player::SetParryPosition(const Vec3& position)
+	{
+		m_EffectVec = position;
+	}
+	void Player::SetParry(const bool& parry)
+	{
+		m_ParryJudge = parry;
+		
 	}
 	void Player::SetDamage(const float& damage)
 	{
@@ -350,17 +397,16 @@ namespace basecross {
 		{
 			ZoneActivation();
 			Debug();
+			Vec3 forward = GetForward();
 
-
-			if (m_ParryJudge == true)
+			if (m_ParryJudge)
 			{
 				m_ParryTime--;
-				if (m_ParryTime <= 0.0f)
+				if (m_ParryTime < 0.0f)
 				{
 					m_ParryJudge = false;
 				}
 			}
-
 			if (m_DamageIntervalStart)
 			{
 				m_DamageInterval -= elapsedTime;
@@ -423,7 +469,6 @@ namespace basecross {
 
 					AimRock(rot);
 					m_Position = GetPosition();
-					Vec3 forward = GetForward();
 
 					//BoostMove(15.0f, forward);
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
@@ -441,10 +486,6 @@ namespace basecross {
 			}
 
 		}
-		else {
-
-		}
-
 	}
 
 	void Player::OnDraw()
@@ -458,40 +499,21 @@ namespace basecross {
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
+		if (other->FindTag(L"Bullet") || other->FindTag(L"BossAttack"))
 		{
 			if (m_DamageIntervalStart == false)
 			{
-				GetDamage();
-				m_ParryDamage = Parry(m_Damage, m_ParryTime);
-				Damage(m_ParryDamage, true);
-				if (m_ParryJudge == true)
+				if (m_ParryJudge)
 				{
-					if (m_ParryDamage == 0)
-					{
-						m_EnergyCharge += 0.2;
-						Vec3 forward = GetForward();
-						m_Effect->PlayEffect(L"Parry", Vec3(m_Position.x + forward.x / 2, m_Position.y, m_Position.z + forward.z / 2), 25.0f);
-						m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
-					}
-					else if (m_ParryDamage == m_Damage / 2)
-					{
-						m_EnergyCharge += 0.1;
-						ScoreManager::Instance()->AddDamage(1);
-					}
-					ScoreManager::Instance()->AddParryCount();
-					SoundManager::Instance().PlaySE(L"SE_GUARD");
+					m_ParryDamage = Parry(m_Damage, m_ParryTime);
+					Damage(m_ParryDamage, true);
 				}
 				else {
-					m_DamageIntervalStart = true;
-					m_EnergyCharge += 0.2;
-					ScoreManager::Instance()->AddDamage(2);
-					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+					Damage(m_Damage, true);
 				}
 			}
 			m_HP = max(m_HP, 0);
-			m_ParryJudge = false;
-			m_ParryTime = 30.0f;
+			m_ParryTime = 5.0f;
 		}
 	}
 
@@ -554,10 +576,20 @@ namespace basecross {
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet") || other->FindTag(L"BossAttack"))
+		if (other->FindTag(L"Bullet"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetDamage(2.0f);
+			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
+			player->SetParry(true);
+			player->OnCollisionEnter(other);
+		}
+		if (other->FindTag(L"BossAttack"))
+		{
+			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
+			player->SetDamage(4.0f);
+			player->SetParry(true);
 			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"Enemy"))
