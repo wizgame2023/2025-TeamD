@@ -170,6 +170,7 @@ namespace basecross {
 	}
 	void GameStage::OnCreate() {
 		try {
+			m_TotalTime = 0;
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
@@ -209,7 +210,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-				 m_Effect->SetEffectPause(true);
+				m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {

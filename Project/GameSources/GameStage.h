@@ -19,6 +19,7 @@ namespace basecross {
 		bool m_IsPose;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
+		float m_TotalTime;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
@@ -63,11 +64,10 @@ namespace basecross {
 		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
-		void ClosePose();
-		void OpenPose();
 		shared_ptr <EffectManeger> GetCreateEffect();
 
 		static int COUNT;
+
 	};
 
 
