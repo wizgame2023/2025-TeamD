@@ -9,7 +9,7 @@
 namespace basecross {
 
 	void UltIcon::OnCreate() {
-		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_PANCH", Vec3(499.0f, -228.0f, 0.0f), Vec2(80.0f));
+		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_PANCH", Vec3(499.0f, -228.0f, 0.0f), Vec2(100.0f));
 	}
 	void UltIcon::OnUpdate() {
 		Vec2 maxSize = m_Icon->GetSize();
@@ -27,7 +27,7 @@ namespace basecross {
 			});
 	}
 	void NormalIcon::OnCreate() {
-		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(80.0f));
+		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(100.0f));
 	}
 	void NormalIcon::OnUpdate() {
 		auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
