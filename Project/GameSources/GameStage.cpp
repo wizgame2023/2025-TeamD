@@ -63,7 +63,7 @@ namespace basecross {
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
-		m_Effect->RegisterResource(L"Parry", effectPath + L"pari.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
 
 	}
 
@@ -81,7 +81,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
-		//builder->Register<Mob>(L"mob");
+		builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
 		builder->LoadCsv();
 
