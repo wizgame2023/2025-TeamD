@@ -16,7 +16,7 @@ namespace basecross {
 	}
 	void Legion::OnUpdate()
 	{
-		MobAreaInterval();
+		//MobAreaInterval();
 		for (int i = 0; i < m_GruopEnemy.size(); i++)
 		{
 			auto enemy = m_GruopEnemy[i].lock();

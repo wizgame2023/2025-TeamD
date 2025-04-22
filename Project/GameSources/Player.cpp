@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Player.h"
 
 namespace basecross {
 	Player::Player(const shared_ptr<Stage>& stage) : Player(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
@@ -270,6 +271,14 @@ namespace basecross {
 	float Player::GetEnergy() {
 		return m_EnergyCharge;
 	}
+	float Player::GetDamage()
+	{
+		return m_Damage;
+	}
+	void Player::SetDamage(const float& damage)
+	{
+		m_Damage = damage;
+	}
 	void Player::SetIsGaol(const bool& goal)
 	{
 		m_IsGoal = goal;
@@ -454,21 +463,20 @@ namespace basecross {
 		{
 			if (m_DamageIntervalStart == false)
 			{
+				GetDamage();
+				m_ParryDamage = Parry(m_Damage, m_ParryTime);
+				Damage(m_ParryDamage, true);
 				if (m_ParryJudge == true)
 				{
-					if (m_ParryTime <= 30 && m_ParryTime > 15)
+					if (m_ParryDamage == 0)
 					{
-						m_HP -= 0;
 						m_EnergyCharge += 0.2;
 						Vec3 forward = GetForward();
-
 						m_Effect->PlayEffect(L"Parry", Vec3(m_Position.x + forward.x / 2, m_Position.y, m_Position.z + forward.z / 2), 25.0f);
 						m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
 					}
-					else if (m_ParryTime <= 15 && m_ParryTime > 0)
+					else if (m_ParryDamage == m_Damage / 2)
 					{
-						Damage(1.0f, true);
-						m_DamageIntervalStart = true;
 						m_EnergyCharge += 0.1;
 						ScoreManager::Instance()->AddDamage(1);
 					}
@@ -476,7 +484,6 @@ namespace basecross {
 					SoundManager::Instance().PlaySE(L"SE_GUARD");
 				}
 				else {
-					Damage(1.0f, false);
 					m_DamageIntervalStart = true;
 					m_EnergyCharge += 0.2;
 					ScoreManager::Instance()->AddDamage(2);
@@ -484,9 +491,6 @@ namespace basecross {
 				}
 			}
 			m_HP = max(m_HP, 0);
-			if (m_HP <= 0) {
-				Dead();
-			}
 			m_ParryJudge = false;
 			m_ParryTime = 30.0f;
 		}
@@ -554,6 +558,7 @@ namespace basecross {
 		if (other->FindTag(L"Bullet") || other->FindTag(L"BossAttack"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+			player->SetDamage(2.0f);
 			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"Enemy"))
