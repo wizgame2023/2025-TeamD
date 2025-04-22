@@ -40,7 +40,7 @@ namespace basecross {
 		void SetIntruderAlert(bool flag);
 		void KnockBackTime(shared_ptr<GameObject>& other);
 
-		shared_ptr<LineCube> m_LineCube;
+		//shared_ptr<LineCube> m_LineCube;
 
 	private:
 

@@ -65,6 +65,9 @@ namespace basecross {
 			if (m_Date.m_ExitTimer.GetTime() < m_Date.m_ExitTimer.GetMaxTime() / 2.0f) {
 				auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
 				boss->AddStun(0.5f);
+				Vec3 direction = GetPosition() - Other->GetComponent<Transform>()->GetPosition();
+				direction = direction.normalize();
+				boss->GetComponent<Gravity>()->StartJump(direction + Vec3(0.0f,2.0f,0.0f));
 				Stop();
 			}
 		}
