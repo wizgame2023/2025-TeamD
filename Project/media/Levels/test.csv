@@ -14,6 +14,7 @@ cube,-28_2_0,55_5_1,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag
 cube,0_2_28,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,0_2_-28,1_5_57,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 player,0_2_0,0.19_0.19_0.19,0_0_0,Untagged,0,0,Chara,name_position_scale_rotation_tag_hp_region_type_
+Ground,-0.3074386_-0.03801489_-0.1887858,559.3992_100_552.7542,0_0_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,14.48256_2.481985_4.591214,5_5_9,0_90_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,8.882561_2.701985_20.18121,4_5_6,0_0_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
 cube,-22.79744_2.701985_12.25121,4.391381_5_6.818728,0_0_0,Untagged,true,Object,name_position_scale_rotation_tag_collision_type_
