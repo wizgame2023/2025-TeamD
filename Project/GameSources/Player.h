@@ -68,7 +68,6 @@ namespace basecross {
 		float GetDamage();
 		bool GetParry();
 		void SetParryPosition(const Vec3& position);
-		void SetParry(const bool& parry);
 		void SetDamage(const float& damage);
 		void SetIsGaol(const bool& goal);
 		Vec3 SearchRange();
