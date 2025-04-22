@@ -23,7 +23,7 @@ namespace basecross {
 		AttackDate(const shared_ptr<Character>& owner,float damage, float range, float time, float cooldown, float charaCooldown) :
 			m_Owner(owner),
 			m_Damage(damage),m_Range(range),
-			m_ExitTimer(Timer(time,false)),m_CooldownTimer(Timer(cooldown,false)),
+			m_ExitTimer(Timer(time,false)),m_CooldownTimer(Timer(cooldown,cooldown,false)),
 			m_CharacterCooldown(charaCooldown)
 		{}
 	};
@@ -54,6 +54,11 @@ namespace basecross {
 			m_Transform->SetPosition(position);
 			m_Date.Reset();
 		}
+		void Stop() {
+			SetDrawActive(false);
+			m_IsFinish = true;
+			m_Transform->SetPosition(Vec3(1000, 1000, 1000));
+		}
 		virtual void LoopEffect() {}
 		virtual void ContactObjectEffect() {}
 		virtual void ContactPlayerEffect() {}
@@ -79,20 +84,42 @@ namespace basecross {
 			return m_IsFinish;
 		}
 	};
+	template<class CollisionType>
 	class AttackCollision : public Attack {
 		Vec3 m_Size;
 	protected:
-		shared_ptr<CollisionObb> m_Collision;
+		shared_ptr<CollisionType> m_Collision;
 	public:
 		AttackCollision(const shared_ptr<Stage>& stage,Vec3 size,AttackDate date) :
 			Attack(stage,date),
 			m_Size(size){}
 		virtual ~AttackCollision() {}
 
-		virtual void OnCreate()override;
-	};
+		virtual void OnCreate()override {
+			Attack::OnCreate();
+			m_Collision = AddComponent<CollisionType>();
+			m_Collision->SetDrawActive(true);
+			m_Collision->SetAfterCollision(AfterCollision::None);
 
-	class CrushAttack : public AttackCollision {
+			m_Transform->SetScale(m_Size);
+			AddTag(L"BossAttack");
+		}
+	};
+	//class AttackCollisionCircle : public Attack {
+	//	float m_Size;
+	//protected:
+	//	shared_ptr<CollisionSphere> m_Collision;
+	//public:
+	//	AttackCollisionCircle(const shared_ptr<Stage>& stage, float size, AttackDate date) :
+	//		Attack(stage, date),
+	//		m_Size(size) {
+	//	}
+	//	virtual ~AttackCollisionCircle() {}
+
+	//	virtual void OnCreate()override;
+	//};
+
+	class CrushAttack : public AttackCollision<CollisionSphere> {
 		float m_BlowForce;
 	public:
 		CrushAttack(const shared_ptr<Stage>& stage,Vec3 size,AttackDate date,float force) :
@@ -113,7 +140,7 @@ namespace basecross {
 		virtual ~MachineGun() {}
 		virtual void OnUpdate()override;
 	};
-	class Missile : public AttackCollision {
+	class Missile : public AttackCollision<CollisionObb> {
 		float m_ExplodePower;
 		Vec3 m_Target;
 	public:

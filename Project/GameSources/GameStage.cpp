@@ -7,7 +7,7 @@
 #include "Project.h"
 
 namespace basecross {
-
+	int GameStage::COUNT = 0;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
@@ -33,6 +33,7 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 		wstring effectPath = mediaPath + L"Effekt/";
+		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
@@ -55,6 +56,7 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
+		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
@@ -65,7 +67,7 @@ namespace basecross {
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
-		m_Effect->RegisterResource(L"Parry", effectPath + L"pari.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
 
 	}
 
@@ -83,8 +85,9 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<RootPointer>(L"pointer");
-		//builder->Register<Mob>(L"mob");
+		builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
+		builder->Register<Ground>(L"Ground");
 		builder->LoadCsv();
 
 	}
@@ -184,6 +187,7 @@ namespace basecross {
 	}
 	void GameStage::OnCreate() {
 		try {
+			m_TotalTime = 0;
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
@@ -215,6 +219,7 @@ namespace basecross {
 		}
 	}
 	void GameStage::OnUpdate() {
+		COUNT = 0;
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
 		float elapsed = app->GetElapsedTime();
@@ -223,7 +228,7 @@ namespace basecross {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
-				 m_Effect->SetEffectPause(true);
+				m_Effect->SetEffectPause(true);
 			}
 			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
 				if (m_ResultMenu->IsOpen()) {
@@ -312,7 +317,7 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
-
+			AddGameObject<BossAppearText>(Vec3(-150, 300, 0.0f), Vec3(300, 100, 1.0f));
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();

@@ -34,6 +34,9 @@ namespace basecross {
 		Timer m_ComboTimer;
 		int m_ComboCount;
 
+		Vec3 m_StartPosition;
+
+		Timer m_DamageEffectTime;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale

@@ -14,11 +14,12 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
-
+		
 		wstring m_MapFileName;
 		bool m_IsPose;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
+		float m_TotalTime;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
@@ -67,6 +68,7 @@ namespace basecross {
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
 
+		static int COUNT;
 
 	};
 

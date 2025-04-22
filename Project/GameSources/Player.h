@@ -23,12 +23,15 @@ namespace basecross {
 		float m_Attacktime;
 		float m_AttackInterval;
 		float m_DamageInterval;
+		float m_Damage;
 		bool m_ParryJudge;
 		bool m_DamageIntervalStart;
 		bool m_IsGoal;
+		float m_ParryDamage;
 
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
+		Vec3 m_EffectVec;
 		shared_ptr<EffectManeger> m_Effect;
 
 		shared_ptr<TargetBoard> m_TargetBoard;
@@ -62,12 +65,19 @@ namespace basecross {
 		Vec3 GetForward();
 		int GetStates();
 		float GetEnergy();
+		float GetDamage();
+		bool GetParry();
+		void SetParryPosition(const Vec3& position);
+		void SetParry(const bool& parry);
+		void SetDamage(const float& damage);
 		void SetIsGaol(const bool& goal);
 		Vec3 SearchRange();
 
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
+
+		float Parry(float damage, const float& ParrySecond);
 	};
 
 	class HitSphere : public GameObject
