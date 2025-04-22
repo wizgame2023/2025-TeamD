@@ -18,12 +18,12 @@ namespace basecross {
 		auto playerModel = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
-		auto modelGround = MeshResource::CreateStaticModelMesh(modelPath, L"Ground.bmf");
+		//auto modelGround = MeshResource::CreateStaticModelMesh(modelPath, L"Ground.bmf");
 
 		app->RegisterResource(L"OBJECT", modelBuild);
 		app->RegisterResource(L"MOB", modelEnemy);
 		app->RegisterResource(L"PLAYER", playerModel);
-		app->RegisterResource(L"GROUND", modelGround);
+		//app->RegisterResource(L"GROUND", modelGround);
 	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------

@@ -33,6 +33,7 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 		wstring effectPath = mediaPath + L"Effekt/";
+		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
 		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
