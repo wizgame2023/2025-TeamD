@@ -60,8 +60,21 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"HitJudge") || other->FindTag(L"Player") || other->FindTag(L"Object")) {
-			GetStage()->RemoveGameObject<LineCube>(m_Line);
+		GetStage()->RemoveGameObject<LineCube>(m_Line);
+
+		if (other->FindTag(L"HitJudge")) {
+
+			other->OnCollisionEnter(GetThis<GameObject>());
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+		}
+		if (other->FindTag(L"Player"))
+		{
+			auto player = dynamic_pointer_cast<Player>(other);
+			player->Damage(false, 2.0f);
+			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+		}
+		if (other->FindTag(L"Object"))
+		{
 			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
 		}
 	}

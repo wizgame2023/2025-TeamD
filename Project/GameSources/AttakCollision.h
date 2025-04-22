@@ -43,10 +43,15 @@ namespace basecross {
 			if (Other->FindTag(L"Player")) {
 				ContactPlayerEffect();
 				ContactPlayer(Other);
+				auto player = dynamic_pointer_cast<Player>(Other);
+				player->Damage(true, 4.0f);
 			}
 			if (Other->FindTag(L"Stage")) {
 				ContactObjectEffect();
 				ContactStage(Other);
+			}
+			if (Other->FindTag(L"HitJudge")) {
+				Other->OnCollisionEnter(GetThis<GameObject>());
 			}
 		}
 		void Play(Vec3 position) {
