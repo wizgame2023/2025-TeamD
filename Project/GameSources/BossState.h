@@ -72,6 +72,7 @@ namespace basecross {
 		bool m_IsFinish;
 
 		Vec3 m_FinishedForward;
+		Vec3 m_AttackPosition;
 
 		bool LerpRotatePlayer(Vec3 direction) {
 			float elapsed = App::GetApp()->GetElapsedTime();
@@ -86,7 +87,8 @@ namespace basecross {
 		AttackState(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
 			m_CooldownTimer(Timer(false)), m_ReadyTimer(Timer(false)),
-			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f)
+			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f),
+			m_AttackPosition(Vec3())
 		{
 		}
 	private:

@@ -14,7 +14,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
-
+		
 		wstring m_MapFileName;
 		bool m_IsPose;
 		int m_MaxEnemyCount;
@@ -65,6 +65,8 @@ namespace basecross {
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
+
+		static int COUNT;
 
 	};
 

@@ -10,7 +10,9 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage) : BossEnemy(stage, Vec3(), Vec3(1.0f)) {}
 
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Enemy(stage, position, scale), m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_ComboTimer(Timer(1.0f,false)),m_IsStun(false)
+		Enemy(stage, position, scale),
+		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false))
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -19,7 +21,7 @@ namespace basecross {
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		SetSpeed(0.5f);
+		SetSpeed(1.0f);
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -52,7 +54,7 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.1f, 0.5f), AttackDate(GetThis<BossEnemy>(),3.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.5f, 0.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 
 	}
@@ -74,12 +76,20 @@ namespace basecross {
 			if (defeatCount >= m_ConditionDefeat) {
 				m_IsAppearance = true;
 			}
+			if (m_IsAppearance) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+			}
 		}
 		else {
 			if (!m_IsStun) {
 				m_currentState->Execute();
 				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
-				ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+				if (m_DamageEffectTime.UpdateTimer()) {
+					ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+				}
+				else {
+					ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
+				}
 			}
 			else {
 				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
@@ -124,7 +134,10 @@ namespace basecross {
 	}
 	void BossEnemy::Damage(float damage, const bool& isSound) {
 		Enemy::Damage(damage, isSound);
-		ChangeState<BossHostility>();
+		m_DamageEffectTime.SetTime(0.2f, true);
+		if (!m_IntruderAlert) {
+			ChangeState<BossHostility>();
+		}
 	}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
