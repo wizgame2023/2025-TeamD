@@ -19,7 +19,8 @@ namespace basecross {
 
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SQUARE");
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"GROUND");
 		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		//ptrDraw->SetMeshResource(L"GROUND");
 		//Mat4x4 meshMat;
