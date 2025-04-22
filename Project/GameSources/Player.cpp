@@ -493,9 +493,7 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
-
-		PostEvent(1.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
-
+		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
