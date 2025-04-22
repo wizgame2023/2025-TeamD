@@ -146,6 +146,10 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AreaOfEffect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -246,5 +250,9 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

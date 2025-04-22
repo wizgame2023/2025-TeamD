@@ -18,25 +18,29 @@ namespace basecross {
 		m_IsFinish = false;
 		if (GetDrawActive()) {
 			if (m_Date.m_ExitTimer.UpdateTimer()) {
-				SetDrawActive(false);
-				m_IsFinish = true;
-				m_Transform->SetPosition(Vec3(1000, 1000, 1000));
+				Stop();
 			}
 		}
 		else {
 			m_Date.m_CooldownTimer.UpdateTimer();
 		}
 	}
-
-	void AttackCollision::OnCreate() {
-		Attack::OnCreate();
-		m_Collision = AddComponent<CollisionObb>();
-		m_Collision->SetDrawActive(true);
-		m_Collision->SetAfterCollision(AfterCollision::None);
-
-		m_Transform->SetScale(m_Size);
-		AddTag(L"BossAttack");
-	}
+	//void AttackCollisionObb<T>::OnCreate() {
+	//	Attack::OnCreate();
+	//	m_Collision = AddComponent<CollisionObb>();
+	//	m_Collision->SetDrawActive(true);
+	//	m_Collision->SetAfterCollision(AfterCollision::None);
+	//	m_Transform->SetScale(m_Size);
+	//	AddTag(L"BossAttack");
+	//}
+	//void AttackCollisionCircle::OnCreate() {
+	//	Attack::OnCreate();
+	//	m_Collision = AddComponent<CollisionSphere>();
+	//	m_Collision->SetDrawActive(true);
+	//	m_Collision->SetAfterCollision(AfterCollision::None);
+	//	m_Transform->SetScale(Vec3(m_Size));
+	//	AddTag(L"BossAttack");
+	//}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
 		Vec3 position = m_Transform->GetPosition();
@@ -61,6 +65,10 @@ namespace basecross {
 			if (m_Date.m_ExitTimer.GetTime() < m_Date.m_ExitTimer.GetMaxTime() / 2.0f) {
 				auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
 				boss->AddStun(0.5f);
+				Vec3 direction = GetPosition() - Other->GetComponent<Transform>()->GetPosition();
+				direction = direction.normalize();
+				boss->GetComponent<Gravity>()->StartJump(direction + Vec3(0.0f,2.0f,0.0f));
+				Stop();
 			}
 		}
 	}

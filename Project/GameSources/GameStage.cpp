@@ -7,7 +7,7 @@
 #include "Project.h"
 
 namespace basecross {
-
+	int GameStage::COUNT = 0;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
@@ -55,6 +55,7 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
+		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
@@ -83,6 +84,7 @@ namespace basecross {
 		builder->Register<RootPointer>(L"pointer");
 		builder->Register<Mob>(L"mob");
 		builder->Register<BossEnemy>(L"boss");
+		builder->Register<Ground>(L"Ground");
 		builder->LoadCsv();
 
 	}
@@ -199,6 +201,7 @@ namespace basecross {
 		}
 	}
 	void GameStage::OnUpdate() {
+		COUNT = 0;
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
 		float elapsed = app->GetElapsedTime();
@@ -290,7 +293,7 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
-
+			AddGameObject<BossAppearText>(Vec3(-150, 300, 0.0f), Vec3(300, 100, 1.0f));
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();

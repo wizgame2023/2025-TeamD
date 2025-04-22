@@ -57,7 +57,6 @@ namespace basecross {
 					m_Transform->SetRotation(Vec3(0, rotate, 0));
 					m_Enemy->Move(direction);
 				}
-				m_Enemy->SetPosition(pos);
 			}
 
 		}
@@ -176,6 +175,8 @@ namespace basecross {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				m_IsReady = true;
 				m_ReadyTimer.SetTime(0.5f, true);
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 0.25f;
+				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, 0.5f, 36, 0.5f);
 			}
 			else if (distance > m_Attack->GetRange() * 10.0f && m_Enemy->m_Gun->GetCooldown() == 0) {
 				m_Enemy->ChangeState<BossHostility>();
@@ -183,7 +184,7 @@ namespace basecross {
 			}
 			if (m_IsReady) {
 				if (m_ReadyTimer.UpdateTimer()) {
-					m_Attack->Play(m_Enemy->GetPosition() + direction.normalize() * 0.25f);
+					m_Attack->Play(m_AttackPosition);
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
