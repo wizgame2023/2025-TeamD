@@ -62,7 +62,6 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
-
 		
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
