@@ -249,8 +249,8 @@ namespace basecross {
 		{
 			m_EnergyCharge += 0.2;
 			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(Vec3(0.05f, 0.05f, 0.05f));
-			m_Effect->SetEffectSpeed(30.0f);
+			m_Effect->SetScale(Vec3(0.1f));
+			m_Effect->SetEffectSpeed(2.0f);
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 			return 0;
@@ -259,8 +259,8 @@ namespace basecross {
 		{
 			m_EnergyCharge += 0.1;
 			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(Vec3(0.01f, 0.01f, 0.01f));
-			m_Effect->SetEffectSpeed(30.0f);
+			m_Effect->SetScale(Vec3(0.1f));
+			m_Effect->SetEffectSpeed(2.0f);
 			ScoreManager::Instance()->AddDamage(1);
 			return damage / 2;
 		}
