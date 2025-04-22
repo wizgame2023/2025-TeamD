@@ -196,7 +196,7 @@ namespace basecross {
 		//sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		AddSprite(sprite);
 		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
-		text->SetDiffuse(Col4(0, 0, 0, 1));
+		//text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 
 		//ƒ^ƒCƒgƒ‹
