@@ -203,5 +203,4 @@ namespace basecross {
 		scene->SetDebugString(Debug.str());
 
 	}
-
 }
