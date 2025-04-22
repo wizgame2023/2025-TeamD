@@ -260,7 +260,7 @@ namespace basecross {
 			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
 			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
 		}
-		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()) {
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen()) {
 			SetAllGameObjectActive(false);
 		}
 		else {
