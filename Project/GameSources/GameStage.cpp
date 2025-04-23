@@ -195,6 +195,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
+			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 
 		}
 		catch (...) {
@@ -274,6 +275,15 @@ namespace basecross {
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();
+		}
+		else if (msg == L"PinchPlayer") {
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
+		}
+		else if(msg == L"StartBoss") {
+
+		}
+		else if (msg == L"EndBoss") {
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_BOSS");
 		}
 	}
 }
