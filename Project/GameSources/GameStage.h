@@ -38,7 +38,6 @@ namespace basecross {
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
-		void CreateBossEnemy();
 
 		void CreateGameOverMenu();
 		void CreatePose();
@@ -46,10 +45,6 @@ namespace basecross {
 		void CreateResult();
 		void CreateUI();
 		void SetAllGameObjectActive(bool flag);
-		float GetClearRate() {
-			if (m_MaxEnemyCount <= 0) return 100.0f;
-			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
-		}
 
 		void GameOver();
 		void GameClear();
@@ -67,8 +62,6 @@ namespace basecross {
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
-
-		static int COUNT;
 
 	};
 

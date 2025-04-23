@@ -470,8 +470,6 @@ namespace basecross {
 
 					AimRock(rot);
 					m_Position = GetPosition();
-
-					//BoostMove(15.0f, forward);
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
 					float rotate = atan2f(forward.x, forward.z);
 
@@ -485,7 +483,6 @@ namespace basecross {
 					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
 				}
 			}
-
 		}
 	}
 
@@ -494,15 +491,17 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
-
-		PostEvent(1.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
-
+		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
 	void Player::Damage(bool parry, float damage)
 	{
+		bool isPinch = false, isBeforePinch = true;
 		if (m_DamageIntervalStart == false)
 		{
+			if (m_HP >= m_MaxHP / 3.0f) {
+				isBeforePinch = false;
+			}
 			if (parry)
 			{
 				m_Damage = Parry(damage, m_ParryTime);
@@ -510,6 +509,9 @@ namespace basecross {
 			}
 			else {
 				Character::Damage(damage, true);
+			}
+			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
 			}
 		}
 		m_HP = max(m_HP, 0);
@@ -529,8 +531,7 @@ namespace basecross {
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
-	{
-	}
+	{}
 
 	void HitSphere::OnCreate()
 	{
