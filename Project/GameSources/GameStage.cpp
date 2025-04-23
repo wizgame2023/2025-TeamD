@@ -1,42 +1,280 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
-
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
-		auto PtrCamera = ObjectFactory::Create<Camera>();
+
+		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 		PtrMultiLight->SetDefaultLighting();
 	}
+	void GameStage::CreateResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
+		wstring modelPath = mediaPath + L"Models/";
+		wstring effectPath = mediaPath + L"Effekt/";
+		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
+		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
+		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
+		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
+		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
+		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SEVolume.png");
+		app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
+		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
+		app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
+		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
+		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
+		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
+		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
+		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
 
+		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
+		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
+		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
+		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
+		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
 
+		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
+		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
+		
+		m_Effect = ObjectFactory::Create<EffectManeger>();
+		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
+		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
+		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
+
+	}
+
+	shared_ptr <EffectManeger> GameStage::GetCreateEffect()
+	{
+		return m_Effect;
+	}
+
+	/// <summary>
+	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+	/// </summary>
+	void GameStage::RegisterObjects() {
+		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
+
+		builder->Register<FixedBox>(L"cube");
+		builder->Register<Player>(L"player");
+		builder->Register<RootPointer>(L"pointer");
+		builder->Register<Mob>(L"mob");
+		builder->Register<BossEnemy>(L"boss");
+		builder->Register<Ground>(L"Ground");
+		builder->LoadCsv();
+
+	}
+	/// </summary>
+	/// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// <summary>
+	void GameStage::CreatePose() {
+		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
+	}
+	/// <summary>
+	/// ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// </summary>
+	void GameStage::CreateSoundTest() {
+		m_SoundTestMenu = AddGameObject<SoundTestMenu>(L"SOUND_TEST");
+	}
+	/// <summary>
+	/// ãƒªã‚¶ãƒ«ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// </summary>
+	void GameStage::CreateResult() {
+		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
+	}
+
+	void GameStage::CreateGameOverMenu() {
+		m_GameOverMenu = AddGameObject<GameOverMenu>(L"GAMEOVER");
+	}
+
+	void GameStage::CreateUI() {
+		auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		icon->SetInput(XINPUT_GAMEPAD_A);
+		icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		icon->SetInput(XINPUT_GAMEPAD_X);
+		m_UltIcon = AddGameObject<UltIcon>();
+
+		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
+
+		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+
+		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBar->SetDiffuse(Col4(1, 0, 0, 1));
+
+		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
+		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+	}
+	/// <summary>
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»ã‚’ONOFF
+	/// </summary>
+	/// <param name="flag">æç”»ONOFF</param>
+	void GameStage::SetAllGameObjectActive(bool flag) {
+		for (auto& obj : GetGameObjectVec()) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu")) {
+				obj->SetUpdateActive(flag);
+			}
+		}
+	}
+	void GameStage::GameClear() {
+		m_ResultMenu->Open();
+		auto camera = GetView()->GetTargetCamera();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr && camera != nullptr) {
+			player->SetIsGaol(true);
+			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+			auto view = static_pointer_cast<SingleView>(GetView());
+			view->SetCamera(newCamera);
+		}
+	}
+
+	void GameStage::GameOver() {
+		m_GameOverMenu->Open();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr ) {
+			player->SetIsGaol(true);
+		}
+
+	}
 	void GameStage::OnCreate() {
 		try {
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			m_TotalTime = 0;
+			CreateSharedObjectGroup(L"BulletGroup");
+			CreateSharedObjectGroup(L"EnemyGroup");
+			CreateSharedObjectGroup(L"PointerGroup");
+			CreateSharedObjectGroup(L"Legion");
+
+			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 			CreateViewLight();
+			CreateResource();
+			RegisterObjects();
+			AddGameObject<ButtonManager>();
+			ButtonManager::instance->SetSound(L"SE_ACCEPT");
+			CreateSoundTest();
+			CreatePose();
+			CreateResult();
+			CreateGameOverMenu();
+			ButtonManager::instance->CloseAll();
+			CreateUI();
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+				if (camera != nullptr) {
+					camera->SetTarget(player->GetComponent<Transform>());
+				}
+			}
+
 		}
 		catch (...) {
 			throw;
 		}
 	}
+	void GameStage::OnUpdate() {
+		auto& app = App::GetApp();
+		m_Effect->OnUpdate();
+		float elapsed = app->GetElapsedTime();
+		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
+				m_SoundTestMenu->Close();
+				m_PauseMenu->Open();
+				m_Effect->SetEffectPause(true);
+			}
+		}
 
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen()) {
+			SetAllGameObjectActive(false);
+		}
+		else {
+			SetAllGameObjectActive(true);
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			if (player != nullptr) {
+				m_UltIcon->SetCharge(player->GetEnergy());
+
+				float currentHp = player->GetHP();
+				float maxHp = player->GetMaxHP();
+				m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+			}
+			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+			if (boss != nullptr) {
+				ScoreManager::Instance()->UpdateTime(elapsed);
+				bool isBossDraw = boss->GetDrawActive();
+				if (isBossDraw) {
+					float currentHp = boss->GetHP();
+					float maxHp = boss->GetMaxHP();
+					m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
+				}
+				m_BossHpBar->SetDrawActive(isBossDraw);
+				m_BossHpBarBackGround->SetDrawActive(isBossDraw);
+				m_BossText->SetDrawActive(isBossDraw);
+			}
+			else {
+				m_BossHpBar->SetDrawActive(false);
+				m_BossHpBarBackGround->SetDrawActive(false);
+				m_BossText->SetDrawActive(false);
+			}
+
+		}
+	}
+
+
+	void GameStage::OnDraw()
+	{
+		auto& camera = GetView()->GetTargetCamera();
+
+		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
+		m_Effect->OnDraw();
+
+	}
+
+	void GameStage::OnDestroy() {
+		SoundManager::Instance().StopAll();
+	}
+
+	void GameStage::OnEvent(const shared_ptr<Event>& event) {
+		auto& msg = event->m_MsgStr;
+
+		if (msg == L"DefeatBoss") {
+			GameClear();
+		}
+		else if (msg == L"AppaerBoss") {
+			AddGameObject<BossAppearText>(Vec3(-150, 300, 0.0f), Vec3(300, 100, 1.0f));
+		}
+		else if (msg == L"DeadPlayer") {
+			GameOver();
+		}
+	}
 }
 //end basecross

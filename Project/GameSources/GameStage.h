@@ -1,27 +1,69 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief 
 */
 
 #pragma once
 #include "stdafx.h"
 
 namespace basecross {
-
+	class NumberSprite;
+	class Sprite;
+	class Menu;
+	class UltIcon;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
-		//ƒrƒ…[‚Ìì¬
-		void CreateViewLight();
-	public:
-		//\’z‚Æ”jŠü
-		GameStage() :Stage() {}
-		virtual ~GameStage() {}
-		//‰Šú‰»
-		virtual void OnCreate()override;
-	};
+		
+		wstring m_MapFileName;
+		bool m_IsPose;
+		int m_MaxEnemyCount;
+		int m_EnemyCount;
+		float m_TotalTime;
 
+		shared_ptr<Menu> m_PauseMenu;
+		shared_ptr<Menu> m_SoundTestMenu;
+		shared_ptr<Menu> m_ResultMenu;
+		shared_ptr<Menu> m_GameOverMenu;
+
+		shared_ptr<UltIcon> m_UltIcon;
+		shared_ptr<Sprite> m_PlayerHpBar;
+		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+
+		shared_ptr<Sprite> m_BossHpBar;
+		shared_ptr<Sprite> m_BossHpBarBackGround;
+		shared_ptr<Sprite> m_BossText;
+
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
+		void CreateViewLight();
+		void CreateResource();
+		void RegisterObjects();
+
+		void CreateGameOverMenu();
+		void CreatePose();
+		void CreateSoundTest();
+		void CreateResult();
+		void CreateUI();
+		void SetAllGameObjectActive(bool flag);
+
+		void GameOver();
+		void GameClear();
+
+		shared_ptr<EffectManeger> m_Effect;
+
+
+	public:
+		//æ§‹ç¯‰ã¨ç ´æ£„
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
+		virtual ~GameStage() {}
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+		virtual void OnDraw()override;
+		virtual void OnDestroy()override;
+		virtual void OnEvent(const shared_ptr<Event>& event)override;
+		shared_ptr <EffectManeger> GetCreateEffect();
+
+	};
 
 }
 //end basecross
