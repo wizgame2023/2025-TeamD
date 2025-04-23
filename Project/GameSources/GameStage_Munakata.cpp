@@ -52,7 +52,6 @@ namespace basecross {
 			GameStage::OnCreate();
 			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(530.0f, 350.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 
-			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
 			throw;
