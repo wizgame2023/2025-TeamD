@@ -28,7 +28,7 @@ namespace basecross {
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
-
+		void Delete();
 		void ZoneSpeedSet();
 	};
 }

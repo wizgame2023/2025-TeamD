@@ -21,6 +21,7 @@ namespace basecross {
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
+		m_Damage(1.0f),
 		m_DamageInterval(0.5f),
 		m_BoostInterval(1.0F),
 		m_IsGoal(false)
@@ -113,6 +114,7 @@ namespace basecross {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
 				{
 					m_PlayerStateNum += PlayerState::ZONE;
+					m_Damage = 3.0f;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 				}
@@ -126,6 +128,7 @@ namespace basecross {
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f)
 			{
+				m_Damage = 1.0f;
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
@@ -219,7 +222,7 @@ namespace basecross {
 
 	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group)
 	{
-		auto target = group->GetGroupVector();
+		auto target = group->GetGroupVectors();
 		shared_ptr<GameObject> nearObject = nullptr;
 		for (auto vec : target)
 		{
@@ -397,7 +400,7 @@ namespace basecross {
 		if (m_IsGoal == false)
 		{
 			ZoneActivation();
-			Debug();
+			//Debug();
 			Vec3 forward = GetForward();
 
 			if (m_ParryJudge)
@@ -504,8 +507,8 @@ namespace basecross {
 			}
 			if (parry)
 			{
-				m_Damage = Parry(damage, m_ParryTime);
-				Character::Damage(m_Damage, true);
+				float parryDamage = Parry(damage, m_ParryTime);
+				Character::Damage(parryDamage, true);
 			}
 			else {
 				Character::Damage(damage, true);
@@ -542,7 +545,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
@@ -599,7 +602,7 @@ namespace basecross {
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetCharge(0.1f);
 			auto enemy = dynamic_pointer_cast<Character>(other);
-			enemy->Damage(1.0f, false);
+			enemy->Damage(player->GetDamage(), false);
 			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}

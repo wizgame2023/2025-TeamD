@@ -92,6 +92,7 @@ namespace basecross {
 			return;
 		}
 	}
+
 	void MobAlert::Exit()
 	{
 	}
@@ -102,6 +103,7 @@ namespace basecross {
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>();
 		m_AlertTime = 5.0f;
+		Execute();
 	}
 
 	void MobJoinAlert::Execute()
@@ -139,7 +141,7 @@ namespace basecross {
 						currntPosition += direction * 1.5f * elapsedTime * enemy->m_ZoneElapsedTime;
 						enemy->SetPosition(currntPosition);
 						if (m_AlertTime < 0.0f)
-						{	
+						{
 							enemy->ChangeState<MobSearch>();
 							m_AlertTime = 5.0f;
 							return;
@@ -154,7 +156,7 @@ namespace basecross {
 					enemy->SetPosition(currntPosition);
 				}
 				else {
-					enemy->ChangeState<MobAlert>();	
+					enemy->ChangeState<MobAlert>();
 					m_AlertTime = 10.0f;
 					return;
 				}
