@@ -10,7 +10,7 @@ namespace basecross {
 	void BossSearch::Enter()
 	{
 		EnemyState::Enter();
-		m_Line = m_Stage->AddGameObject<LineCube>(0.02f, Col4(0, 1, 0, 1));
+		//m_Line = m_Stage->AddGameObject<LineCube>(0.02f, Col4(0, 1, 0, 1));
 	}
 	void BossSearch::Execute()
 	{
@@ -18,7 +18,7 @@ namespace basecross {
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (navigate) {
 			if (m_Path.size() == 0) {
-				m_Line->SetDrawActive(false);
+				//m_Line->SetDrawActive(false);
 				if (m_OperatorIntarval.UpdateTimer()) {
 					float rndOparation = Util::RandZeroToOne() * 100.0f;
 					if (rndOparation < 40) {
@@ -43,11 +43,11 @@ namespace basecross {
 				}
 			}
 			else {
-				m_Line->SetDrawActive(true);
+				//m_Line->SetDrawActive(true);
 				Vec3 pos = m_Enemy->GetPosition();
 				m_Path[0].y = pos.y;
 				Vec3 direction = m_Path[0] - pos;
-				m_Line->SetLine(Line(pos, m_Path[0]));
+				//m_Line->SetLine(Line(pos, m_Path[0]));
 				if (direction.length() < 0.1f) {
 					m_Path.erase(m_Path.begin());
 				}
