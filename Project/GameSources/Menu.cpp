@@ -193,10 +193,10 @@ namespace basecross {
 	void GameOverMenu::OnCreate() {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"HP_BAR", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
-		//sprite->SetDiffuse(Col4(1, 0, 0, 1));
+		sprite->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(sprite);
 		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
-		//text->SetDiffuse(Col4(0, 0, 0, 1));
+		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
 
 		//ƒ^ƒCƒgƒ‹
