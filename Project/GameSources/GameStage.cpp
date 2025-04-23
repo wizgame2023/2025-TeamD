@@ -7,7 +7,6 @@
 #include "Project.h"
 
 namespace basecross {
-	int GameStage::COUNT = 0;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
@@ -169,24 +168,6 @@ namespace basecross {
 		}
 
 	}
-
-	void GameStage::CreateBossEnemy()
-	{
-		vector< vector<Vec3> > vec = {
-			{
-				Vec3(0.0f,3.5f, 0.0f),
-				Vec3(0.0f, 0.0f, 0.0f),
-				Vec3(1.5f, 1.5f, 1.5f)
-			},
-		};
-		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//オブジェクトの作成
-		for (auto v : vec) {
-			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
-			SetSharedGameObject(L"BossBody", bossEnemy);
-			bossEnemy->SetIntruder(player);
-		}
-	}
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
@@ -221,7 +202,6 @@ namespace basecross {
 		}
 	}
 	void GameStage::OnUpdate() {
-		COUNT = 0;
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
 		float elapsed = app->GetElapsedTime();
@@ -232,37 +212,8 @@ namespace basecross {
 				m_PauseMenu->Open();
 				m_Effect->SetEffectPause(true);
 			}
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				if (m_ResultMenu->IsOpen()) {
-					m_ResultMenu->Close();
-				}
-				else {
-					m_ResultMenu->Open();
-					auto camera = GetView()->GetTargetCamera();
-					auto player = GetSharedGameObject<Player>(L"Player", false);
-					if (player != nullptr && camera != nullptr) {
-						player->SetIsGaol(true);
-						auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
-						auto view = static_pointer_cast<SingleView>(GetView());
-						view->SetCamera(newCamera);
-					}
-				}
-			}
 		}
 
-		if (device.wPressedButtons & XINPUT_GAMEPAD_A) {
-			//if (m_ResultMenu->IsOpen()) {
-			//	m_ResultMenu->Open();
-			//}
-			//else {
-			//	m_ResultMenu->Close();
-			//}
-			//m_Effect->SetEffectPause(false);
-
-			//Vec3 Position = m_Player->GetComponent<Transform>()->GetPosition();
-			//m_Effect->PlayEffect(L"Flash", Vec3(0.0f), 0);
-			//m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen()) {
 			SetAllGameObjectActive(false);
 		}
