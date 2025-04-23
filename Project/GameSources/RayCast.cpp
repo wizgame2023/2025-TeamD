@@ -64,7 +64,6 @@ namespace basecross {
 					}
 				}
 				if (isExclude) continue;
-				GameStage::COUNT++;
 				if (RayCast::HitTest(hit, line, obj)) {
 					isHit = true;
 				}
