@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Ballet.h"
 
 namespace basecross {
 
@@ -43,7 +44,7 @@ namespace basecross {
 
 		if ((m_Position - position).length() > m_EffectiveRange) {
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
-			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+			Delete();
 		}
 		else {
 			position += moveAmount;
@@ -61,22 +62,39 @@ namespace basecross {
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
-			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			other->OnCollisionEnter(GetThis<GameObject>());
-			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
-		}
-		if (other->FindTag(L"Player"))
-		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
+			Delete();
+		}
+		else if (other->FindTag(L"Player"))
+		{
 			auto player = dynamic_pointer_cast<Player>(other);
 			player->Damage(false, 2.0f);
-			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+			GetStage()->RemoveGameObject<LineCube>(m_Line);
+			Delete();
 		}
-		if (other->FindTag(L"Object"))
+		else if (other->FindTag(L"Object"))
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
-			GetStage()->RemoveGameObject<Bullet>(GetThis<Bullet>());
+			Delete();
 		}
+	}
+
+	void Bullet::Delete()
+	{
+		auto group = m_Stage->GetSharedObjectGroup(L"BulletGroup");
+		auto& groupVec = group->GetGroupVectors();
+		for (int i = 0; i < groupVec.size(); i++) {
+			auto obj = groupVec[i].lock();
+			if (obj != nullptr) {
+				if (obj == GetThis<GameObject>()) {
+					groupVec.erase(groupVec.begin() + i);
+					break;
+				}
+			}
+		}
+		m_Stage->RemoveGameObject<Bullet>(GetThis<Bullet>());
+
 	}
 	void Bullet::ZoneSpeedSet()
 	{

@@ -165,6 +165,16 @@ namespace basecross {
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
 			player->SetIsGaol(true);
+			auto enemygruop = GetSharedObjectGroup(L"EnemyGroup");
+			auto enemys = enemygruop->GetGroupVectors();
+			for (auto& enemy : enemys)
+			{
+				auto shEnemy = enemy.lock();
+				if (shEnemy->GetUpdateActive() == true)
+				{
+					shEnemy->SetUpdateActive(false);
+				}
+			}
 		}
 
 	}
