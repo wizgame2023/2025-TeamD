@@ -57,43 +57,46 @@ namespace basecross {
 	}
 	void Mob::OnUpdate()
 	{
-		AsyncUpdate();
-		Enemy::OnUpdate();
-		auto draw = GetComponent<BcPNTStaticDraw>();
-
-		/*if (m_IsEndAsyncUpdate) {
-			auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
-			updateThread.detach();
-		}*/
-		float elapsed = App::GetApp()->GetElapsedTime();
-		if (m_IntervalStart == true)
+		if (GetUpdateActive())
 		{
-			draw->SetDiffuse(Col4(1, 0, 0, 1));
+			AsyncUpdate();
+			Enemy::OnUpdate();
+			auto draw = GetComponent<BcPNTStaticDraw>();
 
-			m_BalletInterval -= elapsed * m_ZoneElapsedTime;
-		}
-		else {
-			m_KnockBackInterval -= elapsed * m_ZoneElapsedTime;
-			draw->SetDiffuse(Col4(1, 1, 1, 1));
-
-			if (m_KnockBackInterval < 0)
+			/*if (m_IsEndAsyncUpdate) {
+				auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
+				updateThread.detach();
+			}*/
+			float elapsed = App::GetApp()->GetElapsedTime();
+			if (m_IntervalStart == true)
 			{
-				m_BalletInterval = 0.5f;
-				m_KnockBackInterval = 2.0f;
-				m_IntervalStart = true;
+				draw->SetDiffuse(Col4(1, 0, 0, 1));
 
+				m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 			}
-		}
-		if (m_BalletInterval < 0) {
-			m_BalletInterval = 0;
-			m_ShotRandomInterval -= elapsed * m_ZoneElapsedTime;
-			if (m_ShotRandomInterval <= 0) {
-				m_ShotRandomInterval = 0;
+			else {
+				m_KnockBackInterval -= elapsed * m_ZoneElapsedTime;
+				draw->SetDiffuse(Col4(1, 1, 1, 1));
+
+				if (m_KnockBackInterval < 0)
+				{
+					m_BalletInterval = 0.5f;
+					m_KnockBackInterval = 2.0f;
+					m_IntervalStart = true;
+
+				}
 			}
+			if (m_BalletInterval < 0) {
+				m_BalletInterval = 0;
+				m_ShotRandomInterval -= elapsed * m_ZoneElapsedTime;
+				if (m_ShotRandomInterval <= 0) {
+					m_ShotRandomInterval = 0;
+				}
+			}
+			//m_SearchFan->SetForward(m_Transform->GetForword().normalize());
+			//m_SearchFan->SetPosition(GetPosition());
+			m_HpBar->SetCurrentHp(m_HP);
 		}
-		//m_SearchFan->SetForward(m_Transform->GetForword().normalize());
-		//m_SearchFan->SetPosition(GetPosition());
-		m_HpBar->SetCurrentHp(m_HP);
 	}
 	void Mob::AsyncUpdate()
 	{
@@ -101,8 +104,7 @@ namespace basecross {
 		Vec3 none = Vec3(0);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 currntPosition = m_Transform->GetPosition();
-
-		m_currentState->Execute();
+			m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
 		EndAsync();
