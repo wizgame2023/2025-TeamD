@@ -153,6 +153,40 @@ namespace basecross {
 			}
 		}
 	}
+<<<<<<< Updated upstream
+=======
+	void GameStage::GameClear() {
+		m_ResultMenu->Open();
+		auto camera = GetView()->GetTargetCamera();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr && camera != nullptr) {
+			player->SetIsGaol(true);
+			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
+			auto view = static_pointer_cast<SingleView>(GetView());
+			view->SetCamera(newCamera);
+		}
+	}
+
+	void GameStage::GameOver() {
+		m_GameOverMenu->Open();
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		auto group = GetSharedObjectGroup(L"EnemyGroup");
+		auto enemyGroup = group->GetGroupVector();
+		if (player != nullptr ) {
+			player->SetIsGaol(true);
+			for (auto enemy : enemyGroup)
+			{
+				auto shEnemy = enemy.lock();
+				if (shEnemy->GetUpdateActive() == true)
+				{
+					shEnemy->SetUpdateActive(false);
+				}
+			}
+		}
+
+	}
+
+>>>>>>> Stashed changes
 	void GameStage::CreateBossEnemy()
 	{
 		vector< vector<Vec3> > vec = {

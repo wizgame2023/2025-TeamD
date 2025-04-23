@@ -341,8 +341,31 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
+<<<<<<< Updated upstream
 		SetPosition(Vec3(0, 2, 0));
 		m_HP = 5;
+=======
+
+		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
+
+	}
+
+	void Player::Damage(bool parry, float damage)
+	{
+		if (m_DamageIntervalStart == false)
+		{
+			if (parry)
+			{
+				m_Damage = Parry(damage, m_ParryTime);
+				Character::Damage(m_Damage, true);
+			}
+			else {
+				Character::Damage(damage, true);
+			}
+		}
+		m_HP = max(m_HP, 0);
+		m_ParryTime = 5.0f;
+>>>>>>> Stashed changes
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)

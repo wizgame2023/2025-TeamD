@@ -61,6 +61,7 @@ namespace basecross {
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
+<<<<<<< Updated upstream
 		Enemy::OnUpdate();
 
 		if (m_Intruder != nullptr) {
@@ -82,6 +83,15 @@ namespace basecross {
 
 
 			/*if(GetDistanceToIntruder() < )*/
+=======
+		Vec3 none = Vec3(0);
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 currntPosition = m_Transform->GetPosition();
+		if (GetUpdateActive() == true)
+		{
+			m_currentState->Execute();
+			Enemy::AsyncUpdate();
+>>>>>>> Stashed changes
 		}
 
 		EndAsync();
