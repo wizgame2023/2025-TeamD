@@ -181,6 +181,7 @@ namespace basecross {
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
+			ScoreManager::Instance()->Init();
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
