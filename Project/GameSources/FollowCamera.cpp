@@ -157,8 +157,8 @@ namespace basecross {
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
 
-		m_Eye = m_Position + m_Direction * 1.5f;
-		m_Eye.y = m_Position.y + 0.35f;
+		m_Eye = m_Position + m_Direction * 3.0f;
+		m_Eye.y = m_Position.y + 2.0f;
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
 		for (auto& obj : m_Stage->GetGameObjectVec()) {
