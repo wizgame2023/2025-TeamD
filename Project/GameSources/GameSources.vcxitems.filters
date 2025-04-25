@@ -151,6 +151,7 @@
       <Filter>Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -256,5 +257,6 @@
       <Filter>Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
   </ItemGroup>
 </Project>

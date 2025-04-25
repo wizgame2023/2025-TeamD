@@ -98,11 +98,11 @@ namespace basecross {
 					m_Enemy->Move(direction);
 				}
 				else {
-					m_Enemy->SearchRange();
+					/*m_Enemy->SearchRange();
 					if (!m_Enemy->GetIntruderAlert()) {
 						m_Enemy->ChangeState<BossSearch>();
 						return;
-					}
+					}*/
 				}
 			}
 		}

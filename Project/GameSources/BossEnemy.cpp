@@ -49,7 +49,7 @@ namespace basecross {
 
 		auto navi = AddComponent<Navigate>();
 
-		m_currentState = make_unique<BossSearch>(GetThis<BossEnemy>());
+		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
 		AddComponent<Gravity>();
@@ -58,53 +58,37 @@ namespace basecross {
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 
 	}
+	
 
 	void BossEnemy::OnUpdate()
 	{
 		Enemy::OnUpdate();
-		SetDrawActive(m_IsAppearance);
-
 		float elapsed = App::GetApp()->GetElapsedTime();
-		if (!m_IsAppearance) {
-			m_ConditionTime -= elapsed;
-			if (m_ConditionTime < 0) {
-				m_ConditionTime = 0;
-				m_IsAppearance = true;
-			}
 
-			int defeatCount = ScoreManager::Instance()->GetEliminateEnemyCount();
-			if (defeatCount >= m_ConditionDefeat) {
-				m_IsAppearance = true;
+		if (!m_IsStun) {
+			m_currentState->Execute();
+			auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+			if (m_DamageEffectTime.UpdateTimer()) {
+				ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
 			}
-			if (m_IsAppearance) {
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+			else {
+				ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 			}
 		}
 		else {
-			if (!m_IsStun) {
-				m_currentState->Execute();
-				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
-				if (m_DamageEffectTime.UpdateTimer()) {
-					ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
-				}
-				else {
-					ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
-				}
+			auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+			ptrDraw->SetDiffuse(Col4(0, 0, 0, 1));
+			m_Stun -= elapsed / 2.0f;
+			if (m_Stun < 0) {
+				m_Stun = 0;
+				m_IsStun = false;
 			}
-			else {
-				auto ptrDraw = GetComponent<BcPNTStaticDraw>();
-				ptrDraw->SetDiffuse(Col4(0, 0, 0, 1));
-				m_Stun -= elapsed / 2.0f;
-				if (m_Stun < 0) {
-					m_Stun = 0;
-					m_IsStun = false;
-				}
-			}
-			if (m_ComboTimer.UpdateTimer()) {
-				m_ComboCount = 0;
-				m_Stun -= elapsed / 10.0f;
-				m_Stun = max(0, m_Stun);
-			}
+		}
+		if (m_ComboTimer.UpdateTimer()) {
+			m_ComboCount = 0;
+			m_Stun -= elapsed / 10.0f;
+			m_Stun = max(0, m_Stun);
+
 		}
 	}
 	void BossEnemy::AddStun(float stun) {

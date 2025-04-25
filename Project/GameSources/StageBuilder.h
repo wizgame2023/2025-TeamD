@@ -136,6 +136,7 @@ namespace basecross {
 		}
 
 		void LoadCsv();
+		void LoadCsv2();
 		shared_ptr<Object> CreateObject(vector<wstring> date);
 		void RegisterRootPoint(map<wstring, shared_ptr<RootPointer>> pointer);
 		int GetInfoIndex(const wstring& infoName);

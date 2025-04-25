@@ -16,26 +16,12 @@ namespace basecross {
 	}
 	void Legion::OnUpdate()
 	{
-		//MobAreaInterval();
-		for (int i = 0; i < m_GruopEnemy.size(); i++)
-		{
-			auto enemy = m_GruopEnemy[i].lock();
-			ReportAlert(enemy->GetIntruderAlert());
-			if (m_IntruderAlert == true)
-			{
-				break;
+		for (auto& enemy : m_GruopEnemy) {
+			auto e = enemy.lock();
+			if (e) {
+				e->SetUpdateActive(false);
 			}
 		}
-		if (m_IntruderAlert == true)
-		{
-			for (int i = 0; i < m_GruopEnemy.size(); i++)
-			{
-				auto enemy = m_GruopEnemy[i].lock();
-				auto mob = dynamic_pointer_cast<Mob>(enemy);
-				ChangeEnemyMove<MobJoinAlert>(mob);
-			}
-		}
-
 	}
 
 	void Legion::MobAreaInterval()
@@ -70,11 +56,6 @@ namespace basecross {
 		}
 	}
 
-	template<typename T>
-	void Legion::ChangeEnemyMove(const shared_ptr<Mob>& enemy)
-	{
-		enemy->ChangeState<T>();
-	}
 
 }
 //end basecross
