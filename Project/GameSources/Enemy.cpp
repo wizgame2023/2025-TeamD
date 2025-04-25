@@ -19,7 +19,7 @@ namespace basecross {
 		InitHP(3);
 		m_AlertTime = 5.0f;
 		//CollisionSphereの設定
-		auto ptrColl = AddComponent<CollisionSphere>();
+		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
@@ -36,7 +36,7 @@ namespace basecross {
 			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.3f, 0.0f)
+			Vec3(0.0f, -1.0f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 
@@ -142,6 +142,8 @@ namespace basecross {
 		Vec3 vec = hitPos - pos;
 		vec.normalize();
 		pos += -vec * 5.0f * elapsedTime;
+		float rotate = atan2f(vec.x, vec.z);
+		SetRotation(Vec3(0.0f, rotate, 0.0f));
 		SetPosition(pos);
 	}
 

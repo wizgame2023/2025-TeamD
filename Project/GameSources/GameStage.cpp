@@ -165,12 +165,23 @@ namespace basecross {
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
 			player->SetIsGaol(true);
+			auto enemygruop = GetSharedObjectGroup(L"EnemyGroup");
+			auto enemys = enemygruop->GetGroupVectors();
+			for (auto& enemy : enemys)
+			{
+				auto shEnemy = enemy.lock();
+				if (shEnemy->GetUpdateActive() == true)
+				{
+					shEnemy->SetUpdateActive(false);
+				}
+			}
 		}
 
 	}
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
+			ScoreManager::Instance()->Init();
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
@@ -195,6 +206,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
+			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 
 		}
 		catch (...) {
@@ -274,6 +286,15 @@ namespace basecross {
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();
+		}
+		else if (msg == L"PinchPlayer") {
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
+		}
+		else if(msg == L"StartBoss") {
+
+		}
+		else if (msg == L"EndBoss") {
+			SoundManager::Instance().PlayBGM(L"BGM_GAME_BOSS");
 		}
 	}
 }

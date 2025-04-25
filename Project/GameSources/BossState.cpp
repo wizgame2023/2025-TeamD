@@ -78,6 +78,7 @@ namespace basecross {
 	void BossHostility::Enter()
 	{
 		EnemyState::Enter();
+		m_Stage->PostEvent(0.0f, nullptr, m_Stage, L"StartBoss");
 	}
 	void BossHostility::Execute()
 	{
@@ -155,6 +156,7 @@ namespace basecross {
 	}
 	void BossHostility::Exit()
 	{
+		m_Stage->PostEvent(0.0f, nullptr, m_Stage, L"EndBoss");
 	}
 
 	void BossCrush::Enter()

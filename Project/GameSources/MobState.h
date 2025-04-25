@@ -30,9 +30,10 @@ namespace basecross {
 			m_Stage = m_Enemy->GetStage();
 			m_Transform = m_Enemy->GetComponent<Transform>();
 			m_Player = m_Enemy->m_Intruder;
+			
 		}
 
-		virtual void Execute() {}
+		virtual void Execute();
 		virtual void Exit() {}
 
 	};
@@ -88,5 +89,10 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
+
+	template<typename T>
+	inline void EnemyState<T>::Execute()
+	{
+	}
 }
 //end basecross
