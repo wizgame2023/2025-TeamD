@@ -16,10 +16,11 @@ namespace basecross {
 		auto PtrView = CreateView<SingleView>();
 
 		//ビューのカメラの設定
-		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-		PtrView->SetCamera(PtrCamera);
-		PtrCamera->SetEye(eye);
-		PtrCamera->SetAt(at);
+		m_Camera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+		//auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+		PtrView->SetCamera(m_Camera);
+		m_Camera->SetEye(eye);
+		m_Camera->SetAt(at);
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -75,6 +76,10 @@ namespace basecross {
 	shared_ptr <EffectManeger> GameStage::GetCreateEffect()
 	{
 		return m_Effect;
+	}
+	shared_ptr <FollowCamera>GameStage::SetCameraPause()
+	{
+		return m_Camera;
 	}
 
 	/// <summary>
@@ -223,6 +228,7 @@ namespace basecross {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
 				m_Effect->SetEffectPause(true);
+				m_Camera->SetCameraPause(true);
 			}
 		}
 
