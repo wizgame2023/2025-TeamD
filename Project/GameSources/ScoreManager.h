@@ -26,6 +26,14 @@ namespace basecross{
 			static ScoreManager instance;
 			return &instance;
 		}
+		void Init() {
+			m_Time = 0.0f;
+			m_Damage = 0.0f;
+			m_EliminateEnemyCount = 0.0f;
+			m_MaxEnemyCount = 0.0f;
+			m_EliminateEnemyRate = 0.0f;
+			m_ParryCount = 0;
+		}
 		void UpdateTime(float elapsed) {
 			m_Time += elapsed;
 		}
