@@ -11,6 +11,7 @@ namespace basecross {
 	class Sprite;
 	class Menu;
 	class UltIcon;
+	class FollowCamera;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
@@ -50,8 +51,9 @@ namespace basecross {
 		void GameClear();
 
 		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<FollowCamera> m_Camera;
 
-
+		
 	public:
 		//構築と破棄
 		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
@@ -62,7 +64,7 @@ namespace basecross {
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
-
+		shared_ptr<FollowCamera> SetCameraPause();
 	};
 
 }

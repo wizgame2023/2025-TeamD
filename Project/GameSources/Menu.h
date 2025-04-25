@@ -13,6 +13,7 @@ namespace basecross {
 		vector<shared_ptr<GameObject>> m_MenuObjects;
 		shared_ptr<GameStage> m_Stage;
 		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<FollowCamera>m_Camera;
 		wstring m_GroupName;
 	public:
 		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage), m_GroupName(group), m_IsOpen(false) {}
@@ -31,8 +32,6 @@ namespace basecross {
 
 		virtual void Close();
 		virtual void Open();
-
-		void EffeckPause();
 
 		bool IsOpen() {
 			return m_IsOpen;
