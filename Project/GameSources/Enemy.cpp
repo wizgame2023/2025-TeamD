@@ -162,7 +162,12 @@ namespace basecross {
 				}
 			}
 		}
+		auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner",false);
+		if (spawner) {
+			PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+		}
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{

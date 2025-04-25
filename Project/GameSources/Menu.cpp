@@ -28,6 +28,9 @@ namespace basecross {
 			obj->SetDrawActive(true);
 			obj->SetUpdateActive(true);
 		}
+		if (m_IsPouse) {
+			static_pointer_cast<GameStage>(m_Stage)->SetAllGameObjectActive(false);
+		}
 		ButtonManager::instance->OpenAndUse(m_GroupName);
 		SoundManager::Instance().PauseBGM(true);
 		m_IsOpen = true;
@@ -38,6 +41,9 @@ namespace basecross {
 			//obj->SetUpdateActive(false);
 		}
 		//EffeckPause();
+		if (m_IsPouse) {
+			static_pointer_cast<GameStage>(m_Stage)->SetAllGameObjectActive(true);
+		}
 		ButtonManager::instance->Close(m_GroupName);
 		SoundManager::Instance().PauseBGM(false);
 		m_IsOpen = false;
