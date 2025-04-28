@@ -30,6 +30,7 @@ namespace basecross {
 			m_GruopEnemy.push_back(enemy);
 		}
 		shared_ptr<Enemy> GetEnemy() {
+			if (m_GruopEnemy.size() == 0) return nullptr;
 			auto enemy = m_GruopEnemy[0].lock();
 			m_GruopEnemy.erase(m_GruopEnemy.begin());
 			if (enemy) {
