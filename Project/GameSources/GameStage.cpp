@@ -90,9 +90,8 @@ namespace basecross {
 
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		//builder->Register<RootPointer>(L"pointer");
 		builder->Register<Legion>(L"wave");
-		builder->Register<Mob>(L"enemy");
+		//builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->LoadCsv2();

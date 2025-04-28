@@ -187,7 +187,7 @@ namespace basecross {
 			//自分の位置
 			SetEye(m_Eye);
 			//見ているところ
-			SetAt(m_PlayerTransform->GetPosition());
+			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
 		}
 		LogCamera();
 
