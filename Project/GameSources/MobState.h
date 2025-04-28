@@ -33,7 +33,7 @@ namespace basecross {
 			
 		}
 
-		virtual void Execute();
+		virtual void Execute() {};
 		virtual void Exit() {}
 
 	};
