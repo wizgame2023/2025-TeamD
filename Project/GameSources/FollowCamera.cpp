@@ -123,7 +123,8 @@ namespace basecross {
 		m_Position(Vec3(0)),
 		m_Angle(-XM_PIDIV2),
 		m_RotateSpeed(XMConvertToRadians(180)),
-		m_Stage(StagePtr)
+		m_Stage(StagePtr),
+		m_StopCamera(false)
 	{
 	}
 
@@ -147,10 +148,11 @@ namespace basecross {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (cntlVec.bConnected) {
-			float stickX = cntlVec.fThumbRX;
-			m_Angle -= m_RotateSpeed * elapsed * stickX;
+			if (m_StopCamera == false) {
+				float stickX = cntlVec.fThumbRX;
+				m_Angle -= m_RotateSpeed * elapsed * stickX;
+			}
 		}
-
 
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
@@ -181,14 +183,21 @@ namespace basecross {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
-		//自分の位置
-		SetEye(m_Eye);
-		//見ているところ
-		SetAt(m_PlayerTransform->GetPosition());
+		if (m_StopCamera == false) {
+			//自分の位置
+			SetEye(m_Eye);
+			//見ているところ
+			SetAt(m_PlayerTransform->GetPosition());
+		}
 		LogCamera();
 
 		Camera::OnUpdate();
 
+	}
+
+	void FollowCamera::SetCameraPause(const bool& StopCamera)
+	{
+		m_StopCamera = StopCamera;
 	}
 
 	void FollowCamera::LogCamera() {
