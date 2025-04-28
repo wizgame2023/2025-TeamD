@@ -11,8 +11,8 @@ namespace basecross {
 
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
-		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
-		m_BalletSpeed(20.0f), m_MuzzleOffset(0.05f),
+		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.5f),
+		m_BalletSpeed(5.0f), m_MuzzleOffset(0.05f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
 		m_NearPoint(nullptr),
