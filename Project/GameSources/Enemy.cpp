@@ -20,7 +20,7 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetDrawActive(true);//debug
+		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
 

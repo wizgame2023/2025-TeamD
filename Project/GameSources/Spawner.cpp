@@ -46,9 +46,11 @@ namespace basecross {
 			}
 		}
 		auto enemy = m_Legions[m_Wave]->GetEnemy();
-		enemy->SetDrawActive(true);
-		enemy->SetUpdateActive(true);
-		m_EnemyCount++;
+		if (enemy != nullptr) {
+			enemy->SetDrawActive(true);
+			enemy->SetUpdateActive(true);
+			m_EnemyCount++;
+		}
 	}
 	void Spawner::SpawnBoss() {
 		m_Boss->SetDrawActive(true);
