@@ -76,11 +76,6 @@ namespace basecross {
 			m_currentState = make_unique<NextState>(GetThis<Mob>());
 			m_currentState->Enter();
 		}
-
-		int GetGun()
-		{
-			return m_MobGun;
-		}
 	private:
 
 		float WstrToFlt(const wstring& data) {
