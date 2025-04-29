@@ -20,6 +20,7 @@
 #include "GameStage_Kamata.h"
 #include "GameStage_Satou.h"
 #include "TitleStage.h"
+#include "SelectStage.h"
 #include "Sprite.h"
 #include "Legion.h"
 #include "MobState.h"
@@ -44,3 +45,4 @@
 #include "AreaOfEffect.h"
 #include "GameSprite.h"
 #include "Building.h"
+#include "flyobject.h"

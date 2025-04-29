@@ -46,6 +46,9 @@
     <Filter Include="Sharp">
       <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Select">
+      <UniqueIdentifier>{46f92cd0-f4a0-44a7-b1d8-1149cbad12bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -151,6 +154,10 @@
       <Filter>Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Select</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -256,5 +263,9 @@
       <Filter>Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Select</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
   </ItemGroup>
 </Project>
