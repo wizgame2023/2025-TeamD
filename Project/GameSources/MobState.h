@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Mob.h"
+#include <Timer.h>
 
 namespace basecross {
 	class Enemy;
@@ -60,13 +61,16 @@ namespace basecross {
 	{
 		bool m_IntruderAlert;
 		float m_Interval;
+		float m_BulletRelord;
 		int m_CurrentBullet;
 		int m_BulletRemain;
+
 	public:
 		MobAlert(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy),
 			m_Interval(0.2f),
-			m_CurrentBullet(5)
+			m_CurrentBullet(5),
+			m_BulletRelord(3.0f)
 		{
 		}
 
