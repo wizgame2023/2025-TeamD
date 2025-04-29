@@ -9,6 +9,7 @@
 namespace basecross {
 	class Menu : public GameObject {
 		bool m_IsOpen;
+		bool m_IsPouse;
 	protected:
 		vector<shared_ptr<GameObject>> m_MenuObjects;
 		shared_ptr<GameStage> m_Stage;
@@ -16,7 +17,7 @@ namespace basecross {
 		shared_ptr<FollowCamera>m_Camera;
 		wstring m_GroupName;
 	public:
-		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage), m_GroupName(group), m_IsOpen(false) {}
+		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage), m_GroupName(group), m_IsOpen(false),m_IsPouse(false) {}
 		virtual ~Menu() {}
 		virtual void OnCreate()override;
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
@@ -35,6 +36,9 @@ namespace basecross {
 
 		bool IsOpen() {
 			return m_IsOpen;
+		}
+		void SetIsPouse(bool flag) {
+			m_IsPouse = true;
 		}
 	};
 

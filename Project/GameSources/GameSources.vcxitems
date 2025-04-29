@@ -51,6 +51,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
@@ -94,6 +95,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />

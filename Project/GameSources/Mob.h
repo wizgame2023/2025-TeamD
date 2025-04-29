@@ -17,6 +17,13 @@ namespace basecross {
 	class Mob : public Enemy
 	{
 	public:
+
+		int m_MobState;
+		enum State {
+			ALER  	= 0b00000001,
+			WALK    = 0b00000010,
+			ATTACK  = 0b00000100
+		};
 		float m_BalletSpeed;
 		float m_BalletRange;
 		float m_MuzzleOffset;
@@ -27,7 +34,6 @@ namespace basecross {
 		bool m_IntervalStart;
 		Vec3 m_Before = Vec3(0);
 		int m_BulletRemain;
-
 		shared_ptr<SharpFan> m_SearchFan;
 		shared_ptr<HPBar> m_HpBar;
 		shared_ptr<GameObject> m_NearPoint;
@@ -62,6 +68,7 @@ namespace basecross {
 		{
 			return m_PointData;
 		}
+
 		template <class NextState>
 		void ChangeState() {
 			m_currentState->Exit();
@@ -69,8 +76,6 @@ namespace basecross {
 			m_currentState = make_unique<NextState>(GetThis<Mob>());
 			m_currentState->Enter();
 		}
-
-
 	private:
 
 		float WstrToFlt(const wstring& data) {

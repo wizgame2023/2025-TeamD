@@ -171,7 +171,6 @@ namespace basecross {
 		try {
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			GameStage::OnCreate();
-
 		}
 		catch (...) {
 			throw;

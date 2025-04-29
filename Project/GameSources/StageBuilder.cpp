@@ -79,7 +79,7 @@ namespace basecross {
 							auto regionObject = m_Stage->AddGameObject<Legion>();
 							//敵を登録
 							regionObject->IntoEnemyGruop(enemy);
-							regionObject->SetLegionNumber(region);
+							//regionObject->SetLegionNumber(region);
 							m_Legions.emplace(region, regionObject);
 						}
 						else {
@@ -95,15 +95,89 @@ namespace basecross {
 		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
 		RegisterRootPoint(rootPointers);
 	}
+	void StageBuilder::LoadCsv2() {
+		auto& csvVec = m_Csv.GetCsvVec();
+
+		vector<wstring> objInfo = {};
+		auto spawner = m_Stage->AddGameObject<Spawner>();
+		m_Stage->SetSharedGameObject(L"Spawner", spawner);
+
+		int enemyCount = 0;
+		for (auto& info : csvVec) {
+			objInfo.clear();
+			Util::WStrToTokenVector(objInfo, info, L',');
+			m_InfoNames.clear();
+			wstring names = objInfo[objInfo.size() - 1];
+			Util::WStrToTokenVector(m_InfoNames, objInfo[objInfo.size() - 1], L'_');
+
+			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;
+
+			auto obj = CreateObject(objInfo);
+
+			wstring dateType = objInfo[GetInfoIndex(L"type")];
+			
+			if (dateType == L"Stage") {
+
+			}
+			if (dateType == L"Player") {
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto player = static_pointer_cast<Player>(obj);
+				if (player) {
+					player->InitHP(WstrToFlt(hpStr));
+				}
+			}
+			if (dateType == L"Wave") {
+				wstring maxStr = objInfo[GetInfoIndex(L"max")];
+				wstring intervalStr = objInfo[GetInfoIndex(L"interval")];
+				auto legion = static_pointer_cast<Legion>(obj);
+				legion->SetMaxCount(WstrToFlt(maxStr));
+				legion->SetPopInterval(WstrToFlt(intervalStr));
+				spawner->AddLegion(legion);
+			}
+			if (dateType == L"Enemy") {
+				wstring waveStr = objInfo[GetInfoIndex(L"wave")];
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto enemy = static_pointer_cast<Enemy>(obj);
+				if (enemy) {
+					enemy->InitHP(WstrToFlt(hpStr));
+					spawner->AddEnemy(WstrToFlt(waveStr), enemy);
+				}
+				enemyCount++;
+			}
+			if (dateType == L"Boss") {
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto enemy = static_pointer_cast<BossEnemy>(obj);
+				if (enemy) {
+					enemy->InitHP(WstrToFlt(hpStr));
+					spawner->SetBoss(enemy);
+				}
+				enemyCount++;
+			}
+		}
+		m_Builders.clear();
+		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
+	}
 	/// <summary>
 	/// オブジェクトの生成
 	/// </summary>
 	/// <param name="date">オブジェクトの文字列データ</param>
 	/// <returns>生成したオブジェクト</returns>
 	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
-		Vec3 position = WstrToVec3(date[GetInfoIndex(L"position")]);
-		Vec3 scale = WstrToVec3(date[GetInfoIndex(L"scale")]);
-		Vec3 rotation = WstrToVec3(date[GetInfoIndex(L"rotation")]);
+		Vec3 position = Vec3(), scale = Vec3(1), rotation = Vec3();
+		int index = GetInfoIndex(L"position");
+		if (index != -1) {
+			position = WstrToVec3(date[index]);
+		}
+
+		index = GetInfoIndex(L"scale");
+		if (index != -1) {
+			scale = WstrToVec3(date[index]);
+		}
+
+		index = GetInfoIndex(L"rotation");
+		if (index != -1) {
+			rotation = WstrToVec3(date[index]);
+		}
 
 		auto obj = m_Builders[date[GetInfoIndex(L"name")]]->Create();
 		obj->SetPosition(position * m_Scale);

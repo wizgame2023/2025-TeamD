@@ -45,4 +45,7 @@
 #include "AreaOfEffect.h"
 #include "GameSprite.h"
 #include "Building.h"
+#include "Spawner.h"
+#include "MissileBullet.h"
 #include "flyobject.h"
+

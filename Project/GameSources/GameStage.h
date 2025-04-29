@@ -45,7 +45,6 @@ namespace basecross {
 		void CreateSoundTest();
 		void CreateResult();
 		void CreateUI();
-		void SetAllGameObjectActive(bool flag);
 
 		void GameOver();
 		void GameClear();
@@ -65,6 +64,8 @@ namespace basecross {
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
 		shared_ptr<FollowCamera> SetCameraPause();
+		void SetAllGameObjectActive(bool flag);
+
 	};
 
 }

@@ -90,11 +90,11 @@ namespace basecross {
 
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
-		builder->Register<RootPointer>(L"pointer");
-		builder->Register<Mob>(L"mob");
+		builder->Register<Legion>(L"wave");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
-		builder->LoadCsv();
+		builder->LoadCsv2();
 
 	}
 	/// </summary>
@@ -102,12 +102,14 @@ namespace basecross {
 	/// <summary>
 	void GameStage::CreatePose() {
 		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
+		m_PauseMenu->SetIsPouse(true);
 	}
 	/// <summary>
 	/// サウンドテストメニューの作成
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		m_SoundTestMenu = AddGameObject<SoundTestMenu>(L"SOUND_TEST");
+		m_SoundTestMenu->SetIsPouse(true);
 	}
 	/// <summary>
 	/// リザルトメニューの作成
@@ -118,6 +120,7 @@ namespace basecross {
 
 	void GameStage::CreateGameOverMenu() {
 		m_GameOverMenu = AddGameObject<GameOverMenu>(L"GAMEOVER");
+		m_GameOverMenu->SetIsPouse(true);
 	}
 
 	void GameStage::CreateUI() {
@@ -233,10 +236,10 @@ namespace basecross {
 		}
 
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen()) {
-			SetAllGameObjectActive(false);
+			//SetAllGameObjectActive(false);
 		}
 		else {
-			SetAllGameObjectActive(true);
+			//SetAllGameObjectActive(true);
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				m_UltIcon->SetCharge(player->GetEnergy());

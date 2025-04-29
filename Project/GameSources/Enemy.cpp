@@ -20,7 +20,7 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetDrawActive(true);//debug
+		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->AddExcludeCollisionTag(L"Mob");
 
@@ -162,7 +162,12 @@ namespace basecross {
 				}
 			}
 		}
+		auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner",false);
+		if (spawner) {
+			PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+		}
 		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{

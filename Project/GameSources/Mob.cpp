@@ -11,8 +11,8 @@ namespace basecross {
 
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
-		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.0f),
-		m_BalletSpeed(20.0f), m_MuzzleOffset(0.05f),
+		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.5f),
+		m_BalletSpeed(10.0f), m_MuzzleOffset(0.5f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
 		m_NearPoint(nullptr),
@@ -32,7 +32,7 @@ namespace basecross {
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
-		auto navi = AddComponent<Navigate>();
+		/*auto navi = AddComponent<Navigate>();
 
 		if (pointers.size() != 0) {
 
@@ -43,7 +43,7 @@ namespace basecross {
 			}
 			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
 			m_NearPoint = m_PointData[rnd];
-		}
+		}*/
 
 		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
@@ -129,8 +129,8 @@ namespace basecross {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
-		auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
-		auto Legions = LegionGroup->GetGroupVector();
+		//auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
+		//auto Legions = LegionGroup->GetGroupVector();
 		auto navi = GetComponent<Navigate>();
 		shared_ptr<RootPointer> memoryPoint;
 		shared_ptr<GameObject> memoryRndPoint;

@@ -39,7 +39,7 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 		}
 		catch (...) {
 			throw;
@@ -58,7 +58,7 @@ namespace basecross {
 			ResetActiveStage<GameStage>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"level.csv");
+			ResetActiveStage<GameStageM>(L"waveTest.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
 			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
