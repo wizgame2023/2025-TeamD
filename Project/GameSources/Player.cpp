@@ -170,7 +170,7 @@ namespace basecross {
 				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
 				if ((position - targetbullert).length() < searchDistance)
 				{
-					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
+					if (IsWithinDetectionRange(forward, targetbullert - position, 90.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						return rot;

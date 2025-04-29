@@ -61,6 +61,7 @@ namespace basecross {
 		bool m_IntruderAlert;
 		float m_Interval;
 		int m_CurrentBullet;
+		int m_BulletRemain;
 	public:
 		MobAlert(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy),

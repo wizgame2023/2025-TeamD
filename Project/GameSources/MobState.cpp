@@ -43,16 +43,18 @@ namespace basecross {
 		float rotate = atan2f(direction.x, direction.z);
 		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		float renge = direction.length();
-		if (renge > enemy->m_BalletRange)
+		if (renge > enemy->m_BalletRange / 2)
 		{
-			pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+			pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 			enemy->SetPosition(pos);
 		}
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert)
-		{
-			m_Enemy->ChangeState<MobAlert>();
-			return;
+		else {
+			m_IntruderAlert = m_Enemy->GetIntruderAlert();
+			if (m_IntruderAlert)
+			{
+				m_Enemy->ChangeState<MobAlert>();
+				return;
+			}
 		}
 	}
 	void MobSearch::Exit()
@@ -61,6 +63,8 @@ namespace basecross {
 	void MobAlert::Enter()
 	{
 		EnemyState::Enter();
+		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+		m_BulletRemain = mob->m_BulletRemain;
 		Execute();
 	}
 
@@ -79,8 +83,8 @@ namespace basecross {
 			auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
 			mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
-			mob->m_ShotRandomInterval = 0.5f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
-
+			mob->m_ShotRandomInterval = 1.0f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
+			m_BulletRemain--;
 			SoundManager::Instance().PlaySE(L"SE_SHOT");
 		}
 		if (mob->GetIntruderAlert() == false)
