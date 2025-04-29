@@ -43,16 +43,18 @@ namespace basecross {
 		float rotate = atan2f(direction.x, direction.z);
 		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		float renge = direction.length();
-		if (renge > enemy->m_BalletRange)
+		if (renge > enemy->m_BalletRange / 2)
 		{
-			pos += direction * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+			pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 			enemy->SetPosition(pos);
 		}
-		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		if (m_IntruderAlert)
-		{
-			m_Enemy->ChangeState<MobAlert>();
-			return;
+		else {
+			m_IntruderAlert = m_Enemy->GetIntruderAlert();
+			if (m_IntruderAlert)
+			{
+				m_Enemy->ChangeState<MobAlert>();
+				return;
+			}
 		}
 	}
 	void MobSearch::Exit()
@@ -61,11 +63,14 @@ namespace basecross {
 	void MobAlert::Enter()
 	{
 		EnemyState::Enter();
+		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+		m_BulletRemain = mob->m_BulletRemain;
 		Execute();
 	}
 
 	void MobAlert::Execute()
 	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 rot = target - position;
@@ -73,22 +78,31 @@ namespace basecross {
 		float rotate = atan2f(rot.x, rot.z);
 		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
-		if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
-			Vec3 direction = m_Enemy->GetDirectionToIntruder();
+		if(m_BulletRemain > 0)
+		{
+			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
+				Vec3 direction = m_Enemy->GetDirectionToIntruder();
 
-			auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
-			mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
+				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
-			mob->m_ShotRandomInterval = 0.5f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
-
-			SoundManager::Instance().PlaySE(L"SE_SHOT");
+				mob->m_ShotRandomInterval = 1.0f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
+				m_BulletRemain--;
+				SoundManager::Instance().PlaySE(L"SE_SHOT");
+			}
+		}
+		else {
+			//リロード
+			m_BulletRelord -= elapsedTime;
+			if (m_BulletRelord < 0.0f)
+			{
+				m_BulletRemain = mob->m_BulletRemain;
+				m_BulletRelord = 3.0f;
+			}
 		}
 		if (mob->GetIntruderAlert() == false)
 		{
 			m_Enemy->ChangeState<MobSearch>();
-			return;
-		}
-		else {
 			return;
 		}
 	}
