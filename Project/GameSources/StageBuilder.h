@@ -55,6 +55,9 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void AsyncUpdate() {}
 
+		shared_ptr<Transform>& GetTransform() {
+			return m_Transform;
+		}
 		float GetElpased() {
 			return App::GetApp()->GetElapsedTime() * m_UpdateSpeed;
 		}

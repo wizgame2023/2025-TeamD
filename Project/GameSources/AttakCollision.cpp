@@ -9,12 +9,10 @@
 namespace basecross {
 	void Attack::OnCreate() {
 		Object::OnCreate();
-		SetUpdateActive(false);
 		SetDrawActive(false);
 		LoopEffect();
 	}
 	void Attack::OnUpdate() {
-		float elapsed = App::GetApp()->GetElapsedTime();
 		m_IsFinish = false;
 		if (GetDrawActive()) {
 			if (m_Date.m_ExitTimer.UpdateTimer()) {
@@ -95,15 +93,22 @@ namespace basecross {
 			m_ShotInterval -= elapsed;
 		}
 	}
-	void Missile::ContactStage(shared_ptr<GameObject>& object) {
-		Vec3 scale = m_Transform->GetScale();
-		m_Transform->SetScale(scale * 2.0f);
-
-		m_Date.m_ExitTimer.SetTime(0.5f, true);
-	}
+	
 	void Missile::OnUpdate() {
 		Attack::OnUpdate();
+		if (GetDrawActive()) return;
 
+		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer()) {
+			m_Stage->AddGameObject<MissileBullet>(Vec3(0.0f, 1.0f, 7.0f), Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
+			m_MissileCount--;
+			m_MissileTimer.Reset();
+		}
+	}
+	void Missile::Play(Vec3 position) {
+		Attack::Play(position);
+
+		m_MissileCount = m_MissileMaxCount;
+		m_MissileTimer.Reset();
 	}
 }
 //end basecross
