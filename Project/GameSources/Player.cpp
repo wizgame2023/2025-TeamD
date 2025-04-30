@@ -170,7 +170,7 @@ namespace basecross {
 				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
 				if ((position - targetbullert).length() < searchDistance)
 				{
-					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
+					if (IsWithinDetectionRange(forward, targetbullert - position, 90.0)) {
 						//この方向に少し動く、動いている間はコントローラで移動できない
 						Vec3 rot = RotateTowardsTarget(position, targetbullert);
 						return rot;
@@ -545,7 +545,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		//ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
@@ -603,7 +603,6 @@ namespace basecross {
 			player->SetCharge(0.1f);
 			auto enemy = dynamic_pointer_cast<Character>(other);
 			enemy->Damage(player->GetDamage(), false);
-			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
 	}
 

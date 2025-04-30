@@ -22,6 +22,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
@@ -48,6 +49,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h" />
@@ -66,6 +68,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp" />
@@ -91,6 +94,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />

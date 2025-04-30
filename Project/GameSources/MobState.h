@@ -6,6 +6,7 @@
 #pragma once
 #include "stdafx.h"
 #include "Mob.h"
+#include <Timer.h>
 
 namespace basecross {
 	class Enemy;
@@ -33,7 +34,7 @@ namespace basecross {
 			
 		}
 
-		virtual void Execute();
+		virtual void Execute() {};
 		virtual void Exit() {}
 
 	};
@@ -59,10 +60,17 @@ namespace basecross {
 	class MobAlert : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
+		float m_Interval;
+		float m_BulletRelord;
+		int m_CurrentBullet;
+		int m_BulletRemain;
 
 	public:
 		MobAlert(shared_ptr<Mob>& enemy) :
-			EnemyState(enemy)
+			EnemyState(enemy),
+			m_Interval(0.2f),
+			m_CurrentBullet(5),
+			m_BulletRelord(3.0f)
 		{
 		}
 
@@ -72,27 +80,22 @@ namespace basecross {
 		void Exit()override;
 	};
 
-	class MobJoinAlert : public EnemyState<Mob>
-	{
-		bool m_IntruderAlert;
-		float m_AlertTime;
-		vector<Vec3> m_Path;
+	//class MobJoinAlert : public EnemyState<Mob>
+	//{
+	//	bool m_IntruderAlert;
+	//	float m_AlertTime;
+	//	vector<Vec3> m_Path;
 
-	public:
-		MobJoinAlert(shared_ptr<Mob>& enemy) :
-			EnemyState(enemy)
-		{
-		}
+	//public:
+	//	MobJoinAlert(shared_ptr<Mob>& enemy) :
+	//		EnemyState(enemy)
+	//	{
+	//	}
 
-	private:
-		void Enter() override;
-		void Execute()override;
-		void Exit()override;
-	};
-
-	template<typename T>
-	inline void EnemyState<T>::Execute()
-	{
-	}
+	//private:
+	//	void Enter() override;
+	//	void Execute()override;
+	//	void Exit()override;
+	//};
 }
 //end basecross
