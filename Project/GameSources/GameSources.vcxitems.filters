@@ -159,6 +159,9 @@
       <Filter>Select</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h">
+      <Filter>Ballet</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -269,5 +272,8 @@
       <Filter>Select</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
+      <Filter>Ballet</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>
