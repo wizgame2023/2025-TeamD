@@ -22,6 +22,9 @@ namespace basecross {
 				m_Timer = 0;
 			}
 		}
+		void Reset() {
+			m_Timer = 0;
+		}
 		float GetTime() {
 			return m_Timer;
 		}

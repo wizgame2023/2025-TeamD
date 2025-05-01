@@ -7,8 +7,8 @@ namespace basecross {
 
 	void AreaOfEffect::OnCreate() {
 		Object::OnCreate();
-		m_AreaSizeEffect = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", m_AreaVertexCount, 360.0f, m_AreaSize);
-		m_AreaEffect = m_Stage->AddGameObject<SharpFan>(L"HP_BAR", m_AreaVertexCount, 360.0f, 0);
+		m_AreaSizeEffect = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", m_AreaVertexCount, 380.0f, m_AreaSize);
+		m_AreaEffect = m_Stage->AddGameObject<SharpFan>(L"HP_BAR", m_AreaVertexCount, 380.0f, 0);
 	}
 	void AreaOfEffect::OnUpdate() {
 		m_AreaEffect->SetPosition(GetPosition());

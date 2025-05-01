@@ -20,6 +20,7 @@ namespace basecross {
 			m_ExitTimer.SetTime(m_ExitTimer.GetMaxTime(), true);
 			m_CooldownTimer.SetTime(m_CooldownTimer.GetMaxTime(), true);
 		}
+		AttackDate(float time, float cooldown, float charaCooldown) : AttackDate(nullptr,0.0f,0.0f,time,cooldown,charaCooldown){}
 		AttackDate(const shared_ptr<Character>& owner,float damage, float range, float time, float cooldown, float charaCooldown) :
 			m_Owner(owner),
 			m_Damage(damage),m_Range(range),
@@ -54,12 +55,12 @@ namespace basecross {
 				Other->OnCollisionEnter(GetThis<GameObject>());
 			}
 		}
-		void Play(Vec3 position) {
+		virtual void Play(Vec3 position) {
 			SetDrawActive(true);
 			m_Transform->SetPosition(position);
 			m_Date.Reset();
 		}
-		void Stop() {
+		virtual void Stop() {
 			SetDrawActive(false);
 			m_IsFinish = true;
 			m_Transform->SetPosition(Vec3(1000, 1000, 1000));
@@ -110,19 +111,6 @@ namespace basecross {
 			AddTag(L"BossAttack");
 		}
 	};
-	//class AttackCollisionCircle : public Attack {
-	//	float m_Size;
-	//protected:
-	//	shared_ptr<CollisionSphere> m_Collision;
-	//public:
-	//	AttackCollisionCircle(const shared_ptr<Stage>& stage, float size, AttackDate date) :
-	//		Attack(stage, date),
-	//		m_Size(size) {
-	//	}
-	//	virtual ~AttackCollisionCircle() {}
-
-	//	virtual void OnCreate()override;
-	//};
 
 	class CrushAttack : public AttackCollision<CollisionSphere> {
 		float m_BlowForce;
@@ -145,15 +133,20 @@ namespace basecross {
 		virtual ~MachineGun() {}
 		virtual void OnUpdate()override;
 	};
-	class Missile : public AttackCollision<CollisionObb> {
+	class Missile : public Attack {
 		float m_ExplodePower;
-		Vec3 m_Target;
+		shared_ptr<Transform> m_Target;
+		int m_MissileCount;
+		int m_MissileMaxCount;
+		Timer m_MissileTimer;
 	public:
-		Missile(const shared_ptr<Stage>& stage,const Vec3 target, Vec3 size,AttackDate date,float power) :
-			AttackCollision(stage,size,date),m_Target(target),m_ExplodePower(power){ }
+		Missile(const shared_ptr<Stage>& stage,const shared_ptr<Transform> target,AttackDate date,float power,int count,float time) :
+			Attack(stage, date), m_Target(target), m_ExplodePower(power),m_MissileCount(count),m_MissileMaxCount(count),m_MissileTimer(Timer(time,false)) { }
 		virtual ~Missile(){}
 		virtual void OnUpdate()override;
-		virtual void ContactStage(shared_ptr<GameObject>& object)override;
+
+		virtual void Play(Vec3 position)override;
+
 	};
 }
 
