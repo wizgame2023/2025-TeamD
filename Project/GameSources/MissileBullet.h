@@ -16,13 +16,15 @@ namespace basecross {
 		shared_ptr<AreaOfEffect> m_AreaEffect;
 
 		bool m_IsTarget;
+
+		Vec3 m_LaunchPosition;
+		Vec3 m_Direction;
 	public:
-		MissileBullet(const shared_ptr<Stage>& stage, Vec3 target,float speed,float explodeSize);
+		MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, Vec3 target,float speed,float explodeSize);
 		virtual ~MissileBullet(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other)override;
 	};
 }
