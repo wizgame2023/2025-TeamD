@@ -94,6 +94,7 @@ namespace basecross {
 		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
+		builder->Register<flyobject>(L"flyobject");
 		builder->LoadCsv2();
 
 	}

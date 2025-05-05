@@ -9,7 +9,7 @@ namespace basecross {
 		Vec3 m_Position;
 		void flyPosison();
 	public:
-		flyobject(const shared_ptr<Stage>& stage ,Vec3 position);
+		flyobject(const shared_ptr<Stage>& stage);
 		~flyobject();
 		virtual void OnCreate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other) override;
