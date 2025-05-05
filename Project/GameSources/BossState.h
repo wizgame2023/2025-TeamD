@@ -52,7 +52,7 @@ namespace basecross {
 	public:
 		BossHostility(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
-			m_CooldownTimer(Timer(false)), m_SideStepTimer(Timer(0.5f, false)), m_LastInturderPosition(Vec3()), m_NearDistance(0.2f), m_SideStepDirection(1.0f)
+			m_CooldownTimer(Timer(5.0f)), m_SideStepTimer(Timer(0.5f, false)), m_LastInturderPosition(Vec3()), m_NearDistance(0.2f), m_SideStepDirection(1.0f)
 		{
 		}
 
@@ -88,9 +88,7 @@ namespace basecross {
 			EnemyState(enemy),
 			m_CooldownTimer(Timer(false)), m_ReadyTimer(Timer(false)),
 			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f),
-			m_AttackPosition(Vec3())
-		{
-		}
+			m_AttackPosition(Vec3()){}
 	private:
 		virtual void Enter() override {}
 		virtual void Execute()override {}
@@ -107,7 +105,7 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
-	class BossGun : public AttackState<MachineGun> {
+	class BossGun : public AttackState<Missile> {
 
 	public:
 		BossGun(shared_ptr<BossEnemy>& enemy) :

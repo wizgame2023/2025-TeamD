@@ -56,11 +56,6 @@ namespace basecross {
 		m_Boss->SetDrawActive(true);
 		m_Boss->SetUpdateActive(true);
 
-		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			auto missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(2.0f, 5.0f, 2.0f), 0.0f, 4.0f, 0.5f);
-			missile->Play(Vec3());
-		}
 	}
 
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {

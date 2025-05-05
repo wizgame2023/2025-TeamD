@@ -56,7 +56,7 @@ namespace basecross {
 
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.5f, 0.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
-
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,2.0f, 5.0f, 2.0f), 0.0f, 4.0f, 0.5f);
 	}
 	
 
