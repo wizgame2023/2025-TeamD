@@ -22,38 +22,71 @@ namespace basecross {
 	{
 		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		Vec3 currntPosition = enemy->GetPosition();
-		float elapsedTime = App::GetApp()->GetElapsedTime();
-		//if (navi) {
-		//	if (m_Path.size() == 0)
-		//	{
-		//		auto cellpoint = enemy->RootNaviGate();
-		//		auto point = navi->GetNearPointer(enemy->GetPosition());
-		//		m_Path = navi->FindPathWithWaypoints(point, cellpoint);
-		//	}
-		//	else {
-		//		m_Path[0].y = pos.y;
-		//		Vec3 direction = m_Path[0] - pos;
-		//		if (direction.length() < 0.5f) {
-		//			m_Path.erase(m_Path.begin());
-		//		}
-		//		else {
 		Vec3 pos = enemy->GetPosition();
-		Vec3 direction = m_Player->GetPosition() - pos;
-		float rotate = atan2f(direction.x, direction.z);
-		m_Transform->SetRotation(Vec3(0, rotate, 0));
-		float renge = direction.length();
-		if (renge > enemy->m_BalletRange / 2)
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+
+		auto obj = m_Stage->GetSharedGameObject<Object>(L"BreakObject", false);
+		Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - pos;
+		if (enemy->m_kariState == Mob::kariState::musi)
 		{
-			pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
-			enemy->SetPosition(pos);
-		}
-		else {
 			m_IntruderAlert = m_Enemy->GetIntruderAlert();
 			if (m_IntruderAlert)
 			{
 				m_Enemy->ChangeState<MobAlert>();
 				return;
+			}
+			else
+			{
+				float objRotate = atan2f(objDirection.x, objDirection.z);
+				m_Transform->SetRotation(Vec3(0, objRotate, 0));
+				float objRenge = objDirection.length();
+				pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				enemy->SetPosition(pos);
+			}
+		}
+		else if (enemy->m_kariState == Mob::kariState::hakai)
+		{
+			m_IntruderAlert = m_Enemy->GetIntruderAlert();
+			if (m_IntruderAlert)
+			{
+				m_Enemy->ChangeState<MobAlert>();
+				return;
+			}
+			else
+			{
+				float objRotate = atan2f(objDirection.x, objDirection.z);
+				m_Transform->SetRotation(Vec3(0, objRotate, 0));
+				float objRenge = objDirection.length();
+				if (objRenge > enemy->m_BalletRange / 2)
+				{
+					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+					enemy->SetPosition(pos);
+				}
+				else {
+					m_Enemy->ChangeState<MobAlert>();
+					return;
+				}
+			}
+
+		}
+		else
+		{
+			Vec3 direction = m_Player->GetPosition() - pos;
+			float rotate = atan2f(direction.x, direction.z);
+			m_Transform->SetRotation(Vec3(0, rotate, 0));
+			float renge = direction.length();
+			if (renge > enemy->m_BalletRange / 2)
+			{
+				pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				enemy->SetPosition(pos);
+			}
+			else {
+				m_IntruderAlert = m_Enemy->GetIntruderAlert();
+				if (m_IntruderAlert)
+				{
+					m_Enemy->ChangeState<MobAlert>();
+					return;
+				}
 			}
 		}
 	}
@@ -71,13 +104,17 @@ namespace basecross {
 	void MobAlert::Execute()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 target = m_Player->GetComponent<Transform>()->GetPosition();
-		Vec3 position = m_Transform->GetPosition();
-		Vec3 rot = target - position;
-		rot.normalize();
-		float rotate = atan2f(rot.x, rot.z);
-		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+
+		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		if (m_IntruderAlert)
+		{
+			mob->AlartMove(m_Player);
+		}
+		else {
+			auto obj = m_Stage->GetSharedGameObject<Object>(L"BreakObject", false);
+			mob->AlartMove(obj);
+		}
 		if(m_BulletRemain > 0)
 		{
 			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {

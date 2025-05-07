@@ -20,9 +20,14 @@ namespace basecross {
 
 		int m_MobState;
 		enum State {
-			ALER  	= 0b00000001,
-			WALK    = 0b00000010,
-			ATTACK  = 0b00000100
+			ALER = 0b00000001,
+			WALK = 0b00000010,
+			ATTACK = 0b00000100
+		};
+		int m_kariState;
+		enum kariState {
+			musi = 0b00000001,
+			hakai = 0b00000010,
 		};
 		float m_BalletSpeed;
 		float m_BalletRange;
@@ -68,6 +73,8 @@ namespace basecross {
 		{
 			return m_PointData;
 		}
+
+		void AlartMove(shared_ptr<Object> obj);
 
 		template <class NextState>
 		void ChangeState() {
