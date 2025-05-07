@@ -18,11 +18,14 @@ namespace basecross {
 		auto playerModel = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Playertest.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
+
 		//auto modelGround = MeshResource::CreateStaticModelMesh(modelPath, L"Ground.bmf");
 
 		app->RegisterResource(L"OBJECT", modelBuild);
 		app->RegisterResource(L"MOB", modelEnemy);
-		app->RegisterResource(L"PLAYER", playerModel);
+		//app->RegisterResource(L"PLAYER", playerModel);
 		//app->RegisterResource(L"GROUND", modelGround);
 	}
 	//--------------------------------------------------------------------------------------
@@ -39,7 +42,7 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
 		}
 		catch (...) {
 			throw;
