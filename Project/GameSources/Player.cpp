@@ -24,7 +24,8 @@ namespace basecross {
 		m_Damage(1.0f),
 		m_DamageInterval(0.5f),
 		m_BoostInterval(1.0F),
-		m_IsGoal(false)
+		m_IsGoal(false),
+		m_zoneAnim(1.0f)
 	{
 	}
 	Player::~Player()
@@ -87,7 +88,13 @@ namespace basecross {
 			//utilPtr->RotToHead(angle, 1.0f);
 			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
-
+			SetAnim(L"Dash");
+		}
+		else {
+			if ((m_PlayerStateNum & PlayerState::NORMAL) == 1)
+			{
+				SetAnim(L"Idle");
+			}
 		}
 	}
 
@@ -114,7 +121,9 @@ namespace basecross {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
 				{
 					m_PlayerStateNum += PlayerState::ZONE;
+					m_PlayerStateNum -= PlayerState::NORMAL;
 					m_Damage = 3.0f;
+					m_zoneAnim = 1.0f;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 				}
@@ -124,9 +133,14 @@ namespace basecross {
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
+			m_zoneAnim -= elapsedTime;
+			if (m_zoneAnim >= 0)
+			{
+				SetAnim(L"Zone");
+			}
 			SetAttackDamage(3.0f);
 			m_ZoneTime += elapsedTime;
-			if (m_ZoneTime > 5.0f)
+			if (m_ZoneTime > 5.0f + m_zoneAnim)
 			{
 				m_Damage = 1.0f;
 				m_PlayerStateNum -= PlayerState::ZONE;
@@ -283,6 +297,31 @@ namespace basecross {
 
 	}
 
+	void Player::AddAnimation()
+	{
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto anim_fps = 60.0f;
+		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2);
+		ptrDraw->AddAnimation(L"Dash", 212, 59, true, anim_fps);
+		ptrDraw->AddAnimation(L"Brink", 265, 6, true, anim_fps);
+		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Clear", 491, 109, false, anim_fps);
+
+
+	}
+
+	void Player::PlayAnimation()
+	{
+		if ((m_PlayerStateNum & PlayerState::ZONE) == 1)
+		{
+			SetAnim(L"Zone");
+		}
+	}
+
 	void Player::Debug()
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
@@ -360,13 +399,11 @@ namespace basecross {
 			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
-		ptrDraw->SetTextureResource(L"01");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		ptrDraw->SetOwnShadowActive(true);
 
-		ptrDraw->AddAnimation(L"DEFAULT", 0, 120, true, 60);
-		ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
+		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -394,12 +431,13 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcBaseDraw>();
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
 		if (m_IsGoal == false)
 		{
 			ZoneActivation();
+			PlayAnimation();
 			//Debug();
 			Vec3 forward = GetForward();
 
@@ -427,6 +465,7 @@ namespace basecross {
 				m_BoostTime -= elapsedTime;
 				if (m_BoostTime >= 0.0f)
 				{
+					SetAnim(L"Brink");
 					BoostMove(6.0f * 3.0f, m_BoostAngle);
 				}
 				else {
@@ -440,6 +479,12 @@ namespace basecross {
 				m_Attacktime -= elapsedTime;
 				if (m_Attacktime >= 0.0f)
 				{
+					SetAnim(L"Attack");
+
+					if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+					{
+						SetAnim(L"Attack2");
+					}
 				}
 				else {
 					m_PlayerStateNum -= PlayerState::ATTACK;
@@ -449,7 +494,7 @@ namespace basecross {
 			}
 			else {
 				m_BoostTime = 0.2f;
-				m_Attacktime = 0.2f;
+				m_Attacktime = 0.5f;
 
 				m_BoostInterval -= elapsedTime;
 				m_AttackInterval -= elapsedTime;
@@ -487,6 +532,11 @@ namespace basecross {
 				}
 			}
 		}
+		else 
+		{
+			SetAnim(L"Clear");
+		}
+
 	}
 
 	void Player::OnDraw()
@@ -494,6 +544,7 @@ namespace basecross {
 		Character::OnDraw();
 	}
 	void Player::Dead() {
+		SetAnim(L"Died");
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
@@ -511,6 +562,7 @@ namespace basecross {
 				Character::Damage(parryDamage, true);
 			}
 			else {
+				SetAnim(L"Nock");
 				Character::Damage(damage, true);
 			}
 			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {
