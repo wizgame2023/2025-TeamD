@@ -46,7 +46,8 @@ namespace basecross {
 		SetPosition(position);
 	}
 	void MissileBullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(nullptr, 10.0f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
+		SoundManager::Instance().PlaySE(L"SE_EXPLODE");
+		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(nullptr, 2.5f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
 		explode->Play(GetPosition());
 		m_Stage->RemoveGameObject<MissileBullet>(GetThis<MissileBullet>());
 	}

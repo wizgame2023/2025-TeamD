@@ -83,6 +83,7 @@ namespace basecross {
 		if (!GetDrawActive()) return;
 
 		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer()) {
+			SoundManager::Instance().PlaySE(L"SE_MISSILE");
 			m_Stage->AddGameObject<MissileBullet>(GetPosition(), Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
 			m_MissileCount--;
 			m_MissileTimer.Reset();
