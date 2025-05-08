@@ -25,49 +25,49 @@ namespace basecross {
 		Vec3 pos = enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 
-		auto obj = m_Stage->GetSharedGameObject<Object>(L"BreakObject", false);
-		Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - pos;
-		if (enemy->m_kariState == Mob::kariState::musi)
+		auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+		if (obj != nullptr)
 		{
-			m_IntruderAlert = m_Enemy->GetIntruderAlert();
-			if (m_IntruderAlert)
+			Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - pos;
+			if (enemy->m_kariState == Mob::kariState::musi)
 			{
-				m_Enemy->ChangeState<MobAlert>();
-				return;
-			}
-			else
-			{
-				float objRotate = atan2f(objDirection.x, objDirection.z);
-				m_Transform->SetRotation(Vec3(0, objRotate, 0));
-				float objRenge = objDirection.length();
-				pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
-				enemy->SetPosition(pos);
-			}
-		}
-		else if (enemy->m_kariState == Mob::kariState::hakai)
-		{
-			m_IntruderAlert = m_Enemy->GetIntruderAlert();
-			if (m_IntruderAlert)
-			{
-				m_Enemy->ChangeState<MobAlert>();
-				return;
-			}
-			else
-			{
-				float objRotate = atan2f(objDirection.x, objDirection.z);
-				m_Transform->SetRotation(Vec3(0, objRotate, 0));
-				float objRenge = objDirection.length();
-				if (objRenge > enemy->m_BalletRange / 2)
+				m_IntruderAlert = m_Enemy->GetIntruderAlert();
+				if (m_IntruderAlert)
 				{
+					m_Enemy->ChangeState<MobAlert>();
+				}
+				else
+				{
+					float objRotate = atan2f(objDirection.x, objDirection.z);
+					m_Transform->SetRotation(Vec3(0, objRotate, 0));
+					float objRenge = objDirection.length();
 					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
 					enemy->SetPosition(pos);
 				}
-				else {
-					m_Enemy->ChangeState<MobAlert>();
-					return;
-				}
 			}
+			else if (enemy->m_kariState == Mob::kariState::hakai)
+			{
+				m_IntruderAlert = m_Enemy->GetIntruderAlert();
+				if (m_IntruderAlert)
+				{
+					m_Enemy->ChangeState<MobAlert>();
+				}
+				else
+				{
+					float objRotate = atan2f(objDirection.x, objDirection.z);
+					m_Transform->SetRotation(Vec3(0, objRotate, 0));
+					float objRenge = objDirection.length();
+					if (objRenge > enemy->m_BalletRange / 2)
+					{
+						pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+						enemy->SetPosition(pos);
+					}
+					else {
+						m_Enemy->ChangeState<MobAlert>();
+					}
+				}
 
+			}
 		}
 		else
 		{
@@ -85,7 +85,6 @@ namespace basecross {
 				if (m_IntruderAlert)
 				{
 					m_Enemy->ChangeState<MobAlert>();
-					return;
 				}
 			}
 		}
@@ -105,20 +104,35 @@ namespace basecross {
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
-
+		Vec3 direction = Vec3();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		if (m_IntruderAlert)
 		{
 			mob->AlartMove(m_Player);
+			direction = m_Enemy->GetDirectionToIntruderObject(m_Player);
+
 		}
 		else {
-			auto obj = m_Stage->GetSharedGameObject<Object>(L"BreakObject", false);
-			mob->AlartMove(obj);
+			auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+
+			if (obj != nullptr)
+			{
+				mob->AlartMove(obj);
+				Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - mob->GetPosition();;
+				direction = m_Enemy->GetDirectionToIntruderObject(obj);
+
+				float objRotate = atan2f(objDirection.x, objDirection.z);
+				m_Transform->SetRotation(Vec3(0, objRotate, 0));
+				float objRenge = objDirection.length();
+				if (objRenge > mob->m_BalletRange / 2)
+				{
+					m_Enemy->ChangeState<MobSearch>();
+				}
+			}
 		}
 		if(m_BulletRemain > 0)
 		{
 			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
-				Vec3 direction = m_Enemy->GetDirectionToIntruder();
 
 				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
 				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
@@ -136,11 +150,6 @@ namespace basecross {
 				m_BulletRemain = mob->m_BulletRemain;
 				m_BulletRelord = 3.0f;
 			}
-		}
-		if (mob->GetIntruderAlert() == false)
-		{
-			m_Enemy->ChangeState<MobSearch>();
-			return;
 		}
 	}
 

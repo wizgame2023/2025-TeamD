@@ -24,7 +24,7 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
-		m_kariState = kariState::musi;
+		m_kariState = kariState::hakai;
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);

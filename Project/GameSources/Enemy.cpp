@@ -81,6 +81,26 @@ namespace basecross {
 		return offset.length();
 	}
 
+	Vec3 Enemy::GetDirectionToIntruderObject(shared_ptr<Object> obj)
+	{
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		offset = offset.normalize();
+		return offset;
+	}
+
+	float Enemy::GetDistanceToIntruderObject(shared_ptr<Object> obj)
+	{
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		return offset.length();
+	}
+
+
 	void Enemy::SearchRange()
 	{
 		float searchDistance = 10.0f;
