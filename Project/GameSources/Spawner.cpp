@@ -32,19 +32,8 @@ namespace basecross {
 		m_Legions[wave - 1]->IntoEnemyGruop(enemy);
 	}
 	void Spawner::SpawnEnemy() {
-		if (m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
-			if (m_EnemyCount == 0) {
-				m_Wave++;
-				if (m_Legions.size() <= m_Wave) {
-					SpawnBoss();
-					m_Wave = -1;
-					return;
-				}
-			}
-			else {
-				return;
-			}
-		}
+		if (m_Wave == -1) return;
+
 		auto enemy = m_Legions[m_Wave]->GetEnemy();
 		if (enemy != nullptr) {
 			enemy->SetDrawActive(true);
@@ -61,6 +50,17 @@ namespace basecross {
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"EnemyDead") {
 			m_EnemyCount--;
+			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
+				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
+			}
+		}
+		else if (event->m_MsgStr == L"WaveClear") {
+			m_Wave++;
+			if (m_Legions.size() <= m_Wave) {
+				SpawnBoss();
+				m_Wave = -1;
+				return;
+			}
 		}
 	}
 }
