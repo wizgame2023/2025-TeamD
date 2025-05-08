@@ -16,6 +16,7 @@ namespace basecross {
 	void Menu::AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectedTex, pos, size, object, func);
 	}
+	
 
 	void Menu::AddSelectButton(InputData date) {
 		ButtonManager::instance->SetInput(m_GroupName, date);
@@ -58,22 +59,26 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
-
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME_SELECTED", Vec3(0, 0, 0), Vec2(300, 300), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"SETTING_MENU", Vec3(0, 0, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
-
+		float flashSpeed = 2.0f;
 		auto menu = GetThis<PauseMenu>();
-		AddButton(L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
+		AddButton<SpriteFlash>(L"POSE_SOUND", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50), menu,
+			[](shared_ptr<ObjectInterface> object) {
+				auto menu = static_pointer_cast<PauseMenu>(object);
+				menu->OpenSoundTest();
+			}, flashSpeed);
+		AddButton<SpriteFlash>(L"POSE_TITLE", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			});
-		AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
+			}, flashSpeed);
+		AddButton<SpriteFlash>(L"POSE_SELECT", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			});
-		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50), menu,
+			}, flashSpeed);
+		AddButton<SpriteFlash>(L"POSE_START", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
 				menu->Close();
@@ -83,12 +88,8 @@ namespace basecross {
 				auto getCamera = menu->OnGetDrawCamera();
 				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
 				setCamera->SetCameraPause(false);
-			});
-		AddButton(L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50), menu,
-			[](shared_ptr<ObjectInterface> object) {
-				auto menu = static_pointer_cast<PauseMenu>(object);
-				menu->OpenSoundTest();
-			});
+			}, flashSpeed);
+		
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
 		Close();
@@ -97,30 +98,38 @@ namespace basecross {
 	void SoundTestMenu::OnCreate() {
 		Menu::OnCreate();
 		auto menu = GetThis<SoundTestMenu>();
+		float volumeSE = SoundManager::Instance().GetSEVolume();
+		float volumeBGM = SoundManager::Instance().GetBGMVolume();
+		float x = GetPositionX(volumeSE);
 
-		AddButton(L"SE_VOLUME", L"SE_VOLUME_SELECTED", Vec3(0.0f, 0.0f, 0.0f), Vec2(200, 50),
+		AddButton(L"SE_VOLUME", L"SE_VOLUME_SELECTED", Vec3(x, 0.0f, 0.0f), Vec2(50, 50),menu,
 			[](shared_ptr<ObjectInterface> object) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().SEVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().SEVolumeDown(0.1f);
-				}
+				auto menu = static_pointer_cast<SoundTestMenu>(object);
+				menu->TuningSE();
+				
+				float volume = SoundManager::Instance().GetSEVolume();
+
+				auto button = ButtonManager::instance->GetButtonSprite(L"SOUND_TEST", 0);
+				Vec3 pos = button->GetPos();
+				pos.x = menu->GetPositionX(volume);
+				button->SetPos(pos);
 			});
-		AddButton(L"BGM_VOLUME", L"BGM_VOLUME_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+		x = GetPositionX(volumeBGM);
+		AddButton(L"BGM_VOLUME", L"BGM_VOLUME_SELECTED", Vec3(x, -50.0f, 0.0f), Vec2(50, 50),menu,
 			[](shared_ptr<ObjectInterface> object) {
-				WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-				if (press & XINPUT_GAMEPAD_DPAD_UP) {
-					SoundManager::Instance().BGMVolumeUp(0.1f);
-				}
-				else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
-					SoundManager::Instance().BGMVolumeDown(0.1f);
-				}
+				auto menu = static_pointer_cast<SoundTestMenu>(object);
+				menu->TuningBGM();
+
+				float volume = SoundManager::Instance().GetBGMVolume();
+
+				auto button = ButtonManager::instance->GetButtonSprite(L"SOUND_TEST", 1);
+				Vec3 pos = button->GetPos();
+				pos.x = menu->GetPositionX(volume);
+				button->SetPos(pos);
 			});
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
-		AddAcceptButton(XINPUT_GAMEPAD_DPAD_UP);
-		AddAcceptButton(XINPUT_GAMEPAD_DPAD_DOWN);
+		AddAcceptButton(XINPUT_GAMEPAD_DPAD_LEFT);
+		AddAcceptButton(XINPUT_GAMEPAD_DPAD_RIGHT);
 
 
 		Close();
@@ -163,18 +172,18 @@ namespace basecross {
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(-500.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-500.0f, -250.0f, 0.0f), Vec2(150, 50),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-300.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_START", L"POSE_START", Vec3(-300.0f, -250.0f, 0.0f), Vec2(150, 50),
 			[](shared_ptr<ObjectInterface> object) {
 
 			});
 		//セレクト
-		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(-100.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_SELECT", L"POSE_SELECT", Vec3(-100.0f, -250.0f, 0.0f), Vec2(150, 50),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");

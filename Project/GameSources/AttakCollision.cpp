@@ -23,22 +23,6 @@ namespace basecross {
 			m_Date.m_CooldownTimer.UpdateTimer();
 		}
 	}
-	//void AttackCollisionObb<T>::OnCreate() {
-	//	Attack::OnCreate();
-	//	m_Collision = AddComponent<CollisionObb>();
-	//	m_Collision->SetDrawActive(true);
-	//	m_Collision->SetAfterCollision(AfterCollision::None);
-	//	m_Transform->SetScale(m_Size);
-	//	AddTag(L"BossAttack");
-	//}
-	//void AttackCollisionCircle::OnCreate() {
-	//	Attack::OnCreate();
-	//	m_Collision = AddComponent<CollisionSphere>();
-	//	m_Collision->SetDrawActive(true);
-	//	m_Collision->SetAfterCollision(AfterCollision::None);
-	//	m_Transform->SetScale(Vec3(m_Size));
-	//	AddTag(L"BossAttack");
-	//}
 
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
 		Vec3 position = m_Transform->GetPosition();
@@ -76,7 +60,7 @@ namespace basecross {
 		{
 			auto player = dynamic_pointer_cast<Player>(Other);
 			player->Damage(false, 4.0f);
-			GetStage()->RemoveGameObject<CrushAttack>(GetThis<CrushAttack>());
+			Stop();
 		}
 	}
 	void MachineGun::OnUpdate() {
@@ -96,10 +80,11 @@ namespace basecross {
 	
 	void Missile::OnUpdate() {
 		Attack::OnUpdate();
-		if (GetDrawActive()) return;
+		if (!GetDrawActive()) return;
 
 		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer()) {
-			m_Stage->AddGameObject<MissileBullet>(Vec3(0.0f, 1.0f, 7.0f), Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
+			SoundManager::Instance().PlaySE(L"SE_MISSILE");
+			m_Stage->AddGameObject<MissileBullet>(GetPosition(), Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
 			m_MissileCount--;
 			m_MissileTimer.Reset();
 		}
