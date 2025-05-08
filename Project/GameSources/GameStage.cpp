@@ -36,13 +36,13 @@ namespace basecross {
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
-		app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"POSE_ENDGAME", uiPath + L"NextStage.png");
-		app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
-		app->RegisterTexture(L"POSE_START", uiPath + L"Restart.png");
-		app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
-		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Select.png");
-		app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
+		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_SELECT", uiPath + L"Select.png");
+		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
+		//app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"SoundMenu.png");
+		//app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
 		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SEVolume.png");
 		app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
@@ -66,6 +66,8 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
 		
+		app->RegisterTexture(L"SETTING_MENU", uiPath + L"Setting.png");
+
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
@@ -91,7 +93,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->LoadCsv2();

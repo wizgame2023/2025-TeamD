@@ -21,7 +21,7 @@ namespace basecross {
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		SetSpeed(1.0f);
+		SetSpeed(2.0f);
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -54,9 +54,9 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(0.5f, 0.5f, 0.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 0.5f, 0.25f, 3.0f, 1.0f), 3.0f);
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(1.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 1.0f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,2.0f, 5.0f, 2.0f), 0.0f, 4.0f, 0.5f);
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,4.1f, 5.0f, 2.0f), 0.0f, 4, 1.0f);
 	}
 	
 
@@ -119,9 +119,6 @@ namespace basecross {
 	void BossEnemy::Damage(float damage, const bool& isSound) {
 		Enemy::Damage(damage, isSound);
 		m_DamageEffectTime.SetTime(0.2f, true);
-		if (!m_IntruderAlert) {
-			ChangeState<BossHostility>();
-		}
 	}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
