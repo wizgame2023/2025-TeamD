@@ -302,16 +302,14 @@ namespace basecross {
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
-		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps);
-		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps);
-		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2);
-		ptrDraw->AddAnimation(L"Dash", 212, 59, true, anim_fps);
-		ptrDraw->AddAnimation(L"Brink", 265, 6, true, anim_fps);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.0f);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.0f);
+		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Clear", 491, 109, false, anim_fps);
-
-
 	}
 
 	void Player::PlayAnimation()
@@ -479,12 +477,7 @@ namespace basecross {
 				m_Attacktime -= elapsedTime;
 				if (m_Attacktime >= 0.0f)
 				{
-					SetAnim(L"Attack");
-
-					if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-					{
-						SetAnim(L"Attack2");
-					}
+					SetAnim(m_AttackAnim);
 				}
 				else {
 					m_PlayerStateNum -= PlayerState::ATTACK;
@@ -494,7 +487,7 @@ namespace basecross {
 			}
 			else {
 				m_BoostTime = 0.2f;
-				m_Attacktime = 0.5f;
+				m_Attacktime = 0.25f;
 
 				m_BoostInterval -= elapsedTime;
 				m_AttackInterval -= elapsedTime;
@@ -514,8 +507,16 @@ namespace basecross {
 
 				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
 				{
-					m_ParryJudge = true;
+					if (m_AttackAnim == L"Attack2")
+					{
+						m_AttackAnim = L"Attack";
+					}
+					else
+					{
+						m_AttackAnim = L"Attack2";
+					}
 
+					m_ParryJudge = true;
 					AimRock(rot);
 					m_Position = GetPosition();
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
