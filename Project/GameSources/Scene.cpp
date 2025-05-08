@@ -42,8 +42,9 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
 
+
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
-		}
+    }
 		catch (...) {
 			throw;
 		}
@@ -68,7 +69,7 @@ namespace basecross {
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>(L"levelMap.csv");
+			ResetActiveStage<GameStageS>(L"TestMapSatou.csv");
 		}
 
 	}
