@@ -87,7 +87,6 @@ namespace basecross {
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
-
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
@@ -203,6 +202,7 @@ namespace basecross {
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
 			ButtonManager::instance->SetSound(L"SE_ACCEPT");
+
 			CreateSoundTest();
 			CreatePose();
 			CreateResult();

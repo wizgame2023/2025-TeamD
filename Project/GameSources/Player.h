@@ -28,6 +28,7 @@ namespace basecross {
 		bool m_DamageIntervalStart;
 		bool m_IsGoal;
 		float m_ParryDamage;
+		float m_zoneAnim;
 
 		Vec3 m_BoostAngle;
 		Vec3 m_BulletDire;
@@ -79,6 +80,14 @@ namespace basecross {
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
 
 		float Parry(float damage, const float& ParrySecond);
+		void AddAnimation();
+		void PlayAnimation();
+
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				draw->ChangeCurrentAnimation(animname, time);
+		}
 	};
 
 	class HitSphere : public GameObject

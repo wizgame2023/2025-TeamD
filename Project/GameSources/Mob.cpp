@@ -24,6 +24,7 @@ namespace basecross {
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
+		m_kariState = kariState::musi;
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -159,6 +160,15 @@ namespace basecross {
 	shared_ptr<Transform> Mob::GetTransfrom()
 	{
 		return m_Transform;
+	}
+	void Mob::AlartMove(shared_ptr<Object> obj)
+	{
+		Vec3 target = obj->GetComponent<Transform>()->GetPosition();
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 rot = target - position;
+		rot.normalize();
+		float rotate = atan2f(rot.x, rot.z);
+		SetRotation(Vec3(0, rotate, 0));
 	}
 }
 //end basecross
