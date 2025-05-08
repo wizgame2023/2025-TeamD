@@ -8,14 +8,22 @@ namespace basecross {
 	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage){}
 	flyobject::~flyobject() {}
 
-	void flyobject::flyPosison()
+	Vec3 flyobject::GetForward()
 	{
-		auto gravity = GetComponent<Gravity>();
-		Vec3 hitPos = GetComponent<Transform>()->GetPosition();
-		Vec3 pos = GetPosition();
-		Vec3 vec = hitPos - pos;
+		return m_Transform->GetForward();
+	}
 
-		gravity->StartJump(Vec3(0.0f + vec.x, 5.0f, 0.0f + vec.z));
+	void flyobject::flyPosison(shared_ptr<GameObject>& other)
+	{		
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto gravity = GetComponent<Gravity>();
+		Vec3 objPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 flyPos = GetComponent<Transform>()->GetPosition();
+		Vec3 spherePos = other->GetComponent<Transform>()->GetForward();
+		Vec3 pos = objPos - flyPos;
+		pos.normalize(); 
+
+		gravity->StartJump(Vec3(-pos.x + spherePos.x / 2, 5.0f, -pos.z + spherePos.z / 2));
 	}
 
 	void flyobject::OnCreate() {
@@ -35,7 +43,7 @@ namespace basecross {
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			flyPosison();
+			flyPosison(other);
 		}
 	}
 
