@@ -79,6 +79,14 @@ namespace basecross {
 		virtual void OnCreate() override;
 	};
 
+	class BraekBox : public Object
+	{
+	public:
+		BraekBox(const shared_ptr<Stage>& stage);
+		~BraekBox();
+		virtual void OnCreate() override;
+	};
+
 	class Wall : public GameObject
 	{
 		bool Wicth_Wall;

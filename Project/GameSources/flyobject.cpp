@@ -5,35 +5,45 @@
 namespace basecross {
 
 
-	flyobject::flyobject(const shared_ptr<Stage>& stage ,Vec3 position) : Object(stage) ,m_Position(position){}
+	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage){}
 	flyobject::~flyobject() {}
 
-	void flyobject::flyPosison()
+	Vec3 flyobject::GetForward()
 	{
+		return m_Transform->GetForward();
+	}
+
+	void flyobject::flyPosison(shared_ptr<GameObject>& other)
+	{		
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto gravity = GetComponent<Gravity>();
-		gravity->StartJump(Vec3(0.0f, 2.0f, 0.0f));
+		Vec3 objPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 flyPos = GetComponent<Transform>()->GetPosition();
+		Vec3 spherePos = other->GetComponent<Transform>()->GetForward();
+		Vec3 pos = objPos - flyPos;
+		pos.normalize(); 
+
+		gravity->StartJump(Vec3(-pos.x + spherePos.x / 2, 5.0f, -pos.z + spherePos.z / 2));
 	}
 
 	void flyobject::OnCreate() {
 		Object::OnCreate();
-		auto objectGravity = AddComponent<Gravity>();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);//debug
-		ptrColl->SetFixed(true);
+		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetFixed(false);
+		auto objectGravity = AddComponent<Gravity>();
 
 		//ï`âÊê›íË
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		//ptrDraw->SetTextureResource(L"GROUND");
-
-		AddTag(L"Fly");
 	}
 
 	void flyobject::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			flyPosison();
+			flyPosison(other);
 		}
 	}
 

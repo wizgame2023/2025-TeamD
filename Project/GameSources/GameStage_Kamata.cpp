@@ -169,8 +169,11 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
+			auto obj = AddGameObject<BraekBox>();
+			SetSharedGameObject(L"BreakObject", obj);
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			GameStage::OnCreate();
+
 		}
 		catch (...) {
 			throw;

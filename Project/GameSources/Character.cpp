@@ -77,8 +77,6 @@ namespace basecross {
 		SetPosition(Vec3());
 		SetScale(Vec3(1.0f));
 		SetRotation(Vec3());
-
-
 		Wicth_FixedBox = true;
 
 		//CollisionSphere衝突判定を付ける
@@ -88,20 +86,34 @@ namespace basecross {
 
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
-		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
-		//ptrDraw->SetMeshResource(L"OBJECT");
-		//Mat4x4 meshMat;
-		//meshMat.affineTransformation(
-		//	Vec3(0.5f, 0.4f, 0.5f), //サイズ
-		//	Vec3(0.0f, 0.0f, 0.0f), //回転軸
-		//	Vec3(0.0f, 0.0f, 0.0f), //回転
-		//	Vec3(0.0f, -0.5f, 0.0f) //ポジション
-		//);
-		//ptrDraw->SetMeshToTransformMatrix(meshMat);
-
-
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 	}
+
+	BraekBox::BraekBox(const shared_ptr<Stage>& stage) :
+		Object(stage)
+	{
+	}
+	BraekBox::~BraekBox() {}
+
+	void BraekBox::OnCreate()
+	{
+		//ここでm_Transformの中身取得してくれる
+		Object::OnCreate();
+		//操作系
+		SetPosition(Vec3(0, 1, -20));
+		SetScale(Vec3(1.0f));
+		SetRotation(Vec3(0));
+
+		//CollisionSphere衝突判定を付ける
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(false);
+
+		//描画設定
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+	}
+
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)
 	{

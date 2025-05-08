@@ -89,13 +89,14 @@ namespace basecross {
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
-
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
 		builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
+		builder->Register<flyobject>(L"flyobject");
 		builder->LoadCsv2();
 
 	}
@@ -203,6 +204,7 @@ namespace basecross {
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
 			ButtonManager::instance->SetSound(L"SE_ACCEPT");
+
 			CreateSoundTest();
 			CreatePose();
 			CreateResult();
