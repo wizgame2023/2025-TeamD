@@ -43,16 +43,18 @@ namespace basecross {
 	{
 		bool m_IntruderAlert;
 		Timer m_CooldownTimer;
-		Timer m_SideStepTimer;
 
+		Vec3 m_TargetPosition;
+
+		Vec3 m_LerpStartDirection;
+		Vec3 m_LerpTargetDirection;
+		float m_LerpTime;
 		Vec3 m_LastInturderPosition;
 
-		Vec3 m_NearDistance;
-		float m_SideStepDirection;
 	public:
 		BossHostility(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
-			m_CooldownTimer(Timer(false)), m_SideStepTimer(Timer(0.5f, false)), m_LastInturderPosition(Vec3()), m_NearDistance(0.2f), m_SideStepDirection(1.0f)
+			m_CooldownTimer(Timer(2.5f)), m_LastInturderPosition(Vec3())
 		{
 		}
 
@@ -88,10 +90,14 @@ namespace basecross {
 			EnemyState(enemy),
 			m_CooldownTimer(Timer(false)), m_ReadyTimer(Timer(false)),
 			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f),
-			m_AttackPosition(Vec3())
-		{
+			m_AttackPosition(Vec3()) {}
+
+		virtual void Ready(float time) {
+			m_IsReady = true;
+			m_ReadyTimer.SetTime(time, true);
 		}
-	private:
+		virtual void Attack(){}
+
 		virtual void Enter() override {}
 		virtual void Execute()override {}
 		virtual void Exit()override {}
@@ -102,12 +108,13 @@ namespace basecross {
 			AttackState(enemy) {
 		}
 
+		virtual void Ready(float time)override;
 	private:
 		void Enter() override;
 		void Execute()override;
 		void Exit()override;
 	};
-	class BossGun : public AttackState<MachineGun> {
+	class BossGun : public AttackState<Missile> {
 
 	public:
 		BossGun(shared_ptr<BossEnemy>& enemy) :

@@ -183,7 +183,7 @@ namespace basecross {
 		obj->SetPosition(position * m_Scale);
 		obj->SetScale(scale * m_Scale);
 		obj->SetRotation(Vec3(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)));
-
+		obj->OnAfterCreate();
 		return obj;
 	}
 	/// <summary>

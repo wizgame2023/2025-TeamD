@@ -5,6 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
+#include "Sprite.h"
 
 namespace basecross {
 	class Menu : public GameObject {
@@ -22,6 +23,17 @@ namespace basecross {
 		virtual void OnCreate()override;
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		
+		template<class Comp, typename... params>
+		void AddButton(const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			ButtonManager::Create<Comp>(GetStage(), m_GroupName, defaultTex, pos, size, object, func, param...);
+		}
+		template<class Comp, typename... params>
+		void AddButton(const wstring& defaultTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			ButtonManager::Create<Comp>(GetStage(), m_GroupName, defaultTex, pos, size, func, param...);
+		}
+
+
 
 		void AddSprite(const shared_ptr<GameObject>& sprite) {
 			sprite->AddTag(L"Menu");
@@ -56,29 +68,35 @@ namespace basecross {
 		}
 	};
 	class SoundTestMenu : public Menu {
+		float m_LeftX;
+		float m_RightX;
 	public:
-		SoundTestMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group) {}
+		SoundTestMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group),m_LeftX(-100),m_RightX(100) {}
 		virtual ~SoundTestMenu() {}
 
 		virtual void OnCreate()override;
 
 		void TuningSE() {
 			WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-			if (press & XINPUT_GAMEPAD_DPAD_UP) {
+			if (press & XINPUT_GAMEPAD_DPAD_RIGHT) {
 				SoundManager::Instance().SEVolumeUp(0.1f);
 			}
-			else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+			else if (press & XINPUT_GAMEPAD_DPAD_LEFT) {
 				SoundManager::Instance().SEVolumeDown(0.1f);
 			}
 		}
 		void TuningBGM() {
 			WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-			if (press & XINPUT_GAMEPAD_DPAD_UP) {
+			if (press & XINPUT_GAMEPAD_DPAD_RIGHT) {
 				SoundManager::Instance().BGMVolumeUp(0.1f);
 			}
-			else if (press & XINPUT_GAMEPAD_DPAD_DOWN) {
+			else if (press & XINPUT_GAMEPAD_DPAD_LEFT) {
 				SoundManager::Instance().BGMVolumeDown(0.1f);
 			}
+		}
+
+		float GetPositionX(float volume) {
+			return m_LeftX + abs(m_LeftX - m_RightX) * volume;
 		}
 	};
 

@@ -28,6 +28,7 @@ namespace basecross {
 
 		shared_ptr<CrushAttack> m_Cruch;
 		shared_ptr<MachineGun> m_Gun;
+		shared_ptr<Missile> m_Missile;
 
 		float m_Stun;
 		bool m_IsStun;
