@@ -43,7 +43,7 @@ namespace basecross {
 			SoundManager::Instance().RegisterSounds();
 
 
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
     }
 		catch (...) {
 			throw;
