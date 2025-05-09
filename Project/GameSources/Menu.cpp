@@ -218,7 +218,7 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_TITLE", L"POSE_SELECT", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
@@ -229,7 +229,7 @@ namespace basecross {
 
 		//	});
 		//リスタート
-		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 
 			});
