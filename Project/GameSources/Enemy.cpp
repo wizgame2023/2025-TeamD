@@ -161,7 +161,7 @@ namespace basecross {
 		Vec3 pos = GetPosition();
 		Vec3 vec = hitPos - pos;
 		vec.normalize();
-		pos += -vec * 5.0f * elapsedTime;
+		pos += -vec * 5.0f * elapsedTime * m_ZoneElapsedTime;
 		float rotate = atan2f(vec.x, vec.z);
 		SetRotation(Vec3(0.0f, rotate, 0.0f));
 		SetPosition(pos);
