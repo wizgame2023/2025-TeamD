@@ -49,7 +49,7 @@ namespace basecross {
 		RunAway();
 		if (m_HP <= 0)
 		{
-			//Dead();
+			Dead();
 		}
 	}
 

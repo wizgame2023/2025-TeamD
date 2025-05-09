@@ -15,10 +15,10 @@ namespace basecross {
 		wstring modelPath = mediaPath + L"Models/";
 
 		//モデル関係
-		auto playerModel = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
+		//auto playerModel = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
-		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Playertest.bmf");
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
 
 		//auto modelGround = MeshResource::CreateStaticModelMesh(modelPath, L"Ground.bmf");

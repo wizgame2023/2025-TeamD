@@ -24,8 +24,17 @@ namespace basecross {
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 pos = enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-
-		auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+		shared_ptr<Object> obj;
+		auto objects = m_Stage->GetGameObjectVec();
+		for (auto object : objects)
+		{
+			if (object->FindTag(L"Citizen"))
+			{
+				auto sharedObj = dynamic_pointer_cast<Object>(object);
+				obj = sharedObj;
+			}
+		}
+		//auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
 		if (obj != nullptr)
 		{
 			Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - pos;
@@ -106,7 +115,16 @@ namespace basecross {
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 direction = Vec3();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
-		auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+		shared_ptr<Object> obj;
+		auto objects = m_Stage->GetGameObjectVec();
+		for (auto object : objects)
+		{
+			if (object->FindTag(L"Citizen"))
+			{
+				auto sharedObj = dynamic_pointer_cast<Object>(object);
+				obj = sharedObj;
+			}
+		}
 
 		if (m_IntruderAlert)
 		{
