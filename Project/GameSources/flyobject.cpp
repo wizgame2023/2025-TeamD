@@ -5,7 +5,7 @@
 namespace basecross {
 
 
-	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage){}
+	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage), m_ZoneElapsedTime(1.0f) {}
 	flyobject::~flyobject() {}
 
 	Vec3 flyobject::GetForward()
@@ -13,15 +13,19 @@ namespace basecross {
 		return m_Transform->GetForward();
 	}
 
-	void flyobject::flyPosison(shared_ptr<GameObject>& other)
-	{		
+	void flyobject::flyPositison(shared_ptr<GameObject>& other)
+	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto gravity = GetComponent<Gravity>();
 		Vec3 objPos = other->GetComponent<Transform>()->GetPosition();
 		Vec3 flyPos = GetComponent<Transform>()->GetPosition();
 		Vec3 spherePos = other->GetComponent<Transform>()->GetForward();
-		Vec3 pos = objPos - flyPos;
-		pos.normalize(); 
+		Vec3 pos = objPos + -flyPos;
+		pos.normalize();
+		//flyPos += -pos * 5.0f * elapsedTime * m_ZoneElapsedTime;
+		//float rote = atan2f(pos.x, pos.z);
+		//SetRotation(Vec3(0.0f, rote, 0.0f));
+		//SetPosition(flyPos);
 
 		gravity->StartJump(Vec3(-pos.x + spherePos.x / 2, 5.0f, -pos.z + spherePos.z / 2));
 	}
@@ -39,11 +43,30 @@ namespace basecross {
 		//ptrDraw->SetTextureResource(L"GROUND");
 	}
 
+	void flyobject::OnUpdate() {
+		ZoneSpeedSet();
+	}
+
+	void flyobject::ZoneSpeedSet()
+	{
+		auto gravity = GetComponent<Gravity>();
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+			gravity->SetZoneGravityVerocity(m_ZoneElapsedTime);
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+			gravity->SetZoneGravityVerocity(m_ZoneElapsedTime);
+		}
+	}
+
 	void flyobject::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			flyPosison(other);
+			flyPositison(other);
 		}
 	}
 
