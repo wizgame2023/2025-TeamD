@@ -41,6 +41,10 @@ namespace basecross {
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"Citizen");
+
+		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
+		group->IntoGroup(GetThis<Citizen>());
+
 	}
 
 	void Citizen::OnUpdate()
@@ -55,6 +59,18 @@ namespace basecross {
 
 	void Citizen::Dead()
 	{
+		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
+		auto& groupVec = group->GetGroupVectors();
+		for (int i = 0; i < groupVec.size(); i++) {
+			auto obj = groupVec[i].lock();
+			if (obj != nullptr) {
+				if (obj == GetThis<GameObject>()) {
+					groupVec.erase(groupVec.begin() + i);
+					break;
+				}
+			}
+		}
+
 		m_Stage->RemoveGameObject<Citizen>(GetThis<Citizen>());
 	}
 
@@ -76,6 +92,10 @@ namespace basecross {
 
 	void Citizen::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
+		if (other->FindTag(L"BreakObject"))
+		{
+			Dead();
+		}
 	}
 
 }
