@@ -106,17 +106,16 @@ namespace basecross {
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 direction = Vec3();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
+		auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+
 		if (m_IntruderAlert)
 		{
 			mob->AlartMove(m_Player);
 			direction = m_Enemy->GetDirectionToIntruderObject(m_Player);
-
 		}
-		else {
-			auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
+		else if (obj != nullptr)
+		{
 
-			if (obj != nullptr)
-			{
 				mob->AlartMove(obj);
 				Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - mob->GetPosition();;
 				direction = m_Enemy->GetDirectionToIntruderObject(obj);
@@ -127,9 +126,14 @@ namespace basecross {
 				if (objRenge > mob->m_BalletRange / 2)
 				{
 					m_Enemy->ChangeState<MobSearch>();
+					return;
 				}
-			}
 		}
+		else {
+			m_Enemy->ChangeState<MobSearch>();
+			return;
+		}
+
 		if(m_BulletRemain > 0)
 		{
 			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {

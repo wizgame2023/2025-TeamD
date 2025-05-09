@@ -16,8 +16,11 @@ namespace basecross {
 		~Citizen();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void Dead() override;
 
 		void RunAway();
+		void OnCollisionEnter(shared_ptr<GameObject>& other);
+
 	};
 }
 

@@ -40,13 +40,22 @@ namespace basecross {
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
-
+		AddTag(L"Citizen");
 	}
 
 	void Citizen::OnUpdate()
 	{
 		ZoneSpeedSet();
 		RunAway();
+		if (m_HP <= 0)
+		{
+			//Dead();
+		}
+	}
+
+	void Citizen::Dead()
+	{
+		m_Stage->RemoveGameObject<Citizen>(GetThis<Citizen>());
 	}
 
 	void Citizen::RunAway()
@@ -61,6 +70,10 @@ namespace basecross {
 		float objRenge = objDirection.length();
 		position += objDirection.normalize() * 3.0f * elapsedTime * m_ZoneElapsedTime;
 		SetPosition(position);
+	}
+
+	void Citizen::OnCollisionEnter(shared_ptr<GameObject>& other)
+	{
 	}
 
 }
