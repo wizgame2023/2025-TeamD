@@ -61,15 +61,17 @@ namespace basecross {
 	void Citizen::RunAway()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-
 		auto obj = m_Stage->GetSharedGameObject<Object>(L"BreakObject", false);
-		Vec3 position = GetPosition();
-		Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - position;
-		float objRotate = atan2f(objDirection.x, objDirection.z);
-		m_Transform->SetRotation(Vec3(0, objRotate, 0));
-		float objRenge = objDirection.length();
-		position += objDirection.normalize() * 3.0f * elapsedTime * m_ZoneElapsedTime;
-		SetPosition(position);
+		if (obj != nullptr)
+		{
+			Vec3 position = GetPosition();
+			Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - position;
+			float objRotate = atan2f(objDirection.x, objDirection.z);
+			m_Transform->SetRotation(Vec3(0, objRotate, 0));
+			float objRenge = objDirection.length();
+			position += objDirection.normalize() * 3.0f * elapsedTime * m_ZoneElapsedTime;
+			SetPosition(position);
+		}
 	}
 
 	void Citizen::OnCollisionEnter(shared_ptr<GameObject>& other)
