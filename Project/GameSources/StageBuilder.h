@@ -53,7 +53,7 @@ namespace basecross {
 
 		virtual ~Object() {}
 		virtual void OnCreate()override;
-		virtual void OnAfterCreate() {};
+		virtual void OnAfterCreate(){}
 		virtual void AsyncUpdate() {}
 
 		shared_ptr<Transform>& GetTransform() {
