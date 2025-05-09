@@ -73,6 +73,13 @@ namespace basecross {
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			Delete();
 		}
+		else if (other->FindTag(L"Citizen"))
+		{
+			GetStage()->RemoveGameObject<LineCube>(m_Line);
+			auto citizen = dynamic_pointer_cast<Character>(other);
+			citizen->Damage(1.0f, false);
+			Delete();
+		}
 		else if (other->FindTag(L"Object"))
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);

@@ -287,6 +287,7 @@ namespace basecross{
 		virtual void OnCreate()override;
 		virtual void OnDraw()override {}
 
+		virtual void Reset(){}
 		void Play() {
 			m_IsPlay = true;
 		}
@@ -311,7 +312,7 @@ namespace basecross{
 		virtual ~SpriteFlash(){}
 
 		virtual void OnUpdate()override;
-
+		virtual void Reset()override;
 		void SetFlashSpeed(float flashSpeed) {
 			m_FlashSpeed = flashSpeed;
 		}
@@ -387,6 +388,7 @@ namespace basecross{
 	//----------------------------------------------------------
 	class SpriteButton : public SpriteAction {
 		shared_ptr<SpriteBaseDraw> m_SpriteDraw;
+		shared_ptr<SpriteAction> m_Effect;
 		function<void(shared_ptr<ObjectInterface>&)> m_Function;
 		function<void(shared_ptr<SpriteButton>&)> m_AddFunction;
 		shared_ptr<ObjectInterface> m_ArgmentObject;
@@ -421,8 +423,16 @@ namespace basecross{
 		virtual ~SpriteButton(){}
 
 		virtual void OnCreate()override;
+
 		virtual void OnUpdate()override;
 
+		template<class Comp,typename... params>
+		void AddEffect(params&&... param) {
+			m_Effect = GetGameObject()->AddComponent<Comp>(param...);
+		}
+		shared_ptr<SpriteAction> GetEffect() {
+			return m_Effect;
+		}
 		void AddFunction(function<void(shared_ptr<SpriteButton>&)> func) {
 			m_AddFunction = func;
 		}
@@ -539,19 +549,36 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class ButtonManager : public GameObject{
-		
+		//ボタン格納用配列
 		map<wstring, vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
+		//選択中の番号
 		map<wstring, int> m_SelectIndexes;
+		//反映させる移動量
 		map<wstring, Vec3> m_GroupMovementAmount;
+		//入力
 		map<wstring, vector<InputData>> m_InputDates;
+		//決定ボタン
 		map<wstring, vector<WORD>> m_AcceptButtons;
+		//その瞬間に押された決定ボタン
 		map<wstring, WORD> m_PressedAccept;
 		wstring m_UsingGroup;
-
+		//クリック音のキー
 		wstring m_ClickSound;
-
+		//Updateさせるか
 		bool m_IsActive;
 
+		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		
+		template<typename Comp, typename... params>
+		shared_ptr<Sprite> CreateComp(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
+			sprite->AddTag(L"Button");
+			shared_ptr<SpriteButton> button = sprite->AddComponent<SpriteButton>(defaultTex, group, L"");
+			button->SetFunction(func,object);
+			button->AddEffect<Comp>(param...);
+
+			return sprite;
+		}
 	public:
 		static shared_ptr<ButtonManager> instance;
 
@@ -567,11 +594,29 @@ namespace basecross{
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
-		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex,Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		template<class Comp, typename... params>
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			return ButtonManager::instance->CreateComp<Comp>(stage, group, defaultTex, pos, size, nullptr, func, param...);
+		}
+		template<class Comp, typename... params>
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			return ButtonManager::instance->CreateComp<Comp>(stage, group, defaultTex, pos, size, object, func, param...);
+		}
+		
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
+		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
+			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+				auto vec = m_ButtonGroup[group];
+				if (vec.size() > index) {
+					auto obj = vec[index]->GetGameObject();
+					return static_pointer_cast<Sprite>(obj);
+				}
+			}
+			return nullptr;
+		}
 		bool ExistOpenGroup() {
 			for (auto& buttons : m_ButtonGroup) {
 				if (buttons.second[0]->GetDrawActive()) {

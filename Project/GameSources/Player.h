@@ -36,6 +36,7 @@ namespace basecross {
 		shared_ptr<EffectManeger> m_Effect;
 
 		shared_ptr<TargetBoard> m_TargetBoard;
+		wstring m_AttackAnim = L"Attack";
 
 	public:
 		int m_PlayerStateNum;

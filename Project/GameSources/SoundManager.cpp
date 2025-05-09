@@ -31,6 +31,10 @@ namespace basecross {
 		RegisterSound(L"SE_WALK_PLAYER", L"SE/PlayerWalk.wav");
 		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice_3.wav");
 		RegisterSound(L"SE_ACCEPT", L"SE/AttackVoice.wav");
+
+		RegisterSound(L"SE_EXPLODE", L"SE/AttackVoice.wav");
+		RegisterSound(L"SE_MISSILE", L"SE/AttackVoice.wav");
+		RegisterSound(L"SE_CRUSH", L"SE/AttackVoice.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";

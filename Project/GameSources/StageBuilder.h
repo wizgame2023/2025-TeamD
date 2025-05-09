@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief Æ’LÆ’Æ’Æ’â€°Æ’NÆ’^Â[â€šÃˆâ€šÃ‡
 */
 
 #pragma once
@@ -53,6 +53,7 @@ namespace basecross {
 
 		virtual ~Object() {}
 		virtual void OnCreate()override;
+		virtual void OnAfterCreate() {};
 		virtual void AsyncUpdate() {}
 
 		shared_ptr<Transform>& GetTransform() {
@@ -101,6 +102,7 @@ namespace basecross {
 		Vec3 GetForward() {
 			return m_Transform->GetForward();
 		}
+
 	};
 
 	class StageBuilder : public GameObject

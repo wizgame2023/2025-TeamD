@@ -20,7 +20,7 @@ namespace basecross {
 			m_ExitTimer.SetTime(m_ExitTimer.GetMaxTime(), true);
 			m_CooldownTimer.SetTime(m_CooldownTimer.GetMaxTime(), true);
 		}
-		AttackDate(float time, float cooldown, float charaCooldown) : AttackDate(nullptr,0.0f,0.0f,time,cooldown,charaCooldown){}
+		AttackDate(float range,float time, float cooldown, float charaCooldown) : AttackDate(nullptr,0.0f, range,time,cooldown,charaCooldown){}
 		AttackDate(const shared_ptr<Character>& owner,float damage, float range, float time, float cooldown, float charaCooldown) :
 			m_Owner(owner),
 			m_Damage(damage),m_Range(range),

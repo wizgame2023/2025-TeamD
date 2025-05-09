@@ -257,6 +257,13 @@ namespace basecross {
 		m_Trans = GetGameObject()->GetComponent<Transform>();
 	}
 
+	void SpriteFlash::Reset() {
+		if (m_Draw != nullptr) {
+			Col4 color = m_Draw->GetDiffuse();
+			color.w = 1.0f;
+			m_Draw->SetDiffuse(color);
+		}
+	}
 	void SpriteFlash::OnUpdate() {
 		if (m_Draw != nullptr && IsPlay()) {
 			float elapsed = App::GetApp()->GetElapsedTime();
@@ -327,10 +334,17 @@ namespace basecross {
 			if (m_SelectedColor != Col4(0, 0, 0, 0)) {
 				m_SpriteDraw->SetDiffuse(m_SelectedColor);
 			}
+			if (m_Effect != nullptr) {
+				m_Effect->Play();
+			}
 		}
 		else {
 			m_SpriteDraw->SetTextureResource(m_UnSelectTexture);
 			m_SpriteDraw->SetDiffuse(m_UnSelectColor);
+			if (m_Effect != nullptr) {
+				m_Effect->Reset();
+				m_Effect->Stop();
+			}
 		}
 	}
 
@@ -349,15 +363,18 @@ namespace basecross {
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, object, func);
 	}
+	
+
 
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
 		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
-		if (selectedTex != L"" && button == nullptr) {
+
+		if (selectedTex != L"") {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedTex);
 		}
-		if (selectedColor != Col4() && button == nullptr) {
+		else if (selectedColor != Col4()) {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedColor);
 		}
 
