@@ -517,7 +517,7 @@ namespace basecross{
 		InputData(int input,int amount) : m_Input(input),m_MoveAmount(amount),m_Mode(InputMode::Button),m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
 		InputData(StickMode mode, int amount,float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick),m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
 
-		bool CheckInput(WORD input) {
+		bool CheckInput(WORD input){
 			return input & m_Input;
 		}
 		bool CheckInput(float input) {
@@ -607,6 +607,10 @@ namespace basecross{
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
+
+		bool CheckUpdate();
+		bool CheckMoveInput(InputData& input);
+
 		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
 			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
 				auto vec = m_ButtonGroup[group];

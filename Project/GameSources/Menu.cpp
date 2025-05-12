@@ -16,7 +16,13 @@ namespace basecross {
 	void Menu::AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectedTex, pos, size, object, func);
 	}
-	
+	void Menu::AddButton(const wstring& defaultTex, const Col4& selectColor, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
+		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectColor, pos, size, func);
+	}
+	void Menu::AddButton(const wstring& defaultTex, const Col4& selectColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
+		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectColor, pos, size,object, func);
+	}
+
 
 	void Menu::AddSelectButton(InputData date) {
 		ButtonManager::instance->SetInput(m_GroupName, date);
@@ -59,28 +65,38 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(600, 600), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(700, 700), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 230, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
+
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SELECT", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+
 		float flashSpeed = 2.0f;
 		auto menu = GetThis<PauseMenu>();
-		AddButton<SpriteFlash>(L"POSE_SOUND", Vec3(0.0f, 125.0f, 0.0f), Vec2(200, 100), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1,1,1,1),Vec3(-150.0f, 125.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<PauseMenu>(object);
 				menu->OpenSoundTest();
-			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_TITLE", Vec3(0.0f, 25.0f, 0.0f), Vec2(200, 100),
+			});
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 25.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_SELECT", Vec3(0.0f, -75.0f, 0.0f), Vec2(200, 100),
+			});
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -75.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_START", Vec3(0.0f, -175.0f, 0.0f), Vec2(200, 100), menu,
+			});
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
 				menu->Close();
@@ -90,7 +106,7 @@ namespace basecross {
 				auto getCamera = menu->OnGetDrawCamera();
 				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
 				setCamera->SetCameraPause(false);
-			}, flashSpeed);
+			});
 		
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);

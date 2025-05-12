@@ -36,9 +36,9 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
-		auto character = static_pointer_cast<Character>(player);
+		auto character = static_pointer_cast<Player>(player);
 		if (character) {
-			character->Damage(m_Date.m_Damage);
+			character->Damage(true,m_Date.m_Damage);
 		}
 	}
 	void CrushAttack::OnCollisionEnter(shared_ptr<GameObject>& Other) {

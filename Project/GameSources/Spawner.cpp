@@ -22,6 +22,17 @@ namespace basecross {
 			}
 		}
 	}
+	void Spawner::OnAfterCreate() {
+		if (m_Legions.size() == 0) {
+			PostEvent(0.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
+			return;
+		}
+		for (const auto& legion : m_Legions) {
+			if (legion->GetEnemyLegionGruop().size() == 0) {
+				PostEvent(0.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
+			}
+		}
+	}
 
 	void Spawner::AddLegion(const shared_ptr<Legion>& legion) {
 		m_Legions.push_back(legion);
@@ -52,6 +63,7 @@ namespace basecross {
 			m_EnemyCount--;
 			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
 				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
+				SoundManager::Instance().PlaySE(L"SE_WAVE");
 			}
 		}
 		else if (event->m_MsgStr == L"WaveClear") {
@@ -60,6 +72,9 @@ namespace basecross {
 				SpawnBoss();
 				m_Wave = -1;
 				return;
+			}
+			else {
+				
 			}
 		}
 	}

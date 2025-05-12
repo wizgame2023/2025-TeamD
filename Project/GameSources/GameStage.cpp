@@ -68,6 +68,7 @@ namespace basecross {
 		
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
+		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
@@ -93,11 +94,11 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<flyobject>(L"flyobject");
-		builder->LoadCsv2();
+		builder->LoadCsv();
 
 	}
 	/// </summary>

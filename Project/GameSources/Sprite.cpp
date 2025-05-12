@@ -320,6 +320,10 @@ namespace basecross {
 	void SpriteButton::OnCreate() {
 		m_SpriteDraw = GetGameObject()->GetComponent<SpriteBaseDraw>();
 		m_UnSelectColor = m_SpriteDraw->GetDiffuse();
+		if (m_SelectedColor.w == 1.0f) {
+			m_UnSelectColor.w = 0.0f;
+		}
+		
 		ButtonManager::instance->Register(m_BelongGroup, GetThis<SpriteButton>());
 	}
 	void SpriteButton::OnUpdate() {
@@ -386,12 +390,8 @@ namespace basecross {
 		instance = GetThis<ButtonManager>();
 	}
 	void ButtonManager::OnUpdate() {
-		if (!m_IsActive) return;
-		if (!ExistOpenGroup()) {
-			m_IsActive = false;
-			return;
-		}
-		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return;
+		if (!CheckUpdate()) return;
+
 		if (!m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->GetActive()) {
 			if (m_SelectIndexes[m_UsingGroup] > 0) {
 				m_SelectIndexes[m_UsingGroup]--;
@@ -403,29 +403,7 @@ namespace basecross {
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
 			for (auto& inputData : m_InputDates[m_UsingGroup]) {
-				bool checkInput = false;
-				if (inputData.m_Mode == InputMode::Button) {
-					checkInput = inputData.CheckInput(inputState.wPressedButtons);
-				}
-				else if (inputData.m_Mode == InputMode::Stick) {
-					float inputThumb = 0.0f;
-					switch (inputData.m_StickMode) {
-					case StickMode::LX:
-						inputThumb = inputState.fThumbLX;
-						break;
-					case StickMode::LY:
-						inputThumb = -inputState.fThumbLY;
-						break;
-					case StickMode::RX:
-						inputThumb = inputState.fThumbRX;
-						break;
-					case StickMode::RY:
-						inputThumb = -inputState.fThumbRY;
-						break;
-					}
-					checkInput = inputData.CheckInput(inputThumb);
-				}
-				if (checkInput) {
+				if (CheckMoveInput(inputData)) {
 					if (abs(inputData.m_MoveAmount) > 1) {
 						if (!CheckOverIndex(inputData.m_MoveAmount)) continue;
 					}
@@ -483,7 +461,40 @@ namespace basecross {
 	void ButtonManager::OnDestroy() {
 		instance = nullptr;
 	}
+	bool ButtonManager::CheckUpdate() {
+		if (!m_IsActive) return false;
+		if (!ExistOpenGroup()) {
+			m_IsActive = false;
+			return false;
+		}
+		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return false;
 
+		return true;
+	}
+	bool ButtonManager::CheckMoveInput(InputData& input) {
+
+		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (input.m_Mode == InputMode::Button) {
+			return input.CheckInput(inputState.wPressedButtons);
+		}
+		float inputThumb = 0.0f;
+		switch (input.m_StickMode) {
+		case StickMode::LX:
+			inputThumb = inputState.fThumbLX;
+			break;
+		case StickMode::LY:
+			inputThumb = -inputState.fThumbLY;
+			break;
+		case StickMode::RX:
+			inputThumb = inputState.fThumbRX;
+			break;
+		case StickMode::RY:
+			inputThumb = -inputState.fThumbRY;
+			break;
+		}
+		return input.CheckInput(inputThumb);
+
+	}
 	void ButtonManager::SetSound(const wstring& sound) {
 		m_ClickSound = sound;
 	}
