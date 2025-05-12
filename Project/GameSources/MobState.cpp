@@ -25,13 +25,30 @@ namespace basecross {
 		Vec3 pos = enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		shared_ptr<Object> obj;
-		auto objects = m_Stage->GetGameObjectVec();
-		for (auto object : objects)
+		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
+		auto groups = group->GetGroupVector();
+
+		Vec3 objDirection = Vec3();
+		float objRenge = 0;
+		if (groups.size() != 0)
 		{
-			if (object->FindTag(L"Citizen"))
+			for (auto citizen : groups)
 			{
-				auto sharedObj = dynamic_pointer_cast<Object>(object);
-				obj = sharedObj;
+				auto shObj = citizen.lock();
+				Vec3 direction = shObj->GetComponent<Transform>()->GetPosition() - pos;
+				float renge = direction.length();
+				if (objRenge == 0)
+				{
+					objRenge = renge;
+					objDirection = direction;
+					obj = dynamic_pointer_cast<Object>(shObj);
+				}
+				else if (objRenge > renge)
+				{
+					objRenge = renge;
+					objDirection = direction;
+					obj = dynamic_pointer_cast<Object>(shObj);
+				}
 			}
 		}
 		//auto obj = m_Stage->GetSharedGameObject<Object>(L"Citizen");
@@ -116,16 +133,33 @@ namespace basecross {
 		Vec3 direction = Vec3();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
 		shared_ptr<Object> obj;
-		auto objects = m_Stage->GetGameObjectVec();
-		for (auto object : objects)
+		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
+		auto groups = group->GetGroupVector();
+
+		Vec3 objDirection = Vec3();
+		float objRenge = 0;
+		if (groups.size() != 0)
 		{
-			if (object->FindTag(L"Citizen"))
+
+			for (auto citizen : groups)
 			{
-				auto sharedObj = dynamic_pointer_cast<Object>(object);
-				obj = sharedObj;
+				auto shObj = citizen.lock();
+				Vec3 direction = shObj->GetComponent<Transform>()->GetPosition() - m_Enemy->GetPosition();
+				float renge = direction.length();
+				if (objRenge == 0)
+				{
+					objRenge = renge;
+					objDirection = direction;
+					obj = dynamic_pointer_cast<Object>(shObj);
+				}
+				else if (objRenge > renge)
+				{
+					objRenge = renge;
+					objDirection = direction;
+					obj = dynamic_pointer_cast<Object>(shObj);
+				}
 			}
 		}
-
 		if (m_IntruderAlert)
 		{
 			mob->AlartMove(m_Player);
@@ -134,18 +168,16 @@ namespace basecross {
 		else if (obj != nullptr)
 		{
 
-				mob->AlartMove(obj);
-				Vec3 objDirection = obj->GetComponent<Transform>()->GetPosition() - mob->GetPosition();;
-				direction = m_Enemy->GetDirectionToIntruderObject(obj);
+			mob->AlartMove(obj);
+			direction = m_Enemy->GetDirectionToIntruderObject(obj);
 
-				float objRotate = atan2f(objDirection.x, objDirection.z);
-				m_Transform->SetRotation(Vec3(0, objRotate, 0));
-				float objRenge = objDirection.length();
-				if (objRenge > mob->m_BalletRange / 2)
-				{
-					m_Enemy->ChangeState<MobSearch>();
-					return;
-				}
+			float objRotate = atan2f(objDirection.x, objDirection.z);
+			m_Transform->SetRotation(Vec3(0, objRotate, 0));
+			if (objRenge > mob->m_BalletRange / 2)
+			{
+				m_Enemy->ChangeState<MobSearch>();
+				return;
+			}
 		}
 		else {
 			m_Enemy->ChangeState<MobSearch>();

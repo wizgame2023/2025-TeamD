@@ -112,6 +112,7 @@ namespace basecross {
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		AddTag(L"BreakObject");
 	}
 
 	Wall::Wall(const shared_ptr<Stage>& stage) :
