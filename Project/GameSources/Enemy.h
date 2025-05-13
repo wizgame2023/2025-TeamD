@@ -48,6 +48,12 @@ namespace basecross {
 		}
 		//shared_ptr<LineCube> m_LineCube;
 
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				draw->ChangeCurrentAnimation(animname, time);
+		}
+
 	private:
 
 	};
