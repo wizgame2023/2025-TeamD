@@ -16,10 +16,11 @@ namespace basecross {
 	protected:
 		
 		bool m_IntruderAlert;
+		bool m_KnockBack;
+		float m_KnockBackTime;
 		float m_AlertTime;
 	public:	
 		shared_ptr<Character> m_Intruder;
-
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		virtual ~Enemy();
 		virtual void OnCreate();
@@ -40,8 +41,11 @@ namespace basecross {
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
 		void SetIntruderAlert(bool flag);
-		void KnockBackTime(shared_ptr<GameObject>& other);
-
+		void KnockBack();
+		void KnockBackTime();
+		float GetKnockBack() {
+			return m_KnockBack;
+		}
 		//shared_ptr<LineCube> m_LineCube;
 
 	private:
