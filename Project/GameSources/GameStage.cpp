@@ -35,18 +35,18 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
-		app->RegisterTexture(L"POSE_TITLE", uiPath + L"BackToTitle.png");
+		app->RegisterTexture(L"POSE_TITLE", uiPath + L"Title_Menu.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"POSE_SELECT", uiPath + L"Select.png");
+		app->RegisterTexture(L"POSE_SELECT", uiPath + L"Select_Menu.png");
 		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
 		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
 		//app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
-		app->RegisterTexture(L"POSE_SOUND", uiPath + L"SoundMenu.png");
+		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
 		//app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
-		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SEVolume.png");
-		app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
-		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGMVolume.png");
-		app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
+		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
+		//app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
+		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
+		//app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
@@ -66,7 +66,8 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
 		
-		app->RegisterTexture(L"SETTING_MENU", uiPath + L"Setting.png");
+		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
+		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
 
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
@@ -196,6 +197,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"EnemyGroup");
 			CreateSharedObjectGroup(L"PointerGroup");
 			CreateSharedObjectGroup(L"Legion");
+			CreateSharedObjectGroup(L"Citizen");
 
 			//ビューとライトの作成
 			CreateViewLight();

@@ -59,26 +59,28 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"SETTING_MENU", Vec3(0, 0, 0), Vec2(600, 600), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(600, 600), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		float flashSpeed = 2.0f;
 		auto menu = GetThis<PauseMenu>();
-		AddButton<SpriteFlash>(L"POSE_SOUND", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50), menu,
+		AddButton<SpriteFlash>(L"POSE_SOUND", Vec3(0.0f, 125.0f, 0.0f), Vec2(200, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<PauseMenu>(object);
 				menu->OpenSoundTest();
 			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_TITLE", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
+		AddButton<SpriteFlash>(L"POSE_TITLE", Vec3(0.0f, 25.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_SELECT", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
+		AddButton<SpriteFlash>(L"POSE_SELECT", Vec3(0.0f, -75.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			}, flashSpeed);
-		AddButton<SpriteFlash>(L"POSE_START", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50), menu,
+		AddButton<SpriteFlash>(L"POSE_START", Vec3(0.0f, -175.0f, 0.0f), Vec2(200, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
 				menu->Close();
@@ -97,12 +99,22 @@ namespace basecross {
 
 	void SoundTestMenu::OnCreate() {
 		Menu::OnCreate();
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(600, 600), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+
 		auto menu = GetThis<SoundTestMenu>();
 		float volumeSE = SoundManager::Instance().GetSEVolume();
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
 		float x = GetPositionX(volumeSE);
 
-		AddButton(L"SE_VOLUME", L"SE_VOLUME_SELECTED", Vec3(x, 0.0f, 0.0f), Vec2(50, 50),menu,
+		AddButton(L"SE_VOLUME", L"SE_VOLUME", Vec3(x, 0.0f, 0.0f), Vec2(50, 50),menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
@@ -115,7 +127,7 @@ namespace basecross {
 				button->SetPos(pos);
 			});
 		x = GetPositionX(volumeBGM);
-		AddButton(L"BGM_VOLUME", L"BGM_VOLUME_SELECTED", Vec3(x, -50.0f, 0.0f), Vec2(50, 50),menu,
+		AddButton(L"BGM_VOLUME", L"BGM_VOLUME", Vec3(x, -50.0f, 0.0f), Vec2(50, 50),menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
@@ -218,7 +230,7 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_TITLE", L"POSE_SELECT", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
@@ -229,7 +241,7 @@ namespace basecross {
 
 		//	});
 		//リスタート
-		AddButton(L"POSE_START", L"POSE_START_SELECTED", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 
 			});

@@ -171,10 +171,11 @@ namespace basecross {
 		try {
 			auto obj = AddGameObject<BraekBox>();
 			SetSharedGameObject(L"BreakObject", obj);
-			auto citizen = AddGameObject<Citizen>(Vec3(0, 2, 15), Vec3(1));
-			SetSharedGameObject(L"Citizen", citizen);
 			auto mediaPath = App::GetApp()->GetDataDirWString();
 			GameStage::OnCreate();
+			AddGameObject<Citizen>(Vec3(0, 2, 15), Vec3(1));
+			AddGameObject<Citizen>(Vec3(10, 2, 15), Vec3(1));
+			AddGameObject<Citizen>(Vec3(-10, 2, 15), Vec3(1));
 
 		}
 		catch (...) {
