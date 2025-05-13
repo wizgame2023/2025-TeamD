@@ -58,10 +58,10 @@ namespace basecross {
 	}
 	void Mob::OnUpdate()
 	{
+		Enemy::OnUpdate();
 		if (GetUpdateActive())
 		{
 			AsyncUpdate();
-			Enemy::OnUpdate();
 			auto draw = GetComponent<BcPNTStaticDraw>();
 
 			/*if (m_IsEndAsyncUpdate) {
@@ -118,11 +118,11 @@ namespace basecross {
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"HitJudge"))
+		if (other->FindTag(L"HitJudge") && m_IntervalStart)
 		{
+			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;
 		}
-		Enemy::OnCollisionEnter(other);
 	}
 
 	Vec3 Mob::RootNaviGate()

@@ -450,14 +450,14 @@ namespace basecross {
 			if (m_DamageIntervalStart)
 			{
 				m_DamageInterval -= elapsedTime;
-				draw->SetDiffuse(Col4(1, 0, 0, 1));
 				if (m_DamageInterval <= 0.0f)
 				{
-					draw->SetDiffuse(Col4(1, 1, 1, 1));
 					m_DamageIntervalStart = false;
 					m_DamageInterval = 0.5f;
 				}
 			}
+
+
 			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
 				m_BoostTime -= elapsedTime;
@@ -544,6 +544,7 @@ namespace basecross {
 	{
 		Character::OnDraw();
 	}
+
 	void Player::Dead() {
 		SetAnim(L"Died");
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
@@ -557,10 +558,11 @@ namespace basecross {
 			if (m_HP >= m_MaxHP / 3.0f) {
 				isBeforePinch = false;
 			}
-			if (parry)
+			if (m_ParryJudge)
 			{
 				float parryDamage = Parry(damage, m_ParryTime);
 				Character::Damage(parryDamage, true);
+				m_ParryTime = 30.0f;
 			}
 			else {
 				SetAnim(L"Nock");
@@ -571,7 +573,6 @@ namespace basecross {
 			}
 		}
 		m_HP = max(m_HP, 0);
-		m_ParryTime = 5.0f;
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
