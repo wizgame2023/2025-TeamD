@@ -557,10 +557,11 @@ namespace basecross {
 			if (m_HP >= m_MaxHP / 3.0f) {
 				isBeforePinch = false;
 			}
-			if (parry)
+			if (m_ParryJudge)
 			{
 				float parryDamage = Parry(damage, m_ParryTime);
 				Character::Damage(parryDamage, true);
+				m_ParryTime = 30.0f;
 			}
 			else {
 				SetAnim(L"Nock");
@@ -571,7 +572,6 @@ namespace basecross {
 			}
 		}
 		m_HP = max(m_HP, 0);
-		m_ParryTime = 5.0f;
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
