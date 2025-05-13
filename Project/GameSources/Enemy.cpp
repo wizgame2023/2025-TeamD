@@ -5,6 +5,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Enemy.h"
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
@@ -18,6 +19,8 @@ namespace basecross {
 		Character::OnCreate();
 		InitHP(3);
 		m_AlertTime = 5.0f;
+		m_KnockBack = false;
+		m_KnockBackTime = 0.5f;
 		//CollisionSphereの設定
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		//ptrColl->SetDrawActive(true);//debug
@@ -55,9 +58,22 @@ namespace basecross {
 
 	void Enemy::OnUpdate()
 	{
-		ZoneSpeedSet();
-		if (m_HP <= 0)
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+
+		if (m_KnockBack)
 		{
+			m_KnockBackTime -= elapsedTime;
+			if (m_KnockBackTime > 0.0f)
+			{
+				KnockBackTime();
+			}
+			else 
+			{
+				m_KnockBack = false;
+				m_KnockBackTime = 0.5f;
+			}
+		}
+		if (m_HP <= 0) {
 			Dead();
 		}
 	}
@@ -154,10 +170,15 @@ namespace basecross {
 		m_IntruderAlert = flag;
 	}
 
-	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	void Enemy::KnockBack()
+	{
+		m_KnockBack = true;
+	}
+
+	void Enemy::KnockBackTime()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 hitPos = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 pos = GetPosition();
 		Vec3 vec = hitPos - pos;
 		vec.normalize();
@@ -168,25 +189,32 @@ namespace basecross {
 	}
 
 	void Enemy::Dead() {
-
-		ScoreManager::Instance()->AddEliminateEnemyCount();
-
-		auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
-		auto& groupVec = group->GetGroupVectors();
-		for (int i = 0; i < groupVec.size(); i++) {
-			auto obj = groupVec[i].lock();
-			if (obj != nullptr) {
-				if (obj == GetThis<GameObject>()) {
-					groupVec.erase(groupVec.begin() + i);
-					break;
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_KnockBackTime -= elapsedTime;
+		if (m_KnockBackTime > 0.0f)
+		{
+			KnockBackTime();
+		}
+		else
+		{
+			ScoreManager::Instance()->AddEliminateEnemyCount();
+			auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+			auto& groupVec = group->GetGroupVectors();
+			for (int i = 0; i < groupVec.size(); i++) {
+				auto obj = groupVec[i].lock();
+				if (obj != nullptr) {
+					if (obj == GetThis<GameObject>()) {
+						groupVec.erase(groupVec.begin() + i);
+						break;
+					}
 				}
 			}
+			auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner", false);
+			if (spawner) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+			}
+			m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 		}
-		auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner",false);
-		if (spawner) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
-		}
-		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
@@ -194,7 +222,7 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			//Damage(m_Intruder->GetAttackDamage(), false);
-			KnockBackTime(other);
+			KnockBack();
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}

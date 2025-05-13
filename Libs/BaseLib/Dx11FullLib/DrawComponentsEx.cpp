@@ -4,6 +4,7 @@
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
+#include "DrawComponentsEx.h"
 
 namespace basecross {
 
@@ -677,7 +678,6 @@ namespace basecross {
 	}
 	const wstring& BcBaseDraw::GetCurrentAnimation() const {
 		return pImpl->m_BcDrawObject.m_CurrentAnimeName;
-
 	}
 
 	float BcBaseDraw::GetCurrentAnimationTime() const {
@@ -689,6 +689,10 @@ namespace basecross {
 		return AnimData.m_IsAnimeEnd;
 	}
 
+	bool BcBaseDraw::GetAnimeLoop() const {
+		auto& AnimData = pImpl->m_BcDrawObject.GetAnimationData();
+		return AnimData.m_IsLoop;
+	}
 
 	bool BcBaseDraw::UpdateAnimation(float ElapsedTime) {
 		return pImpl->m_BcDrawObject.UpdateAnimation(ElapsedTime);

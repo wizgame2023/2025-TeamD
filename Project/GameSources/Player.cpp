@@ -450,14 +450,14 @@ namespace basecross {
 			if (m_DamageIntervalStart)
 			{
 				m_DamageInterval -= elapsedTime;
-				draw->SetDiffuse(Col4(1, 0, 0, 1));
 				if (m_DamageInterval <= 0.0f)
 				{
-					draw->SetDiffuse(Col4(1, 1, 1, 1));
 					m_DamageIntervalStart = false;
 					m_DamageInterval = 0.5f;
 				}
 			}
+
+
 			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
 				m_BoostTime -= elapsedTime;
@@ -544,6 +544,7 @@ namespace basecross {
 	{
 		Character::OnDraw();
 	}
+
 	void Player::Dead() {
 		SetAnim(L"Died");
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
