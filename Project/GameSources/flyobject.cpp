@@ -68,6 +68,18 @@ namespace basecross {
 		{
 			flyPositison(other);
 		}
+		if (other->FindTag(L"Enemy"))
+		{
+			auto enemy = dynamic_pointer_cast<Character>(other);
+			enemy->Damage(4.0f, false);
+			m_Stage->RemoveGameObject<flyobject>(GetThis<flyobject>());
+		}
+		if (other->FindTag(L"Boss"))
+		{
+			auto bossEnemy = dynamic_pointer_cast<BossEnemy>(other);
+			bossEnemy->Damage(5.0f, false);
+			m_Stage->RemoveGameObject<flyobject>(GetThis<flyobject>());
+		}
 	}
 
 }
