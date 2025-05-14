@@ -73,6 +73,8 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
+		m_Effect->RegisterResource(L"Laser", effectPath + L"Laser.efk");
+		m_Effect->RegisterResource(L"EnemyEye", effectPath + L"EnemyEye.efk");
 
 	}
 
@@ -93,7 +95,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<flyobject>(L"flyobject");
@@ -226,6 +228,7 @@ namespace basecross {
 			throw;
 		}
 	}
+
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();

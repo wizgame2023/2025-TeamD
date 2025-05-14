@@ -1709,7 +1709,6 @@ namespace basecross {
 		return AnimData.m_IsAnimeEnd;
 	}
 
-
 	bool SmBaseDraw::UpdateAnimation(float ElapsedTime) {
 		return pImpl->m_SmDrawObject.UpdateAnimation(ElapsedTime);
 

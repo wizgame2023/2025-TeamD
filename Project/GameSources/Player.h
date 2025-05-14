@@ -87,7 +87,9 @@ namespace basecross {
 		const void SetAnim(wstring animname, float time = 0.0f) {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
-				draw->ChangeCurrentAnimation(animname, time);
+				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				else 
+					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
 		}
 	};
 
