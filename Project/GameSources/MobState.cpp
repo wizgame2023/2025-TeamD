@@ -122,6 +122,8 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+		mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+		mob->m_ShotRandomInterval = 1.0f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
 		m_BulletRemain = 0;
 		auto stage = static_pointer_cast<GameStage>(m_Stage);
 		if (stage != nullptr) {
@@ -196,34 +198,33 @@ namespace basecross {
 			return;
 		}
 
+
 		if(m_BulletRemain > 0)
 		{
-			if (m_BulletEffect)
+			if (mob->m_BalletInterval < 0.3f && mob->m_ShotRandomInterval < 0.3f && m_BulletEffect != true)
 			{
-				m_Effect->PlayEffect(L"EnemyEye", Vec3(position.x + forward.x / 2, position.y + 0.5f, position.z + forward.z / 2), 0.0f);
+				m_Effect->PlayEffect(L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
 				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
-				m_Effect->SetEffectSpeed(1.5f);
-				m_BulletEffect = false;
+				m_Effect->SetEffectSpeed(2.0f);
+				m_Effect->SetAllColor(Col4(1.0, 0, 0, 1.0f));
+				m_BulletEffect = true;
 			}
-
-			if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) {
+			else if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) 
+			{
 				m_Effect->PlayEffect(L"Flash", Vec3(position.x + forward.x / 2, position.y + 0.25f, position.z + forward.z / 2), 8.0f);
 				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
 
 
 				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);
-					
+				m_BulletEffect = false;
+
 				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
 
 				mob->m_ShotRandomInterval = 1.0f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
 				m_BulletRemain--;
 				SoundManager::Instance().PlaySE(L"SE_SHOT");
-			}
-			else if(mob->m_BalletInterval < 0.3f && mob->m_ShotRandomInterval <= 0.3f)
-			{
-				m_BulletEffect = true;
 			}
 		}
 		else {
@@ -232,7 +233,7 @@ namespace basecross {
 			if (m_BulletRelord < 0.0f)
 			{
 				m_BulletRemain = mob->m_BulletRemain;
-				m_BulletEffect = true;
+				m_BulletEffect = false;
 				m_BulletRelord = 3.0f;
 			}
 		}

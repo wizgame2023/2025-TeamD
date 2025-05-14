@@ -471,16 +471,9 @@ namespace basecross {
 			}
 			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
 			{
-				m_Attacktime -= elapsedTime;
-				if (m_Attacktime >= 0.0f)
-				{
 					SetAnim(m_AttackAnim);
-				}
-				else {
 					m_PlayerStateNum -= PlayerState::ATTACK;
 					m_PlayerStateNum += PlayerState::NORMAL;
-				}
-
 			}
 			else {
 				m_BoostTime = 0.2f;
@@ -640,14 +633,12 @@ namespace basecross {
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 2.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"BossAttack"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 4.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"Enemy"))
 		{
