@@ -35,8 +35,10 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
-		app->RegisterTexture(L"POSE_TITLE", uiPath + L"Title_Menu.png");
-		app->RegisterTexture(L"POSE_SELECT", uiPath + L"Select_Menu.png");
+		app->RegisterTexture(L"POSE_TITLE", uiPath + L"ResultToTitle.png");
+		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
+		app->RegisterTexture(L"POSE_SELECT", uiPath + L"ResultNextStage.png");
+		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
 		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
 		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
@@ -54,7 +56,10 @@ namespace basecross {
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
 
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu2.png");
 		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"ResultTexts.png");
+		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"ResultTexts2.png");
+		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"ResultScore.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
 		

@@ -168,50 +168,61 @@ namespace basecross {
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"HP_BAR", Vec3(-610.0f, 350, 0), Vec2(600, 700));
 		sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		AddSprite(sprite);
-		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-300.0f, 340, 0), Vec2(75, 100), 2);
+	    auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 340, 0), Vec2(75, 100), 2);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-255.0f, 125, 0), Vec2(50, 100), 1);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 240, 0), Vec2(100, 100), 3);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-190.0f, 125, 0), Vec2(75, 100), 2);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 140, 0), Vec2(100, 100), 3);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 20, 0), Vec2(100, 100), 3);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 40, 0), Vec2(100, 100), 3);
-		AddSprite(number);
+
 		
-		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,340.0f,0.0f), Vec2(33, 100), 1);
+		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,230.0f,0.0f), Vec2(33, 100), 1);
 		score->UpdateNumber(0);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 240.0f, 0.0f), Vec2(33, 100), 1);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
 		score->UpdateNumber(1);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 140.0f, 0.0f), Vec2(33, 100), 1);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 20.0f, 0.0f), Vec2(33, 100), 1);
 		score->UpdateNumber(2);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 40.0f, 0.0f), Vec2(33, 100), 1);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-250.0f, -100.0f, 0.0f), Vec2(33, 100), 1);
 		score->UpdateNumber(3);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-215.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
+		score->UpdateNumber(5);
+		score->SetDiffuse(Col4(0, 0, 0, 1));
+		AddSprite(score);
 
-		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT", Vec3(-600,340,0.0f), Vec2(300, 400));
+
+		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT2", Vec3(-600,250,0.0f), Vec2(300, 350));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
+		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-400, 330, 0.0f), Vec2(200, 100));
+		text->SetDiffuse(Col4(0, 0, 0, 1));
+		AddSprite(text);
+		text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-550, -100, 0.0f), Vec2(200, 100));
+		text->SetDiffuse(Col4(0, 0, 0, 1));
+		AddSprite(text);
+
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-500.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_START", L"POSE_START", Vec3(-300.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_START", L"POSE_START", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
 			[](shared_ptr<ObjectInterface> object) {
 
 			});
 		//セレクト
-		AddButton(L"POSE_SELECT", L"POSE_SELECT", Vec3(-100.0f, -250.0f, 0.0f), Vec2(150, 50),
+		AddButton(L"POSE_SELECT", L"POSE_SELECT", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
