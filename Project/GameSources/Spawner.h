@@ -21,6 +21,7 @@ namespace basecross {
 		virtual  ~Spawner(){}
 
 		virtual void OnCreate()override;
+		virtual void OnAfterCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 
