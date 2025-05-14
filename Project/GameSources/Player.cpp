@@ -376,7 +376,7 @@ namespace basecross {
 		Character::OnCreate();
 		InitHP(20);
 		SetAttackDamage(1.0f);
-		SetSpeed(2.0f);
+		SetSpeed(4.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug

@@ -5,9 +5,48 @@
 
 #pragma once
 #include "stdafx.h"
-
+#include<tuple>
 namespace basecross{
+	enum class JudgeMode {
+		UpperOrder,
+		LowerOrder
+	};
+	template<typename T>
+	struct ScoreBorder {
+		vector<T> m_Border;
+		JudgeMode m_JundgeMode;
+	public:
+		ScoreBorder(vector<T> border) :m_Border(border), m_JundgeMode(JudgeMode::LowerOrder) {
+		}
+		void SetMode(JudgeMode mode) {
+			m_JundgeMode = mode;
+		}
+
+		int CalcRank(T score) {
+			for (int i = 0; i < m_Border.size(); i++) {
+				switch (m_JundgeMode) {
+				case JudgeMode::UpperOrder:
+					if (m_Border[i] > score) {
+						return i;
+					}
+					break;
+				case JudgeMode::LowerOrder:
+					if (m_Border[i] < score) {
+						return i;
+					}
+					break;
+				default:
+					break;
+				}
+			}
+			return m_Border.size();
+		}
+	};
 	class ScoreManager{
+		//ボーダー計算用
+		ScoreBorder<float> m_TimeBorder;
+		ScoreBorder<float> m_DamageBorder;
+		ScoreBorder<int> m_ParryBorder;
 		//スコア計算用
 		float m_Time;
 		float m_Damage;
@@ -20,7 +59,10 @@ namespace basecross{
 			m_Time(0.0f),
 			m_Damage(0.0f),
 			m_EliminateEnemyRate(0.0f), m_MaxEnemyCount(0.0f), m_EliminateEnemyCount(0.0f),
-			m_ParryCount(0){}
+			m_ParryCount(0),
+			m_TimeBorder(ScoreBorder<float>({})), m_DamageBorder(ScoreBorder<float>({})),
+			m_ParryBorder(ScoreBorder<int>({}))
+		{}
 	public:
 		static ScoreManager* Instance() {
 			static ScoreManager instance;
@@ -64,6 +106,16 @@ namespace basecross{
 		float CalculateEliminateEnemyRate() {
 			m_EliminateEnemyRate = (m_EliminateEnemyCount / m_MaxEnemyCount) * 100.0f;
 			return m_EliminateEnemyRate;
+		}
+
+		float GetTimeRank() {
+			return m_TimeBorder.CalcRank(m_Time);
+		}
+		float GetDamageRank() {
+			return m_DamageBorder.CalcRank(m_Damage);
+		}
+		float GetParryRank() {
+			return m_ParryBorder.CalcRank(m_ParryCount);
 		}
 	};
 }

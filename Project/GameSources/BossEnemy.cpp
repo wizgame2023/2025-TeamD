@@ -21,7 +21,7 @@ namespace basecross {
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		SetSpeed(2.0f);
+		SetSpeed(4.0f);
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);

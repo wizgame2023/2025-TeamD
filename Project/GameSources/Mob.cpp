@@ -48,15 +48,18 @@ namespace basecross {
 
 		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
 
-		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(0, GetScale().y / 2.0f, 0));
-		m_HpBar->SetMaxHp(3);
-		m_HpBar->SetCurrentHp(m_HP);
+		
 		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
 
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
 
+	}
+	void Mob::OnAfterCreate() {
+		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(GetScale().x * 0.25f, GetScale().y * 1.5f, 0));
+		m_HpBar->SetMaxHp(3);
+		m_HpBar->SetCurrentHp(m_HP);
 	}
 	void Mob::OnUpdate()
 	{
