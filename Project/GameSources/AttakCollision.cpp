@@ -36,9 +36,10 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
-		auto character = static_pointer_cast<Character>(player);
+		auto character = static_pointer_cast<Player>(player);
 		if (character) {
-			character->Damage(m_Date.m_Damage);
+			character->Damage(true,m_Date.m_Damage);
+			Stop();
 		}
 	}
 	void CrushAttack::OnCollisionEnter(shared_ptr<GameObject>& Other) {
@@ -55,12 +56,6 @@ namespace basecross {
 					Stop();
 				}
 			}
-		}
-		if (Other->FindTag(L"Player"))
-		{
-			auto player = dynamic_pointer_cast<Player>(Other);
-			player->Damage(false, 4.0f);
-			Stop();
 		}
 	}
 	void MachineGun::OnUpdate() {

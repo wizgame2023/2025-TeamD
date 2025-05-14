@@ -25,7 +25,8 @@ namespace basecross {
 		m_DamageInterval(0.5f),
 		m_BoostInterval(1.0F),
 		m_IsGoal(false),
-		m_zoneAnim(1.0f)
+		m_zoneAnim(1.0f),
+		m_HitScale(Vec3(2))
 	{
 	}
 	Player::~Player()
@@ -123,6 +124,7 @@ namespace basecross {
 					SetAnim(L"Zone");
 					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
+					m_HitScale = Vec3(3.0f);
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
@@ -141,6 +143,7 @@ namespace basecross {
 				m_Damage = 1.0f;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
+				m_HitScale = Vec3(2.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
@@ -373,7 +376,7 @@ namespace basecross {
 		Character::OnCreate();
 		InitHP(20);
 		SetAttackDamage(1.0f);
-		SetSpeed(2.0f);
+		SetSpeed(4.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
@@ -471,16 +474,9 @@ namespace basecross {
 			}
 			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
 			{
-				m_Attacktime -= elapsedTime;
-				if (m_Attacktime >= 0.0f)
-				{
 					SetAnim(m_AttackAnim);
-				}
-				else {
 					m_PlayerStateNum -= PlayerState::ATTACK;
 					m_PlayerStateNum += PlayerState::NORMAL;
-				}
-
 			}
 			else {
 				m_BoostTime = 0.2f;
@@ -517,7 +513,7 @@ namespace basecross {
 					m_ParryTime = 30.0f;
 					AimRock(rot);
 					m_Position = GetPosition();
-					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
+					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
 					float rotate = atan2f(forward.x, forward.z);
 
 					m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
@@ -577,12 +573,12 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player) :
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale) :
 		GameObject(stage),
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
-		m_HitScale(Vec3(1.0f)),
+		m_HitScale(scale),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
@@ -640,14 +636,12 @@ namespace basecross {
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 2.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"BossAttack"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 4.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"Enemy"))
 		{
