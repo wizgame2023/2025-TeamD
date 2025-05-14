@@ -13,6 +13,7 @@ namespace basecross {
 		m_HpBar = GetStage()->AddGameObject<Board>(L"HP_BAR", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
 	}
 	void HPBar::OnUpdate() {
+		m_HpBar->SetDrawActive(m_Target->GetDrawActive());
 		m_Transform->SetPosition(m_Target->GetPosition() + m_Offset);
 		float remainingHp = m_CurrentHp / m_MaxHp;
 		auto barTransform = m_HpBar->GetComponent<Transform>();
