@@ -148,6 +148,9 @@ namespace basecross {
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
+
+					m_Enemy->m_Effect->PlayEffect(L"Trampling", m_AttackPosition, 0.0f);
+					m_Enemy->m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 				}
 			}
 			else {

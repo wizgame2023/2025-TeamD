@@ -54,6 +54,8 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
+		m_Effect = m_Stage->GetCreateEffect();
+
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(1.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 1.0f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,4.1f, 5.0f, 2.0f), 0.0f, 4, 1.0f);

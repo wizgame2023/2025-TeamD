@@ -30,6 +30,8 @@ namespace basecross {
 		shared_ptr<MachineGun> m_Gun;
 		shared_ptr<Missile> m_Missile;
 
+		shared_ptr<EffectManeger> m_Effect;
+
 		float m_Stun;
 		bool m_IsStun;
 		Timer m_ComboTimer;
