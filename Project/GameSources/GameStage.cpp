@@ -73,6 +73,8 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
+		m_Effect->RegisterResource(L"Laser", effectPath + L"Laser.efk");
+		m_Effect->RegisterResource(L"EnemyEye", effectPath + L"EnemyEye.efk");
 
 	}
 
@@ -226,6 +228,7 @@ namespace basecross {
 			throw;
 		}
 	}
+
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
