@@ -217,7 +217,10 @@ namespace basecross {
 				}
 			}
 			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
-
+			
+			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f });
+			score.SetMode(JudgeMode::UpperOrder);
+			int rank = score.CalcRank(12.0f);
 		}
 		catch (...) {
 			throw;
