@@ -13,6 +13,7 @@ namespace basecross {
 		void flyPositison(shared_ptr<GameObject>& other);
 		shared_ptr<HitSphere> m_Sphere;
 		float m_ZoneElapsedTime;
+		float m_Speed;
 		bool m_Zone;
 
 	public:
