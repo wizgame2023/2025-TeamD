@@ -64,13 +64,16 @@ namespace basecross {
 		float m_BulletRelord;
 		int m_CurrentBullet;
 		int m_BulletRemain;
+		bool m_BulletEffect;
+		shared_ptr<EffectManeger> m_Effect;
 
 	public:
 		MobAlert(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy),
 			m_Interval(0.2f),
 			m_CurrentBullet(5),
-			m_BulletRelord(3.0f)
+			m_BulletRelord(3.0f),
+			m_BulletEffect(false)
 		{
 		}
 
