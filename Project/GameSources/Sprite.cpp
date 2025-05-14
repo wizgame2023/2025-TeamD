@@ -215,9 +215,12 @@ namespace basecross {
 
 			number->UpdateUV(GetUV(singleDigit));
 			digits /= 10;
+			auto trans = number->GetComponent<Transform>();
+			trans->SetParent(GetThis<NumberSprite>());
 			m_Numbers.push_back(number);
 		}
 		auto trans = GetComponent<Transform>();
+		
 		trans->SetPosition(0, 0, 0);
 	}
 
@@ -250,7 +253,12 @@ namespace basecross {
 			digits /= 10;
 		}
 	}
-
+	void NumberSprite::Destroy() {
+		for (int i = 0; i < m_Numbers.size(); i++) {
+			GetStage()->RemoveGameObject<Sprite>(m_Numbers[i]);
+		}
+		GetStage()->RemoveGameObject<Sprite>(GetThis<NumberSprite>());
+	}
 
 	void SpriteAction::OnCreate() {
 		m_Draw = GetGameObject()->GetComponent<SpriteBaseDraw>();

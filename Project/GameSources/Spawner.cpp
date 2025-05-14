@@ -64,6 +64,7 @@ namespace basecross {
 			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
 				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
 				SoundManager::Instance().PlaySE(L"SE_WAVE");
+				m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 2, m_Legions.size() + 1);
 			}
 		}
 		else if (event->m_MsgStr == L"WaveClear") {

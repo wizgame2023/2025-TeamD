@@ -10,7 +10,7 @@ namespace basecross {
 	void HPBar::OnCreate() {
 		m_Transform = GetComponent<Transform>();
 
-		m_HpBar = GetStage()->AddGameObject<Board>(L"HP_BAR_E", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
+		m_HpBar = GetStage()->AddGameObject<Board>(L"HP_BAR", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
 	}
 	void HPBar::OnUpdate() {
 		m_Transform->SetPosition(m_Target->GetPosition() + m_Offset);

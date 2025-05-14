@@ -263,6 +263,7 @@ namespace basecross{
 				number->SetDrawActive(flag);
 			}
 		}
+		void Destroy();
 	};
 
 	//----------------------------------------------------------

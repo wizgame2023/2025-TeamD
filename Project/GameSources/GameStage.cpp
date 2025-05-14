@@ -36,17 +36,11 @@ namespace basecross {
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
 		app->RegisterTexture(L"POSE_TITLE", uiPath + L"Title_Menu.png");
-		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"POSE_SELECT", uiPath + L"Select_Menu.png");
-		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
 		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
-		//app->RegisterTexture(L"POSE_START_SELECTED", uiPath + L"Restart_Selected.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
-		//app->RegisterTexture(L"POSE_SOUND_SELECTED", uiPath + L"Select_Selected.png");
 		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
-		//app->RegisterTexture(L"SE_VOLUME_SELECTED", uiPath + L"SEVolume_Selected.png");
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
-		//app->RegisterTexture(L"BGM_VOLUME_SELECTED", uiPath + L"BGMVolume_Selected.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
@@ -54,9 +48,7 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
 
-		app->RegisterTexture(L"HP_FRAME", uiPath + L"HpFrame.png");
-		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
-		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
+		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
@@ -69,6 +61,8 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
+
+		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
 		m_Effect = ObjectFactory::Create<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
@@ -134,10 +128,10 @@ namespace basecross {
 		icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
 
-		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
 		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 
-		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
+		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
 		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
 
 		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
