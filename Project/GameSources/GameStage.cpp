@@ -72,6 +72,7 @@ namespace basecross {
 		m_Effect->RegisterResource(L"EnemyEye", effectPath + L"EnemyEye.efk");
 		m_Effect->RegisterResource(L"MissileFlash", effectPath + L"MissileFlash.efk");
 		m_Effect->RegisterResource(L"Trampling", effectPath + L"Trampling.efk");
+		m_Effect->RegisterResource(L"Smoke", effectPath + L"Smoke.efk");
 
 	}
 
