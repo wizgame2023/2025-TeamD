@@ -16,7 +16,7 @@ namespace basecross{
 		vector<T> m_Border;
 		JudgeMode m_JundgeMode;
 	public:
-		ScoreBorder(vector<T> border) :m_Border(border), m_JundgeMode(JudgeMode::LowerOrder) {
+		ScoreBorder(vector<T> border,const JudgeMode& mode = JudgeMode::LowerOrder) :m_Border(border), m_JundgeMode(mode) {
 		}
 		void SetMode(JudgeMode mode) {
 			m_JundgeMode = mode;
