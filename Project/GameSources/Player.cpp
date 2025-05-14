@@ -120,12 +120,13 @@ namespace basecross {
 			{
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
 				{
-					m_PlayerStateNum += PlayerState::ZONE;
-					m_PlayerStateNum -= PlayerState::NORMAL;
+					SetAnim(L"Zone");
 					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
+					m_PlayerStateNum += PlayerState::ZONE;
+					m_PlayerStateNum -= PlayerState::NORMAL;
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -133,22 +134,17 @@ namespace basecross {
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
-			m_zoneAnim -= elapsedTime;
-			if (m_zoneAnim >= 0)
-			{
-				SetAnim(L"Zone");
-			}
 			SetAttackDamage(3.0f);
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 5.0f + m_zoneAnim)
 			{
 				m_Damage = 1.0f;
-				m_PlayerStateNum -= PlayerState::ZONE;
-				m_PlayerStateNum += PlayerState::NORMAL;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
+				m_PlayerStateNum -= PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::NORMAL;
 			}
 		}
 
@@ -302,8 +298,8 @@ namespace basecross {
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
-		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.0f);
-		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.0f);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
@@ -316,7 +312,6 @@ namespace basecross {
 	{
 		if ((m_PlayerStateNum & PlayerState::ZONE) == 1)
 		{
-			SetAnim(L"Zone");
 		}
 	}
 
@@ -347,7 +342,8 @@ namespace basecross {
 	{
 		return m_PlayerStateNum;
 	}
-	float Player::GetEnergy() {
+	float Player::GetEnergy() 
+	{
 		return m_EnergyCharge;
 	}
 	float Player::GetDamage()
@@ -445,6 +441,7 @@ namespace basecross {
 				if (m_ParryTime < 0.0f)
 				{
 					m_ParryJudge = false;
+					m_ParryTime = 30.0f;
 				}
 			}
 			if (m_DamageIntervalStart)
@@ -474,16 +471,9 @@ namespace basecross {
 			}
 			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
 			{
-				m_Attacktime -= elapsedTime;
-				if (m_Attacktime >= 0.0f)
-				{
 					SetAnim(m_AttackAnim);
-				}
-				else {
 					m_PlayerStateNum -= PlayerState::ATTACK;
 					m_PlayerStateNum += PlayerState::NORMAL;
-				}
-
 			}
 			else {
 				m_BoostTime = 0.2f;
@@ -517,6 +507,7 @@ namespace basecross {
 					}
 
 					m_ParryJudge = true;
+					m_ParryTime = 30.0f;
 					AimRock(rot);
 					m_Position = GetPosition();
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
@@ -642,14 +633,12 @@ namespace basecross {
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 2.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"BossAttack"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
 			player->Damage(true, 4.0f);
-			player->OnCollisionEnter(other);
 		}
 		if (other->FindTag(L"Enemy"))
 		{
