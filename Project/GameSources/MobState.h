@@ -82,23 +82,5 @@ namespace basecross {
 		void Execute()override;
 		void Exit()override;
 	};
-
-	//class MobJoinAlert : public EnemyState<Mob>
-	//{
-	//	bool m_IntruderAlert;
-	//	float m_AlertTime;
-	//	vector<Vec3> m_Path;
-
-	//public:
-	//	MobJoinAlert(shared_ptr<Mob>& enemy) :
-	//		EnemyState(enemy)
-	//	{
-	//	}
-
-	//private:
-	//	void Enter() override;
-	//	void Execute()override;
-	//	void Exit()override;
-	//};
 }
 //end basecross
