@@ -117,6 +117,16 @@ namespace basecross{
 		float GetParryRank() {
 			return m_ParryBorder.CalcRank(m_ParryCount);
 		}
+
+		float GetTotal()
+		{
+			return(GetTimeRank() + GetDamageRank() + GetParryRank()) / 3;
+		}
+
+		float GetTotalRank()
+		{
+			return roundf(GetTotal());
+		}
 	};
 }
 //end basecross
