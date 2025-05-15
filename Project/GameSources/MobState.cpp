@@ -203,18 +203,18 @@ namespace basecross {
 		{
 			if (mob->m_BalletInterval < 0.5f && mob->m_ShotRandomInterval < 0.5f && m_BulletEffect != true)
 			{
-				m_Effect->PlayEffect(L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
-				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
-				m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
-				m_Effect->SetEffectSpeed(2.0f);
-				m_Effect->SetAllColor(Col4(1.0, 0, 0, 1.0f));
+				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
+				m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+				m_Effect->SetScale(m_Eyehandle, Vec3(0.1f, 0.1f, 0.1f));
+				m_Effect->SetEffectSpeed(m_Eyehandle, 2.0f);
+				m_Effect->SetAllColor(m_Eyehandle, Col4(1.0, 0, 0, 1.0f));
 				m_BulletEffect = true;
 			}
 			else if (mob->m_BalletInterval <= 0 && mob->m_ShotRandomInterval <= 0) 
 			{
-				m_Effect->PlayEffect(L"Flash", Vec3(position.x + forward.x / 2, position.y + 0.25f, position.z + forward.z / 2), 8.0f);
-				m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
-				m_Effect->SetScale(Vec3(0.1f, 0.1f, 0.1f));
+				m_Effect->PlayEffect(m_Handle, L"Flash", Vec3(position.x + forward.x / 2, position.y + 0.25f, position.z + forward.z / 2), 8.0f);
+				m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+				m_Effect->SetScale(m_Handle, Vec3(0.1f, 0.1f, 0.1f));
 
 
 				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * mob->m_MuzzleOffset, mob->m_BalletSpeed, direction, mob->m_BalletRange);

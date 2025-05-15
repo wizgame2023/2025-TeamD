@@ -6,6 +6,14 @@
 #pragma once
 #include "stdafx.h"
 
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
+
+#pragma comment(lib, "Effekseer.lib" )
+#pragma comment(lib, "EffekseerRendererDX11.lib" )
+
+
 namespace basecross {
 	class Character;
 	class TargetBoard;
@@ -35,7 +43,8 @@ namespace basecross {
 		Vec3 m_BulletDire;
 		Vec3 m_EffectVec;
 		shared_ptr<EffectManeger> m_Effect;
-
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_ParryHandle;
 		shared_ptr<TargetBoard> m_TargetBoard;
 		wstring m_AttackAnim = L"Attack";
 

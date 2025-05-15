@@ -12,6 +12,8 @@ namespace basecross {
 
 	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
 		Character(stage, position, rotation, scale),
+		m_ParryHandle(-1),
+		m_Handle(-1),
 		m_MoveSpeed(6.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
@@ -269,9 +271,9 @@ namespace basecross {
 		if (ParrySecond < parryTime)
 		{
 			m_EnergyCharge += 0.2;
-			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(Vec3(0.1f));
-			m_Effect->SetEffectSpeed(2.0f);
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 			return 0;
@@ -279,9 +281,9 @@ namespace basecross {
 		else if (ParrySecond < parryTime / 2)
 		{
 			m_EnergyCharge += 0.1;
-			m_Effect->PlayEffect(L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(Vec3(0.1f));
-			m_Effect->SetEffectSpeed(2.0f);
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 			ScoreManager::Instance()->AddDamage(1);
 			return damage / 2;
 		}
@@ -516,9 +518,9 @@ namespace basecross {
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
 					float rotate = atan2f(forward.x, forward.z);
 
-					m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 8.0f);
-					m_Effect->SetRotation(Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
+					m_Effect->PlayEffect(m_Handle, L"panchi", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+					m_Effect->SetScale(m_Handle, Vec3(0.2f, 0.2f, 0.2f));
 
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
