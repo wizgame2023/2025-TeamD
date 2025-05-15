@@ -25,30 +25,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->AddExcludeCollisionTag(L"Mob");
 
-		//描画設定
-		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"MOB");
-
-		Mat4x4 meshMat;
-		meshMat.affineTransformation(
-			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.0f, 0.0f)
-		);
-		ptrDraw->SetMeshToTransformMatrix(meshMat);
-
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
-
-		auto ptrGra = AddComponent<Gravity>();
-		auto shadowPtr = AddComponent<Shadowmap>();
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
