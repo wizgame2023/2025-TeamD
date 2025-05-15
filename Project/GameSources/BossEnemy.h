@@ -40,6 +40,8 @@ namespace basecross {
 		Vec3 m_StartPosition;
 
 		Timer m_DamageEffectTime;
+
+		wstring m_CurrentAnimationKey;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -50,6 +52,11 @@ namespace basecross {
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
+		virtual void Move(const Vec3& direction)override;
+		void AddAnimation();
+		void SetAnimation(const wstring& key);
+		bool GetAnimationFinish();
+		wstring GetCurrentAnimationKey();
 
 		void AddStun(float stun);
 		

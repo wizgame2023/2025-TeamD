@@ -134,7 +134,7 @@ namespace basecross {
 		}
 
 		float t = dot(pointToStart, direction) / abLengthSquared;
-		t = max(0.0, min(1.0, t));
+		t = static_cast<float>(max(0.0, min(1.0, t)));
 
 		Vec3 closestPoint = { line.m_Start.x + t * direction.x, line.m_Start.y + t * direction.y,line.m_Start.z + t * direction.z };
 		return length(point - closestPoint);

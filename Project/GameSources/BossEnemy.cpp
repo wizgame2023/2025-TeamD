@@ -18,10 +18,44 @@ namespace basecross {
 	BossEnemy::~BossEnemy()
 	{
 	}
+	void BossEnemy::AddAnimation() {
+		int fps = 60.0f;
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		draw->AddAnimation(L"Idle", 0, 1, true, fps);
+		draw->AddAnimation(L"Walk", 40, 120, true, fps * 1.75f);
+		draw->AddAnimation(L"Stan_First", 545, 56, false, fps);
+		draw->AddAnimation(L"Stan", 601, 19, true, fps);
+		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps);
+		//draw->AddAnimation(L"Crush", 0, 60, false, fps);
+		draw->AddAnimation(L"Missile_First", 971, 9, false, fps);
+		draw->AddAnimation(L"Missile", 981, 10, true, fps);
+		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps);
+	}
+	void BossEnemy::SetAnimation(const wstring& key) {
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		
+		if (draw->GetCurrentAnimation() != key)
+			if (draw->GetAnimeLoop()) {
+				draw->ChangeCurrentAnimation(key);
+			}
+			else {
+				if (draw->IsTargetAnimeEnd()) {
+					draw->ChangeCurrentAnimation(key);
+				}
+			}
+				 
+	}
+	bool BossEnemy::GetAnimationFinish() {
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		return draw->IsTargetAnimeEnd();
+	}
+	wstring BossEnemy::GetCurrentAnimationKey() {
+		return GetComponent<BcPNTBoneModelDraw>()->GetCurrentAnimation();
+	}
 	void BossEnemy::OnCreate()
 	{
 		Enemy::OnCreate();
-		SetSpeed(4.0f);
+		SetSpeed(3.0f);
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			SetIntruder(player);
@@ -31,9 +65,11 @@ namespace basecross {
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"MOB");
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		ptrDraw->SetMeshResource(L"BOSS");
 
+		AddAnimation();
+		SetAnimation(L"Idle");
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.6f, 0.6f, 0.6f), //(.1f, .1f, .1f),
@@ -58,7 +94,9 @@ namespace basecross {
 
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(1.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 1.0f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,4.1f, 5.0f, 2.0f), 0.0f, 4, 1.0f);
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,1.7f, 5.0f, 2.0f), 0.0f, 6, 0.25f);
+		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0));
+		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0));
 	}
 	
 
@@ -66,20 +104,20 @@ namespace basecross {
 	{
 		Enemy::OnUpdate();
 		float elapsed = App::GetApp()->GetElapsedTime();
-
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		draw->UpdateAnimation(elapsed);
 		if (!m_IsStun) {
 			m_currentState->Execute();
-			auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+			
 			if (m_DamageEffectTime.UpdateTimer()) {
-				ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+				draw->SetDiffuse(Col4(1, 1, 1, 1));
 			}
 			else {
-				ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
+				draw->SetDiffuse(Col4(1, 0, 0, 1));
 			}
 		}
 		else {
-			auto ptrDraw = GetComponent<BcPNTStaticDraw>();
-			ptrDraw->SetDiffuse(Col4(0, 0, 0, 1));
+			draw->SetDiffuse(Col4(0, 0, 0, 1));
 			m_Stun -= elapsed / 2.0f;
 			if (m_Stun < 0) {
 				m_Stun = 0;
@@ -122,7 +160,10 @@ namespace basecross {
 		Enemy::Damage(damage, isSound);
 		m_DamageEffectTime.SetTime(0.2f, true);
 	}
-
+	void BossEnemy::Move(const Vec3& direction) {
+		Character::Move(direction);
+		SetAnimation(L"Walk");
+	}
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
 
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position, const shared_ptr<Enemy>& enemy, const float& direction) :

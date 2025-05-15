@@ -79,8 +79,14 @@ namespace basecross {
 
 		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer()) {
 			SoundManager::Instance().PlaySE(L"SE_MISSILE");
-			m_Stage->AddGameObject<MissileBullet>(GetPosition(), Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
+			Vec3 position = GetPosition();
+			position += m_MuzzlePositions[m_MuzzleIndex];
+			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
 			m_MissileCount--;
+			m_MuzzleIndex++;
+			if (m_MuzzlePositions.size() <= m_MuzzleIndex) {
+				m_MuzzleIndex = 0;
+			}
 			m_MissileTimer.Reset();
 		}
 	}
@@ -88,7 +94,7 @@ namespace basecross {
 		Attack::Play(position);
 
 		m_MissileCount = m_MissileMaxCount;
-		m_MissileTimer.Reset();
+		//m_MissileTimer.Reset();
 	}
 }
 //end basecross
