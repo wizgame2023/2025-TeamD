@@ -33,24 +33,6 @@ namespace basecross {
 		draw->SetDiffuse(Col4(1, 0, 0, 1));
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
-		/*auto navi = AddComponent<Navigate>();
-
-		if (pointers.size() != 0) {
-
-			for (auto& point : pointers)
-			{
-				auto shObj = point.lock();
-				m_PointData.push_back(shObj);
-			}
-			int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
-			m_NearPoint = m_PointData[rnd];
-		}*/
-
-		//m_SearchFan = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", 36, 90.0f, 10.0f);
-
-		
-		//m_HpFrame = m_Stage->AddGameObject<Board>(L"HP_FRAME", Vec3(1, 1, 5), Vec3(1.0f, 0.1f, 1.0f), true);
-
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
@@ -123,7 +105,7 @@ namespace basecross {
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"HitJudge") && m_IntervalStart)
+		if ((other->FindTag(L"Bullet") ||other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;

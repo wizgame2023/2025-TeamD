@@ -225,6 +225,10 @@ namespace basecross {
 			KnockBack();
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
+		if (other->FindTag(L"Bullet"))
+		{
+			KnockBack();
+		}
 	}
 
 	//--------------------------------------------------------------------------------------

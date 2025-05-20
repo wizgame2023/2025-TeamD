@@ -66,6 +66,7 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
+		virtual void OnDestroy()override;
 
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
