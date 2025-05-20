@@ -57,6 +57,11 @@ namespace basecross {
 		m_renderer->EndRendering();
 	}
 
+	void EffectManeger::OnDestroy()
+	{
+		m_Manager->Release();
+	}
+
 	void EffectManeger::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
 	{
 		m_Manager->SetSpeed(handle, speed);

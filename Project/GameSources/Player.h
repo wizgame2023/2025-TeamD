@@ -66,7 +66,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnDraw();
 		virtual void Dead();
-		virtual void Damage(bool parry,  float damage);
+		virtual bool Damage(bool parry,  float damage);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;
@@ -103,7 +103,7 @@ namespace basecross {
 		}
 	};
 
-	class HitSphere : public GameObject
+	class HitSphere : public Object
 	{
 		Vec3 m_HitPosition;
 		Vec3 m_HitRotation;
@@ -111,11 +111,14 @@ namespace basecross {
 		float m_FlyingTime;
 		float m_TotalTime;
 		float m_Speed;
+		float m_ZoneElapsedTime;
+		shared_ptr<EffectManeger> m_Effect;
+		Effekseer::Handle m_Handle;
 
 		shared_ptr<GameObject> m_Player;
 	public:
 		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale);
-		~HitSphere() {};
+		~HitSphere();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);

@@ -22,6 +22,7 @@ namespace basecross {
 
 		shared_ptr<BulletLine> m_Line;
 		float m_LineLength;
+		bool m_bulletPally;
 	public:
 		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
 		~Bullet();

@@ -126,7 +126,7 @@ namespace basecross {
 					SetAnim(L"Zone");
 					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
-					m_HitScale = Vec3(3.0f);
+					m_HitScale = Vec3(4.0f);
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
@@ -145,14 +145,13 @@ namespace basecross {
 				m_Damage = 1.0f;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
-				m_HitScale = Vec3(2.0f);
+				m_HitScale = Vec3(2.5f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
 			}
 		}
-
 	}
 
 	Vec3 Player::SearchRange()
@@ -168,31 +167,13 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance / 3.0f)
+			if ((position - targetEnemy).length() < searchDistance)
 			{
 				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
-				}
-				else {
-					return Vec3();
-				}
-			}
-			else if (targetBulletVector != nullptr)
-			{
-				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
-				if ((position - targetbullert).length() < searchDistance)
-				{
-					if (IsWithinDetectionRange(forward, targetbullert - position, 90.0)) {
-						//この方向に少し動く、動いている間はコントローラで移動できない
-						Vec3 rot = RotateTowardsTarget(position, targetbullert);
-						return rot;
-					}
-					else {
-						return Vec3();
-					}
 				}
 				else {
 					return Vec3();
@@ -268,7 +249,7 @@ namespace basecross {
 	{
 		float parryTime = 30.0f;
 		Vec3 forward = GetForward();
-		if (ParrySecond < parryTime)
+		if (ParrySecond > 15)
 		{
 			m_EnergyCharge += 0.2;
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
@@ -278,14 +259,15 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 			return 0;
 		}
-		else if (ParrySecond < parryTime / 2)
+		else if (ParrySecond <= 15 && ParrySecond > 5)
 		{
 			m_EnergyCharge += 0.1;
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
-			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-			ScoreManager::Instance()->AddDamage(1);
-			return damage / 2;
+			//m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
+			//m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
+			//m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+			ScoreManager::Instance()->AddParryCount();
+			SoundManager::Instance().PlaySE(L"SE_GUARD");
+			return 0;
 		}
 		else
 		{
@@ -436,7 +418,6 @@ namespace basecross {
 		if (m_IsGoal == false)
 		{
 			ZoneActivation();
-			PlayAnimation();
 			//Debug();
 			Vec3 forward = GetForward();
 
@@ -459,6 +440,7 @@ namespace basecross {
 				}
 			}
 
+			Vec3 rot = SearchRange();
 
 			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
@@ -487,8 +469,6 @@ namespace basecross {
 				m_BoostInterval -= elapsedTime;
 				m_AttackInterval -= elapsedTime;
 				MovePlayer(6.0f);
-				Vec3 rot = SearchRange();
-
 				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 				{
 					m_BoostAngle = GetForward();
@@ -518,9 +498,9 @@ namespace basecross {
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
 					float rotate = atan2f(forward.x, forward.z);
 
-					m_Effect->PlayEffect(m_Handle, L"panchi", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
 					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(m_Handle, Vec3(0.2f, 0.2f, 0.2f));
+					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.2f));
 
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
@@ -531,7 +511,13 @@ namespace basecross {
 		}
 		else 
 		{
-			SetAnim(L"Clear");
+			if (m_HP <= 0)
+			{
+				SetAnim(L"Died");
+			}
+			else {
+				SetAnim(L"Clear");
+			}
 		}
 
 	}
@@ -542,11 +528,10 @@ namespace basecross {
 	}
 
 	void Player::Dead() {
-		SetAnim(L"Died");
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
-	void Player::Damage(bool parry, float damage)
+	bool Player::Damage(bool parry, float damage)
 	{
 		bool isPinch = false, isBeforePinch = true;
 		if (m_DamageIntervalStart == false)
@@ -557,12 +542,20 @@ namespace basecross {
 			if (m_ParryJudge)
 			{
 				float parryDamage = Parry(damage, m_ParryTime);
+				if (parryDamage == 0)
+				{
+					parry = m_ParryJudge;
+					return true;
+				}
 				Character::Damage(parryDamage, true);
-				m_ParryTime = 30.0f;
+				m_ParryTime = false;
+				return false;
 			}
 			else {
 				SetAnim(L"Nock");
 				Character::Damage(damage, true);
+				m_ParryTime = false;
+				return false;
 			}
 			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
@@ -576,7 +569,7 @@ namespace basecross {
 	}
 
 	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale) :
-		GameObject(stage),
+		Object(stage),
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
@@ -585,6 +578,11 @@ namespace basecross {
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
 	{}
+
+	HitSphere::~HitSphere()
+	{
+		m_Effect->StopEffect(m_Handle);
+	}
 
 	void HitSphere::OnCreate()
 	{
@@ -595,7 +593,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
@@ -604,6 +602,18 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
+
+		auto stage = static_pointer_cast<GameStage>(GetStage());
+		if (stage != nullptr) {
+			m_Effect = stage->GetCreateEffect();
+		}
+		else {
+			m_Effect = nullptr;
+		}
+		m_Effect->PlayEffect(m_Handle, L"Panchi", ptr->GetPosition(), 20.0f);
+		float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
+		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
+		m_Effect->SetScale(m_Handle, m_HitScale * 0.5f);
 	}
 
 	void HitSphere::OnUpdate()
@@ -627,24 +637,13 @@ namespace basecross {
 		else {
 			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
+		m_Effect->SetLocation(m_Handle, hitPosition);
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
 	}
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
-		{
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
-			player->Damage(true, 2.0f);
-		}
-		if (other->FindTag(L"BossAttack"))
-		{
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->SetParryPosition(other->GetComponent<Transform>()->GetPosition());
-			player->Damage(true, 4.0f);
-		}
 		if (other->FindTag(L"Enemy"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");

@@ -201,7 +201,7 @@ namespace basecross {
 
 		if(m_BulletRemain > 0)
 		{
-			if (mob->m_BalletInterval < 0.5f && mob->m_ShotRandomInterval < 0.5f && m_BulletEffect != true)
+			if (mob->m_BalletInterval < 0.3f && mob->m_ShotRandomInterval < 0.3f && m_BulletEffect != true)
 			{
 				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
 				m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
@@ -232,6 +232,8 @@ namespace basecross {
 			m_BulletRelord -= elapsedTime;
 			if (m_BulletRelord < 0.0f)
 			{
+				mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+				mob->m_ShotRandomInterval = 1.0f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
 				m_BulletRemain = mob->m_BulletRemain;
 				m_BulletEffect = false;
 				m_BulletRelord = 3.0f;
