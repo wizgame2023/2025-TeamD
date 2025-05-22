@@ -126,7 +126,7 @@ namespace basecross {
 					SetAnim(L"Zone");
 					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
-					m_HitScale = Vec3(4.0f);
+					m_HitScale = Vec3(3.0f);
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
@@ -145,7 +145,7 @@ namespace basecross {
 				m_Damage = 1.0f;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
-				m_HitScale = Vec3(2.5f);
+				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
@@ -427,7 +427,7 @@ namespace basecross {
 				if (m_ParryTime < 0.0f)
 				{
 					m_ParryJudge = false;
-					m_ParryTime = 30.0f;
+					m_ParryTime = 15.0f;
 				}
 			}
 			if (m_DamageIntervalStart)
@@ -458,9 +458,17 @@ namespace basecross {
 			}
 			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
 			{
+				m_Attacktime -= elapsedTime;
+				if (m_Attacktime >= 0.0f)
+				{
 					SetAnim(m_AttackAnim);
+
+				}
+				else
+				{
 					m_PlayerStateNum -= PlayerState::ATTACK;
 					m_PlayerStateNum += PlayerState::NORMAL;
+				}
 			}
 			else {
 				m_BoostTime = 0.2f;
@@ -474,6 +482,10 @@ namespace basecross {
 					m_BoostAngle = GetForward();
 					if (m_BoostInterval <= 0.0f)
 					{
+						float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
+						m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
+						m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
+
 						m_PlayerStateNum -= PlayerState::NORMAL;
 						m_PlayerStateNum += PlayerState::DASH;
 						SoundManager::Instance().PlaySE(L"SE_RUN");
@@ -492,7 +504,7 @@ namespace basecross {
 					}
 
 					m_ParryJudge = true;
-					m_ParryTime = 30.0f;
+					m_ParryTime = 15.0f;
 					AimRock(rot);
 					m_Position = GetPosition();
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
@@ -541,8 +553,9 @@ namespace basecross {
 			}
 			if (m_ParryJudge)
 			{
+				Vec3 rot = SearchRange();
 				float parryDamage = Parry(damage, m_ParryTime);
-				if (parryDamage == 0)
+				if (parryDamage == 0 && rot != Vec3())
 				{
 					parry = m_ParryJudge;
 					return true;
@@ -647,9 +660,13 @@ namespace basecross {
 		if (other->FindTag(L"Enemy"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->SetCharge(0.1f);
 			auto enemy = dynamic_pointer_cast<Character>(other);
+			float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
+			player->SetCharge(0.1f);
 			enemy->Damage(player->GetDamage(), false);
+
+			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
+			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
 		}
 	}
 
