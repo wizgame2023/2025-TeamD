@@ -1,7 +1,7 @@
 
 /*!
 @file Scene.cpp
-@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
+@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
 */
 
 #include "stdafx.h"
@@ -14,19 +14,15 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
 
-		//ãƒ¢ãƒ‡ãƒ«é–¢ä¿‚
-		//auto playerModel = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
+		//ƒ‚ƒfƒ‹ŠÖŒW
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
-
-		//auto modelGround = MeshResource::CreateStaticModelMesh(modelPath, L"Ground.bmf");
-
+		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
+		app->RegisterResource(L"BOSS", modelMesh);
 		app->RegisterResource(L"OBJECT", modelBuild);
 		app->RegisterResource(L"MOB", modelEnemy);
-		//app->RegisterResource(L"PLAYER", playerModel);
-		//app->RegisterResource(L"GROUND", modelGround);
 	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
@@ -36,8 +32,8 @@ namespace basecross {
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
 			SetClearColor(Col);
 
-			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
-			//ã“ã‚Œã«ã‚ˆã‚Šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
+			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
+			//‚±‚ê‚É‚æ‚èŠeƒXƒe[ƒW‚âƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
 
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
@@ -57,17 +53,17 @@ namespace basecross {
 			ResetActiveStage<TitleStage>();
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
-			//æ¬¡ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			//Ÿ‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
 			ResetActiveStage<GameStage>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"waveTest.csv");
+			ResetActiveStage<GameStageM>(L"testStage01.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
 			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
-			//æœ€åˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			//Å‰‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
 			ResetActiveStage<GameStageS>(L"TestMapSatou.csv");
 		}
 

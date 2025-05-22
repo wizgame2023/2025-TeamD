@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -29,10 +29,33 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-		auto draw = GetComponent<BcPNTStaticDraw>();
-		draw->SetDiffuse(Col4(1, 0, 0, 1));
-		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
-		auto pointers = pointerGroup->GetGroupVector();
+		/*auto draw = GetComponent<BcPNTStaticDraw>();
+		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
+		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
+
+		//•`‰æÝ’è
+		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
+
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"MOB");
+
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -1.0f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		//ptrDraw->SetOwnShadowActive(true);
+
+		auto ptrGra = AddComponent<Gravity>();
+		auto shadowPtr = AddComponent<Shadowmap>();
+		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
@@ -162,4 +185,3 @@ namespace basecross {
 		SetRotation(Vec3(0, rotate, 0));
 	}
 }
-//end basecross

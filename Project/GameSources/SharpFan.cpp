@@ -52,7 +52,7 @@ namespace basecross {
 		m_Indices.reserve(m_VerticesSize - 1 * baseIndices.size());
 		for (int i = 0; i < m_VerticesSize - 1; i++)
 		{
-			//baseIndicesã®æ•°ãƒ«ãƒ¼ãƒ—
+			//baseIndices‚Ì”ƒ‹[ƒv
 			for (auto baseIndex : baseIndices)
 			{
 				m_Indices.push_back(baseIndex + (2 * i));

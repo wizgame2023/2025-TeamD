@@ -206,6 +206,10 @@ namespace basecross {
 		}
 	}
 
+	void EffectManeger::SetRotation(Effekseer::Handle handle,const bsm::Vec3& Location, const float angle)
+	{
+		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
+	}
 
 	void EffectManeger::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
 	{
@@ -215,7 +219,6 @@ namespace basecross {
 	void EffectManeger::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		m_Manager->SetLocation(handle, Location.x, Location.y, Location.z);
 	}
-
 	void EffectManeger::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
 	{
 		m_Manager->SetScale(handle, Scale.x, Scale.y, Scale.z);
@@ -228,6 +231,11 @@ namespace basecross {
 	}
 
 	void EffectManeger::StopEffect(Effekseer::Handle& handle) {
+		if (handle != -1) {
+			m_Manager->StopEffect(handle);
+		}
+	}
+	void EffectManeger::StopEffect(Effekseer::Handle handle) {
 		if (handle != -1) {
 			m_Manager->StopEffect(handle);
 		}

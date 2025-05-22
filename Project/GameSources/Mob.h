@@ -1,6 +1,6 @@
 /*!
 @file Enemy.h
-@brief â€œGâ€šÃˆâ€šÃ‡
+@brief
 */
 
 #pragma once
@@ -45,8 +45,8 @@ namespace basecross {
 		vector<shared_ptr <GameObject>> m_PointData;
 		shared_ptr<GameObject> m_BeforPoint;
 	
-		unique_ptr<EnemyState<Mob>> m_currentState;  //ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
-		unique_ptr<EnemyState<Mob>> m_nextState;     //æ¬¡ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
+		unique_ptr<EnemyState<Mob>> m_currentState;  //Œ»İ‚ÌƒXƒe[ƒg
+		unique_ptr<EnemyState<Mob>> m_nextState;     //Ÿ‚ÌƒXƒe[ƒg
 
 	public:
 		Mob(const shared_ptr<Stage>& stage);

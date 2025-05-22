@@ -1,18 +1,20 @@
 /*!
 @file Scene.cpp
-@brief 繧ｷ繝ｼ繝ｳ螳滉ｽ
+@brief
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
+	
 	void ResultCamera::OnCreate() {
 		SetEye(m_Eye);
 		SetAt(m_At);
 		m_Direction = m_Eye - m_At;
 		m_Direction = m_Direction.normalize();
 	}
+
 	void ResultCamera::OnUpdate() {
 		float elpased = App::GetApp()->GetElapsedTime();
 		Vec3 at = GetAt();

@@ -9,7 +9,7 @@
 namespace basecross {
 
 	void TargetBoard::OnCreate() {
-		m_Board = GetStage()->AddGameObject<Board>(L"TARGET", Vec3(), Vec3(0.2f));
+		m_Board = GetStage()->AddGameObject<Board>(L"TARGET", Vec3(), Vec3(1.0f));
 	}
 	void TargetBoard::OnUpdate() {
 		if (m_Target == nullptr || !m_Target->GetDrawActive()) {

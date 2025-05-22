@@ -102,7 +102,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		builder->Register<Mob>(L"enemy");
+		//builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<flyobject>(L"flyobject");
@@ -230,8 +230,7 @@ namespace basecross {
 			}
 			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 			
-			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f });
-			score.SetMode(JudgeMode::UpperOrder);
+			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
 			int rank = score.CalcRank(12.0f);
 		}
 		catch (...) {

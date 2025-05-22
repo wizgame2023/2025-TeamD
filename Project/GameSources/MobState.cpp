@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -228,7 +228,7 @@ namespace basecross {
 			}
 		}
 		else {
-			//リロード
+			//�����[�h
 			m_BulletRelord -= elapsedTime;
 			if (m_BulletRelord < 0.0f)
 			{
@@ -246,5 +246,3 @@ namespace basecross {
 	}
 
 }
-
-//end basecross

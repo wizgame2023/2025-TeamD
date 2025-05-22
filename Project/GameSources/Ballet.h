@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief 
 */
 
 #pragma once
