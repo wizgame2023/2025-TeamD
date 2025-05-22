@@ -11,7 +11,8 @@ namespace basecross {
 
 	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
 		Object(stage,position,Vec3(0),Vec3(0.1f)), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
-		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3()), m_LineLength(5.0f)
+		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3()), m_LineLength(5.0f), 
+		m_bulletPally(false)
 	{
 	}
 	Bullet::~Bullet() {}
@@ -61,23 +62,31 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (other->FindTag(L"HitJudge")) {
-			other->OnCollisionEnter(GetThis<GameObject>());
-			GetStage()->RemoveGameObject<LineCube>(m_Line);
-			Delete();
-		}
-		else if (other->FindTag(L"Player"))
+		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
-			player->Damage(false, 2.0f);
-			GetStage()->RemoveGameObject<LineCube>(m_Line);
-			Delete();
+			m_bulletPally = player->Damage(false, 2.0f);
+			if (m_bulletPally)
+			{
+				m_Direction = -m_Direction;
+			}
+			else {
+				GetStage()->RemoveGameObject<LineCube>(m_Line);
+				Delete();
+			}
 		}
 		else if (other->FindTag(L"Citizen"))
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto citizen = dynamic_pointer_cast<Character>(other);
 			citizen->Damage(1.0f, false);
+			Delete();
+		}
+		else if (other->FindTag(L"Enemy")) 
+		{
+			GetStage()->RemoveGameObject<LineCube>(m_Line);
+			auto enemy = dynamic_pointer_cast<Enemy>(other);
+			enemy->Damage(1.0f, false);
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))

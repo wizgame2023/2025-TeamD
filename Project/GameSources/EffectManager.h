@@ -6,9 +6,6 @@
 #pragma once
 #include "stdafx.h"
 
-#pragma once
-
-#include "stdafx.h"
 
 #include <Effekseer.h>
 #include <EffekseerRendererDX11.h>
@@ -25,7 +22,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class EffectManeger : public ObjectInterface, public ShapeInterface {
 		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
-		Effekseer::Handle m_handle;
+		Effekseer::Handle handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
 		float m_TotalTime;
@@ -69,12 +66,13 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
+		virtual void OnDestroy()override;
 
-		void SetEffectSpeed(const float& speed);
-		void SetEffectPause(const bool& pause);
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
-		void PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);
+		void SetEffectSpeed(Effekseer::Handle& handle, const float& speed);
+		void SetEffectPause(const bool& pause);
+		void PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme);
 		void CreateEffectInterface();
 		void RegisterResource(const wstring& Key, const  wstring& FileName);
 		Effekseer::ManagerRef GetEffectInterface()
@@ -83,12 +81,12 @@ namespace basecross {
 		}
 
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
-		void AddLocation(const bsm::Vec3& Location);
-		void SetLocation(const bsm::Vec3& Location);//位置
-		void SetRotation(const bsm::Vec3& Rotation, const float angle);//回転(クォータニオン)
-		void SetScale(const bsm::Vec3& Scale);
-		void SetAllColor(const bsm::Col4 color);
-		void StopEffect();
+		void AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
+		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);//位置
+		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);//回転(クォータニオン)
+		void SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale);
+		void SetAllColor(Effekseer::Handle& handle, const bsm::Col4 color);
+		void StopEffect(Effekseer::Handle& handle);
 
 	};
 }

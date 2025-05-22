@@ -13,7 +13,6 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	EffectManeger::EffectManeger() :
 		ObjectInterface(),
-		m_handle(-1),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
@@ -27,6 +26,11 @@ namespace basecross {
 
 	void EffectManeger::OnCreate() {
 		CreateEffectInterface();
+
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring effectPath = mediaPath + L"Effekt/";
+		RegisterResource(L"panchi", effectPath + L"panchi.efk");
 	}
 
 	void EffectManeger::OnUpdate()
@@ -37,6 +41,7 @@ namespace basecross {
 		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
+
 
 	}
 
@@ -52,12 +57,17 @@ namespace basecross {
 		m_renderer->EndRendering();
 	}
 
-	void EffectManeger::SetEffectSpeed(const float& speed)
+	void EffectManeger::OnDestroy()
 	{
-		m_Manager->SetSpeed(m_handle, speed);
+		m_Manager->Release();
 	}
 
-	void EffectManeger::SetEffectPause(const bool& pause)
+	void EffectManeger::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
+	{
+		m_Manager->SetSpeed(handle, speed);
+	}
+
+	void EffectManeger::SetEffectPause( const bool& pause)
 	{
 		m_Manager->SetPausedToAllEffects(pause);
 	}
@@ -80,11 +90,11 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	void EffectManeger::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme)
+	void EffectManeger::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
 		int32_t Freme = freme;
 		m_Effect = GetEffectResource(Key);
-		m_handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
+		handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
 	void EffectManeger::CreateEffectInterface()
@@ -190,36 +200,36 @@ namespace basecross {
 
 	}
 
-	void EffectManeger::AddLocation(const bsm::Vec3& Location) {
-		if (m_handle != -1) {
-			m_Manager->AddLocation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
+	void EffectManeger::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+		if (handle != -1) {
+			m_Manager->AddLocation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
 		}
 	}
 
 
-	void EffectManeger::SetRotation(const bsm::Vec3& Location, const float angle)
+	void EffectManeger::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
 	{
-		m_Manager->SetRotation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
+		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EffectManeger::SetLocation(const bsm::Vec3& Location) {
-		m_Manager->SetLocation(m_handle, Location.x, Location.y, Location.z);
+	void EffectManeger::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+		m_Manager->SetLocation(handle, Location.x, Location.y, Location.z);
 	}
 
-	void EffectManeger::SetScale(const bsm::Vec3& Scale)
+	void EffectManeger::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
 	{
-		m_Manager->SetScale(m_handle, Scale.x, Scale.y, Scale.z);
+		m_Manager->SetScale(handle, Scale.x, Scale.y, Scale.z);
 	}
 
-	void EffectManeger::SetAllColor(const bsm::Col4 Color)
+	void EffectManeger::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
 	{
 		auto color = Col4(Color) * 255;
-		m_Manager->SetAllColor(m_handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
+		m_Manager->SetAllColor(handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
 	}
 
-	void EffectManeger::StopEffect() {
-		if (m_handle != -1) {
-			m_Manager->StopEffect(m_handle);
+	void EffectManeger::StopEffect(Effekseer::Handle& handle) {
+		if (handle != -1) {
+			m_Manager->StopEffect(handle);
 		}
 	}
 

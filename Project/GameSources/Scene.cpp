@@ -42,7 +42,7 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
       
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
     }
 		catch (...) {
 			throw;
