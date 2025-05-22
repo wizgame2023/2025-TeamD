@@ -56,6 +56,9 @@ namespace basecross {
 		if (event->m_MsgStr == L"ToTitleStage") {
 			ResetActiveStage<TitleStage>();
 		}
+		else if (event->m_MsgStr == L"ToSelectStage") {
+			ResetActiveStage<SelectStage>();
+		}
 		else if (event->m_MsgStr == L"ToGameStage") {
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(L"level.csv");
