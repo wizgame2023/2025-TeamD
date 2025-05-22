@@ -26,6 +26,7 @@ namespace basecross {
 		draw->AddAnimation(L"Stan_First", 545, 56, false, fps * 0.6f);
 		draw->AddAnimation(L"Stan", 601, 19, true, fps);
 		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
+		draw->AddAnimation(L"Blow", 545, 10, false, fps * 0.5f);
 		//draw->AddAnimation(L"Crush", 0, 60, false, fps);
 		draw->AddAnimation(L"Missile_First", 971, 9, false, fps);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
@@ -107,7 +108,12 @@ namespace basecross {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
 		if (!m_IsStun) {
-			m_currentState->Execute();
+			if (GetCurrentAnimationKey() != L"Blow") {
+				m_currentState->Execute();
+			}
+			else if (GetAnimationFinish()) {
+				SetAnimation(L"Idle");
+			}
 			
 			if (m_DamageEffectTime.UpdateTimer()) {
 				draw->SetDiffuse(Col4(1, 1, 1, 1));
@@ -121,9 +127,9 @@ namespace basecross {
 			if (GetAnimationFinish() && GetCurrentAnimationKey() == L"Stan_First") {
 				SetAnimation(L"Stan");
 				
-				m_EffectHandle = effect->PlayEffect(L"Smoke", GetPosition(), 0.0f);
-				effect->SetScale(Vec3(0.2f));
-				effect->SetEffectSpeed(0.5f);
+				effect->PlayEffect(m_EffectHandle,L"Smoke", GetPosition(), 0.0f);
+				effect->SetScale(m_EffectHandle,Vec3(0.2f));
+				effect->SetEffectSpeed(m_EffectHandle,0.5f);
 			}
 			if (GetAnimationFinish() && GetCurrentAnimationKey() == L"Stan_Finish") {
 				m_IsStun = false;
@@ -140,12 +146,6 @@ namespace basecross {
 				effect->StopEffect(m_EffectHandle);
 			}
 		}
-		/*if (m_ComboTimer.UpdateTimer()) {
-			m_ComboCount = 0;
-			m_Stun -= elapsed / 10.0f;
-			m_Stun = max(0, m_Stun);
-
-		}*/
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
@@ -153,6 +153,9 @@ namespace basecross {
 			if (m_Stun > 1.0f) {
 				m_IsStun = true;
 				SetAnimation(L"Stan_First");
+			}
+			else if (stun >= 0.3f) {
+				SetAnimation(L"Blow");
 			}
 		}
 	}
