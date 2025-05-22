@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief
 */
 
 #pragma once
@@ -146,6 +146,10 @@ namespace basecross {
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
 			return stof(data);
+		}
+		int WstrToInt(const wstring& date) {
+			if (date == L"") return 0;
+			return stoi(date);
 		}
 
 		Vec3 WstrToVec3(const wstring& data) {

@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"

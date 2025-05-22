@@ -117,4 +117,3 @@ namespace basecross {
 	}
 
 }
-//end basecross

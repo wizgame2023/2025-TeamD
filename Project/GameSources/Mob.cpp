@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -29,11 +29,11 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-		auto draw = GetComponent<BcPNTStaticDraw>();
-		draw->SetDiffuse(Col4(1, 0, 0, 1));
+		/*auto draw = GetComponent<BcPNTStaticDraw>();
+		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
 		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
 
-		//描画設定
+		//�`��ݒ�
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
@@ -181,4 +181,3 @@ namespace basecross {
 		SetRotation(Vec3(0, rotate, 0));
 	}
 }
-//end basecross

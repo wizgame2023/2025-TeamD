@@ -1,7 +1,7 @@
 ###############################################################################
 # Set default behavior to automatically normalize line endings.
 ###############################################################################
-* working-tree-encoding=cp932
+* text = utf-8
 
 ###############################################################################
 # Set default behavior for command prompt diff.

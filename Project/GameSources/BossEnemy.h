@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.h
-@brief ƒ{ƒX‚È‚Ç
+@brief
 */
 
 #pragma once
@@ -42,6 +42,8 @@ namespace basecross {
 		Timer m_DamageEffectTime;
 
 		wstring m_CurrentAnimationKey;
+
+		Effekseer::Handle m_EffectHandle;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale

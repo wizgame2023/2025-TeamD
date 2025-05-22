@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.cpp
-@brief ãƒœã‚¹æ•µã®å®Ÿè£…
+@brief ƒ{ƒX“G‚ÌÀ‘•
 */
 
 #include "stdafx.h"
@@ -19,13 +19,13 @@ namespace basecross {
 	{
 	}
 	void BossEnemy::AddAnimation() {
-		int fps = 60.0f;
+		float fps = 60.0f;
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->AddAnimation(L"Idle", 0, 1, true, fps);
 		draw->AddAnimation(L"Walk", 40, 120, true, fps * 1.75f);
-		draw->AddAnimation(L"Stan_First", 545, 56, false, fps);
+		draw->AddAnimation(L"Stan_First", 545, 56, false, fps * 0.6f);
 		draw->AddAnimation(L"Stan", 601, 19, true, fps);
-		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps);
+		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
 		//draw->AddAnimation(L"Crush", 0, 60, false, fps);
 		draw->AddAnimation(L"Missile_First", 971, 9, false, fps);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
@@ -64,7 +64,7 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"BOSS");
 
@@ -78,9 +78,9 @@ namespace basecross {
 			Vec3(0.0f, -0.3f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
+		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
+		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 		auto navi = AddComponent<Navigate>();
@@ -95,8 +95,8 @@ namespace basecross {
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(1.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 1.0f, 0.25f, 3.0f, 1.0f), 3.0f);
 		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
 		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,1.7f, 5.0f, 2.0f), 0.0f, 6, 0.25f);
-		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0));
-		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0));
+		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
+		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 	}
 	
 
@@ -117,25 +117,42 @@ namespace basecross {
 			}
 		}
 		else {
-			draw->SetDiffuse(Col4(0, 0, 0, 1));
-			m_Stun -= elapsed / 2.0f;
-			if (m_Stun < 0) {
-				m_Stun = 0;
+			auto& effect = m_Stage->GetCreateEffect();
+			if (GetAnimationFinish() && GetCurrentAnimationKey() == L"Stan_First") {
+				SetAnimation(L"Stan");
+				
+				m_EffectHandle = effect->PlayEffect(L"Smoke", GetPosition(), 0.0f);
+				effect->SetScale(Vec3(0.2f));
+				effect->SetEffectSpeed(0.5f);
+			}
+			if (GetAnimationFinish() && GetCurrentAnimationKey() == L"Stan_Finish") {
 				m_IsStun = false;
 			}
+			if (GetCurrentAnimationKey() == L"Stan") {
+				m_Stun -= elapsed / 4.0f;
+			}
+			//draw->SetDiffuse(Col4(0, 0, 0, 1));
+			
+			if (m_Stun < 0) {
+				m_Stun = 0;
+				//m_IsStun = false;
+				SetAnimation(L"Stan_Finish");
+				effect->StopEffect(m_EffectHandle);
+			}
 		}
-		if (m_ComboTimer.UpdateTimer()) {
+		/*if (m_ComboTimer.UpdateTimer()) {
 			m_ComboCount = 0;
 			m_Stun -= elapsed / 10.0f;
 			m_Stun = max(0, m_Stun);
 
-		}
+		}*/
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
 			m_Stun += stun;
 			if (m_Stun > 1.0f) {
 				m_IsStun = true;
+				SetAnimation(L"Stan_First");
 			}
 		}
 	}
@@ -187,13 +204,13 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(true);
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
+		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
+		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 	}
@@ -205,4 +222,3 @@ namespace basecross {
 		Enemy::Dead();
 	}
 }
-//end basecross
