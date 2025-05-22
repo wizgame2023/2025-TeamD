@@ -68,6 +68,7 @@ namespace basecross {
 			m_bulletPally = player->Damage(false, 2.0f);
 			if (m_bulletPally)
 			{
+				player->SetParryPosition(GetPosition());
 				m_Direction = -m_Direction;
 			}
 			else {

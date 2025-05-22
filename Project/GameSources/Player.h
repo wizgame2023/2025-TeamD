@@ -44,6 +44,7 @@ namespace basecross {
 		Vec3 m_EffectVec;
 		shared_ptr<EffectManeger> m_Effect;
 		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_BrinkHandle;
 		Effekseer::Handle m_ParryHandle;
 		shared_ptr<TargetBoard> m_TargetBoard;
 		wstring m_AttackAnim = L"Attack";
@@ -114,6 +115,7 @@ namespace basecross {
 		float m_ZoneElapsedTime;
 		shared_ptr<EffectManeger> m_Effect;
 		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_HitHandle;
 
 		shared_ptr<GameObject> m_Player;
 	public:
