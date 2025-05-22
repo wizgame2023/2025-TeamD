@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -124,6 +124,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		m_Attack = m_Enemy->m_Cruch;
+		//m_Enemy->SetAnimation()
 	}
 	void BossCrush::Execute()
 	{
@@ -148,6 +149,9 @@ namespace basecross {
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
+
+					m_Enemy->m_Effect->PlayEffect(L"Trampling", m_AttackPosition, 0.0f);
+					m_Enemy->m_Effect->SetScale(Vec3(0.2f, 0.2f, 0.2f));
 				}
 			}
 			else {
@@ -161,7 +165,6 @@ namespace basecross {
 				if (LerpRotatePlayer(direction)) {
 					m_Enemy->ChangeState<BossHostility>();
 				}
-
 			}
 		}
 	}
@@ -187,6 +190,7 @@ namespace basecross {
 		float distance = direction.length();
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
+				m_Enemy->SetAnimation(L"Missile_First");
 				Ready(0.5f);
 			}
 			if (m_IsReady) {
@@ -194,9 +198,11 @@ namespace basecross {
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
+					m_Enemy->SetAnimation(L"Missile_Finish");
 				}
-				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive()) {
-					m_Attack->Play(position + Vec3(0, 0.6f, 0.0f));
+				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
+					m_Attack->Play(position + Vec3(0, m_Enemy->GetScale().y * 2.0f, 0.0f));
+					m_Enemy->SetAnimation(L"Missile");
 				}
 			}
 			else {
@@ -206,10 +212,12 @@ namespace basecross {
 			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
 		}
 		else {
-			if (m_CooldownTimer.UpdateTimer()) {
-				if (LerpRotatePlayer(direction)) {
-					m_Enemy->ChangeState<BossHostility>();
-				}
+
+			if (m_Enemy->GetAnimationFinish()) {
+				m_Enemy->SetAnimation(L"Idle");
+			}
+			if (m_Enemy->GetCurrentAnimationKey() == L"Idle" && LerpRotatePlayer(direction)) {
+				m_Enemy->ChangeState<BossHostility>();
 			}
 		}
 	}

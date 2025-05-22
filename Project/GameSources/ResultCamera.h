@@ -15,7 +15,7 @@ namespace basecross {
 
 		shared_ptr<Player> m_Player;
 	public:
-		ResultCamera(Vec3 eye,Vec3 at,shared_ptr<Player>& player) : Camera(),m_Eye(eye),m_At(at),m_Player(player){}
+		ResultCamera(Vec3 eye, Vec3 at, shared_ptr<Player>& player) : Camera(), m_Eye(eye), m_At(at), m_Player(player) {}
 		virtual ~ResultCamera() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate();

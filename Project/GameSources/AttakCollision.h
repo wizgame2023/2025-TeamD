@@ -104,7 +104,7 @@ namespace basecross {
 		virtual void OnCreate()override {
 			Attack::OnCreate();
 			m_Collision = AddComponent<CollisionType>();
-			m_Collision->SetDrawActive(true);
+			//m_Collision->SetDrawActive(true);
 			m_Collision->SetAfterCollision(AfterCollision::None);
 
 			m_Transform->SetScale(m_Size);
@@ -139,13 +139,22 @@ namespace basecross {
 		int m_MissileCount;
 		int m_MissileMaxCount;
 		Timer m_MissileTimer;
+		vector<Vec3> m_MuzzlePositions;
+		int m_MuzzleIndex;
 	public:
 		Missile(const shared_ptr<Stage>& stage,const shared_ptr<Transform> target,AttackDate date,float power,int count,float time) :
-			Attack(stage, date), m_Target(target), m_ExplodePower(power),m_MissileCount(count),m_MissileMaxCount(count),m_MissileTimer(Timer(time,false)) { }
+			Attack(stage, date), m_Target(target), m_ExplodePower(power),
+			m_MissileCount(count),m_MissileMaxCount(count),
+			m_MuzzleIndex(0),
+			m_MissileTimer(Timer(time,false)) { }
 		virtual ~Missile(){}
 		virtual void OnUpdate()override;
 
 		virtual void Play(Vec3 position)override;
+
+		void AddMuzzle(Vec3 position) {
+			m_MuzzlePositions.push_back(position);
+		}
 
 	};
 }

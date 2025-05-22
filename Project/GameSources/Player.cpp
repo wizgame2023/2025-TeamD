@@ -7,6 +7,7 @@
 #include "Project.h"
 #include "Player.h"
 
+
 namespace basecross {
 	Player::Player(const shared_ptr<Stage>& stage) : Player(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
 
@@ -115,6 +116,7 @@ namespace basecross {
 
 	void Player::ZoneActivation()
 	{
+
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_EnergyCharge >= 1.0)
@@ -329,7 +331,7 @@ namespace basecross {
 	{
 		return m_PlayerStateNum;
 	}
-	float Player::GetEnergy() 
+	float Player::GetEnergy()
 	{
 		return m_EnergyCharge;
 	}
@@ -411,6 +413,8 @@ namespace basecross {
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		//cntlVec
+
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
@@ -477,6 +481,8 @@ namespace basecross {
 				m_BoostInterval -= elapsedTime;
 				m_AttackInterval -= elapsedTime;
 				MovePlayer(6.0f);
+
+				Vec3 rot = SearchRange();
 				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
 				{
 					m_BoostAngle = GetForward();
@@ -521,7 +527,7 @@ namespace basecross {
 				}
 			}
 		}
-		else 
+		else
 		{
 			if (m_HP <= 0)
 			{
@@ -590,7 +596,8 @@ namespace basecross {
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
-	{}
+	{
+	}
 
 	HitSphere::~HitSphere()
 	{
@@ -631,6 +638,7 @@ namespace basecross {
 
 	void HitSphere::OnUpdate()
 	{
+		App::GetApp()->GetStepTimer().SetFixedTimeStep(false);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
@@ -667,9 +675,14 @@ namespace basecross {
 
 			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
 			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535 * 0.5f;
+			vibration.wRightMotorSpeed = 65535 * 0.5f;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 		}
 	}
 
 }
-//end basecross
-

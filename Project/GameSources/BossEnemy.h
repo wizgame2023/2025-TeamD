@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.h
-@brief ƒ{ƒX‚È‚Ç
+@brief
 */
 
 #pragma once
@@ -30,6 +30,8 @@ namespace basecross {
 		shared_ptr<MachineGun> m_Gun;
 		shared_ptr<Missile> m_Missile;
 
+		shared_ptr<EffectManeger> m_Effect;
+
 		float m_Stun;
 		bool m_IsStun;
 		Timer m_ComboTimer;
@@ -38,6 +40,10 @@ namespace basecross {
 		Vec3 m_StartPosition;
 
 		Timer m_DamageEffectTime;
+
+		wstring m_CurrentAnimationKey;
+
+		Effekseer::Handle m_EffectHandle;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -48,6 +54,11 @@ namespace basecross {
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
+		virtual void Move(const Vec3& direction)override;
+		void AddAnimation();
+		void SetAnimation(const wstring& key);
+		bool GetAnimationFinish();
+		wstring GetCurrentAnimationKey();
 
 		void AddStun(float stun);
 		

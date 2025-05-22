@@ -21,7 +21,8 @@ namespace basecross {
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
 	class EffectManeger : public ObjectInterface, public ShapeInterface {
-		map<wstring, Effekseer::EffectRef> m_ResMap;		///< キーとリソースを結び付けるマップ
+
+		map<wstring, Effekseer::EffectRef> m_ResMap;		///< 繧ｭ繝ｼ縺ｨ繝ｪ繧ｽ繝ｼ繧ｹ繧堤ｵ舌�莉倥￠繧九�繝��
 		Effekseer::Handle handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
@@ -70,6 +71,7 @@ namespace basecross {
 
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
+
 		void SetEffectSpeed(Effekseer::Handle& handle, const float& speed);
 		void SetEffectPause(const bool& pause);
 		void PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme);
@@ -82,8 +84,8 @@ namespace basecross {
 
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
-		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);//位置
-		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);//回転(クォータニオン)
+		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);//菴咲ｽｮ
+		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);//蝗櫁ｻ｢(繧ｯ繧ｩ繝ｼ繧ｿ繝九が繝ｳ)
 		void SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale);
 		void SetAllColor(Effekseer::Handle& handle, const bsm::Col4 color);
 		void StopEffect(Effekseer::Handle& handle);
