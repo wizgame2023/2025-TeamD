@@ -37,7 +37,7 @@ namespace basecross {
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"MOB");
 
 		Mat4x4 meshMat;
@@ -59,7 +59,7 @@ namespace basecross {
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
-
+		AddAnimation();
 	}
 	void Mob::OnAfterCreate() {
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(GetScale().x * 0.25f, GetScale().y * 1.5f, 0));
@@ -71,14 +71,14 @@ namespace basecross {
 		Enemy::OnUpdate();
 		if (GetUpdateActive())
 		{
+			float elapsed = App::GetApp()->GetElapsedTime();
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			draw->UpdateAnimation(elapsed);
 			AsyncUpdate();
-			auto draw = GetComponent<BcPNTStaticDraw>();
-
 			/*if (m_IsEndAsyncUpdate) {
 				auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 				updateThread.detach();
 			}*/
-			float elapsed = App::GetApp()->GetElapsedTime();
 			if (m_IntervalStart == true)
 			{
 				draw->SetDiffuse(Col4(1, 0, 0, 1));
@@ -121,6 +121,7 @@ namespace basecross {
 		EndAsync();
 	}
 	void Mob::Dead() {
+		SetAnim(L"Down", 0.0f);
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
 		m_HpBar->Destroy();
 		Enemy::Dead();
@@ -137,6 +138,13 @@ namespace basecross {
 
 	void Mob::AddAnimation()
 	{
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto anim_fps = 60.0f;
+		ptrDraw->AddAnimation(L"Walk", 21, 206, true, anim_fps);
+		ptrDraw->AddAnimation(L"SetUp", 288, 72, false, anim_fps);
+		ptrDraw->AddAnimation(L"SetDown", 361, 103, false, anim_fps);
+		ptrDraw->AddAnimation(L"Down", 557, 93, false, anim_fps);
+		ptrDraw->AddAnimation(L"Reload", 661, 103, false, anim_fps);
 	}
 
 	Vec3 Mob::RootNaviGate()

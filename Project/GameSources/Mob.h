@@ -61,7 +61,6 @@ namespace basecross {
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		void AddAnimation();
-
 		Vec3 RootNaviGate();
 		shared_ptr<Stage> GetStage();
 		shared_ptr<Transform> GetTransfrom();
@@ -86,6 +85,15 @@ namespace basecross {
 			m_currentState = make_unique<NextState>(GetThis<Mob>());
 			m_currentState->Enter();
 		}
+
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				else
+					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
+		}
+
 	private:
 
 		float WstrToFlt(const wstring& data) {
@@ -105,15 +113,6 @@ namespace basecross {
 				}
 			}
 			return num;
-		}
-
-
-		const void SetAnim(wstring animname, float time = 0.0f) {
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
-			if (draw->GetCurrentAnimation() != animname)
-				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
-				else
-					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
 		}
 	};
 }
