@@ -5,6 +5,8 @@
 namespace basecross {
 	class SpriteFade;
 	class Sprite;
+	class NumberSprite;
+	class Menu;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -17,11 +19,10 @@ namespace basecross {
 		void CreateViewLight();
 		void CreateResource();
 		void CreateTitle();
-		Vec2 GetInputState() const;
-		Vec3 GetMoveVector(float& rot)const;
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 
 		shared_ptr<Sprite> mConut;
+		shared_ptr<NumberSprite> score;
 		shared_ptr<SpriteFade> m_Fade;
 		//bool m_fade;
 	public:
@@ -32,7 +33,6 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 
-		bool Which;
 		void OnPushA();
 
 	};

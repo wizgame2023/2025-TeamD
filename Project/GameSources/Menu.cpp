@@ -95,7 +95,7 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -75.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
@@ -230,7 +230,7 @@ namespace basecross {
 		AddButton(L"POSE_SELECT", L"POSE_SELECT", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);

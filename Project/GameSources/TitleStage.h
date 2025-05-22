@@ -30,7 +30,6 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 
-		bool Which;
 		void OnPushA();
 
 	};

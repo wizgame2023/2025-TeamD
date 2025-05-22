@@ -53,7 +53,6 @@ namespace basecross {
 			//OnUpdate();
 			CreateResource();
 			CreateTitle();
-			Which = false;
 		}
 		catch (...) {
 			throw;
