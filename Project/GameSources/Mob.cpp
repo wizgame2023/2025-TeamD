@@ -105,11 +105,15 @@ namespace basecross {
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if ((other->FindTag(L"Bullet") ||other->FindTag(L"HitJudge")) && m_IntervalStart)
+		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;
 		}
+	}
+
+	void Mob::AddAnimation()
+	{
 	}
 
 	Vec3 Mob::RootNaviGate()
