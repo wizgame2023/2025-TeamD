@@ -28,8 +28,8 @@ namespace basecross {
 		auto col = AddComponent<CollisionObb>();
 		
 		auto& effect = m_Stage->GetCreateEffect();
-		m_EffectHandle = effect->PlayEffect(L"boost", GetPosition(), 0.0f);
-		effect->SetScale(Vec3(0.2f));
+		effect->PlayEffect(m_EffectHandle,L"boost", GetPosition(), 0.0f);
+		effect->SetScale(m_EffectHandle,Vec3(0.2f));
 	}
 
 	void MissileBullet::OnUpdate() {
@@ -61,9 +61,9 @@ namespace basecross {
 		explode->Play(GetPosition());
 		auto& effect = m_Stage->GetCreateEffect();
 		effect->StopEffect(m_EffectHandle);
-		effect->PlayEffect(L"MissileFlash", GetPosition() , 0.0f);
-		effect->SetScale(Vec3(0.25f));
-		effect->SetRotation(Vec3(1.0f, 0.0f, 0.0f),XMConvertToRadians(90.0f));
+		effect->PlayEffect(m_EffectHandle,L"MissileFlash", GetPosition() , 0.0f);
+		effect->SetScale(m_EffectHandle,Vec3(0.25f));
+		effect->SetRotation(m_EffectHandle,Vec3(1.0f, 0.0f, 0.0f),XMConvertToRadians(90.0f));
 		m_Stage->RemoveGameObject<MissileBullet>(GetThis<MissileBullet>());
 	}
 }
