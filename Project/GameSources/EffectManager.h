@@ -1,6 +1,6 @@
 /*!
 @file EffectManager.h
-@brief Effectãªã©
+@brief Effect‚È‚Ç
 */
 
 #pragma once
@@ -18,11 +18,11 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	Effekseerã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
+	///	EffekseerƒGƒtƒFƒNƒg‚ÌƒGƒtƒFƒNƒg
 	//--------------------------------------------------------------------------------------
 	class EffectManeger : public ObjectInterface, public ShapeInterface {
 
-		map<wstring, Effekseer::EffectRef> m_ResMap;		///< ç¹§ï½­ç¹ï½¼ç¸ºï½¨ç¹ï½ªç¹§ï½½ç¹ï½¼ç¹§ï½¹ç¹§å ¤ï½µèˆŒï¿½è‰å€¥ï¿ ç¹§ä¹ï¿½ç¹ï¿½ï¿½
+		map<wstring, Effekseer::EffectRef> m_ResMap;		
 		Effekseer::Handle handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
@@ -34,36 +34,36 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ã‚³ãƒ³ã‚¹ãƒ©ãƒˆã‚¯ã‚¿
-		@param[in]	iface	ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
-		@param[in]	filename	ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«å
+		@brief	ƒRƒ“ƒXƒ‰ƒgƒNƒ^
+		@param[in]	iface	ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@param[in]	filename	ƒGƒtƒFƒNƒgƒtƒ@ƒCƒ‹–¼
 		*/
 		//--------------------------------------------------------------------------------------
 		EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@brief	ƒfƒXƒgƒ‰ƒNƒ^
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	åˆæœŸåŒ–
-		@return	ãªã—
+		@brief	‰Šú‰»
+		@return	‚È‚µ
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate() override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	æ›´æ–°å‡¦ç†
-		@return	ãªã—
+		@brief	XVˆ—
+		@return	‚È‚µ
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	æç”»å‡¦ç†ã€‚
-		@return	ãªã—
+		@brief	•`‰æˆ—B
+		@return	‚È‚µ
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
@@ -84,8 +84,8 @@ namespace basecross {
 
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
-		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);//è´å’²ï½½ï½®
-		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);//è—æ«ï½»ï½¢(ç¹§ï½¯ç¹§ï½©ç¹ï½¼ç¹§ï½¿ç¹ä¹ãŒç¹ï½³)
+		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
+		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);
 		void SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale);
 		void SetAllColor(Effekseer::Handle& handle, const bsm::Col4 color);
 		void StopEffect(Effekseer::Handle& handle);
