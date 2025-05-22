@@ -1,6 +1,6 @@
 /*!
 @file EffectManager.cpp
-@brief ƒGƒtƒFƒNƒg‚È‚ÇÀ‘Ì
+@brief ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,24 +9,28 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	///	EffekseerƒGƒtƒFƒNƒg‚ÌƒGƒtƒFƒNƒg
+	///	Effekseerã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	EffectManeger::EffectManeger() :
 		ObjectInterface(),
-		m_handle(-1),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
 	}
 	EffectManeger::~EffectManeger() {
-		// æ‚ÉƒGƒtƒFƒNƒgŠÇ——pƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü
+		// å…ˆã«ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç®¡ç†ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„
 		m_Manager.Reset();
-		// Ÿ‚É•`‰æ—pƒCƒ“ƒXƒ^ƒ“ƒX‚ğ”jŠü
+		// æ¬¡ã«æç”»ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ç ´æ£„
 		m_renderer.Reset();
 	}
 
 	void EffectManeger::OnCreate() {
 		CreateEffectInterface();
+
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring effectPath = mediaPath + L"Effekt/";
+		RegisterResource(L"panchi", effectPath + L"panchi.efk");
 	}
 
 	void EffectManeger::OnUpdate()
@@ -34,30 +38,36 @@ namespace basecross {
 		auto elps = App::GetApp()->GetElapsedTime();
 		m_TotalTime += elps;
 
-		// ƒGƒtƒFƒNƒg‚ÌXVˆ—‚ğs‚¤
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æ›´æ–°å‡¦ç†ã‚’è¡Œã†
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
+
 
 	}
 
 	void EffectManeger::OnDraw()
 	{
-		// ƒGƒtƒFƒNƒg‚Ì•`‰æŠJnˆ—‚ğs‚¤B
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»é–‹å§‹å‡¦ç†ã‚’è¡Œã†ã€‚
 		m_renderer->BeginRendering();
 
-		// ƒGƒtƒFƒNƒg‚Ì•`‰æ‚ğs‚¤B
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»ã‚’è¡Œã†ã€‚
 		m_Manager->Draw();
 
-		// ƒGƒtƒFƒNƒg‚Ì•`‰æI—¹ˆ—‚ğs‚¤B
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®æç”»çµ‚äº†å‡¦ç†ã‚’è¡Œã†ã€‚
 		m_renderer->EndRendering();
 	}
 
-	void EffectManeger::SetEffectSpeed(const float& speed)
+	void EffectManeger::OnDestroy()
 	{
-		m_Manager->SetSpeed(m_handle, speed);
+		m_Manager->Release();
 	}
 
-	void EffectManeger::SetEffectPause(const bool& pause)
+	void EffectManeger::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
+	{
+		m_Manager->SetSpeed(handle, speed);
+	}
+
+	void EffectManeger::SetEffectPause( const bool& pause)
 	{
 		m_Manager->SetPausedToAllEffects(pause);
 	}
@@ -80,12 +90,11 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	Effekseer::Handle EffectManeger::PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme)
+	void EffectManeger::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
 		int32_t Freme = freme;
 		m_Effect = GetEffectResource(Key);
-		m_handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
-		return m_handle;
+		handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
 	void EffectManeger::CreateEffectInterface()
@@ -94,20 +103,20 @@ namespace basecross {
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();
-		// •`‰æ—pƒCƒ“ƒXƒ^ƒ“ƒX‚Ì¶¬
+		// æç”»ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆ
 		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 8000);
-		// ƒGƒtƒFƒNƒgŠÇ——pƒCƒ“ƒXƒ^ƒ“ƒX‚Ì¶¬
+		// ã‚¨ãƒ•ã‚§ã‚¯ãƒˆç®¡ç†ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã®ç”Ÿæˆ
 		m_Manager = Effekseer::Manager::Create(8000);
 
-		// •`‰æ—pƒCƒ“ƒXƒ^ƒ“ƒX‚©‚ç•`‰æ‹@”\‚ğİ’è
+		// æç”»ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰æç”»æ©Ÿèƒ½ã‚’è¨­å®š
 		m_Manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
 		m_Manager->SetRibbonRenderer(m_renderer->CreateRibbonRenderer());
 		m_Manager->SetRingRenderer(m_renderer->CreateRingRenderer());
 		m_Manager->SetTrackRenderer(m_renderer->CreateTrackRenderer());
 		m_Manager->SetModelRenderer(m_renderer->CreateModelRenderer());
 
-		// •`‰æ—pƒCƒ“ƒXƒ^ƒ“ƒX‚©‚çƒeƒNƒXƒ`ƒƒ‚Ì“Ç‹@”\‚ğİ’è
-		// “Æ©Šg’£‰Â”\AŒ»İ‚Íƒtƒ@ƒCƒ‹‚©‚ç“Ç‚İ‚ñ‚Å‚¢‚éB
+		// æç”»ç”¨ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­è¾¼æ©Ÿèƒ½ã‚’è¨­å®š
+		// ç‹¬è‡ªæ‹¡å¼µå¯èƒ½ã€ç¾åœ¨ã¯ãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰èª­ã¿è¾¼ã‚“ã§ã„ã‚‹ã€‚
 		m_Manager->SetTextureLoader(m_renderer->CreateTextureLoader());
 		m_Manager->SetModelLoader(m_renderer->CreateModelLoader());
 		m_Manager->SetMaterialLoader(m_renderer->CreateMaterialLoader());
@@ -145,8 +154,8 @@ namespace basecross {
 			it = m_ResMap.find(Key);
 			if (it != m_ResMap.end())
 			{
-				//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚Á‚½
-				//—áŠO”­¶
+				//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã£ãŸ
+				//ä¾‹å¤–ç™ºç”Ÿ
 				wstring keyerr = Key;
 				throw BaseException(
 					L"",
@@ -176,11 +185,11 @@ namespace basecross {
 		map<wstring, Effekseer::EffectRef >::const_iterator  it;
 		it = m_ResMap.find(Key);
 		if (it != m_ResMap.end()) {
-			//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚Á‚½
+			//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã£ãŸ
 			return  it->second;
 		}
 		else {
-			//Œ©‚Â‚©‚ç‚È‚¢
+			//è¦‹ã¤ã‹ã‚‰ãªã„
 			wstring keyerr = Key;
 			throw BaseException(
 				L"",
@@ -191,9 +200,9 @@ namespace basecross {
 
 	}
 
-	void EffectManeger::AddLocation(const bsm::Vec3& Location) {
-		if (m_handle != -1) {
-			m_Manager->AddLocation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
+	void EffectManeger::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+		if (handle != -1) {
+			m_Manager->AddLocation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
 		}
 	}
 
@@ -202,31 +211,28 @@ namespace basecross {
 		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EffectManeger::SetRotation(const bsm::Vec3& Location, const float angle)
+	void EffectManeger::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
 	{
-		m_Manager->SetRotation(m_handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
+		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EffectManeger::SetLocation(const bsm::Vec3& Location) {
-		m_Manager->SetLocation(m_handle, Location.x, Location.y, Location.z);
-	}
-	void EffectManeger::SetLocation(Effekseer::Handle handle, const bsm::Vec3& Location) {
+	void EffectManeger::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		m_Manager->SetLocation(handle, Location.x, Location.y, Location.z);
 	}
-	void EffectManeger::SetScale(const bsm::Vec3& Scale)
+	void EffectManeger::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
 	{
-		m_Manager->SetScale(m_handle, Scale.x, Scale.y, Scale.z);
+		m_Manager->SetScale(handle, Scale.x, Scale.y, Scale.z);
 	}
 
-	void EffectManeger::SetAllColor(const bsm::Col4 Color)
+	void EffectManeger::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
 	{
 		auto color = Col4(Color) * 255;
-		m_Manager->SetAllColor(m_handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
+		m_Manager->SetAllColor(handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
 	}
 
-	void EffectManeger::StopEffect() {
-		if (m_handle != -1) {
-			m_Manager->StopEffect(m_handle);
+	void EffectManeger::StopEffect(Effekseer::Handle& handle) {
+		if (handle != -1) {
+			m_Manager->StopEffect(handle);
 		}
 	}
 	void EffectManeger::StopEffect(Effekseer::Handle handle) {

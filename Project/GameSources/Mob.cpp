@@ -33,7 +33,7 @@ namespace basecross {
 		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
 		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
 
-		//�`��ݒ�
+		//•`‰æÝ’è
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
@@ -128,7 +128,7 @@ namespace basecross {
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"HitJudge") && m_IntervalStart)
+		if ((other->FindTag(L"Bullet") ||other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;

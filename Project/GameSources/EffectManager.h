@@ -1,14 +1,11 @@
 /*!
 @file EffectManager.h
-@brief Effect‚È‚Ç
+@brief Effectãªã©
 */
 
 #pragma once
 #include "stdafx.h"
 
-#pragma once
-
-#include "stdafx.h"
 
 #include <Effekseer.h>
 #include <EffekseerRendererDX11.h>
@@ -21,11 +18,12 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	EffekseerƒGƒtƒFƒNƒg‚ÌƒGƒtƒFƒNƒg
+	///	Effekseerã‚¨ãƒ•ã‚§ã‚¯ãƒˆã®ã‚¨ãƒ•ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class EffectManeger : public ObjectInterface, public ShapeInterface {
-		map<wstring, Effekseer::EffectRef> m_ResMap;		///< ƒL[‚ÆƒŠƒ\[ƒX‚ğŒ‹‚Ñ•t‚¯‚éƒ}ƒbƒv
-		Effekseer::Handle m_handle;
+
+		map<wstring, Effekseer::EffectRef> m_ResMap;		///< ç¹§ï½­ç¹ï½¼ç¸ºï½¨ç¹ï½ªç¹§ï½½ç¹ï½¼ç¹§ï½¹ç¹§å ¤ï½µèˆŒï¿½è‰å€¥ï¿ ç¹§ä¹ï¿½ç¹ï¿½ï¿½
+		Effekseer::Handle handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
 		float m_TotalTime;
@@ -36,45 +34,47 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒ‰ƒgƒNƒ^
-		@param[in]	iface	ƒCƒ“ƒ^[ƒtƒFƒCƒX
-		@param[in]	filename	ƒGƒtƒFƒNƒgƒtƒ@ƒCƒ‹–¼
+		@brief	ã‚³ãƒ³ã‚¹ãƒ©ãƒˆã‚¯ã‚¿
+		@param[in]	iface	ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
+		@param[in]	filename	ã‚¨ãƒ•ã‚§ã‚¯ãƒˆãƒ•ã‚¡ã‚¤ãƒ«å
 		*/
 		//--------------------------------------------------------------------------------------
 		EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual ~EffectManeger();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‰Šú‰»
-		@return	‚È‚µ
+		@brief	åˆæœŸåŒ–
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate() override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XVˆ—
-		@return	‚È‚µ
+		@brief	æ›´æ–°å‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	•`‰æˆ—B
-		@return	‚È‚µ
+		@brief	æç”»å‡¦ç†ã€‚
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
+		virtual void OnDestroy()override;
 
-		void SetEffectSpeed(const float& speed);
-		void SetEffectPause(const bool& pause);
 		void Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest);
 		void SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj);
-		Effekseer::Handle PlayEffect(const wstring& Key, const bsm::Vec3& Emitter, const float freme);
+
+		void SetEffectSpeed(Effekseer::Handle& handle, const float& speed);
+		void SetEffectPause(const bool& pause);
+		void PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme);
 		void CreateEffectInterface();
 		void RegisterResource(const wstring& Key, const  wstring& FileName);
 		Effekseer::ManagerRef GetEffectInterface()
@@ -83,15 +83,12 @@ namespace basecross {
 		}
 
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
-		void AddLocation(const bsm::Vec3& Location);
-		void SetLocation(const bsm::Vec3& Location);//ˆÊ’u
-		void SetLocation(Effekseer::Handle handle, const bsm::Vec3& Location);
-		void SetRotation(Effekseer::Handle handle, const bsm::Vec3& Location, const float angle);
-		void SetRotation(const bsm::Vec3& Rotation, const float angle);//‰ñ“](ƒNƒH[ƒ^ƒjƒIƒ“)
-		void SetScale(const bsm::Vec3& Scale);
-		void SetAllColor(const bsm::Col4 color);
-		void StopEffect();
-		void StopEffect(Effekseer::Handle handle);
+		void AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
+		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);//è´å’²ï½½ï½®
+		void SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Rotation, const float angle);//è—æ«ï½»ï½¢(ç¹§ï½¯ç¹§ï½©ç¹ï½¼ç¹§ï½¿ç¹ä¹ãŒç¹ï½³)
+		void SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale);
+		void SetAllColor(Effekseer::Handle& handle, const bsm::Col4 color);
+		void StopEffect(Effekseer::Handle& handle);
 
 	};
 }

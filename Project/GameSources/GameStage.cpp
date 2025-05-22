@@ -79,7 +79,10 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Trampling", effectPath + L"Trampling.efk");
 		m_Effect->RegisterResource(L"Smoke", effectPath + L"Smoke.efk");
 		m_Effect->RegisterResource(L"boost", effectPath + L"boost.efk");
-
+		m_Effect->RegisterResource(L"ShockWave", effectPath + L"ShockWave.efk");
+		m_Effect->RegisterResource(L"Panchi", effectPath + L"panchi.efk");
+		m_Effect->RegisterResource(L"Brick", effectPath + L"Brick.efk");
+		m_Effect->RegisterResource(L"HitEffect", effectPath + L"HitEffect.efk");
 	}
 
 	shared_ptr <EffectManeger> GameStage::GetCreateEffect()

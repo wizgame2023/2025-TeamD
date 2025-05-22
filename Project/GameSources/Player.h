@@ -6,6 +6,14 @@
 #pragma once
 #include "stdafx.h"
 
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
+
+#pragma comment(lib, "Effekseer.lib" )
+#pragma comment(lib, "EffekseerRendererDX11.lib" )
+
+
 namespace basecross {
 	class Character;
 	class TargetBoard;
@@ -35,7 +43,9 @@ namespace basecross {
 		Vec3 m_BulletDire;
 		Vec3 m_EffectVec;
 		shared_ptr<EffectManeger> m_Effect;
-
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_BrinkHandle;
+		Effekseer::Handle m_ParryHandle;
 		shared_ptr<TargetBoard> m_TargetBoard;
 		wstring m_AttackAnim = L"Attack";
 
@@ -57,7 +67,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnDraw();
 		virtual void Dead();
-		virtual void Damage(bool parry,  float damage);
+		virtual bool Damage(bool parry,  float damage);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;
@@ -94,7 +104,7 @@ namespace basecross {
 		}
 	};
 
-	class HitSphere : public GameObject
+	class HitSphere : public Object
 	{
 		Vec3 m_HitPosition;
 		Vec3 m_HitRotation;
@@ -102,11 +112,15 @@ namespace basecross {
 		float m_FlyingTime;
 		float m_TotalTime;
 		float m_Speed;
+		float m_ZoneElapsedTime;
+		shared_ptr<EffectManeger> m_Effect;
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_HitHandle;
 
 		shared_ptr<GameObject> m_Player;
 	public:
 		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale);
-		~HitSphere() {};
+		~HitSphere();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
