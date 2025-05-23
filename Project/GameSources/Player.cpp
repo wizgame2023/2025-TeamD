@@ -523,7 +523,7 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
 			}
 		}
@@ -572,6 +572,7 @@ namespace basecross {
 			}
 			else {
 				SetAnim(L"Nock");
+				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				Character::Damage(damage, true);
 				m_ParryTime = false;
 				return false;

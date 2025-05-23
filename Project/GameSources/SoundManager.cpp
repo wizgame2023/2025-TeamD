@@ -22,17 +22,17 @@ namespace basecross {
 		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
 		//SE
 		RegisterSound(L"SE_GUARD", L"SE/Guard.wav");
-		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit_3.wav");
+		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit.wav");
 		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit.wav");
-		RegisterSound(L"SE_SHOT", L"SE/RifleShot_3.wav");
-		RegisterSound(L"SE_USE_ULT", L"SE/UltUse_3.wav");
-		RegisterSound(L"SE_WALK_ENEMY", L"SE/EnemyWalk_2.wav");
-		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice_3.wav");
+		RegisterSound(L"SE_SHOT", L"SE/RifleShot.wav");
+		RegisterSound(L"SE_USE_ULT", L"SE/UltUse.wav");
+		RegisterSound(L"SE_WALK_ENEMY", L"SE/EnemyWalk.wav");
+		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice.wav");
 		RegisterSound(L"SE_ACCEPT", L"SE/Accept.wav");
 
 		RegisterSound(L"SE_EXPLODE", L"SE/Accept.wav");
 		RegisterSound(L"SE_MISSILE", L"SE/Rocket_Fire.wav");
-		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking_2.wav");
+		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
