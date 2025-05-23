@@ -48,6 +48,7 @@ namespace basecross {
 		unique_ptr<EnemyState<Mob>> m_currentState;  //現在のステート
 		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
+		bool m_Update;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -86,12 +87,14 @@ namespace basecross {
 			m_currentState->Enter();
 		}
 
-		const void SetAnim(wstring animname, float time = 0.0f) {
+		const void SetAnim(wstring animname,float time = 0.0f, bool enforce = false) {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
 				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
 				else
-					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
+				{
+					if (draw->IsTargetAnimeEnd() || enforce) draw->ChangeCurrentAnimation(animname, time);
+				}
 		}
 
 	private:

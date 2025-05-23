@@ -376,7 +376,7 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.1f), //(.1f, .1f, .1f),
+			Vec3(0.25f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
 			Vec3(0.0f, -0.5f, 0.0f)
@@ -494,7 +494,7 @@ namespace basecross {
 
 						m_PlayerStateNum -= PlayerState::NORMAL;
 						m_PlayerStateNum += PlayerState::DASH;
-						SoundManager::Instance().PlaySE(L"SE_RUN");
+						SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 					}
 				}
 
@@ -634,6 +634,8 @@ namespace basecross {
 		float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
 		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
 		m_Effect->SetScale(m_Handle, m_HitScale * 0.5f);
+		//auto layer = m_Effect->GetLayer(m_Handle);
+		//m_Effect->SetLayer(m_Handle, 0);
 	}
 
 	void HitSphere::OnUpdate()

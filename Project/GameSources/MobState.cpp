@@ -14,6 +14,7 @@ namespace basecross {
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		auto navi = enemy->GetComponent<Navigate>(false);
+		enemy->SetAnim(L"Walk", 0.0f);
 		m_Path = {};
 		Execute();
 	}
@@ -60,7 +61,6 @@ namespace basecross {
 				m_IntruderAlert = m_Enemy->GetIntruderAlert();
 				if (m_IntruderAlert)
 				{
-					enemy->SetAnim(L"SetUp", 0.0f);
 					m_Enemy->ChangeState<MobAlert>();
 				}
 				else
@@ -77,7 +77,6 @@ namespace basecross {
 				m_IntruderAlert = m_Enemy->GetIntruderAlert();
 				if (m_IntruderAlert)
 				{
-					enemy->SetAnim(L"SetUp", 0.0f);
 					m_Enemy->ChangeState<MobAlert>();
 				}
 				else
@@ -91,7 +90,6 @@ namespace basecross {
 						enemy->SetPosition(pos);
 					}
 					else {
-						enemy->SetAnim(L"SetUp", 0.0f);
 						m_Enemy->ChangeState<MobAlert>();
 					}
 				}
@@ -113,14 +111,16 @@ namespace basecross {
 				m_IntruderAlert = m_Enemy->GetIntruderAlert();
 				if (m_IntruderAlert)
 				{
-					enemy->SetAnim(L"SetUp", 0.0f);
 					m_Enemy->ChangeState<MobAlert>();
 				}
 			}
 		}
 	}
 	void MobSearch::Exit()
-	{}
+	{
+		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
+		enemy->SetAnim(L"SetUp", 0.0f);
+	}
 
 	void MobAlert::Enter()
 	{
@@ -158,7 +158,6 @@ namespace basecross {
 		float objRenge = 0;
 		if (groups.size() != 0)
 		{
-
 			for (auto citizen : groups)
 			{
 				auto shObj = citizen.lock();
@@ -193,13 +192,13 @@ namespace basecross {
 			m_Transform->SetRotation(Vec3(0, objRotate, 0));
 			if (objRenge > enemy->m_BalletRange / 2)
 			{
-				enemy->SetAnim(L"SetDown", 0.0f);
+				//enemy->SetAnim(L"SetDown", 0.0f);
 				m_Enemy->ChangeState<MobSearch>();
 				return;
 			}
 		}
 		else {
-			enemy->SetAnim(L"SetDown", 0.0f);
+			//enemy->SetAnim(L"SetDown", 0.0f);
 			m_Enemy->ChangeState<MobSearch>();
 			return;
 		}
@@ -207,8 +206,10 @@ namespace basecross {
 
 		if(m_BulletRemain > 0)
 		{
+			enemy->SetAnim(L"Set", 0.0f);
 			if (enemy->m_BalletInterval < 0.3f && enemy->m_ShotRandomInterval < 0.3f && m_BulletEffect != true)
 			{
+
 				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
 				m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(m_Eyehandle, Vec3(0.1f, 0.1f, 0.1f));
@@ -236,6 +237,7 @@ namespace basecross {
 		else {
 			//ƒŠƒ[ƒh
 			enemy->SetAnim(L"Reload", 0.0f);
+
 			m_BulletRelord -= elapsedTime;
 			if (m_BulletRelord < 0.0f)
 			{

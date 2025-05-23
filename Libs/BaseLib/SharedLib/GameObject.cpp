@@ -1253,6 +1253,7 @@ namespace basecross {
 			float RightZ = RightPos.z;
 			return (LeftZ > RightZ);
 		};
+
 		std::sort(pImpl->m_SpriteVec.begin(), pImpl->m_SpriteVec.end(), funcSprite);
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
