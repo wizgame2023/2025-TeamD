@@ -5,7 +5,7 @@
 namespace basecross {
 
 
-	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage), m_ZoneElapsedTime(1.0f), m_Speed(3.0f){}
+	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage), m_ZoneElapsedTime(1.0f), m_Speed(25.0f){}
 	flyobject::~flyobject() {}
 
 	Vec3 flyobject::GetForward()
@@ -23,7 +23,7 @@ namespace basecross {
 		pos.normalize();
 		pos = pos * m_Speed;
 
-		gravity->StartJump(Vec3(pos.x , 5.0f, pos.z));
+		gravity->StartJump(Vec3(pos.x , 3.0f, pos.z));
 	}
 
 	void flyobject::OnCreate() {

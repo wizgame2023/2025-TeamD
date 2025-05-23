@@ -1,12 +1,13 @@
 /*!
 @file Character.cpp
-@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«é¿ëÃ
+@brief „Ç≠„É£„É©„ÇØ„Çø„Éº„Å™„Å©ÂÆü‰Ωì
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
+	class ScoreManager;
 	void Menu::OnCreate() {
 		AddTag(L"Menu");
 	}
@@ -94,7 +95,7 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -75.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
@@ -165,7 +166,7 @@ namespace basecross {
 
 	void ResultMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"HP_BAR", Vec3(-610.0f, 350, 0), Vec2(600, 700));
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 320, 0), Vec2(600, 650));
 		sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		AddSprite(sprite);
 		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
@@ -178,20 +179,25 @@ namespace basecross {
 		AddSprite(number);
 
 
-		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 230.0f, 0.0f), Vec2(33, 100), 1);
-		score->UpdateNumber(0);
+
+		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,230.0f,0.0f), Vec2(33, 100), 1);
+		int damegeRank = ScoreManager::Instance()->GetDamageRank();
+		score->UpdateNumber(damegeRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
 		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
-		score->UpdateNumber(1);
+		int timeRank = ScoreManager::Instance()->GetTimeRank();
+		score->UpdateNumber(timeRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
 		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 20.0f, 0.0f), Vec2(33, 100), 1);
-		score->UpdateNumber(2);
+		int parryRank =  ScoreManager::Instance()->GetParryRank();
+		score->UpdateNumber(parryRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
 		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-250.0f, -100.0f, 0.0f), Vec2(33, 100), 1);
-		score->UpdateNumber(3);
+		int totalRank = ScoreManager::Instance()->GetTotalRank();
+		score->UpdateNumber(totalRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
 		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-215.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
@@ -210,22 +216,31 @@ namespace basecross {
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 
-		//É^ÉCÉgÉã
-		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
+		//„Çø„Ç§„Éà„É´
+		AddButton(L"POSE_TITLE", L"POSE_START", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//éüÇÃÉXÉeÅ[ÉW
-		AddButton(L"POSE_START", L"POSE_START", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
+		//Ê¨°„ÅÆ„Çπ„ÉÜ„Éº„Ç∏
+		AddButton(L"POSE_START", L"POSE_SELECT", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
 			[](shared_ptr<ObjectInterface> object) {
+				auto scene = App::GetApp()->GetScene<Scene>();
+				int count = scene->GetCount();
+				auto stage = static_pointer_cast<Stage>(object);
+				if (count == scene->GetMaxCount()){
+					scene->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+				}
+				else {
+					scene->ChangeCountStage(++count);
+				}
 
 			});
-		//ÉZÉåÉNÉg
-		AddButton(L"POSE_SELECT", L"POSE_SELECT", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
+		//„Çª„É¨„ÇØ„Éà
+		AddButton(L"POSE_SELECT", L"POSE_TITLE", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
@@ -249,28 +264,29 @@ namespace basecross {
 
 	void GameOverMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"HP_BAR", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
 		sprite->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(sprite);
 		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
 		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
 
-		//É^ÉCÉgÉã
-		AddButton(L"POSE_TITLE", L"POSE_SELECT", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		//„Çø„Ç§„Éà„É´
+		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//ÉZÉåÉNÉg
+		//„Çª„É¨„ÇØ„Éà
 		//AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-50.0f, -250.0f, 0.0f), Vec2(250, 120),
 		//	[](shared_ptr<ObjectInterface> object) {
 
 		//	});
-		//ÉäÉXÉ^Å[Ég
+		//„É™„Çπ„Çø„Éº„Éà
 		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
-
+				auto stage = static_pointer_cast<Stage>(object);
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
 			});
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
