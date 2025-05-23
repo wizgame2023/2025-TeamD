@@ -64,6 +64,7 @@ namespace basecross {
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageSatou");
 			break;
 		}
+		SetCount(count);
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
