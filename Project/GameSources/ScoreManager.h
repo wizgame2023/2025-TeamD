@@ -16,7 +16,7 @@ namespace basecross{
 		vector<T> m_Border;
 		JudgeMode m_JundgeMode;
 	public:
-		ScoreBorder(vector<T> border) :m_Border(border), m_JundgeMode(JudgeMode::LowerOrder) {
+		ScoreBorder(vector<T> border,const JudgeMode& mode = JudgeMode::LowerOrder) :m_Border(border), m_JundgeMode(mode) {
 		}
 		void SetMode(JudgeMode mode) {
 			m_JundgeMode = mode;
@@ -39,7 +39,7 @@ namespace basecross{
 					break;
 				}
 			}
-			return m_Border.size();
+			return static_cast<int>(m_Border.size());
 		}
 	};
 	class ScoreManager{
@@ -97,7 +97,7 @@ namespace basecross{
 		void AddEliminateEnemyCount() {
 			m_EliminateEnemyCount++;
 		}
-		void SetMaxEnemyCount(int count) {
+		void SetMaxEnemyCount(float count) {
 			m_MaxEnemyCount = count;
 		}
 		float GetEliminateEnemyCount() {
@@ -108,13 +108,13 @@ namespace basecross{
 			return m_EliminateEnemyRate;
 		}
 
-		float GetTimeRank() {
+		int GetTimeRank() {
 			return m_TimeBorder.CalcRank(m_Time);
 		}
-		float GetDamageRank() {
+		int GetDamageRank() {
 			return m_DamageBorder.CalcRank(m_Damage);
 		}
-		float GetParryRank() {
+		int GetParryRank() {
 			return m_ParryBorder.CalcRank(m_ParryCount);
 		}
 

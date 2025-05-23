@@ -1,6 +1,6 @@
 /*!
 @file Enemy.cpp
-@brief “G‚È‚ÇŽÀ‘Ì
+@brief
 */
 
 #include "stdafx.h"
@@ -95,7 +95,7 @@ namespace basecross {
 		Vec3 direction = intruderPosition - position;
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 40) {
+			if (rnd < 10) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -124,6 +124,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		m_Attack = m_Enemy->m_Cruch;
+		//m_Enemy->SetAnimation()
 	}
 	void BossCrush::Execute()
 	{
@@ -137,9 +138,11 @@ namespace basecross {
 
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
-				Ready(0.5f);
-				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 0.5f;
-				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 0.5f);
+				Ready(1.0f);
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0,1,0),direction) * 0.5f;
+				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 1.0f);
+
+				m_Enemy->SetAnimation(L"Crush");
 			}
 			if (m_IsReady) {
 				if (m_ReadyTimer.UpdateTimer()) {
@@ -148,6 +151,10 @@ namespace basecross {
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
+
+					Effekseer::Handle handle;
+					m_Enemy->m_Effect->PlayEffect(handle,L"Trampling", m_AttackPosition, 0.0f);
+					m_Enemy->m_Effect->SetScale(handle,Vec3(0.2f, 0.2f, 0.2f));
 				}
 			}
 			else {
@@ -161,7 +168,6 @@ namespace basecross {
 				if (LerpRotatePlayer(direction)) {
 					m_Enemy->ChangeState<BossHostility>();
 				}
-
 			}
 		}
 	}
@@ -185,8 +191,12 @@ namespace basecross {
 
 		Vec3 direction = intruderPosition - position;
 		float distance = direction.length();
+		direction = direction.normalize();
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
+				m_Enemy->SetAnimation(L"Missile_First");
+				auto gravity = m_Enemy->GetComponent<Gravity>();
+				gravity->StartJump((-direction + Vec3(0, 0.3f, 0)) * 5.0f);
 				Ready(0.5f);
 			}
 			if (m_IsReady) {
@@ -194,9 +204,11 @@ namespace basecross {
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
+					m_Enemy->SetAnimation(L"Missile_Finish");
 				}
-				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive()) {
-					m_Attack->Play(position + Vec3(0, 0.6f, 0.0f));
+				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
+					m_Attack->Play(position + Vec3(0, m_Enemy->GetScale().y * 2.0f, 0.0f));
+					m_Enemy->SetAnimation(L"Missile");
 				}
 			}
 			else {
@@ -206,10 +218,12 @@ namespace basecross {
 			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
 		}
 		else {
-			if (m_CooldownTimer.UpdateTimer()) {
-				if (LerpRotatePlayer(direction)) {
-					m_Enemy->ChangeState<BossHostility>();
-				}
+
+			if (m_Enemy->GetAnimationFinish()) {
+				m_Enemy->SetAnimation(L"Idle");
+			}
+			if (m_Enemy->GetCurrentAnimationKey() == L"Idle" && LerpRotatePlayer(direction)) {
+				m_Enemy->ChangeState<BossHostility>();
 			}
 		}
 	}

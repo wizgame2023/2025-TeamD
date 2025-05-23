@@ -5,20 +5,20 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Nï¿½ï¿½ï¿½Xï¿½ï¿½ï¿½ï¿½
 	//--------------------------------------------------------------------------------------
 	void SelectStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
+		//ï¿½rï¿½ï¿½ï¿½[ï¿½ÌƒJï¿½ï¿½ï¿½ï¿½ï¿½Ìİ’ï¿½
 		auto PtrCamera = ObjectFactory::Create<Camera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ï¿½}ï¿½ï¿½ï¿½`ï¿½ï¿½ï¿½Cï¿½gï¿½Ìì¬
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ï¿½fï¿½tï¿½Hï¿½ï¿½ï¿½gï¿½Ìƒï¿½ï¿½Cï¿½eï¿½Bï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½wï¿½ï¿½
 		PtrMultiLight->SetDefaultLighting();
 	}
 
@@ -42,7 +42,7 @@ namespace basecross {
 		m_StageSprite = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
-		////“_–Åİ’è
+		////ï¿½_ï¿½Åİ’ï¿½
 		//stratASprite->AddComponent<SpriteFlash>(0.8f);
 		//m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		//m_Fade->FadeOut();
@@ -51,7 +51,7 @@ namespace basecross {
 
 	void SelectStage::OnCreate() {
 		try {
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ï¿½rï¿½ï¿½ï¿½[ï¿½Æƒï¿½ï¿½Cï¿½gï¿½Ìì¬
 			CreateViewLight();
 			//OnUpdate();
 			CreateResource();
@@ -74,11 +74,11 @@ namespace basecross {
 
 		float rot;
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
-			m_Count = (m_Count + 1) % 4; // 0,1,2,3‚Ì”ÍˆÍ“àƒ‹[ƒv
+			m_Count = (m_Count + 1) % 4; // 0,1,2,3ï¿½Ì”ÍˆÍ“ï¿½ï¿½ï¿½ï¿½[ï¿½v
 			m_TotalTimer.Reset();
 		}
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
-			m_Count = (m_Count + 3) % 4; // 0,1,2,3‚Ì”ÍˆÍ“àƒ‹[ƒv
+			m_Count = (m_Count + 3) % 4; // 0,1,2,3ï¿½Ì”ÍˆÍ“ï¿½ï¿½ï¿½ï¿½[ï¿½v
 			m_TotalTimer.Reset();
 		}
 
@@ -109,7 +109,7 @@ namespace basecross {
 	}
 
 	void SelectStage::OnPushA() {
-		//ƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚½‚çtrue
+		//ï¿½{ï¿½^ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ê‚½ï¿½ï¿½true
 		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
 		//m_Fade->Play();
 		OnDestroy();

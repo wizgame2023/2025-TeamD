@@ -1,11 +1,12 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief 
 */
 
 #pragma once
 #include "stdafx.h"
 #include "RayCast.h"
+
 namespace basecross {
 	class Bullet;
 	class LineCube : public GameObject {

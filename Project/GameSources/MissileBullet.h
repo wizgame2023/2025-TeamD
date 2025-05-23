@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief
 */
 
 #pragma once
@@ -19,6 +19,8 @@ namespace basecross {
 
 		Vec3 m_LaunchPosition;
 		Vec3 m_Direction;
+
+		Effekseer::Handle m_EffectHandle;
 	public:
 		MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, Vec3 target,float speed,float explodeSize);
 		virtual ~MissileBullet(){}

@@ -16,8 +16,7 @@ namespace basecross {
 	class GameStageM : public GameStage {
 
 		shared_ptr<NumberSprite> m_Fps;
-		int m_MaxEnemyCount;
-		int m_EnemyCount;
+
 
 		//ƒrƒ…[‚Ìì¬
 		void CreateViewLight();
@@ -25,9 +24,6 @@ namespace basecross {
 		void RegisterObjects();
 		bool m_IsPose;
 
-		float GetClearRate() {
-			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
-		}
 	public:
 		//\’z‚Æ”jŠü
 		GameStageM(const wstring& file) :GameStage(file), m_IsPose(false) {}
@@ -39,16 +35,7 @@ namespace basecross {
 		void ClosePose();
 		void OpenPose();
 
-		void SetMaxEnemyCount(int count) {
-			m_MaxEnemyCount = count;
-			m_EnemyCount = count;
-		}
-		void EliminateEnemy() {
-			m_EnemyCount--;
-		}
 	};
-
 
 }
 //end basecross
-

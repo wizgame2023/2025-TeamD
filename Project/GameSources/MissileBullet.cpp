@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -27,6 +27,9 @@ namespace basecross {
 		draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 		auto col = AddComponent<CollisionObb>();
 		
+		auto& effect = m_Stage->GetCreateEffect();
+		effect->PlayEffect(m_EffectHandle,L"boost", GetPosition(), 0.0f);
+		effect->SetScale(m_EffectHandle,Vec3(0.2f));
 	}
 
 	void MissileBullet::OnUpdate() {
@@ -44,12 +47,23 @@ namespace basecross {
 			m_Direction = Vec3(0, -1, 0);
 		}
 		SetPosition(position);
+
+		
+		auto& effect = m_Stage->GetCreateEffect();
+		Vec3 c = cross(Vec3(0, 0, 1),m_Direction);
+		float angle = acosf(dot(m_Direction,Vec3(0, 0, 1)) / (m_Direction.length() * Vec3(0, 0, 1).length()));
+		effect->SetRotation(m_EffectHandle,c, angle);
+		effect->SetLocation(m_EffectHandle, position);
 	}
 	void MissileBullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		SoundManager::Instance().PlaySE(L"SE_EXPLODE");
 		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(nullptr, 2.5f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
 		explode->Play(GetPosition());
+		auto& effect = m_Stage->GetCreateEffect();
+		effect->StopEffect(m_EffectHandle);
+		effect->PlayEffect(m_EffectHandle,L"MissileFlash", GetPosition() , 0.0f);
+		effect->SetScale(m_EffectHandle,Vec3(0.25f));
+		effect->SetRotation(m_EffectHandle,Vec3(1.0f, 0.0f, 0.0f),XMConvertToRadians(90.0f));
 		m_Stage->RemoveGameObject<MissileBullet>(GetThis<MissileBullet>());
 	}
 }
-//end basecross
