@@ -43,6 +43,7 @@ namespace basecross {
 			SoundManager::Instance().RegisterSounds();
       
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			m_MaxCount = 3;
     }
 		catch (...) {
 			throw;
@@ -50,6 +51,23 @@ namespace basecross {
 	}
 
 	Scene::~Scene() {
+	}
+
+	void Scene::ChangeCountStage(int count) {
+		switch (count) {
+		case 0:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			break;
+		case 1:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			break;
+		case 2:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
+			break;
+		case 3:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageSatou");
+			break;
+		}
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {

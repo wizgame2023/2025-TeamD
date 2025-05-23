@@ -35,9 +35,11 @@ namespace basecross {
 		//app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 	}
 
-	void SelectStage::CreateTitle() {
+	void SelectStage::CreateSelect() {
 		auto titleSprite = AddGameObject<Sprite>(L"SELECTSPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(700.0f, 600.0f), true);
-		score = AddGameObject<NumberSprite>(L"SELECT_NUMBER", Vec3(0.0f, 100.0f, 0.0f), Vec2(33, 100), 1);
+		m_Number = AddGameObject<NumberSprite>(L"SELECT_NUMBER", Vec3(120.0f, -140.0f, 0.0f), Vec2(33, 100), 1);
+		m_TitleSprite = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
+		m_StageSprite = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		////点滅設定
@@ -53,7 +55,7 @@ namespace basecross {
 			CreateViewLight();
 			//OnUpdate();
 			CreateResource();
-			CreateTitle();
+			CreateSelect();
 		}
 		catch (...) {
 			throw;
@@ -65,11 +67,6 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<SelectStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (cntlVec.bConnected) {
-			if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_A) {
-				OnPushA();
-			}
-		}
 		//if (m_Fade->IsFinish())
 		//{
 		//	PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
@@ -77,33 +74,34 @@ namespace basecross {
 
 		float rot;
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
-			count = (count + 1) % 4; // 0,1,2,3の範囲内ループ
+			m_Count = (m_Count + 1) % 4; // 0,1,2,3の範囲内ループ
 			m_TotalTimer.Reset();
 		}
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
-			count = (count + 3) % 4; // 0,1,2,3の範囲内ループ
+			m_Count = (m_Count + 3) % 4; // 0,1,2,3の範囲内ループ
 			m_TotalTimer.Reset();
 		}
 
-		RemoveGameObject<Sprite>(mConut);
-		//RemoveGameObject<NumberSprite>(score);
-
-		switch (count) {
+		switch (m_Count) {
 		case 0:		
-			mConut = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-			score->UpdateNumber(1);
+			m_Number->UpdateNumber(1);
+			m_TitleSprite->SetDrawActive(true);
+			m_StageSprite->SetDrawActive(false);
 			break;
 		case 1:
-			mConut = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-			score->UpdateNumber(2);
+			m_Number->UpdateNumber(2);
+			m_TitleSprite->SetDrawActive(false);
+			m_StageSprite->SetDrawActive(true);
 			break;
 		case 2:
-			mConut = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-			score->UpdateNumber(3);
+			m_Number->UpdateNumber(3);
+			m_TitleSprite->SetDrawActive(false);
+			m_StageSprite->SetDrawActive(true);
 			break;
 		case 3:
-			mConut = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-			score->UpdateNumber(4);
+			m_Number->UpdateNumber(4);
+			m_TitleSprite->SetDrawActive(false);
+			m_StageSprite->SetDrawActive(true);
 			break;
 
 		}
@@ -115,18 +113,8 @@ namespace basecross {
 		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
 		//m_Fade->Play();
 		OnDestroy();
-		if (count == 0) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-		}
-		if (count == 1) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageM");
-		}
-		if (count == 2) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
-		}
-		if (count == 3) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
-		}
+		auto scene = App::GetApp()->GetScene<Scene>();
+		scene->ChangeCountStage(m_Count);
 
 	}
 

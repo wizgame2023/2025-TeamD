@@ -15,19 +15,20 @@ namespace basecross {
 		InputHandler<SelectStage> m_InputHandler;
 		//ƒrƒ…[‚Ìì¬
 		Timer m_TotalTimer;
-		int count;
 		void CreateViewLight();
 		void CreateResource();
-		void CreateTitle();
+		void CreateSelect();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
-
-		shared_ptr<Sprite> mConut;
-		shared_ptr<NumberSprite> score;
+		
+		int m_Count;
+		shared_ptr<Sprite> m_TitleSprite;
+		shared_ptr<Sprite>m_StageSprite;
+		shared_ptr<NumberSprite> m_Number;
 		shared_ptr<SpriteFade> m_Fade;
 		//bool m_fade;
 	public:
 		//\’z‚Æ”jŠü
-		SelectStage() : Stage(), m_TotalTimer(Timer(0.5f, false)) {};
+		SelectStage() : Stage(), m_TotalTimer(Timer(0.5f, false)){};
 		virtual ~SelectStage() {};
 		//‰Šú‰»
 		virtual void OnCreate()override;
