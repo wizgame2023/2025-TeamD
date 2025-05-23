@@ -27,10 +27,11 @@ namespace basecross {
 		draw->AddAnimation(L"Stan", 601, 19, true, fps);
 		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
 		draw->AddAnimation(L"Blow", 545, 10, false, fps * 0.5f);
-		//draw->AddAnimation(L"Crush", 0, 60, false, fps);
+		
 		draw->AddAnimation(L"Missile_First", 971, 9, false, fps);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
 		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps);
+		draw->AddAnimation(L"Crush", 1280, 90, false, fps);
 	}
 	void BossEnemy::SetAnimation(const wstring& key) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();

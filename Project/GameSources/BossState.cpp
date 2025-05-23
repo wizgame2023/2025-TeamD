@@ -95,7 +95,7 @@ namespace basecross {
 		Vec3 direction = intruderPosition - position;
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 40) {
+			if (rnd < 10) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -138,9 +138,11 @@ namespace basecross {
 
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
-				Ready(0.5f);
-				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 0.5f;
-				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 0.5f);
+				Ready(1.0f);
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0,1,0),direction) * 0.5f;
+				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 1.0f);
+
+				m_Enemy->SetAnimation(L"Crush");
 			}
 			if (m_IsReady) {
 				if (m_ReadyTimer.UpdateTimer()) {
@@ -189,9 +191,12 @@ namespace basecross {
 
 		Vec3 direction = intruderPosition - position;
 		float distance = direction.length();
+		direction = direction.normalize();
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				m_Enemy->SetAnimation(L"Missile_First");
+				auto gravity = m_Enemy->GetComponent<Gravity>();
+				gravity->StartJump((-direction + Vec3(0, 0.3f, 0)) * 5.0f);
 				Ready(0.5f);
 			}
 			if (m_IsReady) {
