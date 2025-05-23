@@ -16,7 +16,8 @@ namespace basecross {
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
 		m_NearPoint(nullptr),
-		m_BulletRemain(10)
+		m_BulletRemain(10),
+		m_Update(true)
 	{
 	}
 
@@ -37,28 +38,26 @@ namespace basecross {
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"MOB");
-
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.3f, 0.3f, 0.3f),
-			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(1.0f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.0f, 0.0f)
+			Vec3(0.0f, -0.5f, 0.0f)
 		);
+		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
 
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
+		shadowPtr->SetMeshResource(L"MOB");
+		AddAnimation();
 
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
-
 
 	}
 	void Mob::OnAfterCreate() {
@@ -69,16 +68,16 @@ namespace basecross {
 	void Mob::OnUpdate()
 	{
 		Enemy::OnUpdate();
-		if (GetUpdateActive())
+		if (m_Update)
 		{
+			float elapsed = App::GetApp()->GetElapsedTime();
 			AsyncUpdate();
-			auto draw = GetComponent<BcPNTStaticDraw>();
-
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			draw->UpdateAnimation(elapsed);
 			/*if (m_IsEndAsyncUpdate) {
 				auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
 				updateThread.detach();
 			}*/
-			float elapsed = App::GetApp()->GetElapsedTime();
 			if (m_IntervalStart == true)
 			{
 				draw->SetDiffuse(Col4(1, 0, 0, 1));
@@ -108,6 +107,11 @@ namespace basecross {
 			//m_SearchFan->SetPosition(GetPosition());
 			m_HpBar->SetCurrentHp(m_HP);
 		}
+		else {
+			float elapsed = App::GetApp()->GetElapsedTime();
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			draw->UpdateAnimation(elapsed);
+		}
 	}
 	void Mob::AsyncUpdate()
 	{
@@ -121,18 +125,62 @@ namespace basecross {
 		EndAsync();
 	}
 	void Mob::Dead() {
+		m_Update = false;
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
 		m_HpBar->Destroy();
-		Enemy::Dead();
+
+		m_KnockBackTime -= elapsedTime;
+		if (m_KnockBackTime > 0.0f)
+		{
+			SetAnim(L"Down", 0.0f, true);
+			KnockBackTime();
+		}
+		else if(draw->IsTargetAnimeEnd())
+		{
+			ScoreManager::Instance()->AddEliminateEnemyCount();
+			auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+			auto& groupVec = group->GetGroupVectors();
+			for (int i = 0; i < groupVec.size(); i++) {
+				auto obj = groupVec[i].lock();
+				if (obj != nullptr) {
+					if (obj == GetThis<GameObject>()) {
+						groupVec.erase(groupVec.begin() + i);
+						break;
+					}
+				}
+			}
+			auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner", false);
+			if (spawner) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+			}
+			m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+		}
+
 	}
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if ((other->FindTag(L"Bullet") ||other->FindTag(L"HitJudge")) && m_IntervalStart)
+		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
+			SetAnim(L"Damage", 0.0f, true);
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;
 		}
+	}
+
+	void Mob::AddAnimation()
+	{
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto anim_fps = 60.0f;
+		ptrDraw->AddAnimation(L"Walk", 21, 206, true, anim_fps);
+		ptrDraw->AddAnimation(L"SetUp", 288, 72, false, anim_fps);
+		ptrDraw->AddAnimation(L"Set", 318, 30, true, anim_fps);
+		ptrDraw->AddAnimation(L"SetDown", 361, 103, false, anim_fps);
+		ptrDraw->AddAnimation(L"Down", 557, 93, false, anim_fps);
+		ptrDraw->AddAnimation(L"Damage", 557, 25, false, anim_fps);
+		ptrDraw->AddAnimation(L"Reload", 661, 103, false, anim_fps);
 	}
 
 	Vec3 Mob::RootNaviGate()

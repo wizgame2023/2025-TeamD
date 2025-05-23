@@ -1299,13 +1299,13 @@ namespace basecross {
 			auto MultiMeshRes = m_MultiMeshResource.lock();
 			bool MultiMeshResFlg = MultiMeshRes && MultiMeshRes->IsSkining(0) && MultiMeshRes->GetBoneCount(0) > 0 && MultiMeshRes->GetSampleCount(0) > 0;
 			if (MeshResFlg || MultiMeshResFlg) {
-				if (ElapsedTime < 0.0f) {
-					throw BaseException(
-						L"アニメーション更新にマイナスは設定できません",
-						L"if (ElapsedTime < 0.0f)",
-						L"DrawObjectBase::UpdateAnimation()"
-					);
-				}
+				//if (ElapsedTime < 0.0f) {
+				//	throw BaseException(
+				//		L"アニメーション更新にマイナスは設定できません",
+				//		L"if (ElapsedTime < 0.0f)",
+				//		L"DrawObjectBase::UpdateAnimation()"
+				//	);
+				//}
 				if (m_CurrentAnimeName == L"") {
 					//見つからない
 					throw BaseException(

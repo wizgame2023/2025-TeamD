@@ -48,6 +48,7 @@ namespace basecross {
 		unique_ptr<EnemyState<Mob>> m_currentState;  //現在のステート
 		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
+		bool m_Update;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
@@ -60,6 +61,7 @@ namespace basecross {
 		virtual void Dead()override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
+		void AddAnimation();
 		Vec3 RootNaviGate();
 		shared_ptr<Stage> GetStage();
 		shared_ptr<Transform> GetTransfrom();
@@ -84,6 +86,17 @@ namespace basecross {
 			m_currentState = make_unique<NextState>(GetThis<Mob>());
 			m_currentState->Enter();
 		}
+
+		const void SetAnim(wstring animname,float time = 0.0f, bool enforce = false) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				else
+				{
+					if (draw->IsTargetAnimeEnd() || enforce) draw->ChangeCurrentAnimation(animname, time);
+				}
+		}
+
 	private:
 
 		float WstrToFlt(const wstring& data) {
@@ -104,8 +117,6 @@ namespace basecross {
 			}
 			return num;
 		}
-
-
 	};
 }
 //end basecross
