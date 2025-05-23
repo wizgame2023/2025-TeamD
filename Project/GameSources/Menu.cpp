@@ -229,10 +229,10 @@ namespace basecross {
 				int count = scene->GetCount();
 				auto stage = static_pointer_cast<Stage>(object);
 				if (count == scene->GetMaxCount()){
-					stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+					scene->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 				}
 				else {
-					scene->ChangeCountStage(count++);
+					scene->ChangeCountStage(++count);
 				}
 
 			});
