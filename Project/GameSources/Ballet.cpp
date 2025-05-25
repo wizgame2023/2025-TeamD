@@ -22,11 +22,22 @@ namespace basecross {
 		Object::OnCreate();
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetAfterCollision(AfterCollision::None);
 		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.5f), //(.1f, .1f, .1f),
+			Vec3(0, 0.0f, 0),
+			Vec3(0, 0, 0),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+		ptrDraw->SetMeshResource(L"BULLET");
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
+
 		AddTag(L"Bullet");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
@@ -39,7 +50,9 @@ namespace basecross {
 		float elapsed = GetElpased();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
-
+		Vec3 rot = GetForward();
+		float rotate = atan2f(-m_Direction.x, -m_Direction.z);
+		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		ZoneSpeedSet();
 		moveAmount += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 
