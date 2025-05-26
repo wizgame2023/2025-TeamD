@@ -24,7 +24,7 @@ namespace basecross {
 		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 pos = enemy->GetPosition();
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		shared_ptr<Object> obj;
 		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
 		auto groups = group->GetGroupVector();
@@ -143,7 +143,7 @@ namespace basecross {
 	void MobAlert::Execute()
 	{
 
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 direction = Vec3();
 		m_IntruderAlert = m_Enemy->GetIntruderAlert();
@@ -253,6 +253,9 @@ namespace basecross {
 				m_BulletRelord = 3.0f;
 			}
 		}
+
+		m_Effect->SetEffectSpeed(m_Eyehandle, 2.0f * GameManager::Instance()->GetTimeRate());
+		m_Effect->SetEffectSpeed(m_Handle, GameManager::Instance()->GetTimeRate());
 	}
 
 	void MobAlert::Exit()

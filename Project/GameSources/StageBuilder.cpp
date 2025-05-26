@@ -96,11 +96,7 @@ namespace basecross {
 		spawner->OnAfterCreate();
 		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
 	}
-	/// <summary>
-	/// オブジェクトの生成
-	/// </summary>
-	/// <param name="date">オブジェクトの文字列データ</param>
-	/// <returns>生成したオブジェクト</returns>
+
 	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
 		Vec3 position = Vec3(), scale = Vec3(1), rotation = Vec3();
 		int index = GetInfoIndex(L"position");

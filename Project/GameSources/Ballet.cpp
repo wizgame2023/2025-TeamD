@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -20,11 +20,11 @@ namespace basecross {
 	void Bullet::OnCreate()
 	{
 		Object::OnCreate();
-		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetAfterCollision(AfterCollision::None);
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
@@ -47,7 +47,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnUpdate() {
-		float elapsed = GetElpased();
+		float elapsed = GetGameElapsed();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
 		Vec3 rot = GetForward();

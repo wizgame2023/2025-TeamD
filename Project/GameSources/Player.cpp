@@ -84,7 +84,7 @@ namespace basecross {
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
-			Move(angle);
+			Move(angle,false);
 		}
 		//‰ñ“]‚ÌŒvŽZ
 		if (angle.length() > 0.0f) {
@@ -133,6 +133,8 @@ namespace basecross {
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
+
+					GameManager::Instance()->SetTimeRate(0.5f);
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -152,6 +154,8 @@ namespace basecross {
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
+
+				GameManager::Instance()->SetTimeRate(1.0f);
 			}
 		}
 	}

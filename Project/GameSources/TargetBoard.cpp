@@ -24,6 +24,7 @@ namespace basecross {
 		Vec3 eye = OnGetDrawCamera()->GetEye();
 		Vec3 direction = eye - targetPosition;
 		m_Board->GetComponent<Transform>()->SetPosition(targetPosition + direction * 0.1f);
+		m_Board->GetComponent<Transform>()->SetScale(targetSize);
 	}
 }
 //end basecross

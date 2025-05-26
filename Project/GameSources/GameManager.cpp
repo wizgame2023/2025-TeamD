@@ -8,6 +8,8 @@
 
 namespace basecross {
 	void GameManager::Update() {
+		if (!m_IsUpdate) return;
+
 		if (m_ZoneTimer.UpdateTimer()) {
 			m_TimeRate = 1.0f;
 		}

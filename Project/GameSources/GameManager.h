@@ -20,9 +20,10 @@ namespace basecross{
 		Difficulty m_GameDiffculty;
 
 		bool m_IsDebug;
+		bool m_IsUpdate;
 		GameManager() :
 			m_ZoneRate(1.0f), m_TimeRate(1.0f), m_ZoneTimer(Timer(0.0f, false)),
-			m_GameDiffculty(Difficulty::Easy), m_IsDebug(false)
+			m_GameDiffculty(Difficulty::Easy), m_IsDebug(false), m_IsUpdate(true)
 		{ }
 	public:
 		static GameManager* Instance() {
@@ -34,9 +35,11 @@ namespace basecross{
 
 		void StartZone(float time = 5.0f) {
 			m_ZoneTimer.SetTime(time, true);
+			m_IsUpdate = true;
 		}
 		void SetTimeRate(float rate) {
 			m_TimeRate = rate;
+			m_IsUpdate = false;
 		}
 		void SetZoneRate(float rate) {
 			m_ZoneRate = rate;
