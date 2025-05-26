@@ -8,16 +8,16 @@ namespace basecross {
 	void AreaOfEffect::OnCreate() {
 		Object::OnCreate();
 		m_AreaSizeEffect = m_Stage->AddGameObject<SharpFan>(L"SEARCH_RANGE", m_AreaVertexCount, 380.0f, m_AreaSize);
-		m_AreaEffect = m_Stage->AddGameObject<SharpFan>(L"HP_BAR", m_AreaVertexCount, 380.0f, 0);
+		m_AreaEffect = m_Stage->AddGameObject<SharpFan>(L"AOF", m_AreaVertexCount, 380.0f, 0);
 	}
 	void AreaOfEffect::OnUpdate() {
 		m_AreaEffect->SetPosition(GetPosition());
 		m_AreaSizeEffect->SetPosition(GetPosition());
 
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		float radius = m_AreaEffect->GetRadius();
 		radius += m_AreaSize * elapsed / m_ExitTime.GetMaxTime();
-		m_AreaEffect->SetRadius(radius);
+		m_AreaEffect->SetRadius(m_AreaSize * (m_ExitTime.GetTime() / m_ExitTime.GetMaxTime()));
 
 		if (m_ExitTime.UpdateTimer()) {
 			m_Stage->RemoveGameObject<SharpFan>(m_AreaEffect);

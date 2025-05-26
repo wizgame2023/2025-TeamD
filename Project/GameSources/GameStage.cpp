@@ -57,6 +57,8 @@ namespace basecross {
 
 		app->RegisterTexture(L"RESULT_BACK", uiPath + L"Result_Back.png");
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
+		app->RegisterTexture(L"AOF", texPath + L"AoF.png");
+
 		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu2.png");
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"ResultTexts2.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"ResultScore.png");
@@ -102,9 +104,10 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		builder->Register<Mob>(L"enemy");
+		//builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
+		builder->Register<LimitArea>(L"area");
 		builder->Register<flyobject>(L"flyobject");
 		builder->LoadCsv();
 
@@ -229,9 +232,8 @@ namespace basecross {
 				}
 			}
 			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
-			
-			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
-			int rank = score.CalcRank(12.0f);
+			GameManager::Instance()->SetZoneRate(0.5f);
+			//GameManager::Instance()->StartZone(20.0f);
 		}
 		catch (...) {
 			throw;
@@ -241,6 +243,8 @@ namespace basecross {
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
+		GameManager::Instance()->Update();
+
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {

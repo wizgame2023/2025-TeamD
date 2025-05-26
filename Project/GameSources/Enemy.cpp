@@ -21,7 +21,7 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		m_KnockBack = false;
 		m_KnockBackTime = 0.5f;
-		//CollisionSphereã®è¨­å®š
+		//CollisionSphere‚Ìİ’è
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
@@ -35,7 +35,7 @@ namespace basecross {
 
 	void Enemy::OnUpdate()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElpased();
 
 		if (m_KnockBack)
 		{
@@ -105,7 +105,7 @@ namespace basecross {
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®æ–¹å‘ã‚’ã‚†ã£ãã‚Šå‘ã
+				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğ‚ä‚Á‚­‚èŒü‚­
 				m_IntruderAlert = true;
 			}
 			else {

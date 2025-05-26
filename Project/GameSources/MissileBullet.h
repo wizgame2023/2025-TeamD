@@ -11,7 +11,8 @@ namespace basecross {
 
 	class MissileBullet : public Object {
 		float m_Speed;
-		Vec3 m_Target;
+		Vec3 m_TargetPosition;
+		shared_ptr<Transform> m_Target;
 		float m_ExplodeSize;
 		shared_ptr<AreaOfEffect> m_AreaEffect;
 
@@ -22,7 +23,7 @@ namespace basecross {
 
 		Effekseer::Handle m_EffectHandle;
 	public:
-		MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, Vec3 target,float speed,float explodeSize);
+		MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, shared_ptr<Transform>& target,float speed,float explodeSize);
 		virtual ~MissileBullet(){}
 
 		virtual void OnCreate()override;
