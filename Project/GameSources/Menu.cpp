@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief „Ç≠„É£„É©„ÇØ„Çø„Éº„Å™„Å©ÂÆü‰Ωì
+@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«é¿ëÃ
 */
 
 #include "stdafx.h"
@@ -216,13 +216,13 @@ namespace basecross {
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 
-		//„Çø„Ç§„Éà„É´
+		//É^ÉCÉgÉã
 		AddButton(L"POSE_TITLE", L"POSE_START", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//Ê¨°„ÅÆ„Çπ„ÉÜ„Éº„Ç∏
+		//éüÇÃÉXÉeÅ[ÉW
 		AddButton(L"POSE_START", L"POSE_SELECT", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
@@ -236,7 +236,7 @@ namespace basecross {
 				}
 
 			});
-		//„Çª„É¨„ÇØ„Éà
+		//ÉZÉåÉNÉg
 		AddButton(L"POSE_SELECT", L"POSE_TITLE", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
@@ -248,18 +248,27 @@ namespace basecross {
 	}
 	void ResultMenu::Open() {
 		Menu::Open();
-		auto time_min = static_pointer_cast<NumberSprite>(m_MenuObjects[1]);
-		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
-		auto eliminate = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
+		auto damage = static_pointer_cast<NumberSprite>(m_MenuObjects[1]);
+		auto time_min = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
+		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
 		auto parry = static_pointer_cast<NumberSprite>(m_MenuObjects[4]);
-		auto damage = static_pointer_cast<NumberSprite>(m_MenuObjects[5]);
+
 		int minute = ScoreManager::Instance()->GetTime() / 60;
 		int second = static_cast<int>(ScoreManager::Instance()->GetTime()) % 60;
 		time_min->UpdateNumber(minute);
 		time_sec->UpdateNumber(second);
-		eliminate->UpdateNumber(static_cast<int>(ScoreManager::Instance()->CalculateEliminateEnemyRate()));
 		parry->UpdateNumber(ScoreManager::Instance()->GetParryCount());
 		damage->UpdateNumber(ScoreManager::Instance()->GetDamage());
+
+		auto damageRank = static_pointer_cast<NumberSprite>(m_MenuObjects[5]);
+		auto timeRank = static_pointer_cast<NumberSprite>(m_MenuObjects[6]);
+		auto parryRank = static_pointer_cast<NumberSprite>(m_MenuObjects[7]);
+		auto totalRank = static_pointer_cast<NumberSprite>(m_MenuObjects[7]);
+
+		damageRank->UpdateNumber(ScoreManager::Instance()->GetDamageRank());
+		timeRank->UpdateNumber(ScoreManager::Instance()->GetTimeRank());
+		parryRank->UpdateNumber(ScoreManager::Instance()->GetParryRank());
+		totalRank->UpdateNumber(ScoreManager::Instance()->GetTotalRank());
 	}
 
 	void GameOverMenu::OnCreate() {
@@ -271,18 +280,18 @@ namespace basecross {
 		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
 
-		//„Çø„Ç§„Éà„É´
+		//É^ÉCÉgÉã
 		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//„Çª„É¨„ÇØ„Éà
+		//ÉZÉåÉNÉg
 		//AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-50.0f, -250.0f, 0.0f), Vec2(250, 120),
 		//	[](shared_ptr<ObjectInterface> object) {
 
 		//	});
-		//„É™„Çπ„Çø„Éº„Éà
+		//ÉäÉXÉ^Å[Ég
 		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);

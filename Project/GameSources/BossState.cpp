@@ -88,14 +88,16 @@ namespace basecross {
 	}
 	void BossHostility::Execute()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * m_Enemy->m_ZoneElapsedTime;
-		auto navi = m_Enemy->GetComponent<Navigate>();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		direction = direction.normalize();
+
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 10) {
+			if (rnd < 40.0f) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -103,16 +105,16 @@ namespace basecross {
 			}
 		}
 		else {
-			Vec3 newDirection = Lerp::CalculateLerp(m_LerpStartDirection, m_LerpTargetDirection, 0.0f, 1.0f, m_LerpTime, Lerp::rate::Linear);
-			float rotationY = atan2f(newDirection.x, newDirection.z);
+			float rotationY = atan2f(direction.x, direction.z);
 			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
-			
-			if (m_LerpTargetDirection == newDirection) {
-				m_Enemy->Move(m_LerpTargetDirection);
+			if (distance > 5.0f) {
+				m_Enemy->Move(direction);
 			}
 			else {
-				m_LerpTime += elapsedTime;
+				m_Enemy->Move(-direction / 2.0f);
 			}
+
+			
 		}
 	}
 	void BossHostility::Exit()
@@ -139,7 +141,7 @@ namespace basecross {
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				Ready(1.0f);
-				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0,1,0),direction) * 0.5f;
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0, 1, 0), direction) * 0.5f;
 				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 1.0f);
 
 				m_Enemy->SetAnimation(L"Crush");
@@ -154,7 +156,7 @@ namespace basecross {
 
 					Effekseer::Handle handle;
 					m_Enemy->m_Effect->PlayEffect(handle,L"Trampling", m_AttackPosition, 0.0f);
-					m_Enemy->m_Effect->SetScale(handle,Vec3(0.2f, 0.2f, 0.2f));
+					m_Enemy->m_Effect->SetScale(handle,m_Attack->GetSize() / 8.0f);
 				}
 			}
 			else {
