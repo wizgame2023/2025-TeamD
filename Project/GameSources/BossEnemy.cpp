@@ -45,7 +45,6 @@ namespace basecross {
 					draw->ChangeCurrentAnimation(key);
 				}
 			}
-				 
 	}
 	bool BossEnemy::GetAnimationFinish() {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();

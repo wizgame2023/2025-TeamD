@@ -19,9 +19,10 @@ namespace basecross{
 
 		Difficulty m_GameDiffculty;
 
-		GameManager() : 
-			m_ZoneRate(1.0f),m_TimeRate(1.0f),m_ZoneTimer(Timer(0.0f,false)),
-			m_GameDiffculty(Difficulty::Easy)
+		bool m_IsDebug;
+		GameManager() :
+			m_ZoneRate(1.0f), m_TimeRate(1.0f), m_ZoneTimer(Timer(0.0f, false)),
+			m_GameDiffculty(Difficulty::Easy), m_IsDebug(false)
 		{ }
 	public:
 		static GameManager* Instance() {
@@ -50,6 +51,10 @@ namespace basecross{
 		}
 		Difficulty GetDifficulty() {
 			return m_GameDiffculty;
+		}
+
+		bool IsDebug() {
+			return m_IsDebug;
 		}
 	};
 }
