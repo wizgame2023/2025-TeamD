@@ -41,7 +41,7 @@ namespace basecross {
 
 		Vec3 position = GetPosition();
 		Vec3 move = Vec3();
-		move = m_Direction * m_Speed * GetElpased();
+		move = m_Direction * m_Speed * GetGameElapsed();
 
 		position += move;
 		if (!m_IsTarget && (m_LaunchPosition - position).length() > 1.0f) {

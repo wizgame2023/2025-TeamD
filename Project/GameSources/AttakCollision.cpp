@@ -37,6 +37,7 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
+		Stop();
 	}
 	void CrushAttack::ReflectParry(Vec3 position) {
 		if (m_Date.m_Owner != nullptr) {

@@ -55,7 +55,7 @@ namespace basecross {
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
-		virtual void Move(const Vec3& direction)override;
+		virtual void Move(const Vec3& direction,const bool& isGameSpeed = true)override;
 
 		void RegisterAttack();
 
