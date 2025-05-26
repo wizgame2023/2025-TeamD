@@ -34,6 +34,7 @@ namespace basecross {
 		RegisterSound(L"SE_MISSILE", L"SE/Rocket_Fire.wav");
 		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");
+		RegisterSound(L"SE_ATTACK_SIGN", L"SE/Enemy_Attack_Sign.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";

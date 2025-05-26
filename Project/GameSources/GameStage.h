@@ -35,6 +35,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_BossHpBarBackGround;
 		shared_ptr<Sprite> m_BossText;
 
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
@@ -48,11 +49,12 @@ namespace basecross {
 
 		void GameOver();
 		void GameClear();
-
+		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
 		shared_ptr<FollowCamera> m_Camera;
+		shared_ptr<SingleView> m_OpeningCameraView;
+		shared_ptr<SingleView> m_CurrentCamera;
 
-		
 	public:
 		//構築と破棄
 		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
@@ -65,7 +67,7 @@ namespace basecross {
 		shared_ptr <EffectManeger> GetCreateEffect();
 		shared_ptr<FollowCamera> SetCameraPause();
 		void SetAllGameObjectActive(bool flag);
-
+		void ToMainCamera();
 	};
 
 }

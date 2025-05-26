@@ -41,6 +41,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />

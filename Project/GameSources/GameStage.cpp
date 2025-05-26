@@ -13,14 +13,17 @@ namespace basecross {
 	void GameStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
-		auto PtrView = CreateView<SingleView>();
+		m_CurrentCamera = CreateView<SingleView>();
+		//m_OpeningCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
+		//auto ptrOpeningCamera = ObjectFactory::Create<OpeningCamera>();
 
 		//ビューのカメラの設定
 		m_Camera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-		//auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-		PtrView->SetCamera(m_Camera);
+		//ToOpeningCamera();
+		m_CurrentCamera->SetCamera(m_Camera);
 		m_Camera->SetEye(eye);
 		m_Camera->SetAt(at);
+		//auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -168,6 +171,44 @@ namespace basecross {
 			}
 		}
 	}
+
+	void GameStage::ToMainCamera()
+	{
+		const Vec3 eye(0.0f, 5.0f, -5.0f);
+		const Vec3 at(0.0f);
+		m_CurrentCamera->SetCamera(m_Camera);
+		m_Camera->SetEye(eye);
+		m_Camera->SetAt(at);
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+			if (camera != nullptr) {
+				camera->SetTarget(player->GetComponent<Transform>());
+			}
+		}
+	}
+
+	void GameStage::ToOpeningCamera()
+	{
+		Vec3 CameraPos = Vec3(10.0f, 5.0f, 0);
+		Vec3 CameraStartEndPos = Vec3(5.0f,  5.0f, 0);
+		Vec3 CameraEndPos = Vec3(15.0f, 10.0f, 0);
+		Vec3 PlayEndpos = Vec3(0.0f, 5.0f, -5.0);
+		Vec3 PlayStartpos = Vec3(0, 1.0f, 0);
+		auto view = CreateView<SingleView>();
+		//カメラのオープニングの移動(最初のカメラの位置、最後のカメラの位置、
+// 　　　　　　　　　　　　　最初に見てる所、最後に見てる所、後半最初に見る位置、
+// 　　　　　　　　　　　　　かかる時間(多分)、後半最後にいる位置、後半最後に見てる所)
+		auto ptrOpeningCameraman = AddGameObject<OpeningCameraman>(CameraPos, CameraStartEndPos,
+			PlayStartpos, Vec3(0), PlayEndpos,
+			0.0f, CameraEndPos, PlayEndpos);
+		auto ptrOpeningCamera = dynamic_pointer_cast<OpeningCamera>(m_OpeningCameraView->GetCamera());
+		if (ptrOpeningCamera) {
+			ptrOpeningCamera->SetCameraObject(ptrOpeningCameraman);
+			SetView(m_OpeningCameraView);
+		}
+	}
+
 	void GameStage::GameClear() {
 		m_ResultMenu->Open();
 		auto camera = GetView()->GetTargetCamera();
@@ -221,6 +262,7 @@ namespace basecross {
 			CreateGameOverMenu();
 			ButtonManager::instance->CloseAll();
 			CreateUI();
+			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -228,8 +270,7 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
-			
+
 			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
 			int rank = score.CalcRank(12.0f);
 		}
