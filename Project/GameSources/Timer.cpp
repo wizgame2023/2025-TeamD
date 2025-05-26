@@ -28,7 +28,7 @@ namespace basecross {
 			return true;
 		}
 		else {
-			float elapsed = App::GetApp()->GetElapsedTime();
+			float elapsed = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 			m_Timer += elapsed;
 		}
 		

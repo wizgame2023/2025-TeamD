@@ -33,7 +33,7 @@ namespace basecross {
 		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps);
 		draw->AddAnimation(L"Crush", 1280, 90, false, fps);
 	}
-	void BossEnemy::SetAnimation(const wstring& key) {
+	void BossEnemy::SetAnimation(const wstring& key,const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		
 		if (draw->GetCurrentAnimation() != key)
@@ -41,7 +41,7 @@ namespace basecross {
 				draw->ChangeCurrentAnimation(key);
 			}
 			else {
-				if (draw->IsTargetAnimeEnd()) {
+				if (draw->IsTargetAnimeEnd() || isChange) {
 					draw->ChangeCurrentAnimation(key);
 				}
 			}
@@ -77,7 +77,7 @@ namespace basecross {
 			Vec3(0.6f, 0.6f, 0.6f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.3f, 0.0f)
+			Vec3(0.0f, -0.6f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//影をつける（シャドウマップを描画する）
@@ -94,27 +94,38 @@ namespace basecross {
 
 		m_Effect = m_Stage->GetCreateEffect();
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(1.5f), AttackDate(GetThis<BossEnemy>(),5.0f, 1.0f, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Gun = m_Stage->AddGameObject<MachineGun>(m_Intruder, AttackDate(GetThis<BossEnemy>(),1.0f, 10.0f, 2.0f, 10.0f, 2.0f), 20.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f,1.7f, 5.0f, 2.0f), 0.0f, 6, 0.25f);
+		
+		RegisterAttack();
+	}
+	
+	void BossEnemy::RegisterAttack() {
+		Difficulty difficulty = Difficulty::Hard;//GameManager::Instance()->GetDifficulty();
+		float addRate = max(1.0f, (int)difficulty * 0.75f);
+		float crushDamage = 5.0f * addRate;
+		float crushSize = 1.5f * addRate;
+		float crushRange = max(1.0f,crushSize / 1.8f);
+		float crushBlow = 3.0f * addRate;
+
+		int missileCount = 6.0f * addRate;
+		float missileInterval = 0.25f;
+		float explodeSize = 2.0f * addRate;
+
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
+
+		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(crushSize), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), 3.0f);
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
 		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 	}
-	
 
 	void BossEnemy::OnUpdate()
 	{
 		Enemy::OnUpdate();
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = GetElpased();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
 		if (!m_IsStun) {
-			if (GetCurrentAnimationKey() != L"Blow") {
-				m_currentState->Execute();
-			}
-			else if (GetAnimationFinish()) {
-				SetAnimation(L"Idle");
-			}
+			m_currentState->Execute();
 			
 			if (m_DamageEffectTime.UpdateTimer()) {
 				draw->SetDiffuse(Col4(1, 1, 1, 1));
@@ -153,10 +164,7 @@ namespace basecross {
 			m_Stun += stun;
 			if (m_Stun > 1.0f) {
 				m_IsStun = true;
-				SetAnimation(L"Stan_First");
-			}
-			else if (stun >= 0.3f) {
-				SetAnimation(L"Blow");
+				SetAnimation(L"Stan_First",true);
 			}
 		}
 	}

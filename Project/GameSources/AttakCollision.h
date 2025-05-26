@@ -45,7 +45,7 @@ namespace basecross {
 				ContactPlayerEffect();
 				ContactPlayer(Other);
 				auto player = dynamic_pointer_cast<Player>(Other);
-				player->Damage(true, 4.0f);
+				player->Damage(true, GetDamage(),GetThis<Attack>());
 			}
 			if (Other->FindTag(L"Stage")) {
 				ContactObjectEffect();
@@ -70,7 +70,7 @@ namespace basecross {
 		virtual void ContactPlayerEffect() {}
 		virtual void ContactPlayer(shared_ptr<GameObject>& player) {}
 		virtual void ContactStage(shared_ptr<GameObject>& object) {}
-
+		virtual void ReflectParry(Vec3 position){}
 		virtual float GetDamage() {
 			return m_Date.m_Damage;
 		}
@@ -110,6 +110,10 @@ namespace basecross {
 			m_Transform->SetScale(m_Size);
 			AddTag(L"BossAttack");
 		}
+
+		Vec3 GetSize() {
+			return m_Size;
+		}
 	};
 
 	class CrushAttack : public AttackCollision<CollisionSphere> {
@@ -119,8 +123,9 @@ namespace basecross {
 			AttackCollision(stage,size,date),m_BlowForce(force){}
 		virtual~CrushAttack(){}
 
-		virtual void ContactPlayer(shared_ptr<GameObject>& player);
-		virtual void OnCollisionEnter(shared_ptr<GameObject>& Other);
+		virtual void ContactPlayer(shared_ptr<GameObject>& player)override;
+
+		virtual void ReflectParry(Vec3 position)override;
 	};
 	class MachineGun : public Attack {
 		shared_ptr<GameObject> m_Target;

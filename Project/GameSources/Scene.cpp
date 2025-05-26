@@ -92,7 +92,6 @@ namespace basecross {
 			//最初のアクティブステージの設定
 			ResetActiveStage<GameStageS>(L"TestMapSatou.csv");
 		}
-
 	}
 
 }

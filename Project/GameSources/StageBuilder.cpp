@@ -46,7 +46,16 @@ namespace basecross {
 			wstring dateType = objInfo[GetInfoIndex(L"type")];
 			
 			if (dateType == L"Stage") {
+				wstring difficulty = objInfo[GetInfoIndex(L"difficulty")];
+				if (difficulty == L"easy") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Easy);
+				}else if (difficulty == L"normal") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Normal);
+				}else if (difficulty == L"hard") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Hard);
+				}
 
+				GameManager::Instance()->SetDifficulty(Difficulty::Hard);
 			}
 			if (dateType == L"Player") {
 				wstring hpStr = objInfo[GetInfoIndex(L"hp")];

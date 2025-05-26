@@ -5,7 +5,7 @@
 
 #pragma once
 #include "stdafx.h"
-
+#include"GameManager.h"
 namespace basecross {
 	class Object;
 	class RootPointer;
@@ -60,7 +60,7 @@ namespace basecross {
 			return m_Transform;
 		}
 		float GetElpased() {
-			return App::GetApp()->GetElapsedTime() * m_UpdateSpeed;
+			return App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		}
 		void StartAsync() {
 			m_IsEndAsyncUpdate = false;

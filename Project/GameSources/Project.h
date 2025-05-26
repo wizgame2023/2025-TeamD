@@ -49,3 +49,4 @@
 #include "MissileBullet.h"
 #include "flyobject.h"
 #include "Citizen.h"
+#include "GameManager.h"

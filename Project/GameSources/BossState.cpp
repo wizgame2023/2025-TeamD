@@ -95,7 +95,7 @@ namespace basecross {
 		Vec3 direction = intruderPosition - position;
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 10) {
+			if (rnd < 90) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -139,7 +139,7 @@ namespace basecross {
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				Ready(1.0f);
-				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0,1,0),direction) * 0.5f;
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0, 1, 0), direction) * 0.5f;
 				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 1.0f);
 
 				m_Enemy->SetAnimation(L"Crush");
@@ -154,7 +154,7 @@ namespace basecross {
 
 					Effekseer::Handle handle;
 					m_Enemy->m_Effect->PlayEffect(handle,L"Trampling", m_AttackPosition, 0.0f);
-					m_Enemy->m_Effect->SetScale(handle,Vec3(0.2f, 0.2f, 0.2f));
+					m_Enemy->m_Effect->SetScale(handle,m_Attack->GetSize() / 8.0f);
 				}
 			}
 			else {
