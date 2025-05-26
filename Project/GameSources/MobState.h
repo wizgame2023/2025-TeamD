@@ -65,6 +65,7 @@ namespace basecross {
 		int m_CurrentBullet;
 		int m_BulletRemain;
 		bool m_BulletEffect;
+		bool m_BulletSound;
 		shared_ptr<EffectManeger> m_Effect;
 		Effekseer::Handle m_Handle;
 		Effekseer::Handle m_Eyehandle;
@@ -76,7 +77,8 @@ namespace basecross {
 			m_Interval(0.2f),
 			m_CurrentBullet(5),
 			m_BulletRelord(3.0f),
-			m_BulletEffect(false)
+			m_BulletEffect(false),
+			m_BulletSound(false)
 		{
 		}
 

@@ -207,18 +207,22 @@ namespace basecross {
 		if(m_BulletRemain > 0)
 		{
 			enemy->SetAnim(L"Set", 0.0f);
-			if (enemy->m_BalletInterval < 0.3f && enemy->m_ShotRandomInterval < 0.3f && m_BulletEffect != true)
+			if (enemy->m_BalletInterval < 0.5f && enemy->m_ShotRandomInterval < 0.5f && m_BulletEffect != true)
 			{
 
 				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
 				m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-				m_Effect->SetScale(m_Eyehandle, Vec3(0.1f, 0.1f, 0.1f));
-				m_Effect->SetEffectSpeed(m_Eyehandle, 2.0f);
 				m_Effect->SetAllColor(m_Eyehandle, Col4(1.0, 0, 0, 1.0f));
 				m_BulletEffect = true;
 			}
+			else if (enemy->m_BalletInterval < 0.25f && enemy->m_ShotRandomInterval < 0.25f && m_BulletSound != true)
+			{
+				SoundManager::Instance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
+				m_BulletSound = true;
+			}
 			else if (enemy->m_BalletInterval <= 0 && enemy->m_ShotRandomInterval <= 0) 
 			{
+
 				m_Effect->PlayEffect(m_Handle, L"Flash", Vec3(position.x + forward.x / 2, position.y + 0.25f, position.z + forward.z / 2), 8.0f);
 				m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
 				m_Effect->SetScale(m_Handle, Vec3(0.1f, 0.1f, 0.1f));
@@ -226,7 +230,7 @@ namespace basecross {
 
 				auto ballet = m_Stage->AddGameObject<Bullet>(m_Transform->GetPosition() + direction * enemy->m_MuzzleOffset, enemy->m_BalletSpeed, direction, enemy->m_BalletRange);
 				m_BulletEffect = false;
-
+				m_BulletSound = false;
 				enemy->m_BalletInterval = enemy->MAX_BALLET_INTERVAL;
 
 				enemy->m_ShotRandomInterval = 1.0f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
@@ -245,6 +249,7 @@ namespace basecross {
 				enemy->m_ShotRandomInterval = 1.0f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
 				m_BulletRemain = enemy->m_BulletRemain;
 				m_BulletEffect = false;
+				m_BulletSound = false;
 				m_BulletRelord = 3.0f;
 			}
 		}
