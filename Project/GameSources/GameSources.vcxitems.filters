@@ -165,7 +165,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -282,6 +281,5 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
-  　</ClCompile>
   </ItemGroup>
 </Project>
