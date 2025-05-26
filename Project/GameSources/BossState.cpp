@@ -88,14 +88,16 @@ namespace basecross {
 	}
 	void BossHostility::Execute()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * m_Enemy->m_ZoneElapsedTime;
-		auto navi = m_Enemy->GetComponent<Navigate>();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		direction = direction.normalize();
+
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 90) {
+			if (rnd < 40.0f) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -103,16 +105,16 @@ namespace basecross {
 			}
 		}
 		else {
-			Vec3 newDirection = Lerp::CalculateLerp(m_LerpStartDirection, m_LerpTargetDirection, 0.0f, 1.0f, m_LerpTime, Lerp::rate::Linear);
-			float rotationY = atan2f(newDirection.x, newDirection.z);
+			float rotationY = atan2f(direction.x, direction.z);
 			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
-			
-			if (m_LerpTargetDirection == newDirection) {
-				m_Enemy->Move(m_LerpTargetDirection);
+			if (distance > 5.0f) {
+				m_Enemy->Move(direction);
 			}
 			else {
-				m_LerpTime += elapsedTime;
+				m_Enemy->Move(-direction / 2.0f);
 			}
+
+			
 		}
 	}
 	void BossHostility::Exit()

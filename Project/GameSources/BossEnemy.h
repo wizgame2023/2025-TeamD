@@ -50,6 +50,7 @@ namespace basecross {
 		);
 		~BossEnemy();
 		virtual void OnCreate();
+		virtual void OnAfterCreate()override;
 		virtual void OnUpdate();
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();

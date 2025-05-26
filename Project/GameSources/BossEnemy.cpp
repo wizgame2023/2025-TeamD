@@ -93,13 +93,14 @@ namespace basecross {
 		AddComponent<Gravity>();
 
 		m_Effect = m_Stage->GetCreateEffect();
+	}
 
-		
+	void BossEnemy::OnAfterCreate() {
 		RegisterAttack();
 	}
 	
 	void BossEnemy::RegisterAttack() {
-		Difficulty difficulty = Difficulty::Hard;//GameManager::Instance()->GetDifficulty();
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
 		float addRate = max(1.0f, (int)difficulty * 0.75f);
 		float crushDamage = 5.0f * addRate;
 		float crushSize = 1.5f * addRate;
@@ -116,6 +117,10 @@ namespace basecross {
 		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
 		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
+
+		float hp = GetMaxHP();
+		hp *= addRate;
+		InitHP(hp);
 	}
 
 	void BossEnemy::OnUpdate()
@@ -149,11 +154,9 @@ namespace basecross {
 			if (GetCurrentAnimationKey() == L"Stan") {
 				m_Stun -= elapsed / 4.0f;
 			}
-			//draw->SetDiffuse(Col4(0, 0, 0, 1));
 			
 			if (m_Stun < 0) {
 				m_Stun = 0;
-				//m_IsStun = false;
 				SetAnimation(L"Stan_Finish");
 				effect->StopEffect(m_EffectHandle);
 			}
