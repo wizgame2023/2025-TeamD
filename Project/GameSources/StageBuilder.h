@@ -106,7 +106,7 @@ namespace basecross {
 		/// </summary>
 		/// <returns>Œo‰ßŠÔ</returns>
 		float GetElapsed() {
-			return App::GetApp()->GetElapsedTime();
+			return App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetGameSpeed();
 		}
 		/// <summary>
 		/// ”ñ“¯Šúˆ—ŠJn
