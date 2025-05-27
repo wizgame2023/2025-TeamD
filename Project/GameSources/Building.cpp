@@ -33,5 +33,20 @@ namespace basecross {
 		ptrColl->SetFixed(true);
 
 	}
+
+	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
+	Building::~Building() {}
+
+	void Building::OnCreate() {
+		Object::OnCreate();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetFixed(true);
+
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"BUILDING");
+	}
 }
 //end basecross

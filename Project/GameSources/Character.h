@@ -50,6 +50,9 @@ namespace basecross {
 			m_MaxHP = hp;
 			m_HP = hp;
 		}
+		void HealHP(float hp) {
+			m_HP = min(m_MaxHP, m_HP + hp);
+		}
 		float GetMaxHP() {
 			return m_MaxHP;
 		}
