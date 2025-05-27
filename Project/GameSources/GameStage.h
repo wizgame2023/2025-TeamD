@@ -9,7 +9,8 @@
 namespace basecross {
 	class NumberSprite;
 	class Sprite;
-	class Menu;
+	class Menu; 
+	class NormalIcon;
 	class UltIcon;
 	class FollowCamera;
 	//--------------------------------------------------------------------------------------
@@ -27,6 +28,8 @@ namespace basecross {
 		shared_ptr<Menu> m_ResultMenu;
 		shared_ptr<Menu> m_GameOverMenu;
 
+		shared_ptr<NormalIcon> m_NormalIcon;
+		shared_ptr<NormalIcon> m_Icon;
 		shared_ptr<UltIcon> m_UltIcon;
 		shared_ptr<Sprite> m_PlayerHpBar;
 		shared_ptr<Sprite> m_PlayerHpBarBackGround;

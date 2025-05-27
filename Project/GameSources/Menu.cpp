@@ -121,30 +121,67 @@ namespace basecross {
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-100, 100, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-100, -50, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
+
+		//auto choice = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80), true);
+		//int stick = 1;
+		//auto choiceCitcle = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-30.0f, -50.0f, 0.0f), Vec2(60, 80), true);
+		//AddSprite(choiceCitcle);
+		//if (stick > 1)
+		//{
+		//	choice->SetDrawActive(true);
+		//	choiceCitcle->SetDrawActive(false);
+		//	AddSprite(choice);
+		//}
+		//else if (stick > 2)
+		//{
+		//	choice->SetDrawActive(false);
+		//	choiceCitcle->SetDrawActive(true);
+		//	choiceCitcle->SetUpdateActive(true);
+		//	AddSprite(choiceCitcle);
+		//}
 
 		auto menu = GetThis<SoundTestMenu>();
 		float volumeSE = SoundManager::Instance().GetSEVolume();
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
 		float x = GetPositionX(volumeSE);
 
-		AddButton(L"SE_VOLUME", L"SE_VOLUME", Vec3(x, 0.0f, 0.0f), Vec2(50, 50), menu,
+		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(backBarSprite);
+
+		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(barSprite);
+
+		//auto slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), true);
+		//slideBarSprite->SetPos(Vec3(-x,0.0f,0.0f));
+		//AddSprite(slideBarSprite);
+
+		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
 
 				float volume = SoundManager::Instance().GetSEVolume();
-
 				auto button = ButtonManager::instance->GetButtonSprite(L"SOUND_TEST", 0);
 				Vec3 pos = button->GetPos();
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
 		x = GetPositionX(volumeBGM);
-		AddButton(L"BGM_VOLUME", L"BGM_VOLUME", Vec3(x, -50.0f, 0.0f), Vec2(50, 50), menu,
+
+		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(backBarSprite);
+
+		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(barSprite);
+		//slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
+		//AddSprite(slideBarSprite);
+
+
+		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
@@ -156,6 +193,7 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
+
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_DPAD_LEFT);
 		AddAcceptButton(XINPUT_GAMEPAD_DPAD_RIGHT);
