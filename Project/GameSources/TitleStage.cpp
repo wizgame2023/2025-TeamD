@@ -53,6 +53,7 @@ namespace basecross {
 			//OnUpdate();
 			CreateResource();
 			CreateTitle();
+			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 		}
 		catch (...) {
 			throw;
@@ -66,6 +67,7 @@ namespace basecross {
 		if (m_Fade->IsFinish())
 		{
 			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+
 		}
 
 	}
@@ -74,6 +76,8 @@ namespace basecross {
 		//ƒ{ƒ^ƒ“‚ð‰Ÿ‚³‚ê‚½‚çtrue
 		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
 		m_Fade->Play();
+		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+
 	}
 
 }

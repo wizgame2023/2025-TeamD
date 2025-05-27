@@ -117,7 +117,7 @@ namespace basecross {
 		OnDestroy();
 		auto scene = App::GetApp()->GetScene<Scene>();
 		scene->ChangeCountStage(m_Count);
-		SoundManager::Instance().PlayBGM(L"SE_HIT_ENEMY");
+		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 
 	}
 

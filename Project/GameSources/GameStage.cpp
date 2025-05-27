@@ -38,9 +38,13 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
-		app->RegisterTexture(L"POSE_TITLE", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"POSE_SELECT", uiPath + L"ResultNextStage.png");
+		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
+		app->RegisterTexture(L"RESULT_SELECT_BACK", uiPath + L"ResultSelectBackUI.png");
+		app->RegisterTexture(L"RESULT_START__BACK", uiPath + L"ResultBackGameBack.png");
+		app->RegisterTexture(L"RESULT_TITLE_BACK", uiPath + L"ResultToTitleBack.png");
+		app->RegisterTexture(L"RESULT_NEXT_STAGE_BACK", uiPath + L"ResultNextStageBack.png");
 		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
 		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
@@ -107,7 +111,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		builder->Register<Mob>(L"enemy");
+		//builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -147,7 +151,6 @@ namespace basecross {
 		icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
-
 		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
 		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 
@@ -288,7 +291,6 @@ namespace basecross {
 		auto& app = App::GetApp();
 		m_Effect->OnUpdate();
 		GameManager::Instance()->Update();
-
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		if (device.bConnected) {

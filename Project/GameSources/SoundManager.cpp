@@ -17,7 +17,8 @@ namespace basecross {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
 		//BGM
 		RegisterSound(L"BGM_GAME_BOSS", L"BGM/Boss.wav");
-		//RegisterSound(L"BGM_GAME_PINCH", L"BGM/Pinch.wav");
+		RegisterSound(L"BGM_GAME", L"BGM/BGM.wav");
+		RegisterSound(L"BGM_GAME_PINCH", L"BGM/BGM.wav");
 		RegisterSound(L"BGM_TITLE", L"BGM/Title.wav");
 		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
 		//SE
