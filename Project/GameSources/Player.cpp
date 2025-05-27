@@ -259,7 +259,7 @@ namespace basecross {
 		{
 			m_EnergyCharge += 0.2;
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
+			m_Effect->SetScale(m_ParryHandle, Vec3(2.0f));
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
 			XINPUT_VIBRATION vibration;

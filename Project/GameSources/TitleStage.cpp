@@ -30,12 +30,16 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
+
 		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title_Rogo.png");
 		app->RegisterTexture(L"STRATA", uiPath + L"StartA.png");
 		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
+		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 	}
 
 	void TitleStage::CreateTitle() {
+		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
 		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
