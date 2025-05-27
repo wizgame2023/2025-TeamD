@@ -117,7 +117,7 @@ namespace basecross {
 		Vec3 none = Vec3(0);
 		float elapsedTime = GetGameElapsed();
 		Vec3 currntPosition = m_Transform->GetPosition();
-			m_currentState->Execute();
+		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
 		EndAsync();

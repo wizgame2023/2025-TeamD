@@ -21,6 +21,13 @@ namespace basecross {
 		~LimitArea();
 		virtual void OnCreate() override;
 	};
+
+	class Building : public Object {
+	public:
+		Building(const shared_ptr<Stage>& stage);
+		~Building();
+		virtual void OnCreate() override;
+	};
 }
 
 //end basecross

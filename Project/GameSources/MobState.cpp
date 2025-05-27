@@ -238,7 +238,7 @@ namespace basecross {
 			}
 		}
 		else {
-			//ƒŠƒ[ƒh
+			//Æ’Å Æ’ÂÂ[Æ’h
 			enemy->SetAnim(L"Reload", 0.0f);
 
 			m_BulletRelord -= elapsedTime;
@@ -253,7 +253,7 @@ namespace basecross {
 			}
 		}
 
-		m_Effect->SetEffectSpeed(m_Eyehandle, 1.0f * GameManager::Instance()->GetTimeRate());
+		m_Effect->SetEffectSpeed(m_Eyehandle, GameManager::Instance()->GetTimeRate());
 		m_Effect->SetEffectSpeed(m_Handle, GameManager::Instance()->GetTimeRate());
 	}
 
