@@ -73,11 +73,17 @@ namespace basecross {
 
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SELECT", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE_BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_START__BACK", Vec3(0, -75.0f, -1), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100), true);
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
@@ -121,30 +127,67 @@ namespace basecross {
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-100, 100, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-100, -50, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
+
+		//auto choice = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80), true);
+		//int stick = 1;
+		//auto choiceCitcle = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-30.0f, -50.0f, 0.0f), Vec2(60, 80), true);
+		//AddSprite(choiceCitcle);
+		//if (stick > 1)
+		//{
+		//	choice->SetDrawActive(true);
+		//	choiceCitcle->SetDrawActive(false);
+		//	AddSprite(choice);
+		//}
+		//else if (stick > 2)
+		//{
+		//	choice->SetDrawActive(false);
+		//	choiceCitcle->SetDrawActive(true);
+		//	choiceCitcle->SetUpdateActive(true);
+		//	AddSprite(choiceCitcle);
+		//}
 
 		auto menu = GetThis<SoundTestMenu>();
 		float volumeSE = SoundManager::Instance().GetSEVolume();
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
 		float x = GetPositionX(volumeSE);
 
-		AddButton(L"SE_VOLUME", L"SE_VOLUME", Vec3(x, 0.0f, 0.0f), Vec2(50, 50), menu,
+		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(backBarSprite);
+
+		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(barSprite);
+
+		//auto slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), true);
+		//slideBarSprite->SetPos(Vec3(-x,0.0f,0.0f));
+		//AddSprite(slideBarSprite);
+
+		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
 
 				float volume = SoundManager::Instance().GetSEVolume();
-
 				auto button = ButtonManager::instance->GetButtonSprite(L"SOUND_TEST", 0);
 				Vec3 pos = button->GetPos();
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
 		x = GetPositionX(volumeBGM);
-		AddButton(L"BGM_VOLUME", L"BGM_VOLUME", Vec3(x, -50.0f, 0.0f), Vec2(50, 50), menu,
+
+		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(backBarSprite);
+
+		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		AddSprite(barSprite);
+		//slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
+		//AddSprite(slideBarSprite);
+
+
+		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
@@ -156,6 +199,7 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
+
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_DPAD_LEFT);
 		AddAcceptButton(XINPUT_GAMEPAD_DPAD_RIGHT);
@@ -167,7 +211,6 @@ namespace basecross {
 	void ResultMenu::OnCreate() {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 320, 0), Vec2(600, 650));
-		sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		AddSprite(sprite);
 		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
 		AddSprite(number);
@@ -217,13 +260,13 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_START", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
+		AddButton(L"RESULT_TITLE", L"RESULT_TITLE_BACK", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_START", L"POSE_SELECT", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
+		AddButton(L"POSE_START", L"RESULT_START__BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
@@ -237,7 +280,7 @@ namespace basecross {
 
 			});
 		//セレクト
-		AddButton(L"POSE_SELECT", L"POSE_TITLE", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
+		AddButton(L"RESULT_NEXT_STAGE", L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
@@ -281,7 +324,7 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"RESULT_TITLE", L"RESULT_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");

@@ -31,6 +31,8 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring effectPath = mediaPath + L"Effekt/";
 		RegisterResource(L"panchi", effectPath + L"panchi.efk");
+
+
 	}
 
 	void EffectManeger::OnUpdate()
@@ -41,7 +43,6 @@ namespace basecross {
 		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
-
 
 	}
 
