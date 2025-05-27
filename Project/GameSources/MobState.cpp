@@ -212,7 +212,6 @@ namespace basecross {
 
 				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
 				m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-				m_Effect->SetAllColor(m_Eyehandle, Col4(1.0, 0, 0, 1.0f));
 				m_BulletEffect = true;
 			}
 			else if (enemy->m_BalletInterval < 0.25f && enemy->m_ShotRandomInterval < 0.25f && m_BulletSound != true)

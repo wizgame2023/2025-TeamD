@@ -29,7 +29,7 @@ namespace basecross {
 		m_BoostInterval(1.0F),
 		m_IsGoal(false),
 		m_zoneAnim(1.0f),
-		m_HitScale(Vec3(2))
+		m_HitScale(Vec3(1))
 	{
 	}
 	Player::~Player()
@@ -147,7 +147,7 @@ namespace basecross {
 				m_Damage = 1.0f;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
-				m_HitScale = Vec3(2.0f);
+				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;

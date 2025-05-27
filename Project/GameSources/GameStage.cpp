@@ -107,7 +107,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -265,7 +265,7 @@ namespace basecross {
 			CreateGameOverMenu();
 			ButtonManager::instance->CloseAll();
 			CreateUI();
-			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
+			SoundManager::Instance().PlayBGM(L"BGM_GAME");
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
 				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
@@ -276,7 +276,6 @@ namespace basecross {
 
 			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
 			int rank = score.CalcRank(12.0f);
-			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 		}
