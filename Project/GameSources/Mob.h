@@ -34,6 +34,7 @@ namespace basecross {
 		float m_MuzzleOffset;
 		float m_BalletInterval;
 		float m_KnockBackInterval;
+		float m_IntervalDifficulty;
 		const float MAX_BALLET_INTERVAL;
 		float m_ShotRandomInterval;
 		bool m_IntervalStart;

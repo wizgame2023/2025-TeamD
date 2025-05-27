@@ -86,7 +86,7 @@ namespace basecross {
 			ResetActiveStage<GameStageM>(L"testStage01.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
+			ResetActiveStage<GameStageK>(L"testStage01.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定

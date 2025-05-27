@@ -232,7 +232,7 @@ namespace basecross {
 				m_BulletSound = false;
 				enemy->m_BalletInterval = enemy->MAX_BALLET_INTERVAL;
 
-				enemy->m_ShotRandomInterval = 1.0f /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
+				enemy->m_ShotRandomInterval = enemy->MAX_BALLET_INTERVAL /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/;
 				m_BulletRemain--;
 				SoundManager::Instance().PlaySE(L"SE_SHOT");
 			}
@@ -253,7 +253,7 @@ namespace basecross {
 			}
 		}
 
-		m_Effect->SetEffectSpeed(m_Eyehandle, 2.0f * GameManager::Instance()->GetTimeRate());
+		m_Effect->SetEffectSpeed(m_Eyehandle, 1.0f * GameManager::Instance()->GetTimeRate());
 		m_Effect->SetEffectSpeed(m_Handle, GameManager::Instance()->GetTimeRate());
 	}
 

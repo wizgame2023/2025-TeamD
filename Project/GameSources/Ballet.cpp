@@ -75,6 +75,8 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
@@ -100,7 +102,7 @@ namespace basecross {
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto enemy = dynamic_pointer_cast<Enemy>(other);
-			enemy->Damage(1.0f, false);
+			enemy->Damage(1.0f + ((float)difficulty * 1.5f),  false);
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))
