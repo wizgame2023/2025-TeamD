@@ -12,7 +12,7 @@ const wchar_t* pWndTitle = L"Œ‚Íe‚æ‚è‹­‚µ";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
-BOOL IsMouseCursor = TRUE;
+BOOL IsMouseCursor = FALSE;
 //--------------------------------------------------------------------------------------
 //
 //  ŠÖ”: MyRegisterClass()

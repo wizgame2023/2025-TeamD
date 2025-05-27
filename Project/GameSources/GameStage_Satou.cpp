@@ -50,7 +50,6 @@ namespace basecross {
 		try {
 			CreateResource();
 			GameStage::OnCreate();
-			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(530.0f, 350.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
 
 		}
 		catch (...) {
@@ -65,7 +64,6 @@ namespace basecross {
 		GameStage::OnUpdate();
 
 		float elpased = app->GetStepTimer().GetFramesPerSecond();
-		m_Fps->UpdateNumber(elpased);
 
 
 	}
