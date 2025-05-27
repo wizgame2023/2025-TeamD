@@ -21,6 +21,7 @@ namespace basecross {
 
 	void MobSearch::Execute()
 	{
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
 		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 pos = enemy->GetPosition();
@@ -68,7 +69,7 @@ namespace basecross {
 					float objRotate = atan2f(objDirection.x, objDirection.z);
 					m_Transform->SetRotation(Vec3(0, objRotate, 0));
 					float objRenge = objDirection.length();
-					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
 					enemy->SetPosition(pos);
 				}
 			}
@@ -86,7 +87,7 @@ namespace basecross {
 					float objRenge = objDirection.length();
 					if (objRenge > enemy->m_BalletRange / 2)
 					{
-						pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+						pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
 						enemy->SetPosition(pos);
 					}
 					else {
@@ -104,7 +105,7 @@ namespace basecross {
 			float renge = direction.length();
 			if (renge > enemy->m_BalletRange / 2)
 			{
-				pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime;
+				pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
 				enemy->SetPosition(pos);
 			}
 			else {
