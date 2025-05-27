@@ -44,6 +44,9 @@ namespace basecross {
     
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			m_MaxCount = 3;
+
+			//App::GetApp()->GetStepTimer().SetFixedTimeStep(true);
+			//App::GetApp()->GetStepTimer().SetTargetElapsedSeconds(1.0 / 60.0);
     }
 		catch (...) {
 			throw;

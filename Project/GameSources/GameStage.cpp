@@ -61,6 +61,8 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_BACK", uiPath + L"Result_Back.png");
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 		app->RegisterTexture(L"AOF", texPath + L"AoF.png");
+		app->RegisterTexture(L"BUILDING", texPath + L"Building.png");
+
 
 		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu2.png");
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"ResultTexts2.png");
@@ -111,6 +113,7 @@ namespace basecross {
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
+		builder->Register<Building>(L"building");
 		builder->Register<flyobject>(L"flyobject");
 		builder->LoadCsv();
 

@@ -667,7 +667,6 @@ namespace basecross {
 
 	void HitSphere::OnUpdate()
 	{
-		App::GetApp()->GetStepTimer().SetFixedTimeStep(false);
 		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();

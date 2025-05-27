@@ -254,7 +254,7 @@ namespace basecross {
 			}
 		}
 
-		m_Effect->SetEffectSpeed(m_Eyehandle, 2.0f * GameManager::Instance()->GetTimeRate());
+		m_Effect->SetEffectSpeed(m_Eyehandle, GameManager::Instance()->GetTimeRate());
 		m_Effect->SetEffectSpeed(m_Handle, GameManager::Instance()->GetTimeRate());
 	}
 
