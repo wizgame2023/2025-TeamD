@@ -73,11 +73,17 @@ namespace basecross {
 
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SELECT", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE_BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_START__BACK", Vec3(0, -75.0f, -1), Vec2(200, 100), true);
+		AddSprite(sprite);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100), true);
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
@@ -205,7 +211,6 @@ namespace basecross {
 	void ResultMenu::OnCreate() {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 320, 0), Vec2(600, 650));
-		sprite->SetDiffuse(Col4(1, 0, 0, 1));
 		AddSprite(sprite);
 		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
 		AddSprite(number);
@@ -255,13 +260,13 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_START", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
+		AddButton(L"RESULT_TITLE", L"RESULT_TITLE_BACK", Vec3(-500.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_START", L"POSE_SELECT", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
+		AddButton(L"POSE_START", L"RESULT_START__BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 80),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
@@ -275,7 +280,7 @@ namespace basecross {
 
 			});
 		//セレクト
-		AddButton(L"POSE_SELECT", L"POSE_TITLE", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
+		AddButton(L"RESULT_NEXT_STAGE", L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
@@ -319,7 +324,7 @@ namespace basecross {
 		AddSprite(text);
 
 		//タイトル
-		AddButton(L"POSE_TITLE", L"POSE_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"RESULT_TITLE", L"RESULT_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
