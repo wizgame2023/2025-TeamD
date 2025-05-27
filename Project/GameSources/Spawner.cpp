@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -13,7 +13,19 @@ namespace basecross {
 		Object::OnCreate();
 	}
 	void Spawner::OnUpdate() {
+		
 		if (m_Wave == -1) return;
+		for (auto& wEnemy : m_Legions[m_Wave]->GetEnemyLegionGruop()) {
+			auto enemy = wEnemy.lock();
+			if (enemy && enemy->GetDrawActive()) {
+				auto draw = enemy->GetComponent<BcPNTBoneModelDraw>();
+				float color = draw->GetAlpha();
+				if (color < 1.0f) {
+					color += 1.0f * GetGameElapsed();
+				}
+				draw->SetAlpha(color);
+			}
+		}
 		m_Boss->SetUpdateActive(false);
 		if (m_EnemyCount < m_Legions[m_Wave]->GetMaxCount()) {
 			if (m_SpawnTimer.UpdateTimer()) {
@@ -40,6 +52,7 @@ namespace basecross {
 	void Spawner::AddEnemy(int wave,const shared_ptr<Enemy>& enemy) {
 		enemy->SetDrawActive(false);
 		enemy->SetUpdateActive(false);
+		enemy->GetComponent<BcPNTBoneModelDraw>()->SetAlpha(0.0f);
 		m_Legions[wave - 1]->IntoEnemyGruop(enemy);
 	}
 	void Spawner::SpawnEnemy() {
@@ -67,8 +80,10 @@ namespace basecross {
 				m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 2, m_Legions.size() + 1);
 			}
 		}
-		else if (event->m_MsgStr == L"WaveClear") {
+		else if (event->m_MsgStr == L"WaveClear" && m_Wave != -1) {
 			m_Wave++;
+			auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
+			player->HealHP(player->GetMaxHP() / 4.0f);
 			if (m_Legions.size() <= m_Wave) {
 				SpawnBoss();
 				m_Wave = -1;

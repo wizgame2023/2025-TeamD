@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -20,13 +20,24 @@ namespace basecross {
 	void Bullet::OnCreate()
 	{
 		Object::OnCreate();
-		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetAfterCollision(AfterCollision::None);
-		//æç”»è¨­å®š
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.5f), //(.1f, .1f, .1f),
+			Vec3(0, 0.0f, 0),
+			Vec3(0, 0, 0),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+		ptrDraw->SetMeshResource(L"BULLET");
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
+
 		AddTag(L"Bullet");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"BulletGroup");
@@ -36,10 +47,12 @@ namespace basecross {
 	}
 
 	void Bullet::OnUpdate() {
-		float elapsed = GetElpased();
+		float elapsed = GetGameElapsed();
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 moveAmount = Vec3();
-
+		Vec3 rot = GetForward();
+		float rotate = atan2f(-m_Direction.x, -m_Direction.z);
+		m_Transform->SetRotation(Vec3(0, rotate, 0));
 		ZoneSpeedSet();
 		moveAmount += m_Speed * m_Direction * elapsed * m_ZoneElapsedTime;
 
@@ -62,6 +75,8 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
@@ -87,7 +102,7 @@ namespace basecross {
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto enemy = dynamic_pointer_cast<Enemy>(other);
-			enemy->Damage(1.0f, false);
+			enemy->Damage(1.0f + ((float)difficulty * 1.5f),  false);
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))

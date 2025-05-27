@@ -40,6 +40,7 @@
 #include "BoneCollision.h"
 #include "TargetBoard.h"
 #include "ResultCamera.h"
+#include "OpeningCamera.h"
 #include "Icon.h"
 #include "Timer.h"
 #include "AreaOfEffect.h"
@@ -49,3 +50,4 @@
 #include "MissileBullet.h"
 #include "flyobject.h"
 #include "Citizen.h"
+#include "GameManager.h"

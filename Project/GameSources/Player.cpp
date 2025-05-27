@@ -29,7 +29,7 @@ namespace basecross {
 		m_BoostInterval(1.0F),
 		m_IsGoal(false),
 		m_zoneAnim(1.0f),
-		m_HitScale(Vec3(2))
+		m_HitScale(Vec3(1))
 	{
 	}
 	Player::~Player()
@@ -84,7 +84,7 @@ namespace basecross {
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
-			Move(angle);
+			Move(angle,false);
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
@@ -133,6 +133,8 @@ namespace basecross {
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
+
+					GameManager::Instance()->SetTimeRate(0.5f);
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -152,6 +154,8 @@ namespace basecross {
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
+
+				GameManager::Instance()->SetTimeRate(1.0f);
 			}
 		}
 	}
@@ -254,21 +258,38 @@ namespace basecross {
 		if (ParrySecond > 15)
 		{
 			m_EnergyCharge += 0.2;
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
+
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
+
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
+
+			PostEvent(0.5f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
 		else if (ParrySecond <= 15 && ParrySecond > 5)
 		{
 			m_EnergyCharge += 0.1;
-			//m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
-			//m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
-			//m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+
+			//XINPUT_VIBRATION vibration;
+			//vibration.wLeftMotorSpeed = 65535 * 0.5f;
+			//vibration.wRightMotorSpeed = 65535 * 0.5f;
+			//XInputSetState(0, &vibration);
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
+
+			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
 		else
@@ -494,7 +515,7 @@ namespace basecross {
 
 						m_PlayerStateNum -= PlayerState::NORMAL;
 						m_PlayerStateNum += PlayerState::DASH;
-						SoundManager::Instance().PlaySE(L"SE_RUN");
+						SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 					}
 				}
 
@@ -523,12 +544,13 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
 			}
 		}
 		else
 		{
+			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			if (m_HP <= 0)
 			{
 				SetAnim(L"Died");
@@ -549,7 +571,7 @@ namespace basecross {
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
-	bool Player::Damage(bool parry, float damage)
+	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> sorce)
 	{
 		bool isPinch = false, isBeforePinch = true;
 		if (m_DamageIntervalStart == false)
@@ -561,6 +583,12 @@ namespace basecross {
 			{
 				Vec3 rot = SearchRange();
 				float parryDamage = Parry(damage, m_ParryTime);
+				if (parryDamage < damage) {
+					if (sorce && sorce->FindTag(L"Attack")) {
+						auto attack = static_pointer_cast<Attack>(sorce);
+						attack->ReflectParry(GetPosition());
+					}
+				}
 				if (parryDamage == 0 && rot != Vec3())
 				{
 					parry = m_ParryJudge;
@@ -572,6 +600,7 @@ namespace basecross {
 			}
 			else {
 				SetAnim(L"Nock");
+				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				Character::Damage(damage, true);
 				m_ParryTime = false;
 				return false;
@@ -633,13 +662,14 @@ namespace basecross {
 		m_Effect->PlayEffect(m_Handle, L"Panchi", ptr->GetPosition(), 20.0f);
 		float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
 		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
-		m_Effect->SetScale(m_Handle, m_HitScale * 0.5f);
+		m_Effect->SetScale(m_Handle, m_HitScale + 0.5f);
+		//auto layer = m_Effect->GetLayer(m_Handle);
+		//m_Effect->SetLayer(m_Handle, 0);
 	}
 
 	void HitSphere::OnUpdate()
 	{
-		App::GetApp()->GetStepTimer().SetFixedTimeStep(false);
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {

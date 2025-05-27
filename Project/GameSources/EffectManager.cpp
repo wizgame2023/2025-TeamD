@@ -31,6 +31,8 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring effectPath = mediaPath + L"Effekt/";
 		RegisterResource(L"panchi", effectPath + L"panchi.efk");
+
+
 	}
 
 	void EffectManeger::OnUpdate()
@@ -42,17 +44,15 @@ namespace basecross {
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
 
-
 	}
 
 	void EffectManeger::OnDraw()
 	{
 		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
-
 		// エフェクトの描画を行う。
 		m_Manager->Draw();
-
+		
 		// エフェクトの描画終了処理を行う。
 		m_renderer->EndRendering();
 	}
@@ -229,6 +229,11 @@ namespace basecross {
 		if (handle != -1) {
 			m_Manager->StopEffect(handle);
 		}
+	}
+
+	void EffectManeger::SetLayer(Effekseer::Handle& handle, int32_t layer)
+	{
+		m_Manager->SetLayer(handle, layer);
 	}
 
 }

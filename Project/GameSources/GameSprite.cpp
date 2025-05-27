@@ -50,7 +50,7 @@ namespace basecross {
 		float diff = abs(position.x - m_CenterPosition.x);
 		float speed = diff * 4.5f;
 		speed = max(speed, 320.0f);
-		position.x -= speed * GetElpased();
+		position.x -= speed * GetGameElapsed();
 		SetPosition(position);
 		if (m_CurrentWave != m_MaxWave) {
 			m_BossText->SetDrawActive(false);

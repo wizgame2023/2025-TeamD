@@ -50,13 +50,17 @@ namespace basecross {
 		);
 		~BossEnemy();
 		virtual void OnCreate();
+		virtual void OnAfterCreate()override;
 		virtual void OnUpdate();
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
-		virtual void Move(const Vec3& direction)override;
+		virtual void Move(const Vec3& direction,const bool& isGameSpeed = true)override;
+
+		void RegisterAttack();
+
 		void AddAnimation();
-		void SetAnimation(const wstring& key);
+		void SetAnimation(const wstring& key, const bool& isChange = false);
 		bool GetAnimationFinish();
 		wstring GetCurrentAnimationKey();
 

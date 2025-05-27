@@ -1,6 +1,6 @@
 /*!
 @file MobState.h
-@brief “G‚ÌƒXƒe[ƒgŠÇ—‚È‚Ç
+@brief 
 */
 
 #pragma once
@@ -13,48 +13,15 @@ namespace basecross {
 	class Enemy;
 	class LineCube;
 	
-	class BossSearch : public EnemyState<BossEnemy>
-	{
-		bool m_IntruderAlert;
-		vector<Vec3> m_Path;
-		shared_ptr<LineCube> m_Line;
-		Timer m_OperatorIntarval;
-	public:
-		BossSearch(shared_ptr<BossEnemy>& enemy) :
-			EnemyState(enemy), m_OperatorIntarval(Timer(1.0f))
-		{
-		}
-
-		void Enter() override;
-		void Execute()override;
-		void Exit()override;
-	};
-	class BossWarning : public BossSearch {
-		Vec3 m_StartDirection;
-		Vec3 m_EndDirection;
-	public:
-		BossWarning(shared_ptr<BossEnemy>& enemy) :
-			BossSearch(enemy) {
-		}
-	private:
-		void Execute()override;
-	};
 	class BossHostility : public EnemyState<BossEnemy>
 	{
 		bool m_IntruderAlert;
 		Timer m_CooldownTimer;
 
-		Vec3 m_TargetPosition;
-
-		Vec3 m_LerpStartDirection;
-		Vec3 m_LerpTargetDirection;
-		float m_LerpTime;
-		Vec3 m_LastInturderPosition;
-
 	public:
 		BossHostility(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
-			m_CooldownTimer(Timer(2.5f)), m_LastInturderPosition(Vec3())
+			m_CooldownTimer(Timer(2.5f))
 		{
 		}
 
@@ -110,6 +77,8 @@ namespace basecross {
 
 		virtual void Ready(float time)override;
 	private:
+		Effekseer::Handle m_SmokeHandle;
+
 		void Enter() override;
 		void Execute()override;
 		void Exit()override;

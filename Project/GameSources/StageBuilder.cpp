@@ -38,16 +38,23 @@ namespace basecross {
 			m_InfoNames.clear();
 			wstring names = objInfo[objInfo.size() - 1];
 			Util::WStrToTokenVector(m_InfoNames, objInfo[objInfo.size() - 1], L'_');
-
+			wstring dateType = objInfo[GetInfoIndex(L"type")];
+			if (dateType == L"Stage") {
+				wstring difficulty = objInfo[GetInfoIndex(L"difficulty")];
+				if (difficulty == L"easy") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Easy);
+				}
+				else if (difficulty == L"normal") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Normal);
+				}
+				else if (difficulty == L"hard") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Hard);
+				}
+			}
 			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;
 
 			auto obj = CreateObject(objInfo);
-
-			wstring dateType = objInfo[GetInfoIndex(L"type")];
 			
-			if (dateType == L"Stage") {
-
-			}
 			if (dateType == L"Player") {
 				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
 				auto player = static_pointer_cast<Player>(obj);
@@ -89,11 +96,7 @@ namespace basecross {
 		spawner->OnAfterCreate();
 		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
 	}
-	/// <summary>
-	/// オブジェクトの生成
-	/// </summary>
-	/// <param name="date">オブジェクトの文字列データ</param>
-	/// <returns>生成したオブジェクト</returns>
+
 	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
 		Vec3 position = Vec3(), scale = Vec3(1), rotation = Vec3();
 		int index = GetInfoIndex(L"position");

@@ -24,6 +24,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
@@ -41,6 +42,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
@@ -71,6 +73,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp" />
@@ -88,6 +91,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />

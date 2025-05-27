@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -14,23 +14,39 @@ namespace basecross {
 	void Ground::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"GROUND");
-		//auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
-		//ptrDraw->SetMeshResource(L"GROUND");
-		//Mat4x4 meshMat;
-		//meshMat.affineTransformation(
-		//	Vec3(0.1f, 0.1f, 0.1f), //ã‚µã‚¤ã‚º
-		//	Vec3(0.0f, 0.0f, 0.0f), //å›è»¢è»¸
-		//	Vec3(0.0f, 0.0f, 0.0f), //å›è»¢
-		//	Vec3(0.01f, 0.45f, -0.04f) //ãƒã‚¸ã‚·ãƒ§ãƒ³
-		//);
-		//ptrDraw->SetMeshToTransformMatrix(meshMat);
+	}
+
+	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
+	LimitArea::~LimitArea() {}
+
+	void LimitArea::OnCreate() {
+		Object::OnCreate();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetFixed(true);
+
+	}
+
+	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
+	Building::~Building() {}
+
+	void Building::OnCreate() {
+		Object::OnCreate();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetFixed(true);
+
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"BUILDING");
 	}
 }
 //end basecross

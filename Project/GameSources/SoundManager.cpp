@@ -17,25 +17,25 @@ namespace basecross {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
 		//BGM
 		RegisterSound(L"BGM_GAME_BOSS", L"BGM/Boss.wav");
-		RegisterSound(L"BGM_GAME_PINCH", L"BGM/Pinch.wav");
+		RegisterSound(L"BGM_GAME", L"BGM/BGM.wav");
+		RegisterSound(L"BGM_GAME_PINCH", L"BGM/BGM.wav");
 		RegisterSound(L"BGM_TITLE", L"BGM/Title.wav");
 		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
 		//SE
 		RegisterSound(L"SE_GUARD", L"SE/Guard.wav");
-		RegisterSound(L"SE_RUN", L"SE/Run_2.wav");
-		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit_3.wav");
-		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit_2.wav");
-		RegisterSound(L"SE_SHOT", L"SE/RifleShot_3.wav");
-		RegisterSound(L"SE_USE_ULT", L"SE/UltUse_3.wav");
+		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit.wav");
+		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit.wav");
+		RegisterSound(L"SE_SHOT", L"SE/RifleShot.wav");
+		RegisterSound(L"SE_USE_ULT", L"SE/UltUse.wav");
 		RegisterSound(L"SE_WALK_ENEMY", L"SE/EnemyWalk.wav");
-		RegisterSound(L"SE_WALK_PLAYER", L"SE/PlayerWalk.wav");
-		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice_3.wav");
-		RegisterSound(L"SE_ACCEPT", L"tuika/Determinant.wav");
+		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice.wav");
+		RegisterSound(L"SE_ACCEPT", L"SE/Accept.wav");
 
-		RegisterSound(L"SE_EXPLODE", L"tuika/Determinant.wav");
-		RegisterSound(L"SE_MISSILE", L"tuika/Rocket_Fire.wav");
-		RegisterSound(L"SE_CRUSH", L"tuika/Boss_Attack_Spanking_2.wav");
-		RegisterSound(L"SE_WAVE", L"tuika/Wave_Cahnge_3.wav");
+		RegisterSound(L"SE_EXPLODE", L"SE/Accept.wav");
+		RegisterSound(L"SE_MISSILE", L"SE/Rocket_Fire.wav");
+		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
+		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");
+		RegisterSound(L"SE_ATTACK_SIGN", L"SE/Enemy_Attack_Sign.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";

@@ -1,6 +1,6 @@
 /*!
 @file Player.h
-@brief 繝励Ξ繧､繝､繝ｼ縺ｪ縺ｩ
+@brief プレイヤーなど
 */
 
 #pragma once
@@ -20,7 +20,7 @@ namespace basecross {
 
 	class Player : public Character
 	{
-		//蜈･蜉帙ワ繝ｳ繝峨Λ繝ｼ
+		//入力ハンドラー
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
@@ -67,7 +67,7 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnDraw();
 		virtual void Dead();
-		virtual bool Damage(bool parry,  float damage);
+		virtual bool Damage(bool parry,  float damage,const shared_ptr<GameObject> sorce = nullptr);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;

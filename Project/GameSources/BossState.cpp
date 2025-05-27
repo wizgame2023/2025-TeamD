@@ -7,95 +7,41 @@
 #include "Project.h"
 
 namespace basecross {
-	void BossSearch::Enter()
-	{
-		EnemyState::Enter();
-		//m_Line = m_Stage->AddGameObject<LineCube>(0.02f, Col4(0, 1, 0, 1));
-	}
-	void BossSearch::Execute()
-	{
-		auto navigate = m_Enemy->GetComponent<Navigate>(false);
-		float elapsed = App::GetApp()->GetElapsedTime();
-		if (navigate) {
-			if (m_Path.size() == 0) {
-				m_Line->SetDrawActive(false);
-				if (m_OperatorIntarval.UpdateTimer()) {
-					float rndOparation = Util::RandZeroToOne() * 100.0f;
-					if (rndOparation < 40) {
-						auto group = m_Stage->GetSharedObjectGroup(L"PointerGroup");
-						auto pointers = group->GetGroupVector();
-						int rnd = static_cast<int>(Util::RandZeroToOne() * (pointers.size() - 1));
-						auto pointer = pointers[rnd].lock();
-						if (pointer != nullptr) {
-							m_Path = navigate->FindPathWithWaypoints2(navigate->GetNearPointer(m_Enemy->GetPosition()), pointer->GetComponent<Transform>()->GetPosition());
-						}
-					}
-					else if (rndOparation < 60) {
-
-					}
-					else {
-						Vec3 target;
-						do {
-							target = Vec3(Util::RandZeroToOne() * 10.0f, m_Enemy->GetPosition().y, Util::RandZeroToOne() * 10.0f);
-						} while (RayCast::HitTestVec(RayCastHit(), Line(m_Enemy->GetPosition(), target), m_Enemy->GetStage()->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" }));
-						m_Path.push_back(target);
-					}
-				}
-			}
-			else {
-				m_Line->SetDrawActive(true);
-				Vec3 pos = m_Enemy->GetPosition();
-				m_Path[0].y = pos.y;
-				Vec3 direction = m_Path[0] - pos;
-				m_Line->SetLine(Line(pos, m_Path[0]));
-				if (direction.length() < 0.1f) {
-					m_Path.erase(m_Path.begin());
-				}
-				else {
-					direction = direction.normalize();
-					float rotate = atan2f(direction.x, direction.z);
-					m_Transform->SetRotation(Vec3(0, rotate, 0));
-					m_Enemy->Move(direction);
-				}
-			}
-
-		}
-		m_Enemy->SearchRange();
-		if (m_Enemy->GetIntruderAlert()) {
-			m_Enemy->ChangeState<BossHostility>();
-		}
-	}
-	void BossSearch::Exit()
-	{
-		m_Stage->RemoveGameObject<LineCube>(m_Line);
-	}
-
-	void BossWarning::Execute()
-	{
-		BossSearch::Execute();
-	}
 
 	void BossHostility::Enter()
 	{
 		EnemyState::Enter();
 		m_Stage->PostEvent(0.0f, nullptr, m_Stage, L"StartBoss");
 
-		m_TargetPosition = m_Enemy->GetPosition() + Vec3(Util::RandZeroToOne() * 10.0f - 5.0f,0.0f, Util::RandZeroToOne() * 10.0f - 5.0f);
-		m_LerpStartDirection = m_Enemy->GetForward().normalize();
-		m_LerpTargetDirection = m_TargetPosition - m_Enemy->GetPosition();
-		m_LerpTargetDirection = m_LerpTargetDirection.normalize();
-		m_LerpTime = 0.0f;
-	}
-	void BossHostility::Execute()
-	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * m_Enemy->m_ZoneElapsedTime;
-		auto navi = m_Enemy->GetComponent<Navigate>();
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		float addRate = max(1.0f, (int)difficulty * 0.75f);
+		m_CooldownTimer.SetTime(2.5f / addRate, true);
+
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		
+		if (distance < 5.0f) {
+			auto gravity = m_Enemy->GetComponent<Gravity>(false);
+			if (gravity) {
+				direction = direction.normalize();
+				gravity->StartJump((-direction + Vec3(0, 0.1f, 0)) * 4.0f);
+			}
+		}
+	}
+	void BossHostility::Execute()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		Vec3 position = m_Enemy->GetPosition();
+		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
+		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		direction = direction.normalize();
+
 		if (m_CooldownTimer.UpdateTimer()) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 10) {
+			if (rnd < 40.0f) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -103,16 +49,16 @@ namespace basecross {
 			}
 		}
 		else {
-			Vec3 newDirection = Lerp::CalculateLerp(m_LerpStartDirection, m_LerpTargetDirection, 0.0f, 1.0f, m_LerpTime, Lerp::rate::Linear);
-			float rotationY = atan2f(newDirection.x, newDirection.z);
+			float rotationY = atan2f(direction.x, direction.z);
 			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
-			
-			if (m_LerpTargetDirection == newDirection) {
-				m_Enemy->Move(m_LerpTargetDirection);
+			if (distance > 5.0f) {
+				m_Enemy->Move(direction);
 			}
 			else {
-				m_LerpTime += elapsedTime;
+				m_Enemy->Move(-direction / 2.0f);
 			}
+
+			
 		}
 	}
 	void BossHostility::Exit()
@@ -128,7 +74,7 @@ namespace basecross {
 	}
 	void BossCrush::Execute()
 	{
-		float elapsed = App::GetApp()->GetElapsedTime();
+		float elapsed = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 
@@ -136,10 +82,11 @@ namespace basecross {
 		float distance = direction.length();
 		direction = direction.normalize();
 
+		m_Enemy->m_Effect->SetEffectSpeed(m_SmokeHandle, 1.0f * GameManager::Instance()->GetTimeRate());
 		if (!m_IsFinish) {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				Ready(1.0f);
-				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0,1,0),direction) * 0.5f;
+				m_AttackPosition = m_Enemy->GetPosition() + direction.normalize() * 1.0f + cross(Vec3(0, 1, 0), direction) * 0.5f;
 				m_Stage->AddGameObject<AreaOfEffect>(m_AttackPosition, m_Attack->GetScale().x, 36, 1.0f);
 
 				m_Enemy->SetAnimation(L"Crush");
@@ -152,9 +99,8 @@ namespace basecross {
 					m_IsFinish = true;
 					m_FinishedForward = m_Enemy->GetForward();
 
-					Effekseer::Handle handle;
-					m_Enemy->m_Effect->PlayEffect(handle,L"Trampling", m_AttackPosition, 0.0f);
-					m_Enemy->m_Effect->SetScale(handle,Vec3(0.2f, 0.2f, 0.2f));
+					m_Enemy->m_Effect->PlayEffect(m_SmokeHandle,L"Trampling", m_AttackPosition, 0.0f);
+					m_Enemy->m_Effect->SetScale(m_SmokeHandle,m_Attack->GetSize() / 8.0f);
 				}
 			}
 			else {

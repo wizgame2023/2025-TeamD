@@ -89,7 +89,11 @@ namespace basecross {
 		void SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale);
 		void SetAllColor(Effekseer::Handle& handle, const bsm::Col4 color);
 		void StopEffect(Effekseer::Handle& handle);
-
+		void SetLayer(Effekseer::Handle& handle, int32_t layer);
+		int32_t GetLayer(Effekseer::Handle& handle)
+		{
+			return m_Manager->GetLayer(handle);
+		}
 	};
 }
 //end basecross

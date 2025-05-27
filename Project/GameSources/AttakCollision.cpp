@@ -11,6 +11,8 @@ namespace basecross {
 		Object::OnCreate();
 		SetDrawActive(false);
 		LoopEffect();
+
+		AddTag(L"Attack");
 	}
 	void Attack::OnUpdate() {
 		m_IsFinish = false;
@@ -23,7 +25,6 @@ namespace basecross {
 			m_Date.m_CooldownTimer.UpdateTimer();
 		}
 	}
-
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 playerPosition = player->GetComponent<Transform>()->GetPosition();
@@ -36,28 +37,19 @@ namespace basecross {
 		if (gravity != nullptr) {
 			gravity->StartJump(direction * m_BlowForce);
 		}
-		auto character = static_pointer_cast<Player>(player);
-		if (character) {
-			character->Damage(true,m_Date.m_Damage);
+		Stop();
+	}
+	void CrushAttack::ReflectParry(Vec3 position) {
+		if (m_Date.m_Owner != nullptr) {
+			auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
+			boss->AddStun(0.5f);
+			Vec3 direction = GetPosition() - position;
+			direction = direction.normalize();
+			boss->GetComponent<Gravity>()->StartJump(direction + Vec3(0.0f, 2.0f, 0.0f));
 			Stop();
 		}
 	}
-	void CrushAttack::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		Attack::OnCollisionEnter(Other);
-		if (Other->FindTag(L"HitJudge")) {
-			Other->OnCollisionEnter(GetThis<GameObject>());
-			if (m_Date.m_ExitTimer.GetTime() < m_Date.m_ExitTimer.GetMaxTime() / 2.0f) {
-				if (m_Date.m_Owner != nullptr) {
-					auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
-					boss->AddStun(0.5f);
-					Vec3 direction = GetPosition() - Other->GetComponent<Transform>()->GetPosition();
-					direction = direction.normalize();
-					boss->GetComponent<Gravity>()->StartJump(direction + Vec3(0.0f, 2.0f, 0.0f));
-					Stop();
-				}
-			}
-		}
-	}
+	
 	void MachineGun::OnUpdate() {
 		Attack::OnUpdate();
 		if (!GetDrawActive()) return;
@@ -81,7 +73,7 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_MISSILE");
 			Vec3 position = GetPosition();
 			position += m_MuzzlePositions[m_MuzzleIndex];
-			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target->GetPosition(), 10.0f, 2.0f);
+			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target, 10.0f, m_ExplodePower);
 			m_MissileCount--;
 			m_MuzzleIndex++;
 			if (m_MuzzlePositions.size() <= m_MuzzleIndex) {

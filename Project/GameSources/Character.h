@@ -45,10 +45,13 @@ namespace basecross {
 		double Magnitude(const Vec3& v);
 		void ZoneSpeedSet();
 		inline float GetElpasedTime();
-		virtual void Move(const Vec3& direction);
+		virtual void Move(const Vec3& direction,const bool& isGameSpeed = true);
 		void InitHP(float hp) {
 			m_MaxHP = hp;
 			m_HP = hp;
+		}
+		void HealHP(float hp) {
+			m_HP = min(m_MaxHP, m_HP + hp);
 		}
 		float GetMaxHP() {
 			return m_MaxHP;
