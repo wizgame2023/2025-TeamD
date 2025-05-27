@@ -5,10 +5,11 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Enemy.h"
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage, position, Vec3(), scale) {
+		Character(stage, position, Vec3(), scale){
 	}
 	Enemy::~Enemy()
 	{
@@ -17,48 +18,39 @@ namespace basecross {
 	{
 		Character::OnCreate();
 		InitHP(3);
-    
-		//CollisionSphere„ÅÆË®≠ÂÆö
-		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		m_AlertTime = 5.0f;
+		m_KnockBack = false;
+		m_KnockBackTime = 0.5f;
+		//CollisionSphereÇÃê›íË
+		auto ptrColl = AddComponent<CollisionCapsule>();
+		//ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(false);
-		ptrColl->AddExcludeCollisionTag(L"Mob");
 
-		//ÊèèÁîªË®≠ÂÆö
-		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"MOB");
-
-		Mat4x4 meshMat;
-		meshMat.affineTransformation(
-			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
-			Vec3(0.0f, 0.0f, 0.0f),
-			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.3f, 0.0f)
-		);
-		ptrDraw->SetMeshToTransformMatrix(meshMat);
-
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
-
-		auto ptrGra = AddComponent<Gravity>();
-		auto shadowPtr = AddComponent<Shadowmap>();
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
 
-		m_Line = m_Stage->AddGameObject<ForecastLine>(GetThis<Enemy>(), false);
 	}
 
 	void Enemy::OnUpdate()
 	{
-		ZoneSpeedSet();
-		if (m_HP <= 0)
+		float elapsedTime = GetGameElapsed();
+
+		if (m_KnockBack)
 		{
+			m_KnockBackTime -= elapsedTime;
+			if (m_KnockBackTime > 0.0f)
+			{
+				KnockBackTime();
+			}
+			else 
+			{
+				m_KnockBack = false;
+				m_KnockBackTime = 0.5f;
+			}
+		}
+		if (m_HP <= 0) {
 			Dead();
 		}
 	}
@@ -82,40 +74,38 @@ namespace basecross {
 		return offset.length();
 	}
 
-	void Enemy::ZoneSpeedSet()
+	Vec3 Enemy::GetDirectionToIntruderObject(shared_ptr<Object> obj)
 	{
-		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
-		int state = player->GetStates();
-		if ((state & Player::PlayerState::ZONE) == 0) {
-			m_ZoneElapsedTime = 1.0f;
-		}
-		else {
-			m_ZoneElapsedTime = 0.2f;
-		}
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		offset = offset.normalize();
+		return offset;
 	}
+
+	float Enemy::GetDistanceToIntruderObject(shared_ptr<Object> obj)
+	{
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		return offset.length();
+	}
+
 
 	void Enemy::SearchRange()
 	{
-		m_Line->SetLine(GetDirectionToIntruder(), GetPosition(), 10.0f);
 		float searchDistance = 10.0f;
-
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_Y) {
-				m_Position = GetPosition();
-				m_Position -= forword * 0.05f;
-				SetPosition(m_Position);
-			}
-		}
 		if ((position - target).length() < searchDistance)
 		{
-
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				//„Éó„É¨„Ç§„É§„Éº„ÅÆÊñπÂêë„Çí„ÇÜ„Å£„Åè„ÇäÂêë„Åè
+				//ÉvÉåÉCÉÑÅ[ÇÃï˚å¸ÇÇ‰Ç¡Ç≠ÇËå¸Ç≠
 				m_IntruderAlert = true;
 			}
 			else {
@@ -127,11 +117,20 @@ namespace basecross {
 		}
 
 		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-			m_Line->CheckRayCast(Vec3());
-			if (!m_Line->CheckHitObjectTag(L"Player")) {
+			RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
+			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
 				m_IntruderAlert = false;
 			}
 		}
+	}
+
+	void Enemy::IntervalEnemy(const Vec3& target)
+	{
+		Vec3 crrentPosition = GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		crrentPosition += target * elapsedTime * m_ZoneElapsedTime;
+		SetPosition(crrentPosition);
 	}
 
 	Vec3 Enemy::GetPosition()
@@ -143,43 +142,69 @@ namespace basecross {
 	{
 		return m_IntruderAlert;
 	}
+	void Enemy::SetIntruderAlert(bool flag)
+	{
+		m_IntruderAlert = flag;
+	}
 
-	void Enemy::KnockBackTime(shared_ptr<GameObject>& other)
+	void Enemy::KnockBack()
+	{
+		m_KnockBack = true;
+	}
+
+	void Enemy::KnockBackTime()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		Vec3 hitPos = other->GetComponent<Transform>()->GetPosition();
+		Vec3 hitPos = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 pos = GetPosition();
 		Vec3 vec = hitPos - pos;
 		vec.normalize();
-		pos += -vec * 10.0f * elapsedTime;
+		pos += -vec * 5.0f * elapsedTime * m_ZoneElapsedTime;
+		float rotate = atan2f(vec.x, vec.z);
+		SetRotation(Vec3(0.0f, rotate, 0.0f));
 		SetPosition(pos);
 	}
 
 	void Enemy::Dead() {
-		m_Line->Destroy();
-
-		ScoreManager::Instance()->AddEliminateEnemyCount();
-
-		auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
-		auto& groupVec = group->GetGroupVectors();
-		for (int i = 0; i < groupVec.size(); i++) {
-			auto obj = groupVec[i].lock();
-			if (obj != nullptr) {
-				if (obj == GetThis<GameObject>()) {
-					groupVec.erase(groupVec.begin() + i);
-					break;
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_KnockBackTime -= elapsedTime;
+		if (m_KnockBackTime > 0.0f)
+		{
+			KnockBackTime();
+		}
+		else
+		{
+			ScoreManager::Instance()->AddEliminateEnemyCount();
+			auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+			auto& groupVec = group->GetGroupVectors();
+			for (int i = 0; i < groupVec.size(); i++) {
+				auto obj = groupVec[i].lock();
+				if (obj != nullptr) {
+					if (obj == GetThis<GameObject>()) {
+						groupVec.erase(groupVec.begin() + i);
+						break;
+					}
 				}
 			}
+			auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner", false);
+			if (spawner) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+			}
+			m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
 		}
-		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			Damage(1.0f, false);
-			KnockBackTime(other);
+			//Damage(m_Intruder->GetAttackDamage(), false);
+			KnockBack();
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		}
+		if (other->FindTag(L"Bullet"))
+		{
+			KnockBack();
 		}
 	}
 
@@ -219,10 +244,10 @@ namespace basecross {
 			0,1
 		};
 
-		m_BoneDraw = AddComponent<PCStaticDraw>();
-		m_BoneDraw->SetOriginalMeshUse(true);
-		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
-		auto meshResoure = m_BoneDraw->GetMeshResource();
+		m_Draw = AddComponent<PCStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_Draw->GetMeshResource();
 		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
 
 	}
@@ -254,7 +279,7 @@ namespace basecross {
 			{m_StartPos,m_StartColor},
 			{m_EndPos,m_EndColor}
 		};
-		m_BoneDraw->UpdateVertices(m_Vertices);
+		m_Draw->UpdateVertices(m_Vertices);
 	}
 
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {

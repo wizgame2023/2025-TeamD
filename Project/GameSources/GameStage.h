@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief 繧ｲ繝ｼ繝繧ｹ繝��繧ｸ
+@brief 
 */
 
 #pragma once
@@ -8,57 +8,67 @@
 
 namespace basecross {
 	class NumberSprite;
+	class Sprite;
 	class Menu;
+	class UltIcon;
+	class FollowCamera;
 	//--------------------------------------------------------------------------------------
-	//	繧ｲ繝ｼ繝繧ｹ繝��繧ｸ繧ｯ繝ｩ繧ｹ
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
-
+		
 		wstring m_MapFileName;
 		bool m_IsPose;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
-		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<NumberSprite> m_ProtoScoreNumber;
+		float m_TotalTime;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<Menu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
+		shared_ptr<Menu> m_GameOverMenu;
+
+		shared_ptr<UltIcon> m_UltIcon;
+		shared_ptr<Sprite> m_PlayerHpBar;
+		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+
+		shared_ptr<Sprite> m_BossHpBar;
+		shared_ptr<Sprite> m_BossHpBarBackGround;
+		shared_ptr<Sprite> m_BossText;
+
+
 		//ビューの作成
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
-		void CreateBossEnemy();
 
+		void CreateGameOverMenu();
 		void CreatePose();
 		void CreateSoundTest();
 		void CreateResult();
+		void CreateUI();
 
-		void ClosePose();
-		void OpenPose();
-		void SetAllGameObjectActive(bool flag);
-		float GetClearRate() {
-			if (m_MaxEnemyCount <= 0) return 100.0f;
-			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
-		}
-
-		void GameOver() {};
-		void GameClear() {};
-		
-
+		void GameOver();
+		void GameClear();
+		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<FollowCamera> m_Camera;
+		shared_ptr<SingleView> m_OpeningCameraView;
+		shared_ptr<SingleView> m_CurrentCamera;
 
 	public:
 		//構築と破棄
-		GameStage(const wstring& file) : Stage(),m_MapFileName(file), m_IsPose(false){}
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
 		virtual ~GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
+		shared_ptr <EffectManeger> GetCreateEffect();
+		shared_ptr<FollowCamera> SetCameraPause();
+		void SetAllGameObjectActive(bool flag);
+		void ToMainCamera();
 	};
-
 
 }
 //end basecross

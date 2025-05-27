@@ -8,45 +8,37 @@
 
 namespace basecross {
 
+	class Sprite;
+	class NumberSprite;
+	class SharpFan;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
 	class GameStageS : public GameStage {
-		//ビューの作成
-		void CreateViewLight();
-		void CreateResource();
-		void CreatePose();
-		void CreateSoundTest();
-		void CreatePlayer();
-		void CreateEnemy();
-		void CreateBossEnemy();
-		void RegisterObjects();
-		void SetAllGameObjectActive(bool flag);
-		bool m_IsPose;
 
+		shared_ptr<NumberSprite> m_Fps;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 
-		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<EffectManeger> m_Effect;
+		//ビューの作成
+		void CreateViewLight();
+		void CreateResource();
+		void RegisterObjects();
+		bool m_IsPose;
 
 		float GetClearRate() {
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
-
 	public:
 		//構築と破棄
-		GameStageS(const wstring& file) : GameStage(file), m_IsPose(false) {}
+		GameStageS(const wstring& file) :GameStage(file), m_IsPose(false) {}
 		virtual ~GameStageS() {}
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-		virtual void OnDraw()override;
 
 		void ClosePose();
 		void OpenPose();
-
-		shared_ptr <EffectManeger> GetCreateEffect();
 
 		void SetMaxEnemyCount(int count) {
 			m_MaxEnemyCount = count;
@@ -56,7 +48,6 @@ namespace basecross {
 			m_EnemyCount--;
 		}
 	};
-
 
 }
 //end basecross

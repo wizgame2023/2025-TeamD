@@ -35,9 +35,7 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 
-		app->RegisterTexture(L"HP_BAR", uiPath + L"Hp.png");
-		app->RegisterTexture(L"HP_BAR_E", uiPath + L"EnemyHp.png");
-		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
+		
 	}
 	void GameStageM::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(L"level.csv", 1.0f);
@@ -52,20 +50,6 @@ namespace basecross {
 		try {
 			CreateResource();
 			GameStage::OnCreate();
-			m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
-			m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
-
-			m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 24.0f));
-			m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
-
-			m_PlayerEnergyBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
-			m_PlayerEnergyBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
-
-			m_PlayerEnergyBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 364.0f, 0.0f), Vec2(300.0f, 12.0f));
-			m_PlayerEnergyBar->SetDiffuse(Col4(1, 1, 0, 1));
-
-			m_Fps = AddGameObject<NumberSprite>(L"NUMBER", Vec3(-631.0f, 201.0f, 0.0f), Vec2(109.0f, 96.0f), 3);
-			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		catch (...) {
 			throw;
@@ -76,19 +60,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		GameStage::OnUpdate();
-
-		auto player = GetSharedGameObject<Player>(L"Player", false);
-		if (player != nullptr) {
-			float currentHp = player->GetHP();
-			float maxHp = player->GetMaxHP();
-			m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
-
-			float currentEnergy = player->GetEnergy();
-			m_PlayerEnergyBar->UpdateSize(Vec3(currentEnergy, 1, 1));
-		}
-		float elpased = app->GetStepTimer().GetFramesPerSecond();
-		m_Fps->UpdateNumber(elpased);
+		GameStage::OnUpdate();		
 	}
 
 }

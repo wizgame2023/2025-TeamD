@@ -9,7 +9,7 @@
 namespace basecross{
 
 	struct SpriteAnimation {
-		int m_OrderCount;
+		int m_CurrentOrder;
 		float m_AnimationTime;
 		float m_UpdateInterval;
 		bool m_IsLoop;
@@ -18,15 +18,15 @@ namespace basecross{
 		vector<int> m_Order;
 		void EndAnimation() {
 			if (m_IsReverse) {
-				m_OrderCount = m_Order.size() - 1;
+				m_CurrentOrder = m_Order.size() - 1;
 			}
 			else {
-				m_OrderCount = 0;
+				m_CurrentOrder = 0;
 			}
 		}
 		SpriteAnimation() {
 			m_Order = {};
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = 0;
 			m_UpdateInterval = 0;
 			m_IsLoop = false;
@@ -34,7 +34,7 @@ namespace basecross{
 		}
 		SpriteAnimation(vector<int> order, float time, float interval, const bool isLoop = false, const bool isReverse = false){
 			m_Order = order;
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = time;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
@@ -47,7 +47,7 @@ namespace basecross{
 				order.push_back(i);
 			}
 			m_Order = order;
-			m_OrderCount = 0;
+			m_CurrentOrder = 0;
 			m_AnimationTime = time;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
@@ -85,7 +85,7 @@ namespace basecross{
 		//頂点
 		vector<VertexPositionColorTexture> m_Vertices;
 		//描画コンポーネント
-		shared_ptr<PCTSpriteDraw> m_BoneDraw;
+		shared_ptr<PCTSpriteDraw> m_Draw;
 		//位置コンポーネント
 		shared_ptr<Transform> m_Transform;
 		//スクリーンサイズ
@@ -99,9 +99,6 @@ namespace basecross{
 
 		//アニメーション処理
 		void Animation();
-		void NewAnimation();
-	public:
-		Sprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size,const bool useCenter = false) : Sprite(ptr,texKey,pos,size,{1,1},useCenter,1,-1,false) {}
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUV, const bool useCenter = false, const float changeTime = 0.5f, const int useIndex = -1, const bool isAnimation = true) :
 			GameObject(ptr),
 			m_TexKey(texKey),
@@ -111,8 +108,18 @@ namespace basecross{
 			m_Index(0), m_UseIndex(useIndex),
 			m_IsAnimation(isAnimation),
 			m_AnimationChangeTime(changeTime), m_AnimationTimer(0.0f),
-			m_ScreenSize(0, 0)
-			{}
+			m_ScreenSize(0, 0) {
+		}
+
+	public:
+		Sprite(const shared_ptr<Stage>& ptr,const wstring& texKey,Vec3 pos,Vec2 size) : Sprite(ptr, texKey, pos, size, { 1,1 }, false, 1, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv) : Sprite(ptr, texKey, pos, size, cutUv, false, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, int useIndex) : Sprite(ptr, texKey, pos, size, cutUv, false, 0, useIndex, true) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, bool useCenter) : Sprite(ptr, texKey, pos, size, { 1,1 }, useCenter, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, 0, -1, false) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv,int useIndex, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, 0, useIndex, true) {}
+
+
 		virtual ~Sprite(){}
 
 		virtual void OnCreate()override;
@@ -133,16 +140,16 @@ namespace basecross{
 		Col4 GetDiffuse();
 
 		void CreateVertex(Vec2 size, vector<Vec2> uv);
+		void SetVertex(vector<Vec3> positions);
 		//----------------------------------------------------------
 		//
 		//	UV操作		
 		//																																
 		//----------------------------------------------------------
-		
+		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut,const int& maxIndex = 1024);
 		//UVの切り替え
 		void UpdateUV(vector<Vec2> uv);
 
-		void CutAnimationUv(Vec2 cut);
 		vector<vector<Vec2>> GetUvVec() {
 			return m_AnimationUV;
 		}
@@ -158,6 +165,7 @@ namespace basecross{
 		//	アニメーション操作		
 		//																																
 		//----------------------------------------------------------
+		
 		
 		//前のアニメーションを取得
 		SpriteAnimation GetBeforeAnimation() {
@@ -245,11 +253,17 @@ namespace basecross{
 		virtual void OnUpdate();
 		
 		void UpdateNumber(int number);
+		void SetDiffuse(Col4 color) {
+			for (auto& number : m_Numbers) {
+				number->SetDiffuse(color);
+			}
+		}
 		void SetActive(bool flag) {
 			for (auto& number : m_Numbers) {
 				number->SetDrawActive(flag);
 			}
 		}
+		void Destroy();
 	};
 
 	//----------------------------------------------------------
@@ -265,7 +279,7 @@ namespace basecross{
 	class SpriteAction : public Component {
 		bool m_IsPlay;
 	protected:
-		shared_ptr<SpriteBaseDraw> m_BoneDraw;
+		shared_ptr<SpriteBaseDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
 	public:
 		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr),m_IsPlay(true){}
@@ -274,6 +288,7 @@ namespace basecross{
 		virtual void OnCreate()override;
 		virtual void OnDraw()override {}
 
+		virtual void Reset(){}
 		void Play() {
 			m_IsPlay = true;
 		}
@@ -298,7 +313,7 @@ namespace basecross{
 		virtual ~SpriteFlash(){}
 
 		virtual void OnUpdate()override;
-
+		virtual void Reset()override;
 		void SetFlashSpeed(float flashSpeed) {
 			m_FlashSpeed = flashSpeed;
 		}
@@ -356,12 +371,12 @@ namespace basecross{
 		void FadeOut() {
 			m_IsFadeOut = true;
 			m_IsFinished = false;
-			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 0));
+			m_Draw->SetDiffuse(Col4(1, 1, 1, 0));
 		}
 		void FadeIn() {
 			m_IsFadeOut = false;
 			m_IsFinished = false;
-			m_BoneDraw->SetDiffuse(Col4(1, 1, 1, 1));
+			m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
 		}
 		bool IsFinish() {
 			return m_IsFinished;
@@ -374,6 +389,7 @@ namespace basecross{
 	//----------------------------------------------------------
 	class SpriteButton : public SpriteAction {
 		shared_ptr<SpriteBaseDraw> m_SpriteDraw;
+		shared_ptr<SpriteAction> m_Effect;
 		function<void(shared_ptr<ObjectInterface>&)> m_Function;
 		function<void(shared_ptr<SpriteButton>&)> m_AddFunction;
 		shared_ptr<ObjectInterface> m_ArgmentObject;
@@ -408,8 +424,16 @@ namespace basecross{
 		virtual ~SpriteButton(){}
 
 		virtual void OnCreate()override;
+
 		virtual void OnUpdate()override;
 
+		template<class Comp,typename... params>
+		void AddEffect(params&&... param) {
+			m_Effect = GetGameObject()->AddComponent<Comp>(param...);
+		}
+		shared_ptr<SpriteAction> GetEffect() {
+			return m_Effect;
+		}
 		void AddFunction(function<void(shared_ptr<SpriteButton>&)> func) {
 			m_AddFunction = func;
 		}
@@ -494,7 +518,7 @@ namespace basecross{
 		InputData(int input,int amount) : m_Input(input),m_MoveAmount(amount),m_Mode(InputMode::Button),m_StickMode(StickMode::LX), m_BeforeStickState(false), m_StickDeadZone(0.0f) {}
 		InputData(StickMode mode, int amount,float deadZone) : m_Input(0), m_MoveAmount(amount), m_Mode(InputMode::Stick),m_StickMode(mode), m_BeforeStickState(false), m_StickDeadZone(deadZone) {}
 
-		bool CheckInput(WORD input) {
+		bool CheckInput(WORD input){
 			return input & m_Input;
 		}
 		bool CheckInput(float input) {
@@ -526,19 +550,36 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class ButtonManager : public GameObject{
-		
+		//ボタン格納用配列
 		map<wstring, vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
+		//選択中の番号
 		map<wstring, int> m_SelectIndexes;
+		//反映させる移動量
 		map<wstring, Vec3> m_GroupMovementAmount;
+		//入力
 		map<wstring, vector<InputData>> m_InputDates;
+		//決定ボタン
 		map<wstring, vector<WORD>> m_AcceptButtons;
+		//その瞬間に押された決定ボタン
 		map<wstring, WORD> m_PressedAccept;
 		wstring m_UsingGroup;
-
+		//クリック音のキー
 		wstring m_ClickSound;
-
+		//Updateさせるか
 		bool m_IsActive;
 
+		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		
+		template<typename Comp, typename... params>
+		shared_ptr<Sprite> CreateComp(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
+			sprite->AddTag(L"Button");
+			shared_ptr<SpriteButton> button = sprite->AddComponent<SpriteButton>(defaultTex, group, L"");
+			button->SetFunction(func,object);
+			button->AddEffect<Comp>(param...);
+
+			return sprite;
+		}
 	public:
 		static shared_ptr<ButtonManager> instance;
 
@@ -554,11 +595,33 @@ namespace basecross{
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
-		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex,Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
+		template<class Comp, typename... params>
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			return ButtonManager::instance->CreateComp<Comp>(stage, group, defaultTex, pos, size, nullptr, func, param...);
+		}
+		template<class Comp, typename... params>
+		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
+			return ButtonManager::instance->CreateComp<Comp>(stage, group, defaultTex, pos, size, object, func, param...);
+		}
+		
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
+
+		bool CheckUpdate();
+		bool CheckMoveInput(InputData& input);
+
+		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
+			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+				auto vec = m_ButtonGroup[group];
+				if (vec.size() > index) {
+					auto obj = vec[index]->GetGameObject();
+					return static_pointer_cast<Sprite>(obj);
+				}
+			}
+			return nullptr;
+		}
 		bool ExistOpenGroup() {
 			for (auto& buttons : m_ButtonGroup) {
 				if (buttons.second[0]->GetDrawActive()) {
@@ -730,7 +793,7 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class Board : public GameObject {
-		shared_ptr<PNTStaticDraw> m_BoneDraw;
+		shared_ptr<PNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Trans;
 
 		Vec3 m_StartPos;
@@ -753,10 +816,10 @@ namespace basecross{
 			m_Offset = offset;
 		}
 		shared_ptr<PNTStaticDraw> GetDraw() {
-			return m_BoneDraw;
+			return m_Draw;
 		}
 		void SetColor(Col4 color) {
-			m_BoneDraw->SetDiffuse(color);
+			m_Draw->SetDiffuse(color);
 		}
 		vector<VertexPositionNormalTexture> GetVertices() {
 			return m_Vertices;

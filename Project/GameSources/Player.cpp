@@ -1,16 +1,20 @@
 /*!
 @file Player.cpp
-@brief ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãªã©å®Ÿä½“
+@brief ƒvƒŒƒCƒ„[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Player.h"
+
 
 namespace basecross {
 	Player::Player(const shared_ptr<Stage>& stage) : Player(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
 
 	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
 		Character(stage, position, rotation, scale),
+		m_ParryHandle(-1),
+		m_Handle(-1),
 		m_MoveSpeed(6.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
@@ -20,8 +24,12 @@ namespace basecross {
 		m_BoostTime(1.0f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(1.0f),
+		m_Damage(1.0f),
 		m_DamageInterval(0.5f),
-		m_BoostInterval(1.0F)
+		m_BoostInterval(1.0F),
+		m_IsGoal(false),
+		m_zoneAnim(1.0f),
+		m_HitScale(Vec3(1))
 	{
 	}
 	Player::~Player()
@@ -30,7 +38,7 @@ namespace basecross {
 
 	Vec2 Player::GetInputState() const {
 		Vec2 ret;
-		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
+		//ƒRƒ“ƒgƒ[ƒ‰‚Ìæ“¾
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		ret.x = 0.0f;
 		ret.y = 0.0f;
@@ -39,7 +47,7 @@ namespace basecross {
 			ret.x = cntlVec[0].fThumbLX;
 			ret.y = cntlVec[0].fThumbLY;
 		}
-		//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å–å¾—(ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å„ªå…ˆ)
+		//ƒL[ƒ{[ƒh‚Ìæ“¾(ƒL[ƒ{[ƒh—Dæ)
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (KeyState.m_bPushKeyTbl['W']) { ret.y = 1.0f; }
 		if (KeyState.m_bPushKeyTbl['S']) { ret.y = -1.0f; }
@@ -51,7 +59,7 @@ namespace basecross {
 
 	Vec3 Player::GetMoveVector(float& rot) {
 		Vec3 angle(0, 0, 0);
-		//å…¥åŠ›ã®å–å¾—
+		//“ü—Í‚Ìæ“¾
 		float moveX = GetInputState().x;
 		float moveZ = GetInputState().y;
 
@@ -76,17 +84,21 @@ namespace basecross {
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
-			auto pos = GetPosition();
-			pos += angle * elapsedTime * Speed;
-			SetPosition(pos);
+			Move(angle,false);
 		}
-		//å›è»¢ã®è¨ˆç®—
+		//‰ñ“]‚ÌŒvZ
 		if (angle.length() > 0.0f) {
 			//auto utilPtr = GetBehavior<UtilBehavior>();
 			//utilPtr->RotToHead(angle, 1.0f);
-			SetRotation(Vec3(0, XMConvertToDegrees(rot), 0));
+			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
-
+			SetAnim(L"Dash");
+		}
+		else {
+			if ((m_PlayerStateNum & PlayerState::NORMAL) == 1)
+			{
+				SetAnim(L"Idle");
+			}
 		}
 	}
 
@@ -104,6 +116,7 @@ namespace basecross {
 
 	void Player::ZoneActivation()
 	{
+
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_EnergyCharge >= 1.0)
@@ -112,9 +125,16 @@ namespace basecross {
 			{
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0)
 				{
-					m_PlayerStateNum += PlayerState::ZONE;
+					SetAnim(L"Zone");
+					m_Damage = 3.0f;
+					m_zoneAnim = 1.0f;
+					m_HitScale = Vec3(3.0f);
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
+					m_PlayerStateNum += PlayerState::ZONE;
+					m_PlayerStateNum -= PlayerState::NORMAL;
+
+					GameManager::Instance()->SetTimeRate(0.5f);
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -122,17 +142,22 @@ namespace basecross {
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
 		{
+			SetAttackDamage(3.0f);
 			m_ZoneTime += elapsedTime;
-			if (m_ZoneTime > 5.0f)
+			if (m_ZoneTime > 5.0f + m_zoneAnim)
 			{
-				m_PlayerStateNum -= PlayerState::ZONE;
-				m_PlayerStateNum += PlayerState::NORMAL;
+				m_Damage = 1.0f;
 				m_ZoneTime = 0;
+				SetAttackDamage(1.0f);
+				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
+				m_PlayerStateNum -= PlayerState::ZONE;
+				m_PlayerStateNum += PlayerState::NORMAL;
+
+				GameManager::Instance()->SetTimeRate(1.0f);
 			}
 		}
-
 	}
 
 	Vec3 Player::SearchRange()
@@ -148,31 +173,13 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance / 3.0f)
+			if ((position - targetEnemy).length() < searchDistance)
 			{
 				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
-					//ã“ã®æ–¹å‘ã«å°‘ã—å‹•ãã€å‹•ã„ã¦ã„ã‚‹é–“ã¯ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã§ç§»å‹•ã§ããªã„
+					//‚±‚Ì•ûŒü‚É­‚µ“®‚­A“®‚¢‚Ä‚¢‚éŠÔ‚ÍƒRƒ“ƒgƒ[ƒ‰‚ÅˆÚ“®‚Å‚«‚È‚¢
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
-				}
-				else {
-					return Vec3();
-				}
-			}
-			else if (targetBulletVector != nullptr)
-			{
-				Vec3 targetbullert = targetBulletVector->GetComponent<Transform>()->GetPosition();
-				if ((position - targetbullert).length() < searchDistance)
-				{
-					if (IsWithinDetectionRange(forward, targetbullert - position, 45.0)) {
-						//ã“ã®æ–¹å‘ã«å°‘ã—å‹•ãã€å‹•ã„ã¦ã„ã‚‹é–“ã¯ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã§ç§»å‹•ã§ããªã„
-						Vec3 rot = RotateTowardsTarget(position, targetbullert);
-						return rot;
-					}
-					else {
-						return Vec3();
-					}
 				}
 				else {
 					return Vec3();
@@ -187,18 +194,23 @@ namespace basecross {
 		}
 	}
 
+	void Player::SetCharge(const float& charge)
+	{
+		m_EnergyCharge += charge;
+	}
+
 	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
-		// ç›®æ¨™æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
+		// –Ú•W•ûŒüƒxƒNƒgƒ‹‚ğŒvZ
 		Vec3 direction = {
 			target.x - object.x,
 			target.y - object.y,
 			target.z - object.z
 		};
 
-		// ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–
+		// ƒxƒNƒgƒ‹‚ğ³‹K‰»
 		Vec3 normalizedDirection = direction.normalize();
 
-		return normalizedDirection; // å‘ããƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”å´
+		return normalizedDirection; // Œü‚«ƒxƒNƒgƒ‹‚ğ•Ô‹p
 	}
 
 	void Player::AimRock(Vec3 rot)
@@ -206,13 +218,13 @@ namespace basecross {
 		if (rot != Vec3())
 		{
 			float rotate = atan2f(rot.x, rot.z);
-			SetRotation(Vec3(0.0f, XMConvertToDegrees(rotate), 0.0f));
+			SetRotation(Vec3(0.0f, rotate, 0.0f));
 		}
 	}
 
 	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group)
 	{
-		auto target = group->GetGroupVector();
+		auto target = group->GetGroupVectors();
 		shared_ptr<GameObject> nearObject = nullptr;
 		for (auto vec : target)
 		{
@@ -237,6 +249,78 @@ namespace basecross {
 			}
 		}
 		return nearObject;
+	}
+
+	float Player::Parry(float damage, const float& ParrySecond)
+	{
+		float parryTime = 30.0f;
+		Vec3 forward = GetForward();
+		if (ParrySecond > 15)
+		{
+			m_EnergyCharge += 0.2;
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
+			ScoreManager::Instance()->AddParryCount();
+			SoundManager::Instance().PlaySE(L"SE_GUARD");
+
+			PostEvent(0.5f, nullptr, GetStage(), L"StopVibration");
+			return 0;
+		}
+		else if (ParrySecond <= 15 && ParrySecond > 5)
+		{
+			m_EnergyCharge += 0.1;
+			//m_Effect->PlayEffect(m_ParryHandle, L"Parry", m_EffectVec, 0.0f);
+			//m_Effect->SetScale(m_ParryHandle, Vec3(0.1f));
+			//m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535 * 0.5f;
+			vibration.wRightMotorSpeed = 65535 * 0.5f;
+			XInputSetState(0, &vibration);
+			ScoreManager::Instance()->AddParryCount();
+			SoundManager::Instance().PlaySE(L"SE_GUARD");
+
+			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
+			return 0;
+		}
+		else
+		{
+			m_DamageIntervalStart = true;
+			m_EnergyCharge += 0.2;
+			ScoreManager::Instance()->AddDamage(2);
+			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+			return damage;
+		}
+
+	}
+
+	void Player::AddAnimation()
+	{
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto anim_fps = 60.0f;
+		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
+		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
+		ptrDraw->AddAnimation(L"Clear", 491, 109, false, anim_fps);
+	}
+
+	void Player::PlayAnimation()
+	{
+		if ((m_PlayerStateNum & PlayerState::ZONE) == 1)
+		{
+		}
 	}
 
 	void Player::Debug()
@@ -266,64 +350,81 @@ namespace basecross {
 	{
 		return m_PlayerStateNum;
 	}
-	float Player::GetEnergy() {
+	float Player::GetEnergy()
+	{
 		return m_EnergyCharge;
 	}
+	float Player::GetDamage()
+	{
+		return m_Damage;
+	}
+	bool Player::GetParry()
+	{
+		return m_ParryJudge;
+	}
+	void Player::SetParryPosition(const Vec3& position)
+	{
+		m_EffectVec = position;
+		m_ParryJudge = true;
+	}
+	void Player::SetDamage(const float& damage)
+	{
+		m_Damage = damage;
+	}
+	void Player::SetIsGaol(const bool& goal)
+	{
+		m_IsGoal = goal;
+	}
+
 	void Player::OnCreate()
 	{
 		Character::OnCreate();
 		InitHP(20);
-
-		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
+		SetAttackDamage(1.0f);
+		SetSpeed(4.0f);
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
-		//æç”»è¨­å®š
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		//•`‰æİ’è
+		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-		ptrDraw->SetTextureResource(L"01");
+		ptrDraw->SetTextureResource(L"01");*/
 
 
-		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
-		//Mat4x4 meshMat;
-		//meshMat.affineTransformation(
-		//	Vec3(0.3f,0.15f,0.3f), //(.1f, .1f, .1f),
-		//	Vec3(0.0f, 90.0f, 0.0f),
-		//	Vec3(0.0f, XM_PI, 0.0f),
-		//	Vec3(0.0f, -0.0f, 0.0f)
-		//);
-		//ptrDraw->SetMeshResource(L"DEBUG");
-		//ptrDraw->SetTextureResource(L"01");
-		//ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		//ptrDraw->SetOwnShadowActive(true);
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.1f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 90.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+		ptrDraw->SetMeshResource(L"PLAYER");
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
 
-		//ptrDraw->AddAnimation(L"DEFAULT", 0, 60, true, 60);
-		//ptrDraw->ChangeCurrentAnimation(L"DEFAULT");
-		//ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		//auto bone = AddComponent<BonePosition>(L"a.txt");
-		//bone->CreateBone();
-
-		//é‡åŠ›ã‚’ã¤ã‘ã‚‹
+		AddAnimation();
+		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
+		//d—Í‚ğ‚Â‚¯‚é
 		auto ptrGra = AddComponent<Gravity>();
 
-		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
+		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
+		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		AddTag(L"Player");
 
-
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
-		auto stage = static_pointer_cast<GameStageS>(m_Stage);
+		auto stage = static_pointer_cast<GameStage>(m_Stage);
 		if (stage != nullptr) {
-			//m_Effect = stage->GetCreateEffect();
+			m_Effect = stage->GetCreateEffect();
 		}
 		else {
 			m_Effect = nullptr;
 		}
-
 
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
@@ -331,110 +432,129 @@ namespace basecross {
 	void Player::OnUpdate()
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		//cntlVec
+
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcBaseDraw>();
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;
-		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒã‚§ãƒƒã‚¯ã—ã¦å…¥åŠ›ãŒã‚ã‚Œã°ã‚³ãƒãƒ³ãƒ‰å‘¼ã³å‡ºã—
-		//m_InputHandler.PushHandle(GetThis<Player>());
-		ZoneActivation();
-		Debug();
-
-
-		//ãƒ‡ãƒãƒƒã‚°ç”¨
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_Y) {
-
-		}
-
-		if (m_ParryJudge == true)
+		if (m_IsGoal == false)
 		{
-			m_ParryTime--;
-			if (m_ParryTime <= 0.0f)
-			{
-				//m_ParryJudge = false;
-			}
-		}
+			ZoneActivation();
+			//Debug();
+			Vec3 forward = GetForward();
 
-		if (m_DamageIntervalStart)
-		{
-			m_DamageInterval -= elapsedTime;
-			draw->SetDiffuse(Col4(1, 0, 0, 1));
-			if (m_DamageInterval <= 0.0f)
+			if (m_ParryJudge)
 			{
-				draw->SetDiffuse(Col4(1, 1, 1, 1));
-				m_DamageIntervalStart = false;
-				m_DamageInterval = 0.5f;
-			}
-		}
-		if ((m_PlayerStateNum & PlayerState::DASH) != 0)
-		{
-			m_BoostTime -= elapsedTime;
-			if (m_BoostTime >= 0.0f)
-			{
-				BoostMove(6.0f * 3.0f, m_BoostAngle);
-			}
-			else {
-				m_PlayerStateNum += PlayerState::NORMAL;
-				m_PlayerStateNum -= PlayerState::DASH;
-				m_BoostInterval = 1.0f;
-			}
-		}
-		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
-		{
-			m_Attacktime -= elapsedTime;
-			if (m_Attacktime >= 0.0f)
-			{
-				Vec3 forward = GetForward();
-				BoostMove(3.0f, forward);
-			}
-			else {
-				m_PlayerStateNum -= PlayerState::ATTACK;
-				m_PlayerStateNum += PlayerState::NORMAL;
-			}
-
-		}
-		else {
-			m_BoostTime = 0.2f;
-			m_Attacktime = 0.2f;
-
-			m_BoostInterval -= elapsedTime;
-			m_AttackInterval -= elapsedTime;
-			MovePlayer(6.0f);
-			Vec3 rot = SearchRange();
-
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
-			{
-				m_BoostAngle = GetForward();
-				if (m_BoostInterval <= 0.0f)
+				m_ParryTime--;
+				if (m_ParryTime < 0.0f)
 				{
-					m_PlayerStateNum -= PlayerState::NORMAL;
-					m_PlayerStateNum += PlayerState::DASH;
-					SoundManager::Instance().PlaySE(L"SE_RUN");
+					m_ParryJudge = false;
+					m_ParryTime = 15.0f;
+				}
+			}
+			if (m_DamageIntervalStart)
+			{
+				m_DamageInterval -= elapsedTime;
+				if (m_DamageInterval <= 0.0f)
+				{
+					m_DamageIntervalStart = false;
+					m_DamageInterval = 0.5f;
 				}
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+			Vec3 rot = SearchRange();
+
+			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
-				m_ParryJudge = true;
+				m_BoostTime -= elapsedTime;
+				if (m_BoostTime >= 0.0f)
+				{
+					SetAnim(L"Brink");
+					BoostMove(6.0f * 3.0f, m_BoostAngle);
+				}
+				else {
+					m_PlayerStateNum += PlayerState::NORMAL;
+					m_PlayerStateNum -= PlayerState::DASH;
+					m_BoostInterval = 1.0f;
+				}
+			}
+			else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0)
+			{
+				m_Attacktime -= elapsedTime;
+				if (m_Attacktime >= 0.0f)
+				{
+					SetAnim(m_AttackAnim);
 
-				AimRock(rot);
-				m_Position = GetPosition();
-				Vec3 forward = GetForward();
+				}
+				else
+				{
+					m_PlayerStateNum -= PlayerState::ATTACK;
+					m_PlayerStateNum += PlayerState::NORMAL;
+				}
+			}
+			else {
+				m_BoostTime = 0.2f;
+				m_Attacktime = 0.25f;
 
-				BoostMove(15.0f, forward);
-				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>());
+				m_BoostInterval -= elapsedTime;
+				m_AttackInterval -= elapsedTime;
+				MovePlayer(6.0f);
 
-				float rot;
-				auto angle = GetMoveVector(rot);
+				Vec3 rot = SearchRange();
+				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X)
+				{
+					m_BoostAngle = GetForward();
+					if (m_BoostInterval <= 0.0f)
+					{
+						float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
+						m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
+						m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
 
-				//m_Effect->PlayEffect(L"Flash", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + 0.2f), 0);
-				//m_Effect->SetRotation(Vec3(m_Position), 0.0f);
-				//m_Effect->SetScale(Vec3(0.3f, 0.3f, 0.3f));
+						m_PlayerStateNum -= PlayerState::NORMAL;
+						m_PlayerStateNum += PlayerState::DASH;
+						SoundManager::Instance().PlaySE(L"SE_ACCEPT");
+					}
+				}
 
-				m_PlayerStateNum += PlayerState::ATTACK;
-				m_PlayerStateNum -= PlayerState::NORMAL;
+				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
+				{
+					if (m_AttackAnim == L"Attack2")
+					{
+						m_AttackAnim = L"Attack";
+					}
+					else
+					{
+						m_AttackAnim = L"Attack2";
+					}
 
-				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 0.5f);
+					m_ParryJudge = true;
+					m_ParryTime = 15.0f;
+					AimRock(rot);
+					m_Position = GetPosition();
+					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
+					float rotate = atan2f(forward.x, forward.z);
+
+					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.2f));
+
+					m_PlayerStateNum += PlayerState::ATTACK;
+					m_PlayerStateNum -= PlayerState::NORMAL;
+
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
+				}
+			}
+		}
+		else
+		{
+			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
+			if (m_HP <= 0)
+			{
+				SetAnim(L"Died");
+			}
+			else {
+				SetAnim(L"Clear");
 			}
 		}
 
@@ -442,69 +562,73 @@ namespace basecross {
 
 	void Player::OnDraw()
 	{
-		//m_Effect->OnDraw();
-
 		Character::OnDraw();
 	}
+
 	void Player::Dead() {
-		SetPosition(Vec3(0, 2, 0));
-		InitHP(1000);
+		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
+	}
+
+	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> sorce)
+	{
+		bool isPinch = false, isBeforePinch = true;
+		if (m_DamageIntervalStart == false)
+		{
+			if (m_HP >= m_MaxHP / 3.0f) {
+				isBeforePinch = false;
+			}
+			if (m_ParryJudge)
+			{
+				Vec3 rot = SearchRange();
+				float parryDamage = Parry(damage, m_ParryTime);
+				if (parryDamage < damage) {
+					if (sorce && sorce->FindTag(L"Attack")) {
+						auto attack = static_pointer_cast<Attack>(sorce);
+						attack->ReflectParry(GetPosition());
+					}
+				}
+				if (parryDamage == 0 && rot != Vec3())
+				{
+					parry = m_ParryJudge;
+					return true;
+				}
+				Character::Damage(parryDamage, true);
+				m_ParryTime = false;
+				return false;
+			}
+			else {
+				SetAnim(L"Nock");
+				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+				Character::Damage(damage, true);
+				m_ParryTime = false;
+				return false;
+			}
+			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
+			}
+		}
+		m_HP = max(m_HP, 0);
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
-		{
-			if (m_DamageIntervalStart == false)
-			{
-				if (m_ParryJudge == true)
-				{
-					if (m_ParryTime <= 30 && m_ParryTime > 15)
-					{
-						m_HP -= 0;
-						m_EnergyCharge += 0.2;
-					}
-					else if (m_ParryTime <= 15 && m_ParryTime > 0)
-					{
-						Damage(1.0f, true);
-						m_DamageIntervalStart = true;
-						m_EnergyCharge += 0.1;
-						ScoreManager::Instance()->AddDamage(1);
-					}
-					ScoreManager::Instance()->AddParryCount();
-					SoundManager::Instance().PlaySE(L"SE_GUARD");
-				}
-				else {
-					Damage(1.0f, false);
-					m_DamageIntervalStart = true;
-					m_EnergyCharge += 0.2;
-					ScoreManager::Instance()->AddDamage(2);
-					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
-				}
-			}
-			m_HP = max(m_HP, 0);
-			if (m_HP <= 0) {
-				Dead();
-			}
-			m_ParryJudge = false;
-			m_ParryTime = 30.0f;
-		}
-		if (other->FindTag(L"Enemy"))
-		{
-			m_EnergyCharge += 0.1;
-		}
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player) :
-		GameObject(stage),
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale) :
+		Object(stage),
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
-		m_HitScale(Vec3(0.5f, 0.5f, 0.5f)),
+		m_HitScale(scale),
 		m_FlyingTime(1.0f),
 		m_TotalTime(0.0f),
 		m_Speed(12.0f)
 	{
+	}
+
+	HitSphere::~HitSphere()
+	{
+		m_Effect->StopEffect(m_Handle);
 	}
 
 	void HitSphere::OnCreate()
@@ -514,27 +638,42 @@ namespace basecross {
 		ptr->SetRotation(m_HitRotation);
 		ptr->SetScale(m_HitScale);
 
-		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
+		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
+		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
 		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
+
+		auto stage = static_pointer_cast<GameStage>(GetStage());
+		if (stage != nullptr) {
+			m_Effect = stage->GetCreateEffect();
+		}
+		else {
+			m_Effect = nullptr;
+		}
+		m_Effect->PlayEffect(m_Handle, L"Panchi", ptr->GetPosition(), 20.0f);
+		float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
+		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
+		m_Effect->SetScale(m_Handle, m_HitScale + 0.5f);
+		//auto layer = m_Effect->GetLayer(m_Handle);
+		//m_Effect->SetLayer(m_Handle, 0);
 	}
 
 	void HitSphere::OnUpdate()
 	{
+		App::GetApp()->GetStepTimer().SetFixedTimeStep(false);
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
 		int state = player->GetStates();
 		if ((state & Player::PlayerState::ZONE) == 0) {
 			m_FlyingTime = 0.1f;
-			m_Speed = 6.0f;
+			m_Speed = 8.0f;
 		}
 		else {
 			m_FlyingTime = 0.5f;
@@ -548,25 +687,31 @@ namespace basecross {
 		else {
 			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
 		}
+		m_Effect->SetLocation(m_Handle, hitPosition);
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
 	}
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if (other->FindTag(L"Bullet"))
+		if (other->FindTag(L"Enemy"))
 		{
 			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->OnCollisionEnter(other);
-		}
-		if (other->FindTag(L"Enemy") || other->FindTag(L"Object"))
-		{
-			auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-			player->OnCollisionEnter(other);
-			//GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
+			auto enemy = dynamic_pointer_cast<Character>(other);
+			float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
+			player->SetCharge(0.1f);
+			enemy->Damage(player->GetDamage(), false);
+
+			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
+			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535 * 0.5f;
+			vibration.wRightMotorSpeed = 65535 * 0.5f;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 		}
 	}
 
 }
-//end basecross
-

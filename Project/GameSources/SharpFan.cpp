@@ -20,7 +20,7 @@ namespace basecross {
 			float rad = startRadius + XMConvertToRadians(m_DrawAngle / m_VerticesSize * i);
 
 			float u = 1.0f / static_cast<float>(m_VerticesSize) * static_cast<float>(i);
-			float v = 2.0f;
+			float v = 1.0f;
 
 			Vec3 position = Vec3(0.0f, 0.0f, 0.0f);
 			if (m_Vertices.size() != 0) {
@@ -52,7 +52,7 @@ namespace basecross {
 		m_Indices.reserve(m_VerticesSize - 1 * baseIndices.size());
 		for (int i = 0; i < m_VerticesSize - 1; i++)
 		{
-			//baseIndicesã®æ•°ãƒ«ãƒ¼ãƒ—
+			//baseIndices‚Ì”ƒ‹[ƒv
 			for (auto baseIndex : baseIndices)
 			{
 				m_Indices.push_back(baseIndex + (2 * i));
@@ -61,15 +61,15 @@ namespace basecross {
 	}
 	void SharpFan::OnCreate() {
 		InitializeVertex();
-		m_BoneDraw = AddComponent<PCTStaticDraw>();
-		m_BoneDraw->SetOriginalMeshUse(true);
-		m_BoneDraw->CreateOriginalMesh(m_Vertices, m_Indices);
-		m_BoneDraw->SetSamplerState(SamplerState::LinearWrap);
-		m_BoneDraw->SetDepthStencilState(DepthStencilState::Read);
-		m_BoneDraw->SetBlendState(BlendState::Additive);
+		m_Draw = AddComponent<PCTStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		m_Draw->SetSamplerState(SamplerState::LinearWrap);
+		m_Draw->SetDepthStencilState(DepthStencilState::Read);
+		m_Draw->SetBlendState(BlendState::Additive);
 		SetAlphaActive(true);
 		if (m_TexKey != L"") {
-			m_BoneDraw->SetTextureResource(m_TexKey);
+			m_Draw->SetTextureResource(m_TexKey);
 		}
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(Vec3(-10.0f, 0.1f, 2.0f));
@@ -77,9 +77,10 @@ namespace basecross {
 
 	void SharpFan::OnUpdate() {
 		InitializeVertex();
+		float elapsed = App::GetApp()->GetElapsedTime();
 		for (auto& vertex : m_Vertices) {
-			vertex.textureCoordinate -= 0.01f;
+			vertex.textureCoordinate -= m_Speed * elapsed;
 		}
-		m_BoneDraw->UpdateVertices(m_Vertices);
+		m_Draw->UpdateVertices(m_Vertices);
 	}
 }

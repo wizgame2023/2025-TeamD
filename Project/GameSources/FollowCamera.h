@@ -54,6 +54,7 @@ namespace basecross {
 		
 		int m_Width;
 		int m_Height;
+		bool m_StopCamera;
 
 		shared_ptr<Transform> m_PlayerTransform;
 		shared_ptr<CameraCollision> m_CameraCollision;
@@ -64,6 +65,8 @@ namespace basecross {
 		virtual void OnUpdate();
 		virtual void OnCreate();
 		virtual void LogCamera();
+		
+		void SetCameraPause(const bool& StopCamera);
 
 		void SetTarget(const shared_ptr<Transform> playerTransform) {
 			m_PlayerTransform = playerTransform;

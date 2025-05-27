@@ -9,10 +9,10 @@
 namespace basecross {
 
 	void TargetBoard::OnCreate() {
-		m_Board = GetStage()->AddGameObject<Board>(L"TARGET", Vec3(), Vec3(0.2f));
+		m_Board = GetStage()->AddGameObject<Board>(L"TARGET", Vec3(), Vec3(1.0f));
 	}
 	void TargetBoard::OnUpdate() {
-		if (m_Target == nullptr) {
+		if (m_Target == nullptr || !m_Target->GetDrawActive()) {
 			m_Board->SetDrawActive(false);
 			return;
 		}
@@ -24,6 +24,7 @@ namespace basecross {
 		Vec3 eye = OnGetDrawCamera()->GetEye();
 		Vec3 direction = eye - targetPosition;
 		m_Board->GetComponent<Transform>()->SetPosition(targetPosition + direction * 0.1f);
+		m_Board->GetComponent<Transform>()->SetScale(targetSize);
 	}
 }
 //end basecross

@@ -169,14 +169,13 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
-			//m_EfkInterface = ObjectFactory::Create<EfkInterface>();
-
+			//auto obj = AddGameObject<BraekBox>();
+			//SetSharedGameObject(L"BreakObject", obj);
 			auto mediaPath = App::GetApp()->GetDataDirWString();
-			wstring effectPath = mediaPath + L"Effekt\\";
-			//m_Effect = ObjectFactory::Create<EffectManeger>();
-			//m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
-			//m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 			GameStage::OnCreate();
+			//AddGameObject<Citizen>(Vec3(0, 2, 15), Vec3(1));
+			//AddGameObject<Citizen>(Vec3(10, 2, 15), Vec3(1));
+			//AddGameObject<Citizen>(Vec3(-10, 2, 15), Vec3(1));
 
 		}
 		catch (...) {
@@ -187,23 +186,13 @@ namespace basecross {
 	void GameStageK::OnUpdate() {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto& app = App::GetApp();
-		///m_Effect->OnUpdate();
-
-		auto& device = app->GetInputDevice().GetControlerVec()[0];
-		//if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A)
-		//{
-		//	m_Effect->PlayEffect(L"Flash", Vec3(0), 0);
-		//	m_Effect->SetScale(Vec3(0.5f, 0.5f, 0.5f));
-		//}		
 		GameStage::OnUpdate();
 
 	}
 	void GameStageK::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
-
-		//m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		//m_Effect->OnDraw();
+		GameStage::OnDraw();
 	}
 }
 	//end basecross

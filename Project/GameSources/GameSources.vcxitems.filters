@@ -46,6 +46,9 @@
     <Filter Include="Sharp">
       <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Select">
+      <UniqueIdentifier>{46f92cd0-f4a0-44a7-b1d8-1149cbad12bf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
@@ -140,6 +143,28 @@
       <Filter>Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ResultCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h">
+      <Filter>Enemy</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)AreaOfEffect.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h">
+      <Filter>Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
+      <Filter>Select</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h">
+      <Filter>Ballet</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -234,5 +259,27 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ResultCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp">
+      <Filter>Enemy</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
+      <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Select</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
+      <Filter>Ballet</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
   </ItemGroup>
 </Project>
