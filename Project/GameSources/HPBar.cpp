@@ -13,13 +13,13 @@ namespace basecross {
 		m_HpBar = GetStage()->AddGameObject<Board>(L"HP_BAR", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
 		m_HpBar->SetColor(Col4(1, 0, 0, 1));
 		m_HpBar->SetDrawLayer(0);
-		m_HpFrame = GetStage()->AddGameObject<Board>(L"HP_BAR", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
-		m_HpFrame->SetColor(Col4(0, 0, 0, 1));
-		m_HpFrame->SetDrawLayer(1);
+		//m_HpFrame = GetStage()->AddGameObject<Board>(L"HP_BAR", Vec3(0, 0, 0), Vec3(1.0f, 0.09f, 1.0f), true);
+		//m_HpFrame->SetColor(Col4(0, 0, 0, 1));
+		//m_HpFrame->SetDrawLayer(1);
 	}
 	void HPBar::OnUpdate() {
 		m_HpBar->SetDrawActive(m_Target->GetDrawActive());
-		m_HpFrame->SetDrawActive(m_Target->GetDrawActive());
+		//m_HpFrame->SetDrawActive(m_Target->GetDrawActive());
 
 		m_Transform->SetPosition(m_Target->GetPosition() + m_Offset);
 		float remainingHp = m_CurrentHp / m_MaxHp;
@@ -36,7 +36,7 @@ namespace basecross {
 	}
 	void HPBar::Destroy() {
 		GetStage()->RemoveGameObject<Board>(m_HpBar);
-		GetStage()->RemoveGameObject<Board>(m_HpFrame);
+		//GetStage()->RemoveGameObject<Board>(m_HpFrame);
 		GetStage()->RemoveGameObject<HPBar>(GetThis<HPBar>());
 	}
 }

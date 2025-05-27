@@ -12,6 +12,12 @@ namespace basecross {
 		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", Vec3(499.0f, -228.0f, 0.0f), Vec2(100.0f));
 		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", Vec3(499.0f, -228.0f, 0.0f), Vec2(100.0f));
 	}
+
+	void UltIcon::SetDraw(bool a) {
+		m_IconBackGround->SetDrawActive(a);
+		m_Icon->SetDrawActive(a);
+	}
+
 	void UltIcon::OnUpdate() {
 		Vec2 maxSize = m_Icon->GetSize();
 		m_Icon->SetVertex({
@@ -52,5 +58,10 @@ namespace basecross {
 			m_Icon->SetDiffuse(m_NormalColor);
 		}
 	}
+	void NormalIcon::SetDraw(bool a)
+	{
+		m_Icon->SetDrawActive(a);
+	}
+
 }
 //end basecross

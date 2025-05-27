@@ -46,6 +46,9 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_TITLE_BACK", uiPath + L"ResultToTitleBack.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE_BACK", uiPath + L"ResultNextStageBack.png");
 		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
+		app->RegisterTexture(L"BGM_BAR", uiPath + L"BGM_MenuBar.png");
+		app->RegisterTexture(L"BGM_BACKBAR", uiPath + L"BGM_MenuBackBar.png");
+		app->RegisterTexture(L"BGM_SLIDEBAR", uiPath + L"BGM_MenuSlideBar.png");
 		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
 		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
@@ -138,6 +141,7 @@ namespace basecross {
 	/// </summary>
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
+		m_ResultMenu->SetIsPouse(true);
 	}
 
 	void GameStage::CreateGameOverMenu() {
@@ -146,10 +150,10 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
-		auto icon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		icon->SetInput(XINPUT_GAMEPAD_A);
-		icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		icon->SetInput(XINPUT_GAMEPAD_X);
+		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
+		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
 		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
 		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
@@ -216,6 +220,11 @@ namespace basecross {
 	}
 
 	void GameStage::GameClear() {
+		m_NormalIcon->SetDraw(false);
+		m_Icon->SetDraw(false);
+		m_UltIcon->SetDraw(false);
+		m_PlayerHpBarBackGround->SetDrawActive(false);
+		m_PlayerHpBar->SetDrawActive(false);
 		m_ResultMenu->Open();
 		auto camera = GetView()->GetTargetCamera();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -228,6 +237,11 @@ namespace basecross {
 	}
 
 	void GameStage::GameOver() {
+		m_NormalIcon->SetDraw(false);
+		m_Icon->SetDraw(false);
+		m_UltIcon->SetDraw(false);
+		m_PlayerHpBarBackGround->SetDrawActive(false);
+		m_PlayerHpBar->SetDrawActive(false);
 		m_GameOverMenu->Open();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
@@ -302,8 +316,16 @@ namespace basecross {
 			}
 		}
 
-		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen()) {
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			//SetAllGameObjectActive(false);
+			m_NormalIcon->SetDrawActive(false);
+			m_Icon->SetDrawActive(false);
+			m_UltIcon->SetDrawActive(false);
+
+			m_BossHpBarBackGround->SetDrawActive(false);
+			m_BossHpBar->SetDrawActive(false);
+			m_BossText->SetDrawActive(false);
+
 		}
 		else {
 			//SetAllGameObjectActive(true);

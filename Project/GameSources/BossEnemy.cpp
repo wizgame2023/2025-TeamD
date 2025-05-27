@@ -118,14 +118,14 @@ namespace basecross {
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 
 		float hp = GetMaxHP();
-		hp *= addRate;
+		hp *= (int)difficulty;
 		InitHP(hp);
 	}
 
 	void BossEnemy::OnUpdate()
 	{
 		Enemy::OnUpdate();
-		float elapsed = GetElpased();
+		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
 		if (!m_IsStun) {
@@ -163,6 +163,7 @@ namespace basecross {
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
+			stun /= (float)GameManager::Instance()->GetDifficulty();
 			m_Stun += stun;
 			if (m_Stun > 1.0f) {
 				m_IsStun = true;
@@ -173,12 +174,7 @@ namespace basecross {
 	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
 			Damage(2.0f, false);
-			AddStun(0.01f * (m_ComboCount + 1));
-			if (!m_IsStun) {
-				m_ComboCount++;
-				m_ComboCount = min(4, m_ComboCount);
-				m_ComboTimer.SetTime(1.0f, true);
-			}
+			AddStun(0.06f);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 	}
@@ -191,8 +187,8 @@ namespace basecross {
 		Enemy::Damage(damage, isSound);
 		m_DamageEffectTime.SetTime(0.2f, true);
 	}
-	void BossEnemy::Move(const Vec3& direction) {
-		Character::Move(direction);
+	void BossEnemy::Move(const Vec3& direction,const bool& isGameSpeed) {
+		Character::Move(direction, isGameSpeed);
 		SetAnimation(L"Walk");
 	}
 	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}

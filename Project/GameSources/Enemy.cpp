@@ -35,7 +35,7 @@ namespace basecross {
 
 	void Enemy::OnUpdate()
 	{
-		float elapsedTime = GetElpased();
+		float elapsedTime = GetGameElapsed();
 
 		if (m_KnockBack)
 		{

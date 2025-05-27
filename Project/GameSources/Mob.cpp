@@ -34,7 +34,6 @@ namespace basecross {
 		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
 		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
 
-		//•`‰æÝ’è
 		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
@@ -70,7 +69,7 @@ namespace basecross {
 		Enemy::OnUpdate();
 		if (m_Update)
 		{
-			float elapsed = App::GetApp()->GetElapsedTime();
+			float elapsed = GetGameElapsed();
 			AsyncUpdate();
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			draw->UpdateAnimation(elapsed);
@@ -103,12 +102,10 @@ namespace basecross {
 					m_ShotRandomInterval = 0;
 				}
 			}
-			//m_SearchFan->SetForward(m_Transform->GetForword().normalize());
-			//m_SearchFan->SetPosition(GetPosition());
 			m_HpBar->SetCurrentHp(m_HP);
 		}
 		else {
-			float elapsed = App::GetApp()->GetElapsedTime();
+			float elapsed = GetGameElapsed();;
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			draw->UpdateAnimation(elapsed);
 		}
@@ -117,7 +114,7 @@ namespace basecross {
 	{
 		StartAsync();
 		Vec3 none = Vec3(0);
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetGameElapsed();
 		Vec3 currntPosition = m_Transform->GetPosition();
 			m_currentState->Execute();
 		Enemy::AsyncUpdate();
@@ -127,7 +124,7 @@ namespace basecross {
 	void Mob::Dead() {
 		m_Update = false;
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetGameElapsed();
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
 		m_HpBar->Destroy();
 
@@ -185,7 +182,7 @@ namespace basecross {
 
 	Vec3 Mob::RootNaviGate()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetGameElapsed();
 		auto pointerGroup = GetStage()->GetSharedObjectGroup(L"PointerGroup");
 		auto pointers = pointerGroup->GetGroupVector();
 		//auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");

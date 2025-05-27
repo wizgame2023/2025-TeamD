@@ -97,10 +97,17 @@ namespace basecross {
 		/// ゲーム時間倍率を考慮した経過時間を取得
 		/// </summary>
 		/// <returns>経過時間</returns>
-		float GetElpased() {
-			return App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float GetGameElapsed() {
+			return GetElapsed() * GameManager::Instance()->GetTimeRate();
 		}
 
+		/// <summary>
+		/// 経過時間を取得
+		/// </summary>
+		/// <returns>経過時間</returns>
+		float GetElapsed() {
+			return App::GetApp()->GetElapsedTime();
+		}
 		/// <summary>
 		/// 非同期処理開始
 		/// </summary>

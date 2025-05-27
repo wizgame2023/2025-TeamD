@@ -19,7 +19,7 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-
+		void SetDraw(bool a);
 		void SetCharge(float charge) {
 			m_Charge = charge;
 		}
@@ -45,6 +45,8 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
+		void SetDraw(bool a);
 
 		void SetInput(DWORD input) {
 			m_Input = input;
