@@ -69,7 +69,7 @@ namespace basecross {
 					float objRotate = atan2f(objDirection.x, objDirection.z);
 					m_Transform->SetRotation(Vec3(0, objRotate, 0));
 					float objRenge = objDirection.length();
-					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
+					pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
 					enemy->SetPosition(pos);
 				}
 			}
@@ -87,7 +87,7 @@ namespace basecross {
 					float objRenge = objDirection.length();
 					if (objRenge > enemy->m_BalletRange / 2)
 					{
-						pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
+						pos += objDirection.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
 						enemy->SetPosition(pos);
 					}
 					else {
@@ -105,7 +105,7 @@ namespace basecross {
 			float renge = direction.length();
 			if (renge > enemy->m_BalletRange / 2)
 			{
-				pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * (int)difficulty;
+				pos += direction.normalize() * 1.0f * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
 				enemy->SetPosition(pos);
 			}
 			else {
@@ -128,7 +128,7 @@ namespace basecross {
 		EnemyState::Enter();
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
 		mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
-		mob->m_ShotRandomInterval = 1.0f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
+		mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
 		m_BulletRemain = mob->m_BulletRemain;
 		auto stage = static_pointer_cast<GameStage>(m_Stage);
 		if (stage != nullptr) {
@@ -208,7 +208,7 @@ namespace basecross {
 		if(m_BulletRemain > 0)
 		{
 			enemy->SetAnim(L"Set", 0.0f);
-			if (enemy->m_BalletInterval < 0.5f && enemy->m_ShotRandomInterval < 0.5f && m_BulletEffect != true)
+			if (enemy->m_BalletInterval < 0.4f && enemy->m_ShotRandomInterval < 0.4f && m_BulletEffect != true)
 			{
 
 				m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye", Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
