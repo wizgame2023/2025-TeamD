@@ -45,8 +45,18 @@ namespace basecross {
 
 		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-		ptrDraw->SetTextureResource(L"BUILDING");
+		/*ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"BUILDING");*/
+		ptrDraw->SetMeshResource(L"OBJECT");
+		ptrDraw->SetTextureResource(L"BUILD_TEX");
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.02f, 0.05f, 0.025f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.5f, 0.0f)
+		);
+		ptrDraw->SetMeshToTransformMatrix(meshMat);
 	}
 }
 //end basecross
