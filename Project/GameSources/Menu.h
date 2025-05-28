@@ -26,11 +26,6 @@ namespace basecross {
 		void AddButton(const wstring& defaultTex, const Col4& selectColor, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
 		void AddButton(const wstring& defaultTex, const Col4& selectColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
-		template<typename T>
-		shared_ptr<T> GetSprite(int menuNumber) {
-			return static_cast_pinter<T>(m_MenuObjects[menuNumber]);
-		}
-
 		template<class Comp, typename... params>
 		void AddButton(const wstring& defaultTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func, params&&... param) {
 			ButtonManager::Create<Comp>(GetStage(), m_GroupName, defaultTex, pos, size, object, func, param...);

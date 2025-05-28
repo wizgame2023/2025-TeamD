@@ -16,6 +16,7 @@ namespace basecross {
 
 		//ƒ‚ƒfƒ‹ŠÖŒW
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
+		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
