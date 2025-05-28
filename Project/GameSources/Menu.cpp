@@ -72,6 +72,7 @@ namespace basecross {
 		AddSprite(sprite);
 
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
+		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
@@ -79,12 +80,12 @@ namespace basecross {
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE_BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 100), true);
-		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_START__BACK", Vec3(0, -75.0f, -1), Vec2(200, 100), true);
-		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100), true);
-		AddSprite(sprite);
+		//sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE_BACK", Vec3(-260.0f, -270.0f, 0.0f), Vec2(200, 100), true);
+		//AddSprite(sprite);
+		//sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_START__BACK", Vec3(0, -75.0f, -1), Vec2(200, 100), true);
+		//AddSprite(sprite);
+		//sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100), true);
+		//AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
 		auto menu = GetThis<PauseMenu>();
