@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«é¿ëÃ
+@brief „Ç≠„É£„É©„ÇØ„Çø„Éº„Å™„Å©ÂÆü‰Ωì
 */
 
 #include "stdafx.h"
@@ -264,19 +264,26 @@ namespace basecross {
 		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -230.0f, 0.0f), Vec2(200, 100));
 		AddSprite(choices);
 
-		//É^ÉCÉgÉã
+		//„Çø„Ç§„Éà„É´
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-580.0f, -280.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//éüÇÃÉXÉeÅ[ÉW
+
+		//Ê¨°„ÅÆ„Çπ„ÉÜ„Éº„Ç∏
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -280.0f, 0.0f), Vec2(50, 70),
+			[](shared_ptr<ObjectInterface> object) {
+				auto stage = static_pointer_cast<Stage>(object);
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+			});
+		//Ê¨°„ÅÆ„Çπ„ÉÜ„Éº„Ç∏
+		AddButton(L"RESULT_NEXT_STAGE", L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
 				auto stage = static_pointer_cast<Stage>(object);
-				if (count == scene->GetMaxCount()){
+				if (count == scene->GetMaxCount()) {
 					scene->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 				}
 				else {
@@ -284,7 +291,7 @@ namespace basecross {
 				}
 
 			});
-		//ÉZÉåÉNÉg
+		//„Çª„É¨„ÇØ„Éà
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
@@ -328,18 +335,18 @@ namespace basecross {
 		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
 
-		//É^ÉCÉgÉã
+		//„Çø„Ç§„Éà„É´
 		AddButton(L"RESULT_TITLE", L"RESULT_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		//ÉZÉåÉNÉg
+		//„Çª„É¨„ÇØ„Éà
 		//AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-50.0f, -250.0f, 0.0f), Vec2(250, 120),
 		//	[](shared_ptr<ObjectInterface> object) {
 
 		//	});
-		//ÉäÉXÉ^Å[Ég
+		//„É™„Çπ„Çø„Éº„Éà
 		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);

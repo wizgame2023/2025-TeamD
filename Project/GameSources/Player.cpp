@@ -134,7 +134,7 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ZONE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					GameManager::Instance()->SetTimeRate(0.5f);
+					GameManager::Instance()->StartZone(5.0f);
 				}
 			}
 			m_EnergyCharge = 1.0f;
@@ -155,7 +155,7 @@ namespace basecross {
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
 
-				GameManager::Instance()->SetTimeRate(1.0f);
+				//GameManager::Instance()->SetTimeRate(1.0f);
 			}
 		}
 	}
