@@ -24,7 +24,6 @@ namespace basecross {
 		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectColor, pos, size, object, func);
 	}
 
-
 	void Menu::AddSelectButton(InputData date) {
 		ButtonManager::instance->SetInput(m_GroupName, date);
 	}
@@ -132,10 +131,6 @@ namespace basecross {
 		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-100, -50, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
 
-		//auto choice = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80), true);
-		//int stick = 1;
-		//auto choiceCitcle = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-30.0f, -50.0f, 0.0f), Vec2(60, 80), true);
-		//AddSprite(choiceCitcle);
 		//if (stick > 1)
 		//{
 		//	choice->SetDrawActive(true);
@@ -165,7 +160,7 @@ namespace basecross {
 		//slideBarSprite->SetPos(Vec3(-x,0.0f,0.0f));
 		//AddSprite(slideBarSprite);
 
-		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), menu,
+		AddButton(L"POSE_CIRCLE", L"POSE_CIRCLE",  Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80),menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
@@ -178,6 +173,13 @@ namespace basecross {
 			});
 		x = GetPositionX(volumeBGM);
 
+		//auto choice = GetSprite<Sprite>()->
+		auto choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), true);
+		//choice->SetPos(x);
+		AddSprite(choice);
+		auto choiceCitcle = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
+		AddSprite(choiceCitcle);
+
 		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
 		AddSprite(backBarSprite);
 
@@ -187,7 +189,7 @@ namespace basecross {
 		//AddSprite(slideBarSprite);
 
 
-		AddButton(L"BGM_SLIDEBAR", L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), menu,
+		AddButton(L"POSE_CIRCLE", L"POSE_CIRCLE", Vec3(-30.0f, -50.0f, 0.0f), Vec2(60, 80), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
