@@ -12,7 +12,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false))
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -20,6 +20,8 @@ namespace basecross {
 	}
 	void BossEnemy::AddAnimation() {
 		float fps = 60.0f;
+		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		m_MotionRate = max(1.0f, (int)difficulty * 0.6f);
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->AddAnimation(L"Idle", 0, 1, true, fps);
 		draw->AddAnimation(L"Walk", 40, 120, true, fps * 1.75f);
@@ -28,10 +30,10 @@ namespace basecross {
 		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
 		draw->AddAnimation(L"Blow", 545, 10, false, fps * 0.5f);
 		
-		draw->AddAnimation(L"Missile_First", 971, 9, false, fps);
+		draw->AddAnimation(L"Missile_First", 971, 9, false, fps * m_MotionRate);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
-		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps);
-		draw->AddAnimation(L"Crush", 1280, 90, false, fps);
+		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps * m_MotionRate);
+		draw->AddAnimation(L"Crush", 1280, 90, false, fps * m_MotionRate);
 	}
 	void BossEnemy::SetAnimation(const wstring& key,const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -62,29 +64,22 @@ namespace basecross {
 			SetIntruder(player);
 		}
 		m_Stage->SetSharedGameObject(L"BOSS", GetThis<BossEnemy>());
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(false);//debug
-		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"BOSS");
-
-		AddAnimation();
-		SetAnimation(L"Idle");
+		ptrDraw->SetTextureResource(L"GROUND");
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
-			Vec3(0.6f, 0.6f, 0.6f), //(.1f, .1f, .1f),
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.6f, 0.0f)
+			Vec3(0.0f, -1.0f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
-
-		auto navi = AddComponent<Navigate>();
 
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
@@ -95,6 +90,8 @@ namespace basecross {
 	}
 
 	void BossEnemy::OnAfterCreate() {
+		AddAnimation();
+		SetAnimation(L"Idle");
 		RegisterAttack();
 	}
 	
@@ -103,7 +100,7 @@ namespace basecross {
 		float addRate = max(1.0f, (int)difficulty * 0.75f);
 		float crushDamage = 5.0f * addRate;
 		float crushSize = 1.5f * addRate;
-		float crushRange = max(1.0f,crushSize / 1.8f);
+		float crushRange = max(2.0f,crushSize / 1.8f);
 		float crushBlow = 3.0f * addRate;
 
 		int missileCount = 6.0f * addRate;
@@ -113,7 +110,7 @@ namespace basecross {
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(crushSize), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(GetThis<BossEnemy>(),0.0f,20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
 		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 
