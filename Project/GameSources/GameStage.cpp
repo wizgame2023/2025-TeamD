@@ -299,6 +299,7 @@ namespace basecross {
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
+			//m_GameOverMenu->Open();
 
 		}
 		catch (...) {
