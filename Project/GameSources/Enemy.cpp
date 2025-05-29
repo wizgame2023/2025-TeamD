@@ -23,7 +23,7 @@ namespace basecross {
 		m_KnockBackTime = 0.5f;
 		//CollisionSphere‚Ìİ’è
 		auto ptrColl = AddComponent<CollisionCapsule>();
-		//ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 
 

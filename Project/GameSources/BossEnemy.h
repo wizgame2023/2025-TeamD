@@ -21,6 +21,7 @@ namespace basecross {
 		bool m_IsAppearance;
 		float m_ConditionTime;
 		int m_ConditionDefeat;
+		float m_MotionRate;
 
 		unique_ptr<EnemyState<BossEnemy>> m_currentState;  
 		unique_ptr<EnemyState<BossEnemy>> m_nextState;   
@@ -80,6 +81,9 @@ namespace basecross {
 			m_currentState->Enter();
 		}
 
+		float GetMotionRate() {
+			return m_MotionRate;
+		}
 	};
 
 	class BossEnemyLeg : public Enemy
