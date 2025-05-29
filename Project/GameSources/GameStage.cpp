@@ -179,7 +179,7 @@ namespace basecross {
 	/// <param name="flag">•`‰æONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
-			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu")) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu") ) {
 				obj->SetUpdateActive(flag);
 			}
 		}
@@ -319,6 +319,18 @@ namespace basecross {
 			}
 		}
 
+		if (m_ResultMenu->IsOpen())
+		{
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			player->SetAnim(L"Clear");
+			player->UpdateAnim();
+		}
+		if (m_GameOverMenu->IsOpen())
+		{
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			player->SetAnim(L"Died");
+			player->UpdateAnim();
+		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			//SetAllGameObjectActive(false);
 			m_NormalIcon->SetDrawActive(false);

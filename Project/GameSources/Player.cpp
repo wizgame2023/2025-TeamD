@@ -251,6 +251,13 @@ namespace basecross {
 		return nearObject;
 	}
 
+	void Player::UpdateAnim()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		draw->UpdateAnimation(elapsedTime);
+	}
+
 	float Player::Parry(float damage, const float& ParrySecond)
 	{
 		float parryTime = 30.0f;
@@ -406,7 +413,8 @@ namespace basecross {
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		ptrDraw->SetOwnShadowActive(true);
-
+		ptrDraw->SetModelDiffusePriority(true);
+		ptrDraw->SetModelEmissivePriority(true);
 		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
@@ -435,10 +443,9 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
-
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		draw->UpdateAnimation(elapsedTime);
+
+		UpdateAnim();
 		float spped = 0.0f;
 		if (m_IsGoal == false)
 		{
@@ -539,7 +546,7 @@ namespace basecross {
 
 					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
 					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.2f));
+					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
 
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
