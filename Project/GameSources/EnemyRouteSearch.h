@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ÂƒLÂƒÂƒÂƒâ€°ÂƒNÂƒ^Â[â€šÄŒâ€šÃ‡
 */
 
 #pragma once
@@ -10,28 +10,27 @@ namespace basecross {
 	class RootPointer;
 	class Navigate : public Component {
 	public:
-		// ƒwƒ‹ƒp[ŠÖ”: Vec3‚ÌƒnƒbƒVƒ…‰» (unordered_map‚Å—˜—p‚·‚éê‡)
+		// ÂƒwÂƒâ€¹ÂƒpÂ[Å Ã–Ââ€: Vec3â€šÄšÂƒnÂƒbÂƒVÂƒâ€¦â€°Â» (unordered_mapâ€šÄ¹â€”Â˜â€”pâ€šÂ·â€šÃ©Å¹Ä™Å¤â€¡)
 		std::size_t Vec3HashFunction(const Vec3& v) {
 			std::hash<float> floatHash;
 			return floatHash(v.getX()) ^ (floatHash(v.getY()) << 1) ^ (floatHash(v.getZ()) << 2);
 		}
 
-		// ó‘Ô‚ğ•\‚·enum
+		// Å¹Ã³â€˜Ã”â€šÄ‘â€¢\â€šÂ·enum
 		enum class State {
 			NONE,
 			OPEN,
 			CLOSE
 		};
 
-		// ƒZƒ‹‚Ìƒf[ƒ^‚ğ•Û‚·‚é\‘¢‘Ì
 		struct Data {
 			State m_State = State::NONE;
-			float m_StartDistance = 0.0f; // ŠJnˆÊ’u‚©‚ç‚Ì‹——£
-			float m_GoalDistance = 0.0f;  // –Ú•WˆÊ’u‚©‚ç‚Ì‹——£
-			float m_TotalDistance = 0.0f; // ‡Œv‹——£ (‰Šú’l‚Í–³ŒÀ‘å)
-			Vec3 m_ParentPosition = Vec3(-1, -1, -1); // e‚ÌˆÊ’u
+			float m_StartDistance = 0.0f; // Å JÅ½nÂˆÄ˜â€™uâ€šÂ©â€šÃ§â€šÄšâ€¹â€”â€”Å
+			float m_GoalDistance = 0.0f;  // â€“Ãšâ€¢WÂˆÄ˜â€™uâ€šÂ©â€šÃ§â€šÄšâ€¹â€”â€”Å
+			float m_TotalDistance = 0.0f; // Å¤â€¡Åšvâ€¹â€”â€”Å (Å¹â€°Å Ãºâ€™lâ€šÃâ€“Å‚ÅšÅ”â€˜Äº)
+			Vec3 m_ParentPosition = Vec3(-1, -1, -1); // Âeâ€šÄšÂˆÄ˜â€™u
 
-			// ‹——£‚ğİ’è‚·‚éŠÖ”
+			// â€¹â€”â€”Åâ€šÄ‘ÂÃâ€™Äâ€šÂ·â€šÃ©Å Ã–Ââ€
 			void SetDistance(float start, float goal) {
 				m_StartDistance = start;
 				m_GoalDistance = goal;
@@ -40,8 +39,8 @@ namespace basecross {
 		};
 
 		enum class Dire {
-			X, // …•½•ûŒü
-			Z  // ‚’¼•ûŒü
+			X,
+			Z 
 		};
 
 		Navigate(const std::shared_ptr<GameObject>& GameObjectPtr);
@@ -51,10 +50,9 @@ namespace basecross {
 
 		float Heuristic(Vec3 a, Vec3 b)
 		{
-			return std::abs(a.x - b.x) + std::abs(a.z - b.z); // XZ•½–Ê‚Ì‚İ‚Ì‹——£
+			return std::abs(a.x - b.x) + std::abs(a.z - b.z); // XZâ€¢Ëâ€“Ä˜â€šÄšâ€šÃâ€šÄšâ€¹â€”â€”Å
 		}
 
-		// Vec3“¯m‚ª“¯‚¶ˆÊ’u‚É‚ ‚é‚©‚ğƒ`ƒFƒbƒN‚·‚éŠÖ”
 		bool SamePosition(Vec3 a, Vec3 b) {
 			float tolerance = 0.1f;
 			return (std::abs(a.x - b.x) < tolerance && std::abs(a.z - b.z) < tolerance);
@@ -95,15 +93,14 @@ namespace basecross {
 		Dire m_Dire;
 		Vec3 m_TargetPosition;
 		Vec3 m_Index;
-		Vec3 m_StartPosition;  // ŠJnˆÊ’u‚ğ‹L‰¯‚·‚é
+		Vec3 m_StartPosition;  
 		Vec3 m_HalfPosition;
 		std::stack<Vec3> points;
 		shared_ptr<GameObject> m_NearObject = nullptr;
 		vector<int> m_number;
-		// ƒZƒ‹‚ÌƒTƒCƒY
+
 		float m_CellSize = 5.0f;
 
-		// ƒfƒoƒbƒO—p (A*ƒAƒ‹ƒSƒŠƒYƒ€‚ÌÀs‚ğ§Œä)
 		bool m_debug_pause = false;
 		bool m_BossPause = false;
 
@@ -125,7 +122,6 @@ namespace basecross {
 			}
 			return num;
 		}
-
 	};
 }
 
