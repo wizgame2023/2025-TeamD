@@ -35,7 +35,10 @@ namespace basecross {
 			ButtonManager::Create<Comp>(GetStage(), m_GroupName, defaultTex, pos, size, func, param...);
 		}
 
-
+		template<typename T>
+		shared_ptr<T>GetSprite(int number){
+			return static_pointer_cast<T>(m_MenuObjects[number]);
+		}
 
 		void AddSprite(const shared_ptr<GameObject>& sprite) {
 			sprite->AddTag(L"Menu");

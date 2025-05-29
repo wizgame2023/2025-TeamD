@@ -7,6 +7,11 @@
 #include "Project.h"
 
 namespace basecross {
+
+	GameManager::GameManager() :
+	m_GameSpeed(1.0f), m_ZoneRate(1.0f), m_TimeRate(1.0f), m_ZoneTimer(Timer(0.0f, false)),
+		m_GameDiffculty(Difficulty::Easy), m_IsDebug(false), m_IsUpdate(true)
+	{ }
 	void GameManager::Update() {
 		if (!m_IsUpdate) return;
 
