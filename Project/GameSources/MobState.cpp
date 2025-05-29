@@ -13,7 +13,6 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		auto navi = enemy->GetComponent<Navigate>(false);
 		enemy->SetAnim(L"Walk", 0.0f);
 		m_Path = {};
 		Execute();
@@ -22,7 +21,6 @@ namespace basecross {
 	void MobSearch::Execute()
 	{
 		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
-		auto navi = m_Enemy->GetComponent<Navigate>(false);
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
 		Vec3 pos = enemy->GetPosition();
 		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();

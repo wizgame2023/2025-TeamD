@@ -188,7 +188,6 @@ namespace basecross {
 		auto pointers = pointerGroup->GetGroupVector();
 		//auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
 		//auto Legions = LegionGroup->GetGroupVector();
-		auto navi = GetComponent<Navigate>();
 		shared_ptr<RootPointer> memoryPoint;
 		shared_ptr<GameObject> memoryRndPoint;
 		vector<int> memoryNum;

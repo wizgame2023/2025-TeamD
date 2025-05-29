@@ -81,8 +81,6 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
-		auto navi = AddComponent<Navigate>();
-
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
