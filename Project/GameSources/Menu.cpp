@@ -76,7 +76,7 @@ namespace basecross {
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
