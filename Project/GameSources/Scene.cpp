@@ -1,7 +1,7 @@
 
 /*!
 @file Scene.cpp
-@brief 繧ｷ繝ｼ繝ｳ螳滉ｽ
+@brief 繧ｷ繝ｼ繝ｳ螳滉ｽ
 */
 
 #include "stdafx.h"
@@ -15,12 +15,14 @@ namespace basecross {
 		wstring modelPath = mediaPath + L"Models/";
 
 		//モデル関係
-		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"kari.bmf");
+		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
+		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
 		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
 		app->RegisterResource(L"MOB", mobMesh);
+
 		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
 		app->RegisterResource(L"BOSS", modelMesh);
 		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");
@@ -42,8 +44,11 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
     
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 			m_MaxCount = 3;
+
+			//App::GetApp()->GetStepTimer().SetFixedTimeStep(true);
+			//App::GetApp()->GetStepTimer().SetTargetElapsedSeconds(1.0 / 60.0);
     }
 		catch (...) {
 			throw;
@@ -86,11 +91,11 @@ namespace basecross {
 			ResetActiveStage<GameStageM>(L"testStage01.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"TestKamataMap.csv");
+			ResetActiveStage<GameStageK>(L"testStage02.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>(L"TestMapSatou.csv");
+			ResetActiveStage<GameStageS>(L"testStage03.csv");
 		}
 	}
 

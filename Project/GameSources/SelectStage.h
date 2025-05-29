@@ -25,6 +25,8 @@ namespace basecross {
 		shared_ptr<Sprite>m_StageSprite;
 		shared_ptr<NumberSprite> m_Number;
 		shared_ptr<SpriteFade> m_Fade;
+
+		vector<shared_ptr<Sprite>> m_Difficultys;
 		//bool m_fade;
 	public:
 		//\’z‚Æ”jŠü

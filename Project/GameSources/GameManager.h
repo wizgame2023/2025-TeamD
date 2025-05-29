@@ -13,6 +13,7 @@ namespace basecross{
 		Hard = 3
 	};
 	class GameManager {
+		float m_GameSpeed;
 		float m_TimeRate;
 		float m_ZoneRate;
 		Timer m_ZoneTimer;
@@ -21,10 +22,7 @@ namespace basecross{
 
 		bool m_IsDebug;
 		bool m_IsUpdate;
-		GameManager() :
-			m_ZoneRate(1.0f), m_TimeRate(1.0f), m_ZoneTimer(Timer(0.0f, false)),
-			m_GameDiffculty(Difficulty::Easy), m_IsDebug(false), m_IsUpdate(true)
-		{ }
+		GameManager();
 	public:
 		static GameManager* Instance() {
 			static GameManager instance;
@@ -44,7 +42,13 @@ namespace basecross{
 		void SetZoneRate(float rate) {
 			m_ZoneRate = rate;
 		}
+		void SetGameSpeed(float speed) {
+			m_GameSpeed = speed;
+		}
 		
+		float GetGameSpeed() {
+			return m_GameSpeed;
+		}
 		float GetTimeRate() {
 			return m_TimeRate;
 		}

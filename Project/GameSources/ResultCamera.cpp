@@ -27,7 +27,7 @@ namespace basecross {
 			return;
 		}
 		offset = offset.normalize();
-		Vec3 atOffset = (m_At - side * 0.5f) - at;
+		Vec3 atOffset = (( m_Player->GetPosition() + Vec3(0.0f,0.5f,0.0f)) - side * 0.5f) - at;
 		atOffset = atOffset.normalize();
 
 		m_Direction += offset * elpased;

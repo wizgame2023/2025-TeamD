@@ -11,7 +11,7 @@ namespace basecross {
 
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
-		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(0.5f), m_ShotRandomInterval(0.5f),
+		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(1.0f), m_ShotRandomInterval(1.0f),
 		m_BalletSpeed(50.0f), m_MuzzleOffset(0.5f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
@@ -30,6 +30,7 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
+
 		/*auto draw = GetComponent<BcPNTStaticDraw>();
 		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
 		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
@@ -116,7 +117,7 @@ namespace basecross {
 		Vec3 none = Vec3(0);
 		float elapsedTime = GetGameElapsed();
 		Vec3 currntPosition = m_Transform->GetPosition();
-			m_currentState->Execute();
+		m_currentState->Execute();
 		Enemy::AsyncUpdate();
 
 		EndAsync();
@@ -187,7 +188,6 @@ namespace basecross {
 		auto pointers = pointerGroup->GetGroupVector();
 		//auto LegionGroup = GetStage()->GetSharedObjectGroup(L"Legion");
 		//auto Legions = LegionGroup->GetGroupVector();
-		auto navi = GetComponent<Navigate>();
 		shared_ptr<RootPointer> memoryPoint;
 		shared_ptr<GameObject> memoryRndPoint;
 		vector<int> memoryNum;
