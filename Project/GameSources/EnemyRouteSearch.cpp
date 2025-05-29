@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief キャラクターなど実体
+@brief 
 */
 
 #include "stdafx.h"
@@ -8,5 +8,6 @@
 #include "EnemyRouteSearch.h"
 
 namespace basecross {
+
 }
 //end basecross

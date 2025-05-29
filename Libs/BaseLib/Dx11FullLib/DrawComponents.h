@@ -47,7 +47,7 @@ namespace basecross {
 		/// 射影行列
 		bsm::Mat4x4 mProj;
 		/// Bone用
-		bsm::Vec4 Bones[3 * 72];
+		bsm::Vec4 Bones[3 * 100];
 		ShadowConstants() {
 			memset(this, 0, sizeof(ShadowConstants));
 		};
@@ -119,7 +119,7 @@ namespace basecross {
 		/// ライト射影行列
 		bsm::Mat4x4 LightProjection;
 		/// Bone配列
-		bsm::Vec4 Bones[3 * 72];
+		bsm::Vec4 Bones[3 * 100];
 		SimpleConstants() {
 			memset(this, 0, sizeof(SimpleConstants));
 			Diffuse = bsm::Col4(1.0f, 1.0f, 1.0f, 1.0f);
@@ -1299,13 +1299,13 @@ namespace basecross {
 			auto MultiMeshRes = m_MultiMeshResource.lock();
 			bool MultiMeshResFlg = MultiMeshRes && MultiMeshRes->IsSkining(0) && MultiMeshRes->GetBoneCount(0) > 0 && MultiMeshRes->GetSampleCount(0) > 0;
 			if (MeshResFlg || MultiMeshResFlg) {
-				if (ElapsedTime < 0.0f) {
-					throw BaseException(
-						L"アニメーション更新にマイナスは設定できません",
-						L"if (ElapsedTime < 0.0f)",
-						L"DrawObjectBase::UpdateAnimation()"
-					);
-				}
+				//if (ElapsedTime < 0.0f) {
+				//	throw BaseException(
+				//		L"アニメーション更新にマイナスは設定できません",
+				//		L"if (ElapsedTime < 0.0f)",
+				//		L"DrawObjectBase::UpdateAnimation()"
+				//	);
+				//}
 				if (m_CurrentAnimeName == L"") {
 					//見つからない
 					throw BaseException(

@@ -1,11 +1,20 @@
-using JetBrains.Annotations;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
+using UnityEditor.SceneManagement;
 using UnityEngine;
+using static Unity.Burst.Intrinsics.X86.Avx;
 
 public class ConvertCSV : MonoBehaviour
 {
+    public enum Difficulty
+    {
+        easy,
+        normal,
+        hard
+    }
     public string saveName;
     public string filePath;
 
@@ -13,143 +22,27 @@ public class ConvertCSV : MonoBehaviour
 
     public string playerName;
     public List<string> enemyNames;
-
+    public Difficulty difficulty;
     int count = 0;
     const string ENCODE_TEXT = "Shift_JIS";
+    readonly List<string> LOAD_STAGE = new List<string> { "name", "difficulty","enemys","type" };
 
     GameObject player = null;
-    List<GameObject> enemies = new List<GameObject>();
 
     public Mesh defaultMesh;
     public Material defaultMaterial;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public void WriteLoadType(StreamWriter fs, List<string> loadType)
     {
-      
-        //Convert();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-      
-    }
-    bool IsFileExist()
-    {
-        return File.Exists(filePath + "/" + saveName + ".csv");
-    }
-    void WriteDate(StreamWriter fs, GameObject obj)
-    {
-        if (!WriteStageDate(fs, obj))
+        foreach (var type in loadType)
         {
-            if (!WriteCharaDate(fs, obj))
-            {
-
-            }
+            fs.Write(type);
+            fs.Write("_");
         }
-    }
-    void WriteLoadDate(StreamWriter fs, GameObject obj,bool isChara)
-    {
-        if (isChara)
-        {
-            fs.Write("Chara");
-        }
-        else
-        {
-            fs.Write("Object");
-        }
-    }
-    void WriteTransform(StreamWriter fs, GameObject obj)
-    {
-        fs.Write(obj.transform.position.x + "_" + obj.transform.position.y + "_" + obj.transform.position.z);
-        fs.Write(",");
-
-        fs.Write(obj.transform.localScale.x + "_" + obj.transform.localScale.y + "_" + obj.transform.localScale.z);
-        fs.Write(",");
-
-        fs.Write(obj.transform.rotation.eulerAngles.x + "_" + obj.transform.rotation.eulerAngles.y + "_" + obj.transform.rotation.eulerAngles.z);
-    }
-    void WriteEnemy(StreamWriter fs)
-    {
-        foreach (var enemy in enemies)
-        {
-            var comp = enemy.GetComponent<CharacterDate>();
-            if (comp == null) return;
-            string name = comp.className;
-            float hp = comp.hp;
-
-            fs.Write(name);
-            fs.Write(",");
-            WriteTransform(fs, enemy);
-            fs.Write(",");
-            fs.Write(hp);
-            fs.Write(",");
-            WriteLoadDate(fs, enemy,true);
-            fs.Write("\n");
-            count++;
-        }
-    }
-    bool FindEnemy(string name)
-    {
-        foreach (var enemyName in enemyNames)
-        {
-            if (name == enemyName)
-            {
-                return true;
-            }
-        }
-        return false;
-    }
-    bool WriteCharaDate(StreamWriter fs, GameObject obj)
-    {
-        var comp = obj.GetComponent<CharacterDate>();
-        if (comp == null) return false;
-        string name = comp.className;
-        if(name != playerName)
-        {
-            if (FindEnemy(name))
-            {
-                enemies.Add(obj);
-                return true;
-            }
-        }
-        else
-        {
-            player = obj;
-        }
-        float hp = comp.hp;
-
-        fs.Write(name);
-        fs.Write(",");
-        WriteTransform(fs, obj);
-        fs.Write(",");
-        fs.Write(hp);
-        fs.Write(",");
-        WriteLoadDate(fs, obj, true);
         fs.Write("\n");
-        count++;
-        return true;
-    }
-    bool WriteStageDate(StreamWriter fs,GameObject obj)
-    {
-        var nameComp = obj.GetComponent<ClassName>();
-        if (nameComp == null) return false;
-
-        string name = nameComp.className;
-        
-        fs.Write(name);
-        fs.Write(",");
-        WriteTransform(fs, obj);
-        fs.Write(",");
-        WriteLoadDate(fs, obj, false);
-        fs.Write("\n");
-        count++;
-        return true;
     }
     public void Convert()
     {
         count = 0;
-        enemies.Clear();
         player = null;
 
         List<GameObject> objs = new List<GameObject>();
@@ -160,18 +53,44 @@ public class ConvertCSV : MonoBehaviour
         
         using (var fs = new StreamWriter(filePath + "/" + saveName + ".csv", false, System.Text.Encoding.GetEncoding(ENCODE_TEXT)))
         {
-            foreach (var obj in objs)
+            fs.Write("stage,");
+            fs.Write(difficulty.ToString() + ",");
+            for(int i = 0;i < enemyNames.Count; i++)
             {
-                WriteDate(fs,obj);
-                if(obj.transform.childCount > 0)
+                fs.Write(enemyNames[i]);
+                if(i < enemyNames.Count - 1)
                 {
-                    for (int i = 0; i < obj.transform.childCount; i++)
-                    {
-                        WriteDate(fs, obj.transform.GetChild(i).gameObject);
-                    }
+                    fs.Write("_");
                 }
             }
-            WriteEnemy(fs);
+            fs.Write(",");
+            fs.Write("Stage,");
+            WriteLoadType(fs, LOAD_STAGE);
+            foreach (var obj in objs)
+            {
+                var load = obj.GetComponent<LoadDate>();
+                if (load)
+                {
+                    load.Write(fs);
+                    count++;
+                }
+                else
+                {
+                    if (obj.transform.childCount > 0)
+                    {
+                        for (int i = 0; i < obj.transform.childCount; i++)
+                        {
+                            GameObject child = obj.transform.GetChild(i).gameObject;
+                            var childLoad = child.GetComponent<LoadDate>();
+                            if (!childLoad) continue;
+
+                            childLoad.Write(fs);
+                            count++;
+                        }
+                    }
+                }
+               
+            }
         }
         if(player == null)
         {
@@ -185,6 +104,9 @@ public class ConvertCSV : MonoBehaviour
 
     public void InputCSV()
     {
+        count = 0;
+        player = null;
+
         List<string> line = new List<string>();
         using (StreamReader fs = new StreamReader(filePath + "/" + saveName + ".csv", System.Text.Encoding.GetEncoding(ENCODE_TEXT)))
         {
@@ -194,47 +116,144 @@ public class ConvertCSV : MonoBehaviour
             }
             DestroyObject();
 
+            List<Wave> waves = new List<Wave>();
             foreach (var str in line)
             {
                 string[] date = str.Split(',');
-
-                string name = date[0];
-                string[] positionStr = date[1].Split("_");
-                string[] scaleStr = date[2].Split("_");
-                string[] rotationStr = date[3].Split("_");
-                string[] InfoStr = date[date.Length - 1].Split("_");
-
-                Vector3 position = new Vector3(float.Parse(positionStr[0]), float.Parse(positionStr[1]), float.Parse(positionStr[2]));
-                Vector3 scale = new Vector3(float.Parse(scaleStr[0]), float.Parse(scaleStr[1]), float.Parse(scaleStr[2]));
-                Vector3 rotation = new Vector3(float.Parse(rotationStr[0]), float.Parse(rotationStr[1]), float.Parse(rotationStr[2]));
-
-                var obj = new GameObject(name);
-                var filter = obj.AddComponent<MeshFilter>();
-                filter.mesh = defaultMesh;
-                var renderer = obj.AddComponent<MeshRenderer>();
-                renderer.material = defaultMaterial;
-                if (InfoStr[0] == "Chara")
+                string[] dateNames = date[date.Length - 1].Split("_");
+                string name = "", tag = "", type = "";
+                string[] positionStr = {},scaleStr = {},rotationStr = {};
+                int index = -1;
+                if (FindTag(dateNames, "name",out index) != -1)
                 {
-                    var comp = obj.AddComponent<CharacterDate>();
-                    comp.className = name;
+                    name = date[index];
+                }
+                if (FindTag(dateNames, "position", out index) != -1)
+                {
+                    positionStr = date[index].Split("_");
+                }
+                if (FindTag(dateNames, "scale", out index) != -1)
+                {
+                    scaleStr = date[index].Split("_");
+                }
+                if (FindTag(dateNames, "rotation", out index) != -1)
+                {
+                    rotationStr = date[index].Split("_");
+                }
+                if (FindTag(dateNames, "tag", out index) != -1)
+                {
+                    tag = date[index];
+                }
+                if (FindTag(dateNames, "type", out index) != -1)
+                {
+                    type = date[index];
+                }
+                Vector3 position = Vector3.zero, scale = Vector3.one, rotation = Vector3.zero;
+                if(positionStr.Length != 0)
+                {
+                    position = new Vector3(float.Parse(positionStr[0]), float.Parse(positionStr[1]), float.Parse(positionStr[2]));
+                }
+                if (scaleStr.Length != 0)
+                {
+                    scale = new Vector3(float.Parse(scaleStr[0]), float.Parse(scaleStr[1]), float.Parse(scaleStr[2]));
+                }
+                if (rotationStr.Length != 0)
+                {
+                    rotation = new Vector3(float.Parse(rotationStr[0]), float.Parse(rotationStr[1]), float.Parse(rotationStr[2]));
+                }
+                if (type != "Stage")
+                {
+                    var obj = new GameObject(name);
+                    if (tag != "")
+                    {
+                        obj.transform.tag = tag;
+                    }
+
+                    obj.transform.position = position;
+                    obj.transform.localScale = scale;
+                    obj.transform.eulerAngles = rotation;
+
+                    if (type != "Player" && type != "Enemy")
+                    {
+                        var filter = obj.AddComponent<MeshFilter>();
+                        filter.mesh = defaultMesh;
+                        var renderer = obj.AddComponent<MeshRenderer>();
+                        renderer.material = defaultMaterial;
+                    }
+                    LoadDate load = null;
+                    if (type == "Wave")
+                    {
+                        load = obj.AddComponent<Wave>();
+                        waves.Add(load as Wave);
+                    }
+                    else if (type == "Enemy")
+                    {
+                        load = obj.AddComponent<Enemy>();
+                    }
+                    else if (type == "Boss")
+                    {
+                        load = obj.AddComponent<Boss>();
+                    }
+                    else if (type == "Player")
+                    {
+                        load = obj.AddComponent<Player>();
+                    }
+                    else if (type == "Object")
+                    {
+                        load = obj.AddComponent<LoadDate>();
+                    }
+
+                    if (load)
+                    {
+                        load.Load(date);
+                    }
+
+                    obj.transform.parent = stage.transform;
+                    if (type == "Enemy")
+                    {
+                        var enemy = load as Enemy;
+
+                        foreach (var wave in waves)
+                        {
+                            if (wave.wave == enemy.wave)
+                            {
+                                obj.transform.parent = wave.gameObject.transform;
+                                break;
+                            }
+                        }
+                    }
+                    count++;
                 }
                 else
                 {
-                    var comp = obj.AddComponent<ClassName>();
-                    comp.className = name;
-                }
-                obj.transform.parent = stage.transform;
+                    string difficultyStr = "";
+                    string[] enemysStr = { };
+                    if (FindTag(dateNames, "difficulty", out index) != -1)
+                    {
+                        difficultyStr = date[index];
+                    }
+                    if (FindTag(dateNames, "enemys", out index) != -1)
+                    {
+                        enemysStr = date[index].Split("_");
+                    }
 
-                obj.transform.position = position;
-                obj.transform.localScale = scale;
-                obj.transform.eulerAngles = rotation;
+                    enemyNames = enemysStr.ToList<String>();
+                    
+                }
             }
-            
         }
+
+        Debug.Log("読み込んだオブジェクト数 : " + count);
+        Debug.Log("ファイル名 : " + saveName + ".csv");
+        Debug.Log("読み込みが完了しました");
 
         EditorApplication.delayCall -= InputCSV;
     }
-
+    int FindTag(string[] date,string tag,out int index)
+    {
+        index = Array.IndexOf(date, tag);
+        return index;
+    }
     public void DestroyObject()
     {
         List<GameObject> objs = new List<GameObject>();
@@ -246,10 +265,5 @@ public class ConvertCSV : MonoBehaviour
         {
             DestroyImmediate(obj);
         }
-        //var charaDates = FindObjectsByType<CharacterDate>(FindObjectsSortMode.InstanceID);
-        //foreach (var obj in charaDates)
-        //{
-        //    DestroyImmediate(obj);
-        //}
     }
 }

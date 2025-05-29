@@ -8,25 +8,24 @@
 
 namespace basecross {
 	class Character;
-	class ForecastLine;
-	class EnemyState;
+	template<typename> class EnemyState;
+	class LineCube;
 
 	class Enemy : public Character
 	{
 	protected:
-		shared_ptr<Character> m_Intruder;
-
-		float m_ZoneElapsedTime;
+		
 		bool m_IntruderAlert;
-
-		unique_ptr<EnemyState> m_currentState;  //現在のステート
-		unique_ptr<EnemyState> m_nextState;     //次のステート
-
-	public:
+		bool m_KnockBack;
+		float m_KnockBackTime;
+		float m_AlertTime;
+	public:	
+		shared_ptr<Character> m_Intruder;
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
 		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void AsyncUpdate()override;
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
@@ -35,11 +34,26 @@ namespace basecross {
 		}
 		Vec3 GetDirectionToIntruder();
 		float GetDistanceToIntruder();
-		void ZoneSpeedSet();
+		Vec3 GetDirectionToIntruderObject(shared_ptr<Object> obj);
+		float GetDistanceToIntruderObject(shared_ptr<Object> obj);
 		void SearchRange();
-
+		void IntervalEnemy(const Vec3& position);
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
+		void SetIntruderAlert(bool flag);
+		void KnockBack();
+		void KnockBackTime();
+		float GetKnockBack() {
+			return m_KnockBack;
+		}
+		//shared_ptr<LineCube> m_LineCube;
+
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				draw->ChangeCurrentAnimation(animname, time);
+		}
+
 	private:
 
 	};

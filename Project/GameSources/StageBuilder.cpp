@@ -7,12 +7,12 @@
 #include "Project.h"
 
 
-namespace basecross{
+namespace basecross {
 	void Object::OnCreate() {
-		m_Stage = GetStage();
+		m_Stage = static_pointer_cast<GameStage>(GetStage());
 
 		m_Transform = GetComponent<Transform>();
-		SetPosition(Vec3(0,1,0));
+		SetPosition(m_Position);
 		SetScale(m_Scale);
 		SetRotation(m_Rotation);
 
@@ -28,45 +28,107 @@ namespace basecross{
 		auto& csvVec = m_Csv.GetCsvVec();
 
 		vector<wstring> objInfo = {};
-		map<wstring, shared_ptr<RootPointer>> rootPointers;
+		auto spawner = m_Stage->AddGameObject<Spawner>();
+		m_Stage->SetSharedGameObject(L"Spawner", spawner);
+
+		int enemyCount = 0;
 		for (auto& info : csvVec) {
 			objInfo.clear();
 			Util::WStrToTokenVector(objInfo, info, L',');
-
-			if (m_Builders.find(objInfo[InfoData::Name]) == end(m_Builders)) continue;
-
-			Vec3 position = WstrToVec3(objInfo[InfoData::Position]);
-			Vec3 scale = WstrToVec3(objInfo[InfoData::Scale]);
-			Vec3 rotation = WstrToVec3(objInfo[InfoData::Rotation]);
-			
-			auto obj = m_Builders[objInfo[InfoData::Name]]->Create();
-			obj->SetPosition(position * m_Scale);
-			obj->SetScale(scale * m_Scale);
-			obj->SetRotation(rotation);
-
-			wstring dateType = objInfo[objInfo.size() - 1];
-			if (dateType == L"Pointer") {
-				auto pointer = static_pointer_cast<RootPointer>(obj);
-				if (obj != nullptr) {
-					pointer->SetPointerNumber(objInfo[5]);
-					rootPointers.emplace(objInfo[4], pointer);
+			m_InfoNames.clear();
+			wstring names = objInfo[objInfo.size() - 1];
+			Util::WStrToTokenVector(m_InfoNames, objInfo[objInfo.size() - 1], L'_');
+			wstring dateType = objInfo[GetInfoIndex(L"type")];
+			if (dateType == L"Stage") {
+				wstring difficulty = objInfo[GetInfoIndex(L"difficulty")];
+				if (difficulty == L"easy") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Easy);
+				}
+				else if (difficulty == L"normal") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Normal);
+				}
+				else if (difficulty == L"hard") {
+					GameManager::Instance()->SetDifficulty(Difficulty::Hard);
 				}
 			}
+			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;
+
+			auto obj = CreateObject(objInfo);
+			
+			if (dateType == L"Player") {
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto player = static_pointer_cast<Player>(obj);
+				if (player) {
+					player->InitHP(WstrToFlt(hpStr));
+				}
+			}
+			if (dateType == L"Wave") {
+				wstring maxStr = objInfo[GetInfoIndex(L"max")];
+				wstring intervalStr = objInfo[GetInfoIndex(L"interval")];
+				auto legion = static_pointer_cast<Legion>(obj);
+				legion->SetMaxCount(WstrToFlt(maxStr));
+				legion->SetPopInterval(WstrToFlt(intervalStr));
+				spawner->AddLegion(legion);
+			}
+			if (dateType == L"Enemy") {
+				wstring waveStr = objInfo[GetInfoIndex(L"wave")];
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto enemy = static_pointer_cast<Enemy>(obj);
+				if (enemy) {
+					enemy->InitHP(WstrToFlt(hpStr));
+					spawner->AddEnemy(WstrToFlt(waveStr), enemy);
+				}
+				enemyCount++;
+			}
+			if (dateType == L"Boss") {
+				wstring hpStr = objInfo[GetInfoIndex(L"hp")];
+				auto enemy = static_pointer_cast<BossEnemy>(obj);
+				if (enemy) {
+					enemy->InitHP(WstrToFlt(hpStr));
+					spawner->SetBoss(enemy);
+				}
+				enemyCount++;
+			}
+
+			obj->OnAfterCreate();
 		}
 		m_Builders.clear();
-		
-		for (auto& pointer : rootPointers) {
-			wstring numbers = pointer.second->GetPointerNumber();
-			vector<wstring> number = {};
-			Util::WStrToTokenVector(number, numbers, L'_');
-			for (auto& num : number) {
-				if (num != L"") {
-					if (rootPointers.find(num) != end(rootPointers)) {
-						pointer.second->AddPointer(rootPointers[num]);
-					}
-				}
-			}
+		spawner->OnAfterCreate();
+		ScoreManager::Instance()->SetMaxEnemyCount(enemyCount);
+	}
 
+	shared_ptr<Object> StageBuilder::CreateObject(vector<wstring> date) {
+		Vec3 position = Vec3(), scale = Vec3(1), rotation = Vec3();
+		int index = GetInfoIndex(L"position");
+		if (index != -1) {
+			position = WstrToVec3(date[index]);
+		}
+
+		index = GetInfoIndex(L"scale");
+		if (index != -1) {
+			scale = WstrToVec3(date[index]);
+		}
+
+		index = GetInfoIndex(L"rotation");
+		if (index != -1) {
+			rotation = WstrToVec3(date[index]);
+		}
+
+		auto obj = m_Builders[date[GetInfoIndex(L"name")]]->Create();
+		obj->SetPosition(position * m_Scale);
+		obj->SetScale(scale * m_Scale);
+		obj->SetRotation(Vec3(XMConvertToRadians(rotation.x), XMConvertToRadians(rotation.y), XMConvertToRadians(rotation.z)));
+		return obj;
+	}
+	int StageBuilder::GetInfoIndex(const wstring& infoName) {
+
+		auto it = find(m_InfoNames.begin(), m_InfoNames.end(), infoName);
+		if (it != m_InfoNames.end()) {
+			int index = distance(m_InfoNames.begin(), it);
+			return index;
+		}
+		else {
+			return -1;
 		}
 	}
 }

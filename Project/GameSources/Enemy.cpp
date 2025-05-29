@@ -1,14 +1,15 @@
 /*!
 @file Enemy.cpp
-@brief 敵など実体
+@brief
 */
 
 #include "stdafx.h"
 #include "Project.h"
+#include "Enemy.h"
 
 namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
-		Character(stage, position, Vec3(), scale) {
+		Character(stage, position, Vec3(), scale){
 	}
 	Enemy::~Enemy()
 	{
@@ -16,40 +17,46 @@ namespace basecross {
 	void Enemy::OnCreate()
 	{
 		Character::OnCreate();
-		m_HP = 3;
-
-		//CollisionSphere衝突判定を付ける
-		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(true);//debug
+		InitHP(3);
+		m_AlertTime = 5.0f;
+		m_KnockBack = false;
+		m_KnockBackTime = 0.5f;
+		//CollisionSphereの設定
+		auto ptrColl = AddComponent<CollisionCapsule>();
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
-		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
 
-		//重力をつける
-		auto ptrGra = AddComponent<Gravity>();
-
-
-		//影をつける（シャドウマップを描画する）
-		auto shadowPtr = AddComponent<Shadowmap>();
-		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
+		AddTag(L"Enemy");
 
 	}
 
 	void Enemy::OnUpdate()
 	{
-		ZoneSpeedSet();
-		SearchRange();
-		if (m_HP <= 0)
+		float elapsedTime = GetGameElapsed();
+
+		if (m_KnockBack)
 		{
+			m_KnockBackTime -= elapsedTime;
+			if (m_KnockBackTime > 0.0f)
+			{
+				KnockBackTime();
+			}
+			else 
+			{
+				m_KnockBack = false;
+				m_KnockBackTime = 0.5f;
+			}
+		}
+		if (m_HP <= 0) {
 			Dead();
 		}
 	}
-
+	void Enemy::AsyncUpdate() {
+		SearchRange();
+	}
 
 	Vec3 Enemy::GetDirectionToIntruder() {
 		Vec3 position = m_Transform->GetPosition();
@@ -67,30 +74,38 @@ namespace basecross {
 		return offset.length();
 	}
 
-	void Enemy::ZoneSpeedSet()
+	Vec3 Enemy::GetDirectionToIntruderObject(shared_ptr<Object> obj)
 	{
-		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
-		int state = player->GetStates();
-		if ((state & Player::PlayerState::ZONE) == 0) {
-			m_ZoneElapsedTime = 1.0f;
-		}
-		else {
-			m_ZoneElapsedTime = 0.2f;
-		}
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		offset = offset.normalize();
+		return offset;
 	}
+
+	float Enemy::GetDistanceToIntruderObject(shared_ptr<Object> obj)
+	{
+		Vec3 position = m_Transform->GetPosition();
+		Vec3 intruderPosition = obj->GetComponent<Transform>()->GetPosition();
+
+		Vec3 offset = intruderPosition - position;
+		return offset.length();
+	}
+
 
 	void Enemy::SearchRange()
 	{
+		float searchDistance = 10.0f;
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 forword = m_Transform->GetForword();
 		Vec3 position = m_Transform->GetPosition();
 		forword.normalize();
-		float searchDistance = 10.0f;
 		if ((position - target).length() < searchDistance)
 		{
-			if (IsWithinDetectionRange(forword, target - position, 45.0)) {
+			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				//プレイヤーの方向をゆっくり向く
-
 				m_IntruderAlert = true;
 			}
 			else {
@@ -100,6 +115,22 @@ namespace basecross {
 		else {
 			m_IntruderAlert = false;
 		}
+
+		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
+			RayCastHit hit;
+			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
+			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
+				m_IntruderAlert = false;
+			}
+		}
+	}
+
+	void Enemy::IntervalEnemy(const Vec3& target)
+	{
+		Vec3 crrentPosition = GetPosition();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		crrentPosition += target * elapsedTime * m_ZoneElapsedTime;
+		SetPosition(crrentPosition);
 	}
 
 	Vec3 Enemy::GetPosition()
@@ -111,20 +142,74 @@ namespace basecross {
 	{
 		return m_IntruderAlert;
 	}
+	void Enemy::SetIntruderAlert(bool flag)
+	{
+		m_IntruderAlert = flag;
+	}
+
+	void Enemy::KnockBack()
+	{
+		m_KnockBack = true;
+	}
+
+	void Enemy::KnockBackTime()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		Vec3 hitPos = m_Intruder->GetComponent<Transform>()->GetPosition();
+		Vec3 pos = GetPosition();
+		Vec3 vec = hitPos - pos;
+		vec.normalize();
+		pos += -vec * 5.0f * elapsedTime * m_ZoneElapsedTime;
+		float rotate = atan2f(vec.x, vec.z);
+		SetRotation(Vec3(0.0f, rotate, 0.0f));
+		SetPosition(pos);
+	}
 
 	void Enemy::Dead() {
-		m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_KnockBackTime -= elapsedTime;
+		if (m_KnockBackTime > 0.0f)
+		{
+			KnockBackTime();
+		}
+		else
+		{
+			ScoreManager::Instance()->AddEliminateEnemyCount();
+			auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+			auto& groupVec = group->GetGroupVectors();
+			for (int i = 0; i < groupVec.size(); i++) {
+				auto obj = groupVec[i].lock();
+				if (obj != nullptr) {
+					if (obj == GetThis<GameObject>()) {
+						groupVec.erase(groupVec.begin() + i);
+						break;
+					}
+				}
+			}
+			auto spawner = m_Stage->GetSharedGameObject<Spawner>(L"Spawner", false);
+			if (spawner) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), spawner, L"EnemyDead");
+			}
+			m_Stage->RemoveGameObject<Enemy>(GetThis<Enemy>());
+		}
+
 	}
 	void Enemy::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			m_HP -= 1;
+			//Damage(m_Intruder->GetAttackDamage(), false);
+			KnockBack();
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		}
+		if (other->FindTag(L"Bullet"))
+		{
+			KnockBack();
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //線を描画するオブジェクト
+	//	class LineObject : public GameObject; 
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :
@@ -149,22 +234,22 @@ namespace basecross {
 	}
 	void LineObject::OnCreate() {
 
-		//線を構成する2点
+
 		m_Vertices = {
 			{m_StartPos, m_StartColor},
 			{m_EndPos, m_EndColor}
 		};
-		//始点と終点をつなぐインデックス
+
 		m_Indices = {
 			0,1
 		};
 
-		//描画
-		m_Draw = AddComponent<PCStaticDraw>(); //位置と色のみ
-		m_Draw->SetOriginalMeshUse(true); //自作したメッシュを使用
-		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices); //メッシュの作成
-		auto meshResoure = m_Draw->GetMeshResource(); //メッシュリソースを取得し、プリミティブポロジー（頂点利用方法）を変更する
-		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP); //ポリゴンではなく稜線を表示
+		m_Draw = AddComponent<PCStaticDraw>();
+		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->CreateOriginalMesh(m_Vertices, m_Indices);
+		auto meshResoure = m_Draw->GetMeshResource();
+		meshResoure->SetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINESTRIP);
+
 	}
 	void LineObject::OnUpdate() {
 		auto player = m_MainObject.lock();
@@ -189,7 +274,6 @@ namespace basecross {
 		}
 	}
 
-	//頂点の更新
 	void LineObject::VerticesUpdate() {
 		m_Vertices = {
 			{m_StartPos,m_StartColor},
@@ -198,7 +282,6 @@ namespace basecross {
 		m_Draw->UpdateVertices(m_Vertices);
 	}
 
-	//頂点の設定
 	void LineObject::SetLinePosition(const Vec3& startPos, const Vec3& endPos) {
 		m_StartPos = startPos;
 		m_EndPos = endPos;
@@ -208,7 +291,6 @@ namespace basecross {
 		VerticesUpdate();
 	}
 
-	//線の色の設定
 	void LineObject::SetLineColor(const Col4& startColor, const Col4& endColor) {
 		m_StartColor = startColor;
 		m_EndColor = endColor;

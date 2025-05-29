@@ -738,6 +738,7 @@ namespace basecross {
 		pImpl(new Impl())
 	{
 		pImpl->m_Gravity = gravity;
+		m_ZoneElapsedTime = 1.0f;
 	}
 
 	Gravity::~Gravity() {}
@@ -757,6 +758,12 @@ namespace basecross {
 	void Gravity::SetGravityVerocity(const bsm::Vec3& GravityVerocity) {
 		pImpl->m_GravityVelocity = GravityVerocity;
 	}
+	float Gravity::GetZoneGravityVelocity() const {
+		return m_ZoneElapsedTime;
+	}
+	void Gravity::SetZoneGravityVerocity(const float& GravityVerocity) {
+		m_ZoneElapsedTime = GravityVerocity;
+	}
 	void Gravity::SetGravityVerocityZero() {
 		pImpl->m_GravityVelocity = bsm::Vec3(0);
 	}
@@ -775,10 +782,10 @@ namespace basecross {
 		auto PtrTransform = GetGameObject()->GetComponent<Transform>();
 		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŽžŠÔ
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		pImpl->m_GravityVelocity += pImpl->m_Gravity * ElapsedTime;
+		pImpl->m_GravityVelocity += pImpl->m_Gravity * ElapsedTime * m_ZoneElapsedTime;
 		auto Pos = PtrTransform->GetPosition();
 //		auto Pos = PtrTransform->GetWorldPosition();
-		Pos += pImpl->m_GravityVelocity * ElapsedTime;
+		Pos += pImpl->m_GravityVelocity * ElapsedTime * m_ZoneElapsedTime;
 		PtrTransform->SetPosition(Pos);
 	}
 

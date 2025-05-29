@@ -1,52 +1,38 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief 
 */
 
 #pragma once
 #include "stdafx.h"
-namespace basecross{
+#include "RayCast.h"
+
+namespace basecross {
 	class Bullet;
 	class LineCube : public GameObject {
+	protected:
+		Col4 m_Color;
+		float m_LineSize;
+		Line m_Line;
 	public:
-		LineCube(shared_ptr<Stage>& stage) : GameObject(stage){}
-		virtual ~LineCube(){}
-		
-		virtual void OnCreate()override;
+		LineCube(shared_ptr<Stage>& stage, float size, Col4 color) : GameObject(stage), m_Color(color), m_Line(Line()), m_LineSize(size) {}
+		virtual ~LineCube() {}
 
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+		void SetLine(const Line& line) {
+			m_Line = line;
+		}
 		shared_ptr<BcPNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Transform;
 	};
-	class ForecastLine : public GameObject
-	{
-
-		weak_ptr<GameObject> m_Launcher;
-
-		shared_ptr<LineCube> m_BalletLine;
-		shared_ptr<LineCube> m_Forecast;
-		weak_ptr<Bullet> m_Bullet;
-
-		Vec3 m_Direction;
-		Vec3 m_StartPosition;
-		float m_Length;
-		bool m_IsLaunched;
+	class BulletLine : public LineCube {
 	public:
-		ForecastLine(const shared_ptr<Stage>& stage,const shared_ptr<GameObject>& launcher) :
-			GameObject(stage),m_Direction(Vec3()),m_StartPosition(Vec3()),m_Length(0),m_IsLaunched(false),m_Launcher(launcher)
-		{};
-		virtual ~ForecastLine() {};
+		BulletLine(shared_ptr<Stage>& stage, float size, Col4 color) : LineCube(stage,size,color){}
+		virtual ~BulletLine(){}
 
-		virtual void OnCreate() override;
-		virtual void OnUpdate() override;
-
-		bool CheckRayCast(Vec3& hitPoint);
-		bool CheckDistanceToObject(Vec3 position);
-		void SetLine(const Vec3& direction, const Vec3& startPosition, const float maxLength);
-
-		void SetBallet(const shared_ptr<Bullet> ballet) {
-			m_Bullet = ballet;
-		}
-		void Destroy();
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
 	};
 }
 //end basecross

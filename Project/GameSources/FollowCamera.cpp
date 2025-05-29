@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief ÁπßÔΩ∑ÁπùÔΩºÁπùÔΩ≥Ëû≥ÊªâÔΩΩ
+@brief „Ç∑„Éº„É≥ÂÆü‰Ω
 */
 
 #include "stdafx.h"
@@ -8,40 +8,191 @@
 
 namespace basecross {
 
-	FollowCamera::FollowCamera() :
+	bool CameraCollision::m_Hit = false;
+
+	CameraCollision::CameraCollision(const shared_ptr<Stage>& StagePtr)
+		:GameObject(StagePtr), m_GetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_TargetPosition(Vec3(0.0f, 0.0f, 0.0f)), m_CameraPos(Vec3(0.0f, 0.0f, 0.0f)) {
+	}
+
+	void CameraCollision::OnCreate() {
+		m_Collision = AddComponent<CollisionSphere>();
+		m_Collision->SetAfterCollision(AfterCollision::None);
+	}
+
+	void CameraCollision::OnUpdate() {
+		auto positionTransform = GetComponent<Transform>();
+		//í«îˆÉVÉXÉeÉÄ
+		GetComponent<Transform>()->SetPosition(m_GetPosition);
+	}
+
+	void CameraCollision::OnCollisionEnter(shared_ptr<GameObject>& other) {
+		m_HitObject = other;
+		if (other->FindTag(L"Object"))
+		{
+			m_Hit = true;
+		}
+		if (other->FindTag(L"Player"))
+		{
+			m_Point = true;
+		}
+
+	}
+	void CameraCollision::OnCollisionExit(shared_ptr<GameObject>& other) {
+		m_HitObject = nullptr;
+		if (other->FindTag(L"Object"))
+		{
+			m_Hit = false;
+		}
+		if (other->FindTag(L"Player"))
+		{
+			m_Point = false;
+		}
+
+	}
+	Vec3 CameraCollision::GetAfterPosition(Vec3 beforePosition, Vec3 tergetPosi) {
+		m_TargetPosition = tergetPosi;
+		m_GetPosition = beforePosition;
+		if (m_Hit == false) {
+			return m_GetPosition;
+		}
+		if (m_Hit == true) {
+			auto collision = m_HitObject->GetComponent<Collision>();
+			AABB aabb = collision->GetEnclosingAABB();
+			aabb = AABB(aabb.m_Min - Vec3(0.5f, 0.5f, 0.5f), aabb.m_Max + Vec3(0.5f, 0.5f, 0.5f));
+			//íÍñ 
+			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Min.z));
+			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Min.x, aabb.m_Max.z));
+			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
+			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Max.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
+
+			if (m_CameraPos == Vec3(0.0f)) {
+				m_CameraPos = m_GetPosition;
+			}
+			if ((m_CameraPos - m_GetPosition).length() < 12.5f)
+			{
+				m_CameraPos = m_GetPosition;
+				return m_GetPosition;
+			}
+			else {
+				return m_CameraPos;
+			}
+
+			return m_GetPosition;
+		}
+
+	}
+
+	Vec3 CameraCollision::GetCompareVertex(Vec2 verx, Vec2 very) {
+		float m_Side, m_Beside;
+		Vec2 target = Vec2(m_TargetPosition.x, m_TargetPosition.z);
+		Vec2 get = Vec2(m_GetPosition.x, m_GetPosition.z);
+		Vec2 afterget = /*Vec2(0.0f, 0.0f);*/ Vec2(m_CameraPos.x, m_CameraPos.z);
+		if (afterget == Vec2(0.0f)) {
+			afterget = get;
+		}
+		if ((afterget - get).length() < 12.5f)
+		{
+			afterget = get;
+			//return m_GetPosition;
+		}
+		Vec2 closeget = afterget;
+		float crossget = Cross(very - verx, target - closeget);
+		//else {
+		//	return m_CameraPos;
+		//}
+
+		float dar = Cross(very - verx, target - get);
+		if (dar == 0.0f) return m_GetPosition;
+		m_Side = Cross(get - verx, target - get) / dar;
+		m_Beside = Cross(very - verx, verx - get) / dar;
+		if (m_Side < 0.0f || m_Side > 1.0f || m_Beside < 0.0f || m_Beside > 1.0f) {
+			return m_GetPosition;
+		}
+		Vec3 anser(verx.x + m_Side * (very - verx).x, m_GetPosition.y, verx.y + m_Side * (very - verx).y);
+		return anser;
+	}
+
+	float CameraCollision::Cross(Vec2 crox, Vec2 croy) {
+		return crox.x * croy.y - crox.y * croy.x;
+	}
+
+	FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
 		Camera(),
 		m_Direction(Vec3(0)),
 		m_Eye(Vec3(0)),
 		m_Position(Vec3(0)),
 		m_Angle(-XM_PIDIV2),
-		m_RotateSpeed(XMConvertToRadians(180))
+		m_RotateSpeed(XMConvertToRadians(180)),
+		m_Stage(StagePtr),
+		m_StopCamera(false)
 	{
 	}
 
+	void FollowCamera::OnCreate()
+	{
+		auto& app = App::GetApp();
+
+		m_Width = app->GetGameWidth();
+		m_Height = app->GetGameHeight();
+		// ÉQÅ[ÉÄäJénéûÇ…É}ÉEÉXÉJÅ[É\ÉãÇâÊñ ÇÃíÜâõÇ…à⁄ìÆÇ≥ÇπÇÈ
+		int m_centerX = app->GetGameWidth() / 2;
+		int m_centerY = app->GetGameHeight() / 2;
+		::SetCursorPos(m_centerX, m_centerY);
+		m_HitCollision = false;
+
+		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
+	}
+
 	void FollowCamera::OnUpdate() {
-		//„Ç≥„É≥„Éà„É≠„Éº„É©„ÅÆÂèñÂæó
+		//ÉRÉìÉgÉçÅ[ÉâÇÃéÊìæ
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (cntlVec.bConnected) {
-			float stickX = cntlVec.fThumbRX;
-			m_Angle -= m_RotateSpeed * elapsed * stickX;
+			if (m_StopCamera == false) {
+				float stickX = cntlVec.fThumbRX;
+				m_Angle -= m_RotateSpeed * elapsed * stickX;
+			}
 		}
 
-
-		//ÊñπÂêë
+		//ï˚å¸
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
-		//‰ΩçÁΩÆ
+		//à íu
 		m_Position = m_PlayerTransform->GetPosition();
 
-		m_Eye = m_Position + m_Direction * 5.0f;
-		m_Eye.y = m_Position.y + 2.0f;
+		m_Eye = m_Position + m_Direction * 8.0f;
+		m_Eye.y = m_Position.y + 5.0f;
+		RayCastHit hit;
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
+		for (auto& obj : m_Stage->GetGameObjectVec()) {
 
-		//Ëá™ÂàÜ„ÅÆ‰ΩçÁΩÆ
-		SetEye(m_Eye);
-		//Ë¶ã„Å¶„ÅÑ„Çã„Å®„Åì„Çç
-		SetAt(m_PlayerTransform->GetPosition());
-		LogCamera();
+			auto transform = obj->GetComponent<Transform>();
+			Vec3 position = transform->GetPosition();
+			Vec3 scale = transform->GetScale();
+			float leng = RayCast::CalcDistancePoint(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
+			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
+			if (leng < lengths.length()) {
+				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
+			}
+		}
+		if (hit.m_Object != nullptr) {
+			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
+		}
+		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
+		if (m_StopCamera == false) {
+			//é©ï™ÇÃà íu
+			SetEye(m_Eye);
+			//å©ÇƒÇ¢ÇÈÇ∆Ç±ÇÎ
+			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
+		}
+		//LogCamera();
 
+		Camera::OnUpdate();
+
+	}
+
+	void FollowCamera::SetCameraPause(const bool& StopCamera)
+	{
+		m_StopCamera = StopCamera;
 	}
 
 	void FollowCamera::LogCamera() {
@@ -56,5 +207,4 @@ namespace basecross {
 		scene->SetDebugString(Debug.str());
 
 	}
-
 }

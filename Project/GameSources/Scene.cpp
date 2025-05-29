@@ -1,7 +1,7 @@
 
 /*!
 @file Scene.cpp
-@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
+@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
 */
 
 #include "stdafx.h"
@@ -9,6 +9,26 @@
 
 namespace basecross {
 
+	void Scene::CreateModelResource() {
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring modelPath = mediaPath + L"Models/";
+
+		//ƒ‚ƒfƒ‹ŠÖŒW
+		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
+		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
+		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
+		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
+		app->RegisterResource(L"PLAYER", modelMesh);
+		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
+		app->RegisterResource(L"MOB", mobMesh);
+		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
+		app->RegisterResource(L"BOSS", modelMesh);
+		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");
+		app->RegisterResource(L"BULLET", bulletModelMesh);
+		app->RegisterResource(L"OBJECT", modelBuild);
+		//app->RegisterResource(L"MOB", modelEnemy);
+	}
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	void Scene::OnCreate() {
@@ -17,12 +37,18 @@ namespace basecross {
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
 			SetClearColor(Col);
 
-			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
-			//ã“ã‚Œã«ã‚ˆã‚Šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
+			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
+			//‚±‚ê‚É‚æ‚èŠeƒXƒe[ƒW‚âƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
 
+			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
-		}
+    
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			m_MaxCount = 3;
+
+			//App::GetApp()->GetStepTimer().SetFixedTimeStep(true);
+			//App::GetApp()->GetStepTimer().SetTargetElapsedSeconds(1.0 / 60.0);
+    }
 		catch (...) {
 			throw;
 		}
@@ -31,25 +57,45 @@ namespace basecross {
 	Scene::~Scene() {
 	}
 
+	void Scene::ChangeCountStage(int count) {
+		switch (count) {
+		case 0:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			break;
+		case 1:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
+			break;
+		case 2:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
+			break;
+		case 3:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageSatou");
+			break;
+		}
+		SetCount(count);
+	}
+
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"ToTitleStage") {
 			ResetActiveStage<TitleStage>();
 		}
+		else if (event->m_MsgStr == L"ToSelectStage") {
+			ResetActiveStage<SelectStage>();
+		}
 		else if (event->m_MsgStr == L"ToGameStage") {
-			//æ¬¡ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
-			ResetActiveStage<GameStage>();
-    }
+			//Ÿ‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
+			ResetActiveStage<GameStage>(L"level.csv");
+		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>();
+			ResetActiveStage<GameStageM>(L"testStage01.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>();
+			ResetActiveStage<GameStageK>(L"testStage02.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
-			//æœ€åˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
-			ResetActiveStage<GameStageS>();
+			//Å‰‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
+			ResetActiveStage<GameStageS>(L"testStage03.csv");
 		}
-
 	}
 
 }

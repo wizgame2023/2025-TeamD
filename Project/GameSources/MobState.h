@@ -5,31 +5,46 @@
 
 #pragma once
 #include "stdafx.h"
+#include "Mob.h"
+#include <Timer.h>
 
 namespace basecross {
 	class Enemy;
-	class Mob;
+	//class Mob;
 
+	template <typename T>
 	class EnemyState {
 	protected:
-		shared_ptr<Mob> m_Enemy;
+		shared_ptr<T> m_Enemy;
 		shared_ptr<Stage> m_Stage;
 		shared_ptr<Transform> m_Transform;
+		shared_ptr<Character> m_Player;
 	public:
-		EnemyState(shared_ptr<Mob>& enemy) :
+		EnemyState(shared_ptr<T>& enemy) :
 			m_Enemy(enemy)
 		{}
 		virtual ~EnemyState() {}
 
-		virtual void Enter();
-		virtual void Execute() {}
+		virtual void Enter()
+		{
+
+			m_Stage = m_Enemy->GetStage();
+			m_Transform = m_Enemy->GetComponent<Transform>();
+			m_Player = m_Enemy->m_Intruder;
+			
+		}
+
+		virtual void Execute() {};
 		virtual void Exit() {}
 
 	};
 
-	class MobSearch : public EnemyState
+	class MobSearch : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
+
+		vector<Vec3> m_Path;
+
 	public:
 		MobSearch(shared_ptr<Mob>& enemy) :
 			EnemyState(enemy)
@@ -42,13 +57,28 @@ namespace basecross {
 		void Exit()override;
 	};
 
-	class MobAlert : public EnemyState
+	class MobAlert : public EnemyState<Mob>
 	{
 		bool m_IntruderAlert;
-		
+		float m_Interval;
+		float m_BulletRelord;
+		int m_CurrentBullet;
+		int m_BulletRemain;
+		bool m_BulletEffect;
+		bool m_BulletSound;
+		shared_ptr<EffectManeger> m_Effect;
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_Eyehandle;
 	public:
 		MobAlert(shared_ptr<Mob>& enemy) :
-			EnemyState(enemy)
+			EnemyState(enemy),
+			m_Handle(-1),
+			m_Eyehandle(-1),
+			m_Interval(0.2f),
+			m_CurrentBullet(5),
+			m_BulletRelord(3.0f),
+			m_BulletEffect(false),
+			m_BulletSound(false)
 		{
 		}
 

@@ -232,6 +232,9 @@ namespace basecross {
 	const vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVector() const {
 		return pImpl->m_Group;
 	}
+	vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVectors() const {
+		return pImpl->m_Group;
+	}
 	shared_ptr<GameObject> GameObjectGroup::at(size_t index) {
 		if (index >= pImpl->m_Group.size()) {
 			wstring msg = Util::SizeTToWStr(index);
@@ -1250,6 +1253,7 @@ namespace basecross {
 			float RightZ = RightPos.z;
 			return (LeftZ > RightZ);
 		};
+
 		std::sort(pImpl->m_SpriteVec.begin(), pImpl->m_SpriteVec.end(), funcSprite);
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {

@@ -8,6 +8,40 @@
 
 namespace basecross {
 
+	class CameraCollision :public GameObject
+	{
+		Vec3 m_GetPosition;
+		Vec3 m_TargetPosition;
+		Vec3 m_CameraPos;
+		
+		static bool m_Hit;
+		bool m_Point;
+
+		shared_ptr<CollisionSphere> m_Collision;
+		shared_ptr<GameObject> m_HitObject;
+
+	public:
+		CameraCollision(const shared_ptr<Stage>& StagePtr);
+		virtual ~CameraCollision() {}
+
+		Vec3 GetCompareVertex(Vec2 verx, Vec2 very);
+		virtual void OnUpdate()override;
+		virtual void OnCreate()override;
+
+		//ìñÇΩÉäîªíË
+		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
+		//èoÇΩÇ∆Ç´
+		virtual void OnCollisionExit(shared_ptr<GameObject>& other);
+
+		Vec3 GetAfterPosition(Vec3 beforePosi, Vec3 tergetPosi);
+		float Cross(Vec2 crox, Vec2 croy);
+
+		static bool GetHit()
+		{
+			return  m_Hit;
+		}
+
+	};
 
 	class FollowCamera : public Camera {
 		Vec3 m_Direction;
@@ -15,14 +49,25 @@ namespace basecross {
 		Vec3 m_Position;
 		float m_Angle;
 		float m_RotateSpeed;
+		bool m_HitCollision;
+		shared_ptr<Stage>m_Stage;
+		
+		int m_Width;
+		int m_Height;
+		bool m_StopCamera;
 
 		shared_ptr<Transform> m_PlayerTransform;
+		shared_ptr<CameraCollision> m_CameraCollision;
+
 	public:
-		FollowCamera();
+		FollowCamera(const shared_ptr<Stage>& StagePtr);
 		virtual ~FollowCamera() {}
 		virtual void OnUpdate();
-		virtual void OnCreate() {};
+		virtual void OnCreate();
 		virtual void LogCamera();
+		
+		void SetCameraPause(const bool& StopCamera);
+
 		void SetTarget(const shared_ptr<Transform> playerTransform) {
 			m_PlayerTransform = playerTransform;
 		}
@@ -31,5 +76,8 @@ namespace basecross {
 		{
 			return m_Angle;
 		}
+
 	};
+
+
 }

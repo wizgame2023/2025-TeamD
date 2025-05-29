@@ -1,212 +1,213 @@
 /*!
 @file DrawComponentsEx.cpp
-@brief Šg’£•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief æ‹¡å¼µæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
+#include "DrawComponentsEx.h"
 
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	DirectXTK‚ÌEffectŠÖ˜AˆÚA
+	///	DirectXTKã®Effecté–¢é€£ç§»æ¤
 	//--------------------------------------------------------------------------------------
 
 	//--------------------------------------------------------------------------------------
-	///	BasicƒVƒF[ƒ_[
+	///	Basicã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
-	/// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+	/// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_CONSTANT_BUFFER(CBBasic)
 
 
 	//--------------------------------------------------------------------------------------
-	/// PC’¸“_ƒVƒF[ƒ_
+	/// PCé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPCStatic, App::GetApp()->GetShadersPath() + L"BcVSPCStatic.cso")
 
 	//--------------------------------------------------------------------------------------
-	/// PN’¸“_ƒVƒF[ƒ_
+	/// PNé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNStatic, App::GetApp()->GetShadersPath() + L"BcVSPNStaticVL.cso")
 
 
 	//--------------------------------------------------------------------------------------
-	/// PT’¸“_ƒVƒF[ƒ_
+	/// PTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPTStatic, App::GetApp()->GetShadersPath() + L"BcVSPTStatic.cso")
 
 	//--------------------------------------------------------------------------------------
-	/// PCT’¸“_ƒVƒF[ƒ_
+	/// PCTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPCTStatic, App::GetApp()->GetShadersPath() + L"BcVSPCTStatic.cso")
 
 	//--------------------------------------------------------------------------------------
-	/// PC—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PCç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPCStatic, App::GetApp()->GetShadersPath() + L"BcPSPCStatic.cso")
 
 	//--------------------------------------------------------------------------------------
-	/// PN—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PNç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNStatic, App::GetApp()->GetShadersPath() + L"BcPSPNStaticVL.cso")
 
 	//--------------------------------------------------------------------------------------
-	/// PT,PCT—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PT,PCTç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPTStatic, App::GetApp()->GetShadersPath() + L"BcPSPTStatic.cso")
 
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNT’¸“_ƒVƒF[ƒ_(’¸“_ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticVL, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticVL.cso")
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBoneVL, App::GetApp()->GetShadersPath() + L"BcVSPNTBoneVL.cso")
-	//‰e•t‚«
+	//å½±ä»˜ã
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticVLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticVLShadow.cso")
-	//‰e•t‚«Bone
+	//å½±ä»˜ãBone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBoneVLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTBoneVLShadow.cso")
 
 
 		
 
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µ
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticVLBn, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticVLBn.cso")
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µBone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—Bone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBoneVLBn, App::GetApp()->GetShadersPath() + L"BcVSPNTBoneVLBn.cso")
 
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ã
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticVLBnShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticVLBnShadow.cso")
 
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«Bone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ãBone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBoneVLBnShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTBoneVLBnShadow.cso")
 
 
 		
 	//--------------------------------------------------------------------------------------
-	/// PNTƒsƒNƒZƒ‹ƒVƒF[ƒ_(’¸“_ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTVL, App::GetApp()->GetShadersPath() + L"BcPSPNTVL.cso")
-	//‰e•t‚«
+	//å½±ä»˜ã
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTVLShadow, App::GetApp()->GetShadersPath() + L"BcPSPNTVLShadow.cso")
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNT’¸“_ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticPL, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticPL.cso")
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBonePL, App::GetApp()->GetShadersPath() + L"BcVSPNTBonePL.cso")
-	//‰e•t‚«
+	//å½±ä»˜ã
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticPLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticPLShadow.cso")
-	//‰e•t‚«Bone
+	//å½±ä»˜ãBone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBonePLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTBonePLShadow.cso")
 		
-	//ƒoƒCƒX•t‚«‰e–³‚µ
+	//ãƒã‚¤ã‚¹ä»˜ãå½±ç„¡ã—
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticPLBn, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticPLBn.cso")
-	//ƒoƒCƒX•t‚«‰e–³‚µBone
+	//ãƒã‚¤ã‚¹ä»˜ãå½±ç„¡ã—Bone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBonePLBn, App::GetApp()->GetShadersPath() + L"BcVSPNTBonePLBn.cso")
 
-	//ƒoƒCƒX•t‚«‰e•t‚«
+	//ãƒã‚¤ã‚¹ä»˜ãå½±ä»˜ã
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTStaticPLBnShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTStaticPLBnShadow.cso")
-	//ƒoƒCƒX•t‚«‰e•t‚«Bone
+	//ãƒã‚¤ã‚¹ä»˜ãå½±ä»˜ãBone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTBonePLBnShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTBonePLBnShadow.cso")
 
 
 		
 
 	//--------------------------------------------------------------------------------------
-	/// PNTƒsƒNƒZƒ‹ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTPL, App::GetApp()->GetShadersPath() + L"BcPSPNTPL.cso")
-	//‰e•t‚«
+	//å½±ä»˜ã
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTPLShadow, App::GetApp()->GetShadersPath() + L"BcPSPNTPLShadow.cso")
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNTnT’¸“_ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTnTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTnTStaticPL, App::GetApp()->GetShadersPath() + L"BcVSPNTnTStaticPL.cso")
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTnTBonePL, App::GetApp()->GetShadersPath() + L"BcVSPNTnTBonePL.cso")
 
-	//‰e‚Â‚«
+	//å½±ã¤ã
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTnTStaticPLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTnTStaticPLShadow.cso")
-	//‰e‚Â‚«Bone
+	//å½±ã¤ãBone
 	IMPLEMENT_DX11_VERTEX_SHADER(BcVSPNTnTBonePLShadow, App::GetApp()->GetShadersPath() + L"BcVSPNTnTBonePLShadow.cso")
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNTnTƒsƒNƒZƒ‹ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTnTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTnTPL, App::GetApp()->GetShadersPath() + L"BcPSPNTnTPL.cso")
-	//‰e‚Â‚«
+	//å½±ã¤ã
 	IMPLEMENT_DX11_PIXEL_SHADER(BcPSPNTnTPLShadow, App::GetApp()->GetShadersPath() + L"BcPSPNTnTPLShadow.cso")
 
 	//--------------------------------------------------------------------------------------
-	///	Bc•`‰æ‚Ég—p‚·‚é\‘¢‘Ì(‰e‘Î‰)
+	///	Bcæç”»ã«ä½¿ç”¨ã™ã‚‹æ§‹é€ ä½“(å½±å¯¾å¿œ)
 	//--------------------------------------------------------------------------------------
 	struct BcDrawObject :public DrawObjectBase {
-		//’¸“_•ÏX‚·‚éê‡‚ÌƒƒbƒVƒ…iƒIƒŠƒWƒiƒ‹j
+		//é ‚ç‚¹å¤‰æ›´ã™ã‚‹å ´åˆã®ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆã‚ªãƒªã‚¸ãƒŠãƒ«ï¼‰
 		shared_ptr<MeshResource> m_OriginalMeshResource;
-		//ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğg‚¤‚©‚Ç‚¤‚©
+		//ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_UseOriginalMeshResource;
-		//ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 		weak_ptr<TextureResource> m_TextureResource;
-		//NormalMapƒeƒNƒXƒ`ƒƒ
+		//NormalMapãƒ†ã‚¯ã‚¹ãƒãƒ£
 		weak_ptr<TextureResource> m_NormalMapTextureResource;
 		vector<weak_ptr<TextureResource>> m_NormalMapTextureResourceVec;
-		//ƒGƒ~ƒbƒVƒuF
+		//ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²
 		bsm::Col4 m_Emissive;
-		//ƒfƒtƒ…[ƒYF
+		//ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		bsm::Col4 m_Diffuse;
-		//“§–¾“x
+		//é€æ˜åº¦
 		float m_Alpha;
-		//ƒXƒyƒLƒ…ƒ‰[‚Æƒpƒ[F
+		//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã¨ãƒ‘ãƒ¯ãƒ¼è‰²
 		bsm::Col4 m_SpecularColorAndPower;
-		//ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
+		//ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_LightingEnabled;
-		//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚ğ‚·‚é‚©‚Ç‚¤‚©
+		//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_PreferPerPixelLighting;
-		//–@ü‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚é‚©‚Ç‚¤‚©
+		//æ³•ç·šã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹
 		bool m_BiasedNormals;
-		//ƒAƒ“ƒrƒGƒ“ƒg
+		//ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆ
 		bsm::Col4 m_AmbientLightColor;
-		//ƒ‰ƒCƒg‚ÌMAX
+		//ãƒ©ã‚¤ãƒˆã®MAX
 		static const int MaxDirectionalLights = 3;
-		//ƒ‰ƒCƒg‚ª—LŒø‚©‚Ç‚¤‚©
+		//ãƒ©ã‚¤ãƒˆãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 		bool m_LightEnabled[MaxDirectionalLights];
-		//ƒ‰ƒCƒg‚ÌŒü‚«
+		//ãƒ©ã‚¤ãƒˆã®å‘ã
 		bsm::Vec3 m_LightDirection[MaxDirectionalLights];
-		//ƒ‰ƒCƒg‚Ìƒfƒtƒ…[ƒYF
+		//ãƒ©ã‚¤ãƒˆã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		bsm::Col4 m_LightDiffuseColor[MaxDirectionalLights];
-		//ƒ‰ƒCƒg‚ÌƒXƒyƒLƒ…ƒ‰[F
+		//ãƒ©ã‚¤ãƒˆã®ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		bsm::Col4 m_LightSpecularColor[MaxDirectionalLights];
-		//ƒtƒHƒO‚ª—LŒø‚©‚Ç‚¤‚©
+		//ãƒ•ã‚©ã‚°ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 		bool m_FogEnabled;
-		//ƒtƒHƒO‚ÌŠJnˆÊ’u
+		//ãƒ•ã‚©ã‚°ã®é–‹å§‹ä½ç½®
 		float m_FogStart;
-		//ƒtƒHƒO‚ÌI—¹ˆÊ’u
+		//ãƒ•ã‚©ã‚°ã®çµ‚äº†ä½ç½®
 		float m_FogEnd;
-		//ƒtƒHƒOF
+		//ãƒ•ã‚©ã‚°è‰²
 		bsm::Col4 m_FogColor;
-		//ƒtƒHƒOƒxƒNƒgƒ‹
+		//ãƒ•ã‚©ã‚°ãƒ™ã‚¯ãƒˆãƒ«
 		bsm::Vec3 m_FogVector;
-		//‰e‚ğ“Š‰e‚·‚é‚©‚Ç‚¤‚©
+		//å½±ã‚’æŠ•å½±ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_OwnShadowActive;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éDiffuse‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹Diffuseã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelDiffusePriority;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éEmissive‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹Emissiveã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelEmissivePriority;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éƒeƒNƒXƒ`ƒƒ‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelTextureEnabled;
 		BcDrawObject() :
 			m_UseOriginalMeshResource(false),
@@ -249,13 +250,13 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	Bc•`‰æƒIƒuƒWƒFƒNƒg‚Ìe
+	///	Bcæç”»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	BcBaseDraw::BcBaseDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		DrawComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì‚RD
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ï¼“D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::Default);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -302,7 +303,7 @@ namespace basecross {
 	}
 
 	shared_ptr<TextureResource> BcBaseDraw::GetTextureResource() const {
-		//ƒeƒNƒXƒ`ƒƒ‚ª‚È‚¯‚ê‚Înull‚ğ•Ô‚·
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã‘ã‚Œã°nullã‚’è¿”ã™
 		auto shptr = pImpl->m_BcDrawObject.m_TextureResource.lock();
 		if (shptr) {
 			return shptr;
@@ -320,7 +321,7 @@ namespace basecross {
 	}
 
 	shared_ptr<MultiMeshResource> BcBaseDraw::GetMultiMeshResource() const {
-		//‚È‚¯‚ê‚Înull‚ğ•Ô‚·
+		//ãªã‘ã‚Œã°nullã‚’è¿”ã™
 		auto shptr = pImpl->m_BcDrawObject.m_MultiMeshResource.lock();
 		if (shptr) {
 			return shptr;
@@ -332,7 +333,7 @@ namespace basecross {
 		pImpl->m_BcDrawObject.m_MultiMeshResource = MeshResourcePtr;
 		pImpl->m_BcDrawObject.m_MultiMeshDrawVec.clear();
 		for (size_t i = 0; i < MeshResourcePtr->GetMeshVecCount(); i++) {
-			//Å‰‚Í‚·‚×‚Ä‚Ìƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ğ•`‰æ
+			//æœ€åˆã¯ã™ã¹ã¦ã®ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã‚’æç”»
 			pImpl->m_BcDrawObject.m_MultiMeshDrawVec.push_back(true);
 		}
 	}
@@ -343,7 +344,7 @@ namespace basecross {
 	bool BcBaseDraw::GetMultiMeshIsDraw(size_t index) const {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ÌƒƒbƒVƒ…”‚ğ’´‚¦‚Ä‚Ü‚·",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::GetMultiMeshIsDraw()"
 			);
@@ -353,7 +354,7 @@ namespace basecross {
 	void BcBaseDraw::SetMultiMeshIsDraw(size_t index, bool b) {
 		if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ÌƒƒbƒVƒ…”‚ğ’´‚¦‚Ä‚Ü‚·",
+				L"",
 				L"if (index >= pImpl->m_BcDrawObject.m_MultiMeshDrawVec.size())",
 				L"BcBaseDraw::SetMultiMeshIsDraw()"
 			);
@@ -448,11 +449,11 @@ namespace basecross {
 	}
 
 	void BcBaseDraw::SetLightingParamaters() {
-		//ƒ‰ƒCƒg‚ğ“¾‚é
+		//ãƒ©ã‚¤ãƒˆã‚’å¾—ã‚‹
 		auto PtrLightObj = GetGameObject()->GetStage()->GetLight();
 		auto PtrMultiLight = dynamic_pointer_cast<MultiLight>(PtrLightObj);
 		if (PtrMultiLight) {
-			//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚¾‚Á‚½
+			//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã ã£ãŸ
 			for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 				if (IsLightEnabled(i)) {
 					SetLightDirection(i, PtrMultiLight->GetLight(i).m_Directional);
@@ -462,7 +463,7 @@ namespace basecross {
 			}
 		}
 		else {
-			//‚»‚¤‚Å‚Í‚È‚¢
+			//ãã†ã§ã¯ãªã„
 			auto LightPtr = GetGameObject()->OnGetDrawLight();
 			SetLightEnabled(0, true);
 			SetLightDirection(0, LightPtr.m_Directional);
@@ -500,7 +501,7 @@ namespace basecross {
 		if (whichLight < 0 || whichLight >= BcDrawObject::MaxDirectionalLights)
 		{
 			throw BaseException(
-				L"ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"",
 				L"if (whichLight < 0 || whichLight >= Impl::MaxDirectionalLights)",
 				L"Bc3DDraw::ValidateLightIndex()"
 			);
@@ -573,7 +574,7 @@ namespace basecross {
 	}
 
 	void BcBaseDraw::SetFogStart(float value) {
-		//í‚Éƒ}ƒCƒiƒX’l
+		//å¸¸ã«ãƒã‚¤ãƒŠã‚¹å€¤
 		pImpl->m_BcDrawObject.m_FogStart = -(abs(value));
 	}
 
@@ -581,7 +582,7 @@ namespace basecross {
 		return pImpl->m_BcDrawObject.m_FogEnd;
 	}
 	void BcBaseDraw::SetFogEnd(float value) {
-		//í‚Éƒ}ƒCƒiƒX’l
+		//å¸¸ã«ãƒã‚¤ãƒŠã‚¹å€¤
 		pImpl->m_BcDrawObject.m_FogEnd = -(abs(value));
 	}
 
@@ -677,7 +678,6 @@ namespace basecross {
 	}
 	const wstring& BcBaseDraw::GetCurrentAnimation() const {
 		return pImpl->m_BcDrawObject.m_CurrentAnimeName;
-
 	}
 
 	float BcBaseDraw::GetCurrentAnimationTime() const {
@@ -689,6 +689,10 @@ namespace basecross {
 		return AnimData.m_IsAnimeEnd;
 	}
 
+	bool BcBaseDraw::GetAnimeLoop() const {
+		auto& AnimData = pImpl->m_BcDrawObject.GetAnimationData();
+		return AnimData.m_IsLoop;
+	}
 
 	bool BcBaseDraw::UpdateAnimation(float ElapsedTime) {
 		return pImpl->m_BcDrawObject.UpdateAnimation(ElapsedTime);
@@ -712,7 +716,7 @@ namespace basecross {
 	vector< bsm::Mat4x4 >& BcBaseDraw::GetVecMultiLocalBones(size_t index) {
 		if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªãŒÀ‚ğ’´‚¦‚Ä‚Ü‚·",
+				L"",
 				L"if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() <= index)",
 				L"BcBaseDraw::GetVecMultiLocalBones"
 			);
@@ -724,7 +728,7 @@ namespace basecross {
 		auto ReshRes = GetMeshResource();
 		if (!ReshRes) {
 			throw BaseException(
-				L"ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ª‚ ‚è‚Ü‚¹‚ñ",
+				L"ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚Šã¾ã›ã‚“",
 				L"if (!ReshRes)",
 				L"BcBaseDraw::GetStaticMeshLocalPositions()"
 			);
@@ -735,7 +739,7 @@ namespace basecross {
 
 	void BcBaseDraw::GetStaticMeshWorldPositions(vector<bsm::Vec3>& vertices) {
 		GetStaticMeshLocalPositions(vertices);
-		//ƒ[ƒ‹ƒhs—ñ‚Ì”½‰f
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åæ˜ 
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
 		for (auto& v : vertices) {
 			v *= WorldMat;
@@ -745,15 +749,16 @@ namespace basecross {
 	bool BcBaseDraw::HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,
 		TRIANGLE& RetTri, size_t& RetIndex) {
 		GetStaticMeshWorldPositions(pImpl->m_BcDrawObject.m_TempPositions);
-		for (size_t i = 0; i < pImpl->m_BcDrawObject.m_TempPositions.size(); i += 3) {
+		for (size_t i = 0,size = pImpl->m_BcDrawObject.m_TempPositions.size(); i < size; i += 3) {
 			TRIANGLE tri;
 			tri.m_A = pImpl->m_BcDrawObject.m_TempPositions[i];
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
 			tri.m_C = pImpl->m_BcDrawObject.m_TempPositions[i + 2];
 			if (!tri.IsValid()) {
-				//OŠpŒ`‚ª–³Œø‚È‚çŸ‚É‚¤‚Â‚é
+				//ä¸‰è§’å½¢ãŒç„¡åŠ¹ãªã‚‰æ¬¡ã«ã†ã¤ã‚‹
 				continue;
 			}
+
 			bsm::Vec3 ret;
 			float t;
 			if (HitTest::SEGMENT_TRIANGLE(StartPos, EndPos, tri, ret, t)) {
@@ -779,12 +784,12 @@ namespace basecross {
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
 			tri.m_C = pImpl->m_BcDrawObject.m_TempPositions[i + 2];
 			if (!tri.IsValid()) {
-				//OŠpŒ`‚ª–³Œø‚È‚çŸ‚É‚¤‚Â‚é
+				//ä¸‰è§’å½¢ãŒç„¡åŠ¹ãªã‚‰æ¬¡ã«ã†ã¤ã‚‹
 				continue;
 			}
 			bsm::Vec3 ret;
 			float t;
-			//‹…‘Ì‚ÌˆÚ“®‚ÍStartSp‚©‚çEndSp‚É1.0‚Æ‚·‚é
+			//çƒä½“ã®ç§»å‹•ã¯StartSpã‹ã‚‰EndSpã«1.0ã¨ã™ã‚‹
 			bsm::Vec3 Valocity = EndSp.m_Center - StartSp.m_Center;
 			if (HitTest::CollisionTestSphereTriangle(StartSp, Valocity, tri, 0.0f, 1.0f, t)) {
 				auto Len = length(EndSp.m_Center - StartSp.m_Center);
@@ -806,7 +811,7 @@ namespace basecross {
 	void BcBaseDraw::GetSkinedMeshLocalPositions(vector<bsm::Vec3>& vertices) {
 		if (GetVecLocalBones().size() == 0) {
 			throw BaseException(
-				L"ƒ{[ƒ“s—ñ‚ª‚ ‚è‚Ü‚¹‚ñ",
+				L"ãƒœãƒ¼ãƒ³è¡Œåˆ—ãŒã‚ã‚Šã¾ã›ã‚“",
 				L"if (GetVecLocalBones().size() == 0)",
 				L"BcBaseDraw::GetSkinedMeshLocalPositions()"
 			);
@@ -814,7 +819,7 @@ namespace basecross {
 		auto ReshRes = GetMeshResource();
 		if (!ReshRes) {
 			throw BaseException(
-				L"ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ª‚ ‚è‚Ü‚¹‚ñ",
+				L"ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚Šã¾ã›ã‚“",
 				L"if (!ReshRes)",
 				L"BcBaseDraw::GetSkinedMeshLocalPositions()"
 			);
@@ -826,7 +831,7 @@ namespace basecross {
 		for (auto& v : PosVec) {
 			vertices.push_back(v.position);
 		}
-		//ƒXƒLƒjƒ“ƒOˆ—
+		//ã‚¹ã‚­ãƒ‹ãƒ³ã‚°å‡¦ç†
 		for (size_t j = 0; j < vertices.size(); j++) {
 			bsm::Mat4x4 skinning(0);
 			for (size_t i = 0; i < 4; i++)
@@ -846,7 +851,7 @@ namespace basecross {
 
 	void BcBaseDraw::GetSkinedMeshWorldPositions(vector<bsm::Vec3>& vertices) {
 		GetSkinedMeshLocalPositions(vertices);
-		//ƒ[ƒ‹ƒhs—ñ‚Ì”½‰f
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åæ˜ 
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
 		for (auto& v : vertices) {
 			v *= WorldMat;
@@ -862,7 +867,7 @@ namespace basecross {
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
 			tri.m_C = pImpl->m_BcDrawObject.m_TempPositions[i + 2];
 			if (!tri.IsValid()) {
-				//OŠpŒ`‚ª–³Œø‚È‚çŸ‚É‚¤‚Â‚é
+				//ä¸‰è§’å½¢ãŒç„¡åŠ¹ãªã‚‰æ¬¡ã«ã†ã¤ã‚‹
 				continue;
 			}
 			bsm::Vec3 ret;
@@ -891,12 +896,12 @@ namespace basecross {
 			tri.m_B = pImpl->m_BcDrawObject.m_TempPositions[i + 1];
 			tri.m_C = pImpl->m_BcDrawObject.m_TempPositions[i + 2];
 			if (!tri.IsValid()) {
-				//OŠpŒ`‚ª–³Œø‚È‚çŸ‚É‚¤‚Â‚é
+				//ä¸‰è§’å½¢ãŒç„¡åŠ¹ãªã‚‰æ¬¡ã«ã†ã¤ã‚‹
 				continue;
 			}
 			bsm::Vec3 ret;
 			float t;
-			//‹…‘Ì‚ÌˆÚ“®‚ÍStartSp‚©‚çEndSp‚É1.0‚Æ‚·‚é
+			//çƒä½“ã®ç§»å‹•ã¯StartSpã‹ã‚‰EndSpã«1.0ã¨ã™ã‚‹
 			bsm::Vec3 Valocity = EndSp.m_Center - StartSp.m_Center;
 			if (HitTest::CollisionTestSphereTriangle(StartSp, Valocity, tri, 0.0f, 1.0f, t)) {
 				auto Len = length(EndSp.m_Center - StartSp.m_Center);
@@ -914,23 +919,23 @@ namespace basecross {
 	}
 
 	void BcBaseDraw::SetConstants(BasicConstants& BcCb, const MeshPrimData& data) {
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		auto PtrTrans = GetGameObject()->GetComponent<Transform>();
-		//ƒJƒƒ‰‚ğ“¾‚é
+		//ã‚«ãƒ¡ãƒ©ã‚’å¾—ã‚‹
 		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
-		//ƒ‰ƒCƒg‚ğ“¾‚é
+		//ãƒ©ã‚¤ãƒˆã‚’å¾—ã‚‹
 		auto PtrLightObj = GetGameObject()->GetStage()->GetLight();
 		auto PtrMultiLight = dynamic_pointer_cast<MultiLight>(PtrLightObj);
 		if (PtrMultiLight) {
-			//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚¾‚Á‚½
+			//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã ã£ãŸ
 			BcCb.activeFlg.x = 3;
 		}
 		else {
-			//‚»‚¤‚Å‚Í‚È‚¢
+			//ãã†ã§ã¯ãªã„
 			BcCb.activeFlg.x = 1;
 		}
 		auto StageLight = GetGameObject()->OnGetDrawLight();
-		//ƒ[ƒ‹ƒhs—ñ
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 		bsm::Mat4x4 world;
 		if (data.m_UseMeshToTransformMatrix) {
 			world = data.m_MeshToTransformMatrix * GetMeshToTransformMatrix();
@@ -939,16 +944,16 @@ namespace basecross {
 		else {
 			world = GetMeshToTransformMatrix() * PtrTrans->GetWorldMatrix();
 		}
-		//ƒrƒ…[s—ñ
+		//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—
 		bsm::Mat4x4 view = CameraPtr->GetViewMatrix();
-		//Ë‰es—ñ
+		//å°„å½±è¡Œåˆ—
 		bsm::Mat4x4 projection = CameraPtr->GetProjMatrix();
 
-		//s—ñ‚Ìİ’è
+		//è¡Œåˆ—ã®è¨­å®š
 		auto worldView = world * view;
 		BcCb.worldViewProj = XMMatrixTranspose(XMMatrixMultiply(worldView, projection));
 
-		//ƒtƒHƒO‚Ìİ’è
+		//ãƒ•ã‚©ã‚°ã®è¨­å®š
 		if (IsFogEnabled())
 		{
 			auto start = GetFogStart();
@@ -976,7 +981,7 @@ namespace basecross {
 			BcCb.fogColor = g_XMZero;
 
 		}
-		//ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒ©ã‚¤ãƒˆã®è¨­å®š
 		if (IsLightingEnabled())
 		{
 			if (BcCb.activeFlg.x == 1) {
@@ -1026,7 +1031,7 @@ namespace basecross {
 		// xyz = diffuse * alpha, w = alpha.
 		BcCb.diffuseColor = XMVectorSelect(alphaVector, diffuse * alphaVector, g_XMSelect1110);
 
-		//‰e—p
+		//å½±ç”¨
 		if (GetOwnShadowActive()) {
 			bsm::Vec3 CalcLightDir(StageLight.m_Directional * -1.0);
 			bsm::Vec3 LightAt(CameraPtr->GetAt());
@@ -1040,14 +1045,14 @@ namespace basecross {
 			eyePos4.w = 1.0f;
 			BcCb.eyePos = eyePos4;
 			bsm::Mat4x4 LightView, LightProj;
-			//ƒ‰ƒCƒg‚Ìƒrƒ…[‚ÆË‰e‚ğŒvZ
+			//ãƒ©ã‚¤ãƒˆã®ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±ã‚’è¨ˆç®—
 			LightView = XMMatrixLookAtLH(LightEye, LightAt, bsm::Vec3(0, 1.0f, 0));
 			LightProj = XMMatrixOrthographicLH(Shadowmap::GetViewWidth(), Shadowmap::GetViewHeight(),
 				Shadowmap::GetLightNear(), Shadowmap::GetLightFar());
 			BcCb.lightView = bsm::transpose(LightView);
 			BcCb.lightProjection = bsm::transpose(LightProj);
 		}
-		//ƒ{[ƒ“‚Ìİ’è
+		//ãƒœãƒ¼ãƒ³ã®è¨­å®š
 		size_t BoneSz = pImpl->m_BcDrawObject.m_LocalBonesMatrix.size();
 		if (BoneSz > 0) {
 			UINT cb_count = 0;
@@ -1061,8 +1066,8 @@ namespace basecross {
 			}
 		}
 		else if (pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix.size() > data.m_MultiMeshIndex) {
-			//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚Ìƒ{[ƒ“‚ª‚ ‚Á‚½
-			//ƒ{[ƒ“‚Ìİ’è
+			//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒœãƒ¼ãƒ³ãŒã‚ã£ãŸ
+			//ãƒœãƒ¼ãƒ³ã®è¨­å®š
 			BoneSz = pImpl->m_BcDrawObject.m_MultiLocalBonesMatrix[data.m_MultiMeshIndex].size();
 			if (BoneSz > 0) {
 				UINT cb_count = 0;
@@ -1079,7 +1084,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///BcPCStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///BcPCStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPCStaticDraw::BcPCStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1095,12 +1100,12 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			DrawStatic<BcVSPCStatic, BcPSPCStatic>(PtrMeshResource->GetMashData());
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
@@ -1111,14 +1116,14 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 
 	//--------------------------------------------------------------------------------------
-	///BcPNStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///BcPNStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPNStaticDraw::BcPNStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		BcBaseDraw(GameObjectPtr)
@@ -1126,7 +1131,7 @@ namespace basecross {
 	BcPNStaticDraw::~BcPNStaticDraw() {}
 	void BcPNStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1138,34 +1143,34 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+			//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 			DrawStatic<BcVSPNStatic, BcPSPNStatic>(PtrMeshResource->GetMashData());
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
-				//ƒVƒF[ƒ_‚Ìİ’è
-				//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
-				//ƒoƒCƒAƒX–³‚µ
+				//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+				//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 				if (GetMultiMeshIsDraw(i)) {
 					DrawStatic<BcVSPNStatic, BcPSPNStatic>(vec[i]);
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPTStaticDraw::BcPTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1181,12 +1186,12 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			DrawStatic<BcVSPTStatic, BcPSPTStatic>(PtrMeshResource->GetMashData());
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
@@ -1197,13 +1202,13 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPCTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPCTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPCTStaticDraw::BcPCTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1220,12 +1225,12 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
 			DrawStatic<BcVSPCTStatic, BcPSPTStatic>(PtrMeshResource->GetMashData());
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
@@ -1236,7 +1241,7 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
@@ -1245,7 +1250,7 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	BcPNTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BcPNTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPNTStaticDraw::BcPNTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1254,7 +1259,7 @@ namespace basecross {
 
 	void BcPNTStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1266,115 +1271,115 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒVƒF[ƒ_‚Ìİ’è
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 			if (IsPerPixelLighting()) {
-				//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+				//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawStatic<BcVSPNTStaticPLBnShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTStaticPLShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawStatic<BcVSPNTStaticPLBn, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTStaticPL, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 			else {
-				//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+				//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawStatic<BcVSPNTStaticVLBnShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTStaticVLShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawStatic<BcVSPNTStaticVLBn, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTStaticVL, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒVƒF[ƒ_‚Ìİ’è
+					//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 					if (IsPerPixelLighting()) {
-						//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+						//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawStatic<BcVSPNTStaticPLBnShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawStatic<BcVSPNTStaticPLShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawStatic<BcVSPNTStaticPLBn, BcPSPNTPL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawStatic<BcVSPNTStaticPL, BcPSPNTPL>(vec[i]);
 							}
 						}
 					}
 					else {
-						//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+						//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawStatic<BcVSPNTStaticVLBnShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawStatic<BcVSPNTStaticVLShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawStatic<BcVSPNTStaticVLBn, BcPSPNTVL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawStatic<BcVSPNTStaticVL, BcPSPNTVL>(vec[i]);
 							}
 						}
@@ -1382,14 +1387,14 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTStaticƒ‚ƒfƒ‹•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTStaticãƒ¢ãƒ‡ãƒ«æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPNTStaticModelDraw::BcPNTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1398,7 +1403,7 @@ namespace basecross {
 
 	void BcPNTStaticModelDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1410,115 +1415,115 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒVƒF[ƒ_‚Ìİ’è
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 			if (IsPerPixelLighting()) {
-				//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+				//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTStaticPLBnShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTStaticPLShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTStaticPLBn, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTStaticPL, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 			else {
-				//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+				//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTStaticVLBnShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTStaticVLShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTStaticVLBn, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTStaticVL, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒVƒF[ƒ_‚Ìİ’è
+					//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 					if (IsPerPixelLighting()) {
-						//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+						//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTStaticPLBnShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTStaticPLShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTStaticPLBn, BcPSPNTPL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTStaticPL, BcPSPNTPL>(vec[i]);
 							}
 						}
 					}
 					else {
-						//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+						//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTStaticVLBnShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTStaticVLShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTStaticVLBn, BcPSPNTVL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTStaticVL, BcPSPNTVL>(vec[i]);
 							}
 						}
@@ -1526,12 +1531,12 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 	//--------------------------------------------------------------------------------------
-	///	BcPNTBoneModel•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgiƒ{[ƒ“ƒ‚ƒfƒ‹•`‰æ—pj
+	///	BcPNTBoneModelæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼ˆãƒœãƒ¼ãƒ³ãƒ¢ãƒ‡ãƒ«æç”»ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	BcPNTBoneModelDraw::BcPNTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1558,7 +1563,7 @@ namespace basecross {
 
 	void BcPNTBoneModelDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1571,115 +1576,115 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒVƒF[ƒ_‚Ìİ’è
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 			if (IsPerPixelLighting()) {
-				//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+				//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTBonePLBnShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTBonePLShadow, BcPSPNTPLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTBonePLBn, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTBonePL, BcPSPNTPL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 			else {
-				//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+				//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 				if (IsOwnShadowActive()) {
-					//‰e•t‚«
+					//å½±ä»˜ã
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTBoneVLBnShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTBoneVLShadow, BcPSPNTVLShadow>(PtrMeshResource->GetMashData());
 					}
 				}
 				else {
-					//‰e–³‚µ
+					//å½±ç„¡ã—
 					if (IsBiasedNormals()) {
-						//ƒoƒCƒAƒX•t‚«
+						//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 						DrawModel<BcVSPNTBoneVLBn, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 					else {
-						//ƒoƒCƒAƒX–³‚µ
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawModel<BcVSPNTBoneVL, BcPSPNTVL>(PtrMeshResource->GetMashData());
 					}
 				}
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒVƒF[ƒ_‚Ìİ’è
+					//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
 					if (IsPerPixelLighting()) {
-						//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO
+						//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTBonePLBnShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTBonePLShadow, BcPSPNTPLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTBonePLBn, BcPSPNTPL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTBonePL, BcPSPNTPL>(vec[i]);
 							}
 						}
 					}
 					else {
-						//’¸“_ƒ‰ƒCƒeƒBƒ“ƒO
+						//é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 						if (IsOwnShadowActive()) {
-							//‰e•t‚«
+							//å½±ä»˜ã
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTBoneVLBnShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTBoneVLShadow, BcPSPNTVLShadow>(vec[i]);
 							}
 						}
 						else {
-							//‰e–³‚µ
+							//å½±ç„¡ã—
 							if (IsBiasedNormals()) {
-								//ƒoƒCƒAƒX•t‚«
+								//ãƒã‚¤ã‚¢ã‚¹ä»˜ã
 								DrawModel<BcVSPNTBoneVLBn, BcPSPNTVL>(vec[i]);
 							}
 							else {
-								//ƒoƒCƒAƒX–³‚µ
+								//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 								DrawModel<BcVSPNTBoneVL, BcPSPNTVL>(vec[i]);
 							}
 						}
@@ -1687,13 +1692,13 @@ namespace basecross {
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTnTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTnTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPNTnTStaticDraw::BcPNTnTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		BcBaseDraw(GameObjectPtr)
@@ -1701,7 +1706,7 @@ namespace basecross {
 	BcPNTnTStaticDraw::~BcPNTnTStaticDraw() {}
 	void BcPNTnTStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1713,49 +1718,49 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+			//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 			if (IsOwnShadowActive()) {
-				//‰e•t‚«
-				//ƒoƒCƒAƒX–³‚µ
+				//å½±ä»˜ã
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 				DrawStatic<BcVSPNTnTStaticPLShadow, BcPSPNTnTPLShadow>(PtrMeshResource->GetMashData());
 			}
 			else {
-				//‰e–³‚µ
-				//ƒoƒCƒAƒX–³‚µ
+				//å½±ç„¡ã—
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 				DrawStatic<BcVSPNTnTStaticPL, BcPSPNTnTPL>(PtrMeshResource->GetMashData());
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+					//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 					if (IsOwnShadowActive()) {
-						//‰e•t‚«
-						//ƒoƒCƒAƒX–³‚µ
+						//å½±ä»˜ã
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTnTStaticPLShadow, BcPSPNTnTPLShadow>(vec[i]);
 					}
 					else {
-						//‰e–³‚µ
-						//ƒoƒCƒAƒX–³‚µ
+						//å½±ç„¡ã—
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—
 						DrawStatic<BcVSPNTnTStaticPL, BcPSPNTnTPL>(vec[i]);
 					}
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTnTƒ‚ƒfƒ‹•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTnTãƒ¢ãƒ‡ãƒ«æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	BcPNTnTStaticModelDraw::BcPNTnTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1765,7 +1770,7 @@ namespace basecross {
 	}
 	void BcPNTnTStaticModelDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1777,51 +1782,51 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒVƒF[ƒ_‚Ìİ’è
-			//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+			//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 			if (IsOwnShadowActive()) {
-				//‰e•t‚«
-				//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+				//å½±ä»˜ã
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 				DrawModel<BcVSPNTnTStaticPLShadow, BcPSPNTnTPLShadow>(PtrMeshResource->GetMashData());
 			}
 			else {
-				//‰e–³‚µ
-				//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+				//å½±ç„¡ã—
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 				DrawModel<BcVSPNTnTStaticPL, BcPSPNTnTPL>(PtrMeshResource->GetMashData());
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒVƒF[ƒ_‚Ìİ’è
-					//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+					//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+					//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 					if (IsOwnShadowActive()) {
-						//‰e•t‚«
-						//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+						//å½±ä»˜ã
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 						DrawModel<BcVSPNTnTStaticPLShadow, BcPSPNTnTPLShadow>(vec[i]);
 					}
 					else {
-						//‰e–³‚µ
-						//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+						//å½±ç„¡ã—
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 						DrawModel<BcVSPNTnTStaticPL, BcPSPNTnTPL>(vec[i]);
 					}
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	BcPNTnTBoneModelDraw•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgiƒ{[ƒ“ƒ‚ƒfƒ‹•`‰æ—pj
+	///	BcPNTnTBoneModelDrawæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼ˆãƒœãƒ¼ãƒ³ãƒ¢ãƒ‡ãƒ«æç”»ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	BcPNTnTBoneModelDraw::BcPNTnTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
@@ -1848,7 +1853,7 @@ namespace basecross {
 
 	void BcPNTnTBoneModelDraw::OnCreate() {
 		SetLightingEnabled(true);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìİ’è
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®è¨­å®š
 		for (int i = 0; i < GetMaxDirectionalLights(); i++) {
 			SetLightEnabled(i, true);
 		}
@@ -1860,45 +1865,45 @@ namespace basecross {
 			}
 			SetRasterizerState(RasterizerState::DoubleDraw);
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 		if (PtrMeshResource) {
-			//ƒVƒF[ƒ_‚Ìİ’è
-			//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+			//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 			if (IsOwnShadowActive()) {
-				//‰e•t‚«
-				//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+				//å½±ä»˜ã
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 				DrawModel<BcVSPNTnTBonePLShadow, BcPSPNTnTPLShadow>(PtrMeshResource->GetMashData());
 			}
 			else {
-				//‰e–³‚µ
-				//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+				//å½±ç„¡ã—
+				//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 				DrawModel<BcVSPNTnTBonePL, BcPSPNTnTPL>(PtrMeshResource->GetMashData());
 			}
 		}
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMultiMeshResource = GetMultiMeshResource();
 		if (PtrMultiMeshResource) {
 			size_t count = PtrMultiMeshResource->GetMeshVecCount();
 			auto& vec = PtrMultiMeshResource->GetMeshVec();
 			for (size_t i = 0; i < count; i++) {
 				if (GetMultiMeshIsDraw(i)) {
-					//ƒVƒF[ƒ_‚Ìİ’è
-					//ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ
+					//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+					//ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿
 					if (IsOwnShadowActive()) {
-						//‰e•t‚«
-						//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+						//å½±ä»˜ã
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 						DrawModel<BcVSPNTnTBonePLShadow, BcPSPNTnTPLShadow>(vec[i]);
 					}
 					else {
-						//‰e–³‚µ
-						//ƒoƒCƒAƒX–³‚µ‚Ì‚İ
+						//å½±ç„¡ã—
+						//ãƒã‚¤ã‚¢ã‚¹ç„¡ã—ã®ã¿
 						DrawModel<BcVSPNTnTBonePL, BcPSPNTnTPL>(vec[i]);
 					}
 				}
 			}
 		}
-		//Œãn––
+		//å¾Œå§‹æœ«
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
 	}

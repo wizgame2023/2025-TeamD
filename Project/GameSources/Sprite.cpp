@@ -6,10 +6,10 @@
 #include "stdafx.h"
 #include "Project.h"
 
-namespace basecross{
+namespace basecross {
 
 	void Sprite::OnCreate() {
-		for (int y = 0; y < m_cutUV.y; y++) {
+		/*for (int y = 0; y < m_cutUV.y; y++) {
 			for (int x = 0; x < m_cutUV.x; x++) {
 				m_AnimationUV.push_back({
 					{(1.0f / m_cutUV.x) * x,(1.0f / m_cutUV.y) * y},
@@ -19,12 +19,19 @@ namespace basecross{
 					}
 				);
 			}
+		}*/
+		if (m_UseIndex != -1) {
+			m_AnimationUV = CreateAnimationUV(m_cutUV, m_UseIndex);
 		}
-		if (m_UseIndex == -1 || m_UseIndex >= m_AnimationUV.size()) {
-			m_UseIndex = static_cast<int>(m_AnimationUV.size()) - 1;
+		else {
+			m_AnimationUV = CreateAnimationUV(m_cutUV);
+			m_UseIndex = m_AnimationUV.size() - 1;
 		}
+		//if (m_UseIndex == -1 || m_UseIndex >= m_AnimationUV.size()) {
+		//	m_UseIndex = static_cast<int>(m_AnimationUV.size()) - 1;
+		//}
 		CreateVertex(m_Size, m_AnimationUV[0]);
-		vector<uint16_t> indices = { 
+		vector<uint16_t> indices = {
 			0, 1, 2,
 			2, 1, 3
 		};
@@ -56,46 +63,51 @@ namespace basecross{
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		m_AnimationTimer += elapsedTime;
 
-		if (m_AnimationTimer > m_AnimationChangeTime) {
-			m_Index++;
-			if (m_Index >= m_UseIndex || m_Index >= m_AnimationUV.size()) {
-				m_Index = 0;
-			}
-			UpdateUV(m_AnimationUV[m_Index]);
-
-			m_AnimationTimer = 0.0f;
-		}
-	}
-	void Sprite::NewAnimation() {
-		float elapsedTime = App::GetApp()->GetElapsedTime();
-		m_AnimationTimer += elapsedTime;
-
 		if (m_AnimationTimer > m_CurrentAnimation.m_UpdateInterval) {
 			if (m_CurrentAnimation.m_IsReverse) {
-				m_CurrentAnimation.m_OrderCount--;
-				if (m_CurrentAnimation.m_OrderCount < 0) {
-					m_CurrentAnimation.m_OrderCount = m_CurrentAnimation.m_Order.size() - 1;
-					if (!m_CurrentAnimation.m_IsLoop) {
-						//デフォルトに戻る
-						return;
+				m_CurrentAnimation.m_CurrentOrder--;
+				if (m_CurrentAnimation.m_CurrentOrder < 0) {
+					if (m_CurrentAnimation.m_IsLoop) {
+						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
+					}
+					else {
+						m_CurrentAnimation.m_CurrentOrder = 0;
 					}
 				}
 			}
 			else {
-				m_CurrentAnimation.m_OrderCount++;
-				if (m_CurrentAnimation.m_OrderCount >= m_CurrentAnimation.m_Order.size() || m_CurrentAnimation.m_OrderCount >= m_AnimationUV.size()) {
-					m_CurrentAnimation.m_OrderCount = 0;
-					if (!m_CurrentAnimation.m_IsLoop) {
-						//デフォルトに戻る
-						return;
+				m_CurrentAnimation.m_CurrentOrder++;
+				if (m_CurrentAnimation.m_CurrentOrder >= m_CurrentAnimation.m_Order.size() || m_CurrentAnimation.m_CurrentOrder >= m_AnimationUV.size()) {
+					if (m_CurrentAnimation.m_IsLoop) {
+						m_CurrentAnimation.m_CurrentOrder = 0;
+					}
+					else {
+						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
 					}
 				}
 			}
-			
-			UpdateUV(m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
+
+			UpdateUV(m_AnimationUV[m_CurrentAnimation.m_CurrentOrder]);
 
 			m_AnimationTimer = 0.0f;
 		}
+	}
+	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const int& maxIndex) {
+		vector<vector<Vec2>> uv;
+		for (int y = 0; y < cut.y; y++) {
+			for (int x = 0; x < cut.x; x++) {
+				//最大値に達したらもう作らない
+				if (cut.x * y + x > maxIndex) return uv;
+				uv.push_back({
+					{(1.0f / cut.x) * x,(1.0f / cut.y) * y},
+					{(1.0f / cut.x) * (x + 1),(1.0f / cut.y) * y},
+					{(1.0f / cut.x) * x,(1.0f / cut.y) * (y + 1)},
+					{(1.0f / cut.x) * (x + 1),(1.0f / cut.y) * (y + 1)}
+					}
+				);
+			}
+		}
+		return uv;
 	}
 	void Sprite::CreateVertex(Vec2 size, vector<Vec2> uv) {
 		if (m_IsUseCenterSprite) {
@@ -115,6 +127,13 @@ namespace basecross{
 			};
 		}
 	}
+	void Sprite::SetVertex(vector<Vec3> positions) {
+		for (int i = 0; i < m_Vertices.size(); i++) {
+			if (positions.size() <= i) break;
+			m_Vertices[i].position = positions[i];
+		}
+		m_Draw->UpdateVertices(m_Vertices);
+	}
 	void Sprite::UpdateUV(vector<Vec2> uv) {
 		if (uv.empty()) return;
 		if (m_Draw) {
@@ -126,29 +145,14 @@ namespace basecross{
 			m_Draw->UpdateVertices(m_Vertices);
 		}
 	}
-	void Sprite::CutAnimationUv(Vec2 cut) {
-		for (int i = 0; i < cut.y; i++) {
-			for (int j = 0; j < cut.x; j++) {
-				vector<Vec2> uv = {
-					{(1.0f / cut.x) * j,(1.0f / cut.y) * i},
-					{(1.0f / cut.x) * (j + 1),(1.0f / cut.y) * i},
-					{(1.0f / cut.x) * j,(1.0f / cut.y) * (i + 1)},
-					{(1.0f / cut.x) * (j + 1),(1.0f / cut.y) * (i + 1)}
-				};
-
-				m_AnimationUV.push_back(uv);
-			}
-		}
-		m_IsAnimation = true;
-	}
 	void Sprite::UpdateSize(Vec3 size) {
 		m_Transform->SetScale(size);
 	}
 	void Sprite::UpdateSize(Vec2 size) {
-		if (m_Draw) { 
+		if (m_Draw) {
 			m_Size = size;
 			if (m_IsAnimation) {
-				CreateVertex(m_Size, m_AnimationUV[m_CurrentAnimation.m_OrderCount]);
+				CreateVertex(m_Size, m_AnimationUV[m_CurrentAnimation.m_CurrentOrder]);
 			}
 			else {
 				CreateVertex(m_Size, m_AnimationUV[0]);
@@ -206,19 +210,24 @@ namespace basecross{
 		float sizeX = m_Size.x / m_DisplayDigit;
 		m_Numbers.reserve(m_DisplayDigit);
 		for (int i = 0; i < m_DisplayDigit; i++) {
-			shared_ptr<Sprite> number = GetStage()->AddGameObject<Sprite>(m_TexKey, Vec3(m_Pos.x + i * sizeX,m_Pos.y,m_Pos.z), Vec2(sizeX, m_Size.y));//ObjectFactory::Create<Sprite>(GetStage(), m_TexKey, Vec3(0,0,0)/*m_Pos + i * sizeX*/, Vec2(sizeX, m_Size.y));
+			shared_ptr<Sprite> number = GetStage()->AddGameObject<Sprite>(m_TexKey, Vec3(m_Pos.x + i * sizeX, m_Pos.y, m_Pos.z), Vec2(sizeX, m_Size.y));//ObjectFactory::Create<Sprite>(GetStage(), m_TexKey, Vec3(0,0,0)/*m_Pos + i * sizeX*/, Vec2(sizeX, m_Size.y));
 			int singleDigit = m_DisplayNumber / digits % 10;
-			
+
 			number->UpdateUV(GetUV(singleDigit));
 			digits /= 10;
+			auto trans = number->GetComponent<Transform>();
+			trans->SetParent(GetThis<NumberSprite>());
 			m_Numbers.push_back(number);
 		}
 		auto trans = GetComponent<Transform>();
-		trans->SetPosition(0,0,0);
+		
+		trans->SetPosition(0, 0, 0);
 	}
 
 	void NumberSprite::OnUpdate() {
-		
+		for (auto& number : m_Numbers) {
+			number->SetDrawActive(GetDrawActive());
+		}
 	}
 
 	vector<Vec2> NumberSprite::GetUV(int displayDigit) {
@@ -244,13 +253,25 @@ namespace basecross{
 			digits /= 10;
 		}
 	}
-
+	void NumberSprite::Destroy() {
+		for (int i = 0; i < m_Numbers.size(); i++) {
+			GetStage()->RemoveGameObject<Sprite>(m_Numbers[i]);
+		}
+		GetStage()->RemoveGameObject<Sprite>(GetThis<NumberSprite>());
+	}
 
 	void SpriteAction::OnCreate() {
 		m_Draw = GetGameObject()->GetComponent<SpriteBaseDraw>();
 		m_Trans = GetGameObject()->GetComponent<Transform>();
 	}
 
+	void SpriteFlash::Reset() {
+		if (m_Draw != nullptr) {
+			Col4 color = m_Draw->GetDiffuse();
+			color.w = 1.0f;
+			m_Draw->SetDiffuse(color);
+		}
+	}
 	void SpriteFlash::OnUpdate() {
 		if (m_Draw != nullptr && IsPlay()) {
 			float elapsed = App::GetApp()->GetElapsedTime();
@@ -307,10 +328,14 @@ namespace basecross{
 	void SpriteButton::OnCreate() {
 		m_SpriteDraw = GetGameObject()->GetComponent<SpriteBaseDraw>();
 		m_UnSelectColor = m_SpriteDraw->GetDiffuse();
+		if (m_SelectedColor.w == 1.0f) {
+			m_UnSelectColor.w = 0.0f;
+		}
+		
 		ButtonManager::instance->Register(m_BelongGroup, GetThis<SpriteButton>());
 	}
 	void SpriteButton::OnUpdate() {
-		
+
 		if (m_AddFunction != nullptr) {
 			m_AddFunction(GetThis<SpriteButton>());
 		}
@@ -321,34 +346,51 @@ namespace basecross{
 			if (m_SelectedColor != Col4(0, 0, 0, 0)) {
 				m_SpriteDraw->SetDiffuse(m_SelectedColor);
 			}
+			if (m_Effect != nullptr) {
+				m_Effect->Play();
+			}
 		}
 		else {
 			m_SpriteDraw->SetTextureResource(m_UnSelectTexture);
 			m_SpriteDraw->SetDiffuse(m_UnSelectColor);
+			if (m_Effect != nullptr) {
+				m_Effect->Reset();
+				m_Effect->Stop();
+			}
 		}
 	}
 
 
 	shared_ptr<ButtonManager> ButtonManager::instance = nullptr;
 
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage,const wstring& group,const wstring& defaultTex,const wstring& selectedTex,Vec3 pos,Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size,func);
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size, nullptr, func);
 	}
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
-		return ButtonManager::instance->Create(stage,group,defaultTex,L"",selectedColor,pos,size,func);
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, nullptr, func);
 	}
-	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, function<void(shared_ptr<Stage>&)> func) {
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, selectedTex, Col4(), pos, size, object, func);
+	}
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
+		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, object, func);
+	}
+	
+
+
+	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
 		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
-		if (selectedTex != L"" && button == nullptr) {
-			button = sprite->AddComponent<SpriteButton>(defaultTex, group,selectedTex);
+
+		if (selectedTex != L"") {
+			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedTex);
 		}
-		if (selectedColor != Col4() && button == nullptr) {
+		else if (selectedColor != Col4()) {
 			button = sprite->AddComponent<SpriteButton>(defaultTex, group, selectedColor);
 		}
 
-		button->SetFunction(func);
+		button->SetFunction(func, object);
 		return sprite;
 	}
 	void ButtonManager::OnCreate() {
@@ -356,12 +398,8 @@ namespace basecross{
 		instance = GetThis<ButtonManager>();
 	}
 	void ButtonManager::OnUpdate() {
-		if (!m_IsActive) return;
-		if (!ExistOpenGroup()) {
-			m_IsActive = false;
-			return;
-		}
-		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return;
+		if (!CheckUpdate()) return;
+
 		if (!m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->GetActive()) {
 			if (m_SelectIndexes[m_UsingGroup] > 0) {
 				m_SelectIndexes[m_UsingGroup]--;
@@ -373,29 +411,7 @@ namespace basecross{
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
 			for (auto& inputData : m_InputDates[m_UsingGroup]) {
-				bool checkInput = false;
-				if (inputData.m_Mode == InputMode::Button) {
-					checkInput = inputData.CheckInput(inputState.wPressedButtons);
-				}
-				else if (inputData.m_Mode == InputMode::Stick) {
-					float inputThumb = 0.0f;
-					switch (inputData.m_StickMode) {
-					case StickMode::LX:
-						inputThumb = inputState.fThumbLX;
-						break;
-					case StickMode::LY:
-						inputThumb = -inputState.fThumbLY;
-						break;
-					case StickMode::RX:
-						inputThumb = inputState.fThumbRX;
-						break;
-					case StickMode::RY:
-						inputThumb = -inputState.fThumbRY;
-						break;
-					}
-					checkInput = inputData.CheckInput(inputThumb);
-				}
-				if (checkInput) {
+				if (CheckMoveInput(inputData)) {
 					if (abs(inputData.m_MoveAmount) > 1) {
 						if (!CheckOverIndex(inputData.m_MoveAmount)) continue;
 					}
@@ -434,7 +450,7 @@ namespace basecross{
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;
+				movementAmount *= 30.0f;//移動速度
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
 				}
@@ -447,13 +463,46 @@ namespace basecross{
 				groupMovementAmount.second -= movementAmount;
 			}
 		}
-		
+
 	}
 
 	void ButtonManager::OnDestroy() {
 		instance = nullptr;
 	}
+	bool ButtonManager::CheckUpdate() {
+		if (!m_IsActive) return false;
+		if (!ExistOpenGroup()) {
+			m_IsActive = false;
+			return false;
+		}
+		if (m_SelectIndexes.size() == 0 && m_ButtonGroup.size() == 0) return false;
 
+		return true;
+	}
+	bool ButtonManager::CheckMoveInput(InputData& input) {
+
+		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (input.m_Mode == InputMode::Button) {
+			return input.CheckInput(inputState.wPressedButtons);
+		}
+		float inputThumb = 0.0f;
+		switch (input.m_StickMode) {
+		case StickMode::LX:
+			inputThumb = inputState.fThumbLX;
+			break;
+		case StickMode::LY:
+			inputThumb = -inputState.fThumbLY;
+			break;
+		case StickMode::RX:
+			inputThumb = inputState.fThumbRX;
+			break;
+		case StickMode::RY:
+			inputThumb = -inputState.fThumbRY;
+			break;
+		}
+		return input.CheckInput(inputThumb);
+
+	}
 	void ButtonManager::SetSound(const wstring& sound) {
 		m_ClickSound = sound;
 	}
@@ -464,11 +513,12 @@ namespace basecross{
 			}
 		}
 	}
-
-
-	void Board::OnCreate() {		
+	void Board::OnCreate() {
 		m_Draw = AddComponent<PNTStaticDraw>();
-		m_Draw->SetMeshResource(L"DEFAULT_SQUARE");
+		m_Draw->SetOriginalMeshUse(true);
+		vector<uint16_t> indices = {};
+		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
+		m_Draw->CreateOriginalMesh(m_Vertices, indices);
 		if (m_TexKey != L"") {
 			m_Draw->SetTextureResource(m_TexKey);
 		}
@@ -478,7 +528,29 @@ namespace basecross{
 		m_Trans->SetPosition(m_StartPos);
 		m_Trans->SetScale(m_Size);
 	}
+	void Board::OnUpdate() {
+		if (!m_IsBillBoard) return;
 
-	
+		Vec3 defUp = Vec3(0, 1, 0);
+		auto camera = OnGetDrawCamera();
+		Vec3 eye = camera->GetEye();
+		Vec3 at = camera->GetAt();
+
+		Vec3 temp = at - eye;
+		Vec2 tempVec2(temp.x, temp.z);
+		if (length(tempVec2) < 0.1f) {
+			defUp = bsm::Vec3(0, 0, 1.0f);
+		}
+		temp.normalize();
+		Mat4x4 rotMatrix = static_cast<Mat4x4>(XMMatrixLookAtLH(Vec3(0, 0, 0), temp, defUp));
+		rotMatrix = inverse(rotMatrix);
+		Quat Qt = rotMatrix.quatInMatrix();
+		Qt.normalize();
+
+		m_Trans->SetQuaternion(Qt);
+
+	}
+
+
 }
 //end basecross

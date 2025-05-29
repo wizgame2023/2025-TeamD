@@ -23,9 +23,10 @@ namespace basecross {
 
 	bool Character::IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle)
 	{
-		double angleresult = AngleBetweenVectors(direction, target);
-		double detection_angle_radians = angle * XM_PI / 180.0;
-		double minas_detection_angle_radians = -angle * XM_PI / 180.0;
+		float angleresult = angleBetweenNormals(direction,target);
+		//AngleBetweenVectors(direction, target);
+		float detection_angle_radians = angle * XM_PI / 180.0;
+		float minas_detection_angle_radians = -angle * XM_PI / 180.0;
 		return angleresult <= detection_angle_radians && angleresult >= minas_detection_angle_radians;
 	}
 
@@ -37,6 +38,35 @@ namespace basecross {
 	double Character::Magnitude(const Vec3& v)
 	{
 		return std::sqrt(v.x * v.x + v.z * v.z);
+	}
+
+	void Character::ZoneSpeedSet()
+	{
+		auto player = m_Stage->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+		if ((state & Player::PlayerState::ZONE) == 0) {
+			m_ZoneElapsedTime = 1.0f;
+		}
+		else {
+			m_ZoneElapsedTime = 0.2f;
+		}
+	}
+  
+	inline float Character::GetElpasedTime() {
+		return GetGameElapsed() * m_ZoneElapsedTime;
+	}
+
+	void Character::Move(const Vec3& direction,const bool& isGameSpeed) {
+		float elapsed;
+		if (isGameSpeed) {
+			elapsed = GetGameElapsed();
+		}
+		else {
+			elapsed = GetElapsed();
+		}
+		Vec3 position = GetPosition();
+		position += direction * m_Speed * elapsed * m_ZoneElapsedTime;
+		SetPosition(position);
 	}
 
 	FixedBox::FixedBox(const shared_ptr<Stage>& stage) :
@@ -53,8 +83,6 @@ namespace basecross {
 		SetPosition(Vec3());
 		SetScale(Vec3(1.0f));
 		SetRotation(Vec3());
-
-
 		Wicth_FixedBox = true;
 
 		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
@@ -64,8 +92,35 @@ namespace basecross {
 
 		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 	}
+
+	BraekBox::BraekBox(const shared_ptr<Stage>& stage) :
+		Object(stage)
+	{
+	}
+	BraekBox::~BraekBox() {}
+
+	void BraekBox::OnCreate()
+	{
+		//‚±‚±‚Åm_Transform‚Ì’†gæ“¾‚µ‚Ä‚­‚ê‚é
+		Object::OnCreate();
+		//‘€ìŒn
+		SetPosition(Vec3(0, 1, -20));
+		SetScale(Vec3(1.0f));
+		SetRotation(Vec3(0));
+
+		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(true);//debug
+		ptrColl->SetFixed(false);
+
+		//•`‰æİ’è
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		AddTag(L"BreakObject");
+	}
+
 	Wall::Wall(const shared_ptr<Stage>& stage) :
 		GameObject(stage)
 	{

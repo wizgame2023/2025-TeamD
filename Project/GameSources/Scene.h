@@ -39,6 +39,14 @@ namespace basecross{
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
+
+		int m_MaxCount;
+		int GetMaxCount() { return m_MaxCount; }
+		int m_Count;
+		void ChangeCountStage(int count);
+		void CreateModelResource();
+		int GetCount() { return m_Count; }
+		void SetCount(int count) { m_Count = count; }
 	};
 
 }

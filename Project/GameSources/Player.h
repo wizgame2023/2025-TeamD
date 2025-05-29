@@ -1,28 +1,53 @@
 /*!
 @file Player.h
-@brief 繝励Ξ繧､繝､繝ｼ縺ｪ縺ｩ
+@brief プレイヤーなど
 */
 
 #pragma once
 #include "stdafx.h"
 
+#include <Effekseer.h>
+#include <EffekseerRendererDX11.h>
+
+
+#pragma comment(lib, "Effekseer.lib" )
+#pragma comment(lib, "EffekseerRendererDX11.lib" )
+
+
 namespace basecross {
 	class Character;
-	class ForecastLine;
+	class TargetBoard;
+
 	class Player : public Character
 	{
-		//蜈･蜉帙ワ繝ｳ繝峨Λ繝ｼ
+		//入力ハンドラー
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
 		float m_ParryTime;
-		bool m_ParryJudge;
+		float m_TotalTime;
 		float m_BoostTime;
-		Vec3 m_BoostAngle;
-		Vec3 m_BulletDire;
+		float m_BoostInterval;
+		float m_Attacktime;
+		float m_AttackInterval;
+		float m_DamageInterval;
+		float m_Damage;
+		bool m_ParryJudge;
+		bool m_DamageIntervalStart;
+		bool m_IsGoal;
+		float m_ParryDamage;
+		float m_zoneAnim;
 
-		shared_ptr<ForecastLine> line;
-		shared_ptr<ForecastLine> fline;
+		Vec3 m_BoostAngle;
+		Vec3 m_HitScale;
+		Vec3 m_BulletDire;
+		Vec3 m_EffectVec;
+		shared_ptr<EffectManeger> m_Effect;
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_BrinkHandle;
+		Effekseer::Handle m_ParryHandle;
+		shared_ptr<TargetBoard> m_TargetBoard;
+		wstring m_AttackAnim = L"Attack";
 
 	public:
 		int m_PlayerStateNum;
@@ -41,7 +66,8 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnDraw();
-
+		virtual void Dead();
+		virtual bool Damage(bool parry,  float damage,const shared_ptr<GameObject> sorce = nullptr);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
 		Vec2 GetInputState() const;
@@ -52,13 +78,33 @@ namespace basecross {
 		void Debug();
 		Vec3 GetForward();
 		int GetStates();
-		int GetPlayerHP();
-		void SearchRange();
+		float GetEnergy();
+		float GetDamage();
+		bool GetParry();
+		void SetParryPosition(const Vec3& position);
+		void SetDamage(const float& damage);
+		void SetIsGaol(const bool& goal);
+		Vec3 SearchRange();
+		void SetCharge(const float& charge);
+
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
+		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
+
+		float Parry(float damage, const float& ParrySecond);
+		void AddAnimation();
+		void PlayAnimation();
+
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				else 
+					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
+		}
 	};
 
-	class HitSphere : public GameObject
+	class HitSphere : public Object
 	{
 		Vec3 m_HitPosition;
 		Vec3 m_HitRotation;
@@ -66,11 +112,15 @@ namespace basecross {
 		float m_FlyingTime;
 		float m_TotalTime;
 		float m_Speed;
+		float m_ZoneElapsedTime;
+		shared_ptr<EffectManeger> m_Effect;
+		Effekseer::Handle m_Handle;
+		Effekseer::Handle m_HitHandle;
 
 		shared_ptr<GameObject> m_Player;
 	public:
-		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player);
-		~HitSphere() {};
+		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale);
+		~HitSphere();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
