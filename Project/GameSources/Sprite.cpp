@@ -9,6 +9,7 @@
 namespace basecross {
 
 	void Sprite::OnCreate() {
+		
 		/*for (int y = 0; y < m_cutUV.y; y++) {
 			for (int x = 0; x < m_cutUV.x; x++) {
 				m_AnimationUV.push_back({

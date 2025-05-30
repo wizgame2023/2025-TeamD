@@ -139,12 +139,14 @@ namespace basecross {
 	}
 
 	void SelectStage::OnPushA() {
-		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
-		//m_Fade->Play();
-		m_Fade->FadeOut();
-		m_Fade->Play();
 		
-		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		if (m_Fade->IsFinish()) {
+			m_Fade->FadeOut();
+			m_Fade->Play();
+
+			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		}
+		
 
 	}
 

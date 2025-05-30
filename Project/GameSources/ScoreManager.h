@@ -60,8 +60,8 @@ namespace basecross{
 			m_Damage(0.0f),
 			m_EliminateEnemyRate(0.0f), m_MaxEnemyCount(0.0f), m_EliminateEnemyCount(0.0f),
 			m_ParryCount(0),
-			m_TimeBorder(ScoreBorder<float>({ 50.0f,90.0f,130.0f })), m_DamageBorder(ScoreBorder<float>({ 10.0f,20.0f,30.0f })),
-			m_ParryBorder(ScoreBorder<int>({ 5,3,1 }, JudgeMode::UpperOrder))
+			m_TimeBorder(ScoreBorder<float>({ 50.0f,90.0f,130.0f },JudgeMode::UpperOrder)), m_DamageBorder(ScoreBorder<float>({ 10.0f,20.0f,30.0f },JudgeMode::UpperOrder)),
+			m_ParryBorder(ScoreBorder<int>({ 5,3,1 }))
 		{}
 	public:
 		static ScoreManager* Instance() {
