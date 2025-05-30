@@ -410,10 +410,8 @@ namespace basecross {
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
 		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetModelDiffusePriority(true);
-		ptrDraw->SetModelEmissivePriority(true);
 		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//d—Í‚ğ‚Â‚¯‚é

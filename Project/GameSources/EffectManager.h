@@ -20,7 +20,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	class EffectManeger : public ObjectInterface, public ShapeInterface {
+	class EffectManeger : public MultiParticle {
 
 		map<wstring, Effekseer::EffectRef> m_ResMap;		
 		Effekseer::Handle handle;
@@ -39,7 +39,7 @@ namespace basecross {
 		@param[in]	filename	エフェクトファイル名
 		*/
 		//--------------------------------------------------------------------------------------
-		EffectManeger();
+		EffectManeger(const shared_ptr<Stage>& stage);
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	デストラクタ
