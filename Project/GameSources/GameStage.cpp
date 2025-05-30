@@ -327,10 +327,6 @@ namespace basecross {
 			m_Icon->SetDrawActive(false);
 			m_UltIcon->SetDrawActive(false);
 
-			m_BossHpBarBackGround->SetDrawActive(false);
-			m_BossHpBar->SetDrawActive(false);
-			m_BossText->SetDrawActive(false);
-
 		}
 		else {
 			//SetAllGameObjectActive(true);
