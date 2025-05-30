@@ -76,7 +76,7 @@ namespace basecross {
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
@@ -265,8 +265,14 @@ namespace basecross {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 
-		//次のステージ
+		//セレクト
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -280.0f, 0.0f), Vec2(50, 70),
+			[](shared_ptr<ObjectInterface> object) {
+				auto stage = static_pointer_cast<Stage>(object);
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+			});
+		//次のステージ
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
@@ -279,12 +285,7 @@ namespace basecross {
 				}
 
 			});
-		//セレクト
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
-			[](shared_ptr<ObjectInterface> object) {
-				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
-			});
+
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
 		Close();
