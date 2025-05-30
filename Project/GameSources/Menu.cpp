@@ -342,7 +342,8 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(120.0f, -250.0f, 0.0f), Vec2(70, 90),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+				auto scene = App::GetApp()->GetScene<Scene>();		
+				scene->ChangeCountStage(scene->GetCount());
 			});
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
