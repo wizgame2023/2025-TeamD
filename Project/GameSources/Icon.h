@@ -11,7 +11,6 @@ namespace basecross {
 	class UltIcon : public GameObject {
 		shared_ptr<Sprite> m_IconBackGround;
 		shared_ptr<Sprite> m_Icon;
-		shared_ptr<Sprite> m_IconEffect;
 
 		float m_Charge;
 	public:

@@ -91,7 +91,6 @@ namespace basecross {
 		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
 
-		void UpdateAnim();
 		float Parry(float damage, const float& ParrySecond);
 		void AddAnimation();
 		void PlayAnimation();

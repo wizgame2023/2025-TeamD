@@ -22,7 +22,6 @@ namespace basecross {
 		app->RegisterResource(L"PLAYER", modelMesh);
 		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
 		app->RegisterResource(L"MOB", mobMesh);
-
 		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
 		app->RegisterResource(L"BOSS", modelMesh);
 		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");

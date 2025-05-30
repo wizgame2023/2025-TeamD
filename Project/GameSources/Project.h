@@ -1,6 +1,6 @@
 /*!
 @file Project.h
-@brief ï¿½Rï¿½ï¿½ï¿½eï¿½ï¿½ï¿½cï¿½pï¿½Ìƒwï¿½bï¿½_ï¿½ï¿½ï¿½Ü‚Æ‚ß‚ï¿½
+@brief ƒRƒ“ƒeƒ“ƒc—p‚Ìƒwƒbƒ_‚ð‚Ü‚Æ‚ß‚é
 */
 
 #pragma once
@@ -23,7 +23,6 @@
 #include "SelectStage.h"
 #include "Sprite.h"
 #include "Legion.h"
-#include "EnemyRouteSearch.h"
 #include "MobState.h"
 #include "BossState.h"
 #include "Mob.h"
