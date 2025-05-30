@@ -76,7 +76,7 @@ namespace basecross {
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
@@ -122,9 +122,9 @@ namespace basecross {
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-100, 100, 0), Vec2(120, 80), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, 100, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-100, -50, 0), Vec2(120, 80), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, -50, 0), Vec2(120, 80), true);
 		AddSprite(sprite);
 
 		//auto choice = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80), true);
@@ -152,7 +152,7 @@ namespace basecross {
 		//slideBarSprite->SetPos(Vec3(-x,0.0f,0.0f));
 		//AddSprite(slideBarSprite);
 
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-45.0f, 90.0f, 0.0f), Vec2(60, 80), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, 90.0f, 0.0f), Vec2(60, 80), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
@@ -178,7 +178,7 @@ namespace basecross {
 		//slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
 		//AddSprite(slideBarSprite);
 
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-30.0f, -50.0f, 0.0f), Vec2(60, 80), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, -50.0f, 0.0f), Vec2(60, 80), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
@@ -265,14 +265,14 @@ namespace basecross {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 
-		//次のステージ
+		//セレクト
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -280.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		//次のステージ
-		AddButton(L"RESULT_NEXT_STAGE", L"RESULT_NEXT_STAGE_BACK", Vec3(-150.0f, -270.0f, 0.0f), Vec2(200, 100),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
@@ -285,12 +285,7 @@ namespace basecross {
 				}
 
 			});
-		//セレクト
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
-			[](shared_ptr<ObjectInterface> object) {
-				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
-			});
+
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
 		Close();
@@ -328,9 +323,12 @@ namespace basecross {
 		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
 		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
-
+		auto gameOverSprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE",Vec3(-220.0f,-180.0f,0.0f),Vec2(250,150));
+		AddSprite(gameOverSprite);
+		gameOverSprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(150.0f, -180.0f, 0.0f), Vec2(280, 130));
+		AddSprite(gameOverSprite);
 		//タイトル
-		AddButton(L"RESULT_TITLE", L"RESULT_TITLE", Vec3(-200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-240.0f, -250.0f, 0.0f), Vec2(70, 90),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
@@ -341,10 +339,11 @@ namespace basecross {
 
 		//	});
 		//リスタート
-		AddButton(L"POSE_START", L"POSE_START", Vec3(200.0f, -250.0f, 0.0f), Vec2(250, 150),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(120.0f, -250.0f, 0.0f), Vec2(70, 90),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
+				auto scene = App::GetApp()->GetScene<Scene>();		
+				scene->ChangeCountStage(scene->GetCount());
 			});
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
