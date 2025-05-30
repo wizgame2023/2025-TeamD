@@ -210,7 +210,7 @@ namespace basecross {
 		AddSprite(number);
 		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-190.0f, 125, 0), Vec2(75, 100), 2);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 20, 0), Vec2(100, 100), 3);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 20, 0), Vec2(110, 100), 3);
 		AddSprite(number);
 
 
@@ -230,7 +230,7 @@ namespace basecross {
 		score->UpdateNumber(parryRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-250.0f, -100.0f, 0.0f), Vec2(33, 100), 1);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, -110.0f, 0.0f), Vec2(33, 90), 1);
 		int totalRank = ScoreManager::Instance()->GetTotalRank();
 		score->UpdateNumber(totalRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
@@ -241,21 +241,21 @@ namespace basecross {
 		AddSprite(score);
 
 
-		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT2", Vec3(-600, 250, 0.0f), Vec2(300, 350));
+		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT2", Vec3(-600, 250, 0.0f), Vec2(455, 345));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
-		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-400, 330, 0.0f), Vec2(200, 100));
+		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-400, 330, 0.0f), Vec2(130, 130));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
-		text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-550, -100, 0.0f), Vec2(200, 100));
+		text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-600, -100, 0.0f), Vec2(120, 120));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 
-		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -230.0f, 0.0f), Vec2(200, 100));
+		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -240.0f, 0.0f), Vec2(180, 80));
 		AddSprite(choices);
 		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -240.0f, 0.0f), Vec2(220, 80));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -230.0f, 0.0f), Vec2(200, 100));
+		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -230.0f, 0.0f), Vec2(210, 100));
 		AddSprite(choices);
 
 		//タイトル
