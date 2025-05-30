@@ -106,7 +106,7 @@ namespace basecross {
 		float crushBlow = 3.0f * addRate;
 
 		int missileCount = 6.0f * addRate;
-		float missileInterval = 0.25f;
+		float missileInterval = 0.15f;
 		float explodeSize = 2.0f * addRate;
 
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
