@@ -38,6 +38,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
+		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
 		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
@@ -305,6 +306,7 @@ namespace basecross {
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
+			//m_GameOverMenu->Open();
 
 		}
 		catch (...) {
