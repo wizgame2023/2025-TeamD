@@ -707,12 +707,8 @@ namespace basecross {
 			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
 			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
 
-			XINPUT_VIBRATION vibration;
-			vibration.wLeftMotorSpeed = 65535 * 0.5f;
-			vibration.wRightMotorSpeed = 65535 * 0.5f;
-			XInputSetState(0, &vibration);
-
-			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			PostEvent(0.1f, nullptr, GetStage(), L"HitStop");
 		}
 	}
 

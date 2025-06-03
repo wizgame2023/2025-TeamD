@@ -90,14 +90,14 @@ namespace basecross {
 			ResetActiveStage<GameStage>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"testStage01.csv");
+			ResetActiveStage<GameStage>(L"testStage_Y_Easy.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"testStage02.csv");
+			ResetActiveStage<GameStage>(L"testStage_Y_normal.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>(L"testStage03.csv");
+			ResetActiveStage<GameStage>(L"testStage_Y_Hard.csv");
 		}
 	}
 
