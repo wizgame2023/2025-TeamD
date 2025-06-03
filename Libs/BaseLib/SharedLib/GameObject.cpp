@@ -1271,6 +1271,7 @@ namespace basecross {
 				}
 			}
 		}
+
 		OnDraw();
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
