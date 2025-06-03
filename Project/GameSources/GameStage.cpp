@@ -59,6 +59,7 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
 		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
+		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
 
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
@@ -84,7 +85,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
-		m_Effect = ObjectFactory::Create<EffectManeger>();
+		m_Effect = AddGameObject<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
@@ -154,24 +155,29 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
+		
+
+		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f); 
+		Vec3 playerHpPosition = Vec3(-210.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
-		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
+
+		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", playerHpPosition, Vec2(400.0f, 45.5f));
 		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 
-		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
+		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", playerHpPosition, Vec2(400.0f, 45.5f));
 		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
 
-		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", bossHpPosition, Vec2(800.0f, 12.0f));
 		m_BossHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 
-		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
+		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", bossHpPosition, Vec2(800.0f, 12.0f));
 		m_BossHpBar->SetDiffuse(Col4(1, 0, 0, 1));
 
-		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
+		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
