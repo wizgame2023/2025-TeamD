@@ -264,15 +264,12 @@ namespace basecross {
 
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
-			XINPUT_VIBRATION vibration;
-			vibration.wLeftMotorSpeed = 65535;
-			vibration.wRightMotorSpeed = 65535;
-			XInputSetState(0, &vibration);
-
+			
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
-			PostEvent(0.5f, nullptr, GetStage(), L"StopVibration");
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			PostEvent(0.25f, nullptr, GetStage(), L"HitStop");
 			return 0;
 		}
 		else if (ParrySecond <= 15 && ParrySecond > 5)
@@ -289,6 +286,8 @@ namespace basecross {
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			PostEvent(0.25f, nullptr, GetStage(), L"HitStop");
 			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
@@ -435,7 +434,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
 
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 		float spped = 0.0f;

@@ -116,7 +116,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -299,7 +299,7 @@ namespace basecross {
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
-
+			//GameManager::Instance()->SetGameSpeed(0.75f);
 		}
 		catch (...) {
 			throw;
@@ -402,6 +402,16 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			GameManager::Instance()->SetGameSpeed(1.0f);
+		}
+		else if (msg == L"HitStop") {
+			GameManager::Instance()->SetGameSpeed(1.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 	}
 }
