@@ -78,7 +78,7 @@ namespace basecross {
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(0, -175.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(50.0f, -175.0f, 0), Vec2(300, 100), true);
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
