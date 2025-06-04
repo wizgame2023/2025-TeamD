@@ -11,8 +11,8 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EffectManeger::EffectManeger() :
-		ObjectInterface(),
+	EffectManeger::EffectManeger(const shared_ptr<Stage>& stage) :
+		MultiParticle(stage),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{

@@ -154,7 +154,7 @@ namespace basecross {
 
 	void Enemy::KnockBackTime()
 	{
-		float elapsedTime = GetGameElapsed();
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 hitPos = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 pos = GetPosition();
 		Vec3 vec = hitPos - pos;

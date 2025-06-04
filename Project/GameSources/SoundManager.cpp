@@ -31,7 +31,7 @@ namespace basecross {
 		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice.wav");
 		RegisterSound(L"SE_ACCEPT", L"SE/Accept.wav");
 
-		RegisterSound(L"SE_EXPLODE", L"SE/Rocket_Fire.wav");
+		RegisterSound(L"SE_EXPLODE", L"SE/Accept.wav");
 		RegisterSound(L"SE_MISSILE", L"SE/Rocket_Fire.wav");
 		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");

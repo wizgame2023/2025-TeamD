@@ -9,13 +9,17 @@
 namespace basecross {
 
 	void UltIcon::OnCreate() {
-		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", Vec3(499.0f, -228.0f, 0.0f), Vec2(100.0f));
-		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", Vec3(499.0f, -228.0f, 0.0f), Vec2(100.0f));
+		Vec3 position = Vec3(499.0f, -228.0f, 0.0f);
+		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", position, Vec2(100.0f));
+		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position, Vec2(100.0f));
+		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position, Vec2(100.0f));
+		m_IconEffect->SetDiffuse(Col4(1,1,1,0.5f));
 	}
 
 	void UltIcon::SetDraw(bool a) {
 		m_IconBackGround->SetDrawActive(a);
 		m_Icon->SetDrawActive(a);
+		m_IconEffect->SetDrawActive(a);
 	}
 
 	void UltIcon::OnUpdate() {
@@ -32,6 +36,15 @@ namespace basecross {
 			Vec2(0,1),
 			Vec2(1,1)
 			});
+
+		if (m_Charge >= 1)
+		{
+			m_IconEffect->SetDrawActive(true);
+		}
+		else 
+		{
+			m_IconEffect->SetDrawActive(false);
+		}
 	}
 	void NormalIcon::OnCreate() {
 		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(100.0f));
