@@ -21,6 +21,13 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"GROUND");
+
+		ptrDraw->SetOwnShadowActive(true);
+		auto shadowPtr = AddComponent<Shadowmap>();
+		shadowPtr->SetLightHeight(150.0f);
+		shadowPtr->SetViewWidth(64.0f);
+		shadowPtr->SetViewHeight(64.0f);
+
 	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}

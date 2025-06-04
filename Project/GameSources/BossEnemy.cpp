@@ -73,13 +73,14 @@ namespace basecross {
 			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.0f, 0.0f)
+			Vec3(0.0f, -0.9f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
+		shadowPtr->SetMeshResource(L"BOSS");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
 
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
