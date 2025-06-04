@@ -35,6 +35,7 @@ namespace basecross {
 
 		float m_Stun;
 		bool m_IsStun;
+		bool m_DeadEffect;
 		Timer m_ComboTimer;
 		int m_ComboCount;
 
@@ -45,6 +46,7 @@ namespace basecross {
 		wstring m_CurrentAnimationKey;
 
 		Effekseer::Handle m_EffectHandle;
+		Effekseer::Handle m_EffectBombHandle;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
