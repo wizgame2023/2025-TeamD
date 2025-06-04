@@ -22,7 +22,9 @@ namespace basecross {
 		
 		int m_Count;
 		int m_DifficultyLevel;
-		shared_ptr<Sprite> m_MenuSprite;
+		shared_ptr<Sprite> m_LowSprite;
+		shared_ptr<Sprite> m_MiddleSprite;
+		shared_ptr<Sprite> m_HighSprite;
 		shared_ptr<Sprite> m_TitleSprite;
 		shared_ptr<Sprite>m_StageSprite;
 		shared_ptr<NumberSprite> m_Number;
