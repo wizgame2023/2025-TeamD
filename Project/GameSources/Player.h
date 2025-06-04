@@ -98,9 +98,9 @@ namespace basecross {
 		void AddAnimation();
 		void PlayAnimation();
 
-		float GeLength()
+		float GetLength()
 		{
-			return m_Length;
+			return m_SearchDistance;
 		}
 		const void SetAnim(wstring animname, float time = 0.0f) {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();

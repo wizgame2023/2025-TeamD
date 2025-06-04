@@ -12,7 +12,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f)
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f), m_DeadEffect(false)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -178,8 +178,13 @@ namespace basecross {
 	}
 	void BossEnemy::Dead()
 	{
-		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
 		auto& effect = m_Stage->GetCreateEffect();
+		if (!m_DeadEffect)
+		{
+			effect->PlayEffect(m_EffectBombHandle, L"Bomb", GetPosition(), 0.0f);
+			m_DeadEffect = true;
+		}
+		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
 		effect->StopEffect(m_EffectHandle);
 		Enemy::Dead();
 	}
