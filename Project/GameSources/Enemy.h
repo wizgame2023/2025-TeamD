@@ -36,7 +36,7 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		Vec3 GetDirectionToIntruderObject(shared_ptr<Object> obj);
 		float GetDistanceToIntruderObject(shared_ptr<Object> obj);
-		void SearchRange();
+		bool SearchRange();
 		void IntervalEnemy(const Vec3& position);
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
