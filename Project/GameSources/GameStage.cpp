@@ -101,6 +101,7 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Panchi", effectPath + L"panchi.efk");
 		m_Effect->RegisterResource(L"Brick", effectPath + L"Brick.efk");
 		m_Effect->RegisterResource(L"HitEffect", effectPath + L"HitEffect.efk");
+		m_Effect->RegisterResource(L"Bomb", effectPath + L"bomb.efk");
 	}
 
 	shared_ptr <EffectManeger> GameStage::GetCreateEffect()
@@ -120,7 +121,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		builder->Register<Mob>(L"enemy");
+		//builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
