@@ -1255,7 +1255,6 @@ namespace basecross {
 		};
 
 		std::sort(pImpl->m_SpriteVec.begin(), pImpl->m_SpriteVec.end(), funcSprite);
-		OnDraw();
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
 			int Tgt = *it;
@@ -1271,6 +1270,12 @@ namespace basecross {
 					ptr->OnDraw();
 				}
 			}
+		}
+
+		OnDraw();
+
+		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
+			int Tgt = *it;
 			//パーティクルの描画
 			//パーティクルマネージャは描画レイヤーごとに初期化されるので
 			//毎レイヤー描画する
