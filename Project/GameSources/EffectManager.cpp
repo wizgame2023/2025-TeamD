@@ -46,6 +46,8 @@ namespace basecross {
 
 	void EffectManeger::OnDraw()
 	{
+		auto& camera = GetStage()->GetView()->GetTargetCamera();
+		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
 		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
 		// エフェクトの描画を行う。
