@@ -22,22 +22,24 @@ namespace basecross {
 		m_Manager.Reset();
 		// 次に描画用インスタンスを破棄
 		m_renderer.Reset();
-		
 	}
 
 	void EffectManeger::OnCreate() {
 		CreateEffectInterface();
-		SetDrawLayer(0);
+
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring effectPath = mediaPath + L"Effekt/";
 		RegisterResource(L"panchi", effectPath + L"panchi.efk");
+
+
 	}
 
 	void EffectManeger::OnUpdate()
 	{
 		auto elps = App::GetApp()->GetElapsedTime();
 		m_TotalTime += elps;
+
 		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
@@ -46,6 +48,8 @@ namespace basecross {
 
 	void EffectManeger::OnDraw()
 	{
+		auto& camera = GetStage()->GetView()->GetTargetCamera();
+		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
 		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
 		// エフェクトの描画を行う。
@@ -97,6 +101,7 @@ namespace basecross {
 
 	void EffectManeger::CreateEffectInterface()
 	{
+
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();

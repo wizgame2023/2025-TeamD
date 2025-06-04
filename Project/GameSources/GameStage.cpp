@@ -118,7 +118,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -316,7 +316,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		m_Effect->OnUpdate();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
@@ -388,10 +387,6 @@ namespace basecross {
 	void GameStage::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
-
-		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		m_Effect->OnDraw();
-
 	}
 
 	void GameStage::OnDestroy() {
@@ -426,6 +421,16 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			GameManager::Instance()->SetGameSpeed(1.0f);
+		}
+		else if (msg == L"HitStop") {
+			GameManager::Instance()->SetGameSpeed(1.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 	}
 }
