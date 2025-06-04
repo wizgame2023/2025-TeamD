@@ -25,9 +25,17 @@ namespace basecross {
 		//float time = (1.0f / m_Speed) + ()
 		m_AreaEffect = m_Stage->AddGameObject<AreaOfEffect>(m_TargetPosition, m_ExplodeSize / 2.0f, 36, launchTime + targetTime);
 
-		auto draw = AddComponent<PNTStaticDraw>();
-		draw->SetMeshResource(L"DEFAULT_CUBE");
-		draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
+		auto draw = AddComponent<BcPNTStaticDraw>();
+		draw->SetMeshResource(L"ROCKET");
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.0f, 0.0f)
+		);
+		draw->SetMeshToTransformMatrix(meshMat);
+		//draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
 		auto col = AddComponent<CollisionObb>();
 		col->AddExcludeCollisionTag(L"Attack");
 		auto& effect = m_Stage->GetCreateEffect();
@@ -43,7 +51,7 @@ namespace basecross {
 		Vec3 move = Vec3();
 		move = m_Direction * m_Speed * GetGameElapsed();
 
-		position += move;
+		position += move ;
 		if (!m_IsTarget && (m_LaunchPosition - position).length() > 1.0f) {
 			m_IsTarget = true;
 			m_Direction = m_TargetPosition - position;
@@ -63,9 +71,16 @@ namespace basecross {
 
 		
 		auto& effect = m_Stage->GetCreateEffect();
-		Vec3 c = cross(Vec3(0, 0, 1),m_Direction);
+		Vec3 crossEffect = cross(Vec3(0, 0, 1),m_Direction);
+		Vec3 crossBullet = cross(m_Direction,Vec3(0,0,1));
 		float angle = acosf(dot(m_Direction,Vec3(0, 0, 1)) / (m_Direction.length() * Vec3(0, 0, 1).length()));
-		effect->SetRotation(m_EffectHandle,c, angle);
+
+		Quat q;
+		q.rotation(crossBullet, -angle);
+		
+		GetTransform()->SetQuaternion(q);
+		
+		effect->SetRotation(m_EffectHandle, crossEffect, angle);
 		effect->SetLocation(m_EffectHandle, position);
 		effect->SetEffectSpeed(m_EffectHandle,GameManager::Instance()->GetTimeRate());
 	}

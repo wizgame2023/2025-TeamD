@@ -1,7 +1,7 @@
 
 /*!
 @file Scene.cpp
-@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
+@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -14,7 +14,7 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
 
-		//ƒ‚ƒfƒ‹ŠÖŒW
+		//ãƒ¢ãƒ‡ãƒ«é–¢ä¿‚
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
 		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
@@ -22,11 +22,12 @@ namespace basecross {
 		app->RegisterResource(L"PLAYER", modelMesh);
 		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
 		app->RegisterResource(L"MOB", mobMesh);
-
 		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
 		app->RegisterResource(L"BOSS", modelMesh);
 		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");
 		app->RegisterResource(L"BULLET", bulletModelMesh);
+		auto rocketModel = MeshResource::CreateStaticModelMesh(modelPath, L"Rocket.bmf");
+		app->RegisterResource(L"ROCKET", rocketModel);
 		app->RegisterResource(L"OBJECT", modelBuild);
 		//app->RegisterResource(L"MOB", modelEnemy);
 	}
@@ -38,12 +39,13 @@ namespace basecross {
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
 			SetClearColor(Col);
 
-			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
-			//‚±‚ê‚É‚æ‚èŠeƒXƒe[ƒW‚âƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
+			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
+			//ã“ã‚Œã«ã‚ˆã‚Šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
 
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
     
+			
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 			m_MaxCount = 3;
 
@@ -84,18 +86,18 @@ namespace basecross {
 			ResetActiveStage<SelectStage>();
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
-			//Ÿ‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
+			//æ¬¡ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
 			ResetActiveStage<GameStage>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"testStage_Y_Easy.csv");
+			ResetActiveStage<GameStage>(L"testStage_Y_Easy.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"testStage_Y_normal.csv");
+			ResetActiveStage<GameStage>(L"testStage_Y_normal.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
-			//Å‰‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
-			ResetActiveStage<GameStageS>(L"testStage_Y_Hsrd.csv");
+			//æœ€åˆã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			ResetActiveStage<GameStage>(L"testStage_Y_Hard.csv");
 		}
 	}
 
