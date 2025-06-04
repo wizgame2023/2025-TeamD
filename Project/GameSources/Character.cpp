@@ -144,7 +144,7 @@ namespace basecross {
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-
+		ptrDraw->SetOwnShadowActive(true);
 	}
 
 }
