@@ -95,7 +95,7 @@ namespace basecross {
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>(L"testStage_Y_Hsrd.csv");
+			ResetActiveStage<GameStageS>(L"testStage_Y_Hard.csv");
 		}
 	}
 

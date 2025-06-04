@@ -62,7 +62,7 @@ namespace basecross {
 			//OnUpdate();
 			CreateResource();
 			CreateSelect();
-			SoundManager::Instance().PlayBGM(L"BGM_SELECT");
+			//SoundManager::Instance().PlayBGM(L"BGM_SELECT");
 
 		}
 		catch (...) {

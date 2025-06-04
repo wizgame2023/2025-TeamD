@@ -62,7 +62,9 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
 
+		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
+		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
@@ -165,17 +167,12 @@ namespace basecross {
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
 
-		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", playerHpPosition, Vec2(400.0f, 45.5f));
-		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(400.0f, 45.5f, 0.0f), Col4(0, 1, 0, 1));
 
-		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", playerHpPosition, Vec2(400.0f, 45.5f));
-		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
-
-		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", bossHpPosition, Vec2(800.0f, 12.0f));
-		m_BossHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
-
-		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", bossHpPosition, Vec2(800.0f, 12.0f));
-		m_BossHpBar->SetDiffuse(Col4(1, 0, 0, 1));
+		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
+		
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
@@ -233,7 +230,7 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
-		m_PlayerHpBarBackGround->SetDrawActive(false);
+		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		m_ResultMenu->Open();
 		auto camera = GetView()->GetTargetCamera();
@@ -250,7 +247,7 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
-		m_PlayerHpBarBackGround->SetDrawActive(false);
+		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		m_GameOverMenu->Open();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -300,9 +297,6 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-
-			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
-			int rank = score.CalcRank(12.0f);
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
@@ -346,7 +340,6 @@ namespace basecross {
 			m_Icon->SetDrawActive(false);
 			m_UltIcon->SetDrawActive(false);
 
-			m_BossHpBarBackGround->SetDrawActive(false);
 			m_BossHpBar->SetDrawActive(false);
 			m_BossText->SetDrawActive(false);
 
@@ -357,26 +350,14 @@ namespace basecross {
 			if (player != nullptr) {
 				m_UltIcon->SetCharge(player->GetEnergy());
 
-				float currentHp = player->GetHP();
-				float maxHp = player->GetMaxHP();
-				m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
 				ScoreManager::Instance()->UpdateTime(elapsed);
 				bool isBossDraw = boss->GetDrawActive();
-				if (isBossDraw) {
-					float currentHp = boss->GetHP();
-					float maxHp = boss->GetMaxHP();
-					m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
-				}
-				m_BossHpBar->SetDrawActive(isBossDraw);
-				m_BossHpBarBackGround->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
 			}
 			else {
-				m_BossHpBar->SetDrawActive(false);
-				m_BossHpBarBackGround->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
 			}
 
