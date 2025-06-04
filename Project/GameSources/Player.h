@@ -37,6 +37,8 @@ namespace basecross {
 		bool m_IsGoal;
 		float m_ParryDamage;
 		float m_zoneAnim;
+		float m_SearchDistance;
+		float m_Length;
 
 		Vec3 m_BoostAngle;
 		Vec3 m_HitScale;
@@ -96,6 +98,10 @@ namespace basecross {
 		void AddAnimation();
 		void PlayAnimation();
 
+		float GeLength()
+		{
+			return m_Length;
+		}
 		const void SetAnim(wstring animname, float time = 0.0f) {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
@@ -114,13 +120,14 @@ namespace basecross {
 		float m_TotalTime;
 		float m_Speed;
 		float m_ZoneElapsedTime;
+		float m_Length;
 		shared_ptr<EffectManeger> m_Effect;
 		Effekseer::Handle m_Handle;
 		Effekseer::Handle m_HitHandle;
 
 		shared_ptr<GameObject> m_Player;
 	public:
-		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale);
+		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale,const float& length);
 		~HitSphere();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
