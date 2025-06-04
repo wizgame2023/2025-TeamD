@@ -21,6 +21,8 @@ namespace basecross {
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 		
 		int m_Count;
+		int m_DifficultyLevel;
+		shared_ptr<Sprite> m_MenuSprite;
 		shared_ptr<Sprite> m_TitleSprite;
 		shared_ptr<Sprite>m_StageSprite;
 		shared_ptr<NumberSprite> m_Number;

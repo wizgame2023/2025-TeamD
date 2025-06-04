@@ -61,17 +61,18 @@ namespace basecross {
 	void Scene::ChangeCountStage(int count) {
 		switch (count) {
 		case 0:
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
-			break;
-		case 1:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			break;
-		case 2:
+		case 1:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
 			break;
-		case 3:
+		case 2:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageSatou");
 			break;
+		case 3:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			break;
+
 		}
 		SetCount(count);
 	}

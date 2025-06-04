@@ -31,6 +31,8 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		//app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
+		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
+
 
 		app->RegisterTexture(L"SELECT_EASY", uiPath + L"SelectEasy.png");
 		app->RegisterTexture(L"SELECT_NORMAL", uiPath + L"SelectNormal.png");
@@ -44,6 +46,7 @@ namespace basecross {
 		m_Number = AddGameObject<NumberSprite>(L"SELECT_NUMBER", Vec3(120.0f, -140.0f, 0.0f), Vec2(33, 100), 1);
 		m_TitleSprite = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 150.0f), true);
 		m_StageSprite = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
+		m_MenuSprite = AddGameObject<Sprite>(L"SE_VOLUME", Vec3(0.0f, -300.0f, 0.0f), Vec2(100.0f, 80.0f), true);
 		//auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		//stratASprite->AddComponent<SpriteFlash>(0.8f);
@@ -82,18 +85,18 @@ namespace basecross {
 
 		float rot;
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
-			m_Count = (m_Count + 1) % 4; 
+			m_Count = (m_Count + 1) % 4;
 			m_TotalTimer.Reset();
 		}
 		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
-			m_Count = (m_Count + 3) % 4; 
+			m_Count = (m_Count + 3) % 4;
 			m_TotalTimer.Reset();
 		}
 		m_Number->SetDrawActive(false);
 		switch (m_Count) {
-		case 0:		
+		case 0:
 			//m_Number->UpdateNumber(1);
-			m_TitleSprite->SetDrawActive(true);
+			m_TitleSprite->SetDrawActive(false);
 			m_StageSprite->SetDrawActive(false);
 			break;
 		case 1:
@@ -108,14 +111,42 @@ namespace basecross {
 			break;
 		case 3:
 			//m_Number->UpdateNumber(4);
-			m_TitleSprite->SetDrawActive(false);
+			m_TitleSprite->SetDrawActive(true);
+			m_StageSprite->SetDrawActive(false);
 			//m_StageSprite->SetDrawActive(true);
 			break;
 
 		}
+		//m_MenuSprite->SetDrawActive(true);
+		m_MenuSprite->SetDrawActive(false);
+		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLY > 0.5f) {
+		//	m_DifficultyLevel = (m_DifficultyLevel + 1) % 4;
+		//	m_TotalTimer.Reset();
+		//}
+		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLY < -0.5f) {
+		//	m_DifficultyLevel = (m_DifficultyLevel + 3) % 4;
+		//	m_TotalTimer.Reset();
+		//}
+		//switch (m_DifficultyLevel) {
+		//case 0:
+		//	//m_Number->UpdateNumber(2);
+		//	m_MenuSprite->SetDiffuse(Col4(0, 1, 0, 1));
+		//	//m_StageSprite->SetDrawActive(true);
+		//	break;
+		//case 1:
+		//	//m_Number->UpdateNumber(3);
+		//	m_MenuSprite->SetDiffuse(Col4(1, 0, 0, 1));
+		//	//m_StageSprite->SetDrawActive(true);
+		//	break;
+		//case 2:
+		//	//m_Number->UpdateNumber(4);
+		//	m_MenuSprite->SetDiffuse(Col4(1, 1, 0, 1));
+		//	//m_StageSprite->SetDrawActive(true);
+		//	break;
+		//}
 
 		for (int i = 0; i < m_Difficultys.size(); i++) {
-			if (m_Count != 0 && i == m_Count - 1) {
+			if (m_Count != 4 && i == m_Count - 0) {
 				m_Difficultys[i]->SetDrawActive(true);
 			}
 			else {
