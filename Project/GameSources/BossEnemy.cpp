@@ -81,8 +81,6 @@ namespace basecross {
 		//影の形（メッシュ）を設定
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
-		auto navi = AddComponent<Navigate>();
-
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
@@ -106,7 +104,7 @@ namespace basecross {
 		float crushBlow = 3.0f * addRate;
 
 		int missileCount = 6.0f * addRate;
-		float missileInterval = 0.15f;
+		float missileInterval = 0.25f;
 		float explodeSize = 2.0f * addRate;
 
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);

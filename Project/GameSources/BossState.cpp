@@ -142,7 +142,7 @@ namespace basecross {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				m_Enemy->SetAnimation(L"Missile_First");
 				auto gravity = m_Enemy->GetComponent<Gravity>();
-				gravity->StartJump((-direction) * 5.0f * m_Enemy->GetMotionRate() + Vec3(0.0f,0.15f,0.0f));
+				gravity->StartJump((-direction + Vec3(0, 0.3f / m_Enemy->GetMotionRate(), 0)) * 5.0f * m_Enemy->GetMotionRate());
 				Ready(0.5f * m_Enemy->GetMotionRate());
 			}
 			if (m_IsReady) {

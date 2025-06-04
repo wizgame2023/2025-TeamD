@@ -251,6 +251,13 @@ namespace basecross {
 		return nearObject;
 	}
 
+	void Player::UpdateAnim()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		draw->UpdateAnimation(elapsedTime);
+	}
+
 	float Player::Parry(float damage, const float& ParrySecond)
 	{
 		float parryTime = 30.0f;
@@ -264,12 +271,15 @@ namespace basecross {
 
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
-			
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
-			GameManager::Instance()->SetGameSpeed(0.1f);
-			PostEvent(0.25f, nullptr, GetStage(), L"HitStop");
+			PostEvent(0.5f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
 		else if (ParrySecond <= 15 && ParrySecond > 5)
@@ -286,8 +296,6 @@ namespace basecross {
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
-			GameManager::Instance()->SetGameSpeed(0.1f);
-			PostEvent(0.25f, nullptr, GetStage(), L"HitStop");
 			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
@@ -402,9 +410,8 @@ namespace basecross {
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
 		ptrDraw->SetOwnShadowActive(true);
-
 		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//d—Í‚ð‚Â‚¯‚é
@@ -433,10 +440,9 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
+		float elapsedTime = App::GetApp()->GetElapsedTime();
 
-		float elapsedTime = GetElapsed();
-		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		draw->UpdateAnimation(elapsedTime);
+		UpdateAnim();
 		float spped = 0.0f;
 		if (m_IsGoal == false)
 		{
@@ -537,7 +543,7 @@ namespace basecross {
 
 					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
 					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.2f));
+					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
 
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
@@ -707,8 +713,12 @@ namespace basecross {
 			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
 			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
 
-			GameManager::Instance()->SetGameSpeed(0.1f);
-			PostEvent(0.1f, nullptr, GetStage(), L"HitStop");
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535 * 0.5f;
+			vibration.wRightMotorSpeed = 65535 * 0.5f;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 		}
 	}
 

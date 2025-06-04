@@ -30,7 +30,7 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_STAGE", uiPath + L"SelectStage.png");
 		app->RegisterTexture(L"SELECT_NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
-		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
+		//app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 
 		app->RegisterTexture(L"SELECT_EASY", uiPath + L"SelectEasy.png");
 		app->RegisterTexture(L"SELECT_NORMAL", uiPath + L"SelectNormal.png");
@@ -42,9 +42,8 @@ namespace basecross {
 
 		auto titleSprite = AddGameObject<Sprite>(L"SELECTSPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(600.0f, 200.0f), true);
 		m_Number = AddGameObject<NumberSprite>(L"SELECT_NUMBER", Vec3(120.0f, -140.0f, 0.0f), Vec2(33, 100), 1);
-		m_TitleSprite = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
+		m_TitleSprite = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 150.0f), true);
 		m_StageSprite = AddGameObject<Sprite>(L"SELECT_STAGE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-		
 		//auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
 		//auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		//stratASprite->AddComponent<SpriteFlash>(0.8f);
@@ -52,16 +51,9 @@ namespace basecross {
 		//m_Fade->FadeOut();
 		//m_Fade->Stop();
 
-		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_EASY", Vec3(0.0f, -200.0f, 0.0f), Vec2(350.0f, 150.0f), true));
-		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_NORMAL", Vec3(0.0f, -200.0f, 0.0f), Vec2(350.0f, 150.0f), true));
-		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_HARD", Vec3(0.0f, -200.0f, 0.0f), Vec2(350.0f, 150.0f), true));
-
-		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
-		fadeSprite->SetDiffuse(Col4(0, 0, 0, 1));
-		m_Fade = fadeSprite->AddComponent<SpriteFade>(0.75f);
-		m_Fade->FadeIn();
-		m_Fade->Play();
-
+		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_EASY", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
+		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_NORMAL", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
+		m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_HARD", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
 	}
 
 	void SelectStage::OnCreate() {
@@ -70,7 +62,7 @@ namespace basecross {
 			//OnUpdate();
 			CreateResource();
 			CreateSelect();
-			//SoundManager::Instance().PlayBGM(L"BGM_SELECT");
+			SoundManager::Instance().PlayBGM(L"BGM_SELECT");
 
 		}
 		catch (...) {
@@ -89,15 +81,13 @@ namespace basecross {
 		//}
 
 		float rot;
-		if (m_Fade->IsFinish()) {
-			if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
-				m_Count = (m_Count + 1) % 4;
-				m_TotalTimer.Reset();
-			}
-			if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
-				m_Count = (m_Count + 3) % 4;
-				m_TotalTimer.Reset();
-			}
+		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
+			m_Count = (m_Count + 1) % 4; 
+			m_TotalTimer.Reset();
+		}
+		if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
+			m_Count = (m_Count + 3) % 4; 
+			m_TotalTimer.Reset();
 		}
 		m_Number->SetDrawActive(false);
 		switch (m_Count) {
@@ -132,21 +122,15 @@ namespace basecross {
 				m_Difficultys[i]->SetDrawActive(false);
 			}
 		}
-		if (m_Fade->IsFadeOut() && m_Fade->IsFinish()) {
-			auto scene = App::GetApp()->GetScene<Scene>();
-			scene->ChangeCountStage(m_Count);
-		}
 	}
 
 	void SelectStage::OnPushA() {
-		
-		if (m_Fade->IsFinish()) {
-			m_Fade->FadeOut();
-			m_Fade->Play();
-
-			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
-		}
-		
+		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
+		//m_Fade->Play();
+		OnDestroy();
+		auto scene = App::GetApp()->GetScene<Scene>();
+		scene->ChangeCountStage(m_Count);
+		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 
 	}
 

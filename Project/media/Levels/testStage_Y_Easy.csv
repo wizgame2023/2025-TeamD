@@ -1,4 +1,4 @@
-stage,normal,mob_boss,Stage,name_difficulty_enemys_type_
+stage,easy,mob_boss,Stage,name_difficulty_enemys_type_
 Ground,0_0_0,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_-55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -40,16 +40,4 @@ enemy,-7.15_1.099_36.9,0.7_0.7_0.7,0_0_0,Untagged,2,2,Enemy,name_position_scale_
 enemy,4.86_1.099_38.4,0.7_0.7_0.7,0_0_0,Untagged,2,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,-7.13_1.099_31.54,0.7_0.7_0.7,0_0_0,Untagged,2,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,4.62_1.099_33.15,0.7_0.7_0.7,0_0_0,Untagged,2,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-wave,3,3,1,Wave,name_wave_max_interval_type_
-enemy,0.07_1.099_27.75,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,0.03_1.099_31.47,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,-7.13_1.099_29.41,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,5.08_1.099_29.85,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,-7.15_1.099_36.9,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,4.86_1.099_38.4,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,-7.13_1.099_31.54,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,4.62_1.099_33.15,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,4.86_1.099_38.4,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,-7.13_1.099_31.54,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-enemy,4.62_1.099_33.15,0.7_0.7_0.7,0_0_0,Untagged,3,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 boss,0_2_18.78,1.7_1.7_1.7,0_0_0,Untagged,100,Boss,name_position_scale_rotation_tag_hp_type_
