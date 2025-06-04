@@ -77,11 +77,6 @@ namespace basecross {
 		void PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme);
 		void CreateEffectInterface();
 		void RegisterResource(const wstring& Key, const  wstring& FileName);
-		Effekseer::ManagerRef GetEffectInterface()
-		{
-			return m_Manager;
-		}
-
 		Effekseer::EffectRef GetEffectResource(const wstring& Key) const;
 		void AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
 		void SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location);
@@ -93,6 +88,10 @@ namespace basecross {
 		int32_t GetLayer(Effekseer::Handle& handle)
 		{
 			return m_Manager->GetLayer(handle);
+		}
+		Effekseer::ManagerRef GetEffectInterface()
+		{
+			return m_Manager;
 		}
 	};
 }

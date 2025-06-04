@@ -420,8 +420,8 @@ namespace basecross {
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
-
+		shadowPtr->SetMeshResource(L"PLAYER");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
 		AddTag(L"Player");
 
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
