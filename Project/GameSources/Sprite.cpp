@@ -514,6 +514,7 @@ namespace basecross {
 	}
 	void Board::OnCreate() {
 		m_Draw = AddComponent<PNTStaticDraw>();
+		m_Draw->SetDepthStencilState(DepthStencilState::Read);
 		m_Draw->SetOriginalMeshUse(true);
 		vector<uint16_t> indices = {};
 		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
