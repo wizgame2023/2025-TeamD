@@ -81,6 +81,7 @@ namespace basecross {
 		m_HpBar->SetDiffuse(m_Color);
 		m_HpBar->SetDrawLayer(1);
 		m_HpBarBackGround = m_Stage->AddGameObject<Sprite>(L"HP_BAR2D", GetPosition(), Vec2(size.x, size.y));
+		m_HpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 		m_HpBarBackGround->SetDrawLayer(0);
 
 		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y),true);
@@ -94,10 +95,12 @@ namespace basecross {
 		m_Edge.push_back(edge);
 
 		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
 
 		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
 	}
