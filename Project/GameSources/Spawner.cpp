@@ -44,6 +44,8 @@ namespace basecross {
 				PostEvent(0.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
 			}
 		}
+
+		m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 1, m_Legions.size() + 1);
 	}
 
 	void Spawner::AddLegion(const shared_ptr<Legion>& legion) {

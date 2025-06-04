@@ -82,6 +82,7 @@ namespace basecross {
 		shadowPtr->SetMeshResource(L"BOSS");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
 
+
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
