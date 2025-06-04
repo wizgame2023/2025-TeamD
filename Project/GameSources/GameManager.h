@@ -50,7 +50,7 @@ namespace basecross{
 			return m_GameSpeed;
 		}
 		float GetTimeRate() {
-			return m_TimeRate * m_GameSpeed;
+			return m_TimeRate;
 		}
 
 		void SetDifficulty(Difficulty difficulty) {

@@ -43,7 +43,6 @@ namespace basecross {
 		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
-		fadeSprite->SetDiffuse(Col4(0, 0, 0, 1));
 		//“_–ÅÝ’è
 		stratASprite->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
