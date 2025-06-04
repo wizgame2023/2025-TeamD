@@ -1,4 +1,4 @@
-stage,normal,mob_boss,Stage,name_difficulty_enemys_type_
+stage,easy,mob_boss,Stage,name_difficulty_enemys_type_
 Ground,0_0_0,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_-55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -19,10 +19,10 @@ building,-23_7.5_-29.67,10_14_15,0_0_0,Untagged,Object,name_position_scale_rotat
 building,23_6.75_2.16,10_12.5_20,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_-13.49,10_15_8,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_-28.42,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,13_4.01_-0.03999963,56.82917_6.577_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,-13_4.01_-0.04,56.82917_6.577_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,0_4.01_28.18,1_6.577_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,0_4.01_-28,1_6.577_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,13_4.36_0.06,57.70824_7.233_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,-13_4.36_0.0600003,57.70824_7.233_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,0_4.36_28.6,1_7.233_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,0_4.36_-28,1_7.233_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
 player,-0.75_1.3_-19.53,0.75_0.75_0.75,0_0_0,Untagged,50,Player,name_position_scale_rotation_tag_hp_type_
 wave,1,5,0.75,Wave,name_wave_max_interval_type_
 enemy,-7_4.27_-24.51,0.7_0.7_0.7,0_0_0,Untagged,1,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
@@ -87,4 +87,4 @@ enemy,4.62_4.369_34.79,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_
 enemy,0.07_4.369_36.24,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,0.03_4.369_39.96,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,-7.13_4.369_37.9,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-boss,0_2_18.46,1.7_1.7_1.7,0_0_0,Untagged,100,Boss,name_position_scale_rotation_tag_hp_type_
+boss,0_2_18.46,1.7_1.7_1.7,0_0_0,Untagged,100,Boss,name_position_scale_rotation_tag_hp_type

@@ -410,10 +410,8 @@ namespace basecross {
 		);
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
 		ptrDraw->SetOwnShadowActive(true);
-		ptrDraw->SetModelDiffusePriority(true);
-		ptrDraw->SetModelEmissivePriority(true);
 		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
@@ -422,8 +420,8 @@ namespace basecross {
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
-
+		shadowPtr->SetMeshResource(L"PLAYER");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
 		AddTag(L"Player");
 
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());

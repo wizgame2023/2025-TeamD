@@ -1270,6 +1270,10 @@ namespace basecross {
 					ptr->OnDraw();
 				}
 			}
+		}
+
+		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
+			int Tgt = *it;
 			//パーティクルの描画
 			//パーティクルマネージャは描画レイヤーごとに初期化されるので
 			//毎レイヤー描画する

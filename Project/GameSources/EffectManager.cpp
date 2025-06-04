@@ -11,8 +11,8 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EffectManeger::EffectManeger() :
-		ObjectInterface(),
+	EffectManeger::EffectManeger(const shared_ptr<Stage>& stage) :
+		MultiParticle(stage),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
@@ -48,6 +48,8 @@ namespace basecross {
 
 	void EffectManeger::OnDraw()
 	{
+		auto& camera = GetStage()->GetView()->GetTargetCamera();
+		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
 		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
 		// エフェクトの描画を行う。

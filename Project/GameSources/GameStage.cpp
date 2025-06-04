@@ -38,6 +38,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
+		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
 		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
@@ -58,9 +59,12 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
 		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
+		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
 
+		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
+		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
@@ -71,9 +75,9 @@ namespace basecross {
 		app->RegisterTexture(L"BUILDING", texPath + L"Building.png");
 
 
-		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu2.png");
-		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"ResultTexts2.png");
-		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"ResultScore.png");
+		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu_Score.png");
+		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
+		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
 		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
 		
@@ -83,7 +87,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
-		m_Effect = ObjectFactory::Create<EffectManeger>();
+		m_Effect = AddGameObject<EffectManeger>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
@@ -116,7 +120,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -153,24 +157,24 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
+		
+
+		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f); 
+		Vec3 playerHpPosition = Vec3(-210.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(423.0f, -297.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(347.0f, -228.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
-		m_PlayerHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
-		m_PlayerHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 
-		m_PlayerHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-631.0f, 393.0f, 0.0f), Vec2(400.0f, 65.5f));
-		m_PlayerHpBar->SetDiffuse(Col4(0, 1, 0, 1));
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(400.0f, 45.5f, 0.0f), Col4(0, 1, 0, 1));
 
-		m_BossHpBarBackGround = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
-		m_BossHpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
+		
 
-		m_BossHpBar = AddGameObject<Sprite>(L"HP_BAR", Vec3(-300.0f, -353.0f, 0.0f), Vec2(600.0f, 24.0f));
-		m_BossHpBar->SetDiffuse(Col4(1, 0, 0, 1));
-
-		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-385.0f, -353.0f, 0.0f), Vec2(100.0f, 24.0f));
+		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
@@ -226,7 +230,7 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
-		m_PlayerHpBarBackGround->SetDrawActive(false);
+		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		m_ResultMenu->Open();
 		auto camera = GetView()->GetTargetCamera();
@@ -243,7 +247,7 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
-		m_PlayerHpBarBackGround->SetDrawActive(false);
+		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		m_GameOverMenu->Open();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -293,12 +297,10 @@ namespace basecross {
 					camera->SetTarget(player->GetComponent<Transform>());
 				}
 			}
-
-			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
-			int rank = score.CalcRank(12.0f);
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
+			//m_GameOverMenu->Open();
 
 		}
 		catch (...) {
@@ -308,7 +310,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		m_Effect->OnUpdate();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
@@ -339,7 +340,6 @@ namespace basecross {
 			m_Icon->SetDrawActive(false);
 			m_UltIcon->SetDrawActive(false);
 
-			m_BossHpBarBackGround->SetDrawActive(false);
 			m_BossHpBar->SetDrawActive(false);
 			m_BossText->SetDrawActive(false);
 
@@ -350,26 +350,14 @@ namespace basecross {
 			if (player != nullptr) {
 				m_UltIcon->SetCharge(player->GetEnergy());
 
-				float currentHp = player->GetHP();
-				float maxHp = player->GetMaxHP();
-				m_PlayerHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
 				ScoreManager::Instance()->UpdateTime(elapsed);
 				bool isBossDraw = boss->GetDrawActive();
-				if (isBossDraw) {
-					float currentHp = boss->GetHP();
-					float maxHp = boss->GetMaxHP();
-					m_BossHpBar->UpdateSize(Vec3(currentHp / maxHp, 1, 1));
-				}
-				m_BossHpBar->SetDrawActive(isBossDraw);
-				m_BossHpBarBackGround->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
 			}
 			else {
-				m_BossHpBar->SetDrawActive(false);
-				m_BossHpBarBackGround->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
 			}
 
@@ -380,10 +368,6 @@ namespace basecross {
 	void GameStage::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
-
-		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		m_Effect->OnDraw();
-
 	}
 
 	void GameStage::OnDestroy() {
@@ -418,6 +402,16 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			GameManager::Instance()->SetGameSpeed(1.0f);
+		}
+		else if (msg == L"HitStop") {
+			GameManager::Instance()->SetGameSpeed(1.0f);
+
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+
+			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 	}
 }

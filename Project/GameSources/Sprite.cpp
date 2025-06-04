@@ -44,7 +44,6 @@ namespace basecross {
 		SetAlphaActive(true);
 		m_Draw->SetSamplerState(SamplerState::LinearWrap);
 		m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
-
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(m_Pos);
 
@@ -515,7 +514,14 @@ namespace basecross {
 	}
 	void Board::OnCreate() {
 		m_Draw = AddComponent<PNTStaticDraw>();
+		m_Draw->SetDepthStencilState(DepthStencilState::Read);
 		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->SetModelDiffusePriority(true);
+
+		m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
+		m_Draw->SetEmissive(Col4(1, 1, 1, 1));
+		m_Draw->SetSpecular(Col4(1, 1, 1, 1));
+
 		vector<uint16_t> indices = {};
 		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
 		m_Draw->CreateOriginalMesh(m_Vertices, indices);

@@ -83,14 +83,17 @@ namespace basecross {
 		else if (event->m_MsgStr == L"WaveClear" && m_Wave != -1) {
 			m_Wave++;
 			auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
-			player->HealHP(player->GetMaxHP() / 4.0f);
-			if (m_Legions.size() <= m_Wave) {
-				SpawnBoss();
-				m_Wave = -1;
-				return;
-			}
-			else {
-				
+			if (player != nullptr)
+			{
+				player->HealHP(player->GetMaxHP() / 4.0f);
+				if (m_Legions.size() <= m_Wave) {
+					SpawnBoss();
+					m_Wave = -1;
+					return;
+				}
+				else {
+
+				}
 			}
 		}
 	}

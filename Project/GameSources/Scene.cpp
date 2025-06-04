@@ -61,17 +61,18 @@ namespace basecross {
 	void Scene::ChangeCountStage(int count) {
 		switch (count) {
 		case 0:
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
-			break;
-		case 1:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageM");
 			break;
-		case 2:
+		case 1:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageKamata");
 			break;
-		case 3:
+		case 2:
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToGameStageSatou");
 			break;
+		case 3:
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			break;
+
 		}
 		SetCount(count);
 	}
@@ -88,14 +89,14 @@ namespace basecross {
 			ResetActiveStage<GameStage>(L"level.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"testStage01.csv");
+			ResetActiveStage<GameStageM>(L"testStage_Y_Easy.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"testStage02.csv");
+			ResetActiveStage<GameStageK>(L"testStage_Y_normal.csv");
 		}
 		else if (event->m_MsgStr == L"ToGameStageSatou") {
 			//最初のアクティブステージの設定
-			ResetActiveStage<GameStageS>(L"testStage03.csv");
+			ResetActiveStage<GameStageS>(L"testStage_Y_Hard.csv");
 		}
 	}
 
