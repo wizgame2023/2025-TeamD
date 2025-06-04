@@ -1272,8 +1272,6 @@ namespace basecross {
 			}
 		}
 
-		OnDraw();
-
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
 			int Tgt = *it;
 			//パーティクルの描画
@@ -1291,6 +1289,7 @@ namespace basecross {
 			}
 		}
 		//ステージのDraw();
+		OnDraw();
 		//ワーク用配列のクリア
 		//ワーク配列は毎ターンごとに初期化されるが、
 		//最大値は減らないので2回目のターン以降は高速に動作する

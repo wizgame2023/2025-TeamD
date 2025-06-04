@@ -308,7 +308,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		m_Effect->OnUpdate();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
@@ -364,10 +363,6 @@ namespace basecross {
 	void GameStage::OnDraw()
 	{
 		auto& camera = GetView()->GetTargetCamera();
-
-		m_Effect->SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		m_Effect->OnDraw();
-
 	}
 
 	void GameStage::OnDestroy() {
