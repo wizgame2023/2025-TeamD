@@ -36,6 +36,7 @@ namespace basecross {
 		wstring texPath = mediaPath + L"Textures/";
 		wstring modelPath = mediaPath + L"Models/";
 		wstring effectPath = mediaPath + L"Effekt/";
+		wstring skypath = mediaPath + L"BackGround/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
 
 		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
@@ -279,10 +280,17 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
+			auto& app = App::GetApp();
+			auto path = app->GetDataDirWString();
+			auto skypath = path + L"BackGround/";
+			for (const auto& key : SkyBackGround::pairs) {
+
+				App::GetApp()->RegisterTexture(key.first, skypath + key.first + L".bmp");
+			}
+			AddGameObject<SkyBackGround>();
 			RegisterObjects();
 			AddGameObject<ButtonManager>();
 			ButtonManager::instance->SetSound(L"SE_ACCEPT");
-
 			CreateSoundTest();
 			CreatePose();
 			CreateResult();

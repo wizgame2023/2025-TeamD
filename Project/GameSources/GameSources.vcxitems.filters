@@ -165,6 +165,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -281,5 +283,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
   </ItemGroup>
 </Project>

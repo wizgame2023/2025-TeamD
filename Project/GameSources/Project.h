@@ -52,3 +52,5 @@
 #include "flyobject.h"
 #include "Citizen.h"
 #include "GameManager.h"
+#include"SkyBackGround.h"
+#include "Plane.h"
