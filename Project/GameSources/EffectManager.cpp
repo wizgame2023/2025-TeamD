@@ -31,7 +31,7 @@ namespace basecross {
 		auto mediaPath = app->GetDataDirWString();
 		wstring effectPath = mediaPath + L"Effekt/";
 		RegisterResource(L"panchi", effectPath + L"panchi.efk");
-
+		SetAlphaActive(true);
 
 	}
 

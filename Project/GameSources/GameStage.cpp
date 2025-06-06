@@ -18,6 +18,8 @@ namespace basecross {
 		m_MyCameraView = CreateView<SingleView>();
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		m_MyCameraView->SetCamera(PtrCamera);
+		m_Camera = PtrCamera;
+		
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -187,10 +189,8 @@ namespace basecross {
 
 	void GameStage::ToMainCamera()
 	{
-		const Vec3 eye(0.0f, 5.0f, -5.0f);
-		const Vec3 at(0.0f);
-
 		auto player = GetSharedGameObject<Player>(L"Player", false);
+
 		if (player != nullptr) {
 			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 			if (camera != nullptr) {
@@ -214,8 +214,8 @@ namespace basecross {
 			Vec3 Playpos = player->GetPosition(); 
 			Vec3 AtPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
 			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
-			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire);
-			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire);
+			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire/ 1.5f);
+			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
 			m_cameraState = CameraState::OPENINGCAMERA;
 			// 補間開始時のカメラ位置
 			// 補間終了時のカメラ位置（最終位置）
@@ -226,8 +226,9 @@ namespace basecross {
 			// カメラの補間にかける総時間（外部からの参照）
 
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
-			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 1.0f, true);
+			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, true);
 			ptrOpeningCameraman->SetMoveType(1);
+			SetSharedGameObject(L"ProductionCamera", ptrOpeningCameraman);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
@@ -261,10 +262,9 @@ namespace basecross {
 		m_UltIcon->SetDraw(false);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
-		m_GameOverMenu->Open();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
-			player->SetIsGaol(true);
+
 			auto enemygruop = GetSharedObjectGroup(L"EnemyGroup");
 			auto enemys = enemygruop->GetGroupVectors();
 			for (auto& enemy : enemys)
@@ -274,6 +274,30 @@ namespace basecross {
 				{
 					shEnemy->SetUpdateActive(false);
 				}
+			}
+
+		}
+	}
+
+	void GameStage::GameOverCamera()
+	{
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			player->SetIsGaol(true);
+			Vec3 Playpos = player->GetPosition();
+			Vec3 Playrot = player->GetForward();
+			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
+			Vec3 CameraPos = camera->GetEye();
+
+			Vec3 CameraEndPos = Playpos + (-Playrot) + Vec3(0.0f, 1.0f, 0.0f);
+
+			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot), -CameraPos, Playpos, 3.0f, false);
+			productionCamera->SetMoveType(0);
+			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
+			if (ptrOpeningCamera) {
+				SetView(m_ProductionCameraView);
+				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
 		}
 	}
@@ -336,19 +360,20 @@ namespace basecross {
 				m_Camera->SetCameraPause(true);
 			}
 		}
-		if (m_ResultMenu->IsOpen() && m_cameraState == CameraState::OPENINGCAMERA)
+		if (m_ResultMenu->IsOpen())
 		{
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			player->SetAnim(L"Clear");
 			player->UpdateAnim();
 		}
-		if (m_GameOverMenu->IsOpen())
+		if (m_IsGameOver)
 		{
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			player->SetAnim(L"Died");
-			player->UpdateAnim();
+			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+			if (productionCamera->GetEndState())
+			{
+				m_GameOverMenu->Open();
+			}
 		}
-
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen() || m_cameraState != CameraState::FOLLOWCAMERA) {
 			m_NormalIcon->SetDrawActive(false);
 			m_Icon->SetDrawActive(false);
@@ -399,6 +424,8 @@ namespace basecross {
 		}
 		else if (msg == L"DeadPlayer") {
 			GameOver();
+			GameOverCamera();
+			m_IsGameOver = true;
 		}
 		else if (msg == L"PinchPlayer") {
 			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");

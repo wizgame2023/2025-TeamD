@@ -7,6 +7,9 @@
 #include "stdafx.h"
 
 namespace basecross {
+	/// @brief ProductionCameraman 
+	/// クラスは、カメラのアニメーションや挙動を制御するためのゲームオブジェクトです。
+	/// カメラの位置や注視点の管理、アニメーションの開始、状態遷移の管理などを行います。
 	class ProductionCameraman : public GameObject {
 		Vec3 m_startPos;                          // カメラの開始位置を保持するベクトル
 		Vec3 m_endPos;                            // カメラの終了位置を保持するベクトル
@@ -22,6 +25,7 @@ namespace basecross {
 		float m_currntTime;
 
 		bool m_switchToMainCamera; // メインカメラに切り替えるかどうかのフラグ
+		bool m_finished;        // アニメーションが終了したかどうかのフラグ
 
 		// ステートマシン
 		unique_ptr< StateMachine<ProductionCameraman> >  m_StateMachine;
@@ -46,16 +50,15 @@ namespace basecross {
 		// 操作
 		virtual void OnUpdate() override;
 
-		/// @brief オープニングアニメーションのカメラ補間を開始します。
-		/// @param startPos 補間開始時のカメラ位置。
-		/// @param endPos 補間終了時のカメラ位置。
-		/// @param atStartPos 補間開始時の視線ターゲット位置。
-		/// @param atEndPos 補間終了時の視線ターゲット位置。
-		/// @param secondEndPos 後半フェーズ用のカメラ位置。
-		/// @param secondAtEndPos 後半フェーズ用の視線ターゲット位置。
-		/// @param totalTime 補間にかかる総時間（秒単位）。
-		/// @param switchToMainCamera アニメーション終了後にメインカメラへ切り替えるかどうかのフラグ。
-		
+		/// @brief カメラのアニメーションを開始する。
+		/// @param startPos アニメーション開始時のカメラ位置。
+		/// @param endPos アニメーション終了時のカメラ位置。
+		/// @param atStartPos アニメーション開始時の注視点位置。
+		/// @param atEndPos アニメーション終了時の注視点位置。
+		/// @param secondEndPos 2段階目のアニメーション終了時のカメラ位置。
+		/// @param secondAtEndPos 2段階目のアニメーション終了時の注視点位置。
+		/// @param totalTime アニメーション全体の再生時間（秒単位）。
+		/// @param switchToMainCamera アニメーション終了後にメインカメラへ切り替えるかどうか。
 		void StartOpeningAnimation(
 			const Vec3& startPos,         
 			const Vec3& endPos,           
@@ -66,7 +69,9 @@ namespace basecross {
 			float totalTime,              
 			const bool& switchToMainCamera
 		);
-		// アクセサ
+
+		/// @brief ProductionCameraman用のStateMachineへの参照を取得します。
+		/// @return ProductionCameraman型のStateMachineへのconst unique_ptr参照。
 		const unique_ptr<StateMachine<ProductionCameraman>>& GetStateMachine() {
 			return m_StateMachine;
 		}
@@ -79,14 +84,19 @@ namespace basecross {
 			return m_eyePos;
 		}
 
+		/// @brief ゴール進入時の挙動を実行します。
 		void ToGoalEnterBehavior();
 
-		// 行動を実行する
+		/// @brief 指定された合計時間に基づいて動作を実行します。
+		/// @param totaltime 動作を実行するための合計時間（秒単位）。
+		/// @return 動作が正常に実行された場合は true、失敗した場合は false を返します。
 		bool ExcuteBehavior(float totaltime);
 
 		// 終了状態エンタービヘイビア
 		void EndStateEnterBehavior();
 
+		/// @brief 移動タイプを指定された値に設定します。
+		/// @param type 設定する移動タイプを表す整数値。0は直線移動、1は円軌道移動を指定します。
 		void SetMoveType(const int type)
 		{
 			if (type == 0) {
@@ -96,11 +106,15 @@ namespace basecross {
 				m_moveType = MoveType::Orbit; // 円軌道移動
 			}
 		}
-	};
 
+		bool GetEndState() const {
+			return m_finished;
+		}
+	};
+    /// @brief ProductionCameraman オブジェクトの最初の状態を管理するステートクラスです。
     class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
     {  
-        float& m_time; // 時間を参照する変数  
+        float m_time; // 時間を参照する変数  
 
         // コンストラクタでメンバー変数を初期化する  
         ProductionCameramanToFirstState(float& time) : m_time(time) {} 
@@ -112,9 +126,7 @@ namespace basecross {
         virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;  
     };
 
-	//--------------------------------------------------------------------------------------
-	//	class OpeningCameramanEndState : public ObjState<OpeningCameraman>;
-	//--------------------------------------------------------------------------------------
+	/// @brief ProductionCameramanEndState クラスは、ProductionCameraman オブジェクトの終了状態を管理します。
 	class ProductionCameramanEndState : public ObjState<ProductionCameraman>
 	{
 		float& m_time; // 時間を参照する変数  
@@ -127,7 +139,7 @@ namespace basecross {
 		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj)override;
 	};
 
-
+	/// @brief ProductionCamera クラスは Camera クラスを継承し、カメラの生成や更新処理を提供します。
 	class ProductionCamera : public Camera {
 	public:
 		//--------------------------------------------------------------------------------------
