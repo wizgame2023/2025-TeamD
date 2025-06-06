@@ -225,7 +225,7 @@ namespace basecross {
 			// カメラの補間にかける総時間（外部からの参照）
 
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
-			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, true);
+			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, 0.0f,true);
 			ptrOpeningCameraman->SetMoveType(1);
 			SetSharedGameObject(L"ProductionCamera", ptrOpeningCameraman);
 
@@ -293,14 +293,42 @@ namespace basecross {
 			Vec3 CameraEndPos = Playpos + (-Playrot) + Vec3(0.0f, 1.0f, 0.0f);
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot), -CameraPos, Playpos, 3.0f, false);
+			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot), -CameraPos, Playpos, 3.0f,0.0f, false);
 			productionCamera->SetMoveType(0);
+
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
 		}
+	}
+
+	void GameStage::BossAppaerCamera()
+	{
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
+
+		if (player != nullptr) {
+			player->SetIsGaol(true);
+			Vec3 playerPos = player->GetPosition();
+			Vec3 bossPos = boss->GetPosition();
+			Vec3 bossRot = boss->GetForward();
+			Vec3 CameraPos = camera->GetEye();
+			Vec3 CameraEndPos = bossPos + Vec3(0.0f, -bossPos.y + 2.0f, 0.0f);
+
+			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos - bossRot * 7, playerPos, CameraEndPos, -CameraPos, bossPos, 3.0f, 3.0f, true);
+			productionCamera->SetMoveType(0);
+
+			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
+			if (ptrOpeningCamera) {
+				SetView(m_ProductionCameraView);
+				ptrOpeningCamera->SetCameraObject(productionCamera);
+			}
+		}
+
 	}
 
 	void GameStage::OnCreate() {
@@ -421,6 +449,10 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
+			BossAppaerCamera();
+
+		}
+		else if (msg == L"SpawnBoss") {
 			AddGameObject<BossAppearText>(Vec3(-150, 300, 0.0f), Vec3(300, 100, 1.0f));
 		}
 		else if (msg == L"DeadPlayer") {

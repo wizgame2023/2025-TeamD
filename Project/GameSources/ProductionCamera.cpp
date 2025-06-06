@@ -34,9 +34,10 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
 	//--------------------------------------------------------------------------------------
-	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time) {
-		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time));
+	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time, float& endtime) {
+		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time, endtime));
 		instance->m_time = time; // 時間を保存  		
+		instance->m_endTime = endtime; // 時間を保存  		
 		return instance;
 	}
 	void ProductionCameramanToFirstState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
@@ -44,7 +45,7 @@ namespace basecross {
 	}
 	void ProductionCameramanToFirstState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
 		if (Obj->ExcuteBehavior(m_time)) {
-			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_time));
+			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
 		}
 	}
 	void ProductionCameramanToFirstState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
@@ -53,14 +54,18 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class OpeningCameramanEndState : public ObjState<OpeningCameraman>;
 	//--------------------------------------------------------------------------------------
-	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance(float time) { 
+	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance(float& time) { 
 		static shared_ptr<ProductionCameramanEndState> instance(new ProductionCameramanEndState(time));
+		instance->m_time = time; // 時間を保存  		
 		return instance;
 	}
 	void ProductionCameramanEndState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
 	}
 	void ProductionCameramanEndState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
-		Obj->EndStateEnterBehavior();
+		if (Obj->ExcuteEndBehavior(m_time))
+		{
+			Obj->EndStateEnterBehavior();
+		}
 	}
 	void ProductionCameramanEndState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
 	}
@@ -90,7 +95,10 @@ namespace basecross {
 	void ProductionCameraman::OnUpdate() {
 		//ステートマシンのUpdateを行う
 		//この中でステートの切り替えが行われる
-		m_StateMachine->Update();
+		if (!m_finished)
+		{
+			m_StateMachine->Update();
+		}
 	}
 
 
@@ -103,6 +111,7 @@ namespace basecross {
 		const Vec3& secondEndPos, // 後半フェーズ用のカメラ位置
 		const Vec3& secondAtEndPos, // 後半フェーズ用の視線ターゲット
 		float totalTime,           // 補間にかかる総時間
+		float endtotalTime,           // 補間にかかる総時間
 		const bool& switchToMainCamera// メインカメラに切り替えるかどうかのフラグ
 	) {
 		m_finished = false; 
@@ -114,11 +123,12 @@ namespace basecross {
 		m_secondEndPos = secondEndPos;
 		m_secondAtEndPos = secondAtEndPos;
 		m_totalTime = totalTime;
+		m_endcurrntTime = 0.0f;
 		m_switchToMainCamera = switchToMainCamera;
 		m_currntTime = 0.0f;
 		// ステートマシンを初期状態に変更
 		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
-		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime));
+		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime, endtotalTime));
 
 		// 初期視線と位置の設定
 		m_eyePos = m_startPos;
@@ -170,6 +180,15 @@ namespace basecross {
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_eyePos);
 
+		return false;
+	}
+	bool ProductionCameraman::ExcuteEndBehavior(float totaltime) {
+		float ElapsedTime = App::GetApp()->GetElapsedTime();
+		m_endcurrntTime += ElapsedTime;
+
+		if (m_endcurrntTime > totaltime) {
+			return true;
+		}
 		return false;
 	}
 

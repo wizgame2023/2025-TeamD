@@ -61,6 +61,7 @@ namespace basecross {
 
 		void GameOver();
 		void GameOverCamera();
+		void BossAppaerCamera();
 		void GameClear();
 		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
