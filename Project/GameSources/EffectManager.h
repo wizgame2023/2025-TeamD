@@ -22,7 +22,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class EffectManeger : public MultiParticle {
 
-		map<wstring, Effekseer::EffectRef> m_ResMap;		
+		map<wstring, Effekseer::EffectRef> m_ResMap;	
 		Effekseer::Handle handle;
 		Effekseer::ManagerRef m_Manager;
 		EffekseerRendererDX11::RendererRef m_renderer;
