@@ -16,6 +16,8 @@ namespace basecross {
 		shared_ptr<BossEnemy> m_Boss;
 
 		Timer m_SpawnTimer;
+
+		bool m_IsSpawn;
 	public:
 		Spawner(const shared_ptr<Stage>& stage);
 		virtual  ~Spawner(){}
@@ -35,6 +37,13 @@ namespace basecross {
 		}
 		void SpawnEnemy();
 		void SpawnBoss();
+
+		void Stop() {
+			m_IsSpawn = false;
+		}
+		void Start(){
+			m_IsSpawn = true;
+		}
 	};
 }
 
