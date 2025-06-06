@@ -10,20 +10,16 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス実体
 	//--------------------------------------------------------------------------------------
-	void GameStage::CreateViewLight() {
-		const Vec3 eye(0.0f, 5.0f, -5.0f);
-		const Vec3 at(0.0f);
-		m_CurrentCamera = CreateView<SingleView>();
-		//m_OpeningCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
-		//auto ptrOpeningCamera = ObjectFactory::Create<OpeningCamera>();
+	void GameStage::CreateViewLight() {		//ビューのカメラの設定
+		m_ProductionCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
+		auto ptrOpeningCamera = ObjectFactory::Create<ProductionCamera>();
+		m_ProductionCameraView->SetCamera(ptrOpeningCamera);
 
-		//ビューのカメラの設定
-		m_Camera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
-		//ToOpeningCamera();
-		m_CurrentCamera->SetCamera(m_Camera);
-		m_Camera->SetEye(eye);
-		m_Camera->SetAt(at);
-		//auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+		m_MyCameraView = CreateView<SingleView>();
+		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
+		m_MyCameraView->SetCamera(PtrCamera);
+
+		
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
@@ -121,7 +117,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -179,12 +175,12 @@ namespace basecross {
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
-	/// オブジェクトの描画をONOFF
+	/// オブジェクトの更新をONOFF
 	/// </summary>
 	/// <param name="flag">描画ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
-			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu") ) {
+			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu") && !obj->FindTag(L"Camera")) {
 				obj->SetUpdateActive(flag);
 			}
 		}
@@ -194,36 +190,51 @@ namespace basecross {
 	{
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
-		m_CurrentCamera->SetCamera(m_Camera);
-		m_Camera->SetEye(eye);
-		m_Camera->SetAt(at);
+
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
-			auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
+			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 			if (camera != nullptr) {
+				SetView(m_MyCameraView);
 				camera->SetTarget(player->GetComponent<Transform>());
+				m_cameraState = CameraState::FOLLOWCAMERA;
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				if (player != nullptr) {
+					player->SetIsGaol(false);
+				}
 			}
 		}
 	}
 
 	void GameStage::ToOpeningCamera()
 	{
-		Vec3 CameraPos = Vec3(10.0f, 5.0f, 0);
-		Vec3 CameraStartEndPos = Vec3(5.0f,  5.0f, 0);
-		Vec3 CameraEndPos = Vec3(15.0f, 10.0f, 0);
-		Vec3 PlayEndpos = Vec3(0.0f, 5.0f, -5.0);
-		Vec3 PlayStartpos = Vec3(0, 1.0f, 0);
-		auto view = CreateView<SingleView>();
-		//カメラのオープニングの移動(最初のカメラの位置、最後のカメラの位置、
-// 　　　　　　　　　　　　　最初に見てる所、最後に見てる所、後半最初に見る位置、
-// 　　　　　　　　　　　　　かかる時間(多分)、後半最後にいる位置、後半最後に見てる所)
-		auto ptrOpeningCameraman = AddGameObject<OpeningCameraman>(CameraPos, CameraStartEndPos,
-			PlayStartpos, Vec3(0), PlayEndpos,
-			0.0f, CameraEndPos, PlayEndpos);
-		auto ptrOpeningCamera = dynamic_pointer_cast<OpeningCamera>(m_OpeningCameraView->GetCamera());
-		if (ptrOpeningCamera) {
-			ptrOpeningCamera->SetCameraObject(ptrOpeningCameraman);
-			SetView(m_OpeningCameraView);
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+		if (player != nullptr) {
+			player->SetIsGaol(true);
+			float dire = 3.0f;
+			Vec3 Playpos = player->GetPosition();
+			Vec3 AtPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
+			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire);
+			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire);
+			m_cameraState = CameraState::OPENINGCAMERA;
+			// 補間開始時のカメラ位置
+			// 補間終了時のカメラ位置（最終位置）
+			// 補間開始時にカメラが注視するターゲット位置
+			// 補間終了時にカメラが注視するターゲット位置
+			// 第二フェーズ用のカメラ最終位置（必要に応じて利用）
+			// 第二フェーズ用の注視ターゲット位置（必要に応じて利用）
+			// カメラの補間にかける総時間（外部からの参照）
+
+			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
+			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 1.0f, true);
+			ptrOpeningCameraman->SetMoveType(1);
+
+			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
+			if (ptrOpeningCamera) {
+				SetView(m_ProductionCameraView);
+				ptrOpeningCamera->SetCameraObject(ptrOpeningCameraman);
+			}
 		}
 	}
 
@@ -241,6 +252,7 @@ namespace basecross {
 			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
 			auto view = static_pointer_cast<SingleView>(GetView());
 			view->SetCamera(newCamera);
+			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
 
@@ -265,8 +277,8 @@ namespace basecross {
 				}
 			}
 		}
-
 	}
+
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
@@ -291,13 +303,12 @@ namespace basecross {
 			ButtonManager::instance->CloseAll();
 			CreateUI();
 			SoundManager::Instance().PlayBGM(L"BGM_GAME");
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				auto camera = static_pointer_cast<FollowCamera>(GetView()->GetTargetCamera());
-				if (camera != nullptr) {
-					camera->SetTarget(player->GetComponent<Transform>());
-				}
-			}
+
+			//ToMainCamera();
+			ToOpeningCamera();
+
+			auto score = ScoreBorder<float>({ 10.0f,20.0f,30.0f,40.0f }, JudgeMode::UpperOrder);
+			int rank = score.CalcRank(12.0f);
 			GameManager::Instance()->SetZoneRate(0.5f);
 			//GameManager::Instance()->StartZone(20.0f);
 			//m_ResultMenu->Open();
@@ -322,8 +333,7 @@ namespace basecross {
 				m_Camera->SetCameraPause(true);
 			}
 		}
-
-		if (m_ResultMenu->IsOpen())
+		if (m_ResultMenu->IsOpen() && m_cameraState == CameraState::OPENINGCAMERA)
 		{
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			player->SetAnim(L"Clear");
@@ -335,8 +345,8 @@ namespace basecross {
 			player->SetAnim(L"Died");
 			player->UpdateAnim();
 		}
-		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
-			//SetAllGameObjectActive(false);
+
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen() || m_cameraState != CameraState::FOLLOWCAMERA) {
 			m_NormalIcon->SetDrawActive(false);
 			m_Icon->SetDrawActive(false);
 			m_UltIcon->SetDrawActive(false);

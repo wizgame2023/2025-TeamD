@@ -8,20 +8,20 @@
 
 namespace basecross {
 
-	OpeningCamera::OpeningCamera() :
+	ProductionCamera::ProductionCamera() :
 		Camera()
 	{
 	}
-	OpeningCamera::~OpeningCamera() {}
+	ProductionCamera::~ProductionCamera() {}
 
 
-	void OpeningCamera::OnCreate() {
+	void ProductionCamera::OnCreate() {
 	}
 
-	void OpeningCamera::OnUpdate() {
+	void ProductionCamera::OnUpdate() {
 		Camera::OnUpdate();
 
-		auto ptrOpeningCameraman = dynamic_pointer_cast<OpeningCameraman>(GetCameraObject());
+		auto ptrOpeningCameraman = dynamic_pointer_cast<ProductionCameraman>(GetCameraObject());
 		if (ptrOpeningCameraman) {
 			auto pos = ptrOpeningCameraman->GetAtPos();
 			auto eye = ptrOpeningCameraman->GetEyePos();
@@ -30,51 +30,97 @@ namespace basecross {
 		}
 	}
 
-	OpeningCameraman::OpeningCameraman(const shared_ptr<Stage>& StagePtr, const Vec3& StartPos, const Vec3& EndPos,
-		const Vec3& AtStartPos, const Vec3& AtEndPos, const Vec3& AtPos, float& TotalTime,
-		const Vec3& secondEndPos, const Vec3& secondAtEndPos) :
-		GameObject(StagePtr),
-		m_startPos(StartPos),
-		m_endPos(EndPos),
-		m_atStartPos(AtStartPos),
-		m_atEndPos(AtEndPos),
-		m_atPos(AtStartPos),
-		m_totalTime(TotalTime),
-		m_secondEndPos(secondEndPos),
-		m_secondAtEndPos(secondAtEndPos)
-	{
+
+	//--------------------------------------------------------------------------------------
+	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
+	//--------------------------------------------------------------------------------------
+	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time) {
+		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time));
+		return instance;
 	}
-	OpeningCameraman::~OpeningCameraman() {}
+	void ProductionCameramanToFirstState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
+		Obj->ToGoalEnterBehavior();
+	}
+	void ProductionCameramanToFirstState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
+		if (Obj->ExcuteBehavior(m_time)) {
+			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance());
+		}
+	}
+	void ProductionCameramanToFirstState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
+	}
+
+	//--------------------------------------------------------------------------------------
+	//	class OpeningCameramanEndState : public ObjState<OpeningCameraman>;
+	//--------------------------------------------------------------------------------------
+	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance() {
+		static shared_ptr<ProductionCameramanEndState> instance(new ProductionCameramanEndState);
+		return instance;
+	}
+	void ProductionCameramanEndState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
+		Obj->EndStateEnterBehavior();
+	}
+	void ProductionCameramanEndState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
+	}
+
+
+	ProductionCameraman::ProductionCameraman(const shared_ptr<Stage>& StagePtr): 
+		GameObject(StagePtr),
+		m_currntTime(0.0f),
+		m_moveType(MoveType::Linear),
+		m_tempTotalTime(0.0f),
+		m_totalTime(0.0f),
+		m_switchToMainCamera(true) // メインカメラに切り替えるかどうかのフラグ
+	{}
 
 	//初期化
-	void OpeningCameraman::OnCreate() {
+	void ProductionCameraman::OnCreate() {
 		//初期位置などの設定
-		auto ptr = GetComponent<Transform>();
+		auto ptr = AddComponent<Transform>();
 		ptr->SetScale(0.25f, 0.25f, 0.25f);	//直径25センチの球体
 		ptr->SetRotation(0.0f, 0.0f, 0.0f);
 		ptr->SetPosition(m_startPos);
 		//ステートマシンの構築
-		m_StateMachine.reset(new StateMachine<OpeningCameraman>(GetThis<OpeningCameraman>()));
-		//最初のステートをOpeningCameramanToGoalStateに設定
-		m_StateMachine->ChangeState(OpeningCameramanToFirstState::Instance());
-
-		//後半用の一時的な格納場所
-		m_tempStartPos = m_startPos;
-		m_tempEndPos = m_endPos;
-		m_tempAtStartPos = m_atStartPos;
-		m_tempAtEndPos = m_atEndPos;
-		m_tempAtPos = m_atPos;
-		m_tempTotalTime = m_totalTime;
+		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
 	}
 
 	//操作
-	void OpeningCameraman::OnUpdate() {
+	void ProductionCameraman::OnUpdate() {
 		//ステートマシンのUpdateを行う
 		//この中でステートの切り替えが行われる
 		m_StateMachine->Update();
 	}
 
-	void OpeningCameraman::ToGoalEnterBehavior() { //後半部
+
+	// カメラのオープニング演出を開始（位置や視線を引数で指定可能）
+	void ProductionCameraman::StartOpeningAnimation(
+		const Vec3& startPos,     // 補間開始時のカメラ位置
+		const Vec3& endPos,       // 補間終了時のカメラ位置
+		const Vec3& atStartPos,   // 補間開始時の視線ターゲット
+		const Vec3& atEndPos,     // 補間終了時の視線ターゲット
+		const Vec3& secondEndPos, // 後半フェーズ用のカメラ位置
+		const Vec3& secondAtEndPos, // 後半フェーズ用の視線ターゲット
+		float totalTime,           // 補間にかかる総時間
+		const bool& switchToMainCamera// メインカメラに切り替えるかどうかのフラグ
+	) {
+		// 位置・視線の初期化
+		m_startPos = startPos;
+		m_endPos = endPos;
+		m_atStartPos = atStartPos;
+		m_atEndPos = atEndPos;
+		m_secondEndPos = secondEndPos;
+		m_secondAtEndPos = secondAtEndPos;
+		m_totalTime = totalTime;
+		m_switchToMainCamera = switchToMainCamera;
+		// ステートマシンを初期状態に変更
+		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime));
+
+		// 初期視線と位置の設定
+		m_eyePos = m_startPos;
+		m_atPos = m_atStartPos;
+
+	}
+
+	void ProductionCameraman::ToGoalEnterBehavior() { //後半部
 		m_startPos; //カメラの最初の位置
 		m_endPos; //カメラの最後の位置
 		m_atStartPos; //最初に見てる方角
@@ -83,82 +129,50 @@ namespace basecross {
 		m_totalTime;
 	}
 
-	void OpeningCameraman::ToStartEnterBehavior() { //前半部
-		m_startPos = m_tempEndPos; //カメラの最初の位置
-		m_endPos = m_secondEndPos; //カメラの最後の位置
-		m_atStartPos = m_tempAtEndPos; //最初に見てる方角
-		m_atEndPos = m_secondAtEndPos; //最後に見てる方角
-		m_atPos;//カメラ最後の位置
-		m_totalTime = m_tempTotalTime;
-	}
-
-	bool OpeningCameraman::ExcuteBehavior(float totaltime) {
+	// カメラ移動の処理（回転 or 直線）
+	bool ProductionCameraman::ExcuteBehavior(float totaltime) {
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		m_totalTime += ElapsedTime;
-		if (m_totalTime > totaltime) {
+		m_currntTime += ElapsedTime;
+
+		if (m_currntTime > totaltime) {
 			return true;
 		}
-		Easing<Vec3> easing;
-		m_eyePos = easing.EaseInOut(EasingType::Cubic, m_startPos, m_endPos, m_totalTime, totaltime);
-		m_atPos = easing.EaseInOut(EasingType::Cubic, m_atStartPos, m_atEndPos, m_totalTime, totaltime);
+
+		if (m_moveType == MoveType::Orbit) {
+			// 円軌道での移動
+			float startDistance = (m_startPos - m_atStartPos).length();
+			float endDistance = (m_endPos - m_atEndPos).length();
+			float distance = Lerp::CalculateLerp(startDistance, endDistance, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+
+			float initialAngle = atan2(m_startPos.z - m_atStartPos.z, m_startPos.x - m_atStartPos.x);
+			float easedRotationRatio = Lerp::CalculateLerp(0.0f, 1.0f, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			float currentAngle = initialAngle + easedRotationRatio * XM_2PI;
+
+			Vec3 target = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			float interpHeight = Lerp::CalculateLerp(m_startPos.y, m_endPos.y, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+
+			float newX = target.x + distance * cos(currentAngle);
+			float newZ = target.z + distance * sin(currentAngle);
+			m_eyePos = Vec3(newX, interpHeight, newZ);
+			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+		}
+		else {
+			// 直線移動の処理
+			m_eyePos = Lerp::CalculateLerp(m_startPos, m_endPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+		}
+
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_eyePos);
+
 		return false;
 	}
-	void OpeningCameraman::EndStateEnterBehavior() {
-		GetTypeStage<GameStage>()->ToMainCamera();
-	}
 
-	//--------------------------------------------------------------------------------------
-	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
-	//--------------------------------------------------------------------------------------
-	shared_ptr<OpeningCameramanToFirstState> OpeningCameramanToFirstState::Instance() {
-		static shared_ptr<OpeningCameramanToFirstState> instance(new OpeningCameramanToFirstState);
-		return instance;
-	}
-	void OpeningCameramanToFirstState::Enter(const shared_ptr<OpeningCameraman>& Obj) {
-		Obj->ToGoalEnterBehavior();
-	}
-	void OpeningCameramanToFirstState::Execute(const shared_ptr<OpeningCameraman>& Obj) {
-		if (Obj->ExcuteBehavior(4.0f)) {
-			Obj->GetStateMachine()->ChangeState(OpeningCameramanToSecondState::Instance());
+	void ProductionCameraman::EndStateEnterBehavior() {
+		// 演出終了後に MainCamera に切り替える設定なら変更を実行
+		if (m_switchToMainCamera) {
+			GetTypeStage<GameStage>()->ToMainCamera();
 		}
 	}
-	void OpeningCameramanToFirstState::Exit(const shared_ptr<OpeningCameraman>& Obj) {
-	}
-
-	//--------------------------------------------------------------------------------------
-	//	class OpeningCameramanToStartState : public ObjState<OpeningCameraman>;
-	//--------------------------------------------------------------------------------------
-	shared_ptr<OpeningCameramanToSecondState> OpeningCameramanToSecondState::Instance() {
-		static shared_ptr<OpeningCameramanToSecondState> instance(new OpeningCameramanToSecondState);
-		return instance;
-	}
-	void OpeningCameramanToSecondState::Enter(const shared_ptr<OpeningCameraman>& Obj) {
-		Obj->ToStartEnterBehavior();
-	}
-	void OpeningCameramanToSecondState::Execute(const shared_ptr<OpeningCameraman>& Obj) {
-		if (Obj->ExcuteBehavior(2.0f)) {
-			Obj->GetStateMachine()->ChangeState(OpeningCameramanEndState::Instance());
-		}
-	}
-	void OpeningCameramanToSecondState::Exit(const shared_ptr<OpeningCameraman>& Obj) {
-	}
-
-	//--------------------------------------------------------------------------------------
-	//	class OpeningCameramanEndState : public ObjState<OpeningCameraman>;
-	//--------------------------------------------------------------------------------------
-	shared_ptr<OpeningCameramanEndState> OpeningCameramanEndState::Instance() {
-		static shared_ptr<OpeningCameramanEndState> instance(new OpeningCameramanEndState);
-		return instance;
-	}
-	void OpeningCameramanEndState::Enter(const shared_ptr<OpeningCameraman>& Obj) {
-		Obj->EndStateEnterBehavior();
-	}
-	void OpeningCameramanEndState::Execute(const shared_ptr<OpeningCameraman>& Obj) {
-	}
-	void OpeningCameramanEndState::Exit(const shared_ptr<OpeningCameraman>& Obj) {
-	}
-
 
 }
