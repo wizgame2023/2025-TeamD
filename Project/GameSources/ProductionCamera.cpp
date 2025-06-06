@@ -43,7 +43,7 @@ namespace basecross {
 	}
 	void ProductionCameramanToFirstState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
 		if (Obj->ExcuteBehavior(m_time)) {
-			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance());
+			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_time));
 		}
 	}
 	void ProductionCameramanToFirstState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
@@ -52,9 +52,11 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class OpeningCameramanEndState : public ObjState<OpeningCameraman>;
 	//--------------------------------------------------------------------------------------
-	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance() {
-		static shared_ptr<ProductionCameramanEndState> instance(new ProductionCameramanEndState);
+	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance(float time) { 
+		static shared_ptr<ProductionCameramanEndState> instance(new ProductionCameramanEndState(time));
 		return instance;
+	}
+	void ProductionCameramanEndState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
 	}
 	void ProductionCameramanEndState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
 		Obj->EndStateEnterBehavior();
