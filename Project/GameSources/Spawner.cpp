@@ -89,14 +89,14 @@ namespace basecross {
 			if (player != nullptr)
 			{
 				player->HealHP(player->GetMaxHP() / 4.0f);
-				if (m_Legions.size() <= m_Wave) {
-					SpawnBoss();
-					m_Wave = -1;
-					return;
-				}
-				else {
+			}
+			if (m_Legions.size() <= m_Wave) {
+				SpawnBoss();
+				m_Wave = -1;
+				return;
+			}
+			else {
 
-				}
 			}
 		}
 	}
