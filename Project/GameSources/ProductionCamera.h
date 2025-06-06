@@ -21,6 +21,7 @@ namespace basecross {
 		Vec3 m_secondAtEndPos;                    // 二次注視点終了位置を保持するベクトル
 
 		float m_totalTime;                        // 合計時間を保持する変数
+		float m_endcurrntTime;                        // 合計時間を保持する変数
 		float m_tempTotalTime;                    // 一時的な合計時間を保持する変数
 		float m_currntTime;
 
@@ -66,7 +67,8 @@ namespace basecross {
 			const Vec3& atEndPos,         
 			const Vec3& secondEndPos,     
 			const Vec3& secondAtEndPos,   
-			float totalTime,              
+			float totalTime,       
+			float endtotalTime,
 			const bool& switchToMainCamera
 		);
 
@@ -91,7 +93,7 @@ namespace basecross {
 		/// @param totaltime 動作を実行するための合計時間（秒単位）。
 		/// @return 動作が正常に実行された場合は true、失敗した場合は false を返します。
 		bool ExcuteBehavior(float totaltime);
-
+		bool ExcuteEndBehavior(float totaltime);
 		// 終了状態エンタービヘイビア
 		void EndStateEnterBehavior();
 
@@ -114,13 +116,14 @@ namespace basecross {
     /// @brief ProductionCameraman オブジェクトの最初の状態を管理するステートクラスです。
     class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
     {  
-        float m_time; // 時間を参照する変数  
+		float m_time; // 時間を参照する変数  
+		float m_endTime; // 時間を参照する変数  
 
         // コンストラクタでメンバー変数を初期化する  
-        ProductionCameramanToFirstState(float& time) : m_time(time) {} 
+        ProductionCameramanToFirstState(float& time, float& endtime) : m_time(time), m_endTime(endtime) {}
 
     public:  
-        static shared_ptr<ProductionCameramanToFirstState> Instance(float& time);  
+        static shared_ptr<ProductionCameramanToFirstState> Instance(float& time, float& endtime);
         virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;  
         virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;  
         virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;  
@@ -133,7 +136,7 @@ namespace basecross {
 
 		ProductionCameramanEndState(float& time) : m_time(time) {}
 	public:
-		static shared_ptr<ProductionCameramanEndState> Instance(float time);
+		static shared_ptr<ProductionCameramanEndState> Instance(float& time);
 		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj)override;
 		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj)override;
 		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj)override;
