@@ -104,8 +104,8 @@ namespace basecross {
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
 		}
 
-		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"", L"",
-			Vec3(), Vec2(), [](shared_ptr<ObjectInterface> object) {
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_STAGE", Col4(1,1,1,1),
+			Vec3(0,-300,0), Vec2(200,100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->StartStage();
 			});
@@ -243,6 +243,7 @@ namespace basecross {
 	}
 
 	void SelectStage::AcceptStage(int index) {
+		m_StageNumber = index;
 		ButtonManager::instance->UseGroup(L"Difficulty" + to_wstring(index));
 	}
 	void SelectStage::AcceptDifficulty(int index) {
@@ -251,6 +252,7 @@ namespace basecross {
 		ButtonManager::instance->UseGroup(L"Accept");
 	}
 	void SelectStage::StartStage() {
+
 	}
 
 }

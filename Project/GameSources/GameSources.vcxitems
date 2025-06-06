@@ -22,7 +22,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
@@ -74,7 +73,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
@@ -116,11 +114,5 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <FxCompile Include="$(MSBuildThisFileDirectory)Shader\CSRayCast.hlsl">
-      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Compute</ShaderType>
-      <ShaderModel Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">4.0</ShaderModel>
-    </FxCompile>
   </ItemGroup>
 </Project>
