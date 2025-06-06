@@ -167,6 +167,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -285,5 +286,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Shader\CSRayCast.hlsl" />
   </ItemGroup>
 </Project>

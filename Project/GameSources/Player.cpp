@@ -177,12 +177,12 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < m_SearchDistance)
-			{
-				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
+			if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
+				m_TargetBoard->SetTarget(targetEnemyVector);
+				if ((position - targetEnemy).length() <= m_SearchDistance + 1.0f + 0.85f)
+				{
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
 				else {
@@ -692,6 +692,7 @@ namespace basecross {
 		if (m_FlyingTime > m_TotalTime)
 		{
 			hitPosition += m_Speed * m_HitRotation * elapsedTime;
+			f += (m_Speed * m_HitRotation * elapsedTime).length();
 		}
 		else {
 			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());

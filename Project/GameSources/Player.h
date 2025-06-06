@@ -126,6 +126,8 @@ namespace basecross {
 		Effekseer::Handle m_HitHandle;
 
 		shared_ptr<GameObject> m_Player;
+
+		float f = 0;
 	public:
 		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale,const float& length);
 		~HitSphere();

@@ -13,6 +13,7 @@ namespace basecross {
 
 	}
 	void TargetBoard::OnUpdate() {
+
 		if (m_Target == nullptr || !m_Target->GetDrawActive()) {
 			m_Board->SetDrawActive(false);
 			return;
@@ -22,8 +23,16 @@ namespace basecross {
 		}
 		Vec3 targetSize = m_Target->GetComponent<Transform>()->GetScale();
 		Vec3 targetPosition = m_Target->GetComponent<Transform>()->GetPosition() + Vec3(0, 0.15f, 0);
+		Vec3 playerPosition = m_Player->GetPosition();
+		float handSize = 1.0f;
+		float lnegth = m_Player->GetLength() + handSize + targetSize.x / 2.0f;
+		if (((targetPosition - Vec3(0, 0.15f, 0)) - playerPosition).length() > lnegth) {
+			m_Board->SetDrawActive(false);
+			return;
+		}
 		Vec3 eye = OnGetDrawCamera()->GetEye();
 		Vec3 direction = eye - targetPosition;
+		
 		m_Board->GetComponent<Transform>()->SetPosition(targetPosition + direction * 0.1f);
 		m_Board->GetComponent<Transform>()->SetScale(targetSize);
 	}
