@@ -36,6 +36,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time) {
 		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time));
+		instance->m_time = time; // 時間を保存  		
 		return instance;
 	}
 	void ProductionCameramanToFirstState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
@@ -104,6 +105,7 @@ namespace basecross {
 		float totalTime,           // 補間にかかる総時間
 		const bool& switchToMainCamera// メインカメラに切り替えるかどうかのフラグ
 	) {
+		m_finished = false; 
 		// 位置・視線の初期化
 		m_startPos = startPos;
 		m_endPos = endPos;
@@ -113,13 +115,14 @@ namespace basecross {
 		m_secondAtEndPos = secondAtEndPos;
 		m_totalTime = totalTime;
 		m_switchToMainCamera = switchToMainCamera;
+		m_currntTime = 0.0f;
 		// ステートマシンを初期状態に変更
+		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
 		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime));
 
 		// 初期視線と位置の設定
 		m_eyePos = m_startPos;
 		m_atPos = m_atStartPos;
-
 	}
 
 	void ProductionCameraman::ToGoalEnterBehavior() { //後半部
@@ -171,6 +174,7 @@ namespace basecross {
 	}
 
 	void ProductionCameraman::EndStateEnterBehavior() {
+		m_finished = true; //演出が終了したことを通知
 		// 演出終了後に MainCamera に切り替える設定なら変更を実行
 		if (m_switchToMainCamera) {
 			GetTypeStage<GameStage>()->ToMainCamera();

@@ -27,6 +27,7 @@ namespace basecross {
 		int m_cameraState;
 		wstring m_MapFileName;
 		bool m_IsPose;
+		bool m_IsGameOver;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 		float m_TotalTime;
@@ -59,6 +60,7 @@ namespace basecross {
 		void CreateUI();
 
 		void GameOver();
+		void GameOverCamera();
 		void GameClear();
 		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
@@ -68,7 +70,7 @@ namespace basecross {
 		shared_ptr<SingleView> m_MyCameraView;      
 	public:
 		//ç\ízÇ∆îjä¸
-		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameOver(false){}
 		virtual ~GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
