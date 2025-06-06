@@ -40,6 +40,11 @@ namespace basecross {
 			return *this;
 		}
 	};
+	struct RayCastElement {
+		Vec3 startLine;
+		float pad;
+		Vec3 endLine;
+	};
 	class RayCast {
 		static vector<RayCast> m_RayCasts;
 		void Init(){}

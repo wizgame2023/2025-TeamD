@@ -42,6 +42,10 @@ namespace basecross {
 
 		void OnPushA();
 
+
+		void AcceptStage(int index);
+		void AcceptDifficulty(int index);
+		void StartStage();
 	};
 
 }

@@ -392,6 +392,16 @@ namespace basecross {
 		button->SetFunction(func, object);
 		return sprite;
 	}
+
+	void ButtonManager::InitGroup(const wstring& group) {
+		if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			for (auto& button : m_ButtonGroup[group]) {
+				button->UnSelect();
+				//m_SelectIndexes[group] = 0;
+			}
+		}
+	}
+
 	void ButtonManager::OnCreate() {
 		AddTag(L"Manager");
 		instance = GetThis<ButtonManager>();

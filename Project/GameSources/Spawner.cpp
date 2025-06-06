@@ -64,13 +64,14 @@ namespace basecross {
 		if (enemy != nullptr) {
 			enemy->SetDrawActive(true);
 			enemy->SetUpdateActive(true);
+			enemy->OnSpawn();
 			m_EnemyCount++;
 		}
 	}
 	void Spawner::SpawnBoss() {
 		m_Boss->SetDrawActive(true);
 		m_Boss->SetUpdateActive(true);
-
+		m_Boss->OnSpawn();
 	}
 
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {

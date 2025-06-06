@@ -14,8 +14,9 @@ namespace basecross {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		m_CurrentCamera = CreateView<SingleView>();
-		//m_OpeningCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
-		//auto ptrOpeningCamera = ObjectFactory::Create<OpeningCamera>();
+		m_OpeningCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
+		auto ptrOpeningCamera = ObjectFactory::Create<OpeningCamera>();
+		m_OpeningCameraView->SetCamera(ptrOpeningCamera);
 
 		//ビューのカメラの設定
 		m_Camera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
@@ -213,7 +214,7 @@ namespace basecross {
 		Vec3 CameraEndPos = Vec3(15.0f, 10.0f, 0);
 		Vec3 PlayEndpos = Vec3(0.0f, 5.0f, -5.0);
 		Vec3 PlayStartpos = Vec3(0, 1.0f, 0);
-		auto view = CreateView<SingleView>();
+		//auto view = CreateView<SingleView>();
 		//カメラのオープニングの移動(最初のカメラの位置、最後のカメラの位置、
 // 　　　　　　　　　　　　　最初に見てる所、最後に見てる所、後半最初に見る位置、
 // 　　　　　　　　　　　　　かかる時間(多分)、後半最後にいる位置、後半最後に見てる所)
@@ -299,9 +300,6 @@ namespace basecross {
 				}
 			}
 			GameManager::Instance()->SetZoneRate(0.5f);
-			//GameManager::Instance()->StartZone(20.0f);
-			//m_ResultMenu->Open();
-			//m_GameOverMenu->Open();
 
 		}
 		catch (...) {

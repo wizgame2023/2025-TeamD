@@ -29,7 +29,7 @@ namespace basecross {
 		shadowPtr->SetViewWidth(64.0f);
 		shadowPtr->SetViewHeight(64.0f);
 
-
+		AddTag(L"Ground");
 	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}

@@ -1,6 +1,6 @@
 /*!
 @file Project.h
-@brief �R���e���c�p�̃w�b�_���܂Ƃ߂�
+@brief 
 */
 
 #pragma once
@@ -52,3 +52,4 @@
 #include "flyobject.h"
 #include "Citizen.h"
 #include "GameManager.h"
+#include "ComputeShader.h"

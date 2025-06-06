@@ -580,6 +580,8 @@ namespace basecross{
 
 			return sprite;
 		}
+
+		void InitGroup(const wstring& group);
 	public:
 		static shared_ptr<ButtonManager> instance;
 
@@ -621,6 +623,26 @@ namespace basecross{
 				}
 			}
 			return nullptr;
+		}
+
+		int GetSelectIndex(const wstring& group) {
+			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+				return m_SelectIndexes[group];
+			}
+		}
+		void SetSelectIndex(const wstring& group,int index) {
+			if (group == L"") {
+				if (index < m_ButtonGroup[m_UsingGroup].size()) {
+					m_SelectIndexes[m_UsingGroup] = index;
+				}
+				return;
+			}
+
+			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+				if (index < m_ButtonGroup[group].size()) {
+					m_SelectIndexes[group] = index;
+				}
+			}
 		}
 		bool ExistOpenGroup() {
 			for (auto& buttons : m_ButtonGroup) {
@@ -733,7 +755,8 @@ namespace basecross{
 		}
 		void UseGroup(const wstring& group) {
 			if (m_SelectIndexes.find(group) != end(m_SelectIndexes)) {
-				m_SelectIndexes[m_UsingGroup] = 0;
+				InitGroup(m_UsingGroup);
+				//m_SelectIndexes[m_UsingGroup] = 0;
 				m_UsingGroup = group;
 			}
 		}
