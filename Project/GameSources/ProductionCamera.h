@@ -46,15 +46,25 @@ namespace basecross {
 		// 操作
 		virtual void OnUpdate() override;
 
+		/// @brief オープニングアニメーションのカメラ補間を開始します。
+		/// @param startPos 補間開始時のカメラ位置。
+		/// @param endPos 補間終了時のカメラ位置。
+		/// @param atStartPos 補間開始時の視線ターゲット位置。
+		/// @param atEndPos 補間終了時の視線ターゲット位置。
+		/// @param secondEndPos 後半フェーズ用のカメラ位置。
+		/// @param secondAtEndPos 後半フェーズ用の視線ターゲット位置。
+		/// @param totalTime 補間にかかる総時間（秒単位）。
+		/// @param switchToMainCamera アニメーション終了後にメインカメラへ切り替えるかどうかのフラグ。
+		
 		void StartOpeningAnimation(
-			const Vec3& startPos,     // 補間開始時のカメラ位置
-			const Vec3& endPos,       // 補間終了時のカメラ位置
-			const Vec3& atStartPos,   // 補間開始時の視線ターゲット
-			const Vec3& atEndPos,     // 補間終了時の視線ターゲット
-			const Vec3& secondEndPos, // 後半フェーズ用のカメラ位置
-			const Vec3& secondAtEndPos, // 後半フェーズ用の視線ターゲット
-			float totalTime,           // 補間にかかる総時間
-			const bool& switchToMainCamera// メインカメラに切り替えるかどうかのフラグ
+			const Vec3& startPos,         
+			const Vec3& endPos,           
+			const Vec3& atStartPos,       
+			const Vec3& atEndPos,         
+			const Vec3& secondEndPos,     
+			const Vec3& secondAtEndPos,   
+			float totalTime,              
+			const bool& switchToMainCamera
 		);
 		// アクセサ
 		const unique_ptr<StateMachine<ProductionCameraman>>& GetStateMachine() {
@@ -107,9 +117,11 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class ProductionCameramanEndState : public ObjState<ProductionCameraman>
 	{
-		ProductionCameramanEndState() {}
+		float& m_time; // 時間を参照する変数  
+
+		ProductionCameramanEndState(float& time) : m_time(time) {}
 	public:
-		static shared_ptr<ProductionCameramanEndState> Instance();
+		static shared_ptr<ProductionCameramanEndState> Instance(float time);
 		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj)override;
 		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj)override;
 		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj)override;

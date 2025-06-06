@@ -213,7 +213,7 @@ namespace basecross {
 		if (player != nullptr) {
 			player->SetIsGaol(true);
 			float dire = 3.0f;
-			Vec3 Playpos = player->GetPosition();
+			Vec3 Playpos = player->GetPosition(); 
 			Vec3 AtPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
 			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire);
