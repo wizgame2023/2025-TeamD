@@ -163,8 +163,10 @@
       <Filter>Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -280,8 +282,10 @@
       <Filter>Ballet</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -18,6 +18,13 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 		
+		enum CameraState
+		{
+			OPENINGCAMERA,
+			FOLLOWCAMERA,
+			RESULTCAMERA
+		};
+		int m_cameraState;
 		wstring m_MapFileName;
 		bool m_IsPose;
 		int m_MaxEnemyCount;
@@ -56,9 +63,9 @@ namespace basecross {
 		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
 		shared_ptr<FollowCamera> m_Camera;
-		shared_ptr<SingleView> m_OpeningCameraView;
-		shared_ptr<SingleView> m_CurrentCamera;
 
+		shared_ptr<SingleView> m_ProductionCameraView; 
+		shared_ptr<SingleView> m_MyCameraView;      
 	public:
 		//ç\ízÇ∆îjä¸
 		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}

@@ -251,7 +251,6 @@ namespace basecross {
 		ButtonManager::instance->UseGroup(L"Accept");
 	}
 	void SelectStage::StartStage() {
-
 	}
 
 }

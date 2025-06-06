@@ -43,8 +43,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)OpeningCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Project.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h" />
@@ -55,6 +56,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h" />
@@ -93,8 +95,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)OpeningCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp" />
@@ -104,6 +107,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp" />

@@ -658,10 +658,6 @@ namespace basecross {
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		//影をつける（シャドウマップを描画する）
-		auto shadowPtr = AddComponent<Shadowmap>();
-		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
 
 		auto stage = static_pointer_cast<GameStage>(GetStage());
@@ -687,9 +683,6 @@ namespace basecross {
 			m_FlyingTime = 0.5f;
 		}
 		m_Speed = m_Length / m_FlyingTime;
-
-		if ((state & !Player::PlayerState::ZONE) == 0) {
-		}
 	}
 
 	void HitSphere::OnUpdate()
