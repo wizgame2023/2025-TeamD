@@ -161,6 +161,7 @@ namespace basecross {
 
 		m_Eye = m_Position + m_Direction * 6.0f;
 		m_Eye.y = m_Position.y + 2.5f;
+
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
 		for (auto& obj : m_Stage->GetGameObjectVec()) {

@@ -23,11 +23,13 @@ namespace basecross {
 		ptrDraw->SetTextureResource(L"GROUND");
 
 		ptrDraw->SetOwnShadowActive(true);
+
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetLightHeight(150.0f);
 		shadowPtr->SetViewWidth(64.0f);
 		shadowPtr->SetViewHeight(64.0f);
 
+		AddTag(L"Ground");
 	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
@@ -64,6 +66,8 @@ namespace basecross {
 			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		ptrDraw->SetOwnShadowActive(true);
 	}
 }
 //end basecross
