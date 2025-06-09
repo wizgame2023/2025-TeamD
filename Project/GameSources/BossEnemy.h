@@ -97,6 +97,7 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void Dead();
+
 	};
 
 

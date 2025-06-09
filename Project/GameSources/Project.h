@@ -52,3 +52,4 @@
 #include "flyobject.h"
 #include "Citizen.h"
 #include "GameManager.h"
+#include "TutorialStage.h"

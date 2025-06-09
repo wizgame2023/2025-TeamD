@@ -61,6 +61,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)TutorialStage.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp" />
@@ -109,6 +110,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp" />
   </ItemGroup>
 </Project>
