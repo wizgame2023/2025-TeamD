@@ -91,13 +91,20 @@ namespace basecross {
 				player->HealHP(player->GetMaxHP() / 4.0f);
 			}
 			if (m_Legions.size() <= m_Wave) {
-				SpawnBoss();
+
+				//ƒJƒƒ‰ˆÚ“®
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;
 				return;
 			}
 			else {
 
 			}
+		}
+		else if (event->m_MsgStr == L"SpawnBoss")
+		{
+			SpawnBoss();
 		}
 	}
 }
