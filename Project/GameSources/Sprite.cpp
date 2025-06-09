@@ -392,6 +392,16 @@ namespace basecross {
 		button->SetFunction(func, object);
 		return sprite;
 	}
+
+	void ButtonManager::InitGroup(const wstring& group) {
+		if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			for (auto& button : m_ButtonGroup[group]) {
+				button->UnSelect();
+				//m_SelectIndexes[group] = 0;
+			}
+		}
+	}
+
 	void ButtonManager::OnCreate() {
 		AddTag(L"Manager");
 		instance = GetThis<ButtonManager>();
@@ -516,6 +526,12 @@ namespace basecross {
 		m_Draw = AddComponent<PNTStaticDraw>();
 		m_Draw->SetDepthStencilState(DepthStencilState::Read);
 		m_Draw->SetOriginalMeshUse(true);
+		m_Draw->SetModelDiffusePriority(true);
+
+		m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
+		m_Draw->SetEmissive(Col4(1, 1, 1, 1));
+		m_Draw->SetSpecular(Col4(1, 1, 1, 1));
+
 		vector<uint16_t> indices = {};
 		MeshUtill::CreateSquare(1.0f, m_Vertices, indices);
 		m_Draw->CreateOriginalMesh(m_Vertices, indices);

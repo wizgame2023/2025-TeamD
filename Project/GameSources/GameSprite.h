@@ -39,6 +39,23 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 	};
+
+
+	class HpSprite : public Object {
+		shared_ptr<Character> m_Owner;
+
+		vector<shared_ptr<Sprite>> m_Edge;
+		shared_ptr<Sprite> m_HpBar;
+		shared_ptr<Sprite> m_HpBarBackGround;
+
+		Col4 m_Color;
+	public:
+		HpSprite(const shared_ptr<Stage>& stage, shared_ptr<Character>& owner,Vec3 position,Vec3 size,Col4 color);
+		virtual ~HpSprite(){}
+
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+	};
 }
 
 //end basecross

@@ -29,7 +29,10 @@ namespace basecross {
 		m_BoostInterval(1.0F),
 		m_IsGoal(false),
 		m_zoneAnim(1.0f),
-		m_HitScale(Vec3(1))
+		m_HitScale(Vec3(1)),
+		m_SearchDistance(2.0),
+		m_Length(4.0f)
+
 	{
 	}
 	Player::~Player()
@@ -129,6 +132,7 @@ namespace basecross {
 					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
 					m_HitScale = Vec3(3.0f);
+					m_SearchDistance = 24.0f;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
@@ -151,6 +155,7 @@ namespace basecross {
 				SetAttackDamage(1.0f);
 				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
+				m_SearchDistance = 2.0f;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
 				m_PlayerStateNum += PlayerState::NORMAL;
@@ -164,7 +169,6 @@ namespace basecross {
 	{
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
-		float searchDistance = 10.0f;
 		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		auto targetBulletVector = ObjectSearch(bulletGroup);
@@ -173,12 +177,12 @@ namespace basecross {
 		if (targetEnemyVector != nullptr)
 		{
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if ((position - targetEnemy).length() < searchDistance)
-			{
-				if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
+			if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
+				m_TargetBoard->SetTarget(targetEnemyVector);
+				if ((position - targetEnemy).length() <= m_SearchDistance + 1.0f + 0.85f)
+				{
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					m_TargetBoard->SetTarget(targetEnemyVector);
 					return rot;
 				}
 				else {
@@ -420,8 +424,8 @@ namespace basecross {
 		//影をつける（シャドウマップを描画する）
 		auto shadowPtr = AddComponent<Shadowmap>();
 		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
-
+		shadowPtr->SetMeshResource(L"PLAYER");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
 		AddTag(L"Player");
 
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
@@ -538,7 +542,7 @@ namespace basecross {
 					m_ParryTime = 15.0f;
 					AimRock(rot);
 					m_Position = GetPosition();
-					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale);
+					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
 					float rotate = atan2f(forward.x, forward.z);
 
 					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
@@ -623,15 +627,16 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale) :
+	HitSphere::HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale,const float& length) :
 		Object(stage),
 		m_HitPosition(position),
 		m_HitRotation(forward),
 		m_Player(player),
 		m_HitScale(scale),
-		m_FlyingTime(1.0f),
+		m_FlyingTime(0),
 		m_TotalTime(0.0f),
-		m_Speed(12.0f)
+		m_Speed(0.0f),
+		m_Length(length)
 	{
 	}
 
@@ -653,10 +658,6 @@ namespace basecross {
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 
-		//影をつける（シャドウマップを描画する）
-		auto shadowPtr = AddComponent<Shadowmap>();
-		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_SPHERE");
 		AddTag(L"HitJudge");
 
 		auto stage = static_pointer_cast<GameStage>(GetStage());
@@ -666,31 +667,32 @@ namespace basecross {
 		else {
 			m_Effect = nullptr;
 		}
-		m_Effect->PlayEffect(m_Handle, L"Panchi", ptr->GetPosition(), 20.0f);
-		float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
-		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
-		m_Effect->SetScale(m_Handle, m_HitScale + 0.5f);
-		//auto layer = m_Effect->GetLayer(m_Handle);
-		//m_Effect->SetLayer(m_Handle, 0);
+		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
+		int state = player->GetStates();
+
+		if ((state & Player::PlayerState::ZONE) == 0) {
+
+			m_FlyingTime = 0.1f;
+		}
+		else {
+			m_Effect->PlayEffect(m_Handle, L"Panchi", ptr->GetPosition(), 20.0f);
+			float rotate = atan2f(m_HitRotation.x, m_HitRotation.z);
+			m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
+			m_Effect->SetScale(m_Handle, m_HitScale + 0.5f);
+
+			m_FlyingTime = 0.5f;
+		}
+		m_Speed = m_Length / m_FlyingTime;
 	}
 
 	void HitSphere::OnUpdate()
 	{
 		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
-		auto player = GetStage()->GetSharedGameObject<Player>(L"Player");
-		int state = player->GetStates();
-		if ((state & Player::PlayerState::ZONE) == 0) {
-			m_FlyingTime = 0.1f;
-			m_Speed = 8.0f;
-		}
-		else {
-			m_FlyingTime = 0.5f;
-			m_Speed = 12.0f;
-		}
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)
 		{
 			hitPosition += m_Speed * m_HitRotation * elapsedTime;
+			f += (m_Speed * m_HitRotation * elapsedTime).length();
 		}
 		else {
 			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());

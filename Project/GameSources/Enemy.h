@@ -25,6 +25,7 @@ namespace basecross {
 		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void OnSpawn(){}
 		virtual void AsyncUpdate()override;
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
@@ -36,7 +37,7 @@ namespace basecross {
 		float GetDistanceToIntruder();
 		Vec3 GetDirectionToIntruderObject(shared_ptr<Object> obj);
 		float GetDistanceToIntruderObject(shared_ptr<Object> obj);
-		void SearchRange();
+		bool SearchRange();
 		void IntervalEnemy(const Vec3& position);
 		Vec3 GetPosition();
 		bool GetIntruderAlert();

@@ -35,8 +35,10 @@ namespace basecross {
 
 		float m_Stun;
 		bool m_IsStun;
+		bool m_DeadEffect;
 		Timer m_ComboTimer;
 		int m_ComboCount;
+		bool m_IsGround;
 
 		Vec3 m_StartPosition;
 
@@ -45,6 +47,8 @@ namespace basecross {
 		wstring m_CurrentAnimationKey;
 
 		Effekseer::Handle m_EffectHandle;
+		Effekseer::Handle m_EffectBombHandle;
+		Effekseer::Handle m_SmokeHandle;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -53,6 +57,7 @@ namespace basecross {
 		virtual void OnCreate();
 		virtual void OnAfterCreate()override;
 		virtual void OnUpdate();
+		virtual void OnSpawn();
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;

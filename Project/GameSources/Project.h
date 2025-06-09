@@ -1,6 +1,6 @@
 /*!
 @file Project.h
-@brief �R���e���c�p�̃w�b�_���܂Ƃ߂�
+@brief 
 */
 
 #pragma once
@@ -41,7 +41,7 @@
 #include "BoneCollision.h"
 #include "TargetBoard.h"
 #include "ResultCamera.h"
-#include "OpeningCamera.h"
+#include "ProductionCamera.h"
 #include "Icon.h"
 #include "Timer.h"
 #include "AreaOfEffect.h"
@@ -52,4 +52,7 @@
 #include "flyobject.h"
 #include "Citizen.h"
 #include "GameManager.h"
+#include"SkyBackGround.h"
+#include "Plane.h"
 #include "TutorialStage.h"
+

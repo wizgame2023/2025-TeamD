@@ -44,7 +44,7 @@ namespace basecross {
 			Vec3(0.25f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.5f, 0.0f)
+			Vec3(0.0f, -0.75f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
@@ -54,6 +54,7 @@ namespace basecross {
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"MOB");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
 		AddAnimation();
 
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());

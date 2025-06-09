@@ -94,7 +94,7 @@ namespace basecross {
 	}
 
 
-	void Enemy::SearchRange()
+	bool Enemy::SearchRange()
 	{
 		float searchDistance = 10.0f;
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
@@ -105,23 +105,25 @@ namespace basecross {
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ð‚ä‚Á‚­‚èŒü‚­
+				if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
+					RayCastHit hit;
+					RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Player"});
+					if (hit.m_Object) {
+						m_IntruderAlert = false;
+						return m_IntruderAlert;
+					}
+				}
 				m_IntruderAlert = true;
+				return m_IntruderAlert;
 			}
 			else {
 				m_IntruderAlert = false;
+				return m_IntruderAlert;
 			}
 		}
 		else {
 			m_IntruderAlert = false;
-		}
-
-		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-			RayCastHit hit;
-			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
-			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
-				m_IntruderAlert = false;
-			}
+			return m_IntruderAlert;
 		}
 	}
 

@@ -7,14 +7,14 @@
 #include "Project.h"
 
 namespace basecross {
-	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0),m_SpawnTimer(Timer(1.0f,false)) {}
+	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0),m_SpawnTimer(Timer(1.0f,false)), m_IsSpawn(true){}
 
 	void Spawner::OnCreate() {
 		Object::OnCreate();
 	}
 	void Spawner::OnUpdate() {
 		
-		if (m_Wave == -1) return;
+		if (m_Wave == -1 || !m_IsSpawn) return;
 		for (auto& wEnemy : m_Legions[m_Wave]->GetEnemyLegionGruop()) {
 			auto enemy = wEnemy.lock();
 			if (enemy && enemy->GetDrawActive()) {
@@ -44,6 +44,8 @@ namespace basecross {
 				PostEvent(0.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
 			}
 		}
+
+		m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 1, m_Legions.size() + 1);
 	}
 
 	void Spawner::AddLegion(const shared_ptr<Legion>& legion) {
@@ -62,13 +64,14 @@ namespace basecross {
 		if (enemy != nullptr) {
 			enemy->SetDrawActive(true);
 			enemy->SetUpdateActive(true);
+			enemy->OnSpawn();
 			m_EnemyCount++;
 		}
 	}
 	void Spawner::SpawnBoss() {
 		m_Boss->SetDrawActive(true);
 		m_Boss->SetUpdateActive(true);
-
+		m_Boss->OnSpawn();
 	}
 
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {
@@ -86,15 +89,22 @@ namespace basecross {
 			if (player != nullptr)
 			{
 				player->HealHP(player->GetMaxHP() / 4.0f);
-				if (m_Legions.size() <= m_Wave) {
-					SpawnBoss();
-					m_Wave = -1;
-					return;
-				}
-				else {
-
-				}
 			}
+			if (m_Legions.size() <= m_Wave) {
+
+				//ƒJƒƒ‰ˆÚ“®
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
+				m_Wave = -1;
+				return;
+			}
+			else {
+
+			}
+		}
+		else if (event->m_MsgStr == L"SpawnBoss")
+		{
+			SpawnBoss();
 		}
 	}
 }

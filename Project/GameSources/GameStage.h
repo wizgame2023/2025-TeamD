@@ -13,12 +13,21 @@ namespace basecross {
 	class NormalIcon;
 	class UltIcon;
 	class FollowCamera;
+	class HpSprite;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 		
+		enum CameraState
+		{
+			OPENINGCAMERA,
+			FOLLOWCAMERA,
+			RESULTCAMERA
+		};
+		int m_cameraState;
 		wstring m_MapFileName;
 		bool m_IsPose;
+		bool m_IsGameOver;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 		float m_TotalTime;
@@ -31,15 +40,15 @@ namespace basecross {
 		shared_ptr<NormalIcon> m_NormalIcon;
 		shared_ptr<NormalIcon> m_Icon;
 		shared_ptr<UltIcon> m_UltIcon;
-		shared_ptr<Sprite> m_PlayerHpBar;
-		shared_ptr<Sprite> m_PlayerHpBarBackGround;
+		shared_ptr<HpSprite> m_PlayerHpBar;
+		//shared_ptr<Sprite> m_PlayerHpBarBackGround;
 
-		shared_ptr<Sprite> m_BossHpBar;
-		shared_ptr<Sprite> m_BossHpBarBackGround;
+		shared_ptr<HpSprite> m_BossHpBar;
+		//shared_ptr<Sprite> m_BossHpBarBackGround;
 		shared_ptr<Sprite> m_BossText;
 
 
-		//„Éì„É•„Éº„ÅÆ‰ΩúÊàê
+		//ÉrÉÖÅ[ÇÃçÏê¨
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
@@ -51,16 +60,18 @@ namespace basecross {
 		void CreateUI();
 
 		void GameOver();
+		void GameOverCamera();
+		void BossAppaerCamera();
 		void GameClear();
 		void ToOpeningCamera();
 		shared_ptr<EffectManeger> m_Effect;
 		shared_ptr<FollowCamera> m_Camera;
-		shared_ptr<SingleView> m_OpeningCameraView;
-		shared_ptr<SingleView> m_CurrentCamera;
 
+		shared_ptr<SingleView> m_ProductionCameraView; 
+		shared_ptr<SingleView> m_MyCameraView;      
 	public:
-		//ÊßãÁØâ„Å®Á†¥Ê£Ñ
-		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false) {}
+		//ç\ízÇ∆îjä¸
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameOver(false){}
 		virtual ~GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
