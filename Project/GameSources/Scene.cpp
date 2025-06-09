@@ -96,6 +96,10 @@ namespace basecross {
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(m_StageFile[count->stageNum][count->level]);
 		}
+		else if (event->m_MsgStr == L"ToTutorialGameStage") {
+			ResetActiveStage<TutorialStage>(L"testStage_Y_Easy.csv");
+		}
+
 	}
 
 }
