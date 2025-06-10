@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -66,6 +66,7 @@ namespace basecross {
 			enemy->SetUpdateActive(true);
 			enemy->OnSpawn();
 			m_EnemyCount++;
+			//PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerEnemy");
 		}
 	}
 	void Spawner::SpawnBoss() {
@@ -77,14 +78,19 @@ namespace basecross {
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"EnemyDead") {
 			m_EnemyCount--;
+			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadWave");
 			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
 				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"EnemyDead");
 				SoundManager::Instance().PlaySE(L"SE_WAVE");
 				m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 2, m_Legions.size() + 1);
 			}
 		}
 		else if (event->m_MsgStr == L"WaveClear" && m_Wave != -1) {
 			m_Wave++;
+			if (m_Wave == 1) {
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerWave");
+			}
 			auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr)
 			{
@@ -92,7 +98,7 @@ namespace basecross {
 			}
 			if (m_Legions.size() <= m_Wave) {
 
-				//ƒJƒƒ‰ˆÚ“®
+				//ã‚«ãƒ¡ãƒ©ç§»å‹•
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
 				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;

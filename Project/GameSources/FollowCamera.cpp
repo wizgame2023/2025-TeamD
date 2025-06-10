@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief „Ç∑„Éº„É≥ÂÆü‰Ω
+@brief ÁπßÔΩ∑ÁπùÔΩºÁπùÔΩ≥Ëû≥ÊªâÔΩΩ
 */
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ namespace basecross {
 
 	void CameraCollision::OnUpdate() {
 		auto positionTransform = GetComponent<Transform>();
-		//í«îˆÉVÉXÉeÉÄ
+		//ËøΩÂ∞æ„Ç∑„Çπ„ÉÜ„É†
 		GetComponent<Transform>()->SetPosition(m_GetPosition);
 	}
 
@@ -59,7 +59,7 @@ namespace basecross {
 			auto collision = m_HitObject->GetComponent<Collision>();
 			AABB aabb = collision->GetEnclosingAABB();
 			aabb = AABB(aabb.m_Min - Vec3(0.5f, 0.5f, 0.5f), aabb.m_Max + Vec3(0.5f, 0.5f, 0.5f));
-			//íÍñ 
+			//Â∫ïÈù¢
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Min.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Min.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
@@ -134,17 +134,18 @@ namespace basecross {
 
 		m_Width = app->GetGameWidth();
 		m_Height = app->GetGameHeight();
-		// ÉQÅ[ÉÄäJénéûÇ…É}ÉEÉXÉJÅ[É\ÉãÇâÊñ ÇÃíÜâõÇ…à⁄ìÆÇ≥ÇπÇÈ
+		// „Ç≤„Éº„É†ÈñãÂßãÊôÇ„Å´„Éû„Ç¶„Çπ„Ç´„Éº„ÇΩ„É´„ÇíÁîªÈù¢„ÅÆ‰∏≠Â§Æ„Å´ÁßªÂãï„Åï„Åõ„Çã
 		int m_centerX = app->GetGameWidth() / 2;
 		int m_centerY = app->GetGameHeight() / 2;
 		::SetCursorPos(m_centerX, m_centerY);
 		m_HitCollision = false;
 
 		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
+		//m_Line = m_Stage->AddGameObject<LineCube>(0.01f, Col4(0, 0, 1, 1));
 	}
 
 	void FollowCamera::OnUpdate() {
-		//ÉRÉìÉgÉçÅ[ÉâÇÃéÊìæ
+		//„Ç≥„É≥„Éà„É≠„Éº„É©„ÅÆÂèñÂæó
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (cntlVec.bConnected) {
@@ -154,9 +155,9 @@ namespace basecross {
 			}
 		}
 
-		//ï˚å¸
+		//ÊñπÂêë
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
-		//à íu
+		//‰ΩçÁΩÆ
 		m_Position = m_PlayerTransform->GetPosition();
 
 		m_Eye = m_Position + m_Direction * 6.0f;
@@ -164,25 +165,27 @@ namespace basecross {
 
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
-		for (auto& obj : m_Stage->GetGameObjectVec()) {
+		//m_Line->SetLine(Line(m_PlayerTransform->GetPosition(), m_Eye));
+		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
+		/*for (auto& obj : m_Stage->GetGameObjectVec()) {
 
 			auto transform = obj->GetComponent<Transform>();
 			Vec3 position = transform->GetPosition();
 			Vec3 scale = transform->GetScale();
-			float leng = RayCast::CalcDistancePoint(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
+			float leng = RayCast::CalcDistancePoint(position, );
 			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
 			if (leng < lengths.length()) {
 				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
 			}
-		}
+		}*/
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
-			//é©ï™ÇÃà íu
+			//Ëá™ÂàÜ„ÅÆ‰ΩçÁΩÆ
 			SetEye(m_Eye);
-			//å©ÇƒÇ¢ÇÈÇ∆Ç±ÇÎ
+			//Ë¶ã„Å¶„ÅÑ„Çã„Å®„Åì„Çç
 			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
 		}
 		//LogCamera();
@@ -200,10 +203,10 @@ namespace basecross {
 
 		auto scene = App::GetApp()->GetScene<Scene>();
 
-		wstringstream Debug(L"\n");
-		Debug << L"\nForward.x : " << m_Direction.x
-			<< L"\nForward.y : " << m_Direction.y
-			<< L"\nForward.z : " << m_Direction.z << endl;
+		wstringstream Debug(L"¬•n");
+		Debug << L"¬•nForward.x : " << m_Direction.x
+			<< L"¬•nForward.y : " << m_Direction.y
+			<< L"¬•nForward.z : " << m_Direction.z << endl;
 
 		scene->SetDebugString(Debug.str());
 
