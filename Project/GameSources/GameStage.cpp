@@ -423,9 +423,11 @@ namespace basecross {
 			if (boss != nullptr) {
 				ScoreManager::Instance()->UpdateTime(elapsed);
 				bool isBossDraw = boss->GetDrawActive();
+				m_BossHpBar->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
 			}
 			else {
+				m_BossHpBar->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
 			}
 

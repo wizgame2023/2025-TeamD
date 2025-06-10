@@ -35,8 +35,9 @@ namespace basecross {
 		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps* m_MotionRate);
 		draw->AddAnimation(L"Crush", 1280, 90, false, fps* m_MotionRate);
 
-		draw->AddAnimation(L"Jump", 0, 1, false, fps);
-		draw->AddAnimation(L"Landing", 2430, 70, false, fps);
+		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
+		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps);
+		draw->AddAnimation(L"Landing", 2437, 67, false, fps);//16
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -129,8 +130,18 @@ namespace basecross {
 		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
-		if(GetAnimationFinish() && GetCurrentAnimationKey() == L"Landing"){
-			m_IsGround = true;
+		if (GetCurrentAnimationKey() == L"Landing") {
+			if (GetAnimationFinish()) {
+				m_IsGround = true;
+			}
+		}
+		if (GetCurrentAnimationKey() == L"Landing_First") {
+			if (GetAnimationFinish()) {
+				m_Effect->PlayEffect(m_SmokeHandle, L"Trampling", GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
+				m_Effect->SetScale(m_SmokeHandle, Vec3(0.5f));
+				m_Effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
+				SetAnimation(L"Landing");
+			}
 		}
 		if (!m_IsGround) return;
 
@@ -171,6 +182,9 @@ namespace basecross {
 		Vec3 position = GetPosition();
 		position.y += 10.0f;
 		SetPosition(position);
+		Vec3 direction = m_Intruder->GetPosition() - position;
+		float rotationY = atan2f(direction.x, direction.z);
+		SetRotation(Vec3(0, rotationY, 0));
 
 		SetAnimation(L"Jump");
 		m_IsGround = false;
@@ -193,11 +207,7 @@ namespace basecross {
 		}
 
 		if (GetCurrentAnimationKey() == L"Jump" && other->FindTag(L"Ground")) {
-			SetAnimation(L"Landing", true);
-			m_Effect->PlayEffect(m_SmokeHandle, L"Trampling", GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
-			m_Effect->SetScale(m_SmokeHandle, Vec3(0.5f));
-			m_Effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
-			m_IsGround = true;
+			SetAnimation(L"Landing_First", true);
 		}
 	}
 	void BossEnemy::Dead()
