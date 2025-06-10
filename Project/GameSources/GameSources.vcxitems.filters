@@ -84,6 +84,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Sound</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
+      <Filter>Headers</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
@@ -160,12 +163,15 @@
       <Filter>Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
       <Filter>Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
+      <Filter>Ballet</Filter>
+    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TutorialStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
+      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
       <Filter>TitleScene</Filter>
@@ -280,12 +289,18 @@
       <Filter>Ballet</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
-      <Filter>Ballet</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
+          <Filter>Ballet</Filter>
+    </ClInclude>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)ComputeShader.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)Shader\CSRayCast.hlsl" />
+      <Filter>Ballet</Filter>
+    </ClInclude>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>
