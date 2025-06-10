@@ -165,13 +165,11 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
       <Filter>Ballet</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ComputeShader.h" />
       <Filter>Ballet</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TutorialStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
@@ -291,7 +289,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
           <Filter>Ballet</Filter>
-    </ClInclude>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
@@ -300,7 +297,6 @@
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)Shader\CSRayCast.hlsl" />
       <Filter>Ballet</Filter>
-    </ClInclude>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>
