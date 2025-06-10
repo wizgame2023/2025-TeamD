@@ -1,6 +1,6 @@
 /*!
 @file EffectManager.cpp
-@brief �G�t�F�N�g�Ȃǎ���
+@brief エフェクトなど実体
 */
 
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	///	Effekseer�G�t�F�N�g�̃G�t�F�N�g
+	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
 	EffectManeger::EffectManeger(const shared_ptr<Stage>& stage) :
 		MultiParticle(stage),
@@ -17,10 +17,10 @@ namespace basecross {
 		m_Manager(nullptr)
 	{
 	}
-	EffectManeger::~EffectManeger() {
-		// ��ɃG�t�F�N�g�Ǘ��p�C���X�^���X��j��
+	EffectManeger::‾EffectManeger() {
+		// 先にエフェクト管理用インスタンスを破棄
 		m_Manager.Reset();
-		// ���ɕ`��p�C���X�^���X��j��
+		// 次に描画用インスタンスを破棄
 		m_renderer.Reset();
 	}
 
@@ -28,11 +28,7 @@ namespace basecross {
 		CreateEffectInterface();
 
 		auto& app = App::GetApp();
-		auto mediaPath = app->GetDataDirWString();
-		wstring effectPath = mediaPath + L"Effekt/";
-		RegisterResource(L"panchi", effectPath + L"panchi.efk");
 		SetAlphaActive(true);
-
 	}
 
 	void EffectManeger::OnUpdate()
@@ -40,7 +36,7 @@ namespace basecross {
 		auto elps = App::GetApp()->GetElapsedTime();
 		m_TotalTime += elps;
 
-		// �G�t�F�N�g�̍X�V�������s��
+		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
 
@@ -50,12 +46,12 @@ namespace basecross {
 	{
 		auto& camera = GetStage()->GetView()->GetTargetCamera();
 		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		// �G�t�F�N�g�̕`��J�n�������s���B
+		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
-		// �G�t�F�N�g�̕`����s���B
+		// エフェクトの描画を行う。
 		m_Manager->Draw();
 		
-		// �G�t�F�N�g�̕`��I���������s���B
+		// エフェクトの描画終了処理を行う。
 		m_renderer->EndRendering();
 	}
 
@@ -105,20 +101,20 @@ namespace basecross {
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();
-		// �`��p�C���X�^���X�̐���
+		// 描画用インスタンスの生成
 		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 8000);
-		// �G�t�F�N�g�Ǘ��p�C���X�^���X�̐���
+		// エフェクト管理用インスタンスの生成
 		m_Manager = Effekseer::Manager::Create(8000);
 
-		// �`��p�C���X�^���X����`��@�\��ݒ�
+		// 描画用インスタンスから描画機能を設定
 		m_Manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
 		m_Manager->SetRibbonRenderer(m_renderer->CreateRibbonRenderer());
 		m_Manager->SetRingRenderer(m_renderer->CreateRingRenderer());
 		m_Manager->SetTrackRenderer(m_renderer->CreateTrackRenderer());
 		m_Manager->SetModelRenderer(m_renderer->CreateModelRenderer());
 
-		// �`��p�C���X�^���X����e�N�X�`���̓Ǎ��@�\��ݒ�
-		// �Ǝ��g���\�A���݂̓t�@�C������ǂݍ���ł���B
+		// 描画用インスタンスからテクスチャの読込機能を設定
+		// 独自拡張可能、現在はファイルから読み込んでいる。
 		m_Manager->SetTextureLoader(m_renderer->CreateTextureLoader());
 		m_Manager->SetModelLoader(m_renderer->CreateModelLoader());
 		m_Manager->SetMaterialLoader(m_renderer->CreateMaterialLoader());
@@ -128,78 +124,91 @@ namespace basecross {
 	void EffectManeger::RegisterResource(const wstring& Key, const  wstring& FileName)
 	{
 		try {
+			// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 			if (Key == L"") {
 				throw BaseException(
-					L"",
-					L"if(Key == L\"\")",
-					L"Effect::RegisterResource()"
+					L"キーが空です。", // エラーメッセージ
+					L"if(Key == L¥"¥")", // エラー箇所
+					L"Effect::RegisterResource()" // 関数名
 				);
 			}
+
+			// Effekseerを使用してファイルからエフェクトデータを読み込む
 			auto Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
+
+			//--- 重複チェック ---
 			map<wstring, Effekseer::EffectRef>::iterator it;
+			// 1. 既に読み込まれたエフェクトデータと同じものではないかチェック
 			for (it = m_ResMap.begin(); it != m_ResMap.end(); it++) {
+				// 同じエフェクトデータが見つかった場合
 				if (it->second == Effect)
 				{
+					// キーも同じなら、既に登録済みのため正常終了（二重登録防止）
 					if (it->first == Key)
 					{
 						return;
 					}
-					wstring keyerr = Key;
+					// 同じエフェクトデータが「異なるキー」で登録されようとしているため、例外をスロー
+					wstring keyerr = L"同じエフェクトリソースが別のキー(" + it->first + L")で既に登録されています。キー: " + Key;
 					throw BaseException(
-						L"",
+						L"リソースの重複登録エラー",
 						keyerr,
 						L"Effect::RegisterResource()"
 					);
-
 				}
 			}
+
+			// 2. 指定されたキーが既に使われていないかチェック
 			it = m_ResMap.find(Key);
 			if (it != m_ResMap.end())
 			{
-				//�w��̖��O����������
-				//��O����
-				wstring keyerr = Key;
+				// 指定のキーが見つかった（キーが重複している）ため、例外をスロー
+				wstring keyerr = L"指定されたキー(" + Key + L")は既に使用されています。";
 				throw BaseException(
-					L"",
+					L"キーの重複エラー",
 					keyerr,
 					L"Effect::RegisterResource()"
 				);
 			}
 			else {
+				// チェックをすべてパスした場合、リソースマップに登録する
 				m_ResMap[Key] = Effect;
-
 			}
 		}
 		catch (...) {
+			// この関数内で発生した例外を、そのまま呼び出し元に投げる
 			throw;
 		}
 	}
 
-	Effekseer::EffectRef EffectManeger::GetEffectResource(const wstring& Key) const
+	Effekseer::EffectRef EffectManeger::GetEffectResource(const wstring& Key)
 	{
+		// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 		if (Key == L"") {
 			throw BaseException(
-				L"",
-				L"if(Key == L\"\")",
-				L"App::GetResource()"
-			);
-		}
-		map<wstring, Effekseer::EffectRef >::const_iterator  it;
-		it = m_ResMap.find(Key);
-		if (it != m_ResMap.end()) {
-			//�w��̖��O����������
-			return  it->second;
-		}
-		else {
-			//������Ȃ�
-			wstring keyerr = Key;
-			throw BaseException(
-				L"",
-				keyerr,
-				L"App::GetResource()"
+				L"キーが空です。",
+				L"if(Key == L¥"¥")",
+				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
 			);
 		}
 
+		// マップからキーを検索（const_iteratorを使用）
+		map<wstring, Effekseer::EffectRef >::const_iterator  it;
+		it = m_ResMap.find(Key);
+
+		if (it != m_ResMap.end()) {
+			// 指定のキーが見つかった場合、対応するエフェクトリソースを返す
+			return  it->second;
+		}
+		else {
+			// キーが見つからなかったため、例外をスロー
+			wstring keyerr = L"指定されたキー(" + Key + L")のリソースが見つかりません。";
+			throw BaseException(
+				L"リソース未発見エラー",
+				keyerr,
+				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
+			);
+		}
 	}
 
 	void EffectManeger::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
