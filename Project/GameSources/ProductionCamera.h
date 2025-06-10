@@ -86,7 +86,6 @@ namespace basecross {
 		Vec3 GetEyePos() const {
 			return m_eyePos;
 		}
-
 		void SetReverse(bool reverse) {
 			m_isReverse = reverse;
 		}
@@ -99,7 +98,6 @@ namespace basecross {
 		/// @return 動作が正常に実行された場合は true、失敗した場合は false を返します。
 		bool ExcuteBehavior(float totaltime, bool isReverse);
 		bool ExcuteEndBehavior(float totaltime);
-		bool ReturnBehavior(float totaltime);
 		// 終了状態エンタービヘイビア
 		void EndStateEnterBehavior();
 
@@ -124,8 +122,8 @@ namespace basecross {
 		}
 	};
     /// @brief ProductionCameraman オブジェクトの最初の状態を管理するステートクラスです。
-	class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>
-	{
+    class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
+    {  
 		float m_time; // 時間を参照する変数  
 		float m_endTime; // 時間を参照する変数  
 		bool m_return;
