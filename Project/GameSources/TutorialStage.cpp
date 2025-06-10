@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	/// <summary>
-	/// ƒŠƒ\[ƒX‚Ìì¬
+	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 	/// </summary>
 	void TutorialStage::CreateResource() {
 		auto& app = App::GetApp();
