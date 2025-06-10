@@ -117,7 +117,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -415,9 +415,6 @@ namespace basecross {
 
 		if (m_ResultMenu->IsOpen())
 		{
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			player->SetAnim(L"Clear");
-			player->UpdateAnim();
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
@@ -454,10 +451,18 @@ namespace basecross {
 			if (m_IsGameStater == 1)
 			{
 				m_ResultMenu->Open();
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				player->SetAnim(L"Clear");
+				player->UpdateAnim();
+
 			}
 			else if (m_IsGameStater == 2)
 			{
 				m_GameOverMenu->Open();
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				player->SetAnim(L"Died");
+				player->UpdateAnim();
+
 			}
 			else 
 			{

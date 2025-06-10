@@ -361,3 +361,9 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+
+# git diff, git show 時に文字コード変換
+[diff "cp932"]
+    textconv=iconv -f cp932 -t utf-8
+[diff "sjis"]
+    textconv=iconv -f sjis -t utf-8
