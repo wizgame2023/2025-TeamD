@@ -17,7 +17,7 @@ namespace basecross {
 		m_Manager(nullptr)
 	{
 	}
-	EffectManeger::‾EffectManeger() {
+	EffectManeger::~EffectManeger() {
 		// 先にエフェクト管理用インスタンスを破棄
 		m_Manager.Reset();
 		// 次に描画用インスタンスを破棄
@@ -125,8 +125,8 @@ namespace basecross {
 			// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 			if (Key == L"") {
 				throw BaseException(
-					L"キーが空です。", // エラーメッセージ
-					L"if(Key == L¥"¥")", // エラー箇所
+					L"", // エラーメッセージ
+					L"if(Key == L¥"")", // エラー箇所
 					L"Effect::RegisterResource()" // 関数名
 				);
 			}
@@ -161,7 +161,7 @@ namespace basecross {
 			if (it != m_ResMap.end())
 			{
 				// 指定のキーが見つかった（キーが重複している）ため、例外をスロー
-				wstring keyerr = L"指定されたキー(" + Key + L")は既に使用されています。";
+				wstring keyerr = L"";
 				throw BaseException(
 					L"キーの重複エラー",
 					keyerr,
@@ -184,8 +184,8 @@ namespace basecross {
 		// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 		if (Key == L"") {
 			throw BaseException(
-				L"キーが空です。",
-				L"if(Key == L¥"¥")",
+				L"",
+				L"if(Key == "")",
 				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
 			);
 		}
@@ -200,9 +200,9 @@ namespace basecross {
 		}
 		else {
 			// キーが見つからなかったため、例外をスロー
-			wstring keyerr = L"指定されたキー(" + Key + L")のリソースが見つかりません。";
+			wstring keyerr = L"指定されたキー(" + Key + L")のリソースが見つかりません。\n";
 			throw BaseException(
-				L"リソース未発見エラー",
+				L"",
 				keyerr,
 				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
 			);
