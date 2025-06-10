@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©
 */
 
 #pragma once
@@ -8,58 +8,58 @@
 
 namespace basecross {
 	/// @brief ProductionCameraman 
-	/// ƒNƒ‰ƒX‚ÍAƒJƒƒ‰‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚â‹““®‚ğ§Œä‚·‚é‚½‚ß‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Å‚·B
-	/// ƒJƒƒ‰‚ÌˆÊ’u‚â’‹“_‚ÌŠÇ—AƒAƒjƒ[ƒVƒ‡ƒ“‚ÌŠJnAó‘Ô‘JˆÚ‚ÌŠÇ—‚È‚Ç‚ğs‚¢‚Ü‚·B
+	/// ã‚¯ãƒ©ã‚¹ã¯ã€ã‚«ãƒ¡ãƒ©ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚„æŒ™å‹•ã‚’åˆ¶å¾¡ã™ã‚‹ãŸã‚ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã§ã™ã€‚
+	/// ã‚«ãƒ¡ãƒ©ã®ä½ç½®ã‚„æ³¨è¦–ç‚¹ã®ç®¡ç†ã€ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®é–‹å§‹ã€çŠ¶æ…‹é·ç§»ã®ç®¡ç†ãªã©ã‚’è¡Œã„ã¾ã™ã€‚
 	class ProductionCameraman : public GameObject {
-		Vec3 m_startPos;                          // ƒJƒƒ‰‚ÌŠJnˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_endPos;                            // ƒJƒƒ‰‚ÌI—¹ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_atStartPos;                        // ’‹“_‚ÌŠJnˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_atEndPos;                          // ’‹“_‚ÌI—¹ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_atPos;                             // Œ»İ‚Ì’‹“_ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_eyePos;                            // Œ»İ‚ÌƒJƒƒ‰ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_secondEndPos;                      // “ñŸI—¹ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
-		Vec3 m_secondAtEndPos;                    // “ñŸ’‹“_I—¹ˆÊ’u‚ğ•Û‚·‚éƒxƒNƒgƒ‹
+		Vec3 m_startPos;                          // ã‚«ãƒ¡ãƒ©ã®é–‹å§‹ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_endPos;                            // ã‚«ãƒ¡ãƒ©ã®çµ‚äº†ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_atStartPos;                        // æ³¨è¦–ç‚¹ã®é–‹å§‹ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_atEndPos;                          // æ³¨è¦–ç‚¹ã®çµ‚äº†ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_atPos;                             // ç¾åœ¨ã®æ³¨è¦–ç‚¹ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_eyePos;                            // ç¾åœ¨ã®ã‚«ãƒ¡ãƒ©ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_secondEndPos;                      // äºŒæ¬¡çµ‚äº†ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
+		Vec3 m_secondAtEndPos;                    // äºŒæ¬¡æ³¨è¦–ç‚¹çµ‚äº†ä½ç½®ã‚’ä¿æŒã™ã‚‹ãƒ™ã‚¯ãƒˆãƒ«
 
-		float m_totalTime;                        // ‡ŒvŠÔ‚ğ•Û‚·‚é•Ï”
-		float m_endcurrntTime;                        // ‡ŒvŠÔ‚ğ•Û‚·‚é•Ï”
-		float m_tempTotalTime;                    // ˆê“I‚È‡ŒvŠÔ‚ğ•Û‚·‚é•Ï”
+		float m_totalTime;                        // åˆè¨ˆæ™‚é–“ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
+		float m_endcurrntTime;                        // åˆè¨ˆæ™‚é–“ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
+		float m_tempTotalTime;                    // ä¸€æ™‚çš„ãªåˆè¨ˆæ™‚é–“ã‚’ä¿æŒã™ã‚‹å¤‰æ•°
 		float m_currntTime;
 
-		bool m_switchToMainCamera; // ƒƒCƒ“ƒJƒƒ‰‚ÉØ‚è‘Ö‚¦‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
-		bool m_finished;        // ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI—¹‚µ‚½‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+		bool m_switchToMainCamera; // ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã«åˆ‡ã‚Šæ›¿ãˆã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+		bool m_finished;        // ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚äº†ã—ãŸã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 
-		// ƒXƒe[ƒgƒ}ƒVƒ“
+		// ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³
 		unique_ptr< StateMachine<ProductionCameraman> >  m_StateMachine;
 
 	public:
-		// ˆÚ“®ƒ^ƒCƒv‚ğ’è‹`i‰ñ“] or ’¼üj
+		// ç§»å‹•ã‚¿ã‚¤ãƒ—ã‚’å®šç¾©ï¼ˆå›è»¢ or ç›´ç·šï¼‰
 		enum MoveType {
-			Linear = 0, // ’¼üˆÚ“®
-			Orbit = 1   // ‰~‹O“¹iŒ»İ‚Ì“®‚«j
+			Linear = 0, // ç›´ç·šç§»å‹•
+			Orbit = 1   // å††è»Œé“ï¼ˆç¾åœ¨ã®å‹•ãï¼‰
 		};
 
-		// OpeningCameraman ƒNƒ‰ƒX‚Ìƒƒ“ƒo•Ï”
+		// OpeningCameraman ã‚¯ãƒ©ã‚¹ã®ãƒ¡ãƒ³ãƒå¤‰æ•°
 		int m_moveType;
 
-		// \’z‚Æ”jŠü
+		// æ§‹ç¯‰ã¨ç ´æ£„
 		ProductionCameraman::ProductionCameraman(const shared_ptr<Stage>& StagePtr);
-		ProductionCameraman::~ProductionCameraman() {}
+		ProductionCameraman::â€¾ProductionCameraman() {}
 
-		// ‰Šú‰»
+		// åˆæœŸåŒ–
 		virtual void OnCreate() override;
 
-		// ‘€ì
+		// æ“ä½œ
 		virtual void OnUpdate() override;
 
-		/// @brief ƒJƒƒ‰‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğŠJn‚·‚éB
-		/// @param startPos ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn‚ÌƒJƒƒ‰ˆÊ’uB
-		/// @param endPos ƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚ÌƒJƒƒ‰ˆÊ’uB
-		/// @param atStartPos ƒAƒjƒ[ƒVƒ‡ƒ“ŠJn‚Ì’‹“_ˆÊ’uB
-		/// @param atEndPos ƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚Ì’‹“_ˆÊ’uB
-		/// @param secondEndPos 2’iŠK–Ú‚ÌƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚ÌƒJƒƒ‰ˆÊ’uB
-		/// @param secondAtEndPos 2’iŠK–Ú‚ÌƒAƒjƒ[ƒVƒ‡ƒ“I—¹‚Ì’‹“_ˆÊ’uB
-		/// @param totalTime ƒAƒjƒ[ƒVƒ‡ƒ“‘S‘Ì‚ÌÄ¶ŠÔi•b’PˆÊjB
-		/// @param switchToMainCamera ƒAƒjƒ[ƒVƒ‡ƒ“I—¹Œã‚ÉƒƒCƒ“ƒJƒƒ‰‚ÖØ‚è‘Ö‚¦‚é‚©‚Ç‚¤‚©B
+		/// @brief ã‚«ãƒ¡ãƒ©ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é–‹å§‹ã™ã‚‹ã€‚
+		/// @param startPos ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®ã€‚
+		/// @param endPos ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®ã€‚
+		/// @param atStartPos ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³é–‹å§‹æ™‚ã®æ³¨è¦–ç‚¹ä½ç½®ã€‚
+		/// @param atEndPos ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®æ³¨è¦–ç‚¹ä½ç½®ã€‚
+		/// @param secondEndPos 2æ®µéšç›®ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®ã€‚
+		/// @param secondAtEndPos 2æ®µéšç›®ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†æ™‚ã®æ³¨è¦–ç‚¹ä½ç½®ã€‚
+		/// @param totalTime ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å…¨ä½“ã®å†ç”Ÿæ™‚é–“ï¼ˆç§’å˜ä½ï¼‰ã€‚
+		/// @param switchToMainCamera ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³çµ‚äº†å¾Œã«ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã¸åˆ‡ã‚Šæ›¿ãˆã‚‹ã‹ã©ã†ã‹ã€‚
 		void StartOpeningAnimation(
 			const Vec3& startPos,         
 			const Vec3& endPos,           
@@ -72,8 +72,8 @@ namespace basecross {
 			const bool& switchToMainCamera
 		);
 
-		/// @brief ProductionCameraman—p‚ÌStateMachine‚Ö‚ÌQÆ‚ğæ“¾‚µ‚Ü‚·B
-		/// @return ProductionCameramanŒ^‚ÌStateMachine‚Ö‚Ìconst unique_ptrQÆB
+		/// @brief ProductionCameramanç”¨ã®StateMachineã¸ã®å‚ç…§ã‚’å–å¾—ã—ã¾ã™ã€‚
+		/// @return ProductionCameramanå‹ã®StateMachineã¸ã®const unique_ptrå‚ç…§ã€‚
 		const unique_ptr<StateMachine<ProductionCameraman>>& GetStateMachine() {
 			return m_StateMachine;
 		}
@@ -86,26 +86,26 @@ namespace basecross {
 			return m_eyePos;
 		}
 
-		/// @brief ƒS[ƒ‹i“ü‚Ì‹““®‚ğÀs‚µ‚Ü‚·B
+		/// @brief ã‚´ãƒ¼ãƒ«é€²å…¥æ™‚ã®æŒ™å‹•ã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
 		void ToGoalEnterBehavior();
 
-		/// @brief w’è‚³‚ê‚½‡ŒvŠÔ‚ÉŠî‚Ã‚¢‚Ä“®ì‚ğÀs‚µ‚Ü‚·B
-		/// @param totaltime “®ì‚ğÀs‚·‚é‚½‚ß‚Ì‡ŒvŠÔi•b’PˆÊjB
-		/// @return “®ì‚ª³í‚ÉÀs‚³‚ê‚½ê‡‚Í trueA¸”s‚µ‚½ê‡‚Í false ‚ğ•Ô‚µ‚Ü‚·B
+		/// @brief æŒ‡å®šã•ã‚ŒãŸåˆè¨ˆæ™‚é–“ã«åŸºã¥ã„ã¦å‹•ä½œã‚’å®Ÿè¡Œã—ã¾ã™ã€‚
+		/// @param totaltime å‹•ä½œã‚’å®Ÿè¡Œã™ã‚‹ãŸã‚ã®åˆè¨ˆæ™‚é–“ï¼ˆç§’å˜ä½ï¼‰ã€‚
+		/// @return å‹•ä½œãŒæ­£å¸¸ã«å®Ÿè¡Œã•ã‚ŒãŸå ´åˆã¯ trueã€å¤±æ•—ã—ãŸå ´åˆã¯ false ã‚’è¿”ã—ã¾ã™ã€‚
 		bool ExcuteBehavior(float totaltime);
 		bool ExcuteEndBehavior(float totaltime);
-		// I—¹ó‘ÔƒGƒ“ƒ^[ƒrƒwƒCƒrƒA
+		// çµ‚äº†çŠ¶æ…‹ã‚¨ãƒ³ã‚¿ãƒ¼ãƒ“ãƒ˜ã‚¤ãƒ“ã‚¢
 		void EndStateEnterBehavior();
 
-		/// @brief ˆÚ“®ƒ^ƒCƒv‚ğw’è‚³‚ê‚½’l‚Éİ’è‚µ‚Ü‚·B
-		/// @param type İ’è‚·‚éˆÚ“®ƒ^ƒCƒv‚ğ•\‚·®”’lB0‚Í’¼üˆÚ“®A1‚Í‰~‹O“¹ˆÚ“®‚ğw’è‚µ‚Ü‚·B
+		/// @brief ç§»å‹•ã‚¿ã‚¤ãƒ—ã‚’æŒ‡å®šã•ã‚ŒãŸå€¤ã«è¨­å®šã—ã¾ã™ã€‚
+		/// @param type è¨­å®šã™ã‚‹ç§»å‹•ã‚¿ã‚¤ãƒ—ã‚’è¡¨ã™æ•´æ•°å€¤ã€‚0ã¯ç›´ç·šç§»å‹•ã€1ã¯å††è»Œé“ç§»å‹•ã‚’æŒ‡å®šã—ã¾ã™ã€‚
 		void SetMoveType(const int type)
 		{
 			if (type == 0) {
-				m_moveType = MoveType::Linear; // ’¼üˆÚ“®
+				m_moveType = MoveType::Linear; // ç›´ç·šç§»å‹•
 			}
 			else if (type == 1) {
-				m_moveType = MoveType::Orbit; // ‰~‹O“¹ˆÚ“®
+				m_moveType = MoveType::Orbit; // å††è»Œé“ç§»å‹•
 			}
 		}
 
@@ -113,13 +113,13 @@ namespace basecross {
 			return m_finished;
 		}
 	};
-    /// @brief ProductionCameraman ƒIƒuƒWƒFƒNƒg‚ÌÅ‰‚Ìó‘Ô‚ğŠÇ—‚·‚éƒXƒe[ƒgƒNƒ‰ƒX‚Å‚·B
+    /// @brief ProductionCameraman ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æœ€åˆã®çŠ¶æ…‹ã‚’ç®¡ç†ã™ã‚‹ã‚¹ãƒ†ãƒ¼ãƒˆã‚¯ãƒ©ã‚¹ã§ã™ã€‚
     class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
     {  
-		float m_time; // ŠÔ‚ğQÆ‚·‚é•Ï”  
-		float m_endTime; // ŠÔ‚ğQÆ‚·‚é•Ï”  
+		float m_time; // æ™‚é–“ã‚’å‚ç…§ã™ã‚‹å¤‰æ•°  
+		float m_endTime; // æ™‚é–“ã‚’å‚ç…§ã™ã‚‹å¤‰æ•°  
 
-        // ƒRƒ“ƒXƒgƒ‰ƒNƒ^‚Åƒƒ“ƒo[•Ï”‚ğ‰Šú‰»‚·‚é  
+        // ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ã§ãƒ¡ãƒ³ãƒãƒ¼å¤‰æ•°ã‚’åˆæœŸåŒ–ã™ã‚‹  
         ProductionCameramanToFirstState(float& time, float& endtime) : m_time(time), m_endTime(endtime) {}
 
     public:  
@@ -129,10 +129,10 @@ namespace basecross {
         virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;  
     };
 
-	/// @brief ProductionCameramanEndState ƒNƒ‰ƒX‚ÍAProductionCameraman ƒIƒuƒWƒFƒNƒg‚ÌI—¹ó‘Ô‚ğŠÇ—‚µ‚Ü‚·B
+	/// @brief ProductionCameramanEndState ã‚¯ãƒ©ã‚¹ã¯ã€ProductionCameraman ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®çµ‚äº†çŠ¶æ…‹ã‚’ç®¡ç†ã—ã¾ã™ã€‚
 	class ProductionCameramanEndState : public ObjState<ProductionCameraman>
 	{
-		float& m_time; // ŠÔ‚ğQÆ‚·‚é•Ï”  
+		float& m_time; // æ™‚é–“ã‚’å‚ç…§ã™ã‚‹å¤‰æ•°  
 
 		ProductionCameramanEndState(float& time) : m_time(time) {}
 	public:
@@ -142,25 +142,25 @@ namespace basecross {
 		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj)override;
 	};
 
-	/// @brief ProductionCamera ƒNƒ‰ƒX‚Í Camera ƒNƒ‰ƒX‚ğŒp³‚µAƒJƒƒ‰‚Ì¶¬‚âXVˆ—‚ğ’ñ‹Ÿ‚µ‚Ü‚·B
+	/// @brief ProductionCamera ã‚¯ãƒ©ã‚¹ã¯ Camera ã‚¯ãƒ©ã‚¹ã‚’ç¶™æ‰¿ã—ã€ã‚«ãƒ¡ãƒ©ã®ç”Ÿæˆã‚„æ›´æ–°å‡¦ç†ã‚’æä¾›ã—ã¾ã™ã€‚
 	class ProductionCamera : public Camera {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		ProductionCamera();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~ProductionCamera();
+		virtual â€¾ProductionCamera();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief XVˆ—
-		@return	‚È‚µ
+		@brief æ›´æ–°å‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;

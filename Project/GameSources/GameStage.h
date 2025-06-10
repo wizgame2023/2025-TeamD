@@ -48,7 +48,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_BossText;
 
 
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
@@ -70,9 +70,9 @@ namespace basecross {
 		shared_ptr<SingleView> m_ProductionCameraView; 
 		shared_ptr<SingleView> m_MyCameraView;      
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameOver(false){}
-		virtual ~GameStage() {}
+		virtual â€¾GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
