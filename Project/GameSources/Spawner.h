@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -20,7 +20,7 @@ namespace basecross {
 		bool m_IsSpawn;
 	public:
 		Spawner(const shared_ptr<Stage>& stage);
-		virtual  ~Spawner(){}
+		virtual  窶ｾSpawner(){}
 
 		virtual void OnCreate()override;
 		virtual void OnAfterCreate()override;
