@@ -177,6 +177,7 @@ namespace basecross {
 		m_atPos;//カメラ最後の位置
 		m_totalTime;
 	}
+
 	// カメラ移動の処理（回転 or 直線）※順再生・逆再生対応
 	bool ProductionCameraman::ExcuteBehavior(float totaltime, bool isReverse) {
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
@@ -242,11 +243,6 @@ namespace basecross {
 		if (m_endcurrntTime > totaltime) {
 			return true;
 		}
-		return false;
-	}
-
-	bool ProductionCameraman::ReturnBehavior(float totaltime)
-	{
 		return false;
 	}
 
