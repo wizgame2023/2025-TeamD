@@ -36,7 +36,6 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		float elapsedTime = GetGameElapsed();
-
 		if (m_KnockBack)
 		{
 			m_KnockBackTime -= elapsedTime;
@@ -107,7 +106,7 @@ namespace basecross {
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
 				if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
 					RayCastHit hit;
-					RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Player"});
+					
 					if (hit.m_Object) {
 						m_IntruderAlert = false;
 						return m_IntruderAlert;
