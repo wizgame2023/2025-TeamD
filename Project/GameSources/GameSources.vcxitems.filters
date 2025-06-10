@@ -264,7 +264,6 @@
       <Filter>Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
-
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
@@ -276,17 +275,18 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
-
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
-
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>
-
   </ItemGroup>
 </Project>
