@@ -12,7 +12,7 @@ namespace basecross {
 		Camera()
 	{
 	}
-	ProductionCamera::~ProductionCamera() {}
+	ProductionCamera::â€¾ProductionCamera() {}
 
 
 	void ProductionCamera::OnCreate() {
@@ -34,21 +34,53 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
 	//--------------------------------------------------------------------------------------
-	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time, float& endtime) {
-		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time, endtime));
-		instance->m_time = time; // ŠÔ‚ğ•Û‘¶  		
-		instance->m_endTime = endtime; // ŠÔ‚ğ•Û‘¶  		
+	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time, float& endtime, bool toReturn) {
+		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time, endtime, toReturn));
+		instance->m_time = time; // æ™‚é–“ã‚’ä¿å­˜  		
+		instance->m_endTime = endtime; // æ™‚é–“ã‚’ä¿å­˜  		
+		instance->m_return = toReturn; // æ™‚é–“ã‚’ä¿å­˜  		
 		return instance;
 	}
 	void ProductionCameramanToFirstState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
 		Obj->ToGoalEnterBehavior();
 	}
 	void ProductionCameramanToFirstState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
-		if (Obj->ExcuteBehavior(m_time)) {
-			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+		if (m_return)
+		{
+			if (Obj->ExcuteBehavior(m_time, false)) {
+				Obj->GetStateMachine()->ChangeState(ProductionCameramanToReturnState::Instance(m_time, m_endTime));
+			}
+		}
+		else {
+			if (Obj->ExcuteBehavior(m_time, false)) {
+				Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+			}
 		}
 	}
 	void ProductionCameramanToFirstState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
+	}
+
+	//--------------------------------------------------------------------------------------
+	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
+	//--------------------------------------------------------------------------------------
+	shared_ptr<ProductionCameramanToReturnState> ProductionCameramanToReturnState::Instance(float& time, float& endtime) {
+		static shared_ptr<ProductionCameramanToReturnState> instance(new ProductionCameramanToReturnState(time, endtime));
+		instance->m_time = time; // æ™‚é–“ã‚’ä¿å­˜  		
+		instance->m_endTime = endtime; // æ™‚é–“ã‚’ä¿å­˜  		
+		return instance;
+	}
+	void ProductionCameramanToReturnState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
+		Obj->ToGoalEnterBehavior();
+		Obj->ResetTime();
+		
+	}
+	void ProductionCameramanToReturnState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
+		if (Obj->ExcuteBehavior(m_time / 2, true)) {
+			m_endTime = 0;
+			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+		}
+	}
+	void ProductionCameramanToReturnState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
 	}
 
 	//--------------------------------------------------------------------------------------
@@ -56,7 +88,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	shared_ptr<ProductionCameramanEndState> ProductionCameramanEndState::Instance(float& time) { 
 		static shared_ptr<ProductionCameramanEndState> instance(new ProductionCameramanEndState(time));
-		instance->m_time = time; // ŠÔ‚ğ•Û‘¶  		
+		instance->m_time = time; // æ™‚é–“ã‚’ä¿å­˜  		
 		return instance;
 	}
 	void ProductionCameramanEndState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
@@ -77,24 +109,26 @@ namespace basecross {
 		m_moveType(MoveType::Linear),
 		m_tempTotalTime(0.0f),
 		m_totalTime(0.0f),
-		m_switchToMainCamera(true) // ƒƒCƒ“ƒJƒƒ‰‚ÉØ‚è‘Ö‚¦‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+		m_switchToMainCamera(true), // ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã«åˆ‡ã‚Šæ›¿ãˆã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
+		m_isReverse(false)
 	{}
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void ProductionCameraman::OnCreate() {
-		//‰ŠúˆÊ’u‚È‚Ç‚Ìİ’è
+		//åˆæœŸä½ç½®ãªã©ã®è¨­å®š
 		auto ptr = AddComponent<Transform>();
-		ptr->SetScale(0.25f, 0.25f, 0.25f);	//’¼Œa25ƒZƒ“ƒ`‚Ì‹…‘Ì
+		ptr->SetScale(0.25f, 0.25f, 0.25f);	//ç›´å¾„25ã‚»ãƒ³ãƒã®çƒä½“
 		ptr->SetRotation(0.0f, 0.0f, 0.0f);
 		ptr->SetPosition(m_startPos);
-		//ƒXƒe[ƒgƒ}ƒVƒ“‚Ì\’z
+		//ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã®æ§‹ç¯‰
 		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
+		AddTag(L"Camera");
 	}
 
-	//‘€ì
+	//æ“ä½œ
 	void ProductionCameraman::OnUpdate() {
-		//ƒXƒe[ƒgƒ}ƒVƒ“‚ÌUpdate‚ğs‚¤
-		//‚±‚Ì’†‚ÅƒXƒe[ƒg‚ÌØ‚è‘Ö‚¦‚ªs‚í‚ê‚é
+		//ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã®Updateã‚’è¡Œã†
+		//ã“ã®ä¸­ã§ã‚¹ãƒ†ãƒ¼ãƒˆã®åˆ‡ã‚Šæ›¿ãˆãŒè¡Œã‚ã‚Œã‚‹
 		if (!m_finished)
 		{
 			m_StateMachine->Update();
@@ -102,20 +136,20 @@ namespace basecross {
 	}
 
 
-	// ƒJƒƒ‰‚ÌƒI[ƒvƒjƒ“ƒO‰‰o‚ğŠJniˆÊ’u‚â‹ü‚ğˆø”‚Åw’è‰Â”\j
+	// ã‚«ãƒ¡ãƒ©ã®ã‚ªãƒ¼ãƒ—ãƒ‹ãƒ³ã‚°æ¼”å‡ºã‚’é–‹å§‹ï¼ˆä½ç½®ã‚„è¦–ç·šã‚’å¼•æ•°ã§æŒ‡å®šå¯èƒ½ï¼‰
 	void ProductionCameraman::StartOpeningAnimation(
-		const Vec3& startPos,     // •âŠÔŠJn‚ÌƒJƒƒ‰ˆÊ’u
-		const Vec3& endPos,       // •âŠÔI—¹‚ÌƒJƒƒ‰ˆÊ’u
-		const Vec3& atStartPos,   // •âŠÔŠJn‚Ì‹üƒ^[ƒQƒbƒg
-		const Vec3& atEndPos,     // •âŠÔI—¹‚Ì‹üƒ^[ƒQƒbƒg
-		const Vec3& secondEndPos, // Œã”¼ƒtƒF[ƒY—p‚ÌƒJƒƒ‰ˆÊ’u
-		const Vec3& secondAtEndPos, // Œã”¼ƒtƒF[ƒY—p‚Ì‹üƒ^[ƒQƒbƒg
-		float totalTime,           // •âŠÔ‚É‚©‚©‚é‘ŠÔ
-		float endtotalTime,           // •âŠÔ‚É‚©‚©‚é‘ŠÔ
-		const bool& switchToMainCamera// ƒƒCƒ“ƒJƒƒ‰‚ÉØ‚è‘Ö‚¦‚é‚©‚Ç‚¤‚©‚Ìƒtƒ‰ƒO
+		const Vec3& startPos,     // è£œé–“é–‹å§‹æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®
+		const Vec3& endPos,       // è£œé–“çµ‚äº†æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®
+		const Vec3& atStartPos,   // è£œé–“é–‹å§‹æ™‚ã®è¦–ç·šã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+		const Vec3& atEndPos,     // è£œé–“çµ‚äº†æ™‚ã®è¦–ç·šã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+		const Vec3& secondEndPos, // å¾ŒåŠãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®ã‚«ãƒ¡ãƒ©ä½ç½®
+		const Vec3& secondAtEndPos, // å¾ŒåŠãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®è¦–ç·šã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
+		float totalTime,           // è£œé–“ã«ã‹ã‹ã‚‹ç·æ™‚é–“
+		float endtotalTime,           // è£œé–“ã«ã‹ã‹ã‚‹ç·æ™‚é–“
+		const bool& switchToMainCamera// ãƒ¡ã‚¤ãƒ³ã‚«ãƒ¡ãƒ©ã«åˆ‡ã‚Šæ›¿ãˆã‚‹ã‹ã©ã†ã‹ã®ãƒ•ãƒ©ã‚°
 	) {
-		m_finished = false; 
-		// ˆÊ’uE‹ü‚Ì‰Šú‰»
+		m_finished = false;
+		// ä½ç½®ãƒ»è¦–ç·šã®åˆæœŸåŒ–
 		m_startPos = startPos;
 		m_endPos = endPos;
 		m_atStartPos = atStartPos;
@@ -126,26 +160,25 @@ namespace basecross {
 		m_endcurrntTime = 0.0f;
 		m_switchToMainCamera = switchToMainCamera;
 		m_currntTime = 0.0f;
-		// ƒXƒe[ƒgƒ}ƒVƒ“‚ğ‰Šúó‘Ô‚É•ÏX
+		// ã‚¹ãƒ†ãƒ¼ãƒˆãƒã‚·ãƒ³ã‚’åˆæœŸçŠ¶æ…‹ã«å¤‰æ›´
 		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
-		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime, endtotalTime));
+		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime, endtotalTime, m_isReverse));
 
-		// ‰Šú‹ü‚ÆˆÊ’u‚Ìİ’è
+		// åˆæœŸè¦–ç·šã¨ä½ç½®ã®è¨­å®š
 		m_eyePos = m_startPos;
 		m_atPos = m_atStartPos;
 	}
 
-	void ProductionCameraman::ToGoalEnterBehavior() { //Œã”¼•”
-		m_startPos; //ƒJƒƒ‰‚ÌÅ‰‚ÌˆÊ’u
-		m_endPos; //ƒJƒƒ‰‚ÌÅŒã‚ÌˆÊ’u
-		m_atStartPos; //Å‰‚ÉŒ©‚Ä‚é•ûŠp
-		m_atEndPos; //ÅŒã‚ÉŒ©‚Ä‚é•ûŠp
-		m_atPos;//ƒJƒƒ‰ÅŒã‚ÌˆÊ’u
+	void ProductionCameraman::ToGoalEnterBehavior() { //å¾ŒåŠéƒ¨
+		m_startPos; //ã‚«ãƒ¡ãƒ©ã®æœ€åˆã®ä½ç½®
+		m_endPos; //ã‚«ãƒ¡ãƒ©ã®æœ€å¾Œã®ä½ç½®
+		m_atStartPos; //æœ€åˆã«è¦‹ã¦ã‚‹æ–¹è§’
+		m_atEndPos; //æœ€å¾Œã«è¦‹ã¦ã‚‹æ–¹è§’
+		m_atPos;//ã‚«ãƒ¡ãƒ©æœ€å¾Œã®ä½ç½®
 		m_totalTime;
 	}
-
-	// ƒJƒƒ‰ˆÚ“®‚Ìˆ—i‰ñ“] or ’¼üj
-	bool ProductionCameraman::ExcuteBehavior(float totaltime) {
+	// ã‚«ãƒ¡ãƒ©ç§»å‹•ã®å‡¦ç†ï¼ˆå›è»¢ or ç›´ç·šï¼‰â€»é †å†ç”Ÿãƒ»é€†å†ç”Ÿå¯¾å¿œ
+	bool ProductionCameraman::ExcuteBehavior(float totaltime, bool isReverse) {
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		m_currntTime += ElapsedTime;
 
@@ -153,28 +186,48 @@ namespace basecross {
 			return true;
 		}
 
+		// å†ç”Ÿæ–¹å‘ã«å¿œã˜ã¦é–‹å§‹/çµ‚äº†åœ°ç‚¹ã‚’æ±ºå®š
+		const Vec3& eyeStart = isReverse ? m_endPos : m_startPos;
+		const Vec3& eyeEnd = isReverse ? m_startPos : m_endPos;
+		const Vec3& atStart = isReverse ? m_atEndPos : m_atStartPos;
+		const Vec3& atEnd = isReverse ? m_atStartPos : m_atEndPos;
+
 		if (m_moveType == MoveType::Orbit) {
-			// ‰~‹O“¹‚Å‚ÌˆÚ“®
+			// å††è»Œé“ã§ã®ç§»å‹•
 			float startDistance = (m_startPos - m_atStartPos).length();
 			float endDistance = (m_endPos - m_atEndPos).length();
-			float distance = Lerp::CalculateLerp(startDistance, endDistance, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 
-			float initialAngle = atan2(m_startPos.z - m_atStartPos.z, m_startPos.x - m_atStartPos.x);
+			// isReverseã«å¿œã˜ã¦é–‹å§‹/çµ‚äº†è·é›¢ã‚’è¨­å®š
+			float currentStartDistance = isReverse ? endDistance : startDistance;
+			float currentEndDistance = isReverse ? startDistance : endDistance;
+			float distance = Lerp::CalculateLerp(currentStartDistance, currentEndDistance, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+
+			// è§’åº¦ã®è¨ˆç®—
 			float easedRotationRatio = Lerp::CalculateLerp(0.0f, 1.0f, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			float currentAngle = initialAngle + easedRotationRatio * XM_2PI;
+			float currentAngle;
+			if (isReverse) {
+				// é€†å†ç”Ÿï¼šçµ‚äº†è§’åº¦ã‹ã‚‰é€†å›è»¢
+				float finalAngle = atan2(m_endPos.z - m_atEndPos.z, m_endPos.x - m_atEndPos.x);
+				currentAngle = finalAngle - easedRotationRatio * XM_2PI;
+			}
+			else {
+				// é †å†ç”Ÿï¼šé–‹å§‹è§’åº¦ã‹ã‚‰é †å›è»¢
+				float initialAngle = atan2(m_startPos.z - m_atStartPos.z, m_startPos.x - m_atStartPos.x);
+				currentAngle = initialAngle + easedRotationRatio * XM_2PI;
+			}
 
-			Vec3 target = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			float interpHeight = Lerp::CalculateLerp(m_startPos.y, m_endPos.y, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			Vec3 target = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			float interpHeight = Lerp::CalculateLerp(eyeStart.y, eyeEnd.y, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 
 			float newX = target.x + distance * cos(currentAngle);
 			float newZ = target.z + distance * sin(currentAngle);
 			m_eyePos = Vec3(newX, interpHeight, newZ);
-			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_atPos = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 		}
 		else {
-			// ’¼üˆÚ“®‚Ìˆ—
-			m_eyePos = Lerp::CalculateLerp(m_startPos, m_endPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			// ç›´ç·šç§»å‹•ã®å‡¦ç†
+			m_eyePos = Lerp::CalculateLerp(eyeStart, eyeEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_atPos = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 		}
 
 		auto ptrTrans = GetComponent<Transform>();
@@ -192,9 +245,14 @@ namespace basecross {
 		return false;
 	}
 
+	bool ProductionCameraman::ReturnBehavior(float totaltime)
+	{
+		return false;
+	}
+
 	void ProductionCameraman::EndStateEnterBehavior() {
-		m_finished = true; //‰‰o‚ªI—¹‚µ‚½‚±‚Æ‚ğ’Ê’m
-		// ‰‰oI—¹Œã‚É MainCamera ‚ÉØ‚è‘Ö‚¦‚éİ’è‚È‚ç•ÏX‚ğÀs
+		m_finished = true; //æ¼”å‡ºãŒçµ‚äº†ã—ãŸã“ã¨ã‚’é€šçŸ¥
+		// æ¼”å‡ºçµ‚äº†å¾Œã« MainCamera ã«åˆ‡ã‚Šæ›¿ãˆã‚‹è¨­å®šãªã‚‰å¤‰æ›´ã‚’å®Ÿè¡Œ
 		if (m_switchToMainCamera) {
 			GetTypeStage<GameStage>()->ToMainCamera();
 		}
