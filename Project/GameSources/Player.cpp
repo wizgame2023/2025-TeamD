@@ -396,7 +396,7 @@ namespace basecross {
 		SetSpeed(4.0f);
 		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 		//•`‰æİ’è
 		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();

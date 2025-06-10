@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.cpp
-@brief ƒ{ƒX“G‚ÌÀ‘•
+@brief ãƒœã‚¹æ•µã®å®Ÿè£…
 */
 
 #include "stdafx.h"
@@ -15,7 +15,7 @@ namespace basecross {
 		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
 	}
-	BossEnemy::~BossEnemy()
+	BossEnemy::â€¾BossEnemy()
 	{
 	}
 	void BossEnemy::AddAnimation() {
@@ -35,8 +35,9 @@ namespace basecross {
 		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps* m_MotionRate);
 		draw->AddAnimation(L"Crush", 1280, 90, false, fps* m_MotionRate);
 
-		draw->AddAnimation(L"Jump", 0, 1, false, fps);
-		draw->AddAnimation(L"Landing", 2430, 70, false, fps);
+		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
+		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps);
+		draw->AddAnimation(L"Landing", 2437, 67, false, fps);//16
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -67,7 +68,7 @@ namespace basecross {
 			SetIntruder(player);
 		}
 		m_Stage->SetSharedGameObject(L"BOSS", GetThis<BossEnemy>());
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"BOSS");
 		Mat4x4 meshMat;
@@ -78,9 +79,9 @@ namespace basecross {
 			Vec3(0.0f, -1.0f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"BOSS");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
 
@@ -129,8 +130,18 @@ namespace basecross {
 		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
-		if(GetAnimationFinish() && GetCurrentAnimationKey() == L"Landing"){
-			m_IsGround = true;
+		if (GetCurrentAnimationKey() == L"Landing") {
+			if (GetAnimationFinish()) {
+				m_IsGround = true;
+			}
+		}
+		if (GetCurrentAnimationKey() == L"Landing_First") {
+			if (GetAnimationFinish()) {
+				m_Effect->PlayEffect(m_SmokeHandle, L"Trampling", GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
+				m_Effect->SetScale(m_SmokeHandle, Vec3(0.5f));
+				m_Effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
+				SetAnimation(L"Landing");
+			}
 		}
 		if (!m_IsGround) return;
 
@@ -171,6 +182,9 @@ namespace basecross {
 		Vec3 position = GetPosition();
 		position.y += 10.0f;
 		SetPosition(position);
+		Vec3 direction = m_Intruder->GetPosition() - position;
+		float rotationY = atan2f(direction.x, direction.z);
+		SetRotation(Vec3(0, rotationY, 0));
 
 		SetAnimation(L"Jump");
 		m_IsGround = false;
@@ -193,11 +207,7 @@ namespace basecross {
 		}
 
 		if (GetCurrentAnimationKey() == L"Jump" && other->FindTag(L"Ground")) {
-			SetAnimation(L"Landing", true);
-			m_Effect->PlayEffect(m_SmokeHandle, L"Trampling", GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
-			m_Effect->SetScale(m_SmokeHandle, Vec3(0.5f));
-			m_Effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
-			m_IsGround = true;
+			SetAnimation(L"Landing_First", true);
 		}
 	}
 	void BossEnemy::Dead()
@@ -229,7 +239,7 @@ namespace basecross {
 	{
 	}
 
-	BossEnemyLeg::~BossEnemyLeg()
+	BossEnemyLeg::â€¾BossEnemyLeg()
 	{
 	}
 
@@ -243,13 +253,13 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(true);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 	}

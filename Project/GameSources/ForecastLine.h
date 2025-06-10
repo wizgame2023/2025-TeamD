@@ -20,6 +20,7 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		void Destroy();
 		void SetLine(const Line& line) {
 			m_Line = line;
 		}
