@@ -24,7 +24,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring uiPath = mediaPath + L"UI/";
-		wstring texPath = mediaPath + L"Textures/ ";
+		wstring texPath = mediaPath + L"Textures/";
 		app->RegisterTexture(L"SELECTSPRITE", uiPath + L"SelectStageToTitle.png");
 		app->RegisterTexture(L"SELECT_TITLE", uiPath + L"ResultToTitle.png");
 		app->RegisterTexture(L"SELECT_STAGE", uiPath + L"SelectStage.png");

@@ -87,6 +87,9 @@ namespace basecross {
 		else if (event->m_MsgStr == L"ToSelectStage") {
 			ResetActiveStage<SelectStage>();
 		}
+		else if (event->m_MsgStr == L"ToTutorialGameStage") {
+			ResetActiveStage<TutorialStage>(L"testStage_Y_Easy.csv");
+		}
 		else if (event->m_MsgStr == L"ToGameStage") {
 			auto count = static_pointer_cast<StageData>(event->m_Info).get();
 			if (count->stageNum >= m_StageFile.size() || count->level >= m_StageFile[count->stageNum].size()) {
@@ -95,9 +98,6 @@ namespace basecross {
 			}
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(m_StageFile[count->stageNum][count->level]);
-		}
-		else if (event->m_MsgStr == L"ToTutorialGameStage") {
-			ResetActiveStage<TutorialStage>(L"testStage_Y_Easy.csv");
 		}
 
 	}
