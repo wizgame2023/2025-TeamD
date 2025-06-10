@@ -34,21 +34,53 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
 	//--------------------------------------------------------------------------------------
-	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time, float& endtime) {
-		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time, endtime));
+	shared_ptr<ProductionCameramanToFirstState> ProductionCameramanToFirstState::Instance(float& time, float& endtime, bool toReturn) {
+		static shared_ptr<ProductionCameramanToFirstState> instance(new ProductionCameramanToFirstState(time, endtime, toReturn));
 		instance->m_time = time; // 時間を保存  		
 		instance->m_endTime = endtime; // 時間を保存  		
+		instance->m_return = toReturn; // 時間を保存  		
 		return instance;
 	}
 	void ProductionCameramanToFirstState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
 		Obj->ToGoalEnterBehavior();
 	}
 	void ProductionCameramanToFirstState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
-		if (Obj->ExcuteBehavior(m_time)) {
-			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+		if (m_return)
+		{
+			if (Obj->ExcuteBehavior(m_time, false)) {
+				Obj->GetStateMachine()->ChangeState(ProductionCameramanToReturnState::Instance(m_time, m_endTime));
+			}
+		}
+		else {
+			if (Obj->ExcuteBehavior(m_time, false)) {
+				Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+			}
 		}
 	}
 	void ProductionCameramanToFirstState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
+	}
+
+	//--------------------------------------------------------------------------------------
+	//	class OpeningCameramanToGoalState : public ObjState<OpeningCameraman>;
+	//--------------------------------------------------------------------------------------
+	shared_ptr<ProductionCameramanToReturnState> ProductionCameramanToReturnState::Instance(float& time, float& endtime) {
+		static shared_ptr<ProductionCameramanToReturnState> instance(new ProductionCameramanToReturnState(time, endtime));
+		instance->m_time = time; // 時間を保存  		
+		instance->m_endTime = endtime; // 時間を保存  		
+		return instance;
+	}
+	void ProductionCameramanToReturnState::Enter(const shared_ptr<ProductionCameraman>& Obj) {
+		Obj->ToGoalEnterBehavior();
+		Obj->ResetTime();
+		
+	}
+	void ProductionCameramanToReturnState::Execute(const shared_ptr<ProductionCameraman>& Obj) {
+		if (Obj->ExcuteBehavior(m_time / 2, true)) {
+			m_endTime = 0;
+			Obj->GetStateMachine()->ChangeState(ProductionCameramanEndState::Instance(m_endTime));
+		}
+	}
+	void ProductionCameramanToReturnState::Exit(const shared_ptr<ProductionCameraman>& Obj) {
 	}
 
 	//--------------------------------------------------------------------------------------
@@ -77,7 +109,8 @@ namespace basecross {
 		m_moveType(MoveType::Linear),
 		m_tempTotalTime(0.0f),
 		m_totalTime(0.0f),
-		m_switchToMainCamera(true) // メインカメラに切り替えるかどうかのフラグ
+		m_switchToMainCamera(true), // メインカメラに切り替えるかどうかのフラグ
+		m_isReverse(false)
 	{}
 
 	//初期化
@@ -89,6 +122,7 @@ namespace basecross {
 		ptr->SetPosition(m_startPos);
 		//ステートマシンの構築
 		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
+		AddTag(L"Camera");
 	}
 
 	//操作
@@ -114,7 +148,7 @@ namespace basecross {
 		float endtotalTime,           // 補間にかかる総時間
 		const bool& switchToMainCamera// メインカメラに切り替えるかどうかのフラグ
 	) {
-		m_finished = false; 
+		m_finished = false;
 		// 位置・視線の初期化
 		m_startPos = startPos;
 		m_endPos = endPos;
@@ -128,7 +162,7 @@ namespace basecross {
 		m_currntTime = 0.0f;
 		// ステートマシンを初期状態に変更
 		m_StateMachine.reset(new StateMachine<ProductionCameraman>(GetThis<ProductionCameraman>()));
-		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime, endtotalTime));
+		m_StateMachine->ChangeState(ProductionCameramanToFirstState::Instance(totalTime, endtotalTime, m_isReverse));
 
 		// 初期視線と位置の設定
 		m_eyePos = m_startPos;
@@ -144,8 +178,8 @@ namespace basecross {
 		m_totalTime;
 	}
 
-	// カメラ移動の処理（回転 or 直線）
-	bool ProductionCameraman::ExcuteBehavior(float totaltime) {
+	// カメラ移動の処理（回転 or 直線）※順再生・逆再生対応
+	bool ProductionCameraman::ExcuteBehavior(float totaltime, bool isReverse) {
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		m_currntTime += ElapsedTime;
 
@@ -153,28 +187,48 @@ namespace basecross {
 			return true;
 		}
 
+		// 再生方向に応じて開始/終了地点を決定
+		const Vec3& eyeStart = isReverse ? m_endPos : m_startPos;
+		const Vec3& eyeEnd = isReverse ? m_startPos : m_endPos;
+		const Vec3& atStart = isReverse ? m_atEndPos : m_atStartPos;
+		const Vec3& atEnd = isReverse ? m_atStartPos : m_atEndPos;
+
 		if (m_moveType == MoveType::Orbit) {
 			// 円軌道での移動
 			float startDistance = (m_startPos - m_atStartPos).length();
 			float endDistance = (m_endPos - m_atEndPos).length();
-			float distance = Lerp::CalculateLerp(startDistance, endDistance, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 
-			float initialAngle = atan2(m_startPos.z - m_atStartPos.z, m_startPos.x - m_atStartPos.x);
+			// isReverseに応じて開始/終了距離を設定
+			float currentStartDistance = isReverse ? endDistance : startDistance;
+			float currentEndDistance = isReverse ? startDistance : endDistance;
+			float distance = Lerp::CalculateLerp(currentStartDistance, currentEndDistance, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+
+			// 角度の計算
 			float easedRotationRatio = Lerp::CalculateLerp(0.0f, 1.0f, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			float currentAngle = initialAngle + easedRotationRatio * XM_2PI;
+			float currentAngle;
+			if (isReverse) {
+				// 逆再生：終了角度から逆回転
+				float finalAngle = atan2(m_endPos.z - m_atEndPos.z, m_endPos.x - m_atEndPos.x);
+				currentAngle = finalAngle - easedRotationRatio * XM_2PI;
+			}
+			else {
+				// 順再生：開始角度から順回転
+				float initialAngle = atan2(m_startPos.z - m_atStartPos.z, m_startPos.x - m_atStartPos.x);
+				currentAngle = initialAngle + easedRotationRatio * XM_2PI;
+			}
 
-			Vec3 target = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			float interpHeight = Lerp::CalculateLerp(m_startPos.y, m_endPos.y, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			Vec3 target = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			float interpHeight = Lerp::CalculateLerp(eyeStart.y, eyeEnd.y, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 
 			float newX = target.x + distance * cos(currentAngle);
 			float newZ = target.z + distance * sin(currentAngle);
 			m_eyePos = Vec3(newX, interpHeight, newZ);
-			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_atPos = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 		}
 		else {
 			// 直線移動の処理
-			m_eyePos = Lerp::CalculateLerp(m_startPos, m_endPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
-			m_atPos = Lerp::CalculateLerp(m_atStartPos, m_atEndPos, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_eyePos = Lerp::CalculateLerp(eyeStart, eyeEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
+			m_atPos = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 		}
 
 		auto ptrTrans = GetComponent<Transform>();

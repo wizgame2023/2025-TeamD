@@ -27,7 +27,7 @@ namespace basecross {
 		int m_cameraState;
 		wstring m_MapFileName;
 		bool m_IsPose;
-		bool m_IsGameOver;
+		int m_IsGameStater;
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 		float m_TotalTime;
@@ -71,7 +71,7 @@ namespace basecross {
 		shared_ptr<SingleView> m_MyCameraView;      
 	public:
 		//構築と破棄
-		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameOver(false){}
+		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameStater(false){}
 		virtual ‾GameStage() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

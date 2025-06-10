@@ -27,6 +27,7 @@ namespace basecross {
 
 		bool m_switchToMainCamera; // メインカメラに切り替えるかどうかのフラグ
 		bool m_finished;        // アニメーションが終了したかどうかのフラグ
+		bool m_isReverse; // アニメーションが逆再生されるかどうかのフラグ
 
 		// ステートマシン
 		unique_ptr< StateMachine<ProductionCameraman> >  m_StateMachine;
@@ -85,6 +86,9 @@ namespace basecross {
 		Vec3 GetEyePos() const {
 			return m_eyePos;
 		}
+		void SetReverse(bool reverse) {
+			m_isReverse = reverse;
+		}
 
 		/// @brief ゴール進入時の挙動を実行します。
 		void ToGoalEnterBehavior();
@@ -92,7 +96,7 @@ namespace basecross {
 		/// @brief 指定された合計時間に基づいて動作を実行します。
 		/// @param totaltime 動作を実行するための合計時間（秒単位）。
 		/// @return 動作が正常に実行された場合は true、失敗した場合は false を返します。
-		bool ExcuteBehavior(float totaltime);
+		bool ExcuteBehavior(float totaltime, bool isReverse);
 		bool ExcuteEndBehavior(float totaltime);
 		// 終了状態エンタービヘイビア
 		void EndStateEnterBehavior();
@@ -112,22 +116,41 @@ namespace basecross {
 		bool GetEndState() const {
 			return m_finished;
 		}
+
+		void ResetTime() {
+			m_currntTime = 0.0f; // 現在の時間をリセット
+		}
 	};
     /// @brief ProductionCameraman オブジェクトの最初の状態を管理するステートクラスです。
     class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
     {  
 		float m_time; // 時間を参照する変数  
 		float m_endTime; // 時間を参照する変数  
+		bool m_return;
+		// コンストラクタでメンバー変数を初期化する  
+		ProductionCameramanToFirstState(float& time, float& endtime, bool toReturn) : m_time(time), m_endTime(endtime), m_return(toReturn){}
 
-        // コンストラクタでメンバー変数を初期化する  
-        ProductionCameramanToFirstState(float& time, float& endtime) : m_time(time), m_endTime(endtime) {}
+	public:
+		static shared_ptr<ProductionCameramanToFirstState> Instance(float& time, float& endtime, bool toReturn);
+		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
+		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
+		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
+	};
 
-    public:  
-        static shared_ptr<ProductionCameramanToFirstState> Instance(float& time, float& endtime);
-        virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;  
-        virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;  
-        virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;  
-    };
+	class ProductionCameramanToReturnState : public ObjState<ProductionCameraman>
+	{
+		float m_time; // 時間を参照する変数  
+		float m_endTime; // 時間を参照する変数  
+
+		// コンストラクタでメンバー変数を初期化する  
+		ProductionCameramanToReturnState(float& time, float& endtime) : m_time(time), m_endTime(endtime) {}
+
+	public:
+		static shared_ptr<ProductionCameramanToReturnState> Instance(float& time, float& endtime);
+		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
+		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
+		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
+	};
 
 	/// @brief ProductionCameramanEndState クラスは、ProductionCameraman オブジェクトの終了状態を管理します。
 	class ProductionCameramanEndState : public ObjState<ProductionCameraman>
