@@ -175,7 +175,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)TutorialStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
-
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
@@ -305,6 +304,5 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>
-
   </ItemGroup>
 </Project>
