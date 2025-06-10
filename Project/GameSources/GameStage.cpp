@@ -8,9 +8,9 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
-	void GameStage::CreateViewLight() {		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
+	void GameStage::CreateViewLight() {		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		m_ProductionCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
 		auto ptrOpeningCamera = ObjectFactory::Create<ProductionCamera>();
 		m_ProductionCameraView->SetCamera(ptrOpeningCamera);
@@ -19,9 +19,9 @@ namespace basecross {
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		m_MyCameraView->SetCamera(PtrCamera);
 		m_Camera = PtrCamera;
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -110,7 +110,7 @@ namespace basecross {
 	}
 
 	/// <summary>
-	/// ƒŠƒ\[ƒX‚Ìì¬
+	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
@@ -127,21 +127,21 @@ namespace basecross {
 
 	}
 	/// </summary>
-	/// ƒ|[ƒYƒƒjƒ…[‚Ìì¬
+	/// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// <summary>
 	void GameStage::CreatePose() {
 		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
 		m_PauseMenu->SetIsPouse(true);
 	}
 	/// <summary>
-	/// ƒTƒEƒ“ƒhƒeƒXƒgƒƒjƒ…[‚Ìì¬
+	/// ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		m_SoundTestMenu = AddGameObject<SoundTestMenu>(L"SOUND_TEST");
 		m_SoundTestMenu->SetIsPouse(true);
 	}
 	/// <summary>
-	/// ƒŠƒUƒ‹ƒgƒƒjƒ…[‚Ìì¬
+	/// ãƒªã‚¶ãƒ«ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// </summary>
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
@@ -175,9 +175,9 @@ namespace basecross {
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
-	/// ƒIƒuƒWƒFƒNƒg‚ÌXV‚ğONOFF
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã‚’ONOFF
 	/// </summary>
-	/// <param name="flag">•`‰æONOFF</param>
+	/// <param name="flag">æç”»ONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu") && !obj->FindTag(L"Camera")) {
@@ -216,15 +216,16 @@ namespace basecross {
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire/ 1.5f);
 			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
 			m_cameraState = CameraState::OPENINGCAMERA;
-			// •âŠÔŠJn‚ÌƒJƒƒ‰ˆÊ’u
-			// •âŠÔI—¹‚ÌƒJƒƒ‰ˆÊ’uiÅIˆÊ’uj
-			// •âŠÔŠJn‚ÉƒJƒƒ‰‚ª’‹‚·‚éƒ^[ƒQƒbƒgˆÊ’u
-			// •âŠÔI—¹‚ÉƒJƒƒ‰‚ª’‹‚·‚éƒ^[ƒQƒbƒgˆÊ’u
-			// ‘æ“ñƒtƒF[ƒY—p‚ÌƒJƒƒ‰ÅIˆÊ’ui•K—v‚É‰‚¶‚Ä—˜—pj
-			// ‘æ“ñƒtƒF[ƒY—p‚Ì’‹ƒ^[ƒQƒbƒgˆÊ’ui•K—v‚É‰‚¶‚Ä—˜—pj
-			// ƒJƒƒ‰‚Ì•âŠÔ‚É‚©‚¯‚é‘ŠÔiŠO•”‚©‚ç‚ÌQÆj
+			// è£œé–“é–‹å§‹æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®
+			// è£œé–“çµ‚äº†æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®ï¼ˆæœ€çµ‚ä½ç½®ï¼‰
+			// è£œé–“é–‹å§‹æ™‚ã«ã‚«ãƒ¡ãƒ©ãŒæ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®
+			// è£œé–“çµ‚äº†æ™‚ã«ã‚«ãƒ¡ãƒ©ãŒæ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®
+			// ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®ã‚«ãƒ¡ãƒ©æœ€çµ‚ä½ç½®ï¼ˆå¿…è¦ã«å¿œã˜ã¦åˆ©ç”¨ï¼‰
+			// ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ï¼ˆå¿…è¦ã«å¿œã˜ã¦åˆ©ç”¨ï¼‰
+			// ã‚«ãƒ¡ãƒ©ã®è£œé–“ã«ã‹ã‘ã‚‹ç·æ™‚é–“ï¼ˆå¤–éƒ¨ã‹ã‚‰ã®å‚ç…§ï¼‰
 
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
+			ptrOpeningCameraman->SetReverse(false);
 			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, 0.0f,true);
 			ptrOpeningCameraman->SetMoveType(1);
 			SetSharedGameObject(L"ProductionCamera", ptrOpeningCameraman);
@@ -245,14 +246,32 @@ namespace basecross {
 		m_UltIcon->SetDraw(false);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
-		m_ResultMenu->Open();
-		auto camera = GetView()->GetTargetCamera();
 		auto player = GetSharedGameObject<Player>(L"Player", false);
+		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 		if (player != nullptr && camera != nullptr) {
 			player->SetIsGaol(true);
-			auto newCamera = ObjectFactory::Create<ResultCamera>(camera->GetEye(), camera->GetAt(), player);
-			auto view = static_pointer_cast<SingleView>(GetView());
-			view->SetCamera(newCamera);
+			Vec3 playerPos = player->GetPosition();
+			Vec3 playerForwardOffset = player->GetForward() * 2.0f;
+
+			Vec3 cameraStartPos = camera->GetEye();
+			Vec3 cameraStartAt = camera->GetAt();
+			Vec3 animAtPos = playerPos + Vec3(0.0f, 0.5f, 0.0f);
+			Vec3 side = cross(playerForwardOffset, Vec3(0, 1, 0));
+			Vec3 animEndPos1 = animAtPos + playerForwardOffset;
+			Vec3 animEndPos2 = animAtPos - playerForwardOffset;
+
+			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+			productionCamera->SetReverse(false);
+			productionCamera->SetMoveType(0);
+			productionCamera->StartOpeningAnimation(cameraStartPos,	animEndPos1+ side,  cameraStartAt,	animAtPos - side,  
+													animEndPos2, animAtPos, 3.0f,0.0f,false);
+
+
+			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
+			if (ptrOpeningCamera) {
+				SetView(m_ProductionCameraView);
+				ptrOpeningCamera->SetCameraObject(productionCamera);
+			}
 			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
@@ -319,7 +338,8 @@ namespace basecross {
 			Vec3 CameraEndPos = bossPos + Vec3(0.0f, -bossPos.y + 2.0f, 0.0f);
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos - bossRot * 7, playerPos, CameraEndPos, -CameraPos, bossPos, 3.0f, 3.0f, true);
+			productionCamera->SetReverse(true);
+			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos - bossRot * 7, playerPos, CameraEndPos, -CameraPos, bossPos, 4.5f, 0.0f, true);
 			productionCamera->SetMoveType(0);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
@@ -334,6 +354,7 @@ namespace basecross {
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
+			m_IsGameStater = 0;
 			ScoreManager::Instance()->Init();
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
@@ -341,7 +362,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"Legion");
 			CreateSharedObjectGroup(L"Citizen");
 
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 			CreateViewLight();
 			CreateResource();
 			auto& app = App::GetApp();
@@ -381,6 +402,8 @@ namespace basecross {
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
@@ -389,28 +412,20 @@ namespace basecross {
 				m_Camera->SetCameraPause(true);
 			}
 		}
+
 		if (m_ResultMenu->IsOpen())
 		{
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			player->SetAnim(L"Clear");
 			player->UpdateAnim();
 		}
-		if (m_IsGameOver)
-		{
-			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-			if (productionCamera->GetEndState())
-			{
-				m_GameOverMenu->Open();
-			}
-		}
-		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen() || m_cameraState != CameraState::FOLLOWCAMERA) {
+		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
 			m_Icon->SetDrawActive(false);
 			m_UltIcon->SetDrawActive(false);
 
 			m_BossHpBar->SetDrawActive(false);
 			m_BossText->SetDrawActive(false);
-
 		}
 		else {
 			//SetAllGameObjectActive(true);
@@ -430,8 +445,32 @@ namespace basecross {
 				m_BossHpBar->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
 			}
-
 		}
+
+		auto spawner = GetSharedGameObject<Spawner>(L"Spawner", false);
+
+		if (productionCamera->GetEndState())
+		{
+			if (m_IsGameStater == 1)
+			{
+				m_ResultMenu->Open();
+			}
+			else if (m_IsGameStater == 2)
+			{
+				m_GameOverMenu->Open();
+			}
+			else 
+			{
+				spawner->Start();
+			}
+		}
+		else
+		{
+			if (spawner) {
+				spawner->Stop();
+			}
+		}
+
 	}
 
 
@@ -448,6 +487,7 @@ namespace basecross {
 		auto& msg = event->m_MsgStr;
 
 		if (msg == L"DefeatBoss") {
+			m_IsGameStater = 1;
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
@@ -460,7 +500,7 @@ namespace basecross {
 		else if (msg == L"DeadPlayer") {
 			GameOver();
 			GameOverCamera();
-			m_IsGameOver = true;
+			m_IsGameStater = 2;
 		}
 		else if (msg == L"PinchPlayer") {
 			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
@@ -469,6 +509,7 @@ namespace basecross {
 
 		}
 		else if (msg == L"EndBoss") {
+
 			SoundManager::Instance().PlayBGM(L"BGM_GAME_BOSS");
 		}
 		else if (msg == L"StopVibration") {
