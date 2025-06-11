@@ -1,6 +1,6 @@
 /*!
 @file Enemy.h
-@brief æ•µãªã©
+@brief “G‚È‚Ç
 */
 
 #pragma once
@@ -22,7 +22,7 @@ namespace basecross {
 	public:	
 		shared_ptr<Character> m_Intruder;
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
-		virtual â€¾Enemy();
+		virtual ~Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnSpawn(){}
@@ -60,7 +60,7 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //ç·šã‚’æç”»ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	//	class LineObject : public GameObject; //ü‚ğ•`‰æ‚·‚éƒIƒuƒWƒFƒNƒg
 	//--------------------------------------------------------------------------------------
 	class LineObject : public GameObject {
 	private:
@@ -84,7 +84,7 @@ namespace basecross {
 	public:
 		LineObject(const shared_ptr<Stage>& stage);
 		LineObject(const shared_ptr<Stage>& stage, const shared_ptr<Character>& player, const shared_ptr<Character>& enemy);
-		virtual â€¾LineObject() {}
+		virtual ~LineObject() {}
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 

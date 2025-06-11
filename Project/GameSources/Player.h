@@ -1,6 +1,6 @@
 /*!
 @file Player.h
-@brief 繝励Ξ繧､繝､繝ｼ縺ｪ縺ｩ
+@brief プレイヤーなど
 */
 
 #pragma once
@@ -20,7 +20,7 @@ namespace basecross {
 
 	class Player : public Character
 	{
-		//蜈･蜉帙ワ繝ｳ繝峨Λ繝ｼ
+		//入力ハンドラー
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;
@@ -64,7 +64,7 @@ namespace basecross {
 		};
 		Player(const shared_ptr<Stage>& stage);
 		Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale);
-		窶ｾPlayer();
+		~Player();
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void OnDraw();
@@ -130,7 +130,7 @@ namespace basecross {
 		float f = 0;
 	public:
 		HitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& forward, const shared_ptr<GameObject> player, const Vec3 scale,const float& length);
-		窶ｾHitSphere();
+		~HitSphere();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
