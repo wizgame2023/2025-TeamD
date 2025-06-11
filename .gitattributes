@@ -1,2 +1,3 @@
-*.cpp text working-tree-encoding=sjis diff=sjis
-*.h text working-tree-encoding=sjis diff=sjis
+*.cpp diff=sjis
+*.h diff=sjis
+$ git config diff.sjis.textconv "iconv -f sjis"
