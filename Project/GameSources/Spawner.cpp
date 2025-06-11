@@ -1,19 +1,21 @@
 /*!
 @file Character.cpp
-@brief „Ç≠„É£„É©„ÇØ„Çø„Éº„Å™„Å©ÂÆü‰Ωì
+@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«é¿ëÃ
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
-	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0),m_SpawnTimer(Timer(1.0f,false)), m_IsSpawn(true){}
+	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0), m_EnemyCount(0), m_SpawnTimer(Timer(1.0f, false)), m_IsSpawn(true) {}
 
 	void Spawner::OnCreate() {
 		Object::OnCreate();
 	}
 	void Spawner::OnUpdate() {
-		
+		if (!dynamic_pointer_cast<FollowCamera>(OnGetDrawCamera())) {
+			return;
+		}
 		if (m_Wave == -1 || !m_IsSpawn) return;
 		for (auto& wEnemy : m_Legions[m_Wave]->GetEnemyLegionGruop()) {
 			auto enemy = wEnemy.lock();
@@ -98,7 +100,7 @@ namespace basecross {
 			}
 			if (m_Legions.size() <= m_Wave) {
 
-				//„Ç´„É°„É©ÁßªÂãï
+				//ÉJÉÅÉâà⁄ìÆ
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
 				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;

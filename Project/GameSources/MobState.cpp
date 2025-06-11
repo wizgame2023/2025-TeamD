@@ -152,6 +152,15 @@ namespace basecross {
 		Vec3 position = enemy->GetPosition();
 		float rotate = atan2f(forward.x, forward.z);
 
+		Line line = Line(enemy->GetPosition(), m_Player->GetPosition());
+		line.SetMaxLength(10.0f);
+		RayCastHit hit;
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Player" };
+		if (RayCast::HitTestVec(RayCastHit(), line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
+			return;
+		}
+
+
 		Vec3 objDirection = Vec3();
 		float objRenge = 0;
 		if (groups.size() != 0)
@@ -200,7 +209,6 @@ namespace basecross {
 			m_Enemy->ChangeState<MobSearch>();
 			return;
 		}
-
 
 		if(m_BulletRemain > 0)
 		{
@@ -257,6 +265,7 @@ namespace basecross {
 
 	void MobAlert::Exit()
 	{
+		m_Effect->StopEffect(m_Eyehandle);
 	}
 
 }
