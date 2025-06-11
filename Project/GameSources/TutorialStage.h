@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½W
 */
 
 #pragma once
@@ -11,19 +11,21 @@ namespace basecross {
 	class NumberSprite;
 	class SharpFan;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ï¿½Qï¿½[ï¿½ï¿½ï¿½Xï¿½eï¿½[ï¿½Wï¿½Nï¿½ï¿½ï¿½X
 	//--------------------------------------------------------------------------------------
 	class TutorialStage : public GameStage {
 
-		Timer m_TotalTimer;
 		shared_ptr<NumberSprite> m_Fps;
 		shared_ptr<Sprite> m_backGround;
 		shared_ptr<Sprite> m_backStage;
 		shared_ptr<Sprite> m_backSprite;
 
-		bool EnemyDead;
-		bool BossDead;
-		//ƒrƒ…[‚Ìì¬
+
+		float m_ElapsedTime;
+		bool m_EnemyDead;
+		bool m_BossDead;
+		bool m_PlayerDead;
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateResource();
 		void CreateSelect();
 		void ClearSprite();
@@ -32,10 +34,12 @@ namespace basecross {
 		bool m_IsPose;
 
 	public:
-		//\’z‚Æ”jŠü
-		TutorialStage(const wstring& file) :GameStage(file), m_IsPose(false) {}
+
+		//æ§‹ç¯‰ã¨ç ´æ£„
+		TutorialStage(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ~TutorialStage() {}
-		//‰Šú‰»
+		//åˆæœŸåŒ–
+
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
