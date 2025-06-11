@@ -17,6 +17,7 @@ namespace basecross {
 	}
 
 	void UltIcon::SetDraw(bool a) {
+		//m_IconEffect->SetDiffuse(Col4(0,0,0,0));
 		m_IconBackGround->SetDrawActive(a);
 		m_Icon->SetDrawActive(a);
 		m_IconEffect->SetDrawActive(a);
@@ -39,10 +40,12 @@ namespace basecross {
 
 		if (m_Charge >= 1)
 		{
+			//m_IconEffect->SetDiffuse(Col4(1, 1, 1, 0.5f));
 			m_IconEffect->SetDrawActive(true);
 		}
 		else 
 		{
+			//m_IconEffect->SetDiffuse(Col4(1, 1, 1, 1));
 			m_IconEffect->SetDrawActive(false);
 		}
 	}

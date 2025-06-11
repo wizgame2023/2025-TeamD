@@ -164,6 +164,8 @@ namespace basecross {
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_UltIcon = AddGameObject<UltIcon>();
 
+		//m_UltIcon_yellow = AddGameObject<UltIcon>(L"ACTION_ULT_EFFECT");
+
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(400.0f, 45.5f, 0.0f), Col4(0, 1, 0, 1));
 
@@ -280,6 +282,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnage = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnage);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -403,7 +407,6 @@ namespace basecross {
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-
 		if (device.bConnected) {
 			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
 				m_SoundTestMenu->Close();
@@ -428,7 +431,8 @@ namespace basecross {
 			//SetAllGameObjectActive(true);
 			auto player = GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr) {
-				m_UltIcon->SetCharge(player->GetEnergy());
+				m_UltEnage = player->GetEnergy();
+				m_UltIcon->SetCharge(m_UltEnage);
 
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);

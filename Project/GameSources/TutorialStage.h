@@ -15,14 +15,15 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class TutorialStage : public GameStage {
 
-		Timer m_TotalTimer;
 		shared_ptr<NumberSprite> m_Fps;
 		shared_ptr<Sprite> m_backGround;
 		shared_ptr<Sprite> m_backStage;
 		shared_ptr<Sprite> m_backSprite;
 
-		bool EnemyDead;
-		bool BossDead;
+		float m_ElapsedTime;
+		bool m_EnemyDead;
+		bool m_BossDead;
+		bool m_PlayerDead;
 		//ビューの作成
 		void CreateResource();
 		void CreateSelect();
@@ -33,7 +34,7 @@ namespace basecross {
 
 	public:
 		//構築と破棄
-		TutorialStage(const wstring& file) :GameStage(file), m_IsPose(false) {}
+		TutorialStage(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ‾TutorialStage() {}
 		//初期化
 		virtual void OnCreate()override;
