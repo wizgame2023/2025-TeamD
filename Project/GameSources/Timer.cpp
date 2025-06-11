@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -15,7 +15,7 @@ namespace basecross {
 		m_IsReset = isReset;
 	}
 
-	Timer::~Timer(){}
+	Timer::â€¾Timer(){}
 
 	bool Timer::UpdateTimer() {
 		if (m_Timer >= m_MaxTime) {

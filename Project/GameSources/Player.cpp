@@ -1,6 +1,6 @@
 /*!
 @file Player.cpp
-@brief ƒvƒŒƒCƒ„[‚È‚ÇÀ‘Ì
+@brief ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -35,13 +35,13 @@ namespace basecross {
 
 	{
 	}
-	Player::~Player()
+	Player::â€¾Player()
 	{
 	}
 
 	Vec2 Player::GetInputState() const {
 		Vec2 ret;
-		//ƒRƒ“ƒgƒ[ƒ‰‚Ìæ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		ret.x = 0.0f;
 		ret.y = 0.0f;
@@ -50,7 +50,7 @@ namespace basecross {
 			ret.x = cntlVec[0].fThumbLX;
 			ret.y = cntlVec[0].fThumbLY;
 		}
-		//ƒL[ƒ{[ƒh‚Ìæ“¾(ƒL[ƒ{[ƒh—Dæ)
+		//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å–å¾—(ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰å„ªå…ˆ)
 		auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (KeyState.m_bPushKeyTbl['W']) { ret.y = 1.0f; }
 		if (KeyState.m_bPushKeyTbl['S']) { ret.y = -1.0f; }
@@ -62,7 +62,7 @@ namespace basecross {
 
 	Vec3 Player::GetMoveVector(float& rot) {
 		Vec3 angle(0, 0, 0);
-		//“ü—Í‚Ìæ“¾
+		//å…¥åŠ›ã®å–å¾—
 		float moveX = GetInputState().x;
 		float moveZ = GetInputState().y;
 
@@ -89,7 +89,7 @@ namespace basecross {
 		if (angle.length() > 0.0f) {
 			Move(angle,false);
 		}
-		//‰ñ“]‚ÌŒvZ
+		//å›è»¢ã®è¨ˆç®—
 		if (angle.length() > 0.0f) {
 			//auto utilPtr = GetBehavior<UtilBehavior>();
 			//utilPtr->RotToHead(angle, 1.0f);
@@ -181,7 +181,7 @@ namespace basecross {
 				m_TargetBoard->SetTarget(targetEnemyVector);
 				if ((position - targetEnemy).length() <= m_SearchDistance + 1.0f + 0.85f)
 				{
-					//‚±‚Ì•ûŒü‚É­‚µ“®‚­A“®‚¢‚Ä‚¢‚éŠÔ‚ÍƒRƒ“ƒgƒ[ƒ‰‚ÅˆÚ“®‚Å‚«‚È‚¢
+					//ã“ã®æ–¹å‘ã«å°‘ã—å‹•ãã€å‹•ã„ã¦ã„ã‚‹é–“ã¯ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã§ç§»å‹•ã§ããªã„
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					return rot;
 				}
@@ -204,17 +204,17 @@ namespace basecross {
 	}
 
 	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
-		// –Ú•W•ûŒüƒxƒNƒgƒ‹‚ğŒvZ
+		// ç›®æ¨™æ–¹å‘ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¨ˆç®—
 		Vec3 direction = {
 			target.x - object.x,
 			target.y - object.y,
 			target.z - object.z
 		};
 
-		// ƒxƒNƒgƒ‹‚ğ³‹K‰»
+		// ãƒ™ã‚¯ãƒˆãƒ«ã‚’æ­£è¦åŒ–
 		Vec3 normalizedDirection = direction.normalize();
 
-		return normalizedDirection; // Œü‚«ƒxƒNƒgƒ‹‚ğ•Ô‹p
+		return normalizedDirection; // å‘ããƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”å´
 	}
 
 	void Player::AimRock(Vec3 rot)
@@ -339,15 +339,15 @@ namespace basecross {
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
 		wstringstream wss(L"");
-		wss << L"\nZoneCharge : "
+		wss << L"Â¥nZoneCharge : "
 			<< m_EnergyCharge
-			<< L"\nHP"
+			<< L"Â¥nHP"
 			<< m_HP
-			<< L"\nx"
+			<< L"Â¥nx"
 			<< m_Rotation.x
-			<< L"\ny"
+			<< L"Â¥ny"
 			<< m_Rotation.y
-			<< L"\nz"
+			<< L"Â¥nz"
 			<< m_Rotation.z
 			<< endl;
 		scene->SetDebugString(wss.str());
@@ -394,11 +394,11 @@ namespace basecross {
 		InitHP(20);
 		SetAttackDamage(1.0f);
 		SetSpeed(4.0f);
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"01");*/
@@ -418,12 +418,12 @@ namespace basecross {
 		ptrDraw->SetOwnShadowActive(true);
 		AddAnimation();
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
-		//d—Í‚ğ‚Â‚¯‚é
+		//é‡åŠ›ã‚’ã¤ã‘ã‚‹
 		auto ptrGra = AddComponent<Gravity>();
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"PLAYER");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
 		AddTag(L"Player");
@@ -640,7 +640,7 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::~HitSphere()
+	HitSphere::â€¾HitSphere()
 	{
 		m_Effect->StopEffect(m_Handle);
 	}
@@ -652,7 +652,7 @@ namespace basecross {
 		ptr->SetRotation(m_HitRotation);
 		ptr->SetScale(m_HitScale);
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetFixed(false);
