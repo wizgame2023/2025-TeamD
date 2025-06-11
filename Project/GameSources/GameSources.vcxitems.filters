@@ -280,9 +280,11 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
+      <Filter>Ballet</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
