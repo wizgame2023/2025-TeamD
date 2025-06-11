@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
+@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ namespace basecross {
 
 	void CameraCollision::OnUpdate() {
 		auto positionTransform = GetComponent<Transform>();
-		//’Ç”öƒVƒXƒeƒ€
+		//è¿½å°¾ã‚·ã‚¹ãƒ†ãƒ 
 		GetComponent<Transform>()->SetPosition(m_GetPosition);
 	}
 
@@ -59,7 +59,7 @@ namespace basecross {
 			auto collision = m_HitObject->GetComponent<Collision>();
 			AABB aabb = collision->GetEnclosingAABB();
 			aabb = AABB(aabb.m_Min - Vec3(0.5f, 0.5f, 0.5f), aabb.m_Max + Vec3(0.5f, 0.5f, 0.5f));
-			//’ê–Ê
+			//åº•é¢
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Min.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Min.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
@@ -134,7 +134,7 @@ namespace basecross {
 
 		m_Width = app->GetGameWidth();
 		m_Height = app->GetGameHeight();
-		// ƒQ[ƒ€ŠJn‚Éƒ}ƒEƒXƒJ[ƒ\ƒ‹‚ğ‰æ–Ê‚Ì’†‰›‚ÉˆÚ“®‚³‚¹‚é
+		// ã‚²ãƒ¼ãƒ é–‹å§‹æ™‚ã«ãƒã‚¦ã‚¹ã‚«ãƒ¼ã‚½ãƒ«ã‚’ç”»é¢ã®ä¸­å¤®ã«ç§»å‹•ã•ã›ã‚‹
 		int m_centerX = app->GetGameWidth() / 2;
 		int m_centerY = app->GetGameHeight() / 2;
 		::SetCursorPos(m_centerX, m_centerY);
@@ -144,7 +144,7 @@ namespace basecross {
 	}
 
 	void FollowCamera::OnUpdate() {
-		//ƒRƒ“ƒgƒ[ƒ‰‚Ìæ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (cntlVec.bConnected) {
@@ -154,9 +154,9 @@ namespace basecross {
 			}
 		}
 
-		//•ûŒü
+		//æ–¹å‘
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
-		//ˆÊ’u
+		//ä½ç½®
 		m_Position = m_PlayerTransform->GetPosition();
 
 		m_Eye = m_Position + m_Direction * 6.0f;
@@ -180,9 +180,9 @@ namespace basecross {
 		}
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
-			//©•ª‚ÌˆÊ’u
+			//è‡ªåˆ†ã®ä½ç½®
 			SetEye(m_Eye);
-			//Œ©‚Ä‚¢‚é‚Æ‚±‚ë
+			//è¦‹ã¦ã„ã‚‹ã¨ã“ã‚
 			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
 		}
 		//LogCamera();
@@ -200,10 +200,10 @@ namespace basecross {
 
 		auto scene = App::GetApp()->GetScene<Scene>();
 
-		wstringstream Debug(L"\n");
-		Debug << L"\nForward.x : " << m_Direction.x
-			<< L"\nForward.y : " << m_Direction.y
-			<< L"\nForward.z : " << m_Direction.z << endl;
+		wstringstream Debug(L"Â¥n");
+		Debug << L"Â¥nForward.x : " << m_Direction.x
+			<< L"Â¥nForward.y : " << m_Direction.y
+			<< L"Â¥nForward.z : " << m_Direction.z << endl;
 
 		scene->SetDebugString(Debug.str());
 
