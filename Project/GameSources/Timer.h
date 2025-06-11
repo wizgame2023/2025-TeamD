@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｿ繧､繝槭�ｼ縺ｮ螳溯｣�
 */
 
 #pragma once
@@ -15,7 +15,7 @@ namespace basecross {
 		Timer(const bool& isReset = true);
 		Timer(float time,const bool& isReset = true);
 		Timer(float time,float firstTime, const bool& isReset = true);
-		~Timer();
+		窶ｾTimer();
 		void SetTime(float time,const bool& isReset = false) {
 			m_MaxTime = time;
 			if (isReset) {
