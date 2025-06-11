@@ -50,7 +50,6 @@ namespace basecross {
 
 		//ビューの作成
 		void CreateViewLight();
-		void CreateResource();
 		void RegisterObjects();
 
 		void CreateGameOverMenu();
@@ -77,6 +76,7 @@ namespace basecross {
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;
 		virtual void OnDestroy()override;
+		void CreateResource();
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
 		shared_ptr <EffectManeger> GetCreateEffect();
 		shared_ptr<FollowCamera> SetCameraPause();
