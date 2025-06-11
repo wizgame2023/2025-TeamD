@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,10 +9,10 @@
 namespace basecross {
 
 	void UltIcon::OnCreate() {
-		Vec3 position = Vec3(499.0f, -228.0f, 0.0f);
-		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", position, Vec2(100.0f));
-		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position, Vec2(100.0f));
-		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position, Vec2(100.0f));
+		Vec3 position = Vec3(499.0f, -158.0f, 0.0f);
+		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", position, Vec2(150.0f));
+		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position, Vec2(150.0f));
+		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position, Vec2(150.0f));
 		m_IconEffect->SetDiffuse(Col4(1,1,1,0.5f));
 	}
 
@@ -47,7 +47,7 @@ namespace basecross {
 		}
 	}
 	void NormalIcon::OnCreate() {
-		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(100.0f));
+		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(150.0f));
 	}
 	void NormalIcon::OnUpdate() {
 		auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];

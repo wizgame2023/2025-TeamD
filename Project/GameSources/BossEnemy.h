@@ -42,7 +42,7 @@ namespace basecross {
 
 		Vec3 m_StartPosition;
 
-		Timer m_DamageEffectTime;
+		Timer m_InvincibleTimer;
 
 		wstring m_CurrentAnimationKey;
 

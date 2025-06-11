@@ -12,7 +12,9 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),
+		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
+		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
 	}
 	BossEnemy::~BossEnemy()
@@ -23,7 +25,7 @@ namespace basecross {
 		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
 		m_MotionRate = max(1.0f, (int)difficulty * 0.6f);
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		draw->AddAnimation(L"Idle", 0, 1, true, fps);
+		draw->AddAnimation(L"Idle", 40, 1, true, fps);
 		draw->AddAnimation(L"Walk", 40, 120, true, fps * 1.75f);
 		draw->AddAnimation(L"Stan_First", 545, 56, false, fps * 0.6f);
 		draw->AddAnimation(L"Stan", 601, 19, true, fps);
@@ -36,8 +38,8 @@ namespace basecross {
 		draw->AddAnimation(L"Crush", 1280, 90, false, fps* m_MotionRate);
 
 		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
-		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps);
-		draw->AddAnimation(L"Landing", 2437, 67, false, fps);//16
+		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps * 0.5f);
+		draw->AddAnimation(L"Landing", 2437, 67, false, fps * 0.5f);//16
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -130,6 +132,7 @@ namespace basecross {
 		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
+		m_InvincibleTimer.UpdateTimer();
 		if (GetCurrentAnimationKey() == L"Landing") {
 			if (GetAnimationFinish()) {
 				m_IsGround = true;
@@ -147,13 +150,6 @@ namespace basecross {
 
 		if (!m_IsStun) {
 			m_currentState->Execute();
-			
-			if (m_DamageEffectTime.UpdateTimer()) {
-				draw->SetDiffuse(Col4(1, 1, 1, 1));
-			}
-			else {
-				draw->SetDiffuse(Col4(1, 0, 0, 1));
-			}
 		}
 		else {
 			auto& effect = m_Stage->GetCreateEffect();
@@ -202,7 +198,6 @@ namespace basecross {
 	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
 			Damage(2.0f, false);
-			AddStun(0.06f);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 
@@ -223,8 +218,12 @@ namespace basecross {
 		Enemy::Dead();
 	}
 	void BossEnemy::Damage(float damage, const bool& isSound) {
-		Enemy::Damage(damage, isSound);
-		m_DamageEffectTime.SetTime(0.2f, true);
+		if (m_InvincibleTimer.CheckTime()) {
+			Enemy::Damage(damage, isSound);
+			m_InvincibleTimer.Reset();
+			AddStun(0.06f);
+		}
+		
 	}
 	void BossEnemy::Move(const Vec3& direction,const bool& isGameSpeed) {
 		Character::Move(direction, isGameSpeed);
