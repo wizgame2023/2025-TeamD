@@ -9,7 +9,7 @@
 namespace basecross {
 
 	Ground::Ground(const shared_ptr<Stage>& stage) : Object(stage){}
-	Ground::‾Ground(){}
+	Ground::~Ground(){}
 
 	void Ground::OnCreate() {
 		Object::OnCreate();
@@ -33,7 +33,7 @@ namespace basecross {
 	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
-	LimitArea::‾LimitArea() {}
+	LimitArea::~LimitArea() {}
 
 	void LimitArea::OnCreate() {
 		Object::OnCreate();
@@ -44,7 +44,7 @@ namespace basecross {
 	}
 
 	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
-	Building::‾Building() {}
+	Building::~Building() {}
 
 	void Building::OnCreate() {
 		Object::OnCreate();
