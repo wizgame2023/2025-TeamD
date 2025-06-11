@@ -141,6 +141,7 @@ namespace basecross {
 		m_HitCollision = false;
 
 		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
+
 	}
 
 	void FollowCamera::OnUpdate() {

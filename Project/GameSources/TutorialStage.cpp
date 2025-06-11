@@ -12,20 +12,19 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void TutorialStage::CreateResource() {
-		auto& app = App::GetApp();
-		auto mediaPath = app->GetDataDirWString();
-		wstring uiPath = mediaPath + L"UI/";
-		wstring texPath = mediaPath + L"Textures/";
-		wstring modelPath = mediaPath + L"Models/";
+		//auto& app = App::GetApp();
+		//auto mediaPath = app->GetDataDirWString();
+		//wstring uiPath = mediaPath + L"UI/";
+		//wstring texPath = mediaPath + L"Textures/";
+		//wstring modelPath = mediaPath + L"Models/";
 
-		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
-		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
+		//app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
+		//app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
+		////app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
+		GameStage::CreateResource();
+
 	}
 
-	void TutorialStage::CreateSelect() {
-		backGround = AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0.0f, 0.0f, 0.0f), Vec2(50.0f, 80.0f), true);
-		//backStage = AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(10.0f, 100.0f, 0.0f), Vec2(100.0f, 50.0f), true);
-	}
 
 	void TutorialStage::ClearSprite() {
 		auto enemygruop = GetSharedObjectGroup(L"EnemyGroup");
@@ -41,13 +40,13 @@ namespace basecross {
 
 	}
 
-	void TutorialStage::UpdateStop(bool ClearSprite) {
-		for (auto& obj : GetGameObjectVec()) {
-			//GatUpdateActive(ClearSprite);
-			//if (!obj->FindTag(L"")) {
-			//	obj->SetUpdateActive(ClearSprite);
-			//}
-		}
+	void TutorialStage::CreateSelect() {
+		m_backGround = AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
+		m_backStage = AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
+		m_backSprite = AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
+		m_backGround->SetDrawActive(false);
+		m_backStage->SetDrawActive(false);
+		m_backSprite->SetDrawActive(false);
 
 	}
 
@@ -55,8 +54,11 @@ namespace basecross {
 	void TutorialStage::OnCreate() {
 		try {
 			CreateResource();
-			//CreateSelect();
+			CreateSelect();
 			GameStage::OnCreate();
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<GameStage>(), L"AppaerEnemy");
+			//PostEvent(0.0f, GetThis<ObjectInterface>(),  GetThis<GameStage>(), L"EnemyDead");
+			//PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<GameStage>(), L"AppaerBoss");
 
 		}
 		catch (...) {
@@ -70,8 +72,8 @@ namespace basecross {
 		GameStage::OnUpdate();
 		//auto enemy = GetSharedGameObject<Mob>(L"mob", true);
 		//auto enemyClear = GetSharedGameObject<Mob>(L"enemy", false);
-		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", true);
-		auto bossClear = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		//auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", true);
+		//auto bossClear = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		//backGround->SetDrawActive(true);
 
 		//if (enemy != nullptr) {}
@@ -82,14 +84,30 @@ namespace basecross {
 
 	void TutorialStage::OnEvent(const shared_ptr<Event>& event) {
 		auto& msg = event->m_MsgStr;
-		GameStage::OnEvent(event);
 
 		if (msg == L"DefeatBoss") {
-			backGround->SetDrawActive(false);
+			m_backGround->SetDrawActive(false);
 		}
 		else if (msg == L"AppaerBoss") {
-			backGround->SetDrawActive(true);
+			m_backGround->SetDrawActive(true);
+
 		}
+		if (msg == L"DeadWave") {
+			m_backSprite->SetDrawActive(false);
+		}
+		else if (msg == L"AppaerWave") {
+			m_backSprite->SetDrawActive(true);
+		}
+
+		if (msg == L"EnemyDead") {
+			m_backStage->SetDrawActive(false);
+		}		
+		else if (msg == L"AppaerEnemy") {
+			m_backStage->SetDrawActive(true);
+		}
+
+		GameStage::OnEvent(event);
+
 
 	}
 

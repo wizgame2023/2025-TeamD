@@ -12,8 +12,7 @@ namespace basecross {
 		Camera()
 	{
 	}
-	ProductionCamera::‾ProductionCamera() {}
-
+	ProductionCamera::~ProductionCamera() {}
 
 	void ProductionCamera::OnCreate() {
 	}

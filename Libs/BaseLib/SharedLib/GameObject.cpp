@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 @file GameObject.cpp
 @brief ゲームオブジェクト、ステージ実体
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
@@ -27,7 +27,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"所属ステージがnullです。自分自身がステージではありませんか？",
+					L"所属ステージがnullです",
 					L"if (!shptr)",
 					L"GameObject::GetStage()"
 				);
@@ -219,7 +219,6 @@ namespace basecross {
 		‾Impl() {}
 	};
 
-
 	//--------------------------------------------------------------------------------------
 	//	class GameObjectGroup;
 	//--------------------------------------------------------------------------------------
@@ -227,7 +226,7 @@ namespace basecross {
 		ObjectInterface(),
 		pImpl(new Impl())
 	{}
-	GameObjectGroup::‾GameObjectGroup() {}
+	GameObjectGroup::~GameObjectGroup() {}
 	//アクセサ
 	const vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVector() const {
 		return pImpl->m_Group;
@@ -399,7 +398,7 @@ namespace basecross {
 			if (ResKey == L"") {
 				throw BaseException(
 					L"テクスチャキーが空白です",
-					L"if (ResKey == L¥"¥"",
+					L"if (ResKey == L""",
 					L"Particle::SetTextureResource()"
 				);
 			}
@@ -2250,13 +2249,5 @@ namespace basecross {
 			throw;
 		}
 	}
-
-
-
-
-
-
-
-
 }
 //end basecross

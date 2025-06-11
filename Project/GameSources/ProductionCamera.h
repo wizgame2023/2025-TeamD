@@ -43,8 +43,8 @@ namespace basecross {
 		int m_moveType;
 
 		// 構築と破棄
-		ProductionCameraman::ProductionCameraman(const shared_ptr<Stage>& StagePtr);
-		ProductionCameraman::‾ProductionCameraman() {}
+		ProductionCameraman(const shared_ptr<Stage>& StagePtr);
+		~ProductionCameraman() {}
 
 		// 初期化
 		virtual void OnCreate() override;
@@ -179,7 +179,7 @@ namespace basecross {
 		@brief	デストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ‾ProductionCamera();
+		virtual ~ProductionCamera();
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief 更新処理
