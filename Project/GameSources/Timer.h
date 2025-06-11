@@ -22,6 +22,9 @@ namespace basecross {
 				m_Timer = 0;
 			}
 		}
+		bool CheckTime() {
+			return m_Timer == m_MaxTime;
+		}
 		void Reset() {
 			m_Timer = 0;
 		}
