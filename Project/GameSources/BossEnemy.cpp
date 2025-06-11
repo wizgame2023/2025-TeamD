@@ -17,7 +17,7 @@ namespace basecross {
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
 	}
-	BossEnemy::‾BossEnemy()
+	BossEnemy::~BossEnemy()
 	{
 	}
 	void BossEnemy::AddAnimation() {
@@ -238,7 +238,7 @@ namespace basecross {
 	{
 	}
 
-	BossEnemyLeg::‾BossEnemyLeg()
+	BossEnemyLeg::~BossEnemyLeg()
 	{
 	}
 
