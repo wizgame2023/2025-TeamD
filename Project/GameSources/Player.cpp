@@ -38,7 +38,6 @@ namespace basecross {
 	Player::‾Player()
 	{
 	}
-
 	Vec2 Player::GetInputState() const {
 		Vec2 ret;
 		//コントローラの取得
@@ -396,7 +395,7 @@ namespace basecross {
 		SetSpeed(4.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 		//描画設定
 		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
@@ -558,16 +557,14 @@ namespace basecross {
 		}
 		else
 		{
-			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			if (m_HP <= 0)
 			{
 				SetAnim(L"Died");
 			}
 			else {
-				SetAnim(L"Clear");
+				SetAnim(L"Idle");
 			}
 		}
-
 	}
 
 	void Player::OnDraw()

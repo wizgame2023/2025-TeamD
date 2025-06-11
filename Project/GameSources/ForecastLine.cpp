@@ -38,7 +38,9 @@ namespace basecross {
 		qt = Quat(0, sin(XMConvertToRadians(45)), 0, cos(XMConvertToRadians(45))) * qt;
 		m_Transform->SetQuaternion(qt);
 	}
-
+	void LineCube::Destroy() {
+		GetStage()->RemoveGameObject<LineCube>(GetThis<LineCube>());
+	}
 	void BulletLine::OnCreate() {
 		m_Transform = GetComponent<Transform>();
 		m_Draw = AddComponent<BcPNTStaticDraw>();

@@ -160,9 +160,7 @@
       <Filter>Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h" />
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
-      <Filter>Ballet</Filter>
-    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)ProductionCamera.h" />
@@ -267,25 +265,26 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
-      <Filter>Select</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
-      <Filter>Ballet</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
-      <Filter>Ballet</Filter>
-    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
+  </ItemGroup>
+  <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
       <Filter>TitleScene</Filter>
     </ClCompile>

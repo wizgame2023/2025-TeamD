@@ -17,8 +17,9 @@ namespace basecross {
 
 		Timer m_TotalTimer;
 		shared_ptr<NumberSprite> m_Fps;
-		shared_ptr<Sprite> backGround;
-		shared_ptr<Sprite> backStage;
+		shared_ptr<Sprite> m_backGround;
+		shared_ptr<Sprite> m_backStage;
+		shared_ptr<Sprite> m_backSprite;
 
 		bool EnemyDead;
 		bool BossDead;
@@ -27,7 +28,7 @@ namespace basecross {
 		void CreateSelect();
 		void ClearSprite();
 
-		void UpdateStop(bool ClearSprite);
+		//void UpdateStop(bool ClearSprite);
 		bool m_IsPose;
 
 	public:
