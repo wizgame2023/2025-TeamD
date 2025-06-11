@@ -11,7 +11,7 @@ namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Character(stage, position, Vec3(), scale){
 	}
-	Enemy::‾Enemy()
+	Enemy::~Enemy()
 	{
 	}
 	void Enemy::OnCreate()

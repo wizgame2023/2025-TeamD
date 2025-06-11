@@ -35,7 +35,7 @@ namespace basecross {
 
 	{
 	}
-	Player::‾Player()
+	Player::~Player()
 	{
 	}
 	Vec2 Player::GetInputState() const {
@@ -637,7 +637,7 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::‾HitSphere()
+	HitSphere::~HitSphere()
 	{
 		m_Effect->StopEffect(m_Handle);
 	}

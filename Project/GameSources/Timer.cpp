@@ -15,7 +15,7 @@ namespace basecross {
 		m_IsReset = isReset;
 	}
 
-	Timer::‾Timer(){}
+	Timer::~Timer(){}
 
 	bool Timer::UpdateTimer() {
 		if (m_Timer >= m_MaxTime) {
