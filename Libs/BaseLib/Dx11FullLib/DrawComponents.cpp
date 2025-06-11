@@ -257,11 +257,11 @@ namespace basecross {
 		~Impl() {}
 	};
 
-	float Shadowmap::Impl::m_LightHeight(200.0f);
+	float Shadowmap::Impl::m_LightHeight(100.0f);
 	float Shadowmap::Impl::m_LightNear(1.0f);
-	float Shadowmap::Impl::m_LightFar(220.0f);
-	float Shadowmap::Impl::m_ViewWidth(32.0f);
-	float Shadowmap::Impl::m_ViewHeight(32.0f);
+	float Shadowmap::Impl::m_LightFar(200.0f);
+	float Shadowmap::Impl::m_ViewWidth(128.0f);
+	float Shadowmap::Impl::m_ViewHeight(128.0f);
 	float Shadowmap::Impl::m_PosAdjustment(0.1f);
 
 
