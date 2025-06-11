@@ -3,3 +3,4 @@
 git config --global diff.sjis.textconv "iconv -f SHIFT-JIS -t UTF-8"*.cpp text working-tree-encoding=sjis diff=sjis
 *.h text working-tree-encoding=sjis diff=sjis
 git add --renormalize .
+git commit -m "Fix character encoding conversion from CP932 to UTF-8"
