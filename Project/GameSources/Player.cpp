@@ -35,7 +35,7 @@ namespace basecross {
 
 	{
 	}
-	Player::~Player()
+	Player::‾Player()
 	{
 	}
 	Vec2 Player::GetInputState() const {
@@ -637,7 +637,7 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::~HitSphere()
+	HitSphere::‾HitSphere()
 	{
 		m_Effect->StopEffect(m_Handle);
 	}
@@ -651,7 +651,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 

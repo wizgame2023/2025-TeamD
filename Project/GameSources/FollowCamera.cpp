@@ -141,7 +141,7 @@ namespace basecross {
 		m_HitCollision = false;
 
 		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
-		//m_Line = m_Stage->AddGameObject<LineCube>(0.01f, Col4(0, 0, 1, 1));
+
 	}
 
 	void FollowCamera::OnUpdate() {
@@ -165,19 +165,7 @@ namespace basecross {
 
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
-		//m_Line->SetLine(Line(m_PlayerTransform->GetPosition(), m_Eye));
 		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
-		/*for (auto& obj : m_Stage->GetGameObjectVec()) {
-
-			auto transform = obj->GetComponent<Transform>();
-			Vec3 position = transform->GetPosition();
-			Vec3 scale = transform->GetScale();
-			float leng = RayCast::CalcDistancePoint(position, );
-			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
-			if (leng < lengths.length()) {
-				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
-			}
-		}*/
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}

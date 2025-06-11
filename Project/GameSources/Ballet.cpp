@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -15,16 +15,16 @@ namespace basecross {
 		m_bulletPally(false)
 	{
 	}
-	Bullet::~Bullet() {}
+	Bullet::â€¾Bullet() {}
 
 	void Bullet::OnCreate()
 	{
 		Object::OnCreate();
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetAfterCollision(AfterCollision::None);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(

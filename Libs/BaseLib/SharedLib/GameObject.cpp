@@ -17,7 +17,7 @@ namespace basecross {
 		m_Stage(StagePtr)
 	{}
 
-	GameObject::~GameObject() {}
+	GameObject::‾GameObject() {}
 
 	shared_ptr<Stage> GameObject::GetStage(bool ExceptionActive) const {
 		auto shptr = m_Stage.lock();
@@ -216,7 +216,7 @@ namespace basecross {
 	struct GameObjectGroup::Impl {
 		vector< weak_ptr<GameObject> > m_Group;
 		Impl() {}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -285,7 +285,7 @@ namespace basecross {
 			m_TotalTime(0),
 			m_MaxTime(0)
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 
@@ -298,7 +298,7 @@ namespace basecross {
 		ObjectInterface(),
 		pImpl(new Impl(Count, Option))
 	{}
-	Particle::~Particle() {}
+	Particle::‾Particle() {}
 
 	Particle::DrawOption Particle::GetDrawOption()const {
 		return pImpl->m_DrawOption;
@@ -433,7 +433,7 @@ namespace basecross {
 		Impl():
 			m_AddType(false)
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 
@@ -445,7 +445,7 @@ namespace basecross {
 		GameObject(StagePtr),
 		pImpl(new Impl())
 	{}
-	MultiParticle::~MultiParticle() {}
+	MultiParticle::‾MultiParticle() {}
 
 	vector< shared_ptr<Particle> >& MultiParticle::GetParticleVec() const {
 		return pImpl->m_ParticleVec;
@@ -527,7 +527,7 @@ namespace basecross {
 			m_SamplerWrap(false),
 			m_AddType(AddType)
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -539,7 +539,7 @@ namespace basecross {
 		GameObject(StagePtr),
 		pImpl(new Impl(AddType))
 	{}
-	ParticleManager::~ParticleManager() {}
+	ParticleManager::‾ParticleManager() {}
 
 	//初期化
 	void ParticleManager::OnCreate() {
@@ -713,7 +713,7 @@ namespace basecross {
 			m_IsShadowmapDraw(true),
 			m_IsPhysicsActive(false)
 		{}
-		~Impl() {}
+		‾Impl() {}
 		void RemoveTargetGameObject(const shared_ptr<GameObject>& targetobj);
 	};
 	void Stage::Impl::RemoveTargetGameObject(const shared_ptr<GameObject>& targetobj) {
@@ -738,7 +738,7 @@ namespace basecross {
 		ShapeInterface(),
 		pImpl(new Impl())
 	{}
-	Stage::~Stage() {}
+	Stage::‾Stage() {}
 
 	//プライベートサブ関数
 	void Stage::PushBackGameObject(const shared_ptr<GameObject>& Ptr) {
@@ -1371,7 +1371,7 @@ namespace basecross {
 		Impl() :
 			m_AutoRepeat(true)
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 
@@ -1389,7 +1389,7 @@ namespace basecross {
 	{
 		pImpl->m_MovieFileName = MivieFileName;
 	}
-	MovieStage::~MovieStage() {}
+	MovieStage::‾MovieStage() {}
 
 	void MovieStage::OnCreate() {
 		auto ptrView = CreateView<SingleView>();
@@ -1426,7 +1426,7 @@ namespace basecross {
 	DebugString::DebugString(const shared_ptr<Stage>& StagePtr):
 		GameObject(StagePtr)
 	{}
-	DebugString::~DebugString(){}
+	DebugString::‾DebugString(){}
 	void DebugString::OnCreate() {
 		//文字列をつける
 		auto ptrString = AddComponent<StringSprite>();
@@ -1448,7 +1448,7 @@ namespace basecross {
 			m_ActiveStage(),
 			m_ClearColor(0,0,0,1.0f)
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -1678,7 +1678,7 @@ namespace basecross {
 			throw;
 		}
 	}
-	SceneBase::~SceneBase() {}
+	SceneBase::‾SceneBase() {}
 
 	shared_ptr<Stage> SceneBase::GetActiveStage(bool ExceptionActive) const {
 		if (!pImpl->m_ActiveStage) {
@@ -1757,7 +1757,7 @@ namespace basecross {
 		Impl() :
 			m_IsCellStringActive(false)
 		{}
-		~Impl() {}
+		‾Impl() {}
 		void Init(const bsm::Vec3& MiniPos,
 			float PieceSize, UINT PieceCountX, UINT PieceCountZ, int DefaultCost);
 		void Create(const shared_ptr<MultiStringSprite>& StringPtr, const shared_ptr<Stage>& StagePtr);
@@ -1921,7 +1921,7 @@ namespace basecross {
 
 
 
-	StageCellMap::~StageCellMap() {}
+	StageCellMap::‾StageCellMap() {}
 
 	bool StageCellMap::IsCellStringActive() {
 		return pImpl->m_IsCellStringActive;
@@ -2144,7 +2144,7 @@ namespace basecross {
 		map<wstring, shared_ptr<GameObjectCreatorBaseCSV> > m_CreatorMap;
 		Impl()
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 
@@ -2157,7 +2157,7 @@ namespace basecross {
 	{
 
 	}
-	GameObjecttCSVBuilder::~GameObjecttCSVBuilder() {}
+	GameObjecttCSVBuilder::‾GameObjecttCSVBuilder() {}
 
 	map<wstring, shared_ptr<GameObjectCreatorBaseCSV>>& GameObjecttCSVBuilder::GetCreatorMap() const {
 		return pImpl->m_CreatorMap;
@@ -2203,7 +2203,7 @@ namespace basecross {
 		map<wstring, shared_ptr<GameObjectCreatorBaseXML> > m_CreatorMap;
 		Impl()
 		{}
-		~Impl() {}
+		‾Impl() {}
 	};
 
 
@@ -2216,7 +2216,7 @@ namespace basecross {
 	{
 
 	}
-	GameObjecttXMLBuilder::~GameObjecttXMLBuilder() {}
+	GameObjecttXMLBuilder::‾GameObjecttXMLBuilder() {}
 
 	map<wstring, shared_ptr<GameObjectCreatorBaseXML>>& GameObjecttXMLBuilder::GetCreatorMap() const {
 		return pImpl->m_CreatorMap;
