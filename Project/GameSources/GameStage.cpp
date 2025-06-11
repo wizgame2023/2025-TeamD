@@ -282,6 +282,8 @@ namespace basecross {
 		m_UltIcon->SetDraw(false);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
+		SoundManager::Instance().StopBGM();
+		SoundManager::Instance().PlaySE(L"BGM_GAMEOVER");
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
 
