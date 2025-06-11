@@ -152,6 +152,7 @@ namespace basecross {
 		Vec3 position = enemy->GetPosition();
 		float rotate = atan2f(forward.x, forward.z);
 
+
 		Vec3 objDirection = Vec3();
 		float objRenge = 0;
 		if (groups.size() != 0)
