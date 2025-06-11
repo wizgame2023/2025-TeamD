@@ -1,6 +1,6 @@
 /*!
 @file Sprite.h
-@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+@brief ƒXƒvƒ‰ƒCƒg
 */
 
 #pragma once
@@ -56,48 +56,48 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//
-	//	ç”»åƒè¡¨ç¤ºã‚¯ãƒ©ã‚¹						
+	//	‰æ‘œ•\¦ƒNƒ‰ƒX						
 	//																																
 	//----------------------------------------------------------
 	class Sprite : public GameObject {
-		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼
+		//ƒeƒNƒXƒ`ƒƒƒL[
 		wstring m_TexKey;
-		//ã‚µã‚¤ã‚º
+		//ƒTƒCƒY
 		Vec2 m_Size;
-		//ä½ç½®
+		//ˆÊ’u
 		Vec3 m_Pos;
-		//è¡¨ç¤ºåŸºã‚’ä¸­å¿ƒã«ã™ã‚‹ã‹
+		//•\¦Šî‚ğ’†S‚É‚·‚é‚©
 		bool m_IsUseCenterSprite;
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹ã‹
+		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ª‚ ‚é‚©
 		bool m_IsAnimation;
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚é–“
+		//ƒAƒjƒ[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦ŠÔ
 		float m_AnimationChangeTime;
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åˆ‡ã‚Šæ›¿ãˆæ™‚é–“è¨ˆæ¸¬
+		//ƒAƒjƒ[ƒVƒ‡ƒ“Ø‚è‘Ö‚¦ŠÔŒv‘ª
 		float m_AnimationTimer;
-		//ä½¿ç”¨ã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚³ãƒæ•°
+		//g—p‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒRƒ}”
 		int m_UseIndex;
-		//ç¾åœ¨ã®ã‚³ãƒ
+		//Œ»İ‚ÌƒRƒ}
 		int m_Index;
-		//ç”»åƒã®åˆ‡ã‚Šå–ã‚Šæ•°
+		//‰æ‘œ‚ÌØ‚èæ‚è”
 		Vec2 m_cutUV;
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®UV
+		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌUV
 		vector<vector<Vec2>> m_AnimationUV;
-		//é ‚ç‚¹
+		//’¸“_
 		vector<VertexPositionColorTexture> m_Vertices;
-		//æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+		//•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
 		shared_ptr<PCTSpriteDraw> m_Draw;
-		//ä½ç½®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+		//ˆÊ’uƒRƒ“ƒ|[ƒlƒ“ƒg
 		shared_ptr<Transform> m_Transform;
-		//ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‚µã‚¤ã‚º
+		//ƒXƒNƒŠ[ƒ“ƒTƒCƒY
 		Vec2 m_ScreenSize;
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒãƒƒãƒ—
+		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ}ƒbƒv
 		map<wstring, SpriteAnimation> m_Animations;
-		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 		SpriteAnimation m_CurrentAnimation;
-		//å‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
+		//‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
 		SpriteAnimation m_BeforeAnimation;
 
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å‡¦ç†
+		//ƒAƒjƒ[ƒVƒ‡ƒ“ˆ—
 		void Animation();
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUV, const bool useCenter = false, const float changeTime = 0.5f, const int useIndex = -1, const bool isAnimation = true) :
 			GameObject(ptr),
@@ -120,17 +120,17 @@ namespace basecross{
 		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv,int useIndex, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, 0, useIndex, true) {}
 
 
-		virtual â€¾Sprite(){}
+		virtual ~Sprite(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-		//ã‚µã‚¤ã‚ºã®åˆ‡ã‚Šæ›¿ãˆ
+		//ƒTƒCƒY‚ÌØ‚è‘Ö‚¦
 		void UpdateSize(Vec3 size);
 		void UpdateSize(Vec2 size);
 		Vec2 GetSize() {
 			return m_Size;
 		}
-		//ä½ç½®ã®åˆ‡ã‚Šæ›¿ãˆ
+		//ˆÊ’u‚ÌØ‚è‘Ö‚¦
 		void SetPos(Vec3 pos);
 		Vec3 GetPos() {
 			return m_Pos;
@@ -143,11 +143,11 @@ namespace basecross{
 		void SetVertex(vector<Vec3> positions);
 		//----------------------------------------------------------
 		//
-		//	UVæ“ä½œ		
+		//	UV‘€ì		
 		//																																
 		//----------------------------------------------------------
 		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut,const int& maxIndex = 1024);
-		//UVã®åˆ‡ã‚Šæ›¿ãˆ
+		//UV‚ÌØ‚è‘Ö‚¦
 		void UpdateUV(vector<Vec2> uv);
 
 		vector<vector<Vec2>> GetUvVec() {
@@ -162,27 +162,27 @@ namespace basecross{
 
 		//----------------------------------------------------------
 		//
-		//	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æ“ä½œ		
+		//	ƒAƒjƒ[ƒVƒ‡ƒ“‘€ì		
 		//																																
 		//----------------------------------------------------------
 		
 		
-		//å‰ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
+		//‘O‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
 		SpriteAnimation GetBeforeAnimation() {
 			return m_BeforeAnimation;
 		}
-		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
+		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
 		SpriteAnimation GetCurrentAnimation() {
 			return m_CurrentAnimation;
 		}
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å–å¾—
+		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğæ“¾
 		SpriteAnimation GetAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				return m_Animations[key];
 			}
 			return SpriteAnimation();
 		}
-		//å†ç”Ÿã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¨­å®š
+		//Ä¶‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ğİ’è
 		void SetCurrentAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_CurrentAnimation.EndAnimation();
@@ -190,7 +190,7 @@ namespace basecross{
 				m_CurrentAnimation = m_Animations[key];
 			}
 		}
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ 
+		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’Ç‰Á
 		void AddAnimation(const wstring& key, int startOrder, int endOrder, float time, float interval, const bool isLoop = false, const bool isReverse = false) {
 			SpriteAnimation animation = SpriteAnimation(startOrder, endOrder, time, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
@@ -199,7 +199,7 @@ namespace basecross{
 			SpriteAnimation animation = SpriteAnimation(order, time, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
 		}
-		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³æƒ…å ±ã‚’æ›´æ–°
+		//ƒAƒjƒ[ƒVƒ‡ƒ“î•ñ‚ğXV
 		void UpdateAnimationData(const wstring& key, SpriteAnimation newAnimation) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_Animations[key] = newAnimation;
@@ -207,7 +207,7 @@ namespace basecross{
 		}
 		//----------------------------------------------------------
 		//
-		//	ä½ç½®è¨­å®šãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆ		
+		//	ˆÊ’uİ’èƒeƒ“ƒvƒŒ[ƒg		
 		//																																
 		//----------------------------------------------------------
 		void ScreenCenter(const Vec2 diff = Vec2(0,0));
@@ -224,7 +224,7 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//																																
-	//	æ•°å€¤è¡¨ç¤ºã‚¯ãƒ©ã‚¹																												
+	//	”’l•\¦ƒNƒ‰ƒX																												
 	//																																
 	//----------------------------------------------------------
 	class NumberSprite : public GameObject {
@@ -247,7 +247,7 @@ namespace basecross{
 			m_Pos(pos),m_Size(size),
 			m_DisplayDigit(displayDigit),m_DisplayNumber(1234), m_CutNum(cutNum)
 		{}
-		virtual â€¾NumberSprite(){}
+		virtual ~NumberSprite(){}
 
 		virtual void OnCreate();
 		virtual void OnUpdate();
@@ -268,12 +268,12 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//																																
-	//	Spriteæ“ä½œã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚¯ãƒ©ã‚¹
+	//	Sprite‘€ìƒRƒ“ƒ|[ƒlƒ“ƒgƒNƒ‰ƒX
 	// 
-	//	< ä½¿ã„æ–¹ >
-	//  AddComponentã§ä½¿ã„ãŸã„æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‚’è¨­å®š
-	//  Play() : æ›´æ–°
-	//  Stop() : åœæ­¢																				
+	//	< g‚¢•û >
+	//  AddComponent‚Åg‚¢‚½‚¢”h¶ƒNƒ‰ƒX‚ğİ’è
+	//  Play() : XV
+	//  Stop() : ’â~																				
 	//																																
 	//----------------------------------------------------------
 	class SpriteAction : public Component {
@@ -283,7 +283,7 @@ namespace basecross{
 		shared_ptr<Transform> m_Trans;
 	public:
 		SpriteAction(const shared_ptr<GameObject>& ptr) : Component(ptr),m_IsPlay(true){}
-		virtual â€¾SpriteAction() {}
+		virtual ~SpriteAction() {}
 
 		virtual void OnCreate()override;
 		virtual void OnDraw()override {}
@@ -302,7 +302,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Spriteæ“ä½œ : ç‚¹æ»…																								
+	//	Sprite‘€ì : “_–Å																								
 	//																																
 	//----------------------------------------------------------
 	class SpriteFlash : public SpriteAction {
@@ -310,7 +310,7 @@ namespace basecross{
 	public:
 		SpriteFlash(const shared_ptr<GameObject>& ptr,float flashSpeed) : SpriteAction(ptr),
 			m_FlashSpeed(flashSpeed){}
-		virtual â€¾SpriteFlash(){}
+		virtual ~SpriteFlash(){}
 
 		virtual void OnUpdate()override;
 		virtual void Reset()override;
@@ -321,7 +321,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Spriteæ“ä½œ : æ‹¡å¤§ç¸®å°																								
+	//	Sprite‘€ì : Šg‘åk¬																								
 	//																																
 	//----------------------------------------------------------
 	class SpriteScaling : public SpriteAction {
@@ -334,7 +334,7 @@ namespace basecross{
 	public:
 		SpriteScaling(const shared_ptr<GameObject>& ptr, float scalingSpeed, float max, float min) : SpriteAction(ptr), 
 			m_ScalingSpeed(scalingSpeed), m_MaxRatio(max), m_MinRatio(min),defaultSize(0,0,0),m_Ratio(1.0f) {}
-		virtual â€¾SpriteScaling() {}
+		virtual ~SpriteScaling() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -352,7 +352,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	Spriteæ“ä½œ : ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¤ãƒ³ãƒ»ãƒ•ã‚§ãƒ¼ãƒ‰ã‚¢ã‚¦ãƒˆ																								
+	//	Sprite‘€ì : ƒtƒF[ƒhƒCƒ“EƒtƒF[ƒhƒAƒEƒg																								
 	//																																
 	//----------------------------------------------------------
 	class SpriteFade : public SpriteAction {
@@ -361,7 +361,7 @@ namespace basecross{
 		bool m_IsFinished;
 	public:
 		SpriteFade(const shared_ptr<GameObject>& ptr,float fadeSpeed) : SpriteAction(ptr),m_FadeSpeed(fadeSpeed),m_IsFadeOut(true),m_IsFinished(false){}
-		virtual â€¾SpriteFade(){}
+		virtual ~SpriteFade(){}
 
 		virtual void OnUpdate()override;
 
@@ -384,7 +384,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	ãƒœã‚¿ãƒ³																		
+	//	ƒ{ƒ^ƒ“																		
 	//																																
 	//----------------------------------------------------------
 	class SpriteButton : public SpriteAction {
@@ -421,7 +421,7 @@ namespace basecross{
 		SpriteButton(shared_ptr<GameObject>& ptr, const wstring& defaultTexture, const wstring& group, Col4 selectedColor) :
 			SpriteButton(ptr,defaultTexture,group,L"",selectedColor)
 		{}
-		virtual â€¾SpriteButton(){}
+		virtual ~SpriteButton(){}
 
 		virtual void OnCreate()override;
 
@@ -492,7 +492,7 @@ namespace basecross{
 	};
 	//----------------------------------------------------------
 	//																																
-	//	ãƒœã‚¿ãƒ³å…¥åŠ›ãƒ‡ãƒ¼ã‚¿																							
+	//	ƒ{ƒ^ƒ““ü—Íƒf[ƒ^																							
 	//																																
 	//----------------------------------------------------------
 	enum class InputMode {
@@ -545,27 +545,27 @@ namespace basecross{
 	
 	//----------------------------------------------------------
 	//																																
-	//	ãƒœã‚¿ãƒ³ç”¨ãƒãƒãƒ¼ã‚¸ãƒ£ãƒ¼																							
+	//	ƒ{ƒ^ƒ“—pƒ}ƒl[ƒWƒƒ[																							
 	//																																
 	//----------------------------------------------------------
 
 	class ButtonManager : public GameObject{
-		//ãƒœã‚¿ãƒ³æ ¼ç´ç”¨é…åˆ—
+		//ƒ{ƒ^ƒ“Ši”[—p”z—ñ
 		map<wstring, vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
-		//é¸æŠä¸­ã®ç•ªå·
+		//‘I‘ğ’†‚Ì”Ô†
 		map<wstring, int> m_SelectIndexes;
-		//åæ˜ ã•ã›ã‚‹ç§»å‹•é‡
+		//”½‰f‚³‚¹‚éˆÚ“®—Ê
 		map<wstring, Vec3> m_GroupMovementAmount;
-		//å…¥åŠ›
+		//“ü—Í
 		map<wstring, vector<InputData>> m_InputDates;
-		//æ±ºå®šãƒœã‚¿ãƒ³
+		//Œˆ’èƒ{ƒ^ƒ“
 		map<wstring, vector<WORD>> m_AcceptButtons;
-		//ãã®ç¬é–“ã«æŠ¼ã•ã‚ŒãŸæ±ºå®šãƒœã‚¿ãƒ³
+		//‚»‚ÌuŠÔ‚É‰Ÿ‚³‚ê‚½Œˆ’èƒ{ƒ^ƒ“
 		map<wstring, WORD> m_PressedAccept;
 		wstring m_UsingGroup;
-		//ã‚¯ãƒªãƒƒã‚¯éŸ³ã®ã‚­ãƒ¼
+		//ƒNƒŠƒbƒN‰¹‚ÌƒL[
 		wstring m_ClickSound;
-		//Updateã•ã›ã‚‹ã‹
+		//Update‚³‚¹‚é‚©
 		bool m_IsActive;
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
@@ -589,7 +589,7 @@ namespace basecross{
 			GameObject(ptr),
 			m_IsActive(true),m_UsingGroup(L""),m_ClickSound(L"")
 		{}
-		virtual â€¾ButtonManager(){}
+		virtual ~ButtonManager(){}
 
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
 		static shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size,function<void(shared_ptr<ObjectInterface>&)> func);
@@ -811,7 +811,7 @@ namespace basecross{
 
 	//----------------------------------------------------------
 	//																																
-	//	æ¿ãƒãƒªç”¨																					
+	//	”Âƒ|ƒŠ—p																					
 	//																																
 	//----------------------------------------------------------
 
@@ -830,7 +830,7 @@ namespace basecross{
 		Board(shared_ptr<Stage>& ptr, const wstring& key,Vec3 pos, Vec3 size,const bool& isBillBoard = true) : 
 			GameObject(ptr),
 			m_TexKey(key), m_StartPos(pos),m_Offset(Vec3()), m_Size(size), m_IsBillBoard(isBillBoard) { }
-		virtual â€¾Board() {}
+		virtual ~Board() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

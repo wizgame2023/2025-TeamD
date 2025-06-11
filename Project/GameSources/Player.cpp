@@ -414,9 +414,9 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
-		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
+		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		AddAnimation();
-		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
