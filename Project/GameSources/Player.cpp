@@ -414,9 +414,9 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
-		ptrDraw->SetOwnShadowActive(true);
+		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
+		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		AddAnimation();
-		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -651,7 +651,7 @@ namespace basecross {
 
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(false);//debug
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 		ptrColl->SetAfterCollision(AfterCollision::None);
 

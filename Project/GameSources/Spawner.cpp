@@ -7,13 +7,15 @@
 #include "Project.h"
 
 namespace basecross {
-	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0),m_SpawnTimer(Timer(1.0f,false)), m_IsSpawn(true){}
+	Spawner::Spawner(const shared_ptr<Stage>& stage) : Object(stage),m_Wave(0), m_EnemyCount(0), m_SpawnTimer(Timer(1.0f, false)), m_IsSpawn(true) {}
 
 	void Spawner::OnCreate() {
 		Object::OnCreate();
 	}
 	void Spawner::OnUpdate() {
-		
+		if (!dynamic_pointer_cast<FollowCamera>(OnGetDrawCamera())) {
+			return;
+		}
 		if (m_Wave == -1 || !m_IsSpawn) return;
 		for (auto& wEnemy : m_Legions[m_Wave]->GetEnemyLegionGruop()) {
 			auto enemy = wEnemy.lock();

@@ -280,7 +280,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
       <Filter>Select</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
@@ -288,6 +287,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
       <Filter>Sprite</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
+      <Filter>Select</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

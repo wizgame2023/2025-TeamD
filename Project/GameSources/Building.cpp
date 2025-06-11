@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -17,7 +17,7 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"GROUND");
@@ -52,7 +52,7 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		/*ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"BUILDING");*/
