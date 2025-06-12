@@ -24,7 +24,7 @@ namespace basecross {
 		Effekseer::Handle m_EffectHandle;
 	public:
 		MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, shared_ptr<Transform>& target,float speed,float explodeSize);
-		virtual ~MissileBullet(){}
+		virtual ‾MissileBullet(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

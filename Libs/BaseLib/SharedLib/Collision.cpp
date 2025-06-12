@@ -1,6 +1,6 @@
 /*!
 @file Collision.cpp
-@brief Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief è¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -10,18 +10,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Collision::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Collision::Impl {
-		bool m_Fixed;		//Ã~ƒIƒuƒWƒFƒNƒg‚©‚Ç‚¤‚©
-		weak_ptr<MeshResource> m_MeshResource;	//ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		weak_ptr<GameObjectGroup> m_ExcludeCollisionGroup;	//”»’è‚©‚çœŠO‚·‚éƒOƒ‹[ƒv
-		vector<weak_ptr<GameObject>> m_ExcludeCollisionGameObjects; //”»’è‚©‚çœŠO‚·‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚Ì”z—ñ
-		//”»’è‚©‚çœŠO‚·‚éƒ^ƒO
+		bool m_Fixed;		//é™æ­¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‹ã©ã†ã‹
+		weak_ptr<MeshResource> m_MeshResource;	//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		weak_ptr<GameObjectGroup> m_ExcludeCollisionGroup;	//åˆ¤å®šã‹ã‚‰é™¤å¤–ã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—
+		vector<weak_ptr<GameObject>> m_ExcludeCollisionGameObjects; //åˆ¤å®šã‹ã‚‰é™¤å¤–ã™ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ—
+		//åˆ¤å®šã‹ã‚‰é™¤å¤–ã™ã‚‹ã‚¿ã‚°
 		set<wstring> m_ExcludeCollisionTags;
-		//Õ“ËŒã‚Ìˆ—
+		//è¡çªå¾Œã®å‡¦ç†
 		AfterCollision m_AfterCollision;
-		//ƒXƒŠ[ƒvƒ`ƒFƒbƒN—p
+		//ã‚¹ãƒªãƒ¼ãƒ—ãƒã‚§ãƒƒã‚¯ç”¨
 		bool m_SleepActive;
 		bsm::Mat4x4 m_SleepCheckWorldMatrix;
 		float m_SleepCheckTimer;
@@ -37,19 +37,19 @@ namespace basecross {
 			m_IsSleep(false)
 		{
 		}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class Collision : public Component ;
-	//	—p“r: Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌeƒNƒ‰ƒX
+	//	ç”¨é€”: è¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	Collision::Collision(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	Collision::~Collision() {}
+	Collision::â€¾Collision() {}
 
 	bool Collision::GetFixed() const {
 		return pImpl->m_Fixed;
@@ -121,9 +121,9 @@ namespace basecross {
 	}
 	void  Collision::AddExcludeCollisionTag(const wstring& tagstr) {
 		if (tagstr == L"") {
-			//‹ó”’‚È‚ç—áŠO
+			//ç©ºç™½ãªã‚‰ä¾‹å¤–
 			throw BaseException(
-				L"İ’è‚·‚éƒ^ƒO‚ª‹ó‚Å‚·",
+				L"è¨­å®šã™ã‚‹ã‚¿ã‚°ãŒç©ºã§ã™",
 				L"if (tagstr == L"")",
 				L"Collision::AddExcludeCollisionTag()"
 			);
@@ -223,7 +223,7 @@ namespace basecross {
 		}
 	}
 
-	//‘€ì
+	//æ“ä½œ
 	shared_ptr<CollisionManager> Collision::GetCollisionManager() const {
 		return GetGameObject()->GetStage()->GetCollisionManager();
 	}
@@ -234,11 +234,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct CollisionSphere::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct CollisionSphere::Impl {
-		float m_MakedDiameter;					//ì¬‚Ì’¼Œa
-		//”z—ñƒ{ƒŠƒ…[ƒ€‚ÆÕ“Ë‚ÉÕ“Ë‚µ‚½”z—ñ‚ğ“Á’è‚·‚éƒCƒ“ƒfƒbƒNƒX
+		float m_MakedDiameter;					//ä½œæˆæ™‚ã®ç›´å¾„
+		//é…åˆ—ãƒœãƒªãƒ¥ãƒ¼ãƒ ã¨è¡çªæ™‚ã«è¡çªã—ãŸé…åˆ—ã‚’ç‰¹å®šã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		size_t m_IsHitVolumeIndex;
 		CalcScaling m_CalcScaling;
 		Impl() :
@@ -246,25 +246,25 @@ namespace basecross {
 			m_IsHitVolumeIndex(0),
 			m_CalcScaling(CalcScaling::YScale)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class CollisionSphere : public Collision ;
-	//	—p“r: ‹…Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: çƒè¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	CollisionSphere::CollisionSphere(const shared_ptr<GameObject>& GameObjectPtr) :
 		Collision(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	CollisionSphere::~CollisionSphere() {}
+	CollisionSphere::â€¾CollisionSphere() {}
 
 	void CollisionSphere::OnCreate() {
 		SetDrawActive(false);
 	}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	float CollisionSphere::GetMakedDiameter() const {
 		return pImpl->m_MakedDiameter;
 	}
@@ -292,7 +292,7 @@ namespace basecross {
 		bsm::Mat4x4 MatBase;
 		MatBase.scale(bsm::Vec3(pImpl->m_MakedDiameter, pImpl->m_MakedDiameter, pImpl->m_MakedDiameter));
 		MatBase *= TransPtr->GetWorldMatrix();
-		//‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÌSPHERE‚ğì¬
+		//ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®SPHEREã‚’ä½œæˆ
 		SPHERE Ret(MatBase.transInMatrix(), MatBase.scaleInMatrix().x * 0.5f);
 		switch (pImpl->m_CalcScaling) {
 		case CalcScaling::XScale:
@@ -316,7 +316,7 @@ namespace basecross {
 		bsm::Mat4x4 MatBase;
 		MatBase.scale(bsm::Vec3(pImpl->m_MakedDiameter, pImpl->m_MakedDiameter, pImpl->m_MakedDiameter));
 		MatBase *= TransPtr->GetBeforeWorldMatrix();
-		//‚±‚ÌƒIƒuƒWƒFƒNƒg‚ÌSPHERE‚ğì¬
+		//ã“ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®SPHEREã‚’ä½œæˆ
 		SPHERE Ret(MatBase.transInMatrix(), MatBase.scaleInMatrix().x * 0.5f);
 		switch (pImpl->m_CalcScaling) {
 		case CalcScaling::XScale:
@@ -402,15 +402,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//‹…‚Ìê‡‚ÍA‚·‚×‚ÄˆÚ“®ˆÈŠO•Ï‰»‚È‚µ‚Æ‚·‚é
+		//çƒã®å ´åˆã¯ã€ã™ã¹ã¦ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—ã¨ã™ã‚‹
 		SPHERE SrcSphere = GetSphere();
 		SPHERE SrcBeforSphere = GetBeforeSphere();
-		//‘Šè‚ÌCollisionSphere
+		//ç›¸æ‰‹ã®CollisionSphere
 		SPHERE DestSphere = DestColl->GetSphere();
 		SPHERE DestBeforeSphere = DestColl->GetBeforeSphere();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		if (!HitTest::SPHERE_SPHERE(SrcSphere, DestSphere)) {
 			return;
 		}
@@ -439,15 +439,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		SPHERE SrcSphere = GetSphere();
 		SPHERE SrcBeforSphere = GetBeforeSphere();
-		//‘Šè
+		//ç›¸æ‰‹
 		CAPSULE DestCap = DestColl->GetCapsule();
 		CAPSULE DestBeforeCap = DestColl->GetBeforeCapsule();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::SPHERE_CAPSULE(SrcSphere, DestCap, ret)) {
 			return;
@@ -466,7 +466,7 @@ namespace basecross {
 			DestChkCapsule.SetCenter(pair.m_DestCalcHitCenter);
 			bsm::Vec3 ret;
 			HitTest::SPHERE_CAPSULE(SrcChkSphere, DestChkCapsule, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkSphere.m_Center - ret;
 			pair.m_SrcHitNormal.normalize();
 			pair.m_CalcHitPoint = ret;
@@ -481,15 +481,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		SPHERE SrcSphere = GetSphere();
 		SPHERE SrcBeforSphere = GetBeforeSphere();
-		//‘Šè
+		//ç›¸æ‰‹
 		OBB DestObb = DestColl->GetObb();
 		OBB DestBeforeObb = DestColl->GetBeforeObb();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::SPHERE_OBB(SrcSphere, DestObb, ret)) {
 			return;
@@ -508,7 +508,7 @@ namespace basecross {
 			pair.m_DestCalcHitCenter = DestChkObb.m_Center;
 			bsm::Vec3 ret;
 			HitTest::SPHERE_OBB(SrcChkSphere, DestChkObb, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkSphere.m_Center - ret;
 			pair.m_SrcHitNormal.normalize();
 			pair.m_CalcHitPoint = ret;
@@ -522,15 +522,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		SPHERE SrcSphere = GetSphere();
 		SPHERE SrcBeforSphere = GetBeforeSphere();
-		//‘Šè
+		//ç›¸æ‰‹
 		COLRECT DestRect = DestColl->GetColRect();
 		COLRECT DestBeforeRect = DestColl->GetBeforeColRect();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::SPHERE_COLRECT(SrcSphere, DestRect, ret)) {
 			return;
@@ -549,7 +549,7 @@ namespace basecross {
 			pair.m_DestCalcHitCenter = DestChkRect.m_Center;
 			bsm::Vec3 ret;
 			HitTest::SPHERE_COLRECT(SrcChkSphere, DestChkRect, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkSphere.m_Center - ret;
 			pair.m_SrcHitNormal.normalize();
 			pair.m_CalcHitPoint = ret;
@@ -603,12 +603,12 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct CollisionCapsule::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct CollisionCapsule::Impl {
-		float m_MakedDiameter;			//ì¬‚Ì’¼Œa
-		float m_MakedHeight;			//ì¬‚‚³
-		//”z—ñƒ{ƒŠƒ…[ƒ€‚ÆÕ“Ë‚ÉÕ“Ë‚µ‚½”z—ñ‚ğ“Á’è‚·‚éƒCƒ“ƒfƒbƒNƒX
+		float m_MakedDiameter;			//ä½œæˆæ™‚ã®ç›´å¾„
+		float m_MakedHeight;			//ä½œæˆæ™‚é«˜ã•
+		//é…åˆ—ãƒœãƒªãƒ¥ãƒ¼ãƒ ã¨è¡çªæ™‚ã«è¡çªã—ãŸé…åˆ—ã‚’ç‰¹å®šã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		size_t m_IsHitVolumeIndex;
 		bsm::Mat4x4 m_BeforeWorldMatrix;
 		bsm::Mat4x4 m_WorldMatrix;
@@ -627,26 +627,26 @@ namespace basecross {
 			m_FirstBeforeCalc(true),
 			m_FirstCalc(true)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class CollisionCapsule : public Collision ;
-	//	—p“r: ƒJƒvƒZƒ‹Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: ã‚«ãƒ—ã‚»ãƒ«è¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	CollisionCapsule::CollisionCapsule(const shared_ptr<GameObject>& GameObjectPtr) :
 		Collision(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	CollisionCapsule::~CollisionCapsule() {}
+	CollisionCapsule::â€¾CollisionCapsule() {}
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void CollisionCapsule::OnCreate() {
 		SetDrawActive(false);
 	}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	float CollisionCapsule::GetMakedDiameter() const {
 		return pImpl->m_MakedDiameter;
 	}
@@ -765,20 +765,20 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		CAPSULE SrcCapsule = GetCapsule();
 		CAPSULE SrcBeforCapsule = GetBeforeCapsule();
-		//‘Šè‚ÌCollisionSphere
+		//ç›¸æ‰‹ã®CollisionSphere
 		SPHERE DestSphere = DestColl->GetSphere();
 		SPHERE DestBeforeSphere = DestColl->GetBeforeSphere();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::SPHERE_CAPSULE(DestSphere, SrcCapsule, ret)) {
 			return;
 		}
-		//SPHERE‚ÆCAPSULE‚Ìˆµ‚¢‚ª‹t‚É‚È‚é
+		//SPHEREã¨CAPSULEã®æ‰±ã„ãŒé€†ã«ãªã‚‹
 		bsm::Vec3 SpanVelocity = DestVelocity - SrcVelocity;
 		float HitTime = 0;
 		if (HitTest::CollisionTestSphereCapsule(DestBeforeSphere, SpanVelocity, SrcBeforCapsule, 0, ElapsedTime, HitTime)) {
@@ -793,7 +793,7 @@ namespace basecross {
 			pair.m_DestCalcHitCenter = DestChkSphere.m_Center;
 			bsm::Vec3 ret;
 			HitTest::SPHERE_CAPSULE(DestChkSphere, SrcChkCapsule, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = ret - DestChkSphere.m_Center;
 			pair.m_SrcHitNormal.normalize();
 			pair.m_CalcHitPoint = ret;
@@ -807,15 +807,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		CAPSULE SrcCapsule = GetCapsule();
 		CAPSULE SrcBeforCapsule = GetBeforeCapsule();
-		//‘Šè‚ÌCollisionCapsule
+		//ç›¸æ‰‹ã®CollisionCapsule
 		CAPSULE DestCapsule = DestColl->GetCapsule();
 		CAPSULE DestBeforeCapsule = DestColl->GetBeforeCapsule();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret1, ret2;
 		if (!HitTest::CAPSULE_CAPSULE(SrcCapsule, DestCapsule, ret1, ret2)) {
 			return;
@@ -834,8 +834,8 @@ namespace basecross {
 			DestChkCapsule.SetCenter(pair.m_DestCalcHitCenter);
 			bsm::Vec3 ret1, ret2;
 			HitTest::CAPSULE_CAPSULE(SrcChkCapsule, DestChkCapsule, ret1, ret2);
-			//Ú“_‚Ö‚ÌƒxƒNƒgƒ‹
-			//DestCap‚Ìü•ª‚ÆRetVec1‚Ìü•ªã‚ÌÅ‹ßÚ“_‚ÆRetVec1‚Ì–@ü
+			//æ¥ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
+			//DestCapã®ç·šåˆ†ã¨RetVec1ã®ç·šåˆ†ä¸Šã®æœ€è¿‘æ¥ç‚¹ã¨RetVec1ã®æ³•ç·š
 			bsm::Vec3 Start = DestChkCapsule.m_PointBottom;
 			bsm::Vec3 End = DestChkCapsule.m_PointTop;
 			float t;
@@ -854,15 +854,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		CAPSULE SrcCapsule = GetCapsule();
 		CAPSULE SrcBeforCapsule = GetBeforeCapsule();
-		//‘Šè‚ÌCollisionObb
+		//ç›¸æ‰‹ã®CollisionObb
 		OBB DestObb = DestColl->GetObb();
 		OBB DestBeforeObb = DestColl->GetBeforeObb();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::CAPSULE_OBB(SrcCapsule, DestObb, ret)) {
 			return;
@@ -881,7 +881,7 @@ namespace basecross {
 			pair.m_DestCalcHitCenter = DestChkObb.m_Center;
 			bsm::Vec3 RetVec;
 			HitTest::CAPSULE_OBB(SrcChkCapsule, DestChkObb, RetVec);
-			//Ú“_‚Ö‚ÌƒxƒNƒgƒ‹
+			//æ¥ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
 			float t;
 			bsm::Vec3 SegPoint;
 			HitTest::ClosetPtPointSegment(RetVec, SrcChkCapsule.m_PointBottom, SrcChkCapsule.m_PointTop, t, SegPoint);
@@ -898,15 +898,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		CAPSULE SrcCapsule = GetCapsule();
 		CAPSULE SrcBeforCapsule = GetBeforeCapsule();
-		//‘Šè
+		//ç›¸æ‰‹
 		COLRECT DestRect = DestColl->GetColRect();
 		COLRECT DestBeforeRect = DestColl->GetBeforeColRect();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::CAPSULE_COLRECT(SrcCapsule, DestRect, ret)) {
 			return;
@@ -924,7 +924,7 @@ namespace basecross {
 			DestChkRect.m_Center += DestVelocity * HitTime;
 			pair.m_DestCalcHitCenter = DestChkRect.m_Center;
 			HitTest::CAPSULE_COLRECT(SrcChkCapsule, DestChkRect, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkCapsule.GetCenter() - ret;
 			pair.m_SrcHitNormal.normalize();
 			pair.m_CalcHitPoint = ret;
@@ -956,10 +956,10 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct CollisionObb::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct CollisionObb::Impl {
-		float m_Size;					//ì¬‚ÌƒTƒCƒY
+		float m_Size;					//ä½œæˆæ™‚ã®ã‚µã‚¤ã‚º
 		float m_ChkOnUnderLaySize;
 		bsm::Mat4x4 m_BeforeWorldMatrix;
 		bsm::Mat4x4 m_WorldMatrix;
@@ -977,27 +977,27 @@ namespace basecross {
 			m_FirstBeforeCalc(true),
 			m_FirstCalc(true)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class CollisionObb : public Collision ;
-	//	—p“r: ObbÕ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: Obbè¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	CollisionObb::CollisionObb(const shared_ptr<GameObject>& GameObjectPtr) :
 		Collision(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	CollisionObb::~CollisionObb() {}
+	CollisionObb::â€¾CollisionObb() {}
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void CollisionObb::OnCreate() {
 		SetDrawActive(false);
 	}
 
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	float CollisionObb::GetMakedSize() const {
 		return pImpl->m_Size;
 	}
@@ -1097,20 +1097,20 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		OBB SrcObb = GetObb();
 		OBB SrcBeforeObb = GetBeforeObb();
-		//‘Šè
+		//ç›¸æ‰‹
 		SPHERE DestSphere = DestColl->GetSphere();
 		SPHERE DestBeforeSphere = DestColl->GetBeforeSphere();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::SPHERE_OBB(DestSphere, SrcObb, ret)) {
 			return;
 		}
-		//SPHERE‚ÆOBB‚Ìˆµ‚¢‚ª‹t‚É‚È‚é
+		//SPHEREã¨OBBã®æ‰±ã„ãŒé€†ã«ãªã‚‹
 		bsm::Vec3 SpanVelocity = DestVelocity - SrcVelocity;
 		float HitTime = 0;
 		if (HitTest::CollisionTestSphereObb(DestBeforeSphere, SpanVelocity, SrcBeforeObb, 0, ElapsedTime, HitTime)) {
@@ -1125,7 +1125,7 @@ namespace basecross {
 			pair.m_DestCalcHitCenter = DestChkSphere.m_Center;
 			bsm::Vec3 ret;
 			HitTest::SPHERE_OBB(DestChkSphere, SrcChkObb, ret);
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = ret - DestChkSphere.m_Center;
 			pair.m_CalcHitPoint = ret;
 			pair.m_SrcHitNormal.normalize();
@@ -1139,20 +1139,20 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		OBB SrcObb = GetObb();
 		OBB SrcBeforeObb = GetBeforeObb();
-		//‘Šè
+		//ç›¸æ‰‹
 		CAPSULE DestCapsule = DestColl->GetCapsule();
 		CAPSULE DestBeforeCapsule = DestColl->GetBeforeCapsule();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		bsm::Vec3 ret;
 		if (!HitTest::CAPSULE_OBB(DestCapsule, SrcObb, ret)) {
 			return;
 		}
-		//SPHERE‚ÆOBB‚Ìˆµ‚¢‚ª‹t‚É‚È‚é
+		//SPHEREã¨OBBã®æ‰±ã„ãŒé€†ã«ãªã‚‹
 		bsm::Vec3 SpanVelocity = DestVelocity - SrcVelocity;
 		float HitTime = 0;
 		if (HitTest::CollisionTestCapsuleObb(DestBeforeCapsule, SpanVelocity, SrcBeforeObb, 0, ElapsedTime, HitTime)) {
@@ -1167,7 +1167,7 @@ namespace basecross {
 			DestChkCapsule.SetCenter(pair.m_DestCalcHitCenter);
 			bsm::Vec3 RetVec;
 			HitTest::CAPSULE_OBB(DestChkCapsule, SrcChkObb, RetVec);
-			//Ú“_‚Ö‚ÌƒxƒNƒgƒ‹
+			//æ¥ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
 			float t;
 			bsm::Vec3 SegPoint;
 			HitTest::ClosetPtPointSegment(RetVec, DestChkCapsule.m_PointBottom, DestChkCapsule.m_PointTop, t, SegPoint);
@@ -1185,15 +1185,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		OBB SrcObb = GetObb();
 		OBB SrcBeforeObb = GetBeforeObb();
-		//‘Šè
+		//ç›¸æ‰‹
 		OBB DestObb = DestColl->GetObb();
 		OBB DestBeforeObb = DestColl->GetBeforeObb();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		if (!HitTest::OBB_OBB(SrcObb, DestObb)) {
 			return;
 		}
@@ -1210,10 +1210,10 @@ namespace basecross {
 			DestChkObb.m_Center += DestVelocity * HitTime;
 			pair.m_DestCalcHitCenter = DestChkObb.m_Center;
 			bsm::Vec3 RetVec;
-			//Src‚ÌOBB‚ÆDest‚ÌÅ‹ßÚ“_‚ğ“¾‚é
+			//Srcã®OBBã¨Destã®æœ€è¿‘æ¥ç‚¹ã‚’å¾—ã‚‹
 			HitTest::ClosestPtPointOBB(SrcChkObb.m_Center, DestChkObb, RetVec);
-			//Ú“_‚Ö‚ÌƒxƒNƒgƒ‹
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//æ¥ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkObb.m_Center - RetVec;
 			pair.m_CalcHitPoint = RetVec;
 			pair.m_SrcHitNormal.normalize();
@@ -1227,15 +1227,15 @@ namespace basecross {
 		auto PtrDestTransform = DestColl->GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 SrcVelocity = PtrTransform->GetVelocity();
 		bsm::Vec3 DestVelocity = PtrDestTransform->GetVelocity();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		//ˆÚ“®ˆÈŠO•Ï‰»‚È‚µ
+		//ç§»å‹•ä»¥å¤–å¤‰åŒ–ãªã—
 		OBB SrcObb = GetObb();
 		OBB SrcBeforeObb = GetBeforeObb();
-		//‘Šè
+		//ç›¸æ‰‹
 		COLRECT DestRect = DestColl->GetColRect();
 		COLRECT DestBeforeRect = DestColl->GetBeforeColRect();
-		//ŠÈˆÕ“I‚È”»’è
+		//ç°¡æ˜“çš„ãªåˆ¤å®š
 		if (!HitTest::OBB_COLRECT(SrcObb, DestRect)) {
 			return;
 		}
@@ -1252,10 +1252,10 @@ namespace basecross {
 			DestChkRect.m_Center += DestVelocity * HitTime;
 			pair.m_DestCalcHitCenter = DestChkRect.m_Center;
 			bsm::Vec3 RetVec;
-			//Src‚ÌOBB‚ÆDest‚ÌÅ‹ßÚ“_‚ğ“¾‚é
+			//Srcã®OBBã¨Destã®æœ€è¿‘æ¥ç‚¹ã‚’å¾—ã‚‹
 			HitTest::ClosetPtPointPlane(SrcChkObb.m_Center, DestChkRect.GetPLANE(), RetVec);
-			//Ú“_‚Ö‚ÌƒxƒNƒgƒ‹
-			//Õ“Ë‚µ‚½uŠÔ‚Å–@ü‚ğŒvZ
+			//æ¥ç‚¹ã¸ã®ãƒ™ã‚¯ãƒˆãƒ«
+			//è¡çªã—ãŸç¬é–“ã§æ³•ç·šã‚’è¨ˆç®—
 			pair.m_SrcHitNormal = SrcChkObb.m_Center - RetVec;
 			pair.m_CalcHitPoint = RetVec;
 			pair.m_SrcHitNormal.normalize();
@@ -1287,38 +1287,38 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct CollisionRect::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct CollisionRect::Impl {
-		float m_Size;					//ì¬‚ÌƒTƒCƒY
+		float m_Size;					//ä½œæˆæ™‚ã®ã‚µã‚¤ã‚º
 		Impl() :
 			m_Size(1.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class CollisionRect : public Collision ;
-	//	—p“r: Rect(‹éŒ`)Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: Rect(çŸ©å½¢)è¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	CollisionRect::CollisionRect(const shared_ptr<GameObject>& GameObjectPtr) :
 		Collision(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	CollisionRect::~CollisionRect() {}
+	CollisionRect::â€¾CollisionRect() {}
 
-	//‰Šú‰»
+	//åˆæœŸåŒ–
 	void CollisionRect::OnCreate() {
 		SetFixed(true),
 			SetDrawActive(false);
 	}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	void CollisionRect::SetFixed(bool b) {
 		if (!b) {
 			throw BaseException(
-				L"CollisionRect‚ÍFixedˆÈŠO‚Í‘I‘ğ‚Å‚«‚Ü‚¹‚ñ",
+				L"CollisionRectã¯Fixedä»¥å¤–ã¯é¸æŠã§ãã¾ã›ã‚“",
 				L"if (!b)",
 				L"CollisionRect::SetFixed()"
 			);

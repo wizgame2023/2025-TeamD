@@ -713,45 +713,45 @@ bool DirectX::_ExpandScanline(
 //-------------------------------------------------------------------------------------
 // Loads an image row into standard RGBA XMVECTOR (aligned) array
 //-------------------------------------------------------------------------------------
-#define LOAD_SCANLINE( type, func )\
-        if (size >= sizeof(type))\
-        {\
-            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);\
-            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))\
-            {\
-                if (dPtr >= ePtr) break;\
-                *(dPtr++) = func(sPtr++);\
-            }\
-            return true;\
-        }\
+#define LOAD_SCANLINE( type, func )¥
+        if (size >= sizeof(type))¥
+        {¥
+            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);¥
+            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))¥
+            {¥
+                if (dPtr >= ePtr) break;¥
+                *(dPtr++) = func(sPtr++);¥
+            }¥
+            return true;¥
+        }¥
         return false;
 
-#define LOAD_SCANLINE3( type, func, defvec )\
-        if (size >= sizeof(type))\
-        {\
-            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);\
-            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))\
-            {\
-                XMVECTOR v = func(sPtr++);\
-                if (dPtr >= ePtr) break;\
-                *(dPtr++) = XMVectorSelect(defvec, v, g_XMSelect1110);\
-            }\
-            return true;\
-        }\
+#define LOAD_SCANLINE3( type, func, defvec )¥
+        if (size >= sizeof(type))¥
+        {¥
+            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);¥
+            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))¥
+            {¥
+                XMVECTOR v = func(sPtr++);¥
+                if (dPtr >= ePtr) break;¥
+                *(dPtr++) = XMVectorSelect(defvec, v, g_XMSelect1110);¥
+            }¥
+            return true;¥
+        }¥
         return false;
 
-#define LOAD_SCANLINE2( type, func, defvec )\
-        if (size >= sizeof(type))\
-        {\
-            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);\
-            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))\
-            {\
-                XMVECTOR v = func(sPtr++);\
-                if (dPtr >= ePtr) break;\
-                *(dPtr++) = XMVectorSelect(defvec, v, g_XMSelect1100);\
-            }\
-            return true;\
-        }\
+#define LOAD_SCANLINE2( type, func, defvec )¥
+        if (size >= sizeof(type))¥
+        {¥
+            const type * __restrict sPtr = reinterpret_cast<const type*>(pSource);¥
+            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))¥
+            {¥
+                XMVECTOR v = func(sPtr++);¥
+                if (dPtr >= ePtr) break;¥
+                *(dPtr++) = XMVectorSelect(defvec, v, g_XMSelect1100);¥
+            }¥
+            return true;¥
+        }¥
         return false;
 
 #pragma warning(suppress: 6101)
@@ -1589,17 +1589,17 @@ _Use_decl_annotations_ bool DirectX::_LoadScanline(
 //-------------------------------------------------------------------------------------
 // Stores an image row from standard RGBA XMVECTOR (aligned) array
 //-------------------------------------------------------------------------------------
-#define STORE_SCANLINE( type, func )\
-        if (size >= sizeof(type))\
-        {\
-            type * __restrict dPtr = reinterpret_cast<type*>(pDestination);\
-            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))\
-            {\
-                if (sPtr >= ePtr) break;\
-                func(dPtr++, *sPtr++);\
-            }\
-            return true; \
-        }\
+#define STORE_SCANLINE( type, func )¥
+        if (size >= sizeof(type))¥
+        {¥
+            type * __restrict dPtr = reinterpret_cast<type*>(pDestination);¥
+            for(size_t icount = 0; icount < (size - sizeof(type) + 1); icount += sizeof(type))¥
+            {¥
+                if (sPtr >= ePtr) break;¥
+                func(dPtr++, *sPtr++);¥
+            }¥
+            return true; ¥
+        }¥
         return false;
 
 _Use_decl_annotations_
@@ -2774,7 +2774,7 @@ bool DirectX::_StoreScanlineLinear(
 
     default:
         // can't treat A8, XR, Depth, SNORM, UINT, or SINT as sRGB
-        flags &= ~static_cast<uint32_t>(TEX_FILTER_SRGB);
+        flags &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB);
         break;
     }
 
@@ -2849,7 +2849,7 @@ bool DirectX::_LoadScanlineLinear(
 
     default:
         // can't treat A8, XR, Depth, SNORM, UINT, or SINT as sRGB
-        flags &= ~static_cast<uint32_t>(TEX_FILTER_SRGB);
+        flags &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB);
         break;
     }
 
@@ -3060,7 +3060,7 @@ void DirectX::_ConvertScanline(
 
     case DXGI_FORMAT_A8_UNORM:
     case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
-        flags &= ~static_cast<uint32_t>(TEX_FILTER_SRGB_IN);
+        flags &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB_IN);
         break;
 
     default:
@@ -3081,7 +3081,7 @@ void DirectX::_ConvertScanline(
 
     case DXGI_FORMAT_A8_UNORM:
     case DXGI_FORMAT_R10G10B10_XR_BIAS_A2_UNORM:
-        flags &= ~static_cast<uint32_t>(TEX_FILTER_SRGB_OUT);
+        flags &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB_OUT);
         break;
 
     default:
@@ -3090,7 +3090,7 @@ void DirectX::_ConvertScanline(
 
     if ((flags & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)) == (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT))
     {
-        flags &= ~static_cast<uint32_t>(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
+        flags &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
     }
 
     // sRGB input processing (sRGB -> Linear RGB)
@@ -3737,161 +3737,161 @@ namespace
     const XMVECTORF32 g_ErrorWeight1 = { { { 1.f / 16.f, 1.f / 16.f, 1.f / 16.f, 1.f / 16.f } } };
     const XMVECTORF32 g_ErrorWeight7 = { { { 7.f / 16.f, 7.f / 16.f, 7.f / 16.f, 7.f / 16.f } } };
 
-#define STORE_SCANLINE( type, scalev, clampzero, norm, itype, mask, row, bgr ) \
-        if (size >= sizeof(type)) \
-        { \
-            type * __restrict dest = reinterpret_cast<type*>(pDestination); \
-            for(size_t i = 0; i < count; ++i) \
-            { \
-                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); \
-                ptrdiff_t delta = (row & 1) ? -2 : 0; \
-                \
-                XMVECTOR v = sPtr[ index ]; \
-                if (bgr) { v = XMVectorSwizzle<2, 1, 0, 3>(v); } \
-                if (norm && clampzero) v = XMVectorSaturate(v) ; \
-                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); \
-                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); \
-                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); \
-                v = XMVectorAdd(v, vError); \
-                if (norm) v = XMVectorMultiply(v, scalev); \
-                \
-                XMVECTOR target; \
-                if (pDiffusionErrors) \
-                { \
-                    target = XMVectorRound(v); \
-                    vError = XMVectorSubtract(v, target); \
-                    if (norm) vError = XMVectorDivide(vError, scalev); \
-                    \
-                    /* Distribute error to next scanline and next pixel */ \
-                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); \
-                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); \
-                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); \
-                    vError = XMVectorMultiply(vError, g_ErrorWeight7); \
-                } \
-                else \
-                { \
-                    /* Applied ordered dither */ \
-                    target = XMVectorAdd(v, ordered[ index & 3 ]); \
-                    target = XMVectorRound(target); \
-                } \
-                \
-                target = XMVectorMin(scalev, target); \
-                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); \
-                \
-                XMFLOAT4A tmp; \
-                XMStoreFloat4A(&tmp, target); \
-                \
-                auto dPtr = &dest[ index ]; \
-                if (dPtr >= ePtr) break; \
-                dPtr->x = itype(static_cast<itype>(tmp.x) & mask); \
-                dPtr->y = itype(static_cast<itype>(tmp.y) & mask); \
-                dPtr->z = itype(static_cast<itype>(tmp.z) & mask); \
-                dPtr->w = itype(static_cast<itype>(tmp.w) & mask); \
-            } \
-            return true; \
-        } \
+#define STORE_SCANLINE( type, scalev, clampzero, norm, itype, mask, row, bgr ) ¥
+        if (size >= sizeof(type)) ¥
+        { ¥
+            type * __restrict dest = reinterpret_cast<type*>(pDestination); ¥
+            for(size_t i = 0; i < count; ++i) ¥
+            { ¥
+                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); ¥
+                ptrdiff_t delta = (row & 1) ? -2 : 0; ¥
+                ¥
+                XMVECTOR v = sPtr[ index ]; ¥
+                if (bgr) { v = XMVectorSwizzle<2, 1, 0, 3>(v); } ¥
+                if (norm && clampzero) v = XMVectorSaturate(v) ; ¥
+                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); ¥
+                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); ¥
+                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); ¥
+                v = XMVectorAdd(v, vError); ¥
+                if (norm) v = XMVectorMultiply(v, scalev); ¥
+                ¥
+                XMVECTOR target; ¥
+                if (pDiffusionErrors) ¥
+                { ¥
+                    target = XMVectorRound(v); ¥
+                    vError = XMVectorSubtract(v, target); ¥
+                    if (norm) vError = XMVectorDivide(vError, scalev); ¥
+                    ¥
+                    /* Distribute error to next scanline and next pixel */ ¥
+                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); ¥
+                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); ¥
+                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); ¥
+                    vError = XMVectorMultiply(vError, g_ErrorWeight7); ¥
+                } ¥
+                else ¥
+                { ¥
+                    /* Applied ordered dither */ ¥
+                    target = XMVectorAdd(v, ordered[ index & 3 ]); ¥
+                    target = XMVectorRound(target); ¥
+                } ¥
+                ¥
+                target = XMVectorMin(scalev, target); ¥
+                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); ¥
+                ¥
+                XMFLOAT4A tmp; ¥
+                XMStoreFloat4A(&tmp, target); ¥
+                ¥
+                auto dPtr = &dest[ index ]; ¥
+                if (dPtr >= ePtr) break; ¥
+                dPtr->x = itype(static_cast<itype>(tmp.x) & mask); ¥
+                dPtr->y = itype(static_cast<itype>(tmp.y) & mask); ¥
+                dPtr->z = itype(static_cast<itype>(tmp.z) & mask); ¥
+                dPtr->w = itype(static_cast<itype>(tmp.w) & mask); ¥
+            } ¥
+            return true; ¥
+        } ¥
         return false;
 
-#define STORE_SCANLINE2( type, scalev, clampzero, norm, itype, mask, row ) \
-        /* The 2 component cases are always bgr=false */ \
-        if (size >= sizeof(type)) \
-        { \
-            type * __restrict dest = reinterpret_cast<type*>(pDestination); \
-            for(size_t i = 0; i < count; ++i) \
-            { \
-                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); \
-                ptrdiff_t delta = (row & 1) ? -2 : 0; \
-                \
-                XMVECTOR v = sPtr[ index ]; \
-                if (norm && clampzero) v = XMVectorSaturate(v) ; \
-                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); \
-                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); \
-                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); \
-                v = XMVectorAdd(v, vError); \
-                if (norm) v = XMVectorMultiply(v, scalev); \
-                \
-                XMVECTOR target; \
-                if (pDiffusionErrors) \
-                { \
-                    target = XMVectorRound(v); \
-                    vError = XMVectorSubtract(v, target); \
-                    if (norm) vError = XMVectorDivide(vError, scalev); \
-                    \
-                    /* Distribute error to next scanline and next pixel */ \
-                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); \
-                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); \
-                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); \
-                    vError = XMVectorMultiply(vError, g_ErrorWeight7); \
-                } \
-                else \
-                { \
-                    /* Applied ordered dither */ \
-                    target = XMVectorAdd(v, ordered[ index & 3 ]); \
-                    target = XMVectorRound(target); \
-                } \
-                \
-                target = XMVectorMin(scalev, target); \
-                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); \
-                \
-                XMFLOAT4A tmp; \
-                XMStoreFloat4A(&tmp, target); \
-                \
-                auto dPtr = &dest[ index ]; \
-                if (dPtr >= ePtr) break; \
-                dPtr->x = itype(static_cast<itype>(tmp.x) & mask); \
-                dPtr->y = itype(static_cast<itype>(tmp.y) & mask); \
-            } \
-            return true; \
-        } \
+#define STORE_SCANLINE2( type, scalev, clampzero, norm, itype, mask, row ) ¥
+        /* The 2 component cases are always bgr=false */ ¥
+        if (size >= sizeof(type)) ¥
+        { ¥
+            type * __restrict dest = reinterpret_cast<type*>(pDestination); ¥
+            for(size_t i = 0; i < count; ++i) ¥
+            { ¥
+                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); ¥
+                ptrdiff_t delta = (row & 1) ? -2 : 0; ¥
+                ¥
+                XMVECTOR v = sPtr[ index ]; ¥
+                if (norm && clampzero) v = XMVectorSaturate(v) ; ¥
+                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); ¥
+                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); ¥
+                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); ¥
+                v = XMVectorAdd(v, vError); ¥
+                if (norm) v = XMVectorMultiply(v, scalev); ¥
+                ¥
+                XMVECTOR target; ¥
+                if (pDiffusionErrors) ¥
+                { ¥
+                    target = XMVectorRound(v); ¥
+                    vError = XMVectorSubtract(v, target); ¥
+                    if (norm) vError = XMVectorDivide(vError, scalev); ¥
+                    ¥
+                    /* Distribute error to next scanline and next pixel */ ¥
+                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); ¥
+                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); ¥
+                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); ¥
+                    vError = XMVectorMultiply(vError, g_ErrorWeight7); ¥
+                } ¥
+                else ¥
+                { ¥
+                    /* Applied ordered dither */ ¥
+                    target = XMVectorAdd(v, ordered[ index & 3 ]); ¥
+                    target = XMVectorRound(target); ¥
+                } ¥
+                ¥
+                target = XMVectorMin(scalev, target); ¥
+                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); ¥
+                ¥
+                XMFLOAT4A tmp; ¥
+                XMStoreFloat4A(&tmp, target); ¥
+                ¥
+                auto dPtr = &dest[ index ]; ¥
+                if (dPtr >= ePtr) break; ¥
+                dPtr->x = itype(static_cast<itype>(tmp.x) & mask); ¥
+                dPtr->y = itype(static_cast<itype>(tmp.y) & mask); ¥
+            } ¥
+            return true; ¥
+        } ¥
         return false;
 
-#define STORE_SCANLINE1( type, scalev, clampzero, norm, mask, row, selectw ) \
-        /* The 1 component cases are always bgr=false */ \
-        if (size >= sizeof(type)) \
-        { \
-            type * __restrict dest = reinterpret_cast<type*>(pDestination); \
-            for(size_t i = 0; i < count; ++i) \
-            { \
-                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); \
-                ptrdiff_t delta = (row & 1) ? -2 : 0; \
-                \
-                XMVECTOR v = sPtr[ index ]; \
-                if (norm && clampzero) v = XMVectorSaturate(v) ; \
-                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); \
-                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); \
-                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); \
-                v = XMVectorAdd(v, vError); \
-                if (norm) v = XMVectorMultiply(v, scalev); \
-                \
-                XMVECTOR target; \
-                if (pDiffusionErrors) \
-                { \
-                    target = XMVectorRound(v); \
-                    vError = XMVectorSubtract(v, target); \
-                    if (norm) vError = XMVectorDivide(vError, scalev); \
-                    \
-                    /* Distribute error to next scanline and next pixel */ \
-                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); \
-                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); \
-                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); \
-                    vError = XMVectorMultiply(vError, g_ErrorWeight7); \
-                } \
-                else \
-                { \
-                    /* Applied ordered dither */ \
-                    target = XMVectorAdd(v, ordered[ index & 3 ]); \
-                    target = XMVectorRound(target); \
-                } \
-                \
-                target = XMVectorMin(scalev, target); \
-                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); \
-                \
-                auto dPtr = &dest[ index ]; \
-                if (dPtr >= ePtr) break; \
-                *dPtr = type(static_cast<type>((selectw) ? XMVectorGetW(target) : XMVectorGetX(target)) & mask); \
-            } \
-            return true; \
-        } \
+#define STORE_SCANLINE1( type, scalev, clampzero, norm, mask, row, selectw ) ¥
+        /* The 1 component cases are always bgr=false */ ¥
+        if (size >= sizeof(type)) ¥
+        { ¥
+            type * __restrict dest = reinterpret_cast<type*>(pDestination); ¥
+            for(size_t i = 0; i < count; ++i) ¥
+            { ¥
+                auto index = static_cast<ptrdiff_t>((row & 1) ? (count - i - 1) : i ); ¥
+                ptrdiff_t delta = (row & 1) ? -2 : 0; ¥
+                ¥
+                XMVECTOR v = sPtr[ index ]; ¥
+                if (norm && clampzero) v = XMVectorSaturate(v) ; ¥
+                else if (clampzero) v = XMVectorClamp(v, g_XMZero, scalev); ¥
+                else if (norm) v = XMVectorClamp(v, g_XMNegativeOne, g_XMOne); ¥
+                else v = XMVectorClamp(v, XMVectorAdd(XMVectorNegate(scalev), g_XMOne), scalev); ¥
+                v = XMVectorAdd(v, vError); ¥
+                if (norm) v = XMVectorMultiply(v, scalev); ¥
+                ¥
+                XMVECTOR target; ¥
+                if (pDiffusionErrors) ¥
+                { ¥
+                    target = XMVectorRound(v); ¥
+                    vError = XMVectorSubtract(v, target); ¥
+                    if (norm) vError = XMVectorDivide(vError, scalev); ¥
+                    ¥
+                    /* Distribute error to next scanline and next pixel */ ¥
+                    pDiffusionErrors[ index-delta ]   = XMVectorMultiplyAdd(g_ErrorWeight3, vError, pDiffusionErrors[ index-delta ]); ¥
+                    pDiffusionErrors[ index+1 ]       = XMVectorMultiplyAdd(g_ErrorWeight5, vError, pDiffusionErrors[ index+1 ]); ¥
+                    pDiffusionErrors[ index+2+delta ] = XMVectorMultiplyAdd(g_ErrorWeight1, vError, pDiffusionErrors[ index+2+delta ]); ¥
+                    vError = XMVectorMultiply(vError, g_ErrorWeight7); ¥
+                } ¥
+                else ¥
+                { ¥
+                    /* Applied ordered dither */ ¥
+                    target = XMVectorAdd(v, ordered[ index & 3 ]); ¥
+                    target = XMVectorRound(target); ¥
+                } ¥
+                ¥
+                target = XMVectorMin(scalev, target); ¥
+                target = XMVectorMax((clampzero) ? g_XMZero : (XMVectorAdd(XMVectorNegate(scalev), g_XMOne)), target); ¥
+                ¥
+                auto dPtr = &dest[ index ]; ¥
+                if (dPtr >= ePtr) break; ¥
+                *dPtr = type(static_cast<type>((selectw) ? XMVectorGetW(target) : XMVectorGetX(target)) & mask); ¥
+            } ¥
+            return true; ¥
+        } ¥
         return false;
 }
 
@@ -4502,7 +4502,7 @@ namespace
 
         if ((filter & (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT)) == (TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT))
         {
-            filter &= ~static_cast<uint32_t>(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
+            filter &= ‾static_cast<uint32_t>(TEX_FILTER_SRGB_IN | TEX_FILTER_SRGB_OUT);
         }
 
         DWORD wicsrgb = _CheckWICColorSpace(pfGUID, targetGUID);
@@ -4692,47 +4692,47 @@ namespace
     //-------------------------------------------------------------------------------------
     // Convert the image from a planar to non-planar image
     //-------------------------------------------------------------------------------------
-#define CONVERT_420_TO_422( srcType, destType )\
-        {\
-            size_t rowPitch = srcImage.rowPitch;\
-            \
-            auto sourceE = reinterpret_cast<const srcType*>(pSrc + srcImage.slicePitch);\
-            auto pSrcUV = pSrc + (srcImage.height * rowPitch);\
-            \
-            for(size_t y = 0; y < srcImage.height; y+= 2)\
-            {\
-                auto sPtrY0 = reinterpret_cast<const srcType*>(pSrc);\
-                auto sPtrY2 = reinterpret_cast<const srcType*>(pSrc + rowPitch);\
-                auto sPtrUV = reinterpret_cast<const srcType*>(pSrcUV);\
-                \
-                destType * __restrict dPtr0 = reinterpret_cast<destType*>(pDest);\
-                destType * __restrict dPtr1 = reinterpret_cast<destType*>(pDest + destImage.rowPitch);\
-                \
-                for(size_t x = 0; x < srcImage.width; x+= 2)\
-                {\
-                    if ((sPtrUV+1) >= sourceE) break;\
-                    \
-                    srcType u = *(sPtrUV++);\
-                    srcType v = *(sPtrUV++);\
-                    \
-                    dPtr0->x = *(sPtrY0++);\
-                    dPtr0->y = u;\
-                    dPtr0->z = *(sPtrY0++);\
-                    dPtr0->w = v;\
-                    ++dPtr0;\
-                    \
-                    dPtr1->x = *(sPtrY2++);\
-                    dPtr1->y = u;\
-                    dPtr1->z = *(sPtrY2++);\
-                    dPtr1->w = v;\
-                    ++dPtr1;\
-                }\
-                \
-                pSrc += rowPitch * 2;\
-                pSrcUV += rowPitch;\
-                \
-                pDest += destImage.rowPitch * 2;\
-            }\
+#define CONVERT_420_TO_422( srcType, destType )¥
+        {¥
+            size_t rowPitch = srcImage.rowPitch;¥
+            ¥
+            auto sourceE = reinterpret_cast<const srcType*>(pSrc + srcImage.slicePitch);¥
+            auto pSrcUV = pSrc + (srcImage.height * rowPitch);¥
+            ¥
+            for(size_t y = 0; y < srcImage.height; y+= 2)¥
+            {¥
+                auto sPtrY0 = reinterpret_cast<const srcType*>(pSrc);¥
+                auto sPtrY2 = reinterpret_cast<const srcType*>(pSrc + rowPitch);¥
+                auto sPtrUV = reinterpret_cast<const srcType*>(pSrcUV);¥
+                ¥
+                destType * __restrict dPtr0 = reinterpret_cast<destType*>(pDest);¥
+                destType * __restrict dPtr1 = reinterpret_cast<destType*>(pDest + destImage.rowPitch);¥
+                ¥
+                for(size_t x = 0; x < srcImage.width; x+= 2)¥
+                {¥
+                    if ((sPtrUV+1) >= sourceE) break;¥
+                    ¥
+                    srcType u = *(sPtrUV++);¥
+                    srcType v = *(sPtrUV++);¥
+                    ¥
+                    dPtr0->x = *(sPtrY0++);¥
+                    dPtr0->y = u;¥
+                    dPtr0->z = *(sPtrY0++);¥
+                    dPtr0->w = v;¥
+                    ++dPtr0;¥
+                    ¥
+                    dPtr1->x = *(sPtrY2++);¥
+                    dPtr1->y = u;¥
+                    dPtr1->z = *(sPtrY2++);¥
+                    dPtr1->w = v;¥
+                    ++dPtr1;¥
+                }¥
+                ¥
+                pSrc += rowPitch * 2;¥
+                pSrcUV += rowPitch;¥
+                ¥
+                pDest += destImage.rowPitch * 2;¥
+            }¥
         }
 
     HRESULT ConvertToSinglePlane_(_In_ const Image& srcImage, _In_ const Image& destImage) noexcept

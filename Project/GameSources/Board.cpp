@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -44,13 +44,13 @@ namespace basecross {
 		Object(stage)
 	{
 	}
-	FixedBox::~FixedBox() {}
+	FixedBox::â€¾FixedBox() {}
 
 	void FixedBox::OnCreate()
 	{
-		//‚±‚±‚Åm_Transform‚Ì’†gæ“¾‚µ‚Ä‚­‚ê‚é
+		//ã“ã“ã§m_Transformã®ä¸­èº«å–å¾—ã—ã¦ãã‚Œã‚‹
 		Object::OnCreate();
-		//‘€ìŒn
+		//æ“ä½œç³»
 		SetPosition(Vec3());
 		SetScale(Vec3(1.0f));
 		SetRotation(Vec3());
@@ -58,12 +58,12 @@ namespace basecross {
 
 		Wicth_FixedBox = true;
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(Wicth_FixedBox);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");	
 	}
@@ -71,22 +71,22 @@ namespace basecross {
 		GameObject(stage)
 	{
 	}
-	Wall::~Wall() {}
+	Wall::â€¾Wall() {}
 
 	void Wall::OnCreate()
 	{
 		Wicth_Wall = true;
-		//‰ŠúˆÊ’u‚Ìİ’è
+		//åˆæœŸä½ç½®ã®è¨­å®š
 		auto ptr = AddComponent<Transform>();
 		ptr->SetPosition(Vec3(0.0f, 0.0f, 5.0f));
 		ptr->SetRotation(Vec3(0));
 		ptr->SetScale(Vec3(5.0f, 3.0f, 0.5f));
 
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(Wicth_Wall);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 

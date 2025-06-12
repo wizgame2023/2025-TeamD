@@ -12,7 +12,7 @@ namespace basecross {
 		shared_ptr<SharpFan> m_AreaSizeEffect;
 	public:
 		AreaOfEffect(const shared_ptr<Stage>& stage,Vec3 position, float size,int vertexCount,float time);
-		virtual ~AreaOfEffect(){}
+		virtual ‾AreaOfEffect(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

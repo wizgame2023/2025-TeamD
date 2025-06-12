@@ -1,6 +1,6 @@
 /*!
 @file DrawComponents.cpp
-@brief •`‰æƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -34,11 +34,11 @@ namespace basecross {
 	IMPLEMENT_DX12SHADER(PSPCTSprite, App::GetApp()->GetShadersPath() + L"PSPCTSprite.cso")
 
 	//--------------------------------------------------------------------------------------
-	///	”Ä—p•`‰æ—p
+	///	æ±ç”¨æç”»ç”¨
 	//--------------------------------------------------------------------------------------
 	GenericDraw::GenericDraw() :
 		ObjectInterface() {}
-	GenericDraw::~GenericDraw() {}
+	GenericDraw::â€¾GenericDraw() {}
 	void GenericDraw::OnCreate() {}
 
 	void GenericDraw::PCWireFrameDraw(const shared_ptr<GameObject>& GameObjectPtr, const shared_ptr<MeshResource>& MeshRes,
@@ -57,7 +57,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct DrawComponent::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct DrawComponent::Impl {
 		BlendState m_BlendState;
@@ -72,13 +72,13 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌeƒNƒ‰ƒXÀ‘Ì
+	///	æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¦ªã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 	DrawComponent::DrawComponent(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	DrawComponent::~DrawComponent() {}
+	DrawComponent::â€¾DrawComponent() {}
 
 
 	BlendState DrawComponent::GetBlendState() const {
@@ -138,16 +138,16 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//ParticleDraw€”õ‚Ì‚½‚ß‚Ì\‘¢‘Ì
+	//ParticleDrawæº–å‚™ã®ãŸã‚ã®æ§‹é€ ä½“
 	//--------------------------------------------------------------------------------------
 	struct DrawParticleSprite {
-		//ƒp[ƒeƒBƒNƒ‹‚ÌƒJƒƒ‰‚Ü‚Å‚Ì‹——£
+		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®ã‚«ãƒ¡ãƒ©ã¾ã§ã®è·é›¢
 		float m_ToCaneraLength;
-		//ƒ[ƒ‹ƒhs—ñ
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—
 		bsm::Mat4x4 m_WorldMatrix;
-		//ƒeƒNƒXƒ`ƒƒ
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		shared_ptr<TextureResource> m_TextureRes;
-		//DiffuseƒJƒ‰[
+		//Diffuseã‚«ãƒ©ãƒ¼
 		bsm::Col4 m_Diffuse;
 		DrawParticleSprite() :
 			m_ToCaneraLength(0),
@@ -160,22 +160,22 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct PCTParticleDraw::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PCTParticleDraw::Impl {
-		//•`‰æƒRƒ“ƒeƒLƒXƒg
-		shared_ptr<MeshResource> m_MeshResource;	//ƒƒbƒVƒ…ƒŠƒ\[ƒX
+		//æç”»ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
+		shared_ptr<MeshResource> m_MeshResource;	//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		vector<DrawParticleSprite> m_DrawParticleSpriteVec;
-		const size_t m_MaxInstance;				///<ƒCƒ“ƒXƒ^ƒ“ƒXÅ‘å’l
-//		ComPtr<ID3D11Buffer> m_MatrixBuffer;	///<s—ñ—p‚Ì’¸“_ƒoƒbƒtƒ@
-												//‰ÁZˆ—‚·‚é‚©‚Ç‚¤‚©
+		const size_t m_MaxInstance;				///<ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹æœ€å¤§å€¤
+//		ComPtr<ID3D11Buffer> m_MatrixBuffer;	///<è¡Œåˆ—ç”¨ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+												//åŠ ç®—å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_Addtype;
 		Impl(size_t MaxInstance, bool AddType) :
 			m_MaxInstance(MaxInstance),
 			m_Addtype(AddType)
 		{}
-		~Impl() {}
-		//’¸“_ƒoƒbƒtƒ@‚Ìì¬
+		â€¾Impl() {}
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 		void CreateParticleBuffers();
 	};
 
@@ -184,20 +184,20 @@ namespace basecross {
 		try {
 			float HelfSize = 0.5f;
 			bsm::Vec4 col(1.0f, 1.0f, 1.0f, 1.0f);
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionColorTexture> vertices = {
 				{ VertexPositionColorTexture(bsm::Vec3(-HelfSize, HelfSize, 0),  col,bsm::Vec2(0.0f, 0.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(HelfSize, HelfSize, 0), col, bsm::Vec2(1.0f, 0.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(-HelfSize, -HelfSize, 0),  col,bsm::Vec2(0.0f, 1.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(HelfSize, -HelfSize, 0),  col, bsm::Vec2(1.0f, 1.0f)) },
 			};
-			//ƒCƒ“ƒfƒbƒNƒX”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 			vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-			//ƒƒbƒVƒ…‚Ìì¬
+			//ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 			m_MeshResource = MeshResource::CreateMeshResource(vertices, indices, false);
 
-			//ƒCƒ“ƒXƒ^ƒ“ƒXs—ñƒoƒbƒtƒ@‚Ìì¬
-			//Max’l‚Åì¬‚·‚é
+			//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹è¡Œåˆ—ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
+			//Maxå€¤ã§ä½œæˆã™ã‚‹
 			vector<bsm::Mat4x4> matrices(m_MaxInstance, bsm::Mat4x4());
 //			MeshResource::CreateDynamicVertexBuffer(m_MatrixBuffer, matrices);
 
@@ -211,14 +211,14 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	PCTParticle•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg(ƒp[ƒeƒBƒNƒ‹•`‰æ)
+	///	PCTParticleæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ(ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«æç”»)
 	//--------------------------------------------------------------------------------------
 	PCTParticleDraw::PCTParticleDraw(const shared_ptr<GameObject>& GameObjectPtr, size_t MaxInstance, bool AddType) :
 		DrawComponent(GameObjectPtr),
 		pImpl(new Impl(MaxInstance, AddType))
 	{}
 
-	PCTParticleDraw::~PCTParticleDraw() {}
+	PCTParticleDraw::â€¾PCTParticleDraw() {}
 
 	void PCTParticleDraw::AddParticle(float ToCaneraLength, const bsm::Mat4x4& WorldMatrix,
 		const shared_ptr<TextureResource>& TextureRes, const bsm::Col4& Diffuse) {
@@ -253,15 +253,15 @@ namespace basecross {
 	//	SpriteBaseDraw::Impl
 	//--------------------------------------------------------------------------------------
 	struct SpriteBaseDraw::Impl {
-		//ƒƒbƒVƒ…
+		//ãƒ¡ãƒƒã‚·ãƒ¥
 		shared_ptr<MeshResource> m_SpriteMesh;
-		///ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+		///ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 		weak_ptr<TextureResource> m_TextureResource;
-		//ƒGƒ~ƒbƒVƒuF
+		//ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²
 		bsm::Col4 m_Emissive;
-		//ƒfƒtƒ…[ƒYF
+		//ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		bsm::Col4 m_Diffuse;
-		//ƒXƒvƒ‰ƒCƒg—p‚ÌDx12ƒŠƒ\[ƒX
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”¨ã®Dx12ãƒªã‚½ãƒ¼ã‚¹
 		Dx12DrawResources<SpriteConstants> m_Dx12DrawResources;
 		Impl() :
 			m_Emissive(0, 0, 0, 0),
@@ -274,23 +274,23 @@ namespace basecross {
 		pImpl(new Impl())
 	{}
 
-	SpriteBaseDraw::~SpriteBaseDraw() {}
+	SpriteBaseDraw::â€¾SpriteBaseDraw() {}
 
 	void SpriteBaseDraw::SetConstants(Dx12Constants<SpriteConstants>& SpCb) {
-		//s—ñ‚Ìæ“¾
+		//è¡Œåˆ—ã®å–å¾—
 		auto PtrTrans = GetGameObject()->GetComponent<Transform>();
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		bsm::Mat4x4 World, Proj;
 		World = PtrTrans->Get2DWorldMatrix();
-		//Ë‰es—ñ‚ÌŒˆ’è
+		//å°„å½±è¡Œåˆ—ã®æ±ºå®š
 		GetGameObject()->OnGet2DDrawProjMatrix(Proj);
-		//s—ñ‚Ì‡¬
+		//è¡Œåˆ—ã®åˆæˆ
 		World *= Proj;
-		//ƒGƒ~ƒbƒVƒu
+		//ã‚¨ãƒŸãƒƒã‚·ãƒ–
 		SpCb.m_ConstantBuffer.Emissive = GetEmissive();
-		//ƒfƒtƒB[ƒY‚Í‚·‚×‚Ä’Ê‚·
+		//ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºã¯ã™ã¹ã¦é€šã™
 		SpCb.m_ConstantBuffer.Diffuse = GetDiffuse();
-		//s—ñ‚Ìİ’è
+		//è¡Œåˆ—ã®è¨­å®š
 		SpCb.m_ConstantBuffer.World = World;
 	}
 
@@ -311,7 +311,7 @@ namespace basecross {
 	}
 
 	shared_ptr<TextureResource> SpriteBaseDraw::GetTextureResource() const {
-		//ƒeƒNƒXƒ`ƒƒ‚ª‚È‚¯‚ê‚Înull‚ğ•Ô‚·
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã‘ã‚Œã°nullã‚’è¿”ã™
 		auto shptr = pImpl->m_TextureResource.lock();
 		if (shptr) {
 			return shptr;
@@ -337,19 +337,19 @@ namespace basecross {
 
 	void SpriteBaseDraw::CreatePC()
 	{
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateSrvSmpCbv();
 
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize =
 				Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-			//CbvSrvƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//CbvSrvãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1 + 1);
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap = DescriptorHeap::CreateSamplerHeap(1);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE SrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -370,15 +370,15 @@ namespace basecross {
 			);
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.push_back(CbvHandle);
 		}
-		//ƒTƒ“ƒvƒ‰[
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		{
 			auto SamplerDescriptorHandle = pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			DynamicSampler::CreateSampler(SamplerState::SamplerNone, SamplerDescriptorHandle);
 		}
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & ~255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & â€¾255;
 
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
@@ -387,18 +387,18 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒŠ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒªãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Device->GetDevice()->CreateCommittedResource()",
 				L"SpriteBaseDraw::CreatePC()"
 			);
 
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
 			cbvDesc.SizeInBytes = ConstBuffSize;
 
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒŠƒvƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚ª‚ ‚éê‡AƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚É”z’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒªãƒ—ã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã€ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«é…ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				0,
@@ -406,18 +406,18 @@ namespace basecross {
 			);
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
 
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"SpriteBaseDraw::CreatePC()"
 			);
 		}
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆ
 		{
-			//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ì’è‹`
+			//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®å®šç¾©
 			PipelineState::CreateDefault2D<VertexPositionColor, VSPCSprite, PSPCSprite>(pImpl->m_Dx12DrawResources.m_RootSignature, pImpl->m_Dx12DrawResources.m_PineLineDesc);
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_FRONT;
@@ -425,28 +425,28 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 			pImpl->m_Dx12DrawResources.m_CullBackPipelineState = PipelineState::CreateDirect(pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Í— –ÊƒJƒŠƒ“ƒO‚É‰Šú‰»
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã¯è£é¢ã‚«ãƒªãƒ³ã‚°ã«åˆæœŸåŒ–
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_CullBackPipelineState);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@XV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 			UpdateConstantBuffer();
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
 	}
 
 	void SpriteBaseDraw::CreatePT() {
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateSrvSmpCbv();
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize =
 				Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-			//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1 + 1);
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap = DescriptorHeap::CreateSamplerHeap(1);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE SrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -468,16 +468,16 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.push_back(CbvHandle);
 
 		}
-		//ƒTƒ“ƒvƒ‰[
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		{
 			auto SamplerDescriptorHandle = pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			DynamicSampler::CreateSampler(SamplerState::LinearWrap, SamplerDescriptorHandle);
 		}
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & ~255;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒŠƒ\[ƒXiƒAƒbƒvƒ[ƒhƒq[ƒvj‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & â€¾255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹ï¼ˆã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ï¼‰ã®ä½œæˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 				D3D12_HEAP_FLAG_NONE,
@@ -485,16 +485,16 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"SpriteBaseDraw::CreatePT()"
 			);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
 			cbvDesc.SizeInBytes = ConstBuffSize;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ª‚ ‚éê‡ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚Éİ’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«è¨­ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				1,
@@ -502,18 +502,18 @@ namespace basecross {
 			);
 
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"SpriteBaseDraw::CreatePT()"
 			);
 
 		}
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ÍƒeƒNƒXƒ`ƒƒƒZƒbƒg‚Éì¬
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚»ãƒƒãƒˆæ™‚ã«ä½œæˆ
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 		{
 			PipelineState::CreateDefault2D<VertexPositionTexture, VSPTSprite, PSPTSprite>(pImpl->m_Dx12DrawResources.m_RootSignature, pImpl->m_Dx12DrawResources.m_PineLineDesc);
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
@@ -522,29 +522,29 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 			pImpl->m_Dx12DrawResources.m_CullBackPipelineState = PipelineState::CreateDirect(pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Í— –ÊƒJƒŠƒ“ƒO‚É‰Šú‰»
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã¯è£é¢ã‚«ãƒªãƒ³ã‚°ã«åˆæœŸåŒ–
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_CullBackPipelineState);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@XV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 			UpdateConstantBuffer();
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
 	}
 
 	void SpriteBaseDraw::CreatePCT() {
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateSrvSmpCbv();
 
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize =
 				Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-			//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1 + 1);
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap = DescriptorHeap::CreateSamplerHeap(1);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE SrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -567,17 +567,17 @@ namespace basecross {
 
 		}
 
-		//ƒTƒ“ƒvƒ‰[
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		{
 			auto SamplerDescriptorHandle = pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			DynamicSampler::CreateSampler(SamplerState::LinearWrap, SamplerDescriptorHandle);
 		}
 
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & ~255;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒŠƒ\[ƒXiƒAƒbƒvƒ[ƒhƒq[ƒvj‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & â€¾255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹ï¼ˆã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ï¼‰ã®ä½œæˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 				D3D12_HEAP_FLAG_NONE,
@@ -585,16 +585,16 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"SpriteBaseDraw::CreatePT()"
 			);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
 			cbvDesc.SizeInBytes = ConstBuffSize;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ª‚ ‚éê‡ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚Éİ’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«è¨­ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				1,
@@ -602,18 +602,18 @@ namespace basecross {
 			);
 
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"SpriteBaseDraw::CreatePT()"
 			);
 
 		}
 
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 		{
 			PipelineState::CreateDefault2D<VertexPositionColorTexture, VSPCTSprite, PSPCTSprite>(pImpl->m_Dx12DrawResources.m_RootSignature, pImpl->m_Dx12DrawResources.m_PineLineDesc);
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
@@ -623,37 +623,37 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_CullBackPipelineState = PipelineState::CreateDirect(pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
 
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Í— –ÊƒJƒŠƒ“ƒO‚É‰Šú‰»
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã¯è£é¢ã‚«ãƒªãƒ³ã‚°ã«åˆæœŸåŒ–
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_CullBackPipelineState);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@XV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 			UpdateConstantBuffer();
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
 	}
 
 
-	///ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[iƒeƒNƒXƒ`ƒƒjì¬
+	///ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼‰ä½œæˆ
 	void SpriteBaseDraw::CreateShaderResourceView() {
 		auto ShPtr = GetTextureResource();
 		if (!ShPtr) {
 			return;
 		}
 		auto Dev = App::GetApp()->GetDeviceResources();
-		//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹‚ğì¬
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆ
 		CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 			0,
 			0
 		);
-		//ƒeƒNƒXƒ`ƒƒ‚ÌƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğì¬
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		//ƒtƒH[ƒ}ƒbƒg
+		//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 		srvDesc.Format = ShPtr->GetTextureResDesc().Format;
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = ShPtr->GetTextureResDesc().MipLevels;
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼
 		Dev->GetD3DDevice()->CreateShaderResourceView(
 			ShPtr->GetTexture().Get(),
 			&srvDesc,
@@ -662,7 +662,7 @@ namespace basecross {
 
 
 	void SpriteBaseDraw::RefreshTrace() {
-		//ƒuƒŒƒ“ƒhƒXƒe[ƒg‚Æƒ‰ƒXƒ^ƒ‰ƒCƒU·‚µ‘Ö‚¦
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã¨ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶å·®ã—æ›¿ãˆ
 		if (GetGameObject()->IsAlphaActive()) {
 			D3D12_BLEND_DESC blend_desc;
 			D3D12_RENDER_TARGET_BLEND_DESC Target;
@@ -706,7 +706,7 @@ namespace basecross {
 	void SpriteBaseDraw::DrawPC()
 	{
 		SetConstants(pImpl->m_Dx12DrawResources.m_Dx12Constants);
-		//XV
+		//æ›´æ–°
 		UpdateConstantBuffer();
 		DrawObject<VertexPositionColor>();
 	}
@@ -716,7 +716,7 @@ namespace basecross {
 		auto PtrMeshResource = GetMeshResource();
 		CreateShaderResourceView();
 		SetConstants(pImpl->m_Dx12DrawResources.m_Dx12Constants);
-		//XV
+		//æ›´æ–°
 		UpdateConstantBuffer();
 		DrawObject<VertexPositionTexture>();
 
@@ -725,18 +725,18 @@ namespace basecross {
 	void SpriteBaseDraw::DrawPCT() {
 		CreateShaderResourceView();
 		SetConstants(pImpl->m_Dx12DrawResources.m_Dx12Constants);
-		//XV
+		//æ›´æ–°
 		UpdateConstantBuffer();
 		DrawObject<VertexPositionColorTexture>();
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	PCSprite•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PCSpriteæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PCSpriteDraw::PCSpriteDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -748,7 +748,7 @@ namespace basecross {
 		vector<VertexPositionColor>& Vertices, vector<uint16_t>& indices) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -761,21 +761,21 @@ namespace basecross {
 		}
 	}
 
-	PCSpriteDraw::~PCSpriteDraw() {}
+	PCSpriteDraw::â€¾PCSpriteDraw() {}
 
 	void PCSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
 		if (!SpriteMesh) {
-			//ì¬‚³‚ê‚Ä‚È‚©‚Á‚½‚çì¬‚·‚é
+			//ä½œæˆã•ã‚Œã¦ãªã‹ã£ãŸã‚‰ä½œæˆã™ã‚‹
 			float HelfSize = 0.5f;
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionColor> Vertices = {
 				{ VertexPositionColor(bsm::Vec3(-HelfSize, HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f)) },
 			{ VertexPositionColor(bsm::Vec3(HelfSize, HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f)) },
 			{ VertexPositionColor(bsm::Vec3(-HelfSize, -HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f)) },
 			{ VertexPositionColor(bsm::Vec3(HelfSize, -HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f)) },
 			};
-			//ƒCƒ“ƒfƒbƒNƒX”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 			vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
 			CreateMesh(Vertices, indices);
 		}
@@ -787,12 +787,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	PTSprite•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PTSpriteæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PTSpriteDraw::PTSpriteDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -804,7 +804,7 @@ namespace basecross {
 		vector<VertexPositionTexture>& Vertices, vector<uint16_t>& indices) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -817,21 +817,21 @@ namespace basecross {
 		}
 	}
 
-	PTSpriteDraw::~PTSpriteDraw() {}
+	PTSpriteDraw::â€¾PTSpriteDraw() {}
 
 	void PTSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
 		if (!SpriteMesh) {
-			//ì¬‚³‚ê‚Ä‚È‚©‚Á‚½‚çì¬‚·‚é
+			//ä½œæˆã•ã‚Œã¦ãªã‹ã£ãŸã‚‰ä½œæˆã™ã‚‹
 			float HelfSize = 0.5f;
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionTexture> Vertices = {
 				{ VertexPositionTexture(bsm::Vec3(-HelfSize, HelfSize, 0), bsm::Vec2(0.0f, 0.0f)) },
 			{ VertexPositionTexture(bsm::Vec3(HelfSize, HelfSize, 0), bsm::Vec2(1.0f, 0.0f)) },
 			{ VertexPositionTexture(bsm::Vec3(-HelfSize, -HelfSize, 0), bsm::Vec2(0.0f, 1.0f)) },
 			{ VertexPositionTexture(bsm::Vec3(HelfSize, -HelfSize, 0), bsm::Vec2(1.0f, 1.0f)) },
 			};
-			//ƒCƒ“ƒfƒbƒNƒX”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 			vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
 			CreateMesh(Vertices, indices);
 		}
@@ -843,12 +843,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	PCTSprite•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PCTSpriteæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PCTSpriteDraw::PCTSpriteDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -860,7 +860,7 @@ namespace basecross {
 		vector<VertexPositionColorTexture>& Vertices, vector<uint16_t>& indices) :
 		SpriteBaseDraw(GameObjectPtr)
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì2D
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®2D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::None);
 		SetRasterizerState(RasterizerState::CullBack);
@@ -873,23 +873,23 @@ namespace basecross {
 		}
 	}
 
-	PCTSpriteDraw::~PCTSpriteDraw() {}
+	PCTSpriteDraw::â€¾PCTSpriteDraw() {}
 
 	void PCTSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
 		if (!SpriteMesh) {
-			//ì¬‚³‚ê‚Ä‚È‚©‚Á‚½‚çì¬‚·‚é
+			//ä½œæˆã•ã‚Œã¦ãªã‹ã£ãŸã‚‰ä½œæˆã™ã‚‹
 			float HelfSize = 0.5f;
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionColorTexture> Vertices = {
 				{ VertexPositionColorTexture(bsm::Vec3(-HelfSize, HelfSize, 0),bsm::Col4(1.0f,1.0f,1.0f,1.0f), bsm::Vec2(0.0f, 0.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(HelfSize, HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f), bsm::Vec2(1.0f, 0.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(-HelfSize, -HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f), bsm::Vec2(0.0f, 1.0f)) },
 			{ VertexPositionColorTexture(bsm::Vec3(HelfSize, -HelfSize, 0), bsm::Col4(1.0f,1.0f,1.0f,1.0f), bsm::Vec2(1.0f, 1.0f)) },
 			};
-			//ƒCƒ“ƒfƒbƒNƒX”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹é…åˆ—
 			vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
-			//ƒƒbƒVƒ…‚Ìì¬i•ÏX‚Å‚«‚éj
+			//ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆï¼ˆå¤‰æ›´ã§ãã‚‹ï¼‰
 			CreateMesh(Vertices, indices);
 		}
 
@@ -904,25 +904,25 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Shadowmap::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct Shadowmap::Impl {
-		static float m_LightHeight;	//ƒ‰ƒCƒg‚Ì‚‚³iŒü‚«‚ğ‚±‚Ì’l‚ÅŠ|‚¯‚éj
-		static float m_LightNear;	//ƒ‰ƒCƒg‚ÌNear
-		static float m_LightFar;		//ƒ‰ƒCƒg‚ÌFar
+		static float m_LightHeight;	//ãƒ©ã‚¤ãƒˆã®é«˜ã•ï¼ˆå‘ãã‚’ã“ã®å€¤ã§æ›ã‘ã‚‹ï¼‰
+		static float m_LightNear;	//ãƒ©ã‚¤ãƒˆã®Near
+		static float m_LightFar;		//ãƒ©ã‚¤ãƒˆã®Far
 		static float m_ViewWidth;
 		static float m_ViewHeight;
 
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		weak_ptr<MeshResource> m_MeshResource;
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		weak_ptr<MultiMeshResource> m_MultiMeshResource;
 
 		Dx12DrawResources<ShadowConstants> m_Dx12DrawResources;
 
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	float Shadowmap::Impl::m_LightHeight(100.0f);
@@ -937,13 +937,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class Shadowmap : public Component;
-	//	—p“r: ƒVƒƒƒhƒEƒ}ƒbƒvƒRƒ“ƒ|[ƒlƒ“ƒgi‘Oˆ——pj
+	//	ç”¨é€”: ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼ˆå‰å‡¦ç†ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	Shadowmap::Shadowmap(const shared_ptr<GameObject>& GameObjectPtr) :
 		DrawComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	Shadowmap::~Shadowmap() {}
+	Shadowmap::â€¾Shadowmap() {}
 
 	float Shadowmap::GetLightHeight() { return Impl::m_LightHeight; }
 	float Shadowmap::GetLightNear() { return  Impl::m_LightNear; }
@@ -968,7 +968,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"if (pImpl->m_MeshResource.expired())",
 					L"ShadowmapComp::GetMeshResource()"
 				);
@@ -982,8 +982,8 @@ namespace basecross {
 		try {
 			if (ResKey == L"") {
 				throw BaseException(
-					L"ƒƒbƒVƒ…ƒL[‚ª‹ó”’‚Å‚·",
-					L"if (ResKey == L\"\"",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
+					L"if (ResKey == LÂ¥"Â¥"",
 					L"ShadowmapComp::SetMeshResource()"
 				);
 			}
@@ -1005,7 +1005,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"if (pImpl->m_MultiMeshResource.expired())",
 					L"ShadowmapComp::GetMultiMeshResource()"
 				);
@@ -1017,8 +1017,8 @@ namespace basecross {
 		try {
 			if (ResKey == L"") {
 				throw BaseException(
-					L"ƒƒbƒVƒ…ƒL[‚ª‹ó”’‚Å‚·",
-					L"if (ResKey == L\"\"",
+					L"ãƒ¡ãƒƒã‚·ãƒ¥ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
+					L"if (ResKey == LÂ¥"Â¥"",
 					L"ShadowmapComp::SetMultiMeshResource()"
 				);
 			}
@@ -1034,16 +1034,16 @@ namespace basecross {
 
 
 	void Shadowmap::OnCreate() {
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@•tƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ä»˜ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateCbv();
 		auto Dev = App::GetApp()->GetDeviceResources();
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize
 				= Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-			//CbvSrvƒfƒXƒNƒvƒŠƒ^ƒq[ƒv(ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ì‚İ)
+			//CbvSrvãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—(ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã¿)
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE CbvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -1052,10 +1052,10 @@ namespace basecross {
 			);
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.push_back(CbvHandle);
 		}
-		///ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ì¬
+		///ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ä½œæˆ
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(ShadowConstants) + 255) & ~255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(ShadowConstants) + 255) & â€¾255;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 				D3D12_HEAP_FLAG_NONE,
@@ -1063,38 +1063,38 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"Shadowmap::Impl::CreateConstantBuffer()"
 			);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
 			cbvDesc.SizeInBytes = ConstBuffSize;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ª‚ ‚éê‡ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚Éİ’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«è¨­ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				0,
 				0
 			);
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"Shadowmap::CreateNotShadow()"
 			);
 		}
-		///ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgì¬
+		///ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆä½œæˆ
 		{
 			pImpl->m_Dx12DrawResources.m_PipelineState 
 				= PipelineState::CreateShadowmap3D<VertexPositionNormalTexture, VSShadowmap>(pImpl->m_Dx12DrawResources.m_RootSignature, pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
-		///ƒRƒ}ƒ“ƒhƒŠƒXƒgì¬
+		///ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆä½œæˆ
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_PipelineState);
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
@@ -1102,7 +1102,7 @@ namespace basecross {
 	}
 
 	void Shadowmap::UpdateConstantBuffer() {
-		//XV
+		//æ›´æ–°
 		memcpy(pImpl->m_Dx12DrawResources.m_pConstantBuffer, reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer),
 			sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer));
 	}
@@ -1113,16 +1113,16 @@ namespace basecross {
 		if (!ShMesh) {
 			return;
 		}
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆ
 		CommandList::Reset(pImpl->m_Dx12DrawResources.m_PipelineState, pImpl->m_Dx12DrawResources.m_CommandList);
-		//ƒƒbƒVƒ…‚ªXV‚³‚ê‚Ä‚¢‚ê‚ÎƒŠƒ\[ƒXXV
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãŒæ›´æ–°ã•ã‚Œã¦ã„ã‚Œã°ãƒªã‚½ãƒ¼ã‚¹æ›´æ–°
 		ShMesh->UpdateResources<VertexPositionNormalTexture>(pImpl->m_Dx12DrawResources.m_CommandList);
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ÌƒZƒbƒg
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ã‚»ãƒƒãƒˆ
 		pImpl->m_Dx12DrawResources.m_CommandList->SetGraphicsRootSignature(pImpl->m_Dx12DrawResources.m_RootSignature.Get());
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚ÌƒZƒbƒg
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ã‚»ãƒƒãƒˆ
 		ID3D12DescriptorHeap* ppHeaps[] = { pImpl->m_Dx12DrawResources.m_DescriptorHeap.Get() };
 		pImpl->m_Dx12DrawResources.m_CommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
-		//GPUƒfƒXƒNƒvƒŠƒ^ƒq[ƒvƒnƒ“ƒhƒ‹‚ÌƒZƒbƒg
+		//GPUãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ãƒãƒ³ãƒ‰ãƒ«ã®ã‚»ãƒƒãƒˆ
 		for (size_t i = 0; i < pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.size(); i++) {
 			pImpl->m_Dx12DrawResources.m_CommandList->SetGraphicsRootDescriptorTable((UINT)i, pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec[i]);
 		}
@@ -1144,21 +1144,21 @@ namespace basecross {
 		pImpl->m_Dx12DrawResources.m_CommandList->RSSetViewports(1, &Viewport);
 		pImpl->m_Dx12DrawResources.m_CommandList->RSSetScissorRects(1, &ScissorRect);
 
-		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
+		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
 		auto SMRenderTarget = Dev->GetShadowMapRenderTarget();
 		CD3DX12_CPU_DESCRIPTOR_HANDLE dsvHandle = SMRenderTarget->GetDsvHandle();
-		//æ“¾‚µ‚½ƒnƒ“ƒhƒ‹‚ğƒZƒbƒg
+		//å–å¾—ã—ãŸãƒãƒ³ãƒ‰ãƒ«ã‚’ã‚»ãƒƒãƒˆ
 		pImpl->m_Dx12DrawResources.m_CommandList->OMSetRenderTargets(0, nullptr, FALSE, &dsvHandle);
 
 		pImpl->m_Dx12DrawResources.m_CommandList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
 		pImpl->m_Dx12DrawResources.m_CommandList->IASetVertexBuffers(0, 1, &ShMesh->GetVertexBufferView());
-		//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ğƒZƒbƒg
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ã‚»ãƒƒãƒˆ
 		pImpl->m_Dx12DrawResources.m_CommandList->IASetIndexBuffer(&ShMesh->GetIndexBufferView());
-		//ƒCƒ“ƒfƒbƒNƒX•`‰æ
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æç”»
 		pImpl->m_Dx12DrawResources.m_CommandList->DrawIndexedInstanced(ShMesh->GetNumIndicis(), 1, 0, 0, 0);
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚º
 		CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
-		//ƒfƒoƒCƒX‚ÉƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğ‘—‚é
+		//ãƒ‡ãƒã‚¤ã‚¹ã«ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’é€ã‚‹
 		Dev->InsertDrawCommandLists(pImpl->m_Dx12DrawResources.m_CommandList.Get());
 	}
 
@@ -1170,33 +1170,33 @@ namespace basecross {
 		if (!PtrStage) {
 			return;
 		}
-		//ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
+		//ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
 		auto PtrMeshResource = GetMeshResource();
 
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		bsm::Mat4x4 World, LightView, LightProj;
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		auto PtrTrans = GetGameObject()->GetComponent<Transform>();
-		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 		World = GetMeshToTransformMatrix() * PtrTrans->GetWorldMatrix();
-		//ƒrƒ…[s—ñ‚ÌŒˆ’è
+		//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®æ±ºå®š
 		auto StageView = PtrStage->GetView();
-		//ƒ‰ƒCƒg‚Ìæ“¾
+		//ãƒ©ã‚¤ãƒˆã®å–å¾—
 		auto StageLight = PtrGameObject->OnGetDrawLight();
-		//ˆÊ’u‚Ìæ“¾
+		//ä½ç½®ã®å–å¾—
 		auto Pos = PtrTrans->GetWorldMatrix().transInMatrix();
 		bsm::Vec3 PosSpan = StageLight.m_Directional;
 		PosSpan *= 0.1f;
 //		Pos += PosSpan;
-		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 		World.affineTransformation(
-			PtrTrans->GetScale(),			//ƒXƒP[ƒŠƒ“ƒO
-			PtrTrans->GetPivot(),		//‰ñ“]‚Ì’†SidSj
-			PtrTrans->GetQuaternion(),				//‰ñ“]Šp“x
-			Pos				//ˆÊ’u
+			PtrTrans->GetScale(),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+			PtrTrans->GetPivot(),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			PtrTrans->GetQuaternion(),				//å›è»¢è§’åº¦
+			Pos				//ä½ç½®
 		);
 		bsm::Mat4x4 RealWorldMatrix;
-		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 //		if (data.m_UseMeshToTransformMatrix) {
 //			RealWorldMatrix = data.m_MeshToTransformMatrix * GetMeshToTransformMatrix();
 //			RealWorldMatrix *= World;
@@ -1204,12 +1204,12 @@ namespace basecross {
 //		else {
 			RealWorldMatrix = GetMeshToTransformMatrix() * World;
 //		}
-		//ƒrƒ…[s—ñ‚ÌŒˆ’è
+		//ãƒ“ãƒ¥ãƒ¼è¡Œåˆ—ã®æ±ºå®š
 //		auto StageView = PtrStage->GetView();
 		bsm::Vec3 LightDir = -1.0 * StageLight.m_Directional;
 		bsm::Vec3 LightAt = StageView->GetTargetCamera()->GetAt();
 		bsm::Vec3 LightEye = LightAt + (LightDir * GetLightHeight());
-		//ƒ‰ƒCƒg‚Ìƒrƒ…[‚ÆË‰e‚ğŒvZ
+		//ãƒ©ã‚¤ãƒˆã®ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±ã‚’è¨ˆç®—
 		LightView.lookatLH(LightEye, LightAt, bsm::Vec3(0, 1.0f, 0));
 		LightProj.orthographicLH(GetViewWidth(), GetViewHeight(), GetLightNear(), GetLightFar());
 
@@ -1223,42 +1223,42 @@ namespace basecross {
 	}
 
 
-	//static•Ï”‚ÌÀ‘Ì
+	//staticå¤‰æ•°ã®å®Ÿä½“
 	vector<bsm::Vec3> DrawObjectBase::m_TempPositions;
 
 
 	//--------------------------------------------------------------------------------------
-	///	Simple•`‰æ‚Ég—p‚·‚é\‘¢‘Ì(‰e‘Î‰)
+	///	Simpleæç”»ã«ä½¿ç”¨ã™ã‚‹æ§‹é€ ä½“(å½±å¯¾å¿œ)
 	//--------------------------------------------------------------------------------------
 	struct SmDrawObject :public DrawObjectBase {
-		//’¸“_•ÏX‚·‚éê‡‚ÌƒƒbƒVƒ…iƒIƒŠƒWƒiƒ‹j
+		//é ‚ç‚¹å¤‰æ›´ã™ã‚‹å ´åˆã®ãƒ¡ãƒƒã‚·ãƒ¥ï¼ˆã‚ªãƒªã‚¸ãƒŠãƒ«ï¼‰
 		shared_ptr<MeshResource> m_OriginalMeshResource;
-		//ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğg‚¤‚©‚Ç‚¤‚©
+		//ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_UseOriginalMeshResource;
-		///ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+		///ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 		weak_ptr<TextureResource> m_TextureResource;
-		///ƒGƒ~ƒbƒVƒuF
+		///ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²
 		bsm::Col4 m_Emissive;
-		/// ƒfƒtƒ…[ƒYF
+		/// ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		bsm::Col4 m_Diffuse;
-		/// ƒXƒyƒLƒ…ƒ‰[F
+		/// ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		bsm::Col4 m_Specular;
-		///‰e‚ğ“Š‰e‚·‚é‚©‚Ç‚¤‚©
+		///å½±ã‚’æŠ•å½±ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_OwnShadowActive;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éDiffuse‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹Diffuseã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelDiffusePriority;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éEmissive‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹Emissiveã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelEmissivePriority;
-		//ƒ‚ƒfƒ‹‚É“ü‚Á‚Ä‚¢‚éƒeƒNƒXƒ`ƒƒ‚ğg‚¤‚©‚Ç‚¤‚©
+		//ãƒ¢ãƒ‡ãƒ«ã«å…¥ã£ã¦ã„ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’ä½¿ã†ã‹ã©ã†ã‹
 		bool m_ModelTextureEnabled;
-		///Instance•`‰æ—p
-		///InstanceÅ‘å’l
+		///Instanceæç”»ç”¨
+		///Instanceæœ€å¤§å€¤
 		size_t m_MaxInstance;
-		/// s—ñ—p‚ÌƒƒbƒVƒ…
+		/// è¡Œåˆ—ç”¨ã®ãƒ¡ãƒƒã‚·ãƒ¥
 		shared_ptr<MeshResource> m_InstanceMatrixMesh;
-		///s—ñ‚Ì”z—ñ
+		///è¡Œåˆ—ã®é…åˆ—
 		vector<bsm::Mat4x4> m_MatrixVec;
-		//s—ñ‚ğ©“®ƒNƒŠƒA‚·‚é‚©‚Ç‚¤‚©
+		//è¡Œåˆ—ã‚’è‡ªå‹•ã‚¯ãƒªã‚¢ã™ã‚‹ã‹ã©ã†ã‹
 		bool m_AutoClearMatrixVec;
 		SmDrawObject() :
 			m_UseOriginalMeshResource(false),
@@ -1283,27 +1283,27 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	Simple•`‰æƒIƒuƒWƒFƒNƒg‚Ìe
+	///	Simpleæç”»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	SmBaseDraw::SmBaseDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		DrawComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚ğƒfƒtƒHƒ‹ƒg‚Ì‚RD
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ï¼“D
 		SetBlendState(BlendState::Opaque);
 		SetDepthStencilState(DepthStencilState::Default);
 		SetRasterizerState(RasterizerState::CullBack);
 		SetSamplerState(SamplerState::LinearClamp);
 	}
 
-	SmBaseDraw::~SmBaseDraw() {}
+	SmBaseDraw::â€¾SmBaseDraw() {}
 
 	void SmBaseDraw::SetConstants(Dx12Constants<SimpleConstants>& SmCb) {
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		auto PtrTrans = GetGameObject()->GetComponent<Transform>();
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		bsm::Mat4x4 World, ViewMat, ProjMat;
-		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 //		if (data.m_UseMeshToTransformMatrix) {
 //			World = data.m_MeshToTransformMatrix * GetMeshToTransformMatrix();
 //			World *= PtrTrans->GetWorldMatrix();
@@ -1311,33 +1311,33 @@ namespace basecross {
 //		else {
 			World = GetMeshToTransformMatrix() * PtrTrans->GetWorldMatrix();
 //		}
-		//“]’u‚·‚é
+		//è»¢ç½®ã™ã‚‹
 		World.transpose();
-		//ƒJƒƒ‰‚ğ“¾‚é
+		//ã‚«ãƒ¡ãƒ©ã‚’å¾—ã‚‹
 		auto CameraPtr = GetGameObject()->OnGetDrawCamera();
-		//ƒrƒ…[‚ÆË‰es—ñ‚ğ“¾‚é
+		//ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±è¡Œåˆ—ã‚’å¾—ã‚‹
 		ViewMat = CameraPtr->GetViewMatrix();
-		//“]’u‚·‚é
+		//è»¢ç½®ã™ã‚‹
 		ViewMat.transpose();
-		//“]’u‚·‚é
+		//è»¢ç½®ã™ã‚‹
 		ProjMat = CameraPtr->GetProjMatrix();
 		ProjMat.transpose();
 		SmCb.m_ConstantBuffer.World = World;
 		SmCb.m_ConstantBuffer.View = ViewMat;
 		SmCb.m_ConstantBuffer.Projection = ProjMat;
-		//ƒGƒ~ƒbƒVƒu
+		//ã‚¨ãƒŸãƒƒã‚·ãƒ–
 		SmCb.m_ConstantBuffer.Emissive = GetEmissive();
-		//ƒfƒtƒB[ƒY
+		//ãƒ‡ãƒ•ã‚£ãƒ¼ã‚º
 		SmCb.m_ConstantBuffer.Diffuse = GetDiffuse();
-		//ƒXƒyƒLƒ…ƒ‰[
+		//ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼
 		SmCb.m_ConstantBuffer.Specular = GetSpecular();
-		//ƒ‰ƒCƒeƒBƒ“ƒO
+		//ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°
 		auto StageLight = GetGameObject()->OnGetDrawLight();
 		SmCb.m_ConstantBuffer.LightDir = StageLight.m_Directional;
 		SmCb.m_ConstantBuffer.LightDir.w = 1.0f;
 		SmCb.m_ConstantBuffer.EyePos = CameraPtr->GetEye();
 		SmCb.m_ConstantBuffer.EyePos.w = 1.0f;
-		//‰e—p
+		//å½±ç”¨
 		if (GetOwnShadowActive()) {
 			bsm::Vec3 CalcLightDir = -1.0 * StageLight.m_Directional;
 			bsm::Vec3 LightAt = CameraPtr->GetAt();
@@ -1347,30 +1347,30 @@ namespace basecross {
 			SmCb.m_ConstantBuffer.LightPos = LightEye;
 			SmCb.m_ConstantBuffer.LightPos.w = 1.0f;
 			bsm::Mat4x4 LightView, LightProj;
-			//ƒ‰ƒCƒg‚Ìƒrƒ…[‚ÆË‰e‚ğŒvZ
+			//ãƒ©ã‚¤ãƒˆã®ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±ã‚’è¨ˆç®—
 			LightView = XMMatrixLookAtLH(LightEye, LightAt, bsm::Vec3(0, 1.0f, 0));
 			LightProj = XMMatrixOrthographicLH(Shadowmap::GetViewWidth(), Shadowmap::GetViewHeight(),
 				Shadowmap::GetLightNear(), Shadowmap::GetLightFar());
 			SmCb.m_ConstantBuffer.LightView = bsm::transpose(LightView);
 			SmCb.m_ConstantBuffer.LightProjection = bsm::transpose(LightProj);
 		}
-		//ƒ{[ƒ“‚Ìİ’è
+		//ãƒœãƒ¼ãƒ³ã®è¨­å®š
 /*
-–¢’è‹`
+æœªå®šç¾©
 */
 	}
 
-	//s—ñƒoƒbƒtƒ@‚Ìì¬
+	//è¡Œåˆ—ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 	void SmBaseDraw::CreateMatrixBuffer() {
 /*
-–¢’è‹`
+æœªå®šç¾©
 */
 	}
 
-	//s—ñƒoƒbƒtƒ@‚Ìƒ}ƒbƒv
+	//è¡Œåˆ—ãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—
 	void SmBaseDraw::MapMatrixBuffer() {
 /*
-–¢’è‹`
+æœªå®šç¾©
 */
 	}
 
@@ -1424,7 +1424,7 @@ namespace basecross {
 	}
 
 	shared_ptr<TextureResource> SmBaseDraw::GetTextureResource() const {
-		//ƒeƒNƒXƒ`ƒƒ‚ª‚È‚¯‚ê‚Înull‚ğ•Ô‚·
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã‘ã‚Œã°nullã‚’è¿”ã™
 		auto shptr = pImpl->m_SmDrawObject.m_TextureResource.lock();
 		if (shptr) {
 			return shptr;
@@ -1434,7 +1434,7 @@ namespace basecross {
 	}
 
 	shared_ptr<MultiMeshResource> SmBaseDraw::GetMultiMeshResource() const {
-		//‚È‚¯‚ê‚Înull‚ğ•Ô‚·
+		//ãªã‘ã‚Œã°nullã‚’è¿”ã™
 		auto shptr = pImpl->m_SmDrawObject.m_MultiMeshResource.lock();
 		if (shptr) {
 			return shptr;
@@ -1599,7 +1599,7 @@ namespace basecross {
 	vector< bsm::Mat4x4 >& SmBaseDraw::GetVecMultiLocalBones(size_t index) {
 		if (pImpl->m_SmDrawObject.m_MultiLocalBonesMatrix.size() <= index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªãŒÀ‚ğ’´‚¦‚Ä‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä¸Šé™ã‚’è¶…ãˆã¦ã¾ã™",
 				L"if (pImpl->m_SmDrawObject.m_MultiLocalBonesMatrix.size() <= index)",
 				L"SmBaseDraw::GetVecMultiLocalBones"
 			);
@@ -1621,7 +1621,7 @@ namespace basecross {
 	void SmBaseDraw::AddMatrix(const bsm::Mat4x4& NewMat) {
 		if (pImpl->m_SmDrawObject.m_MatrixVec.size() >= GetMaxInstance()) {
 			throw BaseException(
-				L"ƒCƒ“ƒXƒ^ƒ“ƒXãŒÀ‚ğ’´‚¦‚Ä‚Ü‚·",
+				L"ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ä¸Šé™ã‚’è¶…ãˆã¦ã¾ã™",
 				L"if (pImpl->m_MatrixVec.size() >= GetMaxInstance())",
 				L"SmBaseDraw::AddMatrix()"
 			);
@@ -1655,13 +1655,13 @@ namespace basecross {
 */
 	void SmBaseDraw::GetStaticMeshLocalPositions(vector<bsm::Vec3>& vertices) {
 /*
-–¢’è‹`
+æœªå®šç¾©
 */
 	}
 
 	void SmBaseDraw::GetStaticMeshWorldPositions(vector<bsm::Vec3>& vertices) {
 		GetStaticMeshLocalPositions(vertices);
-		//ƒ[ƒ‹ƒhs—ñ‚Ì”½‰f
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åæ˜ 
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
 		for (auto& v : vertices) {
 			v *= WorldMat;
@@ -1696,13 +1696,13 @@ namespace basecross {
 
 	void SmBaseDraw::GetSkinedMeshLocalPositions(vector<bsm::Vec3>& vertices) {
 /*
-–¢’è‹`
+æœªå®šç¾©
 */
 	}
 
 	void SmBaseDraw::GetSkinedMeshWorldPositions(vector<bsm::Vec3>& vertices) {
 		GetSkinedMeshLocalPositions(vertices);
-		//ƒ[ƒ‹ƒhs—ñ‚Ì”½‰f
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®åæ˜ 
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
 		for (auto& v : vertices) {
 			v *= WorldMat;
@@ -1736,27 +1736,27 @@ namespace basecross {
 
 
 
-	///ƒVƒF[ƒ_[ƒŠƒ\[ƒXƒrƒ…[iƒeƒNƒXƒ`ƒƒjì¬
+	///ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ï¼ˆãƒ†ã‚¯ã‚¹ãƒãƒ£ï¼‰ä½œæˆ
 	void SmBaseDraw::CreateShaderResourceView() {
 		auto ShPtr = GetTextureResource();
 		if (!ShPtr) {
 			return;
 		}
 		auto Dev = App::GetApp()->GetDeviceResources();
-		//ƒeƒNƒXƒ`ƒƒƒnƒ“ƒhƒ‹‚ğì¬
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒãƒ³ãƒ‰ãƒ«ã‚’ä½œæˆ
 		CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 			0,
 			0
 		);
-		//ƒeƒNƒXƒ`ƒƒ‚ÌƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ğì¬
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 		D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc = {};
 		srvDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
-		//ƒtƒH[ƒ}ƒbƒg
+		//ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆ
 		srvDesc.Format = ShPtr->GetTextureResDesc().Format;
 		srvDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 		srvDesc.Texture2D.MipLevels = ShPtr->GetTextureResDesc().MipLevels;
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼
 		Dev->GetD3DDevice()->CreateShaderResourceView(
 			ShPtr->GetTexture().Get(),
 			&srvDesc,
@@ -1779,7 +1779,7 @@ namespace basecross {
 
 
 	void SmBaseDraw::RefreshTrace() {
-		//ƒuƒŒƒ“ƒhƒXƒe[ƒg‚Æƒ‰ƒXƒ^ƒ‰ƒCƒU·‚µ‘Ö‚¦
+		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆã¨ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶å·®ã—æ›¿ãˆ
 		if (GetGameObject()->IsAlphaActive()) {
 			D3D12_BLEND_DESC blend_desc;
 			D3D12_RENDER_TARGET_BLEND_DESC Target;
@@ -1817,16 +1817,16 @@ namespace basecross {
 	}
 
 
-	///•`‰æˆ—
+	///æç”»å‡¦ç†
 	void SmBaseDraw::DrawObject() {
 		auto ShMesh = GetMeshResource();
 		auto ShTex = GetTextureResource();
 		if (!ShMesh) {
 			return;
 		}
-		//“§–¾ˆ—
+		//é€æ˜å‡¦ç†
 		RefreshTrace();
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆ
 		if (GetGameObject()->IsAlphaActive()) {
 			CommandList::Reset(pImpl->m_Dx12DrawResources.m_CullFrontPipelineState, pImpl->m_Dx12DrawResources.m_CommandList);
 		}
@@ -1837,7 +1837,7 @@ namespace basecross {
 		if (ShTex) {
 			ShTex->UpdateResources(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
-		//•`‰æ
+		//æç”»
 		pImpl->m_Dx12DrawResources.m_CommandList->SetGraphicsRootSignature(pImpl->m_Dx12DrawResources.m_RootSignature.Get());
 		ID3D12DescriptorHeap* ppHeaps[] = { pImpl->m_Dx12DrawResources.m_DescriptorHeap.Get(), pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap.Get() };
 		pImpl->m_Dx12DrawResources.m_CommandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
@@ -1868,32 +1868,32 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_CommandList->DrawIndexedInstanced(ShMesh->GetNumIndicis(), 1, 0, 0, 0);
 		}
 
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚º
 		CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
-		//ƒfƒoƒCƒX‚ÉƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğ‘—‚é
+		//ãƒ‡ãƒã‚¤ã‚¹ã«ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’é€ã‚‹
 		Dev->InsertDrawCommandLists(pImpl->m_Dx12DrawResources.m_CommandList.Get());
 	}
 
 	void SmBaseDraw::CreatePNNotShadow() {
-		//–¢À‘•
+		//æœªå®Ÿè£…
 		
 
 	}
 
 
 	void SmBaseDraw::CreatePNTNotShadow() {
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateSrvSmpCbv();
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize =
 				Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-			//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1 + 1);
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap = DescriptorHeap::CreateSamplerHeap(1);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE SrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -1915,16 +1915,16 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.push_back(CbvHandle);
 
 		}
-		//ƒTƒ“ƒvƒ‰[
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		{
 			auto SamplerDescriptorHandle = pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			DynamicSampler::CreateSampler(SamplerState::LinearClamp, SamplerDescriptorHandle);
 		}
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & ~255;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒŠƒ\[ƒXiƒAƒbƒvƒ[ƒhƒq[ƒvj‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & â€¾255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹ï¼ˆã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ï¼‰ã®ä½œæˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 				D3D12_HEAP_FLAG_NONE,
@@ -1932,16 +1932,16 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"PNTStaticDraw::CreateNotShadow()"
 			);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
 			cbvDesc.SizeInBytes = ConstBuffSize;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ª‚ ‚éê‡ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚Éİ’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«è¨­ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				1,
@@ -1949,18 +1949,18 @@ namespace basecross {
 			);
 
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"PNTStaticDraw::CreateNotShadow()"
 			);
 
 		}
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ÍƒeƒNƒXƒ`ƒƒƒZƒbƒg‚Éì¬
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚»ãƒƒãƒˆæ™‚ã«ä½œæˆ
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 		{
 			PipelineState::CreateDefault3D<VertexPositionNormalTexture, VSPNTStatic, PSPNTStatic>(pImpl->m_Dx12DrawResources.m_RootSignature, pImpl->m_Dx12DrawResources.m_PineLineDesc);
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
@@ -1969,10 +1969,10 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 			pImpl->m_Dx12DrawResources.m_CullBackPipelineState = PipelineState::CreateDirect(pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Í— –ÊƒJƒŠƒ“ƒO‚É‰Šú‰»
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã¯è£é¢ã‚«ãƒªãƒ³ã‚°ã«åˆæœŸåŒ–
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_CullBackPipelineState);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@XV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 			UpdateConstantBuffer();
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
@@ -1980,9 +1980,9 @@ namespace basecross {
 
 
 	void SmBaseDraw::CreatePNTWithShadow() {
-		//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		pImpl->m_Dx12DrawResources.m_RootSignature = RootSignature::CreateSrv2Smp2Cbv();
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		auto Dev = App::GetApp()->GetDeviceResources();
 		{
 			pImpl->m_Dx12DrawResources.m_DescriptorHandleIncrementSize =
@@ -1990,11 +1990,11 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHandleIncrementSize =
 				Dev->GetD3DDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER);
 
-			//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_DescriptorHeap = DescriptorHeap::CreateCbvSrvUavHeap(1 + 2);
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap = DescriptorHeap::CreateSamplerHeap(2);
-			//GPU‘¤ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìƒnƒ“ƒhƒ‹‚Ì”z—ñ‚Ìì¬
+			//GPUå´ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ãƒãƒ³ãƒ‰ãƒ«ã®é…åˆ—ã®ä½œæˆ
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.clear();
 			CD3DX12_GPU_DESCRIPTOR_HANDLE SrvHandle1(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetGPUDescriptorHandleForHeapStart(),
@@ -2030,7 +2030,7 @@ namespace basecross {
 			);
 			pImpl->m_Dx12DrawResources.m_GPUDescriptorHandleVec.push_back(CbvHandle);
 		}
-		//ƒTƒ“ƒvƒ‰[
+		//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		{
 			auto SamplerDescriptorHandleWithShadow1 = pImpl->m_Dx12DrawResources.m_SamplerDescriptorHeap->GetCPUDescriptorHandleForHeapStart();
 			DynamicSampler::CreateSampler(SamplerState::LinearClamp, SamplerDescriptorHandleWithShadow1);
@@ -2042,11 +2042,11 @@ namespace basecross {
 			};
 			DynamicSampler::CreateSampler(SamplerState::ComparisonLinear, SamplerDescriptorHandleWithShadow2);
 		}
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		{
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Í256ƒoƒCƒg‚ÉƒAƒ‰ƒCƒ“ƒƒ“ƒg
-			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & ~255;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒŠƒ\[ƒXiƒAƒbƒvƒ[ƒhƒq[ƒvj‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯256ãƒã‚¤ãƒˆã«ã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆ
+			UINT ConstBuffSize = (sizeof(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer) + 255) & â€¾255;
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒªã‚½ãƒ¼ã‚¹ï¼ˆã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ï¼‰ã®ä½œæˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 				&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
 				D3D12_HEAP_FLAG_NONE,
@@ -2054,16 +2054,16 @@ namespace basecross {
 				D3D12_RESOURCE_STATE_GENERIC_READ,
 				nullptr,
 				IID_PPV_ARGS(&pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@—p‚ÌƒAƒbƒvƒ[ƒhƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ç”¨ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"PNTStaticDraw::CreateWithShadow()"
 			);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒrƒ…[‚ğì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆ
 			D3D12_CONSTANT_BUFFER_VIEW_DESC cbvDesc = {};
 			cbvDesc.BufferLocation = pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->GetGPUVirtualAddress();
 			cbvDesc.SizeInBytes = ConstBuffSize;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@ƒrƒ…[‚ğì¬‚·‚×‚«ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvã‚Ìƒnƒ“ƒhƒ‹‚ğæ“¾
-			//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ª‚ ‚éê‡ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÍƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚Ì‚ ‚Æ‚Éİ’u‚·‚é
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã‚’ä½œæˆã™ã¹ããƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä¸Šã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å–å¾—
+			//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãŒã‚ã‚‹å ´åˆã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¯ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã®ã‚ã¨ã«è¨­ç½®ã™ã‚‹
 			CD3DX12_CPU_DESCRIPTOR_HANDLE cbvSrvHandle(
 				pImpl->m_Dx12DrawResources.m_DescriptorHeap->GetCPUDescriptorHandleForHeapStart(),
 				2,
@@ -2071,19 +2071,19 @@ namespace basecross {
 			);
 
 			Dev->GetD3DDevice()->CreateConstantBufferView(&cbvDesc, cbvSrvHandle);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌƒAƒbƒvƒ[ƒhƒq[ƒv‚Ìƒ}ƒbƒv
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒ’ãƒ¼ãƒ—ã®ãƒãƒƒãƒ—
 			CD3DX12_RANGE readRange(0, 0);
 			ThrowIfFailed(pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBufferUploadHeap->Map(0, &readRange,
 				reinterpret_cast<void**>(&pImpl->m_Dx12DrawResources.m_pConstantBuffer)),
-				L"ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìƒ}ƒbƒv‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ãƒãƒƒãƒ—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"pImpl->m_ConstantBufferUploadHeap->Map()",
 				L"PNTStaticDraw::CreateNotShadow()"
 			);
 		}
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒXƒrƒ…[‚ÍƒeƒNƒXƒ`ƒƒƒZƒbƒg‚Éì¬
-		//ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ãƒ“ãƒ¥ãƒ¼ã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚»ãƒƒãƒˆæ™‚ã«ä½œæˆ
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 		{
-			//ƒVƒƒƒhƒE•t‚«ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬
+			//ã‚·ãƒ£ãƒ‰ã‚¦ä»˜ããƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆ
 			PipelineState::CreateDefault3D<VertexPositionNormalTexture, VSPNTStaticShadow, PSPNTStaticShadow>(pImpl->m_Dx12DrawResources.m_RootSignature,
 				pImpl->m_Dx12DrawResources.m_PineLineDesc);
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
@@ -2092,10 +2092,10 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_PineLineDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
 			pImpl->m_Dx12DrawResources.m_CullBackPipelineState = PipelineState::CreateDirect(pImpl->m_Dx12DrawResources.m_PineLineDesc);
 		}
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Í— –ÊƒJƒŠƒ“ƒO‚É‰Šú‰»
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã¯è£é¢ã‚«ãƒªãƒ³ã‚°ã«åˆæœŸåŒ–
 		{
 			pImpl->m_Dx12DrawResources.m_CommandList = CommandList::CreateDefault(pImpl->m_Dx12DrawResources.m_CullBackPipelineState);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@XV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ›´æ–°
 			UpdateConstantBuffer();
 			CommandList::Close(pImpl->m_Dx12DrawResources.m_CommandList);
 		}
@@ -2117,7 +2117,7 @@ namespace basecross {
 			pImpl->m_Dx12DrawResources.m_Dx12Constants.m_ConstantBuffer.ActiveFlg.x = 0;
 		}
 		SetConstants(pImpl->m_Dx12DrawResources.m_Dx12Constants);
-		//XV
+		//æ›´æ–°
 		UpdateConstantBuffer();
 		DrawObject();
 
@@ -2138,20 +2138,20 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	PNStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PNStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PNStaticDraw::PNStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SmBaseDraw(GameObjectPtr)
 	{
 	}
 
-	PNStaticDraw::~PNStaticDraw() {}
+	PNStaticDraw::â€¾PNStaticDraw() {}
 
 	void PNStaticDraw::OnCreate() {
-		//ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ‚¾‚Æ‹É’[‚É‚È‚é‚Ì‚Å’²®
+		//ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿ã ã¨æ¥µç«¯ã«ãªã‚‹ã®ã§èª¿æ•´
 		SetEmissive(bsm::Col4(0.5f, 0.5f, 0.5f, 0.0f));
 		SetDiffuse(bsm::Col4(0.6f, 0.6f, 0.6f, 1.0f));
-		//PN‰e–³‚µ‚É‰Šú‰»
+		//PNå½±ç„¡ã—ã«åˆæœŸåŒ–
 		CreatePNNotShadow();
 	}
 
@@ -2160,13 +2160,13 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	PCTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PCTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PCTStaticDraw::PCTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PCTStaticDraw::~PCTStaticDraw() {}
+	PCTStaticDraw::â€¾PCTStaticDraw() {}
 
 	void PCTStaticDraw::OnCreate() {}
 
@@ -2176,28 +2176,28 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	PNTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	PNTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PNTStaticDraw::PNTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SmBaseDraw(GameObjectPtr)
 	{
 	}
 
-	PNTStaticDraw::~PNTStaticDraw() {}
+	PNTStaticDraw::â€¾PNTStaticDraw() {}
 
 	void PNTStaticDraw::SetOwnShadowActive(bool b) {
 		if (IsOwnShadowActive()) {
-			//¡‚Í‰e•t‚«
+			//ä»Šã¯å½±ä»˜ã
 			if (!b) {
-				//PNT‰e–³‚µ‚É•ÏX
+				//PNTå½±ç„¡ã—ã«å¤‰æ›´
 				CreatePNTNotShadow();
 				SmBaseDraw::SetOwnShadowActive(false);
 			}
 		}
 		else {
-			//¡‚Í‰e–³‚µ
+			//ä»Šã¯å½±ç„¡ã—
 			if (b) {
-				//PNT‰e•t‚«‚É•ÏX
+				//PNTå½±ä»˜ãã«å¤‰æ›´
 				CreatePNTWithShadow();
 				SmBaseDraw::SetOwnShadowActive(true);
 			}
@@ -2206,10 +2206,10 @@ namespace basecross {
 
 
 	void PNTStaticDraw::OnCreate() {
-		//ƒ‰ƒCƒeƒBƒ“ƒO‚Ì‚İ‚¾‚Æ‹É’[‚É‚È‚é‚Ì‚Å’²®
+		//ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã®ã¿ã ã¨æ¥µç«¯ã«ãªã‚‹ã®ã§èª¿æ•´
 		SetEmissive(bsm::Col4(0.5f, 0.5f, 0.5f, 0.0f));
 		SetDiffuse(bsm::Col4(0.6f, 0.6f, 0.6f, 1.0f));
-		//PNT‰e–³‚µ‚É‰Šú‰»
+		//PNTå½±ç„¡ã—ã«åˆæœŸåŒ–
 		CreatePNTNotShadow();
 	}
 

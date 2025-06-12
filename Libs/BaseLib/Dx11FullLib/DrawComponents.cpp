@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 @file DrawComponents.cpp
 @brief 描画コンポーネント実体
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
@@ -90,7 +90,7 @@ namespace basecross {
 		Component(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	DrawComponent::‾DrawComponent() {}
+	DrawComponent::~DrawComponent() {}
 
 
 	BlendState DrawComponent::GetBlendState() const {
@@ -254,7 +254,7 @@ namespace basecross {
 
 		Impl()
 		{}
-		‾Impl() {}
+		~Impl() {}
 	};
 
 	float Shadowmap::Impl::m_LightHeight(100.0f);
@@ -274,7 +274,7 @@ namespace basecross {
 		DrawComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	Shadowmap::‾Shadowmap() {}
+	Shadowmap::~Shadowmap() {}
 
 	float Shadowmap::GetLightHeight() { return Impl::m_LightHeight; }
 	float Shadowmap::GetLightNear() { return  Impl::m_LightNear; }
@@ -316,7 +316,7 @@ namespace basecross {
 			if (ResKey == L"") {
 				throw BaseException(
 					L"メッシュキーが空白です",
-					L"if (ResKey == L¥"¥"",
+					L"if (ResKey == L¥""",
 					L"ShadowmapComp::SetMeshResource()"
 				);
 			}
@@ -604,7 +604,7 @@ namespace basecross {
 			m_MaxInstance(MaxInstance),
 			m_Addtype(AddType)
 		{}
-		‾Impl() {}
+		~Impl() {}
 		//頂点バッファの作成
 		void CreateParticleBuffers();
 	};
@@ -648,7 +648,7 @@ namespace basecross {
 		pImpl(new Impl(MaxInstance, AddType))
 	{}
 
-	PCTParticleDraw::‾PCTParticleDraw() {}
+	PCTParticleDraw::~PCTParticleDraw() {}
 
 	void PCTParticleDraw::AddParticle(float ToCaneraLength, const bsm::Mat4x4& WorldMatrix,
 		const shared_ptr<TextureResource>& TextureRes,const bsm::Col4& Diffuse) {
@@ -844,7 +844,7 @@ namespace basecross {
 		pImpl(new Impl())
 	{}
 
-	SpriteBaseDraw::‾SpriteBaseDraw() {}
+	SpriteBaseDraw::~SpriteBaseDraw() {}
 
 	void SpriteBaseDraw::SetConstants(SpriteConstants& SpCb) {
 		//行列の取得
@@ -936,7 +936,7 @@ namespace basecross {
 		}
 	}
 
-	PCSpriteDraw::‾PCSpriteDraw(){}
+	PCSpriteDraw::~PCSpriteDraw(){}
 
 	void PCSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
@@ -1005,7 +1005,7 @@ namespace basecross {
 		}
 	}
 
-	PTSpriteDraw::‾PTSpriteDraw() {}
+	PTSpriteDraw::~PTSpriteDraw() {}
 
 	void PTSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
@@ -1075,7 +1075,7 @@ namespace basecross {
 		}
 	}
 
-	PCTSpriteDraw::‾PCTSpriteDraw() {}
+	PCTSpriteDraw::~PCTSpriteDraw() {}
 
 	void PCTSpriteDraw::OnCreate() {
 		auto SpriteMesh = GetMeshResource();
@@ -1120,7 +1120,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	GenericDraw::GenericDraw() :
 		ObjectInterface() {}
-	GenericDraw::‾GenericDraw() {}
+	GenericDraw::~GenericDraw() {}
 	void GenericDraw::OnCreate() {}
 
 	void GenericDraw::PCWireFrameDraw(const shared_ptr<GameObject>& GameObjectPtr, const shared_ptr<MeshResource>& MeshRes,
@@ -1347,7 +1347,7 @@ namespace basecross {
 		SetSamplerState(SamplerState::LinearClamp);
 	}
 
-	SmBaseDraw::‾SmBaseDraw() {}
+	SmBaseDraw::~SmBaseDraw() {}
 
 	void SmBaseDraw::SetConstants(SimpleConstants& SmCb, const MeshPrimData& data) {
 		//行列の定義
@@ -1987,7 +1987,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PCStaticDraw::‾PCStaticDraw(){}
+	PCStaticDraw::~PCStaticDraw(){}
 
 	void PCStaticDraw::OnCreate(){}
 
@@ -2027,7 +2027,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PNStaticDraw::‾PNStaticDraw() {}
+	PNStaticDraw::~PNStaticDraw() {}
 
 	void PNStaticDraw::OnCreate() {}
 
@@ -2069,7 +2069,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PTStaticDraw::‾PTStaticDraw() {}
+	PTStaticDraw::~PTStaticDraw() {}
 
 	void PTStaticDraw::OnCreate() {}
 
@@ -2109,7 +2109,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PCTStaticDraw::‾PCTStaticDraw() {}
+	PCTStaticDraw::~PCTStaticDraw() {}
 
 	void PCTStaticDraw::OnCreate() {}
 
@@ -2149,7 +2149,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PNTStaticDraw::‾PNTStaticDraw() {}
+	PNTStaticDraw::~PNTStaticDraw() {}
 
 	void PNTStaticDraw::OnCreate() {
 		//ライティングのみだと極端になるので調整
@@ -2208,7 +2208,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PNTStaticModelDraw::‾PNTStaticModelDraw() {}
+	PNTStaticModelDraw::~PNTStaticModelDraw() {}
 
 	void PNTStaticModelDraw::OnCreate() {
 		//ライティングのみだと極端になるので調整
@@ -2271,7 +2271,7 @@ namespace basecross {
 	PNTBoneModelDraw::PNTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		SmBaseDraw(GameObjectPtr)
 	{}
-	PNTBoneModelDraw::‾PNTBoneModelDraw() {}
+	PNTBoneModelDraw::~PNTBoneModelDraw() {}
 
 	void PNTBoneModelDraw::SetMeshResource(const shared_ptr<MeshResource>& MeshRes) {
 		SmBaseDraw::SetMeshResource(MeshRes);
@@ -2358,7 +2358,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PCStaticInstanceDraw::‾PCStaticInstanceDraw() {}
+	PCStaticInstanceDraw::~PCStaticInstanceDraw() {}
 
 	void PCStaticInstanceDraw::OnCreate() {
 		//行列バッファの作成
@@ -2406,7 +2406,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PTStaticInstanceDraw::‾PTStaticInstanceDraw() {}
+	PTStaticInstanceDraw::~PTStaticInstanceDraw() {}
 
 	void PTStaticInstanceDraw::OnCreate() {
 		//行列バッファの作成
@@ -2454,7 +2454,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PCTStaticInstanceDraw::‾PCTStaticInstanceDraw() {}
+	PCTStaticInstanceDraw::~PCTStaticInstanceDraw() {}
 
 	void PCTStaticInstanceDraw::OnCreate() {
 		//行列バッファの作成
@@ -2502,7 +2502,7 @@ namespace basecross {
 		SmBaseDraw(GameObjectPtr)
 	{}
 
-	PNTStaticInstanceDraw::‾PNTStaticInstanceDraw() {}
+	PNTStaticInstanceDraw::~PNTStaticInstanceDraw() {}
 
 	void PNTStaticInstanceDraw::OnCreate() {
 		//ライティングのみだと極端になるので調整

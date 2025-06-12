@@ -1,6 +1,6 @@
 /*!
 @file MeshHelper.cpp
-@brief ƒvƒŠƒ~ƒeƒBƒuì¬ŠÖ”“™À‘Ì
+@brief ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä½œæˆé–¢æ•°ç­‰å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -57,12 +57,12 @@ namespace basecross {
 		vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices) {
 		try {
 			float HelfSize = size / 2.0f;
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vertices.push_back(VertexPositionNormalTexture(bsm::Vec3(-HelfSize, HelfSize, 0), bsm::Vec3(0.0f, 0.0f, -1.0f), bsm::Vec2(0.0f, 0.0f)));
 			vertices.push_back(VertexPositionNormalTexture(bsm::Vec3(HelfSize, HelfSize, 0), bsm::Vec3(0.0f, 0.0f, -1.0f), bsm::Vec2(1.0f, 0.0f)));
 			vertices.push_back(VertexPositionNormalTexture(bsm::Vec3(-HelfSize, -HelfSize, 0), bsm::Vec3(0.0f, 0.0f, -1.0f), bsm::Vec2(0.0f, 1.0f)));
 			vertices.push_back(VertexPositionNormalTexture(bsm::Vec3(HelfSize, -HelfSize, 0), bsm::Vec3(0.0f, 0.0f, -1.0f), bsm::Vec2(1.0f, 1.0f)));
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			indices.push_back((uint16_t)0);
 			indices.push_back((uint16_t)1);
 			indices.push_back((uint16_t)2);
@@ -78,7 +78,7 @@ namespace basecross {
 	void MeshUtill::CreateCube(float size,
 		vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices) {
 		try {
-			//Face”‚Í6
+			//Faceæ•°ã¯6
 			const int FaceCount = 6;
 			static const XMVECTORF32 faceNormals[FaceCount] =
 			{
@@ -96,11 +96,11 @@ namespace basecross {
 				{ 0, 1 },
 				{ 0, 0 },
 			};
-			//‚P•Ó‚Ì’·‚³‚ğ‚µ‚ÄˆÊ’u‚É‚·‚é‚½‚ßA”¼•ª‚É‚·‚é
+			//ï¼‘è¾ºã®é•·ã•ã‚’ã—ã¦ä½ç½®ã«ã™ã‚‹ãŸã‚ã€åŠåˆ†ã«ã™ã‚‹
 			size /= 2;
 			for (int i = 0; i < FaceCount; i++)
 			{
-				//–@ü
+				//æ³•ç·š
 				XMVECTOR normal = faceNormals[i];
 
 				XMVECTOR basis = (i >= 4) ? g_XMIdentityR2 : g_XMIdentityR1;
@@ -108,7 +108,7 @@ namespace basecross {
 				XMVECTOR side1 = XMVector3Cross(normal, basis);
 				XMVECTOR side2 = XMVector3Cross(normal, side1);
 
-				//ƒCƒ“ƒfƒbƒNƒX‚Ì“o˜^
+				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ç™»éŒ²
 				size_t vbase = vertices.size();
 				indices.push_back((uint16_t)vbase + 0);
 				indices.push_back((uint16_t)vbase + 1);
@@ -117,13 +117,13 @@ namespace basecross {
 				indices.push_back((uint16_t)vbase + 0);
 				indices.push_back((uint16_t)vbase + 2);
 				indices.push_back((uint16_t)vbase + 3);
-				//’¸“_‚Ì“o˜^
+				//é ‚ç‚¹ã®ç™»éŒ²
 				vertices.push_back(VertexPositionNormalTexture((normal - side1 - side2) * size, normal, textureCoordinates[0]));
 				vertices.push_back(VertexPositionNormalTexture((normal - side1 + side2) * size, normal, textureCoordinates[1]));
 				vertices.push_back(VertexPositionNormalTexture((normal + side1 + side2) * size, normal, textureCoordinates[2]));
 				vertices.push_back(VertexPositionNormalTexture((normal + side1 - side2) * size, normal, textureCoordinates[3]));
 			}
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
 		}
 		catch (...) {
@@ -136,9 +136,9 @@ namespace basecross {
 		vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices) {
 		try {
 			if (tessellation < 3) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				ThrowBaseException(
-					L"•ªŠ„”‚Í3ˆÈã•K—v‚Å‚·",
+					L"åˆ†å‰²æ•°ã¯3ä»¥ä¸Šå¿…è¦ã§ã™",
 					L"if (tessellation < 3)",
 					L"VertexUtil::CreateSphere()"
 				);
@@ -191,7 +191,7 @@ namespace basecross {
 					indices.push_back((uint16_t)(nextI * stride + nextJ));
 				}
 			}
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
 		}
 		catch (...) {
@@ -207,9 +207,9 @@ namespace basecross {
 		bool landscape) {
 		try {
 			if (tessellation < 3) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				ThrowBaseException(
-					L"•ªŠ„”‚Í3ˆÈã•K—v‚Å‚·",
+					L"åˆ†å‰²æ•°ã¯3ä»¥ä¸Šå¿…è¦ã§ã™",
 					L"if (tessellation < 3)",
 					L"VertexUtil::CreateCapsule()"
 				);
@@ -280,10 +280,10 @@ namespace basecross {
 					indices.push_back((uint16_t)(nextI * stride + nextJ));
 				}
 			}
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
 
-			//‰¡‚ÉQ‚¹‚é
+			//æ¨ªã«å¯ã›ã‚‹
 			if (landscape) {
 				bsm::Mat4x4 mat = (bsm::Mat4x4)XMMatrixRotationZ(XM_PIDIV2);
 				for (auto& v : vertices) {
@@ -308,9 +308,9 @@ namespace basecross {
 		try {
 
 			if (tessellation < 3) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				ThrowBaseException(
-					L"•ªŠ„”‚Í3ˆÈã•K—v‚Å‚·",
+					L"åˆ†å‰²æ•°ã¯3ä»¥ä¸Šå¿…è¦ã§ã™",
 					L"if (tessellation < 3)",
 					L"VertexUtil::CreateCylinder()"
 				);
@@ -346,9 +346,9 @@ namespace basecross {
 			}
 			CreateCylinderCap(vertices, indices, tessellation, height, radius, true);
 			CreateCylinderCap(vertices, indices, tessellation, height, radius, false);
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
-			//‰¡‚ÉQ‚¹‚é
+			//æ¨ªã«å¯ã›ã‚‹
 			if (landscape) {
 				bsm::Mat4x4 mat = (bsm::Mat4x4)XMMatrixRotationZ(XM_PIDIV2);
 				for (auto& v : vertices) {
@@ -372,9 +372,9 @@ namespace basecross {
 		vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices) {
 		try {
 			if (tessellation < 3) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				ThrowBaseException(
-					L"•ªŠ„”‚Í3ˆÈã•K—v‚Å‚·",
+					L"åˆ†å‰²æ•°ã¯3ä»¥ä¸Šå¿…è¦ã§ã™",
 					L"if (tessellation < 3)",
 					L"VertexUtil::CreateCone()"
 				);
@@ -411,7 +411,7 @@ namespace basecross {
 			}
 
 			CreateCylinderCap(vertices, indices, tessellation, height, radius, false);
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
 
 
@@ -425,9 +425,9 @@ namespace basecross {
 		vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices) {
 		try {
 			if (tessellation < 3) {
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				ThrowBaseException(
-					L"•ªŠ„”‚Í3ˆÈã•K—v‚Å‚·",
+					L"åˆ†å‰²æ•°ã¯3ä»¥ä¸Šå¿…è¦ã§ã™",
 					L"if (tessellation < 3)",
 					L"VertexUtil::CreateTorus()"
 				);
@@ -474,7 +474,7 @@ namespace basecross {
 				}
 			}
 
-			//RH‚©‚çLH‚É•ÏX
+			//RHã‹ã‚‰LHã«å¤‰æ›´
 			ReverseWinding(indices, vertices);
 
 
@@ -532,14 +532,14 @@ namespace basecross {
 
 			if (vertices.size() != 4 * 3) {
 				ThrowBaseException(
-					L"’¸“_‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"é ‚ç‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(vertices.size() != 4*3)",
 					L"VertexUtil::CreateTetrahedron()"
 				);
 			}
 			if (indices.size() != 4 * 3) {
 				ThrowBaseException(
-					L"ƒCƒ“ƒfƒbƒNƒX‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(indices.size() != 4*3)",
 					L"VertexUtil::CreateTetrahedron()"
 				);
@@ -604,14 +604,14 @@ namespace basecross {
 
 			if (vertices.size() != 8 * 3) {
 				ThrowBaseException(
-					L"’¸“_‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"é ‚ç‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(vertices.size() != 8*3)",
 					L"VertexUtil::CreateOctahedron()"
 				);
 			}
 			if (indices.size() != 8 * 3) {
 				ThrowBaseException(
-					L"ƒCƒ“ƒfƒbƒNƒX‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(indices.size() != 8*3)",
 					L"VertexUtil::CreateOctahedron()"
 				);
@@ -742,14 +742,14 @@ namespace basecross {
 
 			if (vertices.size() != 12 * 5) {
 				ThrowBaseException(
-					L"’¸“_‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"é ‚ç‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(vertices.size() != 12*5)",
 					L"VertexUtil::CreateDodecahedron()"
 				);
 			}
 			if (indices.size() != 12 * 3 * 3) {
 				ThrowBaseException(
-					L"ƒCƒ“ƒfƒbƒNƒX‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(indices.size() != 12*3*3)",
 					L"VertexUtil::CreateDodecahedron()"
 				);
@@ -836,14 +836,14 @@ namespace basecross {
 
 			if (vertices.size() != 20 * 3) {
 				ThrowBaseException(
-					L"’¸“_‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"é ‚ç‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(vertices.size() != 20*3)",
 					L"VertexUtil::CreateIcosahedron()"
 				);
 			}
 			if (indices.size() != 20 * 3) {
 				ThrowBaseException(
-					L"ƒCƒ“ƒfƒbƒNƒX‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if(indices.size() != 20*3)",
 					L"VertexUtil::CreateIcosahedron()"
 				);

@@ -6,7 +6,7 @@ namespace basecross {
 
 
 	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage), m_ZoneElapsedTime(1.0f), m_Speed(25.0f){}
-	flyobject::~flyobject() {}
+	flyobject::â€¾flyobject() {}
 
 	Vec3 flyobject::GetForward()
 	{
@@ -33,7 +33,7 @@ namespace basecross {
 		ptrColl->SetFixed(false);
 		auto objectGravity = AddComponent<Gravity>();
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		//ptrDraw->SetTextureResource(L"GROUND");

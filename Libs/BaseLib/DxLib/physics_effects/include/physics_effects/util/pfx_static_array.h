@@ -39,7 +39,7 @@ private:
 public:
 	
 	PfxStaticQueue();
-	~PfxStaticQueue();
+	‾PfxStaticQueue();
 	
 	PfxUInt32 size() const {return m_numData;}
 	
@@ -71,7 +71,7 @@ private:
 	
 public:
 	PfxStaticPriorityQueue();
-	~PfxStaticPriorityQueue();
+	‾PfxStaticPriorityQueue();
 	
 	PfxUInt32 size() const {return m_numData-1;}
 	
@@ -102,7 +102,7 @@ private:
 public:
 
 	inline PfxStaticStack();
-	inline ~PfxStaticStack();
+	inline ‾PfxStaticStack();
 	
 	PfxUInt32 size() const {return m_numData;}
 	
@@ -134,7 +134,7 @@ private:
 	
 public:
 	inline PfxStaticArray();
-	inline ~PfxStaticArray();
+	inline ‾PfxStaticArray();
 	
 	PfxUInt32 size() const {return m_numData;}
 	PfxUInt32 capacity() const {return SIZE;}
@@ -183,7 +183,7 @@ private:
 	
 public:
 	inline PfxStaticMap();
-	inline ~PfxStaticMap();
+	inline ‾PfxStaticMap();
 	
 	PfxUInt32 size() const {return m_numData;}
 	

@@ -62,10 +62,10 @@ SCE_PFX_FORCE_INLINE PfxUInt16 pfxGetXYZMin(const PfxAabb32 &aabb,int axis) {ret
 SCE_PFX_FORCE_INLINE PfxUInt16 pfxGetXYZMax(const PfxAabb32 &aabb,int axis) {return aabb.get16((axis<<1)+1);}
 
 
-#define SCE_PFX_TEST_AABB(aabbA,aabbB) \
-if(pfxGetXMax(aabbA) < pfxGetXMin(aabbB) || pfxGetXMin(aabbA) > pfxGetXMax(aabbB)) return false;\
-if(pfxGetYMax(aabbA) < pfxGetYMin(aabbB) || pfxGetYMin(aabbA) > pfxGetYMax(aabbB)) return false;\
-if(pfxGetZMax(aabbA) < pfxGetZMin(aabbB) || pfxGetZMin(aabbA) > pfxGetZMax(aabbB)) return false;\
+#define SCE_PFX_TEST_AABB(aabbA,aabbB) ¥
+if(pfxGetXMax(aabbA) < pfxGetXMin(aabbB) || pfxGetXMin(aabbA) > pfxGetXMax(aabbB)) return false;¥
+if(pfxGetYMax(aabbA) < pfxGetYMin(aabbB) || pfxGetYMin(aabbA) > pfxGetYMax(aabbB)) return false;¥
+if(pfxGetZMax(aabbA) < pfxGetZMin(aabbB) || pfxGetZMin(aabbA) > pfxGetZMax(aabbB)) return false;¥
 return true;
 
 SCE_PFX_FORCE_INLINE

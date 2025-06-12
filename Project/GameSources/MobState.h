@@ -1,6 +1,6 @@
 /*!
 @file MobState.h
-@brief 敵のステート管理など
+@brief 謨ｵ縺ｮ繧ｹ繝�繝ｼ繝育ｮ｡逅�縺ｪ縺ｩ
 */
 
 #pragma once
@@ -23,7 +23,7 @@ namespace basecross {
 		EnemyState(shared_ptr<T>& enemy) :
 			m_Enemy(enemy)
 		{}
-		virtual ~EnemyState() {}
+		virtual 窶ｾEnemyState() {}
 
 		virtual void Enter()
 		{

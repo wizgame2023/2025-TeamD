@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -43,16 +43,16 @@ namespace basecross{
 		}
 	};
 	class ScoreManager{
-		//ボーダー計算用
+		//繝懊�ｼ繝繝ｼ險育ｮ礼畑
 		ScoreBorder<float> m_TimeBorder;
 		ScoreBorder<float> m_DamageBorder;
 		ScoreBorder<int> m_ParryBorder;
-		//スコア計算用
+		//繧ｹ繧ｳ繧｢險育ｮ礼畑
 		float m_Time;
 		float m_Damage;
 		float m_EliminateEnemyRate;
 		int m_ParryCount;
-		//敵の討伐情報
+		//謨ｵ縺ｮ險惹ｼ先ュ蝣ｱ
 		float m_MaxEnemyCount;
 		float m_EliminateEnemyCount;
 		ScoreManager() :

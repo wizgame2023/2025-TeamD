@@ -73,10 +73,10 @@ deltaAngularVelocityB -= deltaImpulse * inertiaInvB * normal;
 static SCE_PFX_FORCE_INLINE
 void pfxCalcJointAngleSwingTwist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB,PfxFloat *angle,PfxVector3 *axis)
 {
-	// �t���[��A���W�n�ւ̕ϊ��}�g���N�X
+	// フレームA座標系への変換マトリクス
 	PfxMatrix3 frameBA = transpose(worldFrameA) * worldFrameB;
 
-	// �N�H�[�^�j�I����]��twist��swing�ɕ���
+	// クォータニオン回転をtwistとswingに分離
 	PfxQuat swing,twist,qBA(frameBA);
 	swing = PfxQuat::rotation(PfxVector3(1.0f,0.0f,0.0f),frameBA.getCol0());
 	twist = qBA * conj(swing);
@@ -85,7 +85,7 @@ void pfxCalcJointAngleSwingTwist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB
 		twist = -twist;
 	}
 
-	// ���ꂼ��̉�]���Ɖ�]�p�x���Z�o
+	// それぞれの回転軸と回転角度を算出
 	pfxGetRotationAngleAndAxis(normalize(twist),angle[0],axis[0]);
 	pfxGetRotationAngleAndAxis(normalize(swing),angle[1],axis[1]);
 
@@ -93,7 +93,7 @@ void pfxCalcJointAngleSwingTwist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB
 		axis[1] = PfxVector3(0.0f,1.0f,0.0f);
 	}
 
-	// twist�̎������̃`�F�b�N
+	// twistの軸方向のチェック
 	if(dot(axis[0],frameBA.getCol0()) < 0.0f) {
 		angle[0] = -angle[0];
 	}
@@ -107,10 +107,10 @@ void pfxCalcJointAngleSwingTwist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB
 static SCE_PFX_FORCE_INLINE
 void pfxCalcJointAngleSwing1Swing2Twist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB,PfxFloat *angle,PfxVector3 *axis)
 {
-	// �t���[��A���W�n�ւ̕ϊ��}�g���N�X
+	// フレームA座標系への変換マトリクス
 	PfxMatrix3 frameBA = transpose(worldFrameA) * worldFrameB;
 
-	// �N�H�[�^�j�I����]��twist��swing�ɕ���
+	// クォータニオン回転をtwistとswingに分離
 	PfxQuat swing,twist,qBA(frameBA);
 	swing = PfxQuat::rotation(PfxVector3(1.0f,0.0f,0.0f),frameBA.getCol0());
 	twist = qBA * conj(swing);
@@ -133,7 +133,7 @@ void pfxCalcJointAngleSwing1Swing2Twist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worl
 		swing1 = conj(swing2) * swing;
 	}
 
-	// ���ꂼ��̉�]���Ɖ�]�p�x���Z�o
+	// それぞれの回転軸と回転角度を算出
 	pfxGetRotationAngleAndAxis(normalize(twist),angle[0],axis[0]);
 	pfxGetRotationAngleAndAxis(normalize(swing2),angle[1],axis[1]);
 	pfxGetRotationAngleAndAxis(normalize(swing1),angle[2],axis[2]);
@@ -148,7 +148,7 @@ void pfxCalcJointAngleSwing1Swing2Twist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worl
 		axis[2] = PfxVector3(0.0f,0.0f,1.0f);
 	}
 
-	// twist�̎������̃`�F�b�N
+	// twistの軸方向のチェック
 	if(dot(axis[0],frameBA.getCol0()) < 0.0f) {
 		angle[0] = -angle[0];
 	}
@@ -161,11 +161,11 @@ void pfxCalcJointAngleSwing1Swing2Twist(PfxMatrix3 &worldFrameA,PfxMatrix3 &worl
 static SCE_PFX_FORCE_INLINE
 void pfxCalcJointAngleUniversal(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB,PfxFloat *angle,PfxVector3 *axis)
 {
-	// �t���[��A���W�n�ւ̕ϊ��}�g���N�X
+	// フレームA座標系への変換マトリクス
 	PfxMatrix3 frameBA = transpose(worldFrameA) * worldFrameB;
 
 #if 1
-	// �N�H�[�^�j�I����]��twist��swing�ɕ���
+	// クォータニオン回転をtwistとswingに分離
 	PfxQuat swing,swing1,swing2,twist,qBA(frameBA);
 	PfxVector3 Pxy(frameBA.getCol0());
 	Pxy[2] = 0.0f;
@@ -193,7 +193,7 @@ void pfxCalcJointAngleUniversal(PfxMatrix3 &worldFrameA,PfxMatrix3 &worldFrameB,
 		angle[2] = -angle[2];
 	}
 
-	// twist�̎������̃`�F�b�N
+	// twistの軸方向のチェック
 	if(dot(axis[0],frameBA.getCol0()) < 0.0f) {
 		angle[0] = -angle[0];
 	}

@@ -236,7 +236,7 @@ distMax = SCE_PFX_MAX(p0,p1);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// ‚Q‚Â‚ÌƒxƒNƒgƒ‹‚ÌŒü‚«‚ğƒ`ƒFƒbƒN
+// ï¼’ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å‘ãã‚’ãƒã‚§ãƒƒã‚¯
 
 static SCE_PFX_FORCE_INLINE
 bool pfxIsSameDirection(const PfxVector3 &vecA,const PfxVector3 &vecB)
@@ -245,7 +245,7 @@ return pfxAbsf(dot(vecA,vecB)) > 0.9999f;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// –Êƒ[ƒJƒ‹‚ÌÀ•W‚ğZo
+// é¢ãƒ­ãƒ¼ã‚«ãƒ«ã®åº§æ¨™ã‚’ç®—å‡º
 
 static SCE_PFX_FORCE_INLINE
 void pfxGetLocalCoords(
@@ -275,7 +275,7 @@ void pfxGetLocalCoords(
 	#endif
 }
 
-// a,b‚©‚ç‚È‚é’¼üã‚É“_p‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’è
+// a,bã‹ã‚‰ãªã‚‹ç›´ç·šä¸Šã«ç‚¹pãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 static SCE_PFX_FORCE_INLINE
 bool pfxPointOnLine(const PfxVector3 &p,const PfxVector3 &a,const PfxVector3 &b)
 {
@@ -284,7 +284,7 @@ bool pfxPointOnLine(const PfxVector3 &p,const PfxVector3 &a,const PfxVector3 &b)
 	return lengthSqr(p-q) < 0.00001f;
 }
 
-// ü•ªa,bã‚É“_p‚ª‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’è
+// ç·šåˆ†a,bä¸Šã«ç‚¹pãŒã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 static SCE_PFX_FORCE_INLINE
 bool pfxPointOnSegment(const PfxVector3 &p,const PfxVector3 &a,const PfxVector3 &b)
 {

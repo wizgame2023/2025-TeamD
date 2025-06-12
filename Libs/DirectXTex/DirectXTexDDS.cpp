@@ -160,7 +160,7 @@ namespace
         if (hdr.reserved1[9] == MAKEFOURCC('N', 'V', 'T', 'T'))
         {
             // Clear out non-standard nVidia DDS flags
-            ddpfFlags &= ~0xC0000000 /* DDPF_SRGB | DDPF_NORMAL */;
+            ddpfFlags &= ‾0xC0000000 /* DDPF_SRGB | DDPF_NORMAL */;
         }
 
         const size_t MAP_SIZE = sizeof(g_LegacyDDSMap) / sizeof(LegacyDDS);
@@ -331,7 +331,7 @@ namespace
 
             static_assert(static_cast<int>(TEX_MISC_TEXTURECUBE) == static_cast<int>(DDS_RESOURCE_MISC_TEXTURECUBE), "DDS header mismatch");
 
-            metadata.miscFlags = d3d10ext->miscFlag & ~static_cast<uint32_t>(TEX_MISC_TEXTURECUBE);
+            metadata.miscFlags = d3d10ext->miscFlag & ‾static_cast<uint32_t>(TEX_MISC_TEXTURECUBE);
 
             switch (d3d10ext->resourceDimension)
             {
@@ -732,7 +732,7 @@ HRESULT DirectX::_EncodeDDSHeader(
 
         static_assert(static_cast<int>(TEX_MISC_TEXTURECUBE) == static_cast<int>(DDS_RESOURCE_MISC_TEXTURECUBE), "DDS header mismatch");
 
-        ext->miscFlag = metadata.miscFlags & ~static_cast<uint32_t>(TEX_MISC_TEXTURECUBE);
+        ext->miscFlag = metadata.miscFlags & ‾static_cast<uint32_t>(TEX_MISC_TEXTURECUBE);
 
         if (metadata.miscFlags & TEX_MISC_TEXTURECUBE)
         {

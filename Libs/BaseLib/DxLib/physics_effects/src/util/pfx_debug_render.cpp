@@ -70,7 +70,7 @@ PfxDebugRender::PfxDebugRender() : m_scale(1.0f)
 	}
 }
 
-PfxDebugRender::~PfxDebugRender()
+PfxDebugRender::‾PfxDebugRender()
 {
 	for(unsigned int k=0;k<m_largeMeshFlagTables.size();k++) {
 		if (m_largeMeshFlagTables[k].largeMeshFlagTable) {
@@ -108,13 +108,13 @@ void PfxDebugRender::setDebugRenderBoxFunc(PfxDebugRenderBoxFunc func)
 
 void PfxDebugRender::renderWorld(const PfxVector3 &center,const PfxVector3 &halfExtent)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.¥n");
 	m_renderAabbFunc(center,halfExtent,m_colorWorld);
 }
 
 void PfxDebugRender::renderLocalAxis(const PfxRigidState *states,const PfxUInt32 numRigidbodies)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
 
 	PfxUInt32 vsize = m_visibleFlags.size();
 	for(PfxUInt32 i=0;i<numRigidbodies;i++) {
@@ -134,7 +134,7 @@ void PfxDebugRender::renderLocalAxis(const PfxRigidState *states,const PfxUInt32
 
 void PfxDebugRender::renderAabb(const PfxRigidState *states,const PfxCollidable *collidables,const PfxUInt32 numRigidbodies)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.¥n");
 
 	PfxUInt32 vsize = m_visibleFlags.size();
 	for(PfxUInt32 i=0;i<numRigidbodies;i++) {
@@ -153,7 +153,7 @@ void PfxDebugRender::renderAabb(const PfxRigidState *states,const PfxCollidable 
 
 void PfxDebugRender::renderIsland(const PfxIsland *island,const PfxRigidState *states,const PfxCollidable *collidables)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderAabbFunc,"PfxDebugRender: render Aabb function is not set.¥n");
 
 	if(island) {
 		for(PfxUInt32 i=0;i<pfxGetNumIslands(island);i++) {
@@ -178,8 +178,8 @@ void PfxDebugRender::renderIsland(const PfxIsland *island,const PfxRigidState *s
 
 void PfxDebugRender::renderContact(const PfxContactManifold *contacts,const PfxBroadphasePair *pairsBuff,const PfxRigidState *states,const PfxUInt32 numContacts)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderPointFunc,"PfxDebugRender: render Point function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderPointFunc,"PfxDebugRender: render Point function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
 
 	PfxUInt32 vsize = m_visibleFlags.size();
 	for(PfxUInt32 i=0;i<numContacts;i++) {
@@ -235,7 +235,7 @@ static PfxAabb16 findIslandInBvh(const PfxLargeTriMesh *mesh,PfxUInt32 islandIdx
 
 void PfxDebugRender::renderLargeMeshIsland(const PfxLargeTriMesh *mesh,PfxUInt32 islandIdx,const PfxTransform3 &shapeTransform,const PfxVector3 &color)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.¥n");
 
 	PfxAabb16 aabb;
 	aabb.set32(0,0);
@@ -259,8 +259,8 @@ void PfxDebugRender::renderLargeMeshIsland(const PfxLargeTriMesh *mesh,PfxUInt32
 void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const PfxExpandedTriMesh *island, PfxUInt32 facetId, const PfxTransform3 &shapeTransform, const PfxUInt32 flag, const PfxVector3 &color)
 {
 	(void) mesh;
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.¥n");
 
 	if(flag==SCE_PFX_DRENDER_MESH_FLG_NONE) return;
 
@@ -360,8 +360,8 @@ void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const Pfx
 void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const PfxQuantizedTriMesh *island, PfxUInt32 facetId, const PfxTransform3 &shapeTransform, const PfxUInt32 flag, const PfxVector3 &color)
 
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.¥n");
 
 	if(flag==SCE_PFX_DRENDER_MESH_FLG_NONE) return;
 
@@ -460,8 +460,8 @@ void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const Pfx
 {
 	(void) mesh;
 
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.¥n");
 
 	if(flag==SCE_PFX_DRENDER_MESH_FLG_NONE) return;
 
@@ -561,8 +561,8 @@ void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const Pfx
 void PfxDebugRender::renderLargeMeshFacet(const PfxLargeTriMesh *mesh, const PfxQuantizedTriMeshBvh *island, PfxUInt32 facetId, const PfxTransform3 &shapeTransform, const PfxUInt32 flag, const PfxVector3 &color)
 
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderBoxFunc,"PfxDebugRender: render Box function is not set.¥n");
 
 	if(flag==SCE_PFX_DRENDER_MESH_FLG_NONE) return;
 
@@ -846,7 +846,7 @@ void PfxDebugRender::resetLargeMeshFlagTables(const PfxCollidable *collidables,c
 			if (shape.getType() == kPfxShapeLargeTriMesh) {
 				unsigned int mem_size = sizeof(PfxUInt8)*SCE_PFX_DRENDER_ISLANDS_MAX_NUM*SCE_PFX_DRENDER_FACETS_PER_ISLAND_NUM;
 				PfxUInt8 *largeMeshFlagTable = (PfxUInt8*)SCE_PFX_UTIL_ALLOC(16,mem_size);
-				SCE_PFX_ALWAYS_ASSERT_MSG(largeMeshFlagTable,"PfxDebugRender: can not allocate largeMeshFlagTable.\n");
+				SCE_PFX_ALWAYS_ASSERT_MSG(largeMeshFlagTable,"PfxDebugRender: can not allocate largeMeshFlagTable.¥n");
 				memset(largeMeshFlagTable, 0, mem_size);
 				PfxLargeMeshFlagTable ft;
 				ft.rigidbodyId = i;
@@ -859,9 +859,9 @@ void PfxDebugRender::resetLargeMeshFlagTables(const PfxCollidable *collidables,c
 
 void PfxDebugRender::renderJoint(const PfxJoint *joints,const PfxRigidState *states,const PfxUInt32 numJoints)
 {
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderPointFunc,"PfxDebugRender: render Point function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.\n");
-	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderArcFunc,"PfxDebugRender: render Arc function is not set.\n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderPointFunc,"PfxDebugRender: render Point function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderLineFunc,"PfxDebugRender: render Line function is not set.¥n");
+	SCE_PFX_ALWAYS_ASSERT_MSG(m_renderArcFunc,"PfxDebugRender: render Arc function is not set.¥n");
 
 	float lower1, upper1, lower2, upper2;
 	PfxVector3 anchorA, anchorB;
@@ -944,7 +944,7 @@ void PfxDebugRender::renderJoint(const PfxJoint *joints,const PfxRigidState *sta
 				m_renderArcFunc(wAnchorA,wFrameA.getCol1(),wFrameA.getCol0(),1.0,lower2,upper2,m_colorJointArc2);
 			break;
 			default:
-				SCE_PFX_PRINTF("PfxDebugRender: joint type error\n");
+				SCE_PFX_PRINTF("PfxDebugRender: joint type error¥n");
 			break;
 		}
 	}
@@ -1046,26 +1046,26 @@ void PfxDebugRender::debugPrintlargeMeshFlagTables()
 	unsigned int table_len = SCE_PFX_DRENDER_FACETS_PER_ISLAND_NUM * SCE_PFX_DRENDER_ISLANDS_MAX_NUM;
 	for(PfxUInt32 k=0;k<m_largeMeshFlagTables.size();k++) {
 		if(m_largeMeshFlagTables[k].largeMeshFlagTable){
-			SCE_PFX_PRINTF("\nPfxDebugRender::debugPrintlargeMeshFlagTables --------");
+			SCE_PFX_PRINTF("¥nPfxDebugRender::debugPrintlargeMeshFlagTables --------");
 			for(unsigned int i=0;i<table_len;i++){
-				if(i%SCE_PFX_DRENDER_FACETS_PER_ISLAND_NUM==0) SCE_PFX_PRINTF("\n");
+				if(i%SCE_PFX_DRENDER_FACETS_PER_ISLAND_NUM==0) SCE_PFX_PRINTF("¥n");
 				else if(i%8==0) SCE_PFX_PRINTF(" ");
 				SCE_PFX_PRINTF("%d",m_largeMeshFlagTables[k].largeMeshFlagTable[i]);
 			}
-			SCE_PFX_PRINTF("\n\n");
+			SCE_PFX_PRINTF("¥n¥n");
 		}
 	}
 }
 
 void PfxDebugRender::debugPrintVisibleFlags()
 {
-	SCE_PFX_PRINTF("\nPfxDebugRender::debugPrintVisibleFlags --------\n");
+	SCE_PFX_PRINTF("¥nPfxDebugRender::debugPrintVisibleFlags --------¥n");
 	PfxUInt32 i = 0;
 	for(i=0;i<m_visibleFlags.size();i++) {
-		if(i%10==0) SCE_PFX_PRINTF("\n");
+		if(i%10==0) SCE_PFX_PRINTF("¥n");
 		SCE_PFX_PRINTF("%d",m_visibleFlags[i]);
 	}
-	SCE_PFX_PRINTF("\n\n");
+	SCE_PFX_PRINTF("¥n¥n");
 }
 #endif
 

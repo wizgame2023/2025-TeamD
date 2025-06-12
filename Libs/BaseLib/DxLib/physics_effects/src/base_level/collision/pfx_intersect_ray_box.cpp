@@ -24,12 +24,12 @@ namespace PhysicsEffects {
 
 PfxBool pfxIntersectRayBox(const PfxRayInput &ray,PfxRayOutput &out,const PfxBox &box,const PfxTransform3 &transform)
 {
-	// ƒŒƒC‚ğBox‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’Boxã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformBox = orthoInverse(transform);
 	PfxVector3 rayStartPosition = transformBox.getUpper3x3() * ray.m_startPosition + transformBox.getTranslation();
 	PfxVector3 rayDirection = transformBox.getUpper3x3() * ray.m_direction;
 	
-	// Œğ·”»’è
+	// äº¤å·®åˆ¤å®š
 	PfxFloat tmpVariable=0.0f;
 	PfxVector3 tmpNormal(0.0f);
 	if(pfxIntersectRayAABB(rayStartPosition,rayDirection,PfxVector3(0.0f),box.m_half,tmpVariable,tmpNormal)) {

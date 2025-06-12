@@ -22,7 +22,7 @@ namespace PhysicsEffects {
 
 typedef PfxSortData32 PfxBroadphaseProxy;
 
-//J	AABBƒpƒ‰ƒ[ƒ^‚ÍPfxAabb‚Æ‹¤’Ê
+//J	AABBãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯PfxAabbã¨å…±é€š
 //E PfxBroadphaseProxy shares AABB parameters with PfxAabb32
 
 SCE_PFX_FORCE_INLINE void pfxSetObjectId(PfxBroadphaseProxy &proxy,PfxUInt16 i)	   {proxy.set16(6,i);}

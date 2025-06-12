@@ -41,35 +41,35 @@ struct PfxGenerateIslandResult {
 	PfxIsland *island;
 };
 
-//J	ƒAƒCƒ‰ƒ“ƒhî•ñ‚ğg‚¢I‚í‚é‚Ü‚ÅislandBuff‚ğ”jŠü‚µ‚È‚¢‚Å‚­‚¾‚³‚¢
+//J	ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰æƒ…å ±ã‚’ä½¿ã„çµ‚ã‚ã‚‹ã¾ã§islandBuffã‚’ç ´æ£„ã—ãªã„ã§ãã ã•ã„
 //E Keep islandBuff while the island is used
 PfxUInt32 pfxGetIslandBytesOfGenerateIsland(PfxUInt32 numObjects);
 
 PfxInt32 pfxGenerateIsland(PfxGenerateIslandParam &param,PfxGenerateIslandResult &result);
 
 //E Access to island information
-//J	ƒAƒCƒ‰ƒ“ƒhî•ñ‚Ö‚ÌƒAƒNƒZƒX
+//J	ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰æƒ…å ±ã¸ã®ã‚¢ã‚¯ã‚»ã‚¹
 
 //E Get the number of islands
-//J ƒAƒCƒ‰ƒ“ƒh”‚ğæ“¾‚·‚é
+//J ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰æ•°ã‚’å–å¾—ã™ã‚‹
 PfxUInt32 pfxGetNumIslands(const PfxIsland *islands);
 
 //E Get a island unit in a island
-//J w’è‚µ‚½ƒAƒCƒ‰ƒ“ƒh‚ÉŠÜ‚Ü‚ê‚éƒ†ƒjƒbƒgi„‘Ìj‚ÉƒAƒNƒZƒX
+//J æŒ‡å®šã—ãŸã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã«å«ã¾ã‚Œã‚‹ãƒ¦ãƒ‹ãƒƒãƒˆï¼ˆå‰›ä½“ï¼‰ã«ã‚¢ã‚¯ã‚»ã‚¹
 PfxIslandUnit *pfxGetFirstUnitInIsland(const PfxIsland *islands,PfxUInt32 islandId);
 PfxIslandUnit *pfxGetNextUnitInIsland(const PfxIslandUnit *islandUnit);
 PfxUInt32 pfxGetUnitId(const PfxIslandUnit *islandUnit);
 
 //E Get an index of an island which includes a specific unit
-//J w’è‚µ‚½ƒ†ƒjƒbƒgi„‘Ìj‚ÌƒAƒCƒ‰ƒ“ƒhƒCƒ“ƒfƒbƒNƒX‚ğæ“¾‚·‚é
+//J æŒ‡å®šã—ãŸãƒ¦ãƒ‹ãƒƒãƒˆï¼ˆå‰›ä½“ï¼‰ã®ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—ã™ã‚‹
 PfxUInt32 pfxGetIslandId(const PfxIsland *islands,PfxUInt32 unitId);
 
 //E Add pairs and construct islands
-//J ƒAƒCƒ‰ƒ“ƒh‚ÉƒyƒA‚ğ’Ç‰Á‚·‚é
+//J ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã«ãƒšã‚¢ã‚’è¿½åŠ ã™ã‚‹
 PfxInt32 pfxAppendPairs(PfxIsland *island,PfxConstraintPair *pairs,PfxUInt32 numPairs);
 
 //E Reset islands
-//J	ƒAƒCƒ‰ƒ“ƒhƒŠƒZƒbƒg
+//J	ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ãƒªã‚»ãƒƒãƒˆ
 void pfxResetIsland(PfxIsland *island);
 
 } //namespace PhysicsEffects

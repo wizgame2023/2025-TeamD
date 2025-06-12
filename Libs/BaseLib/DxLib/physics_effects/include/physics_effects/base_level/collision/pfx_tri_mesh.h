@@ -21,13 +21,13 @@ Physics Effects under the filename: physics_effects_license.txt
 #include "../base/pfx_vec_utils.h"
 #include "pfx_aabb.h"
 
-//J ƒƒbƒVƒ…‚ÌƒŠƒ\[ƒX§ŒÀ
+//J ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒªã‚½ãƒ¼ã‚¹åˆ¶é™
 //E Define some limitations of a triangle mesh
 #define SCE_PFX_NUMMESHFACETS		64
 #define SCE_PFX_NUMMESHEDGES		192
 #define SCE_PFX_NUMMESHVERTICES		128
 
-//J ƒGƒbƒW‚ÌŠp
+//J ã‚¨ãƒƒã‚¸ã®è§’
 //E Edge types
 #define SCE_PFX_EDGE_FLAT    0
 #define SCE_PFX_EDGE_CONVEX  1

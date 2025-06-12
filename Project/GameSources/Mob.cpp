@@ -21,7 +21,7 @@ namespace basecross {
 	{
 	}
 
-	Mob::~Mob() {}
+	Mob::‾Mob() {}
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();

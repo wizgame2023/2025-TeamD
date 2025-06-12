@@ -1,6 +1,6 @@
 /*!
 @file Components.cpp
-@brief ƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -9,34 +9,34 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Component::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Component::Impl {
 		weak_ptr<GameObject> m_GameObject;
-		bool m_UpdateActive{ true };	//update‚·‚é‚©‚Ç‚¤‚©
-		bool m_DrawActive{ true };		//Draw‚·‚é‚©‚Ç‚¤‚©
+		bool m_UpdateActive{ true };	//updateã™ã‚‹ã‹ã©ã†ã‹
+		bool m_DrawActive{ true };		//Drawã™ã‚‹ã‹ã©ã†ã‹
 		explicit Impl(const shared_ptr<GameObject>& GameObjectPtr) :
 			m_GameObject(GameObjectPtr)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class Component :public Object;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgŠî’êƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆåŸºåº•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	Component::Component(const shared_ptr<GameObject>& GameObjectPtr) :
 		ObjectInterface(),
 		ShapeInterface(),
 		pImpl(new Impl(GameObjectPtr))
 	{}
-	Component::~Component() {}
-	//ƒAƒNƒZƒT
+	Component::â€¾Component() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	shared_ptr<GameObject> Component::GetGameObject() const {
 		auto shptr = pImpl->m_GameObject.lock();
 		if (!shptr) {
 			throw BaseException(
-				L"GameObject‚Í—LŒø‚Å‚Í‚ ‚è‚Ü‚¹‚ñ",
+				L"GameObjectã¯æœ‰åŠ¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“",
 				L"if (!shptr)",
 				L"Component::GetGameObject()"
 			);
@@ -76,43 +76,43 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Transform::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Transform::Impl {
-		//1‚Â‘O‚Ì•Ï”
+		//1ã¤å‰ã®å¤‰æ•°
 		bsm::Vec3 m_BeforeScale;
 		bsm::Vec3 m_BeforePivot;
 		bsm::Quat m_BeforeQuaternion;
 		bsm::Vec3 m_BeforePosition;
-		//Œ»İ‚Ì•Ï”
+		//ç¾åœ¨ã®å¤‰æ•°
 		bsm::Vec3 m_Scale;
 		bsm::Vec3 m_Pivot;
 		bsm::Quat m_Quaternion;
 		bsm::Vec3 m_Position;
 		bsm::Mat4x4 m_WorldMatrix;
 		bool m_DirtyFlg;
-		//eƒIƒuƒWƒFƒNƒg
+		//è¦ªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		weak_ptr<GameObject> m_Parent;
 		Impl():
-			//ƒXƒP[ƒ‹‚Ì‚İ‰Šú‰»i‘¼‚ÍƒfƒtƒHƒ‹ƒgˆ—‚Å‚æ‚¢j
+			//ã‚¹ã‚±ãƒ¼ãƒ«ã®ã¿åˆæœŸåŒ–ï¼ˆä»–ã¯ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆå‡¦ç†ã§ã‚ˆã„ï¼‰
 			m_BeforeScale(1.0f,1.0f,1.0f),
 			m_Scale(1.0f, 1.0f, 1.0f),
 			m_DirtyFlg(true)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
 	//	class Transform : public Component ;
-	//	—p“r: •Ï‰»
+	//	ç”¨é€”: å¤‰åŒ–
 	//--------------------------------------------------------------------------------------
 	Transform::Transform(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr), pImpl(new Impl())
 	{}
-	Transform::~Transform() {}
+	Transform::â€¾Transform() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	//BeforeGetter
 	bsm::Vec3 Transform::GetBeforeScale() const {
 		return pImpl->m_BeforeScale;
@@ -353,7 +353,7 @@ namespace basecross {
 
 		}
 		else {
-			//nullptr‚ª“n‚³‚ê‚½
+			//nullptrãŒæ¸¡ã•ã‚ŒãŸ
 			ClearParent();
 		}
 		pImpl->m_DirtyFlg = true;
@@ -369,7 +369,7 @@ namespace basecross {
 		pImpl->m_DirtyFlg = true;
 	}
 	bsm::Vec3 Transform::GetVelocity() const {
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		bsm::Vec3 Velocity = pImpl->m_Position - pImpl->m_BeforePosition;
 		Velocity /= ElapsedTime;
@@ -410,7 +410,7 @@ namespace basecross {
 	}
 
 
-	//‘€ì
+	//æ“ä½œ
 	void Transform::OnUpdate() {
 	}
 
@@ -427,13 +427,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct PathSearch::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct PathSearch::Impl {
 		weak_ptr<StageCellMap> m_StageCellMap;
-		//–Ú•W‚ÌƒZƒ‹ƒCƒ“ƒfƒbƒNƒX
+		//ç›®æ¨™ã®ã‚»ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		CellIndex m_TargetIndex;
-		//‚±‚¿‚ç‘¤‚ÌƒZƒ‹ƒCƒ“ƒfƒbƒNƒX
+		//ã“ã¡ã‚‰å´ã®ã‚»ãƒ«ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		CellIndex m_BaseIndex;
 		vector<CellNode> m_OpenVec;
 		vector<CellNode> m_CloseVec;
@@ -462,13 +462,13 @@ namespace basecross {
 
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	int PathSearch::Impl::GetHeuristic(const CellIndex& Base, const CellIndex& Target) {
 		int spanX = abs((int)Base.x - (int)Target.x);
 		int spanZ = abs((int)Base.z - (int)Target.z);
-		//‚Ç‚¿‚ç‚©’·‚¢‚Ù‚¤‚ğ•Ô‚·
+		//ã©ã¡ã‚‰ã‹é•·ã„ã»ã†ã‚’è¿”ã™
 		return (spanX >= spanZ) ? spanX : spanZ;
 	}
 
@@ -508,13 +508,13 @@ namespace basecross {
 	}
 
 	bool PathSearch::Impl::AddOpenNode(const CellIndex& Base, const CellIndex& Target) {
-		//OpenƒŠƒXƒg‚©‚çw’è‚ÌNode‚ğæ‚èo‚·
+		//Openãƒªã‚¹ãƒˆã‹ã‚‰æŒ‡å®šã®Nodeã‚’å–ã‚Šå‡ºã™
 		auto it = m_OpenVec.begin();
 		CellNode TempNode;
 		bool find = false;
 		while (it != m_OpenVec.end()) {
 			if (it->x == Base.x && it->z == Base.z) {
-				//æ‚èo‚µ‚½‚çerase‚µCloseƒŠƒXƒg‚É’Ç‰Á
+				//å–ã‚Šå‡ºã—ãŸã‚‰eraseã—Closeãƒªã‚¹ãƒˆã«è¿½åŠ 
 				TempNode = *it;
 				m_CloseVec.push_back(TempNode);
 				m_OpenVec.erase(it);
@@ -528,9 +528,9 @@ namespace basecross {
 		}
 		auto ShCellMap = m_StageCellMap.lock();
 		if (!ShCellMap) {
-			//ƒZƒ‹ƒ}ƒbƒv‚ª‚È‚¢
+			//ã‚»ãƒ«ãƒãƒƒãƒ—ãŒãªã„
 			throw BaseException(
-				L"ƒZƒ‹ƒ}ƒbƒv‚ªw’è‚³‚ê‚Ä‚Ü‚¹‚ñ",
+				L"ã‚»ãƒ«ãƒãƒƒãƒ—ãŒæŒ‡å®šã•ã‚Œã¦ã¾ã›ã‚“",
 				L"if (!ShCellMap)",
 				L"PathFindSteering::AddOpenNode()"
 			);
@@ -542,22 +542,22 @@ namespace basecross {
 			int posz = TempNode.z + m_WayArr[i][1];
 			if (posx >= 0 && posx < (int)CellVec.size() &&
 				posz >= 0 && posz < (int)CellVec[posx].size()) {
-				//posx,posz‚ªƒZƒ‹ƒ}ƒbƒv‚Ì”ÍˆÍ“à
+				//posx,poszãŒã‚»ãƒ«ãƒãƒƒãƒ—ã®ç¯„å›²å†…
 				if (CellVec[posx][posz].m_Cost == -1) {
-					//ƒRƒXƒg‚ª-1‚Å‚Í‚È‚¢
+					//ã‚³ã‚¹ãƒˆãŒ-1ã§ã¯ãªã„
 					continue;
 				}
 				CellNode ret;
 				if (IsInVector(CellIndex(posx, posz), m_OpenVec, ret)) {
-					//OpenVec‚É‚ ‚Á‚½
+					//OpenVecã«ã‚ã£ãŸ
 					continue;
 				}
 				if (IsInVector(CellIndex(posx, posz), m_CloseVec, ret)) {
-					//CloseVec‚É‚ ‚Á‚½
+					//CloseVecã«ã‚ã£ãŸ
 					continue;
 				}
-				//Œ»İƒI[ƒvƒ“ƒŠƒXƒg‚É‚È‚¢
-				//OpenVec‚É’Ç‰Á
+				//ç¾åœ¨ã‚ªãƒ¼ãƒ—ãƒ³ãƒªã‚¹ãƒˆã«ãªã„
+				//OpenVecã«è¿½åŠ 
 				CellIndex BaseIndex(posx, posz);
 				CellNode Node;
 				Node.x = posx;
@@ -575,17 +575,17 @@ namespace basecross {
 
 	bool PathSearch::Impl::SearchCellBase(const CellIndex& Start, const CellIndex& Target) {
 		if (Start == Target) {
-			//‚½‚Ç‚è’…‚¢‚½
+			//ãŸã©ã‚Šç€ã„ãŸ
 			return true;
 		}
 		if (!AddOpenNode(Start, Target)) {
 			return false;
 		}
-		//—×Ú‚·‚éOpen‚ÈNode‚ğæ“¾
+		//éš£æ¥ã™ã‚‹OpenãªNodeã‚’å–å¾—
 		vector<CellNode> adjacentvec;
 		InOpenScore(Start, adjacentvec);
 		if (!adjacentvec.empty()) {
-			//—×Ú‚·‚é—LŒø‚ÈNode‚ğ‡”Ô‚ÉŒŸØ
+			//éš£æ¥ã™ã‚‹æœ‰åŠ¹ãªNodeã‚’é †ç•ªã«æ¤œè¨¼
 			for (auto& v : adjacentvec) {
 				CellIndex Index;
 				Index.x = v.x;
@@ -602,9 +602,9 @@ namespace basecross {
 	shared_ptr<StageCellMap> PathSearch::Impl::GetStageCellMap() const {
 		auto ShCellMap = m_StageCellMap.lock();
 		if (!ShCellMap) {
-			//ƒZƒ‹ƒ}ƒbƒv‚ª‚È‚¢
+			//ã‚»ãƒ«ãƒãƒƒãƒ—ãŒãªã„
 			throw BaseException(
-				L"ƒZƒ‹ƒ}ƒbƒv‚ªw’è‚³‚ê‚Ä‚Ü‚¹‚ñ",
+				L"ã‚»ãƒ«ãƒãƒƒãƒ—ãŒæŒ‡å®šã•ã‚Œã¦ã¾ã›ã‚“",
 				L"if (!ShCellMap)",
 				L"PathSearch::Impl::GetStageCellMap()"
 			);
@@ -613,7 +613,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	 Œo˜HŒŸõ‘€‘ÇƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	 çµŒè·¯æ¤œç´¢æ“èˆµã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PathSearch::PathSearch(const shared_ptr<GameObject>& GameObjectPtr,
 		const shared_ptr<StageCellMap>& StageCellMapPtr) :
@@ -623,27 +623,27 @@ namespace basecross {
 		pImpl->m_StageCellMap = StageCellMapPtr;
 	}
 
-	PathSearch::~PathSearch() {}
+	PathSearch::â€¾PathSearch() {}
 
 
 	bool PathSearch::SearchCell(const bsm::Vec3& TargetPosition, vector<CellIndex>& RetCellIndexVec) {
-		//ƒI[ƒvƒ“EƒNƒ[ƒYƒŠƒXƒg‚ÌƒNƒŠƒA
+		//ã‚ªãƒ¼ãƒ—ãƒ³ãƒ»ã‚¯ãƒ­ãƒ¼ã‚ºãƒªã‚¹ãƒˆã®ã‚¯ãƒªã‚¢
 		pImpl->m_OpenVec.clear();
 		pImpl->m_CloseVec.clear();
 		RetCellIndexVec.clear();
 		auto ShCellMap = pImpl->GetStageCellMap();
-		//ƒ^[ƒQƒbƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+		//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 		if (!ShCellMap->FindCell(TargetPosition, pImpl->m_TargetIndex)) {
-			//–³‚©‚Á‚½‚çƒŠƒ^[ƒ“
+			//ç„¡ã‹ã£ãŸã‚‰ãƒªã‚¿ãƒ¼ãƒ³
 			return false;
 		}
 		auto Pos = GetGameObject()->GetComponent<Transform>()->GetWorldPosition();
-		//©•ª©g‚ÌƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+		//è‡ªåˆ†è‡ªèº«ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 		if (!ShCellMap->FindCell(Pos, pImpl->m_BaseIndex)) {
-			//–³‚©‚Á‚½‚çƒŠƒ^[ƒ“
+			//ç„¡ã‹ã£ãŸã‚‰ãƒªã‚¿ãƒ¼ãƒ³
 			return false;
 		}
-		//Å‰‚ÌNode‚ğİ’è
+		//æœ€åˆã®Nodeã‚’è¨­å®š
 		auto& CellVec = ShCellMap->GetCellVec();
 		CellNode Node;
 		Node.x = pImpl->m_BaseIndex.x;
@@ -660,9 +660,9 @@ namespace basecross {
 		for (UINT x = 0; x < CellVec.size(); x++) {
 			for (UINT z = 0; z < CellVec[x].size(); z++) {
 				if (CellVec[x][z].m_Cost == -1) {
-					//áŠQ•¨‚ª‚ ‚Á‚½
+					//éšœå®³ç‰©ãŒã‚ã£ãŸ
 					if (HitTest::SEGMENT_AABB(Pos, TargetPosition, CellVec[x][z].m_PieceRange)) {
-						//áŠQ•¨‚ÆƒŒƒC‚ªƒqƒbƒg‚µ‚Ä‚¢‚é
+						//éšœå®³ç‰©ã¨ãƒ¬ã‚¤ãŒãƒ’ãƒƒãƒˆã—ã¦ã„ã‚‹
 						DirectHit = true;
 						break;
 					}
@@ -673,29 +673,29 @@ namespace basecross {
 			}
 		}
 		if (!DirectHit) {
-			//‚Ç‚ÌáŠQ•¨‚Æ‚àƒqƒbƒg‚µ‚Ä‚È‚¢
-			//’¼Úƒ^[ƒQƒbƒg‚És‚¯‚é
-			//‚Ü‚¸©•ª©g
+			//ã©ã®éšœå®³ç‰©ã¨ã‚‚ãƒ’ãƒƒãƒˆã—ã¦ãªã„
+			//ç›´æ¥ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã«è¡Œã‘ã‚‹
+			//ã¾ãšè‡ªåˆ†è‡ªèº«
 			RetCellIndexVec.push_back(pImpl->m_BaseIndex);
 			if (pImpl->m_BaseIndex != pImpl->m_TargetIndex) {
-				//‘±‚¢‚Äƒ^[ƒQƒbƒg
+				//ç¶šã„ã¦ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 				RetCellIndexVec.push_back(pImpl->m_TargetIndex);
 			}
-			//¬Œ÷
+			//æˆåŠŸ
 			return true;
 		}
 		pImpl->m_OpenVec.push_back(Node);
 		if (pImpl->SearchCellBase(pImpl->m_BaseIndex, pImpl->m_TargetIndex)) {
-			//Œo˜H‚ªŒ©‚Â‚©‚Á‚½
+			//çµŒè·¯ãŒè¦‹ã¤ã‹ã£ãŸ
 			CellNode TempNode;
 			CellIndex TempCellIndex;
-			//Å‰‚ÌNode‚ÍOpenƒŠƒXƒg‚É‚ ‚é
+			//æœ€åˆã®Nodeã¯Openãƒªã‚¹ãƒˆã«ã‚ã‚‹
 			pImpl->IsInVector(pImpl->m_TargetIndex, pImpl->m_OpenVec, TempNode);
 			TempCellIndex.x = TempNode.x;
 			TempCellIndex.z = TempNode.z;
 			RetCellIndexVec.push_back(TempCellIndex);
 			while (pImpl->m_BaseIndex != TempCellIndex) {
-				//2”Ô–ÚˆÈ~‚ÍCloseƒŠƒXƒg‚É‚ ‚é
+				//2ç•ªç›®ä»¥é™ã¯Closeãƒªã‚¹ãƒˆã«ã‚ã‚‹
 				TempCellIndex.x = TempNode.px;
 				TempCellIndex.z = TempNode.pz;
 				if (!pImpl->IsInVector(TempCellIndex, pImpl->m_CloseVec, TempNode)) {
@@ -705,11 +705,11 @@ namespace basecross {
 				TempCellIndex.x = TempNode.x;
 				TempCellIndex.z = TempNode.z;
 			}
-			//‹t‡‚É‚µ‚ÄI—¹
+			//é€†é †ã«ã—ã¦çµ‚äº†
 			std::reverse(RetCellIndexVec.begin(), RetCellIndexVec.end());
 			return true;
 		}
-		//Œo˜H‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
+		//çµŒè·¯ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
 		return false;
 
 	}
@@ -717,7 +717,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Gravity::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Gravity::Impl {
 		bsm::Vec3 m_Gravity;
@@ -726,12 +726,12 @@ namespace basecross {
 			m_Gravity(0),
 			m_GravityVelocity(0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	 d—ÍƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	 é‡åŠ›ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	Gravity::Gravity(const shared_ptr<GameObject>& GameObjectPtr,const bsm::Vec3& gravity):
 		Component(GameObjectPtr),
@@ -741,7 +741,7 @@ namespace basecross {
 		m_ZoneElapsedTime = 1.0f;
 	}
 
-	Gravity::~Gravity() {}
+	Gravity::â€¾Gravity() {}
 
 	bsm::Vec3 Gravity::GetGravity() const {
 		return pImpl->m_Gravity;
@@ -774,13 +774,13 @@ namespace basecross {
 
 
 	void Gravity::OnUpdate() {
-		//ƒRƒŠƒWƒ‡ƒ“‚ª‚ ‚Á‚ÄAƒXƒŠ[ƒvó‘Ô‚È‚çXV‚µ‚È‚¢
+		//ã‚³ãƒªã‚¸ãƒ§ãƒ³ãŒã‚ã£ã¦ã€ã‚¹ãƒªãƒ¼ãƒ—çŠ¶æ…‹ãªã‚‰æ›´æ–°ã—ãªã„
 		auto PtrCollision = GetGameObject()->GetComponent<Collision>(false);
 		if (PtrCollision && PtrCollision->IsSleep()) {
 			return;
 		}
 		auto PtrTransform = GetGameObject()->GetComponent<Transform>();
-		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
+		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		pImpl->m_GravityVelocity += pImpl->m_Gravity * ElapsedTime * m_ZoneElapsedTime;
 		auto Pos = PtrTransform->GetPosition();

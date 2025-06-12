@@ -2263,7 +2263,7 @@ struct ID3DX12PipelineParserCallbacks
     virtual void ErrorDuplicateSubobject(D3D12_PIPELINE_STATE_SUBOBJECT_TYPE /*DuplicateType*/) {}
     virtual void ErrorUnknownSubobject(UINT /*UnknownTypeValue*/) {}
 
-    virtual ~ID3DX12PipelineParserCallbacks() = default;
+    virtual ‾ID3DX12PipelineParserCallbacks() = default;
 };
 
 // Requires the Windows 10 Fall Creators Update SDK (16299)
@@ -2908,7 +2908,7 @@ private:
     {
     public:
         SUBOBJECT_HELPER_BASE() { Init(); }
-        virtual ~SUBOBJECT_HELPER_BASE() {}
+        virtual ‾SUBOBJECT_HELPER_BASE() {}
         virtual D3D12_STATE_SUBOBJECT_TYPE Type() const = 0;
         void AddToStateObject(CD3DX12_STATE_OBJECT_DESC& ContainingStateObject)
         {
@@ -2927,7 +2927,7 @@ private:
     {
     public:
         OWNED_HELPER(const SUBOBJECT_HELPER_BASE* pHelper) { m_pHelper = pHelper; }
-        ~OWNED_HELPER() { delete m_pHelper; }
+        ‾OWNED_HELPER() { delete m_pHelper; }
         const SUBOBJECT_HELPER_BASE* m_pHelper;
     };
 
