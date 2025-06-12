@@ -117,7 +117,7 @@ namespace basecross {
 		builder->Register<FixedBox>(L"cube");
 		builder->Register<Player>(L"player");
 		builder->Register<Legion>(L"wave");
-		//builder->Register<Mob>(L"enemy");
+		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
 		builder->Register<LimitArea>(L"area");
@@ -192,6 +192,7 @@ namespace basecross {
 	{
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 
+
 		if (player != nullptr) {
 			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 			if (camera != nullptr) {
@@ -246,6 +247,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnage = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnage);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -433,11 +436,14 @@ namespace basecross {
 		}
 		else {
 			//SetAllGameObjectActive(true);
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				m_UltEnage = player->GetEnergy();
-				m_UltIcon->SetCharge(m_UltEnage);
 
+			if (m_cameraState == CameraState::FOLLOWCAMERA) {
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				if (player != nullptr) {
+					m_UltEnage = player->GetEnergy();
+					m_UltIcon->SetCharge(m_UltEnage);
+
+				}
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
