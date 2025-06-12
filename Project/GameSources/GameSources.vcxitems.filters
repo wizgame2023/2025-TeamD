@@ -281,7 +281,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ProductionCamera.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp" />
       <Filter>Select</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
       <Filter>Ballet</Filter>
     </ClCompile>
