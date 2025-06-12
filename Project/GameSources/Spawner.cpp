@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -100,7 +100,7 @@ namespace basecross {
 			}
 			if (m_Legions.size() <= m_Wave) {
 
-				//ã‚«ãƒ¡ãƒ©ç§»å‹•
+				//ƒJƒƒ‰ˆÚ“®
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
 				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;
