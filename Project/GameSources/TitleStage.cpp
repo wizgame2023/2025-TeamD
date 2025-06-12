@@ -1,6 +1,6 @@
 /*!
 @file TitleScne.cpp
-@brief ƒ^ƒCƒgƒ‹ƒV[ƒ“À‘Ì
+@brief ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,20 +9,20 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 	void TitleStage::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -5.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
+		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		auto PtrCamera = ObjectFactory::Create<Camera>();
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 		PtrMultiLight->SetDefaultLighting();
 	}
 
@@ -43,7 +43,7 @@ namespace basecross {
 		auto titleSprite = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
-		//“_–Åİ’è
+		//ç‚¹æ»…è¨­å®š
 		stratASprite->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
@@ -52,7 +52,7 @@ namespace basecross {
 
 	void TitleStage::OnCreate() {
 		try {
-			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
+			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
 			CreateViewLight();
 			//OnUpdate();
 			CreateResource();
@@ -77,7 +77,7 @@ namespace basecross {
 	}
 
 	void TitleStage::OnPushA() {
-		//ƒ{ƒ^ƒ“‚ğ‰Ÿ‚³‚ê‚½‚çtrue
+		//ãƒœã‚¿ãƒ³ã‚’æŠ¼ã•ã‚ŒãŸã‚‰true
 		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
 		m_Fade->Play();
 		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");

@@ -23,14 +23,14 @@ namespace PhysicsEffects {
 
 PfxBool pfxIntersectRayCapsule(const PfxRayInput &ray,PfxRayOutput &out,const PfxCapsule &capsule,const PfxTransform3 &transform)
 {
-	// ƒŒƒC‚ğCapsule‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’Capsuleã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformCapsule = orthoInverse(transform);
 	PfxVector3 startPosL = transformCapsule.getUpper3x3() * ray.m_startPosition + transformCapsule.getTranslation();
 	PfxVector3 rayDirL = transformCapsule.getUpper3x3() * ray.m_direction;
 	
 	PfxFloat radSqr = capsule.m_radius * capsule.m_radius;
 
-	// n“_‚ªƒJƒvƒZƒ‹‚Ì“à‘¤‚É‚ ‚é‚©”»’è
+	// å§‹ç‚¹ãŒã‚«ãƒ—ã‚»ãƒ«ã®å†…å´ã«ã‚ã‚‹ã‹åˆ¤å®š
 	{
 		PfxFloat h = startPosL[0];
 		h = SCE_PFX_CLAMP(h,-capsule.m_halfLen,capsule.m_halfLen);
@@ -39,7 +39,7 @@ PfxBool pfxIntersectRayCapsule(const PfxRayInput &ray,PfxRayOutput &out,const Pf
 		if(sqrLen <= radSqr) return false;
 	}
 
-	// ƒJƒvƒZƒ‹‚Ì“·‘Ì‚Æ‚ÌŒğ·”»’è
+	// ã‚«ãƒ—ã‚»ãƒ«ã®èƒ´ä½“ã¨ã®äº¤å·®åˆ¤å®š
 	do {
 		PfxVector3 P(startPosL);
 		PfxVector3 D(rayDirL);
@@ -53,8 +53,8 @@ PfxBool pfxIntersectRayCapsule(const PfxRayInput &ray,PfxRayOutput &out,const Pf
 		
 		PfxFloat d = b * b - a * c;
 		
-		if(d < 0.0f) return false; // ƒŒƒC‚Íˆí‚ê‚Ä‚¢‚é
-		if(pfxAbsf(a) < 0.00001f) break; // ƒŒƒC‚ªX²‚É•½s
+		if(d < 0.0f) return false; // ãƒ¬ã‚¤ã¯é€¸ã‚Œã¦ã„ã‚‹
+		if(pfxAbsf(a) < 0.00001f) break; // ãƒ¬ã‚¤ãŒXè»¸ã«å¹³è¡Œ
 		
 		PfxFloat tt = ( -b - sqrtf(d) ) / a;
 		
@@ -74,7 +74,7 @@ PfxBool pfxIntersectRayCapsule(const PfxRayInput &ray,PfxRayOutput &out,const Pf
 		}
 	} while(0);
 	
-	// ƒJƒvƒZƒ‹‚Ì—¼’[‚É‚ ‚é‹…‘Ì‚Æ‚ÌŒğ·”»’è
+	// ã‚«ãƒ—ã‚»ãƒ«ã®ä¸¡ç«¯ã«ã‚ã‚‹çƒä½“ã¨ã®äº¤å·®åˆ¤å®š
 	PfxFloat a = dot(rayDirL,rayDirL);
 	if(pfxAbsf(a) < 0.00001f) return false;
 	

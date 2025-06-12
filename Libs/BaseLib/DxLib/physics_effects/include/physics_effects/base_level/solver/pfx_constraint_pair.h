@@ -25,7 +25,7 @@ namespace PhysicsEffects {
 
 typedef PfxSortData16 PfxConstraintPair;
 
-//J	PfxBroadphasePairÇ∆ã§í 
+//J	PfxBroadphasePair„Å®ÂÖ±ÈÄö
 //E Same as PfxBroadphasePair
 
 SCE_PFX_FORCE_INLINE void pfxSetConstraintId(PfxConstraintPair &pair,PfxUInt32 i)	{pair.set32(2,i);}

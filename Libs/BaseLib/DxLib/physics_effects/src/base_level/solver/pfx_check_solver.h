@@ -57,8 +57,8 @@ PfxBool pfxCheckSolver(const PfxConstraintPair &pair)
 	
 	return
 		pfxGetActive(pair) &&
-		pfxCheckSolverTable((ePfxMotionType)motionA,(ePfxMotionType)motionB) && // モーションタイプ別衝突判定テーブル
-		!((sleepA != 0 && sleepB != 0) || (sleepA != 0 && motionB == kPfxMotionTypeFixed) || (sleepB != 0 && motionA == kPfxMotionTypeFixed));// スリープ時のチェック
+		pfxCheckSolverTable((ePfxMotionType)motionA,(ePfxMotionType)motionB) && // 繝｢繝ｼ繧ｷ繝ｧ繝ｳ繧ｿ繧､繝怜挨陦晉ｪ∝愛螳壹ユ繝ｼ繝悶Ν
+		!((sleepA != 0 && sleepB != 0) || (sleepA != 0 && motionB == kPfxMotionTypeFixed) || (sleepB != 0 && motionA == kPfxMotionTypeFixed));// 繧ｹ繝ｪ繝ｼ繝玲凾縺ｮ繝√ぉ繝�繧ｯ
 }
 
 } //namespace PhysicsEffects

@@ -131,7 +131,7 @@ namespace DirectX
             // Helper for miscFlags
 
         bool __cdecl IsPMAlpha() const noexcept { return ((miscFlags2 & TEX_MISC2_ALPHA_MODE_MASK) == TEX_ALPHA_MODE_PREMULTIPLIED) != 0; }
-        void __cdecl SetAlphaMode(TEX_ALPHA_MODE mode) noexcept { miscFlags2 = (miscFlags2 & ~static_cast<uint32_t>(TEX_MISC2_ALPHA_MODE_MASK)) | static_cast<uint32_t>(mode); }
+        void __cdecl SetAlphaMode(TEX_ALPHA_MODE mode) noexcept { miscFlags2 = (miscFlags2 & ‾static_cast<uint32_t>(TEX_MISC2_ALPHA_MODE_MASK)) | static_cast<uint32_t>(mode); }
         TEX_ALPHA_MODE __cdecl GetAlphaMode() const noexcept { return static_cast<TEX_ALPHA_MODE>(miscFlags2 & TEX_MISC2_ALPHA_MODE_MASK); }
             // Helpers for miscFlags2
 
@@ -266,7 +266,7 @@ namespace DirectX
             : m_nimages(0), m_size(0), m_metadata{}, m_image(nullptr), m_memory(nullptr) {}
         ScratchImage(ScratchImage&& moveFrom) noexcept
             : m_nimages(0), m_size(0), m_metadata{}, m_image(nullptr), m_memory(nullptr) { *this = std::move(moveFrom); }
-        ~ScratchImage() { Release(); }
+        ‾ScratchImage() { Release(); }
 
         ScratchImage& __cdecl operator= (ScratchImage&& moveFrom) noexcept;
 
@@ -315,7 +315,7 @@ namespace DirectX
     public:
         Blob() noexcept : m_buffer(nullptr), m_size(0) {}
         Blob(Blob&& moveFrom) noexcept : m_buffer(nullptr), m_size(0) { *this = std::move(moveFrom); }
-        ~Blob() { Release(); }
+        ‾Blob() { Release(); }
 
         Blob& __cdecl operator= (Blob&& moveFrom) noexcept;
 

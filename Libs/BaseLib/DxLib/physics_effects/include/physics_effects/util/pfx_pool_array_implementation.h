@@ -29,7 +29,7 @@ inline PfxPoolQueue<T>::PfxPoolQueue(PfxHeapManager *pool,PfxUInt32 maxData)
 }
 
 template <class T>
-inline PfxPoolQueue<T>::~PfxPoolQueue()
+inline PfxPoolQueue<T>::‾PfxPoolQueue()
 {
 	m_pool->deallocate(m_data);
 }
@@ -78,7 +78,7 @@ inline PfxPoolPriorityQueue<T>::PfxPoolPriorityQueue(PfxHeapManager *pool,PfxUIn
 }
 
 template <class T>
-inline PfxPoolPriorityQueue<T>::~PfxPoolPriorityQueue()
+inline PfxPoolPriorityQueue<T>::‾PfxPoolPriorityQueue()
 {
 	m_pool->deallocate(m_data);
 }
@@ -160,7 +160,7 @@ inline PfxPoolStack<T>::PfxPoolStack(PfxHeapManager *pool,PfxUInt32 maxData)
 }
 
 template <class T>
-inline PfxPoolStack<T>::~PfxPoolStack()
+inline PfxPoolStack<T>::‾PfxPoolStack()
 {
 	m_pool->deallocate(m_data);
 }
@@ -208,7 +208,7 @@ inline PfxPoolArray<T>::PfxPoolArray(PfxHeapManager *pool,PfxUInt32 maxData)
 }
 
 template <class T>
-inline PfxPoolArray<T>::~PfxPoolArray()
+inline PfxPoolArray<T>::‾PfxPoolArray()
 {
 	m_pool->deallocate(m_poolTable);
 	m_pool->deallocate(m_data);
@@ -284,7 +284,7 @@ inline bool PfxPoolArray<T>::remove(PfxUInt32 i)
 	}
 	
 	m_poolId.push(i);
-	m_poolTable[i>>5] &= ~(1<<(i&31));
+	m_poolTable[i>>5] &= ‾(1<<(i&31));
 	m_numData--;
 	
 	return true;

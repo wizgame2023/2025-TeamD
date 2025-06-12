@@ -1,6 +1,6 @@
 /*!
 @file ProjectShader.h
-@brief プロジェクトで使用するシェーダー
+@brief 繝励Ο繧ｸ繧ｧ繧ｯ繝医〒菴ｿ逕ｨ縺吶ｋ繧ｷ繧ｧ繝ｼ繝繝ｼ
 */
 
 #pragma once

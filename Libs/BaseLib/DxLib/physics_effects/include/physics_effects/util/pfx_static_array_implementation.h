@@ -28,7 +28,7 @@ inline PfxStaticQueue<T,SIZE>::PfxStaticQueue()
 }
 
 template <class T,int SIZE>
-inline PfxStaticQueue<T,SIZE>::~PfxStaticQueue()
+inline PfxStaticQueue<T,SIZE>::‾PfxStaticQueue()
 {
 }
 
@@ -75,7 +75,7 @@ inline PfxStaticPriorityQueue<T,SIZE>::PfxStaticPriorityQueue()
 }
 
 template <class T,int SIZE>
-inline PfxStaticPriorityQueue<T,SIZE>::~PfxStaticPriorityQueue()
+inline PfxStaticPriorityQueue<T,SIZE>::‾PfxStaticPriorityQueue()
 {
 }
 
@@ -155,7 +155,7 @@ inline PfxStaticStack<T,SIZE>::PfxStaticStack()
 }
 
 template <class T,int SIZE>
-inline PfxStaticStack<T,SIZE>::~PfxStaticStack()
+inline PfxStaticStack<T,SIZE>::‾PfxStaticStack()
 {
 }
 
@@ -200,7 +200,7 @@ inline PfxStaticArray<T,SIZE>::PfxStaticArray()
 }
 
 template <class T,int SIZE>
-inline PfxStaticArray<T,SIZE>::~PfxStaticArray()
+inline PfxStaticArray<T,SIZE>::‾PfxStaticArray()
 {
 }
 
@@ -274,7 +274,7 @@ inline bool PfxStaticArray<T,SIZE>::remove(PfxUInt32 i)
 	}
 	
 	m_poolId.push(i);
-	m_poolTable[i>>5] &= ~(1<<(i&31));
+	m_poolTable[i>>5] &= ‾(1<<(i&31));
 	m_numData--;
 	
 	return true;
@@ -320,7 +320,7 @@ inline PfxStaticMap<KEY,T,SIZE>::PfxStaticMap() : m_numData(0)
 }
 
 template <class KEY,class T,int SIZE>
-inline PfxStaticMap<KEY,T,SIZE>::~PfxStaticMap()
+inline PfxStaticMap<KEY,T,SIZE>::‾PfxStaticMap()
 {
 }
 
@@ -398,7 +398,7 @@ inline bool PfxStaticMap<KEY,T,SIZE>::erase(const KEY& key)
 	
 	for(PfxMapNode *iterator=m_headers[id];iterator!=NULL;iterator=iterator->next) {
 		if(iterator->key == key) {
-			// �m�[�h�폜
+			// ノード削除
 			if(iterator->prev) {
 				iterator->prev->next = iterator->next;
 			}
@@ -410,7 +410,7 @@ inline bool PfxStaticMap<KEY,T,SIZE>::erase(const KEY& key)
 				iterator->next->prev = iterator->prev;
 			}
 			
-			// �m�[�h�ړ�
+			// ノード移動
 			int pos = m_numData-1;
 			PfxMapNode *lastNode = &m_nodes[pos];
 			if(iterator != lastNode) {

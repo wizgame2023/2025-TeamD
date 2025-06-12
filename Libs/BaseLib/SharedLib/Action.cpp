@@ -1,6 +1,6 @@
 /*!
 @file Action.cpp
-@brief ƒAƒNƒVƒ‡ƒ“ŒnƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ç³»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -10,34 +10,34 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct ActionComponent::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct ActionComponent::Impl {
-		bool m_Run;			//ˆÚ“®’†‚©‚Ç‚¤‚©
-		bool m_Arrived;	//“’…‚µ‚½‚©‚Ç‚¤‚©
-		float m_TotalTime;	//ˆÚ“®‚É‚©‚¯‚éŠÔ
-		float m_NowTime;	//Œ»İ‚ÌŠÔ
+		bool m_Run;			//ç§»å‹•ä¸­ã‹ã©ã†ã‹
+		bool m_Arrived;	//åˆ°ç€ã—ãŸã‹ã©ã†ã‹
+		float m_TotalTime;	//ç§»å‹•ã«ã‹ã‘ã‚‹æ™‚é–“
+		float m_NowTime;	//ç¾åœ¨ã®æ™‚é–“
 		Impl() :
 			m_Run(false),
 			m_Arrived(false),
 			m_TotalTime(0),
 			m_NowTime(0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class ActionComponent : public Component ;
-	//	—p“r: ƒAƒNƒVƒ‡ƒ“ŒnƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌeƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ç³»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	ActionComponent::ActionComponent(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	ActionComponent::~ActionComponent() {}
+	ActionComponent::â€¾ActionComponent() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	void ActionComponent::SetRun(bool b) {
 		pImpl->m_Run = b;
 	}
@@ -74,7 +74,7 @@ namespace basecross {
 		pImpl->m_NowTime = f;
 	}
 
-	//NowTime‚ğ‰ÁZ‚µ‚ÄATotalTime‚Æ”äŠr‚·‚é
+	//NowTimeã‚’åŠ ç®—ã—ã¦ã€TotalTimeã¨æ¯”è¼ƒã™ã‚‹
 	bool ActionComponent::AdditionalNowTime() {
 		if (pImpl->m_Run) {
 			if (pImpl->m_TotalTime > 0) {
@@ -83,7 +83,7 @@ namespace basecross {
 				if (pImpl->m_NowTime >= pImpl->m_TotalTime) {
 					pImpl->m_NowTime = pImpl->m_TotalTime;
 					pImpl->m_Run = false;
-					//“’…‚µ‚½
+					//åˆ°ç€ã—ãŸ
 					pImpl->m_Arrived = true;
 				}
 				return true;
@@ -98,20 +98,20 @@ namespace basecross {
 	}
 	void ActionComponent::ReStart() {
 		if (!pImpl->m_Arrived) {
-			//“’…‚µ‚Ä‚È‚¯‚ê‚Î“®ì‚³‚¹‚é
+			//åˆ°ç€ã—ã¦ãªã‘ã‚Œã°å‹•ä½œã•ã›ã‚‹
 			pImpl->m_Run = true;
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
 	//	class ActionInterval : public  ActionComponent ;
-	//	—p“r: ƒAƒNƒVƒ‡ƒ“‚ÌƒCƒ“ƒ^[ƒoƒ‹
+	//	ç”¨é€”: ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	ActionInterval::ActionInterval(const shared_ptr<GameObject>& GameObjectPtr) :
 		ActionComponent(GameObjectPtr)
 	{}
-	ActionInterval::~ActionInterval() {}
+	ActionInterval::â€¾ActionInterval() {}
 
 	void ActionInterval::SetParams(float TotalTime) {
 		SetTotalTime(TotalTime);
@@ -122,7 +122,7 @@ namespace basecross {
 		SetRun(true);
 		SetArrived(false);
 		if (GetTotalTime() <= 0) {
-			//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+			//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 			SetTotalTime(0);
 			SetNowTime(0);
 			SetRun(false);
@@ -133,7 +133,7 @@ namespace basecross {
 		if (GetRun()) {
 			if (!AdditionalNowTime()) {
 				if (GetTotalTime() <= 0) {
-					//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+					//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 					SetTotalTime(0);
 					SetNowTime(0);
 					SetRun(false);
@@ -145,33 +145,33 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct ScaleComponent::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct ScaleComponent::Impl {
-		bsm::Vec3 m_StartScale;	//ŠJn”{—¦
-		bsm::Vec3 m_TargetScale;	//–Ú“I”{—¦
-		Lerp::rate m_Rate;	//•âŠÔ•û–@
+		bsm::Vec3 m_StartScale;	//é–‹å§‹å€ç‡
+		bsm::Vec3 m_TargetScale;	//ç›®çš„å€ç‡
+		Lerp::rate m_Rate;	//è£œé–“æ–¹æ³•
 		Impl() :
 			m_StartScale(1.0f, 1.0f, 1.0f),
 			m_TargetScale(1.0f, 1.0f, 1.0f),
 			m_Rate(Lerp::Linear)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class ScaleComponent : public Component ;
-	//	—p“r: Šg‘åk¬ƒAƒNƒVƒ‡ƒ“‚ÌeƒNƒ‰ƒX
+	//	ç”¨é€”: æ‹¡å¤§ç¸®å°ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	ScaleComponent::ScaleComponent(const shared_ptr<GameObject>& GameObjectPtr) :
 		ActionComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	ScaleComponent::~ScaleComponent() {}
+	ScaleComponent::â€¾ScaleComponent() {}
 
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	Lerp::rate ScaleComponent::GetRate() const { return pImpl->m_Rate; }
 	void ScaleComponent::SetRate(const Lerp::rate r) { pImpl->m_Rate = r; }
 
@@ -183,7 +183,7 @@ namespace basecross {
 	void ScaleComponent::SetTargetScale(const bsm::Vec3& TargetScale) { pImpl->m_TargetScale = TargetScale; }
 	void ScaleComponent::SetTargetScale(float x, float y, float z) { pImpl->m_TargetScale = bsm::Vec3(x, y, z); }
 
-	//‘€ì
+	//æ“ä½œ
 	void ScaleComponent::Run() {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
 		pImpl->m_StartScale = TransPtr->GetScale();
@@ -191,7 +191,7 @@ namespace basecross {
 		SetRun(true);
 		SetArrived(false);
 		if (GetTotalTime() <= 0) {
-			//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+			//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 			TransPtr->SetScale(pImpl->m_TargetScale);
 			SetTotalTime(0);
 			SetNowTime(0);
@@ -216,7 +216,7 @@ namespace basecross {
 			}
 			else {
 				if (GetTotalTime() <= 0) {
-					//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+					//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 					TransPtr->SetScale(pImpl->m_TargetScale);
 					SetTotalTime(0);
 					SetNowTime(0);
@@ -227,9 +227,9 @@ namespace basecross {
 		}
 	}
 
-	//Œ»İƒXƒP[ƒ‹‚ğŒvZ‚µ‚Ä•Ô‚·
-	//ƒ^ƒCƒ€‚ÌXV‚Ís‚í‚È‚¢‚Ì‚Å
-	//UpdateŒã‚ÉŒÄ‚Ô‚×‚«
+	//ç¾åœ¨ã‚¹ã‚±ãƒ¼ãƒ«ã‚’è¨ˆç®—ã—ã¦è¿”ã™
+	//ã‚¿ã‚¤ãƒ ã®æ›´æ–°ã¯è¡Œã‚ãªã„ã®ã§
+	//Updateå¾Œã«å‘¼ã¶ã¹ã
 	bsm::Vec3 ScaleComponent::GetNowScale() const {
 		if (GetTotalTime() <= 0) {
 			return pImpl->m_TargetScale;
@@ -249,11 +249,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class ScaleTo : public  ScaleComponent ;
-	//	—p“r: –Ú“I‚ÌŠg‘å—¦‚ÉŠg‘åk¬
+	//	ç”¨é€”: ç›®çš„ã®æ‹¡å¤§ç‡ã«æ‹¡å¤§ç¸®å°
 	//--------------------------------------------------------------------------------------
 	ScaleTo::ScaleTo(const shared_ptr<GameObject>& GameObjectPtr) :
 		ScaleComponent(GameObjectPtr) {}
-	ScaleTo::~ScaleTo() {}
+	ScaleTo::â€¾ScaleTo() {}
 	void ScaleTo::SetParams(float TotalTime, const bsm::Vec3& TargetScale, Lerp::rate Rate) {
 		SetTargetScale(TargetScale);
 		SetTotalTime(TotalTime);
@@ -262,28 +262,28 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct ScaleBy::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct ScaleBy::Impl {
-		bsm::Vec3 m_LocalScale;	//‘Š‘ÎƒXƒP[ƒ‹
+		bsm::Vec3 m_LocalScale;	//ç›¸å¯¾ã‚¹ã‚±ãƒ¼ãƒ«
 	public:
 		Impl() :
 			m_LocalScale(1.0f, 1.0f, 1.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class ScaleBy : public  ScaleComponent;
-	//	—p“r: –Ú“I‚Ì‘Š‘ÎƒXƒP[ƒ‹‚É‚ÉŠg‘åk¬
+	//	ç”¨é€”: ç›®çš„ã®ç›¸å¯¾ã‚¹ã‚±ãƒ¼ãƒ«ã«ã«æ‹¡å¤§ç¸®å°
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	ScaleBy::ScaleBy(const shared_ptr<GameObject>& GameObjectPtr) :
 		ScaleComponent(GameObjectPtr), pImpl(new Impl()) {}
-	ScaleBy::~ScaleBy() {}
+	ScaleBy::â€¾ScaleBy() {}
 
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Vec3& ScaleBy::GetLocalScale() const { return pImpl->m_LocalScale; }
 	void ScaleBy::SetLocalScale(const bsm::Vec3& LocalScale) { pImpl->m_LocalScale = LocalScale; }
 	void ScaleBy::SetLocalScale(float x, float y, float z) { pImpl->m_LocalScale = bsm::Vec3(x, y, z); }
@@ -295,7 +295,7 @@ namespace basecross {
 	}
 
 
-	//‘€ì
+	//æ“ä½œ
 	void ScaleBy::Run() {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 Target = TransPtr->GetScale();
@@ -310,34 +310,34 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct RotateComponent::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct RotateComponent::Impl {
-		bsm::Quat m_StartQuaternion;	//ŠJn‰ñ“]
-		bsm::Quat m_TargetQuaternion;	//I—¹‰ñ“]
+		bsm::Quat m_StartQuaternion;	//é–‹å§‹å›è»¢
+		bsm::Quat m_TargetQuaternion;	//çµ‚äº†å›è»¢
 	public:
 		Impl() :
 			m_StartQuaternion(),
 			m_TargetQuaternion()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class RotateComponent : public ActionComponent ;
-	//	—p“r: ‰ñ“]ƒAƒNƒVƒ‡ƒ“‚ÌeƒNƒ‰ƒX
+	//	ç”¨é€”: å›è»¢ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	RotateComponent::RotateComponent(const shared_ptr<GameObject>& GameObjectPtr) :
 		ActionComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{
 	}
-	RotateComponent::~RotateComponent() {}
+	RotateComponent::â€¾RotateComponent() {}
 
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Quat& RotateComponent::GetStartQuaternion() const { return pImpl->m_StartQuaternion; }
 	void RotateComponent::SetStartQuaternion(const bsm::Quat& StartQuaternion) {
 		pImpl->m_StartQuaternion = StartQuaternion;
@@ -375,16 +375,16 @@ namespace basecross {
 		pImpl->m_TargetQuaternion.normalize();
 	}
 
-	//‘€ì
+	//æ“ä½œ
 	void RotateComponent::Run() {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
-		//ƒNƒI[ƒ^ƒjƒIƒ“‚©‚çŒ»İ‚Ì‰ñ“]‚ğ“¾‚é
+		//ã‚¯ã‚ªãƒ¼ã‚¿ãƒ‹ã‚ªãƒ³ã‹ã‚‰ç¾åœ¨ã®å›è»¢ã‚’å¾—ã‚‹
 		pImpl->m_StartQuaternion = TransPtr->GetQuaternion();
 		SetNowTime(0);
 		SetRun(true);
 		SetArrived(false);
 		if (GetTotalTime() <= 0) {
-			//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+			//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 			TransPtr->SetQuaternion(pImpl->m_TargetQuaternion);
 			SetTotalTime(0);
 			SetNowTime(0);
@@ -406,7 +406,7 @@ namespace basecross {
 			}
 			else {
 				if (GetTotalTime() <= 0) {
-					//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+					//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 					TransPtr->SetQuaternion(pImpl->m_TargetQuaternion);
 					SetTotalTime(0);
 					SetNowTime(0);
@@ -417,9 +417,9 @@ namespace basecross {
 		}
 	}
 
-	//Œ»İ‰ñ“]‚ğŒvZ‚µ‚Ä•Ô‚·
-	//ƒ^ƒCƒ€‚ÌXV‚Ís‚í‚È‚¢‚Ì‚Å
-	//UpdateŒã‚ÉŒÄ‚Ô‚×‚«
+	//ç¾åœ¨å›è»¢ã‚’è¨ˆç®—ã—ã¦è¿”ã™
+	//ã‚¿ã‚¤ãƒ ã®æ›´æ–°ã¯è¡Œã‚ãªã„ã®ã§
+	//Updateå¾Œã«å‘¼ã¶ã¹ã
 	bsm::Vec3 RotateComponent::GetNowRotate() const {
 		if (GetTotalTime() <= 0) {
 			return pImpl->m_TargetQuaternion.toRotVec();
@@ -449,13 +449,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class RotateTo : public  MoveComponent ;
-	//	—p“r: –Ú“I‚ÌŠp“x‚É‰ñ“]
+	//	ç”¨é€”: ç›®çš„ã®è§’åº¦ã«å›è»¢
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	RotateTo::RotateTo(const shared_ptr<GameObject>& GameObjectPtr) :
 		RotateComponent(GameObjectPtr)
 	{}
-	RotateTo::~RotateTo() {}
+	RotateTo::â€¾RotateTo() {}
 
 	void RotateTo::SetParams(float TotalTime, const bsm::Vec3& TargetRotate) {
 		SetTargetRotate(TargetRotate);
@@ -470,27 +470,27 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct RotateBy::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct RotateBy::Impl {
-		bsm::Quat m_LocalQuaternion;	//‘Š‘Î‰ñ“]
+		bsm::Quat m_LocalQuaternion;	//ç›¸å¯¾å›è»¢
 		Impl() :
 			m_LocalQuaternion()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
 	//	class RotateBy : public  RotateComponent ;
-	//	—p“r: –Ú“I‚Ì‘Š‘ÎŠp“x‚É‰ñ“]
+	//	ç”¨é€”: ç›®çš„ã®ç›¸å¯¾è§’åº¦ã«å›è»¢
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	RotateBy::RotateBy(const shared_ptr<GameObject>& GameObjectPtr) :
 		RotateComponent(GameObjectPtr), pImpl(new Impl()) {}
-	RotateBy::~RotateBy() {}
+	RotateBy::â€¾RotateBy() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Quat& RotateBy::GetLocalQuaternion() const { return pImpl->m_LocalQuaternion; }
 	void RotateBy::SetLocalQuaternion(const bsm::Quat& LocalQuaternion) {
 		pImpl->m_LocalQuaternion = LocalQuaternion;
@@ -519,7 +519,7 @@ namespace basecross {
 	}
 
 
-	//‘€ì
+	//æ“ä½œ
 	void RotateBy::Run() {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
 		bsm::Quat QtNow = TransPtr->GetQuaternion();
@@ -530,15 +530,15 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct MoveComponent::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct MoveComponent::Impl {
-		bsm::Vec3 m_StartPosition;	//ŠJn’n“_
-		bsm::Vec3 m_TargetPosition;	//–Ú“I’n“_
-		Lerp::rate m_RateX;	//•âŠÔ•û–@X
-		Lerp::rate m_RateY;	//•âŠÔ•û–@Y
-		Lerp::rate m_RateZ;	//•âŠÔ•û–@Z
-		bsm::Vec3 m_Velocity;	//Œ»İ‚Ì‘¬“x
+		bsm::Vec3 m_StartPosition;	//é–‹å§‹åœ°ç‚¹
+		bsm::Vec3 m_TargetPosition;	//ç›®çš„åœ°ç‚¹
+		Lerp::rate m_RateX;	//è£œé–“æ–¹æ³•X
+		Lerp::rate m_RateY;	//è£œé–“æ–¹æ³•Y
+		Lerp::rate m_RateZ;	//è£œé–“æ–¹æ³•Z
+		bsm::Vec3 m_Velocity;	//ç¾åœ¨ã®é€Ÿåº¦
 		Impl() :
 			m_StartPosition(0, 0, 0),
 			m_TargetPosition(0, 0, 0),
@@ -547,20 +547,20 @@ namespace basecross {
 			m_RateZ(Lerp::Linear),
 			m_Velocity(0, 0, 0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class MoveComponent : public ActionComponent ;
-	//	—p“r: ˆÚ“®ƒAƒNƒVƒ‡ƒ“‚ÌeƒNƒ‰ƒX
+	//	ç”¨é€”: ç§»å‹•ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	MoveComponent::MoveComponent(const shared_ptr<GameObject>& GameObjectPtr) :
 		ActionComponent(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	MoveComponent::~MoveComponent() {}
-	//ƒAƒNƒZƒT
+	MoveComponent::â€¾MoveComponent() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 
 	Lerp::rate MoveComponent::GetRateX() const {
 		return pImpl->m_RateX;
@@ -694,7 +694,7 @@ namespace basecross {
 	}
 
 
-	//‘€ì
+	//æ“ä½œ
 	void MoveComponent::Run() {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
 		pImpl->m_StartPosition = TransPtr->GetWorldPosition();
@@ -702,7 +702,7 @@ namespace basecross {
 		SetRun(true);
 		SetArrived(false);
 		if (GetTotalTime() <= 0) {
-			//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+			//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 			TransPtr->SetWorldPosition(pImpl->m_TargetPosition);
 			SetTotalTime(0);
 			SetNowTime(0);
@@ -757,7 +757,7 @@ namespace basecross {
 			}
 			else {
 				if (GetTotalTime() <= 0) {
-					//ƒg[ƒ^ƒ‹ƒ^ƒCƒ€‚ª0ˆÈ‰º‚È‚çA‚·‚Å‚É“’…‚µ‚Ä‚¢‚é‚±‚Æ‚É‚È‚é
+					//ãƒˆãƒ¼ã‚¿ãƒ«ã‚¿ã‚¤ãƒ ãŒ0ä»¥ä¸‹ãªã‚‰ã€ã™ã§ã«åˆ°ç€ã—ã¦ã„ã‚‹ã“ã¨ã«ãªã‚‹
 					PtrTrans->SetWorldPosition(pImpl->m_TargetPosition);
 					SetTotalTime(0);
 					SetNowTime(0);
@@ -769,9 +769,9 @@ namespace basecross {
 		}
 	}
 
-	//Œ»İˆÊ’u‚ğŒvZ‚µ‚Ä•Ô‚·
-	//ƒ^ƒCƒ€‚ÌXV‚Ís‚í‚È‚¢‚Ì‚Å
-	//UpdateŒã‚ÉŒÄ‚Ô‚×‚«
+	//ç¾åœ¨ä½ç½®ã‚’è¨ˆç®—ã—ã¦è¿”ã™
+	//ã‚¿ã‚¤ãƒ ã®æ›´æ–°ã¯è¡Œã‚ãªã„ã®ã§
+	//Updateå¾Œã«å‘¼ã¶ã¹ã
 	bsm::Vec3 MoveComponent::GetNowPosition() const {
 		if (GetTotalTime() <= 0) {
 			return pImpl->m_TargetPosition;
@@ -820,11 +820,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class MoveTo : public  MoveComponent ;
-	//	—p“r: –Ú“I‚ÌˆÊ’u‚ÉˆÚ“®
+	//	ç”¨é€”: ç›®çš„ã®ä½ç½®ã«ç§»å‹•
 	//--------------------------------------------------------------------------------------
 	MoveTo::MoveTo(const shared_ptr<GameObject>& GameObjectPtr) :
 		MoveComponent(GameObjectPtr) {}
-	MoveTo::~MoveTo() {}
+	MoveTo::â€¾MoveTo() {}
 
 	void MoveTo::SetParams(float TotalTime, const bsm::Vec3& TargetPosition, Lerp::rate Rate) {
 		SetTargetPosition(TargetPosition);
@@ -844,26 +844,26 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct MoveBy::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct MoveBy::Impl {
-		bsm::Vec3 m_LocalVector;	//‘Š‘Î•ûŒü
+		bsm::Vec3 m_LocalVector;	//ç›¸å¯¾æ–¹å‘
 		Impl() :
 			m_LocalVector(0, 0, 0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class MoveBy : public  MoveComponent ;
-	//	—p“r: –Ú“I‚Ì‘Š‘ÎˆÊ’u‚ÉˆÚ“®
+	//	ç”¨é€”: ç›®çš„ã®ç›¸å¯¾ä½ç½®ã«ç§»å‹•
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	MoveBy::MoveBy(const shared_ptr<GameObject>& GameObjectPtr) :
 		MoveComponent(GameObjectPtr), pImpl(new Impl()) {}
-	MoveBy::~MoveBy() {}
+	MoveBy::â€¾MoveBy() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Vec3& MoveBy::GetLocalVector() const { return pImpl->m_LocalVector; }
 	void MoveBy::SetLocalVector(const bsm::Vec3& LocalVector) { pImpl->m_LocalVector = LocalVector; }
 	void MoveBy::SetLocalVector(float x, float y, float z) { pImpl->m_LocalVector = bsm::Vec3(x, y, z); }
@@ -882,7 +882,7 @@ namespace basecross {
 		SetRateZ(RateZ);
 	}
 
-	//‘€ì
+	//æ“ä½œ
 	void MoveBy::Run() {
 		auto PtrTrans = GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 Pos = PtrTrans->GetWorldPosition();
@@ -895,14 +895,14 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Action::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Action::Impl {
 		bool m_Looped;
 
-		bool m_ScaleArrived;	//m_Loop‚ªfalse‚Ì‚Æ‚«‚Ì‚İ—LŒø
-		bool m_RotateArrived;	//m_Loop‚ªfalse‚Ì‚Æ‚«‚Ì‚İ—LŒø
-		bool m_MoveArrived;	//m_Loop‚ªfalse‚Ì‚Æ‚«‚Ì‚İ—LŒø
+		bool m_ScaleArrived;	//m_LoopãŒfalseã®ã¨ãã®ã¿æœ‰åŠ¹
+		bool m_RotateArrived;	//m_LoopãŒfalseã®ã¨ãã®ã¿æœ‰åŠ¹
+		bool m_MoveArrived;	//m_LoopãŒfalseã®ã¨ãã®ã¿æœ‰åŠ¹
 
 
 		vector<shared_ptr<ActionComponent> > m_ScaleVec;
@@ -922,22 +922,22 @@ namespace basecross {
 			m_RotateActiveIndex(0),
 			m_MoveActiveIndex(0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class Action : public Component ;
-	//	—p“r: ©“®ó‘Ô•ÏXƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: è‡ªå‹•çŠ¶æ…‹å¤‰æ›´ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	Action::Action(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	Action::~Action() {}
+	Action::â€¾Action() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	bool Action::IsLooped()const { return pImpl->m_Looped; }
 	bool Action::GetLooped()const { return pImpl->m_Looped; }
 	void Action::SetLooped(bool b) { pImpl->m_Looped = b; }
@@ -945,21 +945,21 @@ namespace basecross {
 	bool Action::IsArrived()const {
 		bool retScale = true;
 		if (pImpl->m_ScaleVec.size() > 0) {
-			//ƒAƒNƒVƒ‡ƒ“‚ª‚ ‚é‚ªI—¹‚µ‚Ä‚È‚¢
+			//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹ãŒçµ‚äº†ã—ã¦ãªã„
 			if (!pImpl->m_ScaleArrived) {
 				retScale = false;
 			}
 		}
 		bool retRot = true;
 		if (pImpl->m_RotateVec.size() > 0) {
-			//ƒAƒNƒVƒ‡ƒ“‚ª‚ ‚é‚ªI—¹‚µ‚Ä‚È‚¢
+			//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹ãŒçµ‚äº†ã—ã¦ãªã„
 			if (!pImpl->m_RotateArrived) {
 				retRot = false;
 			}
 		}
 		bool retMove = true;
 		if (pImpl->m_MoveVec.size() > 0) {
-			//ƒAƒNƒVƒ‡ƒ“‚ª‚ ‚é‚ªI—¹‚µ‚Ä‚È‚¢
+			//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒã‚ã‚‹ãŒçµ‚äº†ã—ã¦ãªã„
 			if (!pImpl->m_MoveArrived) {
 				retMove = false;
 			}
@@ -975,7 +975,7 @@ namespace basecross {
 	size_t Action::GetScaleActiveIndex() const {
 		if (pImpl->m_ScaleVec.size() <= 0) {
 			throw BaseException(
-				L"ƒXƒP[ƒ‹ƒAƒNƒVƒ‡ƒ“‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+				L"ã‚¹ã‚±ãƒ¼ãƒ«ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“",
 				L"if (pImpl->m_ScaleVec.size() <= 0)",
 				L"Action::GetScaleActiveIndex()"
 			);
@@ -985,7 +985,7 @@ namespace basecross {
 	size_t Action::GetRotateActiveIndex() const {
 		if (pImpl->m_RotateVec.size() <= 0) {
 			throw BaseException(
-				L"‰ñ“]ƒAƒNƒVƒ‡ƒ“‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+				L"å›è»¢ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“",
 				L"if (pImpl->m_RotateVec.size() <= 0)",
 				L"Action::GetRotateActiveIndex()"
 			);
@@ -995,7 +995,7 @@ namespace basecross {
 	size_t Action::GetMoveActiveIndex() const {
 		if (pImpl->m_MoveVec.size() <= 0) {
 			throw BaseException(
-				L"ˆÚ“®ƒAƒNƒVƒ‡ƒ“‚ª“o˜^‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+				L"ç§»å‹•ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ãŒç™»éŒ²ã•ã‚Œã¦ã„ã¾ã›ã‚“",
 				L"if (pImpl->m_MoveVec.size() <= 0)",
 				L"Action::GetMoveActiveIndex()"
 			);
@@ -1003,8 +1003,8 @@ namespace basecross {
 		return pImpl->m_MoveActiveIndex;
 	}
 
-	//Œ»İ‚Ì‘¬“x
-	//MoveƒRƒ“ƒ|[ƒlƒ“ƒg‚ª‚È‚¢ê‡‚Íbsm::Vec3(0,0,0)‚ğ•Ô‚·
+	//ç¾åœ¨ã®é€Ÿåº¦
+	//Moveã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒãªã„å ´åˆã¯bsm::Vec3(0,0,0)ã‚’è¿”ã™
 
 	bsm::Vec3 Action::GetVelocity()const {
 		if (pImpl->m_MoveVec.size() <= 0) {
@@ -1023,7 +1023,7 @@ namespace basecross {
 
 
 
-	//‘€ì
+	//æ“ä½œ
 	shared_ptr<ScaleTo> Action::AddScaleTo(float TotalTime, const bsm::Vec3& TargetScale, Lerp::rate Rate) {
 		auto Ptr = ObjectFactory::Create<ScaleTo>(GetGameObject());
 		Ptr->SetParams(TotalTime, TargetScale, Rate);
@@ -1047,7 +1047,7 @@ namespace basecross {
 	shared_ptr<ActionComponent> Action::GetScaleComponent(size_t TargetIndex)const {
 		if (TargetIndex >= pImpl->m_ScaleVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 				L"if (TargetIndex >= pImpl->m_ScaleVec.size())",
 				L"Action::GetScaleComponent()"
 			);
@@ -1100,7 +1100,7 @@ namespace basecross {
 	shared_ptr<ActionComponent> Action::GetRotateComponent(size_t TargetIndex)const {
 		if (TargetIndex >= pImpl->m_RotateVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 				L"if (TargetIndex >= pImpl->m_RotateVec.size())",
 				L"Action::GetRotateComponent()"
 			);
@@ -1152,7 +1152,7 @@ namespace basecross {
 	shared_ptr<ActionComponent> Action::GetMoveComponent(size_t TargetIndex)const {
 		if (TargetIndex >= pImpl->m_MoveVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 				L"if (TargetIndex >= pImpl->m_MoveVec.size())",
 				L"Action::GetMoveComponent()"
 			);
@@ -1163,7 +1163,7 @@ namespace basecross {
 	vector<shared_ptr<ActionComponent>>& Action::GetMoveVec() const {
 		return pImpl->m_MoveVec;
 	}
-	//‚·‚×‚Ä‚ÌƒAƒNƒVƒ‡ƒ“‚ğƒNƒŠƒA‚·‚é
+	//ã™ã¹ã¦ã®ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 	void Action::AllActionClear() {
 		pImpl->m_ScaleVec.clear();
 		pImpl->m_RotateVec.clear();
@@ -1221,19 +1221,19 @@ namespace basecross {
 			if (TgtVector[TgtIndex]->IsUpdateActive()) {
 				TgtVector[TgtIndex]->OnUpdate();
 				if (TgtVector[TgtIndex]->IsArrived()) {
-					//“’…‚µ‚½
-					//ƒCƒ“ƒfƒbƒNƒX‚ğ‰ÁZ
+					//åˆ°ç€ã—ãŸ
+					//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’åŠ ç®—
 					TgtIndex++;
 					if (TgtIndex >= TgtVector.size()) {
-						//”ÍˆÍŠO‚È‚ç
+						//ç¯„å›²å¤–ãªã‚‰
 						if (pImpl->m_Looped) {
 							TgtIndex = 0;
 							TgtVector[TgtIndex]->Run();
 						}
 						else {
 							TgtIndex = TgtVector.size() - 1;
-							//Run‚Ís‚í‚È‚¢
-							//“’…‚µ‚½
+							//Runã¯è¡Œã‚ãªã„
+							//åˆ°ç€ã—ãŸ
 							ret = true;
 						}
 					}
@@ -1245,7 +1245,7 @@ namespace basecross {
 		}
 		return ret;
 	}
-	//XV
+	//æ›´æ–°
 	void Action::OnUpdate() {
 		pImpl->m_ScaleArrived = UpdateSub(pImpl->m_ScaleVec, pImpl->m_ScaleActiveIndex);
 		pImpl->m_RotateArrived = UpdateSub(pImpl->m_RotateVec, pImpl->m_RotateActiveIndex);

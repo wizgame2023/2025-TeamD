@@ -1,2 +1,2 @@
-*.cpp diff=sjis
-*.h diff=sjis
+*.cpp text working-tree-encoding=sjis diff=sjis
+*.h   text working-tree-encoding=sjis diff=sjis

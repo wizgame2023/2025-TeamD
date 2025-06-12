@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -47,7 +47,7 @@ namespace basecross {
 
 	public:
 		BonePosition(shared_ptr<GameObject>& object,const wstring& name) : Component(object),m_FileName(name){}
-		virtual ~BonePosition(){}
+		virtual 窶ｾBonePosition(){}
 
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override{}

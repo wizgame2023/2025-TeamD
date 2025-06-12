@@ -1,6 +1,6 @@
 /*!
 @file BehaviorSteering.cpp
-@brief ‘€‘Çs“®ƒNƒ‰ƒXÀ‘Ì
+@brief æ“èˆµè¡Œå‹•ã‚¯ãƒ©ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -20,19 +20,19 @@ namespace basecross {
 			m_MaxSpeed(10.0f),
 			m_MaxForce(30.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 
 	//--------------------------------------------------------------------------------------
-	///	‘€‘Çs“®‚ÌeƒNƒ‰ƒX
+	///	æ“èˆµè¡Œå‹•ã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	SteeringBehavior::SteeringBehavior(const shared_ptr<GameObject>& GameObjectPtr) :
 		Behavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	SteeringBehavior::~SteeringBehavior() {}
+	SteeringBehavior::â€¾SteeringBehavior() {}
 
 	float SteeringBehavior::GetWeight() const { return pImpl->m_Weight; }
 	void SteeringBehavior::SetWeight(float f) { pImpl->m_Weight = f; }
@@ -46,12 +46,12 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	SeekSteerings“®ƒNƒ‰ƒX
+	///	SeekSteeringè¡Œå‹•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	SeekSteering::SeekSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr)
 	{}
-	SeekSteering::~SeekSteering() {}
+	SeekSteering::â€¾SeekSteering() {}
 
 	bsm::Vec3 SeekSteering::Execute(const bsm::Vec3& Force, const bsm::Vec3& Velocity, const bsm::Vec3& TargetPos) {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
@@ -72,19 +72,19 @@ namespace basecross {
 		Impl() :
 			m_Decl(3.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 
 	//--------------------------------------------------------------------------------------
-	///	ArriveSteerings“®ƒNƒ‰ƒX
+	///	ArriveSteeringè¡Œå‹•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	ArriveSteering::ArriveSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	ArriveSteering::~ArriveSteering() {}
+	ArriveSteering::â€¾ArriveSteering() {}
 
 	float ArriveSteering::GetDecl() const { return pImpl->m_Decl; }
 	void ArriveSteering::SetDecl(float f) { pImpl->m_Decl = f; }
@@ -100,13 +100,13 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	PursuitSteeringi’ÇÕjs“®ƒNƒ‰ƒX
+	///	PursuitSteeringï¼ˆè¿½è·¡ï¼‰è¡Œå‹•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 
 	PursuitSteering::PursuitSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr)
 	{}
-	PursuitSteering::~PursuitSteering() {}
+	PursuitSteering::â€¾PursuitSteering() {}
 
 	bsm::Vec3 PursuitSteering::Execute(const bsm::Vec3& Force, const bsm::Vec3& Velocity, const bsm::Vec3& TargetPos, const bsm::Vec3& TargetVelocity, const bsm::Vec3& TargetRotation) {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
@@ -126,28 +126,28 @@ namespace basecross {
 	//	struct WanderSteering::Impl;
 	//--------------------------------------------------------------------------------------
 	struct WanderSteering::Impl {
-		bsm::Vec3 m_WanderTarget;	//œpœj–Ú•W‚Ì‰ñ“]ŒW”i‘€‘Ç‚É‚æ‚Á‚Ä‘‚«Š·‚¦‚ç‚ê‚éj
-		float m_WanderRadius;	//œpœj”¼Œa
-		float m_WanderDistance;	//œpœj‰~‚Ü‚Å‚Ì‹——£
-		float m_WanderJitter;	//ƒ‰ƒ“ƒ_ƒ€•ÏˆÙ‚ÌÅ‘å’l
+		bsm::Vec3 m_WanderTarget;	//å¾˜å¾Šç›®æ¨™ã®å›è»¢ä¿‚æ•°ï¼ˆæ“èˆµã«ã‚ˆã£ã¦æ›¸ãæ›ãˆã‚‰ã‚Œã‚‹ï¼‰
+		float m_WanderRadius;	//å¾˜å¾ŠåŠå¾„
+		float m_WanderDistance;	//å¾˜å¾Šå††ã¾ã§ã®è·é›¢
+		float m_WanderJitter;	//ãƒ©ãƒ³ãƒ€ãƒ å¤‰ç•°ã®æœ€å¤§å€¤
 		Impl() :
 			m_WanderTarget(0, 0, 0),
 			m_WanderRadius(1.5f),
 			m_WanderDistance(1.0f),
 			m_WanderJitter(0.5f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	WanderSteeringiœpœjjs“®
+	///	WanderSteeringï¼ˆå¾˜å¾Šï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	WanderSteering::WanderSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	WanderSteering::~WanderSteering() {}
-	//ƒAƒNƒZƒT
+	WanderSteering::â€¾WanderSteering() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Vec3& WanderSteering::GetWanderTarget() const {
 		return pImpl->m_WanderTarget;
 	}
@@ -194,34 +194,34 @@ namespace basecross {
 	//	struct WallAvoidanceSteering::Impl;
 	//--------------------------------------------------------------------------------------
 	struct WallAvoidanceSteering::Impl {
-		vector<PLANE> m_PlaneVec;//‰ñ”ğ‚·‚×‚«–Ê‚Ì”z—ñ
+		vector<PLANE> m_PlaneVec;//å›é¿ã™ã¹ãé¢ã®é…åˆ—
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	WallAvoidanceSteeringi•Ç‰ñ”ğjs“®
+	///	WallAvoidanceSteeringï¼ˆå£å›é¿ï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	WallAvoidanceSteering::WallAvoidanceSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	WallAvoidanceSteering::~WallAvoidanceSteering() {}
+	WallAvoidanceSteering::â€¾WallAvoidanceSteering() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	vector<PLANE>& WallAvoidanceSteering::GetPlaneVec() const {
 		return pImpl->m_PlaneVec;
 	}
 	void WallAvoidanceSteering::SetPlaneVec(const vector<PLANE>& planevec) {
-		//•K‚¸ƒNƒŠƒA‚·‚é
+		//å¿…ãšã‚¯ãƒªã‚¢ã™ã‚‹
 		pImpl->m_PlaneVec.clear();
 		for (auto& v : planevec) {
 			pImpl->m_PlaneVec.push_back(v);
 		}
 	}
 	void WallAvoidanceSteering::SetPlaneVec(const vector<bsm::Plane4>& planevec) {
-		//•K‚¸ƒNƒŠƒA‚·‚é
+		//å¿…ãšã‚¯ãƒªã‚¢ã™ã‚‹
 		pImpl->m_PlaneVec.clear();
 		for (auto& v : planevec) {
 			PLANE p(v);
@@ -246,27 +246,27 @@ namespace basecross {
 	//	struct ObstacleAvoidanceSteering::Impl;
 	//--------------------------------------------------------------------------------------
 	struct ObstacleAvoidanceSteering::Impl {
-		vector<SPHERE> m_ObstacleSphereVec;		//‰ñ”ğ‚·‚×‚«áŠQ•¨‚ÌSPHERE”z—ñ
+		vector<SPHERE> m_ObstacleSphereVec;		//å›é¿ã™ã¹ãéšœå®³ç‰©ã®SPHEREé…åˆ—
 		float m_RoadWidth;
 		float m_RoadHeight;
 		Impl() :
 			m_RoadWidth(1.0f),
 			m_RoadHeight(1.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	 ObstacleAvoidanceSteeringiáŠQ•¨‰ñ”ğjs“®
+	///	 ObstacleAvoidanceSteeringï¼ˆéšœå®³ç‰©å›é¿ï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	ObstacleAvoidanceSteering::ObstacleAvoidanceSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	ObstacleAvoidanceSteering::~ObstacleAvoidanceSteering() {}
-	//ƒAƒNƒZƒT
-	//áŠQ•¨‚Ì”z—ñ
+	ObstacleAvoidanceSteering::â€¾ObstacleAvoidanceSteering() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
+	//éšœå®³ç‰©ã®é…åˆ—
 	const vector<SPHERE>& ObstacleAvoidanceSteering::GetObstacleSphereVec() const {
 		return pImpl->m_ObstacleSphereVec;
 	}
@@ -277,14 +277,14 @@ namespace basecross {
 		}
 	}
 
-	//“¹‚Ì‚‚³
+	//é“ã®é«˜ã•
 	float ObstacleAvoidanceSteering::GetRoadWidth() const {
 		return pImpl->m_RoadWidth;
 	}
 	void ObstacleAvoidanceSteering::SetRoadWidth(float f) {
 		pImpl->m_RoadWidth = f;
 	}
-	//“¹•
+	//é“å¹…
 	float ObstacleAvoidanceSteering::GetRoadHeight() const {
 		return pImpl->m_RoadHeight;
 	}
@@ -310,26 +310,26 @@ namespace basecross {
 	//	struct FollowPathSteering::Impl;
 	//--------------------------------------------------------------------------------------
 	struct FollowPathSteering::Impl {
-		Path m_Path;	//Œo˜H‚ğ‚ ‚ç‚í‚·ƒpƒX
-		float m_Decl;	//Œ¸‘¬’l
-		float m_WaypointSpan;	//Œo˜H‚Ì’†S‚©‚ç‚Ì‹——£
+		Path m_Path;	//çµŒè·¯ã‚’ã‚ã‚‰ã‚ã™ãƒ‘ã‚¹
+		float m_Decl;	//æ¸›é€Ÿå€¤
+		float m_WaypointSpan;	//çµŒè·¯ã®ä¸­å¿ƒã‹ã‚‰ã®è·é›¢
 		Impl() :
 			m_Decl(3.0f),
 			m_WaypointSpan(2.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	 FollowPathSteeringiŒo˜H’Ç]js“®
+	///	 FollowPathSteeringï¼ˆçµŒè·¯è¿½å¾“ï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	FollowPathSteering::FollowPathSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	FollowPathSteering::~FollowPathSteering() {}
+	FollowPathSteering::â€¾FollowPathSteering() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	void FollowPathSteering::SetPathList(const list<bsm::Vec3>& pathlist) {
 		pImpl->m_Path.SetList(pathlist);
 	}
@@ -366,7 +366,7 @@ namespace basecross {
 		auto TransPtr = GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 TempForce = Force;
 		if (IsFinished()) {
-			//I—¹‚µ‚Ä‚½‚çA“n‚³‚ê‚½ƒtƒH[ƒX‚ğ‚»‚Ì‚Ü‚Ü•Ô‚·
+			//çµ‚äº†ã—ã¦ãŸã‚‰ã€æ¸¡ã•ã‚ŒãŸãƒ•ã‚©ãƒ¼ã‚¹ã‚’ãã®ã¾ã¾è¿”ã™
 			return TempForce;
 		}
 		bsm::Vec3 WorkForce(0, 0, 0);
@@ -389,25 +389,25 @@ namespace basecross {
 		weak_ptr<GameObjectGroup> m_Group;
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	 AlignmentSteeringi®—ñjs“®
+	///	 AlignmentSteeringï¼ˆæ•´åˆ—ï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	AlignmentSteering::AlignmentSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	AlignmentSteering::~AlignmentSteering() {}
+	AlignmentSteering::â€¾AlignmentSteering() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	shared_ptr<GameObjectGroup> AlignmentSteering::GetGameObjectGroup() const {
 		auto shptr = pImpl->m_Group.lock();
 		if (!shptr) {
 			throw BaseException(
-				L"ƒOƒ‹[ƒv‚Í–³Œø‚Å‚·",
-				L"ƒOƒ‹[ƒv‚Ì‘¶İ‚ğŠm”F‚µ‚Ä‰º‚³‚¢",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã¯ç„¡åŠ¹ã§ã™",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã®å­˜åœ¨ã‚’ç¢ºèªã—ã¦ä¸‹ã•ã„",
 				L"AlignmentSteering::GetGameObjectGroup()"
 			);
 		}
@@ -437,25 +437,25 @@ namespace basecross {
 		weak_ptr<GameObjectGroup> m_Group;
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	 CohesionSteeringiŒ‹‡js“®
+	///	 CohesionSteeringï¼ˆçµåˆï¼‰è¡Œå‹•
 	//--------------------------------------------------------------------------------------
 	CohesionSteering::CohesionSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
-	CohesionSteering::~CohesionSteering() {}
+	CohesionSteering::â€¾CohesionSteering() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	shared_ptr<GameObjectGroup> CohesionSteering::GetGameObjectGroup() const {
 		auto shptr = pImpl->m_Group.lock();
 		if (!shptr) {
 			throw BaseException(
-				L"ƒOƒ‹[ƒv‚Í–³Œø‚Å‚·",
-				L"ƒOƒ‹[ƒv‚Ì‘¶İ‚ğŠm”F‚µ‚Ä‰º‚³‚¢",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã¯ç„¡åŠ¹ã§ã™",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã®å­˜åœ¨ã‚’ç¢ºèªã—ã¦ä¸‹ã•ã„",
 				L"CohesionSteering::GetGameObjectGroup()"
 			);
 		}
@@ -489,26 +489,26 @@ namespace basecross {
 		weak_ptr<GameObjectGroup> m_Group;
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	 SeparationSteeringi•ª—£js“®ƒNƒ‰ƒX
+	///	 SeparationSteeringï¼ˆåˆ†é›¢ï¼‰è¡Œå‹•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	SeparationSteering::SeparationSteering(const shared_ptr<GameObject>& GameObjectPtr) :
 		SteeringBehavior(GameObjectPtr),
 		pImpl(new Impl())
 	{}
 
-	SeparationSteering::~SeparationSteering() {}
-	//ƒAƒNƒZƒT
+	SeparationSteering::â€¾SeparationSteering() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	shared_ptr<GameObjectGroup> SeparationSteering::GetGameObjectGroup() const {
 		auto shptr = pImpl->m_Group.lock();
 		if (!shptr) {
 			throw BaseException(
-				L"ƒOƒ‹[ƒv‚Í–³Œø‚Å‚·",
-				L"ƒOƒ‹[ƒv‚Ì‘¶İ‚ğŠm”F‚µ‚Ä‰º‚³‚¢",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã¯ç„¡åŠ¹ã§ã™",
+				L"ã‚°ãƒ«ãƒ¼ãƒ—ã®å­˜åœ¨ã‚’ç¢ºèªã—ã¦ä¸‹ã•ã„",
 				L"SeparationSteering::GetGameObjectGroup()"
 			);
 		}

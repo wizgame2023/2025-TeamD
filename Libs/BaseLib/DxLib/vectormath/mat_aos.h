@@ -481,7 +481,7 @@ inline void print( const Matrix3 & mat )
 
 inline void print( const Matrix3 & mat, const char * name )
 {
-    printf("%s:\n", name);
+    printf("%s:¥n", name);
     print( mat );
 }
 
@@ -1213,7 +1213,7 @@ inline void print( const Matrix4 & mat )
 
 inline void print( const Matrix4 & mat, const char * name )
 {
-    printf("%s:\n", name);
+    printf("%s:¥n", name);
     print( mat );
 }
 
@@ -1659,7 +1659,7 @@ inline void print( const Transform3 & tfrm )
 
 inline void print( const Transform3 & tfrm, const char * name )
 {
-    printf("%s:\n", name);
+    printf("%s:¥n", name);
     print( tfrm );
 }
 

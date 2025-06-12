@@ -1,38 +1,38 @@
 /*!
 @file FullCommon.h
-@brief Fullƒo[ƒWƒ‡ƒ“—pƒ‰ƒCƒuƒ‰ƒŠiDx12ê—pŠÜ‚Şj—p‚Ìƒwƒbƒ_‚ğ‚Ü‚Æ‚ß‚é
+@brief Fullãƒãƒ¼ã‚¸ãƒ§ãƒ³ç”¨ãƒ©ã‚¤ãƒ–ãƒ©ãƒªï¼ˆDx12å°‚ç”¨å«ã‚€ï¼‰ç”¨ã®ãƒ˜ãƒƒãƒ€ã‚’ã¾ã¨ã‚ã‚‹
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
 #pragma once
 
 
-//‹¤—LƒŠƒ\[ƒX
-//‹¤—LƒŠƒ\[ƒX
+//å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹
+//å…±æœ‰ãƒªã‚½ãƒ¼ã‚¹
 #include "../SharedLib/SharedResources.h"
-//ƒRƒ“ƒ|[ƒlƒ“ƒg
+//ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "../SharedLib/Components.h"
-//ƒAƒNƒVƒ‡ƒ“ŒnƒRƒ“ƒ|[ƒlƒ“ƒg
+//ã‚¢ã‚¯ã‚·ãƒ§ãƒ³ç³»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "../SharedLib/Action.h"
-//•¨—ŒvZƒ}ƒl[ƒWƒƒ‚È‚Ç
+//ç‰©ç†è¨ˆç®—ãƒãƒãƒ¼ã‚¸ãƒ£ãªã©
 #include "../SharedLib/Rigidbody.h"
-//Õ“Ë”»’èƒRƒ“ƒ|[ƒlƒ“ƒg
+//è¡çªåˆ¤å®šã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "../SharedLib/Collision.h"
-//•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+//æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "DrawComponents.h"
-//Šg’£•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+//æ‹¡å¼µæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "DrawComponentsEx.h"
-//•¶š—ñ•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+//æ–‡å­—åˆ—æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 #include "StringComponents.h"
-//s“®ƒNƒ‰ƒX
+//è¡Œå‹•ã‚¯ãƒ©ã‚¹
 #include "../SharedLib/Behavior.h"
-//s“®ƒNƒ‰ƒX(RigidbodyŠÖ˜A)
+//è¡Œå‹•ã‚¯ãƒ©ã‚¹(Rigidbodyé–¢é€£)
 #include "../SharedLib/BehaviorSteering.h"
-//ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgAƒXƒe[ƒW‚È‚Ç
+//ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚¹ãƒ†ãƒ¼ã‚¸ãªã©
 #include "../SharedLib/GameObject.h"
-//Õ“Ë”»’èƒ}ƒl[ƒWƒƒ
+//è¡çªåˆ¤å®šãƒãƒãƒ¼ã‚¸ãƒ£
 #include "../SharedLib/CollisionManager.h"
-//ƒXƒvƒ‰ƒCƒgƒXƒ^ƒWƒI‚T
+//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¹ã‚¿ã‚¸ã‚ªï¼•
 #include "../SharedLib/SpriteStudio5.h"
 
 

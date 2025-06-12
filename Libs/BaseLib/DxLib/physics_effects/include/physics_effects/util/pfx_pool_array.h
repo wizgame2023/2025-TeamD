@@ -42,7 +42,7 @@ private:
 public:
 	
 	PfxPoolQueue(PfxHeapManager *pool,PfxUInt32 maxData);
-	~PfxPoolQueue();
+	‾PfxPoolQueue();
 	
 	PfxUInt32 size() const {return m_numData;}
 	
@@ -79,7 +79,7 @@ private:
 	
 public:
 	PfxPoolPriorityQueue(PfxHeapManager *pool,PfxUInt32 maxData);
-	~PfxPoolPriorityQueue();
+	‾PfxPoolPriorityQueue();
 	
 	PfxUInt32 size() const {return m_numData-1;}
 	
@@ -118,7 +118,7 @@ private:
 public:
 
 	inline PfxPoolStack(PfxHeapManager *pool,PfxUInt32 maxData);
-	inline ~PfxPoolStack();
+	inline ‾PfxPoolStack();
 	
 	PfxUInt32 size() const {return m_numData;}
 	
@@ -155,7 +155,7 @@ private:
 	
 public:
 	inline PfxPoolArray(PfxHeapManager *pool,PfxUInt32 maxData);
-	inline ~PfxPoolArray();
+	inline ‾PfxPoolArray();
 	
 	PfxUInt32 size() const {return m_numData;}
 	PfxUInt32 capacity() const {return m_maxData;}

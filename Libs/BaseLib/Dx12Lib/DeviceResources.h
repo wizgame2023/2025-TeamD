@@ -1,6 +1,6 @@
 /*!
 @file DeviceResources.h
-@brief ƒeƒNƒXƒ`ƒƒAƒƒbƒVƒ…ADx12ƒfƒoƒCƒXƒŠƒ\[ƒX
+@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€ãƒ¡ãƒƒã‚·ãƒ¥ã€Dx12ãƒ‡ãƒã‚¤ã‚¹ãƒªã‚½ãƒ¼ã‚¹
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -12,7 +12,7 @@ namespace basecross {
 #define BASECROSS_DXVERSION 12
 
 	//--------------------------------------------------------------------------------------
-	/// ƒƒ‚ƒŠã‚É•Û‚·‚éDx12ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+	/// ãƒ¡ãƒ¢ãƒªä¸Šã«ä¿æŒã™ã‚‹Dx12ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	class TextureResource : public BaseResource {
 		friend class ObjectFactory;
@@ -22,106 +22,106 @@ namespace basecross {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒfƒXƒgƒ‰ƒNƒ^
+		@breaf ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~TextureResource();
+		virtual â€¾TextureResource();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒƒ‚ƒŠã‚ÉƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìì¬
-		@param[in]	Width •
-		@param[in]	Height ‚‚³
-		@return	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìshared_ptr
+		@brief ãƒ¡ãƒ¢ãƒªä¸Šã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+		@param[in]	Width å¹…
+		@param[in]	Height é«˜ã•
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®shared_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		static  shared_ptr<TextureResource> CreateTextureResource(uint32_t Width, uint32_t Height, const vector<uint8_t>& data);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ‰æ‘œƒtƒ@ƒCƒ‹‚©‚çƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìì¬
-		@param[in]	FileName ƒtƒ@ƒCƒ‹–¼
-		@param[in]	TexType ‰æ‘œƒ^ƒCƒv
-		@return	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìshared_ptr
+		@brief ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ã‹ã‚‰ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+		@param[in]	FileName ãƒ•ã‚¡ã‚¤ãƒ«å
+		@param[in]	TexType ç”»åƒã‚¿ã‚¤ãƒ—
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®shared_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		static  shared_ptr<TextureResource> CreateTextureResource(const wstring& FileName, const wstring& TexType = L"WIC");
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒ‚Ì•‚ğ“¾‚é
-		@return	ƒeƒNƒXƒ`ƒƒ‚Ì•
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¹…ã‚’å¾—ã‚‹
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®å¹…
 		*/
 		//--------------------------------------------------------------------------------------
 		uint32_t GetTextureWidth();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒ‚Ì‚‚³‚ğ“¾‚é
-		@return	ƒeƒNƒXƒ`ƒƒ‚Ì‚‚³
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é«˜ã•ã‚’å¾—ã‚‹
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é«˜ã•
 		*/
 		//--------------------------------------------------------------------------------------
 		uint32_t GetTextureHeight();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒsƒNƒZƒ‹”‚ğ“¾‚é
-		@return	ƒsƒNƒZƒ‹”
+		@brief ãƒ”ã‚¯ã‚»ãƒ«æ•°ã‚’å¾—ã‚‹
+		@return	ãƒ”ã‚¯ã‚»ãƒ«æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		uint32_t GetPixelSize();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒXƒfƒXƒNƒvƒŠƒ^‚ğ“¾‚é
-		@return	ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒXƒfƒXƒNƒvƒŠƒ^
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ã‚’å¾—ã‚‹
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		const D3D12_RESOURCE_DESC& GetTextureResDesc() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒX‚ğ“¾‚é
-		@return	ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒX
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹ã‚’å¾—ã‚‹
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12Resource> GetTexture() const;
-		//ƒeƒNƒXƒ`ƒƒƒf[ƒ^
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒƒf[ƒ^‚ğ“¾‚é
-		@return	ƒeƒNƒXƒ`ƒƒƒf[ƒ^‚Ì”z—ñ
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿ã‚’å¾—ã‚‹
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿ã®é…åˆ—
 		*/
 		//--------------------------------------------------------------------------------------
 		vector<uint8_t>& GetData() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒƒf[ƒ^‚ğİ’è‚·‚é
-		@param[in]	data ƒf[ƒ^‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
+		@param[in]	data ãƒ‡ãƒ¼ã‚¿ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetData(const vector<uint8_t>& data);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒeƒNƒXƒ`ƒƒƒf[ƒ^‚ğİ’è‚·‚é(SetDataŠÖ”‚Æ“¯‚¶)
-		@param[in]	data ƒf[ƒ^‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹(SetDataé–¢æ•°ã¨åŒã˜)
+		@param[in]	data ãƒ‡ãƒ¼ã‚¿ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void UpdateTexture(const vector<uint8_t>& data);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŠƒ\[ƒX‚ğXV‚·‚é
-		@param[in]	commandList ƒRƒ}ƒ“ƒhƒŠƒXƒg
-		@return	‚È‚µ
+		@brief ãƒªã‚½ãƒ¼ã‚¹ã‚’æ›´æ–°ã™ã‚‹
+		@param[in]	commandList ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void UpdateResources(const ComPtr<ID3D12GraphicsCommandList>& commandList);
-		//‰¼‘zŠÖ”i‹óŠÖ”j
+		//ä»®æƒ³é–¢æ•°ï¼ˆç©ºé–¢æ•°ï¼‰
 		virtual void OnPreCreate()override {}
 		virtual void OnCreate()override {}
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	’¸“_‚²‚Æ‚ÌƒXƒLƒjƒ“ƒOî•ñ
+	///	é ‚ç‚¹ã”ã¨ã®ã‚¹ã‚­ãƒ‹ãƒ³ã‚°æƒ…å ±
 	//--------------------------------------------------------------------------------------
 	struct SkinPrimData {
 		uint32_t indices[4];
@@ -129,53 +129,53 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ˆê‚Â‚ÌƒƒbƒVƒ…ƒf[ƒ^
+	///	ä¸€ã¤ã®ãƒ¡ãƒƒã‚·ãƒ¥ãƒ‡ãƒ¼ã‚¿
 	//--------------------------------------------------------------------------------------
 	struct MeshPrimData {
-		//’¸“_ƒoƒbƒtƒ@
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> m_VertexBuffer;
-		//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> m_IndexBuffer;
-		//’¸“_‚Ì”
+		//é ‚ç‚¹ã®æ•°
 		UINT m_NumVertices;
-		//ƒCƒ“ƒfƒbƒNƒX‚Ì”
+		//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°
 		UINT m_NumIndicis;
-		//‚±‚ÌƒƒbƒVƒ…‚ÌŒ`ƒCƒ“ƒfƒbƒNƒX
+		//ã“ã®ãƒ¡ãƒƒã‚·ãƒ¥ã®å½¢ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		type_index m_MeshTypeIndex;
-		//ƒXƒgƒ‰ƒCƒh”
+		//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰æ•°
 		UINT m_NumStride;
-		//•`‰æƒgƒ|ƒƒW[
+		//æç”»ãƒˆãƒãƒ­ã‚¸ãƒ¼
 		D3D12_PRIMITIVE_TOPOLOGY m_PrimitiveTopology;
-		//ƒoƒbƒNƒAƒbƒvƒf[ƒ^
+		//ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ã‚¿
 		shared_ptr<BackupDataBase> m_BackUpData;
-		//ƒƒbƒVƒ…‚Æ‚Æƒ^ƒ“ƒXƒtƒH[ƒ€‚Ì·•ªs—ñiƒƒbƒVƒ…’PˆÊ‚Åİ’è‚·‚éê‡j
+		//ãƒ¡ãƒƒã‚·ãƒ¥ã¨ã¨ã‚¿ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã®å·®åˆ†è¡Œåˆ—ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§è¨­å®šã™ã‚‹å ´åˆï¼‰
 		bsm::Mat4x4 m_MeshToTransformMatrix;
-		//ƒƒbƒVƒ…‚Ì·•ªs—ñ‚ğİ’è‚·‚é‚©‚Ç‚¤‚©
+		//ãƒ¡ãƒƒã‚·ãƒ¥ã®å·®åˆ†è¡Œåˆ—ã‚’è¨­å®šã™ã‚‹ã‹ã©ã†ã‹
 		bool m_UseMeshToTransformMatrix;
-		//ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX(ƒƒbƒVƒ…’PˆÊ‚Åİ’è‚·‚éê‡)
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹(ãƒ¡ãƒƒã‚·ãƒ¥å˜ä½ã§è¨­å®šã™ã‚‹å ´åˆ)
 		weak_ptr<TextureResource> m_TextureResource;
-		//ƒ}ƒeƒŠƒAƒ‹‚Ì”z—ñiƒ‚ƒfƒ‹‚Åg—pj
+		//ãƒãƒ†ãƒªã‚¢ãƒ«ã®é…åˆ—ï¼ˆãƒ¢ãƒ‡ãƒ«ã§ä½¿ç”¨ï¼‰
 		vector<MaterialEx> m_MaterialExVec;
-		//ˆÈ‰ºAƒ{[ƒ“—p
-		//ƒ{[ƒ“‚©‚Ç‚¤‚©
+		//ä»¥ä¸‹ã€ãƒœãƒ¼ãƒ³ç”¨
+		//ãƒœãƒ¼ãƒ³ã‹ã©ã†ã‹
 		bool m_IsSkining;
-		//ƒ{[ƒ“‚Ì”
+		//ãƒœãƒ¼ãƒ³ã®æ•°
 		UINT m_BoneCount;
-		//ƒTƒ“ƒvƒŠƒ“ƒO”
+		//ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°æ•°
 		UINT m_SampleCount;
-		//ƒTƒ“ƒvƒŠƒ“ƒO‚³‚ê‚½ƒ{[ƒ“s—ñ
+		//ã‚µãƒ³ãƒ—ãƒªãƒ³ã‚°ã•ã‚ŒãŸãƒœãƒ¼ãƒ³è¡Œåˆ—
 		vector<bsm::Mat4x4> m_SampleMatrixVec;
-		//ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚Ìê‡‚ÌƒƒbƒVƒ…ƒCƒ“ƒfƒbƒNƒX
+		//ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®å ´åˆã®ãƒ¡ãƒƒã‚·ãƒ¥ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		UINT m_MultiMeshIndex;
-		//”Ä—p‚Ég‚¦‚éƒ[ƒJƒ‹’¸“_‚Ì”z—ñ
+		//æ±ç”¨ã«ä½¿ãˆã‚‹ãƒ­ãƒ¼ã‚«ãƒ«é ‚ç‚¹ã®é…åˆ—
 		vector<VertexPosition> m_Vertices;
-		//ƒXƒLƒjƒ“ƒOî•ñ
+		//ã‚¹ã‚­ãƒ‹ãƒ³ã‚°æƒ…å ±
 		vector<SkinPrimData> m_Skins;
 		MeshPrimData() :
 			m_IsSkining(false),
 			m_BoneCount(0),
 			m_SampleCount(0),
-			m_MeshTypeIndex(typeid(VertexPosition)),	//•Ö‹XãVertexPosition‚É‰Šú‰»
+			m_MeshTypeIndex(typeid(VertexPosition)),	//ä¾¿å®œä¸ŠVertexPositionã«åˆæœŸåŒ–
 			m_NumStride(sizeof(VertexPosition)),
 			m_PrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_TRIANGLELIST),
 			m_MeshToTransformMatrix(),
@@ -187,18 +187,18 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	/// Dx12ƒƒbƒVƒ…ƒNƒ‰ƒX
+	/// Dx12ãƒ¡ãƒƒã‚·ãƒ¥ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class MeshResource : public BaseResource {
 		friend class ObjectFactory;
-		ComPtr<ID3D12Resource> m_VertexBuffer;	//’¸“_ƒoƒbƒtƒ@
-		ComPtr<ID3D12Resource> m_IndexBuffer;	//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@
+		ComPtr<ID3D12Resource> m_VertexBuffer;	//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡
+		ComPtr<ID3D12Resource> m_IndexBuffer;	//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡
 		ComPtr<ID3D12Resource> m_VertexBufferUploadHeap;
 		ComPtr<ID3D12Resource> m_IndexBufferUploadHeap;
 		D3D12_VERTEX_BUFFER_VIEW m_VertexBufferView;
 		D3D12_INDEX_BUFFER_VIEW m_IndexBufferView;
-		UINT m_NumVertices;				//’¸“_‚Ì”
-		UINT m_NumIndicis;				//ƒCƒ“ƒfƒbƒNƒX”
+		UINT m_NumVertices;				//é ‚ç‚¹ã®æ•°
+		UINT m_NumIndicis;				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
 		bool m_AccessWrite;
 		bool m_DataRefresh;
 		shared_ptr<BackupDataBase> m_BackupData;
@@ -213,27 +213,27 @@ namespace basecross {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒfƒXƒgƒ‰ƒNƒ^
+		@breaf ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~MeshResource() {}
+		virtual â€¾MeshResource() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒCƒ“ƒfƒbƒNƒX‚ğŠÜ‚ŞƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìì¬
-		@tparam	T ’¸“_‚ÌŒ^
-		@param[in]	vertices ’¸“_‚Ì”z—ñ
-		@param[in]	indices ƒCƒ“ƒfƒbƒNƒX‚Ì”z—ñ
-		@param[in]	AccessWrite ’¸“_•ÏX‰Â”\‚©‚Ç‚¤‚©
-		@return	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìshared_ptr
+		@brief ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å«ã‚€ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+		@tparam	T é ‚ç‚¹ã®å‹
+		@param[in]	vertices é ‚ç‚¹ã®é…åˆ—
+		@param[in]	indices ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®é…åˆ—
+		@param[in]	AccessWrite é ‚ç‚¹å¤‰æ›´å¯èƒ½ã‹ã©ã†ã‹
+		@return	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®shared_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T>
 		static  shared_ptr<MeshResource> CreateMeshResource(const vector<T>& vertices, const vector<uint16_t>& indices, bool AccessWrite) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto Ptr = ObjectFactory::Create<MeshResource>();
 			Ptr->m_AccessWrite = AccessWrite;
-			//ƒf[ƒ^‚ÌƒoƒbƒNƒAƒbƒv
+			//ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 
 			auto DataPtr = make_shared< BackupData<T> >();
 			DataPtr->m_Vertices.clear();
@@ -246,7 +246,7 @@ namespace basecross {
 			}
 			Ptr->m_BackupData = DataPtr;
 			UINT vertexBufferSize = (UINT)(sizeof(T) * vertices.size());
-			//’¸“_ƒoƒbƒtƒ@‚Ìì¬
+			//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 			{
 				ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
 					&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT),
@@ -255,7 +255,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_COPY_DEST,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_VertexBuffer)),
-					L"’¸“_ƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -267,7 +267,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_GENERIC_READ,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_VertexBufferUploadHeap)),
-					L"’¸“_ƒAƒbƒvƒ[ƒhƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"é ‚ç‚¹ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -276,9 +276,9 @@ namespace basecross {
 				Ptr->m_VertexBufferView.StrideInBytes = static_cast<UINT>(sizeof(T));
 				Ptr->m_VertexBufferView.SizeInBytes = static_cast<UINT>(sizeof(T) * vertices.size());
 			}
-			//’¸“_”‚Ìİ’è
+			//é ‚ç‚¹æ•°ã®è¨­å®š
 			Ptr->m_NumVertices = static_cast<UINT>(vertices.size());
-			//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìì¬
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 			UINT indexBufferSize = static_cast<UINT>(sizeof(uint16_t) * indices.size());
 			{
 				ThrowIfFailed(Dev->GetD3DDevice()->CreateCommittedResource(
@@ -288,7 +288,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_COPY_DEST,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_IndexBuffer)),
-					L"ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -300,7 +300,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_GENERIC_READ,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_IndexBufferUploadHeap)),
-					L"ƒCƒ“ƒfƒbƒNƒXƒAƒbƒvƒ[ƒhƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -311,7 +311,7 @@ namespace basecross {
 				Ptr->m_IndexBufferView.SizeInBytes = indexBufferSize;
 
 			}
-			//ƒCƒ“ƒfƒbƒNƒX”‚Ìİ’è
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°ã®è¨­å®š
 			Ptr->m_NumIndicis = static_cast<UINT>(indices.size());
 			return Ptr;
 		}
@@ -319,21 +319,21 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒCƒ“ƒfƒbƒNƒX‚ğŠÜ‚Ü‚È‚¢ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìì¬
-		@tparam	T ’¸“_‚ÌŒ^
-		@param[in]	vertices ’¸“_‚Ì”z—ñ
-		@param[in]	AccessWrite ’¸“_•ÏX‰Â”\‚©‚Ç‚¤‚©
-		@return	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìshared_ptr
+		@brief ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å«ã¾ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+		@tparam	T é ‚ç‚¹ã®å‹
+		@param[in]	vertices é ‚ç‚¹ã®é…åˆ—
+		@param[in]	AccessWrite é ‚ç‚¹å¤‰æ›´å¯èƒ½ã‹ã©ã†ã‹
+		@return	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®shared_ptr
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T>
 		static  shared_ptr<MeshResource> CreateMeshResource(const vector<T>& vertices, bool AccessWrite) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto Ptr = ObjectFactory::Create<MeshResource>();
 			Ptr->m_AccessWrite = AccessWrite;
 
-			//ƒf[ƒ^‚ÌƒoƒbƒNƒAƒbƒv
+			//ãƒ‡ãƒ¼ã‚¿ã®ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—
 
 			auto DataPtr = make_shared< BackupData<T> >();
 			DataPtr->m_Vertices.clear();
@@ -351,7 +351,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_COPY_DEST,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_VertexBuffer)),
-					L"’¸“_ƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -363,7 +363,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_GENERIC_READ,
 					nullptr,
 					IID_PPV_ARGS(&Ptr->m_VertexBufferUploadHeap)),
-					L"’¸“_ƒAƒbƒvƒ[ƒhƒoƒbƒtƒ@ì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"é ‚ç‚¹ã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if(FAILED(pDx12Device->CreateCommittedResource())",
 					L"MeshResource::CreateMeshResource()"
 				);
@@ -372,18 +372,18 @@ namespace basecross {
 				Ptr->m_VertexBufferView.StrideInBytes = static_cast<UINT>(sizeof(T));
 				Ptr->m_VertexBufferView.SizeInBytes = static_cast<UINT>(sizeof(T) * vertices.size());
 			}
-			//’¸“_”‚Ìİ’è
+			//é ‚ç‚¹æ•°ã®è¨­å®š
 			Ptr->m_NumVertices = static_cast<UINT>(vertices.size());
 			return Ptr;
 		}
 
-		//ƒvƒŠƒ~ƒeƒBƒuƒŠƒ\[ƒX\’z
+		//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ãƒªã‚½ãƒ¼ã‚¹æ§‹ç¯‰
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf 4ŠpŒ`•½–Ê‚Ìì¬
-		@param[in]	size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf 4è§’å½¢å¹³é¢ã®ä½œæˆ
+		@param[in]	size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateSquare(float Size, bool AccessWrite = false) {
@@ -395,10 +395,10 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒLƒ…[ƒui—§•û‘Ìj‚Ìì¬
-		@param[in]	size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf ã‚­ãƒ¥ãƒ¼ãƒ–ï¼ˆç«‹æ–¹ä½“ï¼‰ã®ä½œæˆ
+		@param[in]	size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateCube(float Size, bool AccessWrite = false) {
@@ -409,11 +409,11 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ‹…‘Ì‚Ìì¬
-		@param[in]	Diameter		’¼Œa
-		@param[in]	Tessellation	•ªŠ„”
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf çƒä½“ã®ä½œæˆ
+		@param[in]	Diameter		ç›´å¾„
+		@param[in]	Tessellation	åˆ†å‰²æ•°
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateSphere(float Diameter, size_t Tessellation, bool AccessWrite = false) {
@@ -424,12 +424,12 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒJƒvƒZƒ‹‚Ìì¬
-		@param[in]	Diameter		’¼Œa
-		@param[in]	Height,		‚‚³
-		@param[in]	Tessellation	•ªŠ„”
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf ã‚«ãƒ—ã‚»ãƒ«ã®ä½œæˆ
+		@param[in]	Diameter		ç›´å¾„
+		@param[in]	Height,		é«˜ã•
+		@param[in]	Tessellation	åˆ†å‰²æ•°
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateCapsule(float Diameter, float Height, size_t Tessellation, bool AccessWrite = false) {
@@ -437,136 +437,136 @@ namespace basecross {
 			vector<uint16_t> indices;
 			bsm::Vec3 PointA(0, -Height / 2.0f, 0);
 			bsm::Vec3 PointB(0, Height / 2.0f, 0);
-			//Capsule‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Capsuleã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCapsule(Diameter, PointA, PointB, Tessellation, vertices, indices);
 			return CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒVƒŠƒ“ƒ_[‚Ìì¬
-		@param[in]	Height,		‚‚³
-		@param[in]	Diameter		’¼Œa
-		@param[in]	Tessellation	•ªŠ„”
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf ã‚·ãƒªãƒ³ãƒ€ãƒ¼ã®ä½œæˆ
+		@param[in]	Height,		é«˜ã•
+		@param[in]	Diameter		ç›´å¾„
+		@param[in]	Tessellation	åˆ†å‰²æ•°
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateCylinder(float Height, float Diameter, size_t Tessellation, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Cylinder‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Cylinderã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCylinder(Height, Diameter, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒR[ƒ“‚Ìì¬
-		@param[in]	Diameter		’¼Œa
-		@param[in]	Height,		‚‚³
-		@param[in]	Tessellation	•ªŠ„”
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf ã‚³ãƒ¼ãƒ³ã®ä½œæˆ
+		@param[in]	Diameter		ç›´å¾„
+		@param[in]	Height,		é«˜ã•
+		@param[in]	Tessellation	åˆ†å‰²æ•°
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateCone(float Diameter, float Height, size_t Tessellation, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Cone‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Coneã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateCone(Diameter, Height, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒg[ƒ‰ƒX‚Ìì¬
-		@param[in]	Diameter		’¼Œa
-		@param[in]	Thickness		ƒh[ƒiƒbƒc‚Ì‘¾‚³
-		@param[in]	Tessellation	•ªŠ„”
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf ãƒˆãƒ¼ãƒ©ã‚¹ã®ä½œæˆ
+		@param[in]	Diameter		ç›´å¾„
+		@param[in]	Thickness		ãƒ‰ãƒ¼ãƒŠãƒƒãƒ„ã®å¤ªã•
+		@param[in]	Tessellation	åˆ†å‰²æ•°
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateTorus(float Diameter, float Thickness, size_t Tessellation, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Torus‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Torusã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateTorus(Diameter, Thickness, Tessellation, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ³4–Ê‘Ì‚Ìì¬
-		@param[in]	Size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf æ­£4é¢ä½“ã®ä½œæˆ
+		@param[in]	Size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateTetrahedron(float Size, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Tetrahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Tetrahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateTetrahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ³8–Ê‘Ì‚Ìì¬
-		@param[in]	Size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf æ­£8é¢ä½“ã®ä½œæˆ
+		@param[in]	Size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateOctahedron(float Size, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Octahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Octahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateOctahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ³12–Ê‘Ì‚Ìì¬
-		@param[in]	Size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf æ­£12é¢ä½“ã®ä½œæˆ
+		@param[in]	Size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateDodecahedron(float Size, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Dodecahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Dodecahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateDodecahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ³20–Ê‘Ì‚Ìì¬
-		@param[in]	Size		1•Ó‚ÌƒTƒCƒY
-		@param[in]	AccessWrite	’¸“_‚ğ•ÏX‚Å‚«‚é‚©‚Ç‚¤‚©
-		@return	ƒŠƒ\[ƒX‚ÌƒXƒ}[ƒgƒ|ƒCƒ“ƒ^
+		@breaf æ­£20é¢ä½“ã®ä½œæˆ
+		@param[in]	Size		1è¾ºã®ã‚µã‚¤ã‚º
+		@param[in]	AccessWrite	é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‹ã©ã†ã‹
+		@return	ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		static shared_ptr<MeshResource> CreateIcosahedron(float Size, bool AccessWrite = false) {
-			//’¸“_”z—ñ
+			//é ‚ç‚¹é…åˆ—
 			vector<VertexPositionNormalTexture> vertices;
-			//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 			vector<uint16_t> indices;
-			//Icosahedron‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+			//Icosahedronã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 			MeshUtill::CreateIcosahedron(Size, vertices, indices);
 			return MeshResource::CreateMeshResource<VertexPositionNormalTexture>(vertices, indices, AccessWrite);
 		}
-		//–¢À‘•
+		//æœªå®Ÿè£…
 		static shared_ptr<MeshResource> CreateBoneModelMeshWithTangent(const wstring& BinDataDir,
 			const wstring& BinDataFile, bool AccessWrite = false) {
 			return nullptr;
@@ -574,8 +574,8 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ’¸“_ƒoƒbƒtƒ@‚Ìæ“¾
-		@return	’¸“_‚ÌQÆ
+		@breaf é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®å–å¾—
+		@return	é ‚ç‚¹ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		const ComPtr<ID3D12Resource>& GetVertexBuffer()const {
@@ -583,8 +583,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚Ìæ“¾
-		@return	’¸“_ƒoƒbƒtƒ@ƒrƒ…[‚ÌQÆ
+		@breaf é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®å–å¾—
+		@return	é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		const D3D12_VERTEX_BUFFER_VIEW& GetVertexBufferView() const {
@@ -592,8 +592,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ’¸“_”‚Ìæ“¾
-		@return	’¸“_”
+		@breaf é ‚ç‚¹æ•°ã®å–å¾—
+		@return	é ‚ç‚¹æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetNumVertices() const {
@@ -601,8 +601,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚Ìæ“¾
-		@return	ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌQÆ
+		@breaf ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®å–å¾—
+		@return	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		const ComPtr<ID3D12Resource>& GetIndexBuffer()const {
@@ -610,8 +610,8 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚Ìæ“¾
-		@return	ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@ƒrƒ…[‚ÌQÆ
+		@breaf ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®å–å¾—
+		@return	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ãƒ“ãƒ¥ãƒ¼ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		const D3D12_INDEX_BUFFER_VIEW& GetIndexBufferView() const {
@@ -619,28 +619,28 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒCƒ“ƒfƒbƒNƒX”‚Ìæ“¾
-		@return	ƒCƒ“ƒfƒbƒNƒX”
+		@breaf ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°ã®å–å¾—
+		@return	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetNumIndicis() const {
 			return m_NumIndicis;
 		}
 
-		//‘€ì
+		//æ“ä½œ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ’¸“_‚ÌXV
-		@tparam	T	’¸“_‚ÌŒ^
-		@param[in] vertices	’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief  é ‚ç‚¹ã®æ›´æ–°
+		@tparam	T	é ‚ç‚¹ã®å‹
+		@param[in] vertices	é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T>
 		void UpdateVirtex(const vector<T>& vertices) {
 			if (!m_AccessWrite) {
 				ThrowBaseException(
-					L"‚±‚ÌƒƒbƒVƒ…‚Ì’¸“_•ÏX‚Í‹–‰Â‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ã“ã®ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹å¤‰æ›´ã¯è¨±å¯ã•ã‚Œã¦ã„ã¾ã›ã‚“",
 					L"if (!m_AccessWrite)",
 					L"MeshResource::UpdateVirtex()"
 				);
@@ -660,10 +660,10 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒŠƒ\[ƒX‚ÌXV
-		@tparam	T	’¸“_‚ÌŒ^
-		@param[in] commandList	ƒRƒ}ƒ“ƒhƒŠƒXƒg
-		@return	‚È‚µ
+		@brief  ãƒªã‚½ãƒ¼ã‚¹ã®æ›´æ–°
+		@tparam	T	é ‚ç‚¹ã®å‹
+		@param[in] commandList	ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T>
@@ -675,7 +675,7 @@ namespace basecross {
 			if (!shptr) {
 				return;
 			}
-			//’¸“_ƒoƒbƒtƒ@‚ÌXV
+			//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 			D3D12_SUBRESOURCE_DATA vertexData = {};
 			vertexData.pData = (void*)&shptr->m_Vertices[0];
 			vertexData.RowPitch = shptr->m_Vertices.size() * sizeof(T);
@@ -683,7 +683,7 @@ namespace basecross {
 			UpdateSubresources<1>(commandList.Get(), m_VertexBuffer.Get(), m_VertexBufferUploadHeap.Get(), 0, 0, 1, &vertexData);
 			commandList->ResourceBarrier(1, &CD3DX12_RESOURCE_BARRIER::Transition(m_VertexBuffer.Get(),
 				D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_VERTEX_AND_CONSTANT_BUFFER));
-			//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌXV
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 			if (shptr->m_Indices.size() > 0) {
 				D3D12_SUBRESOURCE_DATA indexData = {};
 				indexData.pData = (void*)&shptr->m_Indices[0];
@@ -700,33 +700,33 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX
+	///	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	class MultiMeshResource : public BaseResource {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒvƒƒeƒNƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^<br />
-		\’z‚ÍƒXƒ^ƒeƒBƒbƒNŠÖ”‚ğ—˜—p‚·‚é
+		@brief	ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿<br />
+		æ§‹ç¯‰ã¯ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯é–¢æ•°ã‚’åˆ©ç”¨ã™ã‚‹
 		*/
 		//--------------------------------------------------------------------------------------
 		MultiMeshResource() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~MultiMeshResource() {}
+		virtual â€¾MultiMeshResource() {}
 		virtual void OnPreCreate()override {}
 		virtual void OnCreate()override {}
 	};
 
 
 
-	//”Ä—p“I‚Èİ’è—p’è‹`
+	//æ±ç”¨çš„ãªè¨­å®šç”¨å®šç¾©
 	//--------------------------------------------------------------------------------------
-	///	ƒuƒŒƒ“ƒhƒXƒe[ƒg
+	///	ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 	//--------------------------------------------------------------------------------------
 	enum class BlendState {
 		Opaque,
@@ -736,7 +736,7 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
+	///	ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 	//--------------------------------------------------------------------------------------
 	enum class DepthStencilState {
 		None,
@@ -745,18 +745,18 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg
+	///	ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ
 	//--------------------------------------------------------------------------------------
 	enum class RasterizerState {
 		CullNone,
 		CullFront,
 		CullBack,
 		Wireframe,
-		DoubleDraw,	//”w–Ê•`‰æ‚ÌŒãA‘O–Ê•`‰æ
+		DoubleDraw,	//èƒŒé¢æç”»ã®å¾Œã€å‰é¢æç”»
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒTƒ“ƒvƒ‰[ƒXƒe[ƒg
+	///	ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚¹ãƒ†ãƒ¼ãƒˆ
 	//--------------------------------------------------------------------------------------
 	enum class SamplerState {
 		SamplerNone,
@@ -775,177 +775,177 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	class DeviceResources;
 	/*!
-	DirectX12ƒfƒoƒCƒXƒNƒ‰ƒX
+	DirectX12ãƒ‡ãƒã‚¤ã‚¹ã‚¯ãƒ©ã‚¹
 	*/
 	//--------------------------------------------------------------------------------------
 	class DeviceResources {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in] hWnd	ƒEƒCƒ“ƒhƒE‚Ìƒnƒ“ƒhƒ‹
-		@param[in] isFullScreen ƒtƒ‹ƒXƒNƒŠ[ƒ“‚©‚Ç‚¤‚©
-		@param[in] Width		•
-		@param[in] Height		‚‚³
+		@breaf ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in] hWnd	ã‚¦ã‚¤ãƒ³ãƒ‰ã‚¦ã®ãƒãƒ³ãƒ‰ãƒ«
+		@param[in] isFullScreen ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã‹ã©ã†ã‹
+		@param[in] Width		å¹…
+		@param[in] Height		é«˜ã•
 		*/
 		//--------------------------------------------------------------------------------------
 		DeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@breaf ƒfƒXƒgƒ‰ƒNƒ^
+		@breaf ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~DeviceResources();
+		virtual â€¾DeviceResources();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒtƒŒ[ƒ€”‚ğ“¾‚é
-		@return	ƒtƒŒ[ƒ€”
+		@brief  ãƒ•ãƒ¬ãƒ¼ãƒ æ•°ã‚’å¾—ã‚‹
+		@return	ãƒ•ãƒ¬ãƒ¼ãƒ æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetFrameCount() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒtƒŒ[ƒ€ƒCƒ“ƒfƒbƒNƒX‚ğ“¾‚é
-		@return	ƒtƒŒ[ƒ€ƒCƒ“ƒfƒbƒNƒX
+		@brief  ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å¾—ã‚‹
+		@return	ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetFrameIndex() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒXƒƒbƒvƒ`ƒFƒCƒ“‚ğ“¾‚é
-		@return	ƒXƒƒbƒvƒ`ƒFƒCƒ“
+		@brief  ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ã‚¤ãƒ³ã‚’å¾—ã‚‹
+		@return	ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ã‚¤ãƒ³
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<IDXGISwapChain3> GetSwapChain() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒfƒoƒCƒX‚ğ“¾‚é
-		@return	ƒfƒoƒCƒX
+		@brief  ãƒ‡ãƒã‚¤ã‚¹ã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12Device> GetD3DDevice() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  D3D11On12ƒfƒoƒCƒX‚ğ“¾‚é
-		@return	ƒfƒoƒCƒX
+		@brief  D3D11On12ãƒ‡ãƒã‚¤ã‚¹ã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D11On12Device> Get11On12Device() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  D3D11DeviceContext‚ğ“¾‚é
-		@return	ƒfƒoƒCƒX
+		@brief  D3D11DeviceContextã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D11DeviceContext> GetD3D11DeviceContext() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ìì¬
-		@param[in] ShadowMapDimension	ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì•‹y‚Ñ‚‚³
-		@return	ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+		@brief ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®ä½œæˆ
+		@param[in] ShadowMapDimension	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¹…åŠã³é«˜ã•
+		@return	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<ShadowMapRenderTarget> CreateShadowMapRenderTarget(float ShadowMapDimension = 2048.0f);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚Ìæ“¾
-		@return	ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+		@brief ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®å–å¾—
+		@return	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<ShadowMapRenderTarget> GetShadowMapRenderTarget(float ShadowMapDimension = 2048.0f);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgi‚Ìƒ|ƒCƒ“ƒ^j‚ğ“¾‚é
-		@return	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgi‚Ìƒ|ƒCƒ“ƒ^j
+		@brief  ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼ˆã®ãƒã‚¤ãƒ³ã‚¿ï¼‰ã‚’å¾—ã‚‹
+		@return	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆï¼ˆã®ãƒã‚¤ãƒ³ã‚¿ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12Resource>* GetRenderTargets() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ“¾‚é
-		@return	w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+		@brief æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å¾—ã‚‹
+		@return	æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12Resource> GetRenderTarget(UINT Index) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief  2DƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğ“¾‚é
-		@return	2DƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+		@brief  2Dãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’å¾—ã‚‹
+		@return	2Dãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID2D1Bitmap1> Get2DRenderTargets(UINT Index) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒoƒbƒNƒoƒbƒtƒ@‚ğ“¾‚é
-		@return	w’è‚µ‚½ƒCƒ“ƒfƒbƒNƒX‚ÌƒoƒbƒNƒoƒbƒtƒ@
+		@brief æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡ã‚’å¾—ã‚‹
+		@return	æŒ‡å®šã—ãŸã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ãƒãƒƒã‚¯ãƒãƒƒãƒ•ã‚¡
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D11Resource> GetWrappedBackBuffer(UINT Index) const;
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^‚ğ“¾‚é
-		@return	ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^
+		@brief ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã‚’å¾—ã‚‹
+		@return	ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12CommandAllocator> GetCommandAllocator() const;
 		ComPtr<ID3D12CommandAllocator> GetCommandAllocator(UINT Index) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ}ƒ“ƒhƒLƒ…[‚ğ“¾‚é
-		@return	ƒRƒ}ƒ“ƒhƒLƒ…[
+		@brief ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã‚’å¾—ã‚‹
+		@return	ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚Ìƒq[ƒv—Ìˆæ‚ğ“¾‚é
-		@return	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚Ìƒq[ƒv—Ìˆæ
+		@brief ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ’ãƒ¼ãƒ—é ˜åŸŸã‚’å¾—ã‚‹
+		@return	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ’ãƒ¼ãƒ—é ˜åŸŸ
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12DescriptorHeap> GetRtvHeap() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒq[ƒv—Ìˆæ‚ğ“¾‚é
-		@return	ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒq[ƒv—Ìˆæ
+		@brief ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ’ãƒ¼ãƒ—é ˜åŸŸã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ’ãƒ¼ãƒ—é ˜åŸŸ
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12DescriptorHeap> GetDsvHeap() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒTƒCƒY‚ğ“¾‚é
-		@return	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒgƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒTƒCƒY
+		@brief ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ã‚µã‚¤ã‚ºã‚’å¾—ã‚‹
+		@return	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ã‚µã‚¤ã‚º
 		*/
 		//--------------------------------------------------------------------------------------
 		UINT GetRtvDescriptorSize() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒrƒ…[ƒ|[ƒg‚ğ“¾‚é
-		@return	ƒrƒ…[ƒ|[ƒg
+		@brief ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆã‚’å¾—ã‚‹
+		@return	ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		const D3D12_VIEWPORT& GetViewport() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒU[—Ìˆæ‚ğ“¾‚é
-		@return	ƒVƒU[—Ìˆæ
+		@brief ã‚·ã‚¶ãƒ¼é ˜åŸŸã‚’å¾—ã‚‹
+		@return	ã‚·ã‚¶ãƒ¼é ˜åŸŸ
 		*/
 		//--------------------------------------------------------------------------------------
 		const D3D12_RECT& GetScissorRect() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğ’Ç‰Á‚·‚é
-		@param[in] Tgt	ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìƒ|ƒCƒ“ƒ^i¶ƒ|ƒCƒ“ƒ^j
-		@return	‚È‚µ
+		@brief ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’è¿½åŠ ã™ã‚‹
+		@param[in] Tgt	ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒã‚¤ãƒ³ã‚¿ï¼ˆç”Ÿãƒã‚¤ãƒ³ã‚¿ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void InsertDrawCommandLists(ID3D12CommandList* Tgt);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğÀs‚µƒtƒƒ“ƒgƒoƒbƒtƒ@‚Ö‚Ì“]‘—‚ğs‚¤
-		@param[in] SyncInterval	ƒCƒ“ƒ^[ƒoƒ‹
-		@param[in] Flags	ƒtƒ‰ƒO
-		@return	‚È‚µ
+		@brief ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’å®Ÿè¡Œã—ãƒ•ãƒ­ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã¸ã®è»¢é€ã‚’è¡Œã†
+		@param[in] SyncInterval	ã‚¤ãƒ³ã‚¿ãƒ¼ãƒãƒ«
+		@param[in] Flags	ãƒ•ãƒ©ã‚°
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void Present(unsigned int SyncInterval, unsigned int  Flags);
@@ -953,8 +953,8 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ‚½‚Ü‚Á‚Ä‚¢‚éƒRƒ}ƒ“ƒhƒŠƒXƒg‚ğÀs‚µ‚ÄƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìƒoƒbƒtƒ@‚ğƒNƒŠƒA‚·‚é
-		@return	‚È‚µ
+		@brief ãŸã¾ã£ã¦ã„ã‚‹ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã‚’å®Ÿè¡Œã—ã¦ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒãƒƒãƒ•ã‚¡ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void ExecuteCommandLists();
@@ -962,268 +962,268 @@ namespace basecross {
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief 1‚Â‘O‚ÌƒtƒŒ[ƒ€‚Ìˆ—‚ğ‘Ò‚Â
-		@return	‚È‚µ
+		@brief 1ã¤å‰ã®ãƒ•ãƒ¬ãƒ¼ãƒ ã®å‡¦ç†ã‚’å¾…ã¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void WaitForPreviousFrame();
 
-		// D2D ƒAƒNƒZƒT
+		// D2D ã‚¢ã‚¯ã‚»ã‚µ
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	D2D1Factory2ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	D2D1Factory2ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	D2D1Factory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	D2D1Factory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ID2D1Factory2* GetD2DFactory() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	D2D1Device1ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	D2D1Device1ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	D2D1Device1ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	D2D1Device1ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ID2D1Device1* GetD2DDevice() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	D2D1DeviceContext1ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	D2D1DeviceContext1ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	D2D1DeviceContext1ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	D2D1DeviceContext1ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		ID2D1DeviceContext2* GetD2DDeviceContext() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	DWriteFactory2ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	DWriteFactory2ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	DWriteFactory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	DWriteFactory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IDWriteFactory* GetDWriteFactory() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	WICImagingFactory2ƒCƒ“ƒ^[ƒtƒFƒCƒX‚Ìæ“¾
-		@return	WICImagingFactory2ƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	WICImagingFactory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹ã®å–å¾—
+		@return	WICImagingFactory2ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IWICImagingFactory2* GetWicImagingFactory() const;
 
 
 
-		//‰¼‘zŠÖ”
+		//ä»®æƒ³é–¢æ•°
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒNƒŠƒAi–¢’è‹`j
-		@return	‚È‚µ
+		@brief ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ã‚¯ãƒªã‚¢ï¼ˆæœªå®šç¾©ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void ClearShadowmapViews();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒƒƒhƒEƒ}ƒbƒv•`‰æ‚ÌŠJn
-		@return	‚È‚µ
+		@brief ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—æç”»ã®é–‹å§‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void StartShadowmapDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒVƒƒƒhƒEƒ}ƒbƒv•`‰æ‚ÌI—¹
-		@return	‚È‚µ
+		@brief ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—æç”»ã®çµ‚äº†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void EndShadowmapDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ’Êí•`‰æ‚ÌƒNƒŠƒAi–¢’è‹`j
-		@return	‚È‚µ
+		@brief é€šå¸¸æç”»ã®ã‚¯ãƒªã‚¢ï¼ˆæœªå®šç¾©ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void ClearDefaultViews(const bsm::Col4& col = bsm::Col4(0, 0, 0, 1.0f));
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ’Êí•`‰æ‚ÌŠJni–¢’è‹`j
-		@return	‚È‚µ
+		@brief é€šå¸¸æç”»ã®é–‹å§‹ï¼ˆæœªå®šç¾©ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void StartDefaultDraw() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ’Êí•`‰æ‚ÌI—¹i–¢’è‹`j
-		@return	‚È‚µ
+		@brief é€šå¸¸æç”»ã®çµ‚äº†ï¼ˆæœªå®šç¾©ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void EndDefaultDraw() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg—Ş‚Ì€”õi–¢’è‹`j
-		@return	‚È‚µ
+		@brief ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆé¡ã®æº–å‚™ï¼ˆæœªå®šç¾©ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void InitRenderTargets() {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒeƒ“ƒc‚Ìì¬Œã‚Ìˆ—
-		@param[in]	ShadowActive	‰e‚ª—LŒø‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ä½œæˆå¾Œã®å‡¦ç†
+		@param[in]	ShadowActive	å½±ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void AfterInitContents(bool ShadowActive);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒL[‚ÉŠ„‚è“–‚Ä‚ç‚ê‚½ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğ“¾‚é
-		@param[in] Key	ƒL[
-		@return	Œ©‚Â‚©‚ê‚Îƒ‹[ƒgƒVƒOƒlƒ`ƒƒB‚È‚¯‚ê‚Înurrptr
+		@brief ã‚­ãƒ¼ã«å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’å¾—ã‚‹
+		@param[in] Key	ã‚­ãƒ¼
+		@return	è¦‹ã¤ã‹ã‚Œã°ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã€‚ãªã‘ã‚Œã°nurrptr
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12RootSignature> GetRootSignature(const wstring& Key);
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒL[‚ÉŠ„‚è“–‚Ä‚ç‚ê‚½ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ğİ’è‚·‚é
-		@param[in] Key	ƒL[
-		@param[in] rootsig	İ’è‚·‚éƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
-		@return	‚È‚µ
+		@brief ã‚­ãƒ¼ã«å‰²ã‚Šå½“ã¦ã‚‰ã‚ŒãŸãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã‚’è¨­å®šã™ã‚‹
+		@param[in] Key	ã‚­ãƒ¼
+		@param[in] rootsig	è¨­å®šã™ã‚‹ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetRootSignature(const wstring& Key,const ComPtr<ID3D12RootSignature>& rootsig);
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ìƒnƒ“ƒhƒ‹‚ğ“¾‚é
-		@return	ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚Ìƒnƒ“ƒhƒ‹
+		@brief ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å¾—ã‚‹
+		@return	ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		CD3DX12_CPU_DESCRIPTOR_HANDLE GetRtvHandle() const;
 
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹‚ğ“¾‚é
-		@return	ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹
+		@brief ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		CD3DX12_CPU_DESCRIPTOR_HANDLE GetDsvHandle() const;
 
 
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgŠî’êƒNƒ‰ƒX
+	///	ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆåŸºåº•ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class RenderTarget {
 	protected:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒvƒƒeƒNƒgƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		RenderTarget();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒvƒƒeƒNƒgƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ—ãƒ­ãƒ†ã‚¯ãƒˆãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~RenderTarget();
+		virtual â€¾RenderTarget();
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA‚·‚éƒˆ‰¼‘zŠÖ”
-		@param[in]	col	ƒNƒŠƒAF
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ç´”ç²‹ä»®æƒ³é–¢æ•°
+		@param[in]	col	ã‚¯ãƒªã‚¢è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void ClearViews(const bsm::Col4& col = bsm::Col4(0, 0, 0, 1.0f)) = 0;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŠJn‚·‚éƒˆ‰¼‘zŠÖ”
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é–‹å§‹ã™ã‚‹ç´”ç²‹ä»®æƒ³é–¢æ•°
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void StartRenderTarget() = 0;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğI—¹‚·‚éƒˆ‰¼‘zŠÖ”
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’çµ‚äº†ã™ã‚‹ç´”ç²‹ä»®æƒ³é–¢æ•°
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void EndRenderTarget() = 0;
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		RenderTarget(const RenderTarget&) = delete;
 		RenderTarget& operator=(const RenderTarget&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		RenderTarget(const RenderTarget&&) = delete;
 		RenderTarget& operator=(const RenderTarget&&) = delete;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+	///	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	//--------------------------------------------------------------------------------------
 	class ShadowMapRenderTarget : public RenderTarget {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	ShadowMapDimension	ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì‘å‚«‚³
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	ShadowMapDimension	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¤§ãã•
 		*/
 		//--------------------------------------------------------------------------------------
 		ShadowMapRenderTarget(float ShadowMapDimension);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~ShadowMapRenderTarget();
+		virtual â€¾ShadowMapRenderTarget();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì‘å‚«‚³‚ğ“¾‚é
-		@return	ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì‘å‚«‚³
+		@brief	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¤§ãã•ã‚’å¾—ã‚‹
+		@return	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¤§ãã•
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetShadowMapDimension() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA‚·‚é‰¼‘zŠÖ”
-		@param[in]	col	ƒNƒŠƒAF
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢ã™ã‚‹ä»®æƒ³é–¢æ•°
+		@param[in]	col	ã‚¯ãƒªã‚¢è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void ClearViews(const bsm::Col4& col = bsm::Col4(0, 0, 0, 1.0f)) override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŠJn‚·‚é
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é–‹å§‹ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void StartRenderTarget()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğI—¹‚·‚é
-		@return	‚È‚µ
+		@brief	ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’çµ‚äº†ã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void EndRenderTarget()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹‚ğ“¾‚é
-		@return	ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìƒnƒ“ƒhƒ‹
+		@brief ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«ã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒãƒ³ãƒ‰ãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		CD3DX12_CPU_DESCRIPTOR_HANDLE GetDsvHandle() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒvƒXƒXƒeƒ“ƒVƒ‹‚ğ“¾‚é
-		@return	ƒfƒvƒXƒXƒeƒ“ƒVƒ‹
+		@brief ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚’å¾—ã‚‹
+		@return	ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		ComPtr<ID3D12Resource> GetDepthStencil() const;
 
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -1234,21 +1234,21 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	/// ƒfƒXƒNƒvƒŠƒ^ƒq[ƒvƒ†[ƒeƒBƒŠƒeƒB
+	/// ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	namespace DescriptorHeap {
 		static inline ComPtr<ID3D12DescriptorHeap> CreateDirect(const D3D12_DESCRIPTOR_HEAP_DESC& desc) {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12DescriptorHeap> Ret;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateDescriptorHeap(&desc, IID_PPV_ARGS(&Ret)),
-				L"ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateDescriptorHeap()",
 				L"DescriptorHeap::CreateDirect()"
 			);
 			return Ret;
 		}
 		static inline ComPtr<ID3D12DescriptorHeap> CreateCbvSrvUavHeap(UINT NumDescriptorHeap) {
-			//CbvSrvƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//CbvSrvãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			D3D12_DESCRIPTOR_HEAP_DESC CbvSrvHeapDesc = {};
 			CbvSrvHeapDesc.NumDescriptors = NumDescriptorHeap;
 			CbvSrvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
@@ -1256,7 +1256,7 @@ namespace basecross {
 			return CreateDirect(CbvSrvHeapDesc);
 		}
 		static inline ComPtr<ID3D12DescriptorHeap> CreateSamplerHeap(UINT NumDescriptorHeap) {
-			//ƒTƒ“ƒvƒ‰[ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			D3D12_DESCRIPTOR_HEAP_DESC SamplerHeapDesc = {};
 			SamplerHeapDesc.NumDescriptors = NumDescriptorHeap;
 			SamplerHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER;
@@ -1267,7 +1267,7 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	/// ƒ‹[ƒgƒVƒOƒlƒ`ƒƒƒ†[ƒeƒBƒŠƒeƒB
+	/// ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	namespace RootSignature {
 		static inline ComPtr<ID3D12RootSignature> CreateDirect(const D3D12_ROOT_SIGNATURE_DESC& desc) {
@@ -1276,20 +1276,20 @@ namespace basecross {
 			ComPtr<ID3DBlob> error;
 			ComPtr<ID3D12RootSignature> Ret;
 			ThrowIfFailed(D3D12SerializeRootSignature(&desc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error),
-				L"ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ÌƒVƒŠƒAƒ‰ƒCƒY‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error)",
 				L"RootSignature::Create()"
 			);
 			ThrowIfFailed(
 				Dev->GetD3DDevice()->CreateRootSignature(0, signature->GetBufferPointer(),
 					signature->GetBufferSize(), IID_PPV_ARGS(&Ret)),
-				L"ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateRootSignature()",
 				L"RootSignature::Create()"
 			);
 			return Ret;
 		}
-		//ˆê”ÔƒVƒ“ƒvƒ‹‚Èƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+		//ä¸€ç•ªã‚·ãƒ³ãƒ—ãƒ«ãªãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 		static inline ComPtr<ID3D12RootSignature> CreateSimple() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12RootSignature> Ret = Dev->GetRootSignature(L"Simple");
@@ -1304,7 +1304,7 @@ namespace basecross {
 			Dev->SetRootSignature(L"Simple", Ret);
 			return Ret;
 		}
-		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ì‚İ
+		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ã¿
 		static inline ComPtr<ID3D12RootSignature> CreateCbv() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12RootSignature> Ret = Dev->GetRootSignature(L"Cbv");
@@ -1327,7 +1327,7 @@ namespace basecross {
 			Dev->SetRootSignature(L"Cbv", Ret);
 			return Ret;
 		}
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ÆƒTƒ“ƒvƒ‰[
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 		static inline ComPtr<ID3D12RootSignature> CreateSrvSmp() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12RootSignature> Ret = Dev->GetRootSignature(L"SrvSmp");
@@ -1350,7 +1350,7 @@ namespace basecross {
 			return Ret;
 		}
 
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒX‚ÆƒTƒ“ƒvƒ‰[‚ÆƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã¨ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 		static inline ComPtr<ID3D12RootSignature> CreateSrvSmpCbv() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12RootSignature> Ret = Dev->GetRootSignature(L"SrvSmpCbv");
@@ -1376,7 +1376,7 @@ namespace basecross {
 			Dev->SetRootSignature(L"SrvSmpCbv", Ret);
 			return Ret;
 		}
-		//ƒVƒF[ƒ_ƒŠƒ\[ƒX2‚Â‚ÆƒTƒ“ƒvƒ‰[2‚Â‚ÆƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@1‚Â
+		//ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹2ã¤ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼2ã¤ã¨ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡1ã¤
 		static inline ComPtr<ID3D12RootSignature> CreateSrv2Smp2Cbv() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12RootSignature> Ret = Dev->GetRootSignature(L"Srv2Smp2Cbv");
@@ -1411,12 +1411,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	/// ƒTƒ“ƒvƒ‰[ƒ†[ƒeƒBƒŠƒeƒBi•ÏX‰Â”\j
+	/// ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ï¼ˆå¤‰æ›´å¯èƒ½ï¼‰
 	//--------------------------------------------------------------------------------------
 	namespace DynamicSampler {
 		static inline void CreateSampler(const SamplerState State, D3D12_CPU_DESCRIPTOR_HANDLE& Handle) {
 			D3D12_SAMPLER_DESC samplerDesc = {};
-			//ƒfƒtƒHƒ‹ƒg‚ğ“ü‚ê‚Ä‚¨‚­
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã‚’å…¥ã‚Œã¦ãŠã
 			samplerDesc.Filter = D3D12_FILTER_MIN_MAG_MIP_LINEAR;
 			samplerDesc.AddressU = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
 			samplerDesc.AddressV = D3D12_TEXTURE_ADDRESS_MODE_CLAMP;
@@ -1482,7 +1482,7 @@ namespace basecross {
 				break;
 			}
 
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			Dev->GetD3DDevice()->CreateSampler(&samplerDesc, Handle);
 		}
@@ -1490,15 +1490,15 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	/// ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒgƒ†[ƒeƒBƒŠƒeƒB
+	/// ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	namespace PipelineState {
 		static inline ComPtr<ID3D12PipelineState> CreateDirect(const D3D12_GRAPHICS_PIPELINE_STATE_DESC& desc) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12PipelineState> Ret;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateGraphicsPipelineState(&desc, IID_PPV_ARGS(&Ret)),
-				L"ƒpƒCƒvƒ‰ƒCƒ“ƒXƒe[ƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³ã‚¹ãƒ†ãƒ¼ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateGraphicsPipelineState()",
 				L"PipelineState::CreateDirect()"
 			);
@@ -1532,7 +1532,7 @@ namespace basecross {
 		static inline ComPtr<ID3D12PipelineState> CreateDefault3D(const ComPtr<ID3D12RootSignature>& rootSignature, D3D12_GRAPHICS_PIPELINE_STATE_DESC& RetDesc) {
 
 			CD3DX12_RASTERIZER_DESC rasterizerStateDesc(D3D12_DEFAULT);
-			//— –ÊƒJƒŠƒ“ƒO
+			//è£é¢ã‚«ãƒªãƒ³ã‚°
 			rasterizerStateDesc.CullMode = D3D12_CULL_MODE_NONE;
 
 			ZeroMemory(&RetDesc, sizeof(RetDesc));
@@ -1564,7 +1564,7 @@ namespace basecross {
 		static inline ComPtr<ID3D12PipelineState> CreateShadowmap3D(const ComPtr<ID3D12RootSignature>& rootSignature, D3D12_GRAPHICS_PIPELINE_STATE_DESC& RetDesc) {
 
 			CD3DX12_RASTERIZER_DESC rasterizerStateDesc(D3D12_DEFAULT);
-			//•\–ÊƒJƒŠƒ“ƒO
+			//è¡¨é¢ã‚«ãƒªãƒ³ã‚°
 			rasterizerStateDesc.CullMode = D3D12_CULL_MODE_FRONT;
 			rasterizerStateDesc.FillMode = D3D12_FILL_MODE_SOLID;
 			rasterizerStateDesc.DepthClipEnable = TRUE;
@@ -1598,11 +1598,11 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	/// ƒRƒ}ƒ“ƒhƒŠƒXƒgƒ†[ƒeƒBƒŠƒeƒB
+	/// ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	namespace CommandList {
 		static inline  ComPtr<ID3D12GraphicsCommandList> CreateSimple() {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12GraphicsCommandList> Ret;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommandList(
@@ -1611,7 +1611,7 @@ namespace basecross {
 				Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(),
 				nullptr,
 				IID_PPV_ARGS(&Ret)),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommandList()",
 				L"CommandList::CreateSimple()"
 			);
@@ -1619,7 +1619,7 @@ namespace basecross {
 		}
 
 		static inline  ComPtr<ID3D12GraphicsCommandList> CreateDefault(const ComPtr<ID3D12PipelineState>& pipelineState) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12GraphicsCommandList> Ret;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommandList(
@@ -1628,14 +1628,14 @@ namespace basecross {
 				Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(),
 				pipelineState.Get(),
 				IID_PPV_ARGS(&Ret)),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommandList()",
 				L"CommandList::CreateDefault()"
 			);
 			return Ret;
 		}
 		static inline  ComPtr<ID3D12GraphicsCommandList> CreateCopy(const ComPtr<ID3D12PipelineState>& pipelineState) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ComPtr<ID3D12GraphicsCommandList> Ret;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommandList(
@@ -1644,7 +1644,7 @@ namespace basecross {
 				Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(),
 				pipelineState.Get(),
 				IID_PPV_ARGS(&Ret)),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommandList()",
 				L"CommandList::CreateCopy()"
 			);
@@ -1652,20 +1652,20 @@ namespace basecross {
 		}
 
 		static inline  void Reset(const ComPtr<ID3D12GraphicsCommandList>& commandList) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ThrowIfFailed(commandList->Reset(Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(), nullptr),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"commandList->Reset(Dev->GetCommandAllocator().Get(),nullptr)",
 				L"CommandList::Reset()"
 			);
 
 		}
 		static inline  void Reset(const ComPtr<ID3D12PipelineState>& pipelineState, const ComPtr<ID3D12GraphicsCommandList>& commandList) {
-			//ƒfƒoƒCƒX‚Ìæ“¾
+			//ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
 			auto Dev = App::GetApp()->GetDeviceResources();
 			ThrowIfFailed(commandList->Reset(Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(), pipelineState.Get()),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"commandList->Reset(Dev->GetCommandAllocator().Get(),pipelineState.Get())",
 				L"CommandList::Reset()"
 			);
@@ -1673,7 +1673,7 @@ namespace basecross {
 		}
 		static inline  void Close(const ComPtr<ID3D12GraphicsCommandList>& commandList) {
 			ThrowIfFailed(commandList->Close(),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"commandList->Close()",
 				L"CommandList::Close()"
 			);
@@ -1684,50 +1684,50 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒF[ƒ_ŠÖ˜AƒŠƒ\[ƒX‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
+	///	ã‚·ã‚§ãƒ¼ãƒ€é–¢é€£ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//--------------------------------------------------------------------------------------
 	class Dx12ShaderResource {
 	protected:
 		Dx12ShaderResource();
-		virtual ~Dx12ShaderResource();
-		//ƒVƒF[ƒ_ƒAƒNƒZƒT
+		virtual â€¾Dx12ShaderResource();
+		//ã‚·ã‚§ãƒ¼ãƒ€ã‚¢ã‚¯ã‚»ã‚µ
 		ID3DBlob* GetShaderBlob(const wstring& Filename, ComPtr<ID3DBlob>& ShaderComPtr);
 		ComPtr<ID3DBlob>& GetShaderBlobComPtr(const wstring& Filename, ComPtr<ID3DBlob>& ShaderComPtr);
 	private:
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		Dx12ShaderResource(const Dx12ShaderResource&) = delete;
 		Dx12ShaderResource& operator=(const Dx12ShaderResource&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		Dx12ShaderResource(const Dx12ShaderResource&&) = delete;
 		Dx12ShaderResource& operator=(const Dx12ShaderResource&&) = delete;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒ“ƒOƒ‹ƒgƒ“ƒVƒF[ƒ_‚ÌeƒNƒ‰ƒX(ƒVƒF[ƒ_‚Ìí—Ş‚É‚©‚©‚í‚ç‚¸“¯‚¶ƒNƒ‰ƒXg—p)
+	///	ã‚·ãƒ³ã‚°ãƒ«ãƒˆãƒ³ã‚·ã‚§ãƒ¼ãƒ€ã®è¦ªã‚¯ãƒ©ã‚¹(ã‚·ã‚§ãƒ¼ãƒ€ã®ç¨®é¡ã«ã‹ã‹ã‚ã‚‰ãšåŒã˜ã‚¯ãƒ©ã‚¹ä½¿ç”¨)
 	//--------------------------------------------------------------------------------------
 	template<typename ShaderType>
 	class Dx12Shader : public Dx12ShaderResource {
 		wstring m_Filename;
 	protected:
-		//ƒfƒŠ[ƒ^[
+		//ãƒ‡ãƒªãƒ¼ã‚¿ãƒ¼
 		struct Deleter
 		{
 			void operator()(ShaderType *p) { delete p; }
 		};
 		ComPtr<ID3DBlob> m_ShaderPtr;
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Dx12Shader<ShaderType>(const wstring& Filename) : Dx12ShaderResource(), m_Filename(Filename) {}
-		virtual ~Dx12Shader() {}
+		virtual â€¾Dx12Shader() {}
 		static unique_ptr<ShaderType, Deleter> m_Ptr;
 	public:
-		//ƒVƒF[ƒ_ŒöŠJƒAƒNƒZƒbƒT
+		//ã‚·ã‚§ãƒ¼ãƒ€å…¬é–‹ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 		ID3DBlob* GetShader() {
 			return GetShaderBlob(m_Filename, m_ShaderPtr);
 		}
 		ComPtr<ID3DBlob>& GetShaderComPtr() {
 			return GetShaderBlobComPtr(m_Filename, m_ShaderPtr);
 		}
-		//ƒCƒ“ƒXƒ^ƒ“ƒXæ“¾
+		//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹å–å¾—
 		static unique_ptr<ShaderType, Deleter>& GetPtr() {
 			if (!m_Ptr) {
 				m_Ptr.reset(new ShaderType());
@@ -1737,15 +1737,15 @@ namespace basecross {
 	};
 
 
-	//‚±‚ê‚æ‚èŒÂ•ÊƒVƒF[ƒ_[
-	//ƒVƒF[ƒ_éŒ¾—pƒ}ƒNƒ
-#define DECLARE_DX12SHADER(ShaderName) class ShaderName : public Dx12Shader<ShaderName>{ \
-	public: \
-		ShaderName(); \
+	//ã“ã‚Œã‚ˆã‚Šå€‹åˆ¥ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼
+	//ã‚·ã‚§ãƒ¼ãƒ€å®£è¨€ç”¨ãƒã‚¯ãƒ­
+#define DECLARE_DX12SHADER(ShaderName) class ShaderName : public Dx12Shader<ShaderName>{ Â¥
+	public: Â¥
+		ShaderName(); Â¥
 	};
-	//ƒVƒF[ƒ_À‘Ì—pƒ}ƒNƒ
-#define IMPLEMENT_DX12SHADER(ShaderName,CsoFilename) unique_ptr<ShaderName, ShaderName::Deleter> ShaderName::m_Ptr; \
-	ShaderName::ShaderName() : \
+	//ã‚·ã‚§ãƒ¼ãƒ€å®Ÿä½“ç”¨ãƒã‚¯ãƒ­
+#define IMPLEMENT_DX12SHADER(ShaderName,CsoFilename) unique_ptr<ShaderName, ShaderName::Deleter> ShaderName::m_Ptr; Â¥
+	ShaderName::ShaderName() : Â¥
 	Dx12Shader(CsoFilename){}
 
 

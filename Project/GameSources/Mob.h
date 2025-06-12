@@ -46,14 +46,14 @@ namespace basecross {
 		vector<shared_ptr <GameObject>> m_PointData;
 		shared_ptr<GameObject> m_BeforPoint;
 	
-		unique_ptr<EnemyState<Mob>> m_currentState;  //Œ»İ‚ÌƒXƒe[ƒg
-		unique_ptr<EnemyState<Mob>> m_nextState;     //Ÿ‚ÌƒXƒe[ƒg
+		unique_ptr<EnemyState<Mob>> m_currentState;  //ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
+		unique_ptr<EnemyState<Mob>> m_nextState;     //æ¬¡ã®ã‚¹ãƒ†ãƒ¼ãƒˆ
 
 		bool m_Update;
 	public:
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
-		~Mob();
+		â€¾Mob();
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnAfterCreate()override;

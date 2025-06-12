@@ -23,14 +23,14 @@ namespace PhysicsEffects {
 
 PfxBool pfxIntersectRayCylinder(const PfxRayInput &ray,PfxRayOutput &out,const PfxCylinder &cylinder,const PfxTransform3 &transform)
 {
-	// ƒŒƒC‚ğ‰~’Œ‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’å††æŸ±ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformCapsule = orthoInverse(transform);
 	PfxVector3 startPosL = transformCapsule.getUpper3x3() * ray.m_startPosition + transformCapsule.getTranslation();
 	PfxVector3 rayDirL = transformCapsule.getUpper3x3() * ray.m_direction;
 	
 	PfxFloat radSqr = cylinder.m_radius * cylinder.m_radius;
 
-	// n“_‚ª‰~’Œ‚Ì“à‘¤‚É‚ ‚é‚©”»’è
+	// å§‹ç‚¹ãŒå††æŸ±ã®å†…å´ã«ã‚ã‚‹ã‹åˆ¤å®š
 	{
 		PfxFloat h = startPosL[0];
 		if(-cylinder.m_halfLen <= h && h <= cylinder.m_halfLen) {
@@ -40,7 +40,7 @@ PfxBool pfxIntersectRayCylinder(const PfxRayInput &ray,PfxRayOutput &out,const P
 		}
 	}
 
-	// ‰~’Œ‚Ì“·‘Ì‚Æ‚ÌŒğ·”»’è
+	// å††æŸ±ã®èƒ´ä½“ã¨ã®äº¤å·®åˆ¤å®š
 	do {
 		PfxVector3 P(startPosL);
 		PfxVector3 D(rayDirL);
@@ -54,8 +54,8 @@ PfxBool pfxIntersectRayCylinder(const PfxRayInput &ray,PfxRayOutput &out,const P
 		
 		PfxFloat d = b * b - a * c;
 		
-		if(d < 0.0f) return false; // ƒŒƒC‚Íˆí‚ê‚Ä‚¢‚é
-		if(pfxAbsf(a) < 0.00001f) break; // ƒŒƒC‚ªX²‚É•½s
+		if(d < 0.0f) return false; // ãƒ¬ã‚¤ã¯é€¸ã‚Œã¦ã„ã‚‹
+		if(pfxAbsf(a) < 0.00001f) break; // ãƒ¬ã‚¤ãŒXè»¸ã«å¹³è¡Œ
 		
 		PfxFloat tt = ( -b - sqrtf(d) ) / a;
 		
@@ -75,7 +75,7 @@ PfxBool pfxIntersectRayCylinder(const PfxRayInput &ray,PfxRayOutput &out,const P
 		}
 	} while(0);
 	
-	// ‰~’Œ‚Ì—¼’[‚É‚ ‚é•½–Ê‚Æ‚ÌŒğ·”»’è
+	// å††æŸ±ã®ä¸¡ç«¯ã«ã‚ã‚‹å¹³é¢ã¨ã®äº¤å·®åˆ¤å®š
 	{
 		if(pfxAbsf(rayDirL[0]) < 0.00001f) return false;
 		

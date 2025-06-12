@@ -75,7 +75,7 @@ namespace
 
         void SetIndex(size_t uOffset, size_t uIndex) noexcept
         {
-            data &= ~(uint64_t(0x07) << (3 * uOffset + 16));
+            data &= ‾(uint64_t(0x07) << (3 * uOffset + 16));
             data |= (uint64_t(uIndex) << (3 * uOffset + 16));
         }
 
@@ -134,7 +134,7 @@ namespace
 
         void SetIndex(size_t uOffset, size_t uIndex) noexcept
         {
-            data &= ~(uint64_t(0x07) << (3 * uOffset + 16));
+            data &= ‾(uint64_t(0x07) << (3 * uOffset + 16));
             data |= (uint64_t(uIndex) << (3 * uOffset + 16));
         }
 

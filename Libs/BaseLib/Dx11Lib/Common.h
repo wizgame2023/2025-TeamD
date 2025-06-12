@@ -1,30 +1,30 @@
 /*!
 @file Common.h
-@brief ƒ‰ƒCƒuƒ‰ƒŠ—p‚Ìƒwƒbƒ_‚ð‚Ü‚Æ‚ß‚é
+@brief ãƒ©ã‚¤ãƒ–ãƒ©ãƒªç”¨ã®ãƒ˜ãƒƒãƒ€ã‚’ã¾ã¨ã‚ã‚‹
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
 #pragma once
 
-//ƒ†[ƒeƒBƒŠƒeƒBŠî–{ƒNƒ‰ƒXiíœƒeƒ“ƒvƒŒ[ƒgA—áŠOˆ—‚È‚Çj
+//ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£åŸºæœ¬ã‚¯ãƒ©ã‚¹ï¼ˆå‰Šé™¤ãƒ†ãƒ³ãƒ—ãƒ¬ãƒ¼ãƒˆã€ä¾‹å¤–å‡¦ç†ãªã©ï¼‰
 #include "../DxLib/BaseHelper.h"
-//XML“Ç‚Ýž‚Ý
+//XMLèª­ã¿è¾¼ã¿
 #include "../DxLib/XmlDoc.h"
-//ƒVƒ“ƒvƒ‹‚ÈŒvŽZƒNƒ‰ƒX
+//ã‚·ãƒ³ãƒ—ãƒ«ãªè¨ˆç®—ã‚¯ãƒ©ã‚¹
 #include "../DxLib/BaseMath.h"
-//•¨—ŒvŽZ
+//ç‰©ç†è¨ˆç®—
 #include "../DxLib/physics_effects/include/physics_effects.h"
-//Õ“Ë”»’èA•âŠÔˆ——pƒ†[ƒeƒBƒŠƒeƒB
+//è¡çªåˆ¤å®šã€è£œé–“å‡¦ç†ç”¨ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 #include "../DxLib/TransHelper.h"
-//’¸“_’è‹`A
+//é ‚ç‚¹å®šç¾©ã€
 #include "VertexHelper.h"
-//ƒvƒŠƒ~ƒeƒBƒuì¬ŠÖ”“™
+//ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä½œæˆé–¢æ•°ç­‰
 #include "../DxLib/MeshHelper.h"
-//ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ƒNƒ‰ƒX‚È‚Ç
+//ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ã‚¯ãƒ©ã‚¹ãªã©
 #include "../DxLib/App.h"
-//ƒfƒoƒCƒX‚È‚Ç
+//ãƒ‡ãƒã‚¤ã‚¹ãªã©
 #include "DeviceResources.h"
-//•¨—ŒvŽZƒCƒ“ƒ^[ƒtƒFƒCƒX
+//ç‰©ç†è¨ˆç®—ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 #include "../DxLib/BasePhysics.h"
 
 

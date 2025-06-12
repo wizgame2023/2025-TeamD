@@ -1,6 +1,6 @@
 /*!
 @file SpriteStudio5.h
-@brief ƒXƒvƒ‰ƒCƒgƒXƒ^ƒWƒI
+@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¹ã‚¿ã‚¸ã‚ª
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #pragma once
@@ -9,14 +9,14 @@
 namespace basecross {
 
 	//---------------------------------------------------------------
-	/// ƒ\[ƒgƒ‚[ƒh
+	/// ã‚½ãƒ¼ãƒˆãƒ¢ãƒ¼ãƒ‰
 	struct SsPartsSortMode
 	{
 		enum _enum
 		{
 			invalid = -1,
-			prio,			///< •`‰æ‡‚Í—Dæ“x‚Å§Œä‚·‚éB—Dæ“x‚ğ•\¦‚µA‚yÀ•W‚ğ‰B‚·B
-			z,				///< •`‰æ‡‚Í‚yÀ•W‚Å§Œä‚·‚éB‚yÀ•W‚ğ•\¦‚µA—Dæ“x‚ğ‰B‚·B
+			prio,			///< æç”»é †ã¯å„ªå…ˆåº¦ã§åˆ¶å¾¡ã™ã‚‹ã€‚å„ªå…ˆåº¦ã‚’è¡¨ç¤ºã—ã€ï¼ºåº§æ¨™ã‚’éš ã™ã€‚
+			z,				///< æç”»é †ã¯ï¼ºåº§æ¨™ã§åˆ¶å¾¡ã™ã‚‹ã€‚ï¼ºåº§æ¨™ã‚’è¡¨ç¤ºã—ã€å„ªå…ˆåº¦ã‚’éš ã™ã€‚
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -34,10 +34,10 @@ namespace basecross {
 		enum _enum
 		{
 			invalid = -1,
-			null,			///< nullB—Ìˆæ‚ğ‚½‚¸SRTî•ñ‚Ì‚İB‚½‚¾‚µ‰~Œ`‚Ì“–‚½‚è”»’è‚Íİ’è‰Â”\B
-			normal,			///< ’Êíƒp[ƒcB—Ìˆæ‚ğ‚ÂB‰æ‘œ‚Í–³‚­‚Ä‚à‚¢‚¢B
-			text,			///< ƒeƒLƒXƒg(—\–ñ@–¢À‘•j
-			instance,		///< ƒCƒ“ƒXƒ^ƒ“ƒXB‘¼ƒAƒjƒAƒp[ƒc‚Ö‚ÌQÆBƒV[ƒ“•ÒWƒ‚[ƒh‚Ì‘ã‘Ö‚É‚È‚é‚à‚Ì
+			null,			///< nullã€‚é ˜åŸŸã‚’æŒãŸãšSRTæƒ…å ±ã®ã¿ã€‚ãŸã ã—å††å½¢ã®å½“ãŸã‚Šåˆ¤å®šã¯è¨­å®šå¯èƒ½ã€‚
+			normal,			///< é€šå¸¸ãƒ‘ãƒ¼ãƒ„ã€‚é ˜åŸŸã‚’æŒã¤ã€‚ç”»åƒã¯ç„¡ãã¦ã‚‚ã„ã„ã€‚
+			text,			///< ãƒ†ã‚­ã‚¹ãƒˆ(äºˆç´„ã€€æœªå®Ÿè£…ï¼‰
+			instance,		///< ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã€‚ä»–ã‚¢ãƒ‹ãƒ¡ã€ãƒ‘ãƒ¼ãƒ„ã¸ã®å‚ç…§ã€‚ã‚·ãƒ¼ãƒ³ç·¨é›†ãƒ¢ãƒ¼ãƒ‰ã®ä»£æ›¿ã«ãªã‚‹ã‚‚ã®
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -52,18 +52,18 @@ namespace basecross {
 
 
 	//---------------------------------------------------------------
-	/// “–‚½‚è”»’èŒ`ó
+	/// å½“ãŸã‚Šåˆ¤å®šå½¢çŠ¶
 	struct SsBoundsType
 	{
 		enum _enum
 		{
 			invalid = -1,
-			none,			///< “–‚½‚è”»’è‚Æ‚µ‚Äg‚í‚È‚¢B
-			quad,			///< ©İ‚É•ÏŒ`‚·‚él•ÓŒ`B’¸“_•ÏŒ`‚È‚Ç“K—pŒã‚Ì‚SŠp‚ğŒ‹‚ñ‚¾—ÌˆæBÅ‚àd‚¢B
-			aabb,			///< ‰ñ“]‚µ‚È‚¢‘S‘Ì‚ğˆÍ‚Ş‹éŒ`‚ÅŒğ·”»’è
-			circle,			///< ^‰~‚Ì”¼Œa‚Å‹——£‚É‚æ‚è”»’è‚·‚é
-			circle_smin,	///< ^‰~‚Ì”¼Œa‚Å‹——£‚É‚æ‚è”»’è‚·‚é (ƒXƒP[ƒ‹‚Íx,y‚ÌÅ¬’l‚ğ‚Æ‚éj
-			circle_smax,	///< ^‰~‚Ì”¼Œa‚Å‹——£‚É‚æ‚è”»’è‚·‚é (ƒXƒP[ƒ‹‚Íx,y‚ÌÅ‘å’l‚ğ‚Æ‚éj
+			none,			///< å½“ãŸã‚Šåˆ¤å®šã¨ã—ã¦ä½¿ã‚ãªã„ã€‚
+			quad,			///< è‡ªåœ¨ã«å¤‰å½¢ã™ã‚‹å››è¾ºå½¢ã€‚é ‚ç‚¹å¤‰å½¢ãªã©é©ç”¨å¾Œã®ï¼”è§’ã‚’çµã‚“ã é ˜åŸŸã€‚æœ€ã‚‚é‡ã„ã€‚
+			aabb,			///< å›è»¢ã—ãªã„å…¨ä½“ã‚’å›²ã‚€çŸ©å½¢ã§äº¤å·®åˆ¤å®š
+			circle,			///< çœŸå††ã®åŠå¾„ã§è·é›¢ã«ã‚ˆã‚Šåˆ¤å®šã™ã‚‹
+			circle_smin,	///< çœŸå††ã®åŠå¾„ã§è·é›¢ã«ã‚ˆã‚Šåˆ¤å®šã™ã‚‹ (ã‚¹ã‚±ãƒ¼ãƒ«ã¯x,yã®æœ€å°å€¤ã‚’ã¨ã‚‹ï¼‰
+			circle_smax,	///< çœŸå††ã®åŠå¾„ã§è·é›¢ã«ã‚ˆã‚Šåˆ¤å®šã™ã‚‹ (ã‚¹ã‚±ãƒ¼ãƒ«ã¯x,yã®æœ€å¤§å€¤ã‚’ã¨ã‚‹ï¼‰
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -80,14 +80,14 @@ namespace basecross {
 
 
 	//---------------------------------------------------------------
-	/// Œp³ƒ^ƒCƒv
+	/// ç¶™æ‰¿ã‚¿ã‚¤ãƒ—
 	struct SsInheritType
 	{
 		enum _enum
 		{
 			invalid = -1,
-			parent,			///< e‚ÌŒp³•û–@‚ğ‚»‚Ì‚Ü‚Üˆø‚«Œp‚®
-			self,			///< ©g‚ªƒAƒgƒŠƒrƒ…[ƒg•Ê‚É‚ÂŒp³•û–@‚ğg‚¤
+			parent,			///< è¦ªã®ç¶™æ‰¿æ–¹æ³•ã‚’ãã®ã¾ã¾å¼•ãç¶™ã
+			self,			///< è‡ªèº«ãŒã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆåˆ¥ã«æŒã¤ç¶™æ‰¿æ–¹æ³•ã‚’ä½¿ã†
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -99,15 +99,15 @@ namespace basecross {
 	};
 
 	//---------------------------------------------------------------
-	/// ƒuƒŒƒ“ƒhƒ^ƒCƒv
+	/// ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¿ã‚¤ãƒ—
 	struct SsBlendType
 	{
 		enum _enum{
 			invalid = -1,
-			mix,			///< 0 ƒuƒŒƒ“ƒhiƒ~ƒbƒNƒXj
-			mul,			///< 1 æZ
-			add,			///< 2 ‰ÁZ
-			sub,			///< 3 Œ¸Z
+			mix,			///< 0 ãƒ–ãƒ¬ãƒ³ãƒ‰ï¼ˆãƒŸãƒƒã‚¯ã‚¹ï¼‰
+			mul,			///< 1 ä¹—ç®—
+			add,			///< 2 åŠ ç®—
+			sub,			///< 3 æ¸›ç®—
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -121,13 +121,13 @@ namespace basecross {
 	};
 
 
-	///ƒJƒ‰[ƒuƒŒƒ“ƒhƒL[‚ªg—p‚³‚ê‚Ä‚¢‚éÛ‚ÌƒJƒ‰[“K—p”ÍˆÍ‚Ì’è‹`
+	///ã‚«ãƒ©ãƒ¼ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚­ãƒ¼ãŒä½¿ç”¨ã•ã‚Œã¦ã„ã‚‹éš›ã®ã‚«ãƒ©ãƒ¼é©ç”¨ç¯„å›²ã®å®šç¾©
 	struct SsColorBlendTarget
 	{
 		enum _enum{
 			invalid = -1,
-			whole,	///< ’PFB‘S‘Ì‚É‚©‚¯‚éB
-			vertex,	///< ’¸“_’PˆÊ
+			whole,	///< å˜è‰²ã€‚å…¨ä½“ã«ã‹ã‘ã‚‹ã€‚
+			vertex,	///< é ‚ç‚¹å˜ä½
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -138,18 +138,18 @@ namespace basecross {
 		}
 	};
 
-	///•âŠÔƒ‚[ƒh‚Ì’è‹`
+	///è£œé–“ãƒ¢ãƒ¼ãƒ‰ã®å®šç¾©
 	struct SsInterpolationType
 	{
 		enum _enum
 		{
 			invalid = -1,
-			none,			///< ‚È‚µ
-			linear,			///< üŒ`
-			hermite,		///< ƒGƒ‹ƒ~[ƒg
-			bezier,			///< ƒxƒWƒF
-			acceleration,	///< ‰Á‘¬“x
-			deceleration,	///< Œ¸‘¬“x
+			none,			///< ãªã—
+			linear,			///< ç·šå½¢
+			hermite,		///< ã‚¨ãƒ«ãƒŸãƒ¼ãƒˆ
+			bezier,			///< ãƒ™ã‚¸ã‚§
+			acceleration,	///< åŠ é€Ÿåº¦
+			deceleration,	///< æ¸›é€Ÿåº¦
 			num,
 		};
 		static _enum ws2e(const wstring& s){
@@ -165,15 +165,15 @@ namespace basecross {
 	};
 
 
-	/// ƒeƒNƒXƒ`ƒƒƒ‰ƒbƒvƒ‚[ƒh
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ©ãƒƒãƒ—ãƒ¢ãƒ¼ãƒ‰
 	struct SsTexWrapMode
 	{
 		enum _enum
 		{
-			invalid = -1,	/// ‚È‚µ
-			clamp,			/// ƒNƒ‰ƒ“ƒv‚·‚é
-			repeat,			/// ƒŠƒs[ƒg
-			mirror,			/// ƒ~ƒ‰[
+			invalid = -1,	/// ãªã—
+			clamp,			/// ã‚¯ãƒ©ãƒ³ãƒ—ã™ã‚‹
+			repeat,			/// ãƒªãƒ”ãƒ¼ãƒˆ
+			mirror,			/// ãƒŸãƒ©ãƒ¼
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -185,14 +185,14 @@ namespace basecross {
 		}
 	};
 
-	/// ƒeƒNƒXƒ`ƒƒƒtƒBƒ‹ƒ^[ƒ‚[ƒh ‰æ‘f•âŠÔ•û–@
+	/// ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚£ãƒ«ã‚¿ãƒ¼ãƒ¢ãƒ¼ãƒ‰ ç”»ç´ è£œé–“æ–¹æ³•
 	struct SsTexFilterMode
 	{
 		enum _enum
 		{
 			invalid = -1,
-			nearest,	///< ƒjƒAƒŒƒXƒgƒlƒCƒo[
-			linear,		///< ƒŠƒjƒAAƒoƒCƒŠƒjƒA
+			nearest,	///< ãƒ‹ã‚¢ãƒ¬ã‚¹ãƒˆãƒã‚¤ãƒãƒ¼
+			linear,		///< ãƒªãƒ‹ã‚¢ã€ãƒã‚¤ãƒªãƒ‹ã‚¢
 			num
 		};
 		static _enum ws2e(const wstring& s){
@@ -203,44 +203,44 @@ namespace basecross {
 		}
 	};
 
-	/// ƒAƒgƒŠƒrƒ…[ƒg‚Ìí—Ş
+	/// ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®ç¨®é¡
 	struct SsAttributeKind
 	{
 		enum _enum
 		{
-			invalid = -1,	///< –³Œø’lB‹Œƒf[ƒ^‚©‚ç‚Ì•ÏŠ·‚È‚Ç
-			cell = 0,		///< [CELL]QÆƒZƒ‹
-			posx,		///< [POSX]ˆÊ’u.X
-			posy,		///< [POSY]ˆÊ’u.Y
-			posz,		///< [POSZ]ˆÊ’u.Z
-			rotx,		///< [ROTX]‰ñ“].X
-			roty,		///< [ROTY]‰ñ“].Y
-			rotz,		///< [ROTZ]‰ñ“].Z
-			sclx,		///< [SCLX]ƒXƒP[ƒ‹.X
-			scly,		///< [SCLY]ƒXƒP[ƒ‹.Y
-			alpha,		///< [ALPH]•s“§–¾“x
-			prio,		///< [PRIO]—Dæ“x
-			fliph,		///< [FLPH]¶‰E”½“](ƒZƒ‹‚ÌŒ´“_‚ğ²‚É‚·‚é)
-			flipv,		///< [FLPV]ã‰º”½“](ƒZƒ‹‚ÌŒ´“_‚ğ²‚É‚·‚é)
-			hide,		///< [HIDE]”ñ•\¦
-			color,		///< [VCOL]ƒJƒ‰[ƒuƒŒƒ“ƒh
-			vertex,		///< [VERT]’¸“_•ÏŒ`
-			pivotx,		///< [PVTX]Œ´“_ƒIƒtƒZƒbƒg.X
-			pivoty,		///< [PVTY]Œ´“_ƒIƒtƒZƒbƒg.Y
-			anchorx,	///< [ANCX]ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg.X
-			anchory,	///< [ANCY]ƒAƒ“ƒJ[ƒ|ƒCƒ“ƒg.Y
-			sizex,		///< [SIZX]•\¦ƒTƒCƒY.X
-			sizey,		///< [SIZY]•\¦ƒTƒCƒY.Y
-			imgfliph,	///< [IFLH]ƒCƒ[ƒW¶‰E”½“](í‚ÉƒCƒ[ƒW‚Ì’†‰›‚ğŒ´“_‚Æ‚·‚é)
-			imgflipv,	///< [IFLV]ƒCƒ[ƒWã‰º”½“](í‚ÉƒCƒ[ƒW‚Ì’†‰›‚ğŒ´“_‚Æ‚·‚é)
-			uvtx,		///< [UVTX]UVƒAƒjƒ.ˆÚ“®.X
-			uvty,		///< [UVTY]UVƒAƒjƒ.ˆÚ“®.Y
-			uvrz,		///< [UVRZ]UVƒAƒjƒ.‰ñ“]
-			uvsx,		///< [UVSX]UVƒAƒjƒ.ƒXƒP[ƒ‹.X
-			uvsy,		///< [UVSY]UVƒAƒjƒ.ƒXƒP[ƒ‹.Y
-			boundr,		///< [BNDR]“–‚½‚è”»’è—p‚Ì”¼Œa
-			user,		///< [USER]ƒ†[ƒU[ƒf[ƒ^
-			instance,	///< [IPRM]ƒCƒ“ƒXƒ^ƒ“ƒXƒp[ƒcƒpƒ‰ƒ[ƒ^
+			invalid = -1,	///< ç„¡åŠ¹å€¤ã€‚æ—§ãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã®å¤‰æ›æ™‚ãªã©
+			cell = 0,		///< [CELL]å‚ç…§ã‚»ãƒ«
+			posx,		///< [POSX]ä½ç½®.X
+			posy,		///< [POSY]ä½ç½®.Y
+			posz,		///< [POSZ]ä½ç½®.Z
+			rotx,		///< [ROTX]å›è»¢.X
+			roty,		///< [ROTY]å›è»¢.Y
+			rotz,		///< [ROTZ]å›è»¢.Z
+			sclx,		///< [SCLX]ã‚¹ã‚±ãƒ¼ãƒ«.X
+			scly,		///< [SCLY]ã‚¹ã‚±ãƒ¼ãƒ«.Y
+			alpha,		///< [ALPH]ä¸é€æ˜åº¦
+			prio,		///< [PRIO]å„ªå…ˆåº¦
+			fliph,		///< [FLPH]å·¦å³åè»¢(ã‚»ãƒ«ã®åŸç‚¹ã‚’è»¸ã«ã™ã‚‹)
+			flipv,		///< [FLPV]ä¸Šä¸‹åè»¢(ã‚»ãƒ«ã®åŸç‚¹ã‚’è»¸ã«ã™ã‚‹)
+			hide,		///< [HIDE]éè¡¨ç¤º
+			color,		///< [VCOL]ã‚«ãƒ©ãƒ¼ãƒ–ãƒ¬ãƒ³ãƒ‰
+			vertex,		///< [VERT]é ‚ç‚¹å¤‰å½¢
+			pivotx,		///< [PVTX]åŸç‚¹ã‚ªãƒ•ã‚»ãƒƒãƒˆ.X
+			pivoty,		///< [PVTY]åŸç‚¹ã‚ªãƒ•ã‚»ãƒƒãƒˆ.Y
+			anchorx,	///< [ANCX]ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ.X
+			anchory,	///< [ANCY]ã‚¢ãƒ³ã‚«ãƒ¼ãƒã‚¤ãƒ³ãƒˆ.Y
+			sizex,		///< [SIZX]è¡¨ç¤ºã‚µã‚¤ã‚º.X
+			sizey,		///< [SIZY]è¡¨ç¤ºã‚µã‚¤ã‚º.Y
+			imgfliph,	///< [IFLH]ã‚¤ãƒ¡ãƒ¼ã‚¸å·¦å³åè»¢(å¸¸ã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ä¸­å¤®ã‚’åŸç‚¹ã¨ã™ã‚‹)
+			imgflipv,	///< [IFLV]ã‚¤ãƒ¡ãƒ¼ã‚¸ä¸Šä¸‹åè»¢(å¸¸ã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ä¸­å¤®ã‚’åŸç‚¹ã¨ã™ã‚‹)
+			uvtx,		///< [UVTX]UVã‚¢ãƒ‹ãƒ¡.ç§»å‹•.X
+			uvty,		///< [UVTY]UVã‚¢ãƒ‹ãƒ¡.ç§»å‹•.Y
+			uvrz,		///< [UVRZ]UVã‚¢ãƒ‹ãƒ¡.å›è»¢
+			uvsx,		///< [UVSX]UVã‚¢ãƒ‹ãƒ¡.ã‚¹ã‚±ãƒ¼ãƒ«.X
+			uvsy,		///< [UVSY]UVã‚¢ãƒ‹ãƒ¡.ã‚¹ã‚±ãƒ¼ãƒ«.Y
+			boundr,		///< [BNDR]å½“ãŸã‚Šåˆ¤å®šç”¨ã®åŠå¾„
+			user,		///< [USER]ãƒ¦ãƒ¼ã‚¶ãƒ¼ãƒ‡ãƒ¼ã‚¿
+			instance,	///< [IPRM]ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒ‘ãƒ¼ãƒ„ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 			num,
 		};
 		static _enum ws2e(const wstring& s){
@@ -276,7 +276,7 @@ namespace basecross {
 			if (s == L"UVSY") return uvsy;
 			if (s == L"BNDR") return boundr;
 			if (s == L"USER") return user;
-			if (s == L"IPRM") return instance;	//SDK‚É–³‚µBÀ‘•˜R‚ê‚©H
+			if (s == L"IPRM") return instance;	//SDKã«ç„¡ã—ã€‚å®Ÿè£…æ¼ã‚Œã‹ï¼Ÿ
 			return invalid;
 		}
 	};
@@ -297,27 +297,27 @@ namespace basecross {
 		};
 	};
 
-	/// ‹Èü•âŠÔŒvZ—pƒpƒ‰ƒ[ƒ^
+	/// æ›²ç·šè£œé–“è¨ˆç®—ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 	struct SsCurve
 	{
-		float	startTime;		///< n“_ƒL[‚ÌŠÔ‚©‚ç§Œä“_‚ÌŠÔ‚Ö‚ÌƒIƒtƒZƒbƒg’lB‚w²‚É“–‚½‚éB
-		float	startValue;		///< n“_ƒL[‚Ì’l‚©‚ç	V	B‚x²	V
-		float	endTime;		///< I“_ƒL[‚ÌŠÔ‚©‚ç§Œä“_‚ÌŠÔ‚Ö‚ÌƒIƒtƒZƒbƒg’lB‚w²‚É“–‚½‚éB
-		float	endValue;		///< I“_ƒL[‚Ì’l‚©‚ç	V	B‚x²	V
+		float	startTime;		///< å§‹ç‚¹ã‚­ãƒ¼ã®æ™‚é–“ã‹ã‚‰åˆ¶å¾¡ç‚¹ã®æ™‚é–“ã¸ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã€‚ï¼¸è»¸ã«å½“ãŸã‚‹ã€‚
+		float	startValue;		///< å§‹ç‚¹ã‚­ãƒ¼ã®å€¤ã‹ã‚‰	ã€ƒ	ã€‚ï¼¹è»¸	ã€ƒ
+		float	endTime;		///< çµ‚ç‚¹ã‚­ãƒ¼ã®æ™‚é–“ã‹ã‚‰åˆ¶å¾¡ç‚¹ã®æ™‚é–“ã¸ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆå€¤ã€‚ï¼¸è»¸ã«å½“ãŸã‚‹ã€‚
+		float	endValue;		///< çµ‚ç‚¹ã‚­ãƒ¼ã®å€¤ã‹ã‚‰	ã€ƒ	ã€‚ï¼¹è»¸	ã€ƒ
 
-		float	startKeyTime;	///< [ƒ[ƒNƒpƒ‰ƒ[ƒ^] n“_ƒL[‚ÌŠÔ ŒvZ‚Ì‚İg—p
-		float	endKeyTime;		///< [ƒ[ƒNƒpƒ‰ƒ[ƒ^] I“_ƒL[‚ÌŠÔ ŒvZ‚Ì‚İg—p
+		float	startKeyTime;	///< [ãƒ¯ãƒ¼ã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿] å§‹ç‚¹ã‚­ãƒ¼ã®æ™‚é–“ è¨ˆç®—æ™‚ã®ã¿ä½¿ç”¨
+		float	endKeyTime;		///< [ãƒ¯ãƒ¼ã‚¯ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿] çµ‚ç‚¹ã‚­ãƒ¼ã®æ™‚é–“ è¨ˆç®—æ™‚ã®ã¿ä½¿ç”¨
 
-		bool	syncStartEnd;	///< [•ÒW—pƒpƒ‰ƒ[ƒ^]ƒJ[ƒuƒGƒfƒBƒ^‚Å‚Ì•ÒW‚Én“_EI“_ƒnƒ“ƒhƒ‹‚ğ“¯Šú‚µ‚Ä“®‚©‚·‚©H
+		bool	syncStartEnd;	///< [ç·¨é›†ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿]ã‚«ãƒ¼ãƒ–ã‚¨ãƒ‡ã‚£ã‚¿ã§ã®ç·¨é›†æ™‚ã«å§‹ç‚¹ãƒ»çµ‚ç‚¹ãƒãƒ³ãƒ‰ãƒ«ã‚’åŒæœŸã—ã¦å‹•ã‹ã™ã‹ï¼Ÿ
 
 		SsCurve() : startTime(0.f), startValue(0.f), endTime(0.f), endValue(0.f), startKeyTime(0.f), endKeyTime(0.f), syncStartEnd(false){}
-		~SsCurve(){}
+		â€¾SsCurve(){}
 
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5Util;
-	//	—p“r: SpriteStdioƒ†[ƒeƒBƒŠƒeƒB
+	//	ç”¨é€”: SpriteStdioãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	struct SS5Util{
 		static bsm::Vec3 WstrToVector3(const wstring& src){
@@ -345,7 +345,7 @@ namespace basecross {
 		static bsm::Col4 WstrARGBToColor4(const wstring& src){
 			if (src.size() != 8){
 				throw BaseException(
-					L"ƒJƒ‰[î•ñ‚ÉŠÔˆá‚¢‚ª‚ ‚è‚Ü‚·",
+					L"ã‚«ãƒ©ãƒ¼æƒ…å ±ã«é–“é•ã„ãŒã‚ã‚Šã¾ã™",
 					src,
 					L"SS5Util::WstrARGBTobsm::Col4()"
 					);
@@ -507,7 +507,7 @@ namespace basecross {
 		}
 
 
-		// ˆÀ‘S‚ÉD3DƒŠƒ\[ƒX‚ğì¬‚·‚éƒwƒ‹ƒp[ŠÖ”.
+		// å®‰å…¨ã«D3Dãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã™ã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°.
 		template<typename T, typename TCreateFunc>
 		static T* DemandCreate(Microsoft::WRL::ComPtr<T>& comPtr, std::mutex& mutex, TCreateFunc createFunc)
 		{
@@ -528,7 +528,7 @@ namespace basecross {
 			return result;
 		}
 
-		///•âŠÔ‚ÅƒJ[ƒuƒpƒ‰ƒ[ƒ^‚ª•K—v‚Èƒ^ƒCƒv‚©”»’è‚·‚é
+		///è£œé–“ã§ã‚«ãƒ¼ãƒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ãŒå¿…è¦ãªã‚¿ã‚¤ãƒ—ã‹åˆ¤å®šã™ã‚‹
 		static bool SsNeedsCurveParams(SsInterpolationType::_enum type)
 		{
 			switch (type)
@@ -541,7 +541,7 @@ namespace basecross {
 		}
 		//----------------------------------------------------------------------------
 		/**
-		ƒ^ƒCƒv‚ğw’è‚µ‚Ä•âŠÔ‚·‚é
+		ã‚¿ã‚¤ãƒ—ã‚’æŒ‡å®šã—ã¦è£œé–“ã™ã‚‹
 		*/
 		//----------------------------------------------------------------------------
 		static float SsInterpolate(SsInterpolationType::_enum type,
@@ -550,20 +550,20 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeLine;
-	//	—p“r: ƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“iŠî’êƒNƒ‰ƒXj
+	//	ç”¨é€”: ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³ï¼ˆåŸºåº•ã‚¯ãƒ©ã‚¹ï¼‰
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeLine{
 	protected:
-		SsAttributeKind::_enum type;	//ƒ^ƒCƒv
+		SsAttributeKind::_enum type;	//ã‚¿ã‚¤ãƒ—
 		SS5AnimeLine();
-		virtual ~SS5AnimeLine();
+		virtual â€¾SS5AnimeLine();
 	public:
 		SsAttributeKind::_enum GetType()const{ return type; }
 	private:
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		SS5AnimeLine(const  SS5AnimeLine&) = delete;
 		SS5AnimeLine& operator=(const  SS5AnimeLine&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		SS5AnimeLine(const  SS5AnimeLine&&) = delete;
 		SS5AnimeLine& operator=(const  SS5AnimeLine&&) = delete;
 
@@ -571,33 +571,33 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeBoolVal : public SS5AnimeLine;
-	//	—p“r: boolŒ^ƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: boolå‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeBoolVal : public SS5AnimeLine{
 	public:
 		SS5AnimeBoolVal(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeBoolVal();
-		//w’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeBoolVal();
+		//æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		bool GetValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeFloatVal : public SS5AnimeLine;
-	//	—p“r: floatŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: floatå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeFloatVal : public SS5AnimeLine{
 	public:
 		SS5AnimeFloatVal(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeFloatVal();
-		//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeFloatVal();
+		//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		float GetValue(float Time);
 		float GetScaleValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -609,16 +609,16 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeCellVal : public SS5AnimeLine;
-	//	—p“r: AnimeCellŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: AnimeCellå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeCellVal : public SS5AnimeLine{
 	public:
 		SS5AnimeCellVal(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeCellVal();
-		//w’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeCellVal();
+		//æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		AnimeCell GetValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -628,32 +628,32 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeWstrVal : public SS5AnimeLine;
-	//	—p“r: wstrngŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: wstrngå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeWstrVal : public SS5AnimeLine{
 	public:
 		SS5AnimeWstrVal(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeWstrVal();
-		//w’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeWstrVal();
+		//æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		wstring GetValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeColorVal : public SS5AnimeLine;
-	//	—p“r: bsm::Col4Œ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: bsm::Col4å‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeColorVal : public SS5AnimeLine{
 	public:
 		SS5AnimeColorVal(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeColorVal();
-		//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeColorVal();
+		//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		bsm::Col4 GetValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -672,16 +672,16 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Animebsm::Vec3Val : public SS5AnimeLine;
-	//	—p“r: bsm::Vec3Œ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: bsm::Vec3å‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5AnimeVector3Val : public SS5AnimeLine{
 	public:
 		SS5AnimeVector3Val(IXMLDOMNodePtr TgtNode, const wstring& typestr);
-		virtual ~SS5AnimeVector3Val();
-		//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+		virtual â€¾SS5AnimeVector3Val();
+		//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 		Vertex2DAnimeData GetValue(float Time);
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
@@ -690,14 +690,14 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Cell;
-	//	—p“r: SpriteStdioƒZƒ‹
+	//	ç”¨é€”: SpriteStdioã‚»ãƒ«
 	//--------------------------------------------------------------------------------------
 	class SS5Cell{
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		SS5Cell(IXMLDOMNodePtr Node);
-		virtual ~SS5Cell();
-		//ƒAƒNƒZƒbƒT
+		virtual â€¾SS5Cell();
+		//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 		const wstring& get_name() const;
 		const Point2D<float>& get_pos() const;
 		const Point2D<float>& get_pivot() const;
@@ -705,45 +705,45 @@ namespace basecross {
 		bool get_rotated() const;
 		bool is_rotated() const;
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		SS5Cell(const SS5Cell&) = delete;
 		SS5Cell& operator=(const SS5Cell&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		SS5Cell(const SS5Cell&&) = delete;
 		SS5Cell& operator=(const SS5Cell&&) = delete;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5ssce;
-	//	—p“r: SpriteStdio‚ÌssceƒNƒ‰ƒX
+	//	ç”¨é€”: SpriteStdioã®ssceã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class SS5ssce{
 	public:
-		//\’z‚ÆÁ–Å
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		SS5ssce(const wstring& BaseDir, const wstring& Xmlfilename);
-		virtual ~SS5ssce();
-		//ƒAƒNƒZƒbƒT
+		virtual â€¾SS5ssce();
+		//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 		const Point2D<float>& get_pixelSize() const;
-		//ƒZƒ‹‚ÌŒŸõ
+		//ã‚»ãƒ«ã®æ¤œç´¢
 		shared_ptr<SS5Cell> GetCell(const wstring& name);
-		//ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX–¼
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹å
 		const wstring& get_textureResname() const;
-		//ƒZƒ‹ƒ}ƒbƒv–¼
+		//ã‚»ãƒ«ãƒãƒƒãƒ—å
 		const wstring& get_name() const;
-		//ƒeƒNƒXƒ`ƒƒ
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		shared_ptr<TextureResource> GetTexture() const;
 
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		SS5ssce(const SS5ssce&) = delete;
 		SS5ssce& operator=(const SS5ssce&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		SS5ssce(const SS5ssce&&) = delete;
 		SS5ssce& operator=(const SS5ssce&&) = delete;
 	};
@@ -755,20 +755,20 @@ namespace basecross {
 	class SS5Animation;
 	//--------------------------------------------------------------------------------------
 	//	class SS5PartAnimation;
-	//	—p“r: ƒp[ƒc‚²‚Æ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+	//	ç”¨é€”: ãƒ‘ãƒ¼ãƒ„ã”ã¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5PartAnimation{
 	public:
-		//\’z‚ÆÁ–Å
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		SS5PartAnimation(IXMLDOMNodePtr TgtNode, SS5Animation* pSS5Animation);
-		~SS5PartAnimation();
-		//ƒAƒNƒZƒbƒT
+		â€¾SS5PartAnimation();
+		//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 		const wstring& GetpartName() const;
 
-		//ƒOƒŠƒbƒhƒTƒCƒY
+		//ã‚°ãƒªãƒƒãƒ‰ã‚µã‚¤ã‚º
 		float GetGridSize() const;
 
-		//‘€ì
+		//æ“ä½œ
 		bsm::Mat4x4 GetLocalMatrix();
 
 		bool GetHide();
@@ -778,13 +778,13 @@ namespace basecross {
 		Vertex2DAnimeData GetVirtex2DData();
 
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		SS5PartAnimation(const SS5PartAnimation&) = delete;
 		SS5PartAnimation& operator=(const SS5PartAnimation&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		SS5PartAnimation(const SS5PartAnimation&&) = delete;
 		SS5PartAnimation& operator=(const SS5PartAnimation&&) = delete;
 	};
@@ -792,15 +792,15 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Animation;
-	//	—p“r: ƒAƒjƒ[ƒVƒ‡ƒ“
+	//	ç”¨é€”: ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	//--------------------------------------------------------------------------------------
 	class SS5Animation{
 	public:
-		//\’z‚ÆÁ–Å
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		SS5Animation(IXMLDOMNodePtr TgtNode);
-		~SS5Animation();
+		â€¾SS5Animation();
 
-		//ƒAƒNƒZƒbƒT
+		//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 		const wstring& get_name() const;
 		vector< shared_ptr<SS5PartAnimation> >& get_PartAnimationVec();
 		const Point2D<float>& get_canvasSize() const;
@@ -810,27 +810,27 @@ namespace basecross {
 		float  get_fps() const;
 		void set_fps(float f);
 
-		//ƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
+		//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
 		bool IsLooped() const;
 		bool GetLooped() const;
-		//ƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+		//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
 		void SetLooped(bool b);
-		//ƒAƒjƒ‚ªI—¹‚µ‚½‚©‚Ç‚¤‚©
+		//ã‚¢ãƒ‹ãƒ¡ãŒçµ‚äº†ã—ãŸã‹ã©ã†ã‹
 		bool IsAnimeEnd() const;
 
 
-		//‘€ì
-		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚Ì‰Šú‰»
+		//æ“ä½œ
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®åˆæœŸåŒ–
 		void SetCurrentTime(float AnimeTime);
-		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ÌXV
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®æ›´æ–°
 		void AddCurrentTime(float TimeSpan);
-		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ğ‚à‚Æ‚ÉƒtƒŒ[ƒ€‚ğŒvZ‚µ•Ô‚·
+		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã‚’ã‚‚ã¨ã«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆç®—ã—è¿”ã™
 		float GetAnimationTimer2Frame();
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		SS5Animation(SS5Animation const&);
 		SS5Animation& operator=(SS5Animation const&);
 	};
@@ -839,71 +839,71 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SSPart : public  GameObject;
-	//	—p“r: SSPartƒNƒ‰ƒX(Šeƒp[ƒc)
+	//	ç”¨é€”: SSPartã‚¯ãƒ©ã‚¹(å„ãƒ‘ãƒ¼ãƒ„)
 	//--------------------------------------------------------------------------------------
 	class SSPart : public  GameObject{
 	public:
-		//\’z‚ÆÁ–Å
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		SSPart(const shared_ptr<Stage>& StagePtr, const wstring& SsaeName, vector< shared_ptr<SS5ssce> >& SS5sscePtrVec,
 			IXMLDOMNodePtr ScanNode, IXMLDOMNodePtr TgtNode, const shared_ptr<SSPart>& Parent,bool SpriteType);
-		virtual ~SSPart();
-		//‰Šú‰»
+		virtual â€¾SSPart();
+		//åˆæœŸåŒ–
 		virtual void OnCreate() override;
-		//ƒAƒNƒZƒT
+		//ã‚¢ã‚¯ã‚»ã‚µ
 		int get_arrayIndex();
 		float GetPrio();
 		void SetSS5ssae(const shared_ptr<SS5ssae>& pSS5ssae);
 
-		//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©(Getter‚Ì‚İ)
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹(Getterã®ã¿)
 		bool GetSpriteType() const;
 		bool IsSpriteType() const;
 
-		//‘€ì
-		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
+		//æ“ä½œ
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
 		void ChangeAnimation(shared_ptr<SS5Animation> AnimationPtr);
-		//ƒAƒjƒ[ƒVƒ‡ƒ“Œã‚Ìs—ñ‚ğŒvZ‚·‚é(ZSort–³‚µ)
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã®è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹(ZSortç„¡ã—)
 		void CaluclateMatrix();
 		void SetPartInVector(vector<SSPart*>& PartVec);
 
 		virtual void OnDraw()override;
 
 	private:
-		//’¸“_‚Ì•ÏX
+		//é ‚ç‚¹ã®å¤‰æ›´
 		void ResetVirtex();
 		void ResetSpriteVirtex();
 
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5ssae :  public GameObject;
-	//	—p“r: SpriteStdio‚ÌssaeƒNƒ‰ƒXiƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒbƒNj
+	//	ç”¨é€”: SpriteStdioã®ssaeã‚¯ãƒ©ã‚¹ï¼ˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒƒã‚¯ï¼‰
 	//--------------------------------------------------------------------------------------
 	class SS5ssae : public  GameObject{
 	public:
-		//\’z‚ÆÁ–Å
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		SS5ssae(const shared_ptr<Stage>& StagePtr, const wstring& BaseDir,
 			const wstring& Xmlfilename, const wstring& StartAnimeName,bool SpriteType = false);
-		virtual ~SS5ssae();
-		//‰Šú‰»
+		virtual â€¾SS5ssae();
+		//åˆæœŸåŒ–
 		virtual void OnCreate() override;
-		//ƒAƒNƒZƒbƒT
-		//SS5ssae‚©‚çƒAƒjƒ[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ö‚Ìs—ñ
+		//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
+		//SS5ssaeã‹ã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®è¡Œåˆ—
 		const bsm::Mat4x4& GetToAnimeMatrix() const;
 		void SetToAnimeMatrix(const bsm::Mat4x4& mat);
 
-		//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©(Getter‚Ì‚İ)
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹(Getterã®ã¿)
 		bool GetSpriteType() const;
 		bool IsSpriteType() const;
 
-		//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
+		//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
 		bool IsLooped() const;
 		bool GetLooped() const;
-		//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+		//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
 		void SetLooped(bool b);
-		//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªÀsI—¹‚µ‚½‚©‚Ç‚¤‚©
+		//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå®Ÿè¡Œçµ‚äº†ã—ãŸã‹ã©ã†ã‹
 		bool IsAnimeEnd() const;
 
 		void SetTextureOnlyNoLight(bool b);
@@ -911,24 +911,24 @@ namespace basecross {
 		bool IsTextureOnlyNoLight() const;
 
 
-		//‘€ì
-		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
+		//æ“ä½œ
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
 		void ChangeAnimation(const wstring& AnimationName, float AnimeTime = 0);
-		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğXV‚·‚é
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’æ›´æ–°ã™ã‚‹
 		void UpdateAnimeTime(float TimeSpan);
-		//fpsiÄ¶ƒXƒs[ƒhj‚ğİ’è‚·‚é
+		//fpsï¼ˆå†ç”Ÿã‚¹ãƒ”ãƒ¼ãƒ‰ï¼‰ã‚’è¨­å®šã™ã‚‹
 		void SetFps(float f);
-		//ƒ‹[ƒg‚Ìƒp[ƒc‚ğæ“¾‚·‚é
+		//ãƒ«ãƒ¼ãƒˆã®ãƒ‘ãƒ¼ãƒ„ã‚’å–å¾—ã™ã‚‹
 		const shared_ptr<SSPart>& GetRootPart() const;
-		//‚·‚×‚Ä‚Ìƒp[ƒc‚Ìƒfƒtƒ…[ƒY‚ğ•ÏX‚·‚é
+		//ã™ã¹ã¦ã®ãƒ‘ãƒ¼ãƒ„ã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºã‚’å¤‰æ›´ã™ã‚‹
 		void SetAllPartsDiffuse(const bsm::Col4& c);
-		//‚·‚×‚Ä‚Ìƒp[ƒc‚ÌƒGƒ~ƒbƒVƒu‚ğ•ÏX‚·‚é
+		//ã™ã¹ã¦ã®ãƒ‘ãƒ¼ãƒ„ã®ã‚¨ãƒŸãƒƒã‚·ãƒ–ã‚’å¤‰æ›´ã™ã‚‹
 		void SetAllPartsEmissive(const bsm::Col4& c);
 
 		virtual void OnUpdate() override{}
 		virtual void OnDraw()override;
 	private:
-		//ImplƒCƒfƒBƒIƒ€
+		//Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
