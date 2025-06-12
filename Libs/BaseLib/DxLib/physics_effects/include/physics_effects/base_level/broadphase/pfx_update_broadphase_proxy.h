@@ -29,7 +29,7 @@ namespace PhysicsEffects {
 // Update Broadphase Proxy
 
 //E For single axis
-//J �P�ꎲ�ɑ΂��č쐬
+//J 単一軸に対して作成
 PfxInt32 pfxUpdateBroadphaseProxy(
 	PfxBroadphaseProxy &proxy,
 	const PfxRigidState &state,
@@ -48,7 +48,7 @@ PfxInt32 pfxUpdateBroadphaseProxy(
 	PfxUInt32 axis);
 
 //E For all axes
-//J �S���ɑ΂��č쐬
+//J 全軸に対して作成
 PfxInt32 pfxUpdateBroadphaseProxy(
 	PfxBroadphaseProxy &proxyX,
 	PfxBroadphaseProxy &proxyY,

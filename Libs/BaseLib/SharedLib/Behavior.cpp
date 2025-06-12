@@ -1,6 +1,6 @@
 /*!
 @file Behavior.cpp
-@brief s“®ƒNƒ‰ƒXÀ‘Ì
+@brief è¡Œå‹•ã‚¯ãƒ©ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -16,21 +16,21 @@ namespace basecross {
 		explicit Impl(const shared_ptr<GameObject>& GameObjectPtr) :
 			m_GameObject(GameObjectPtr)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	s“®ƒNƒ‰ƒX‚ÌeƒNƒ‰ƒX
+	///	è¡Œå‹•ã‚¯ãƒ©ã‚¹ã®è¦ªã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	Behavior::Behavior(const shared_ptr<GameObject>& GameObjectPtr) :
 		pImpl(new Impl(GameObjectPtr))
 	{}
-	Behavior::~Behavior() {}
+	Behavior::â€¾Behavior() {}
 	shared_ptr<GameObject> Behavior::GetGameObject() const {
 		auto shptr = pImpl->m_GameObject.lock();
 		if (!shptr) {
 			throw BaseException(
-				L"GameObject‚Í—LŒø‚Å‚Í‚ ‚è‚Ü‚¹‚ñ",
+				L"GameObjectã¯æœ‰åŠ¹ã§ã¯ã‚ã‚Šã¾ã›ã‚“",
 				L"if (!shptr)",
 				L"Behavior::GetGameObject()"
 			);
@@ -44,17 +44,17 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	s“®ƒ†[ƒeƒBƒŠƒeƒBƒNƒ‰ƒX
+	///	è¡Œå‹•ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//is•ûŒü‚ğŒü‚­‚æ‚¤‚É‚·‚é
+	//é€²è¡Œæ–¹å‘ã‚’å‘ãã‚ˆã†ã«ã™ã‚‹
 	void UtilBehavior::RotToHead(float LerpFact) {
 		if (LerpFact <= 0.0f) {
-			//•âŠÔŒW”‚ª0ˆÈ‰º‚È‚ç‰½‚à‚µ‚È‚¢
+			//è£œé–“ä¿‚æ•°ãŒ0ä»¥ä¸‹ãªã‚‰ä½•ã‚‚ã—ãªã„
 			return;
 		}
-		//‰ñ“]‚ÌXV
-		//Velocity‚Ì’l‚ÅA‰ñ“]‚ğ•ÏX‚·‚é
-		//‚±‚ê‚Åis•ûŒü‚ğŒü‚­‚æ‚¤‚É‚È‚é
+		//å›è»¢ã®æ›´æ–°
+		//Velocityã®å€¤ã§ã€å›è»¢ã‚’å¤‰æ›´ã™ã‚‹
+		//ã“ã‚Œã§é€²è¡Œæ–¹å‘ã‚’å‘ãã‚ˆã†ã«ãªã‚‹
 		auto PtrTransform = GetGameObject()->GetComponent<Transform>();
 		bsm::Vec3 Velocity = PtrTransform->GetVelocity();
 		if (Velocity.length() > 0.0f) {
@@ -64,10 +64,10 @@ namespace basecross {
 			bsm::Quat Qt;
 			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
 			Qt.normalize();
-			//Œ»İ‚Ì‰ñ“]‚ğæ“¾
+			//ç¾åœ¨ã®å›è»¢ã‚’å–å¾—
 			bsm::Quat NowQt = PtrTransform->GetQuaternion();
-			//Œ»İ‚Æ–Ú•W‚ğ•âŠÔ
-			//Œ»İ‚Æ–Ú•W‚ğ•âŠÔ
+			//ç¾åœ¨ã¨ç›®æ¨™ã‚’è£œé–“
+			//ç¾åœ¨ã¨ç›®æ¨™ã‚’è£œé–“
 			if (LerpFact >= 1.0f) {
 				NowQt = Qt;
 			}
@@ -80,11 +80,11 @@ namespace basecross {
 
 	void UtilBehavior::RotToHead(const bsm::Vec3& Velocity, float LerpFact) {
 		if (LerpFact <= 0.0f) {
-			//•âŠÔŒW”‚ª0ˆÈ‰º‚È‚ç‰½‚à‚µ‚È‚¢
+			//è£œé–“ä¿‚æ•°ãŒ0ä»¥ä¸‹ãªã‚‰ä½•ã‚‚ã—ãªã„
 			return;
 		}
 		auto PtrTransform = GetGameObject()->GetComponent<Transform>();
-		//‰ñ“]‚ÌXV
+		//å›è»¢ã®æ›´æ–°
 		if (Velocity.length() > 0.0f) {
 			bsm::Vec3 Temp = Velocity;
 			Temp.normalize();
@@ -92,9 +92,9 @@ namespace basecross {
 			bsm::Quat Qt;
 			Qt.rotationRollPitchYawFromVector(bsm::Vec3(0, ToAngle, 0));
 			Qt.normalize();
-			//Œ»İ‚Ì‰ñ“]‚ğæ“¾
+			//ç¾åœ¨ã®å›è»¢ã‚’å–å¾—
 			bsm::Quat NowQt = PtrTransform->GetQuaternion();
-			//Œ»İ‚Æ–Ú•W‚ğ•âŠÔ
+			//ç¾åœ¨ã¨ç›®æ¨™ã‚’è£œé–“
 			if (LerpFact >= 1.0f) {
 				NowQt = Qt;
 			}

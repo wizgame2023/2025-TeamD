@@ -1,7 +1,7 @@
 
 /*!
 @file DrawComponentsEx.h
-@brief Šg’£•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+@brief æ‹¡å¼µæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #pragma once
@@ -10,7 +10,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	BasicƒVƒF[ƒ_[—pƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+	///	Basicã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ç”¨ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 	//--------------------------------------------------------------------------------------
 	struct BasicConstants
 	{
@@ -30,9 +30,9 @@ namespace basecross {
 		bsm::Mat4x4 world;
 		bsm::Vec4 worldInverseTranspose[3];
 		bsm::Mat4x4 worldViewProj;
-		//”Ä—pƒtƒ‰ƒO
+		//æ±ç”¨ãƒ•ãƒ©ã‚°
 		XMUINT4 activeFlg;
-		//ˆÈ‰º‰e
+		//ä»¥ä¸‹å½±
 		bsm::Vec4 lightPos;
 		bsm::Vec4 eyePos;
 		bsm::Mat4x4 lightView;
@@ -43,167 +43,167 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	/// ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@
+	/// ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_CONSTANT_BUFFER(CBBasic, BasicConstants)
 
 
 	//--------------------------------------------------------------------------------------
-	/// PC’¸“_ƒVƒF[ƒ_
+	/// PCé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_VERTEX_SHADER(BcVSPCStatic, VertexPositionColor)
 	//--------------------------------------------------------------------------------------
-	/// PN’¸“_ƒVƒF[ƒ_
+	/// PNé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNStatic, VertexPositionNormal)
 	//--------------------------------------------------------------------------------------
-	/// PT’¸“_ƒVƒF[ƒ_
+	/// PTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_VERTEX_SHADER(BcVSPTStatic, VertexPositionTexture)
 	//--------------------------------------------------------------------------------------
-	/// PCT’¸“_ƒVƒF[ƒ_
+	/// PCTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_VERTEX_SHADER(BcVSPCTStatic, VertexPositionColorTexture)
 
 	//--------------------------------------------------------------------------------------
-	/// PC—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PCç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_PIXEL_SHADER(BcPSPCStatic);
 
 	//--------------------------------------------------------------------------------------
-	/// PN—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PNç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNStatic);
 
 
 	//--------------------------------------------------------------------------------------
-	/// PT,PCT—pƒsƒNƒZƒ‹ƒVƒF[ƒ_
+	/// PT,PCTç”¨ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 	//--------------------------------------------------------------------------------------
 	DECLARE_DX11_PIXEL_SHADER(BcPSPTStatic);
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNT’¸“_ƒVƒF[ƒ_(’¸“_ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticVL, VertexPositionNormalTexture)
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBoneVL, VertexPositionNormalTextureSkinning)
 
-	//‰e•t‚«
+	//å½±ä»˜ã
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticVLShadow, VertexPositionNormalTexture)
-	//‰e•t‚«Bone
+	//å½±ä»˜ãBone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBoneVLShadow, VertexPositionNormalTextureSkinning)
 
 
 	
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µ
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticVLBn, VertexPositionNormalTexture)
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µBone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—Bone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBoneVLBn, VertexPositionNormalTextureSkinning)
 
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ã
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticVLBnShadow, VertexPositionNormalTexture)
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«Bone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ãBone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBoneVLBnShadow, VertexPositionNormalTextureSkinning)
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNTƒsƒNƒZƒ‹ƒVƒF[ƒ_(’¸“_ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(é ‚ç‚¹ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTVL);
-	//‰e•t‚«
+	//å½±ä»˜ã
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTVLShadow);
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNT’¸“_ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticPL, VertexPositionNormalTexture)
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBonePL, VertexPositionNormalTextureSkinning)
-	//‰e•t‚«
+	//å½±ä»˜ã
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticPLShadow, VertexPositionNormalTexture)
-	//‰e•t‚«Bone
+	//å½±ä»˜ãBone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBonePLShadow, VertexPositionNormalTextureSkinning)
 
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µ
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticPLBn, VertexPositionNormalTexture)
-	//ƒoƒCƒAƒX•t‚«‰e–³‚µBone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ç„¡ã—Bone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBonePLBn, VertexPositionNormalTextureSkinning)
 
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ã
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTStaticPLBnShadow, VertexPositionNormalTexture)
-	//ƒoƒCƒAƒX•t‚«‰e•t‚«Bone
+	//ãƒã‚¤ã‚¢ã‚¹ä»˜ãå½±ä»˜ãBone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTBonePLBnShadow, VertexPositionNormalTextureSkinning)
 
 	//--------------------------------------------------------------------------------------
-	/// PNTƒsƒNƒZƒ‹ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTPL);
-	//‰e•t‚«
+	//å½±ä»˜ã
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTPLShadow);
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNTnT’¸“_ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTnTé ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTnTStaticPL, VertexPositionNormalTangentTexture)
-	//‰e–³‚µBone
+	//å½±ç„¡ã—Bone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTnTBonePL, VertexPositionNormalTangentTextureSkinning)
 
-	//‰e‚Â‚«
+	//å½±ã¤ã
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTnTStaticPLShadow, VertexPositionNormalTangentTexture)
-	//‰e‚Â‚«Bone
+	//å½±ã¤ãBone
 	DECLARE_DX11_VERTEX_SHADER(BcVSPNTnTBonePLShadow, VertexPositionNormalTangentTextureSkinning)
 
 
 	//--------------------------------------------------------------------------------------
-	/// PNTnTƒsƒNƒZƒ‹ƒVƒF[ƒ_(ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO)
+	/// PNTnTãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€(ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°)
 	//--------------------------------------------------------------------------------------
-	//‰e–³‚µ
+	//å½±ç„¡ã—
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTnTPL)
-	//‰e‚Â‚«
+	//å½±ã¤ã
 	DECLARE_DX11_PIXEL_SHADER(BcPSPNTnTPLShadow);
 
 	//--------------------------------------------------------------------------------------
-	///	Bc•`‰æƒIƒuƒWƒFƒNƒg‚Ìe
+	///	Bcæç”»ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	class BcBaseDraw : public DrawComponent{
 	protected:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	StagePtr	ƒXƒe[ƒW‚Ìƒ|ƒCƒ“ƒ^
+		@brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	StagePtr	ã‚¹ãƒ†ãƒ¼ã‚¸ã®ãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcBaseDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒXƒgƒ‰ƒNƒ^
+		@brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcBaseDraw();
+		virtual â€¾BcBaseDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
-		@param[out]	BcCb	İ’è‚·‚éƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@\‘¢‘Ì
-		@param[in]	data	ƒƒbƒVƒ…‚Ìƒf[ƒ^
-		@return	‚È‚µ
+		@brief	ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+		@param[out]	BcCb	è¨­å®šã™ã‚‹ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡æ§‹é€ ä½“
+		@param[in]	data	ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ‡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetConstants(BasicConstants& BcCb, const MeshPrimData& data);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒ^ƒeƒBƒbƒNƒƒbƒVƒ…‚Ì•`‰æ
-		@tparam[in]	T_VShader	g—p‚·‚é’¸“_ƒVƒF[ƒ_
-		@tparam[in]	T_PShader	g—p‚·‚éƒsƒNƒZƒ‹ƒVƒF[ƒ_
-		@param[in]	data	ƒƒbƒVƒ…‚Ìƒf[ƒ^
-		@return	‚È‚µ
+		@brief	ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ãƒ¡ãƒƒã‚·ãƒ¥ã®æç”»
+		@tparam[in]	T_VShader	ä½¿ç”¨ã™ã‚‹é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
+		@tparam[in]	T_PShader	ä½¿ç”¨ã™ã‚‹ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
+		@param[in]	data	ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ‡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T_VShader, typename T_PShader>
@@ -211,127 +211,127 @@ namespace basecross {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
 			auto RenderState = Dev->GetRenderState();
-			//NULL‚ÌƒVƒF[ƒ_ƒŠƒ\[ƒX‚Ì€”õ
+			//NULLã®ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ã®æº–å‚™
 			ID3D11ShaderResourceView* pNull[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = { nullptr };
-			//ƒTƒ“ƒvƒ‰[‚Ì€”õ
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®æº–å‚™
 			ID3D11SamplerState* pNullSR[D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT] = { nullptr };
-			//ŠeƒIƒuƒWƒFƒNƒg‹¤’Êˆ—
-			//ƒVƒF[ƒ_‚Ìİ’è
-			//’¸“_ƒVƒF[ƒ_
+			//å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…±é€šå‡¦ç†
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+			//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 			pD3D11DeviceContext->VSSetShader(T_VShader::GetPtr()->GetShader(), nullptr, 0);
-			//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìİ’è
+			//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
 			pD3D11DeviceContext->IASetInputLayout(T_VShader::GetPtr()->GetInputLayout());
-			//ƒsƒNƒZƒ‹ƒVƒF[ƒ_
+			//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 			pD3D11DeviceContext->PSSetShader(T_PShader::GetPtr()->GetShader(), nullptr, 0);
-			//ƒ‰ƒCƒg‚ğİ’è
+			//ãƒ©ã‚¤ãƒˆã‚’è¨­å®š
 			SetLightingParamaters();
-			//ŒÂ•Êˆ—
+			//å€‹åˆ¥å‡¦ç†
 			BasicConstants BcCb;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 			SetConstants(BcCb, data);
-			//ƒeƒNƒXƒ`ƒƒ
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 			auto shTex = GetTextureResource();
 			if (shTex) {
-				//ƒeƒNƒXƒ`ƒƒ‚ª‚ ‚é
+				//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒã‚ã‚‹
 				BcCb.activeFlg.y = 1;
 			}
 			else {
-				//•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg‚É‚ÍƒeƒNƒXƒ`ƒƒ‚ª‚È‚¢
+				//æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ã¯ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã„
 				if (shTex = data.m_TextureResource.lock()) {
-					//ƒeƒNƒXƒ`ƒƒ‚ª‚ ‚é
+					//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒã‚ã‚‹
 					BcCb.activeFlg.y = 1;
 				}
 				else {
 					BcCb.activeFlg.y = 0;
 				}
 			}
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌXV
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 			pD3D11DeviceContext->UpdateSubresource(CBBasic::GetPtr()->GetBuffer(), 0, nullptr, &BcCb, 0, 0);
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 			ID3D11Buffer* pConstantBuffer = CBBasic::GetPtr()->GetBuffer();
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
-			//’¸“_ƒVƒF[ƒ_‚É“n‚·
+			//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 			pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-			//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚É“n‚·
+			//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 			pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
-			//ƒXƒgƒ‰ƒCƒh‚ÆƒIƒtƒZƒbƒg
+			//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 			UINT stride = data.m_NumStride;
 			UINT offset = 0;
-			//•`‰æ•û–@‚ÌƒZƒbƒg
+			//æç”»æ–¹æ³•ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetPrimitiveTopology(data.m_PrimitiveTopology);
-			//’¸“_ƒoƒbƒtƒ@‚ÌƒZƒbƒg
+			//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetVertexBuffers(0, 1, data.m_VertexBuffer.GetAddressOf(), &stride, &offset);
-			//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒZƒbƒg
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetIndexBuffer(data.m_IndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-			//ŠeƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒg‚Ìİ’è
-			//ƒuƒŒƒ“ƒhƒXƒe[ƒg
+			//å„ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š
+			//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 			RenderState->SetBlendState(pD3D11DeviceContext, GetBlendState());
-			//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
+			//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
-			//ƒeƒNƒXƒ`ƒƒ‚ÆƒTƒ“ƒvƒ‰[
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 			if (shTex) {
 				pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
-				//ƒTƒ“ƒvƒ‰[‚ğİ’è
+				//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 				RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
-				//–@üƒ}ƒbƒv
+				//æ³•ç·šãƒãƒƒãƒ—
 				if (GetNormalMapTextureResource()) {
 					if (IsOwnShadowActive()) {
-						//‚Q”Ô–Ú‚É“ü‚ê‚é
+						//ï¼’ç•ªç›®ã«å…¥ã‚Œã‚‹
 						pD3D11DeviceContext->PSSetShaderResources(2, 1, GetNormalMapTextureResource()->GetShaderResourceView().GetAddressOf());
-						//ƒTƒ“ƒvƒ‰[‚ğİ’è
+						//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 						RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 2);
 					}
 					else {
-						//1”Ô–Ú‚É“ü‚ê‚é
+						//1ç•ªç›®ã«å…¥ã‚Œã‚‹
 						pD3D11DeviceContext->PSSetShaderResources(1, 1, GetNormalMapTextureResource()->GetShaderResourceView().GetAddressOf());
-						//ƒTƒ“ƒvƒ‰[‚ğİ’è
+						//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 						RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 1);
 					}
 				}
 			}
 			else {
-				//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚àƒNƒŠƒA
+				//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã‚‚ã‚¯ãƒªã‚¢
 				pD3D11DeviceContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pNull);
-				//ƒTƒ“ƒvƒ‰[‚àƒNƒŠƒA
+				//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚‚ã‚¯ãƒªã‚¢
 				RenderState->SetSamplerAllClear(pD3D11DeviceContext);
 			}
-			//‰e‚ÆƒTƒ“ƒvƒ‰[
+			//å½±ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 			if (IsOwnShadowActive()) {
-				//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒ‰[ƒ^[ƒQƒbƒg
+				//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 				auto ShadowmapPtr = Dev->GetShadowMapRenderTarget();
 				ID3D11ShaderResourceView* pShadowSRV = ShadowmapPtr->GetShaderResourceView();
 				pD3D11DeviceContext->PSSetShaderResources(1, 1, &pShadowSRV);
-				//ƒVƒƒƒhƒEƒ}ƒbƒvƒTƒ“ƒvƒ‰[
+				//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 				ID3D11SamplerState* pShadowSampler = RenderState->GetComparisonLinear();
 				pD3D11DeviceContext->PSSetSamplers(1, 1, &pShadowSampler);
 			}
-			//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Æ•`‰æ
+			//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã¨æç”»
 			if (GetRasterizerState() == RasterizerState::DoubleDraw) {
-				//“§–¾ˆ——p
-				//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg(— •`‰æ)
+				//é€æ˜å‡¦ç†ç”¨
+				//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ(è£æç”»)
 				pD3D11DeviceContext->RSSetState(RenderState->GetCullFront());
-				//•`‰æ
+				//æç”»
 				pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
-				//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgi•\•`‰æj
+				//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆï¼ˆè¡¨æç”»ï¼‰
 				pD3D11DeviceContext->RSSetState(RenderState->GetCullBack());
-				//•`‰æ
+				//æç”»
 				pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
 			}
 			else {
 				RenderState->SetRasterizerState(pD3D11DeviceContext, GetRasterizerState());
-				//•`‰æ
+				//æç”»
 				pD3D11DeviceContext->DrawIndexed(data.m_NumIndicis, 0, 0);
 			}
-			//Œãn––
+			//å¾Œå§‹æœ«
 //			Dev->InitializeStates();
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‚ƒfƒ‹ƒƒbƒVƒ…‚Ì•`‰æ
-		@tparam[in]	T_VShader	g—p‚·‚é’¸“_ƒVƒF[ƒ_
-		@tparam[in]	T_PShader	g—p‚·‚éƒsƒNƒZƒ‹ƒVƒF[ƒ_
-		@param[in]	data	ƒƒbƒVƒ…‚Ìƒf[ƒ^
-		@return	‚È‚µ
+		@brief	ãƒ¢ãƒ‡ãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã®æç”»
+		@tparam[in]	T_VShader	ä½¿ç”¨ã™ã‚‹é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
+		@tparam[in]	T_PShader	ä½¿ç”¨ã™ã‚‹ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
+		@param[in]	data	ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ‡ãƒ¼ã‚¿
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		template<typename T_VShader, typename T_PShader>
@@ -339,59 +339,59 @@ namespace basecross {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
 			auto RenderState = Dev->GetRenderState();
-			//NULL‚ÌƒVƒF[ƒ_ƒŠƒ\[ƒX‚Ì€”õ
+			//NULLã®ã‚·ã‚§ãƒ¼ãƒ€ãƒªã‚½ãƒ¼ã‚¹ã®æº–å‚™
 			ID3D11ShaderResourceView* pNull[D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT] = { nullptr };
-			//ƒTƒ“ƒvƒ‰[‚Ì€”õ
+			//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®æº–å‚™
 			ID3D11SamplerState* pSamplerClamp = RenderState->GetLinearClamp();
 			ID3D11SamplerState* pSamplerWrap = RenderState->GetLinearWrap();
 			ID3D11SamplerState* pNullSR[D3D11_COMMONSHADER_SAMPLER_SLOT_COUNT] = { nullptr };
-			//ŠeƒIƒuƒWƒFƒNƒg‹¤’Êˆ—
-			//ƒVƒF[ƒ_‚Ìİ’è
-			//’¸“_ƒVƒF[ƒ_
+			//å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆå…±é€šå‡¦ç†
+			//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+			//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€
 			pD3D11DeviceContext->VSSetShader(T_VShader::GetPtr()->GetShader(), nullptr, 0);
-			//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìİ’è
+			//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
 			pD3D11DeviceContext->IASetInputLayout(T_VShader::GetPtr()->GetInputLayout());
-			//ƒsƒNƒZƒ‹ƒVƒF[ƒ_
+			//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€
 			pD3D11DeviceContext->PSSetShader(T_PShader::GetPtr()->GetShader(), nullptr, 0);
-			//ƒXƒgƒ‰ƒCƒh‚ÆƒIƒtƒZƒbƒg
+			//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆ
 			UINT stride = data.m_NumStride;
 			UINT offset = 0;
-			//•`‰æ•û–@‚ÌƒZƒbƒg
+			//æç”»æ–¹æ³•ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetPrimitiveTopology(data.m_PrimitiveTopology);
-			//’¸“_ƒoƒbƒtƒ@‚ÌƒZƒbƒg
+			//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetVertexBuffers(0, 1, data.m_VertexBuffer.GetAddressOf(), &stride, &offset);
-			//ƒCƒ“ƒfƒbƒNƒXƒoƒbƒtƒ@‚ÌƒZƒbƒg
+			//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
 			pD3D11DeviceContext->IASetIndexBuffer(data.m_IndexBuffer.Get(), DXGI_FORMAT_R16_UINT, 0);
-			//ŠeƒŒƒ“ƒ_ƒŠƒ“ƒOƒXƒe[ƒg‚Ìİ’è
-			//ƒuƒŒƒ“ƒhƒXƒe[ƒg
+			//å„ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¹ãƒ†ãƒ¼ãƒˆã®è¨­å®š
+			//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
 			RenderState->SetBlendState(pD3D11DeviceContext, GetBlendState());
-			//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
+			//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
 			RenderState->SetDepthStencilState(pD3D11DeviceContext, GetDepthStencilState());
-			//‰e‚ÆƒTƒ“ƒvƒ‰[
+			//å½±ã¨ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 			if (GetOwnShadowActive()) {
-				//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒ‰[ƒ^[ƒQƒbƒg
+				//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒ©ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 				auto ShadowmapPtr = Dev->GetShadowMapRenderTarget();
 				ID3D11ShaderResourceView* pShadowSRV = ShadowmapPtr->GetShaderResourceView();
 				pD3D11DeviceContext->PSSetShaderResources(1, 1, &pShadowSRV);
-				//ƒVƒƒƒhƒEƒ}ƒbƒvƒTƒ“ƒvƒ‰[
+				//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚µãƒ³ãƒ—ãƒ©ãƒ¼
 				ID3D11SamplerState* pShadowSampler = RenderState->GetComparisonLinear();
 				pD3D11DeviceContext->PSSetSamplers(1, 1, &pShadowSampler);
 			}
-			//ƒ‰ƒCƒg‚ğİ’è
+			//ãƒ©ã‚¤ãƒˆã‚’è¨­å®š
 			SetLightingParamaters();
 			BasicConstants BcCb;
-			//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìì¬
+			//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ
 			SetConstants(BcCb, data);
-			//ƒƒbƒVƒ…“à‚Ìƒ}ƒeƒŠƒAƒ‹‚Ì”z—ñ
+			//ãƒ¡ãƒƒã‚·ãƒ¥å†…ã®ãƒãƒ†ãƒªã‚¢ãƒ«ã®é…åˆ—
 			auto& MatVec = data.m_MaterialExVec;
 			size_t MatIndex = 0;
 			for (auto& m : MatVec) {
 				if (m.m_TextureResource) {
-					//ƒeƒNƒXƒ`ƒƒ‚ª‚ ‚é
+					//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒã‚ã‚‹
 					BcCb.activeFlg.y = 1;
 				}
 				else {
-					//ƒeƒNƒXƒ`ƒƒ‚ª‚È‚¢
+					//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã„
 					BcCb.activeFlg.y = 0;
 				}
 				if (IsModelDiffusePriority()) {
@@ -402,99 +402,99 @@ namespace basecross {
 					Em4.w = 0.0f;
 					BcCb.emissiveColor = Em4;
 				}
-				//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌXV
+				//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
 				pD3D11DeviceContext->UpdateSubresource(CBBasic::GetPtr()->GetBuffer(), 0, nullptr, &BcCb, 0, 0);
-				//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
+				//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
 				ID3D11Buffer* pConstantBuffer = CBBasic::GetPtr()->GetBuffer();
 				ID3D11Buffer* pNullConstantBuffer = nullptr;
-				//’¸“_ƒVƒF[ƒ_‚É“n‚·
+				//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 				pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-				//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚É“n‚·
+				//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
 				pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
 				if (BcCb.activeFlg.y) {
-					//ƒVƒF[ƒ_‚ÉƒeƒNƒXƒ`ƒƒ‚Ìİ’è‚ª‚³‚ê‚Ä‚¢‚é
-					//ƒTƒ“ƒvƒ‰[‚Ìİ’è
+					//ã‚·ã‚§ãƒ¼ãƒ€ã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®è¨­å®šãŒã•ã‚Œã¦ã„ã‚‹
+					//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®è¨­å®š
 					RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 0);
-					//ƒeƒNƒXƒ`ƒƒ‚Ì‘I‘ğ
+					//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®é¸æŠ
 					if (IsModelTextureEnabled()) {
-						//ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ª—LŒø
+						//ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒæœ‰åŠ¹
 						pD3D11DeviceContext->PSSetShaderResources(0, 1, m.m_TextureResource->GetShaderResourceView().GetAddressOf());
 					}
 					else {
-						//ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ª–³Œø
+						//ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒç„¡åŠ¹
 						auto shTex = GetTextureResource();
 						if (shTex) {
-							//ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉƒeƒNƒXƒ`ƒƒ‚ª‚ ‚é
+							//ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒã‚ã‚‹
 							pD3D11DeviceContext->PSSetShaderResources(0, 1, shTex->GetShaderResourceView().GetAddressOf());
 						}
 						else {
-							//ƒRƒ“ƒ|[ƒlƒ“ƒg‚ÉƒeƒNƒXƒ`ƒƒ‚ª‚È‚¢
+							//ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã«ãƒ†ã‚¯ã‚¹ãƒãƒ£ãŒãªã„
 							BcCb.activeFlg.y = 0;
 						}
 					}
 					if (BcCb.activeFlg.y) {
-						//–@üƒ}ƒbƒv
+						//æ³•ç·šãƒãƒƒãƒ—
 						if (GetNormalMapTextureResourceVec().size() > MatIndex) {
-							//•¡”‚Ì–@üƒ}ƒbƒv‚ª‚ ‚é
+							//è¤‡æ•°ã®æ³•ç·šãƒãƒƒãƒ—ãŒã‚ã‚‹
 							auto& normalVec = GetNormalMapTextureResourceVec();
 							auto normalShptr = normalVec[MatIndex].lock();
 							if (GetOwnShadowActive()) {
-								//‚Q”Ô–Ú‚É“ü‚ê‚é
+								//ï¼’ç•ªç›®ã«å…¥ã‚Œã‚‹
 								pD3D11DeviceContext->PSSetShaderResources(2, 1, normalShptr->GetShaderResourceView().GetAddressOf());
-								//ƒTƒ“ƒvƒ‰[‚ğİ’è
+								//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 								RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 2);
 							}
 							else {
-								//1”Ô–Ú‚É“ü‚ê‚é
+								//1ç•ªç›®ã«å…¥ã‚Œã‚‹
 								pD3D11DeviceContext->PSSetShaderResources(1, 1, normalShptr->GetShaderResourceView().GetAddressOf());
-								//ƒTƒ“ƒvƒ‰[‚ğİ’è
+								//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 								RenderState->SetSamplerState(pD3D11DeviceContext,GetSamplerState(), 1);
 							}
 						}
 						else if (GetNormalMapTextureResource()) {
-							//‚»‚¤‚Å‚Í‚È‚­‚Äˆê‚Â‚¾‚¯–@üƒ}ƒbƒv‚ª‚ ‚é
+							//ãã†ã§ã¯ãªãã¦ä¸€ã¤ã ã‘æ³•ç·šãƒãƒƒãƒ—ãŒã‚ã‚‹
 							if (GetOwnShadowActive()) {
-								//‚Q”Ô–Ú‚É“ü‚ê‚é
+								//ï¼’ç•ªç›®ã«å…¥ã‚Œã‚‹
 								pD3D11DeviceContext->PSSetShaderResources(2, 1, GetNormalMapTextureResource()->GetShaderResourceView().GetAddressOf());
-								//ƒTƒ“ƒvƒ‰[‚ğİ’è
+								//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 								RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 2);
 							}
 							else {
-								//1”Ô–Ú‚É“ü‚ê‚é
+								//1ç•ªç›®ã«å…¥ã‚Œã‚‹
 								pD3D11DeviceContext->PSSetShaderResources(1, 1, GetNormalMapTextureResource()->GetShaderResourceView().GetAddressOf());
-								//ƒTƒ“ƒvƒ‰[‚ğİ’è
+								//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚’è¨­å®š
 								RenderState->SetSamplerState(pD3D11DeviceContext, GetSamplerState(), 1);
 							}
 						}
 					}
 					else {
-						//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚àƒNƒŠƒA
+						//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã‚‚ã‚¯ãƒªã‚¢
 						pD3D11DeviceContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pNull);
-						//ƒTƒ“ƒvƒ‰[‚àƒNƒŠƒA
+						//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚‚ã‚¯ãƒªã‚¢
 						RenderState->SetSamplerAllClear(pD3D11DeviceContext);
 					}
 				}
 				else {
-					//ƒVƒF[ƒ_[ƒŠƒ\[ƒX‚àƒNƒŠƒA
+					//ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼ãƒªã‚½ãƒ¼ã‚¹ã‚‚ã‚¯ãƒªã‚¢
 					pD3D11DeviceContext->PSSetShaderResources(0, D3D11_COMMONSHADER_INPUT_RESOURCE_SLOT_COUNT, pNull);
-					//ƒTƒ“ƒvƒ‰[‚àƒNƒŠƒA
+					//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã‚‚ã‚¯ãƒªã‚¢
 					RenderState->SetSamplerAllClear(pD3D11DeviceContext);
 				}
-				//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg‚Æ•`‰æ
+				//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆã¨æç”»
 				if (GetRasterizerState() == RasterizerState::DoubleDraw) {
-					//“§–¾ˆ——p
-					//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg(— •`‰æ)
+					//é€æ˜å‡¦ç†ç”¨
+					//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ(è£æç”»)
 					pD3D11DeviceContext->RSSetState(RenderState->GetCullFront());
-					//•`‰æ
+					//æç”»
 					pD3D11DeviceContext->DrawIndexed(m.m_IndexCount, m.m_StartIndex, 0);
-					//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒgi•\•`‰æj
+					//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆï¼ˆè¡¨æç”»ï¼‰
 					pD3D11DeviceContext->RSSetState(RenderState->GetCullBack());
-					//•`‰æ
+					//æç”»
 					pD3D11DeviceContext->DrawIndexed(m.m_IndexCount, m.m_StartIndex, 0);
 				}
 				else {
 					RenderState->SetRasterizerState(pD3D11DeviceContext, GetRasterizerState());
-					//•`‰æ
+					//æç”»
 					pD3D11DeviceContext->DrawIndexed(m.m_IndexCount, m.m_StartIndex, 0);
 				}
 				MatIndex++;
@@ -503,39 +503,39 @@ namespace basecross {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğg‚¤‚©‚Ç‚¤‚©
-		@return	g‚¤ê‡‚Ítrue
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		@return	ä½¿ã†å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsOriginalMeshUse() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğg‚¤‚©‚Ç‚¤‚©‚ğİ’è
-		@param[in]	b	ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğg‚¤‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã‹ã©ã†ã‹ã‚’è¨­å®š
+		@param[in]	b	ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetOriginalMeshUse(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹‚ÈƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾
-		@return	ƒIƒŠƒWƒiƒ‹‚ÈƒƒbƒVƒ…ƒŠƒ\[ƒX
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãªãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
+		@return	ã‚ªãƒªã‚¸ãƒŠãƒ«ãªãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<MeshResource> GetOriginalMeshResource() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹‚ÈƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	MeshRes	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãªãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	MeshRes	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetOriginalMeshResource(const shared_ptr<MeshResource>& MeshRes);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ğì¬‚·‚é
-		@param[in]	Vertices	’¸“_‚Ì”z—ñ
-		@param[in]	indices		ƒCƒ“ƒfƒbƒNƒX‚Ì”z—ñ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã‚’ä½œæˆã™ã‚‹
+		@param[in]	Vertices	é ‚ç‚¹ã®é…åˆ—
+		@param[in]	indices		ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®é…åˆ—
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
@@ -550,9 +550,9 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚Ì’¸“_ƒoƒbƒtƒ@‚ğ•ÏX‚·‚é
-		@param[in]	Vertices	’¸“_”z—ñ
-		@return	‚È‚µ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ã®é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’å¤‰æ›´ã™ã‚‹
+		@param[in]	Vertices	é ‚ç‚¹é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		template <typename T>
@@ -560,7 +560,7 @@ namespace basecross {
 			auto MeshRes = GetOriginalMeshResource();
 			if (!MeshRes) {
 				throw BaseException(
-					L"ƒIƒŠƒWƒiƒ‹ƒƒbƒVƒ…‚ªì¬‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ã‚ªãƒªã‚¸ãƒŠãƒ«ãƒ¡ãƒƒã‚·ãƒ¥ãŒä½œæˆã•ã‚Œã¦ã„ã¾ã›ã‚“",
 					L"if (!GetOriginalMeshResource())",
 					L"BcStaticBaseDraw::UpdateVertices()"
 				);
@@ -570,845 +570,845 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìæ“¾(ƒIƒŠƒWƒiƒ‹‚©‚Ç‚¤‚©‚Í“à•”‚Åˆ—‚³‚ê‚é)
-		@return	ƒƒbƒVƒ…ƒŠƒ\[ƒX
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—(ã‚ªãƒªã‚¸ãƒŠãƒ«ã‹ã©ã†ã‹ã¯å†…éƒ¨ã§å‡¦ç†ã•ã‚Œã‚‹)
+		@return	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<MeshResource> GetMeshResource() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹‚Å‚Í‚È‚¢ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìİ’è(‰¼‘zŠÖ”)
-		@param[in]	MeshRes	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ã§ã¯ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š(ä»®æƒ³é–¢æ•°)
+		@param[in]	MeshRes	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMeshResource(const shared_ptr<MeshResource>& MeshRes);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒIƒŠƒWƒiƒ‹‚Å‚Í‚È‚¢ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	MeshKey	ƒƒbƒVƒ…ƒL[
-		@return	‚È‚µ
+		@brief	ã‚ªãƒªã‚¸ãƒŠãƒ«ã§ã¯ãªã„ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	MeshKey	ãƒ¡ãƒƒã‚·ãƒ¥ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMeshResource(const wstring& MeshKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	TextureRes	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	TextureRes	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetTextureResource(const shared_ptr<TextureResource>& TextureRes);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	TextureKey	“o˜^‚³‚ê‚Ä‚¢‚éƒeƒNƒXƒ`ƒƒƒL[
-		@return	‚È‚µ
+		@brief	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	TextureKey	ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetTextureResource(const wstring& TextureKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìæ“¾
-		@return	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+		@brief	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
+		@return	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<TextureResource> GetTextureResource() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğ“¾‚é
-		@param[in]	ExceptionActive	ƒGƒ‰[‚É—áŠO‚ª”­¶‚·‚é‚©‚Ç‚¤‚©
-		@return	ƒƒbƒVƒ…ƒŠƒ\[ƒX
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’å¾—ã‚‹
+		@param[in]	ExceptionActive	ã‚¨ãƒ©ãƒ¼æ™‚ã«ä¾‹å¤–ãŒç™ºç”Ÿã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<MultiMeshResource> GetMultiMeshResource() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	MeshResourcePtr	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	MeshResourcePtr	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMultiMeshResource(const shared_ptr<MultiMeshResource>& MeshResourcePtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	ResKey	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ÌƒL[
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	ResKey	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMultiMeshResource(const wstring& ResKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ÌŠY“–‚ÌƒCƒ“ƒfƒbƒNƒX‚Í•`‰æ‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
-		@param[in]	index	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	•`‰æ‚·‚ê‚Îtrue
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®è©²å½“ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯æç”»ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
+		@param[in]	index	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æç”»ã™ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetMultiMeshIsDraw(size_t index) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚Ì•`‰æ‚·‚éƒCƒ“ƒfƒbƒNƒX‚ğİ’è‚·‚é
-		@param[in]	index	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…‚ÌƒCƒ“ƒfƒbƒNƒX
-		@param[in]	b		•`‰æ‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®æç”»ã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	index	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in]	b		æç”»ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMultiMeshIsDraw(size_t index,bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒGƒ~ƒbƒVƒuF‚Ìæ“¾
-		@return	ƒGƒ~ƒbƒVƒuF
+		@brief	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã®å–å¾—
+		@return	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetEmissive() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒGƒ~ƒbƒVƒuF‚Ìİ’è
-		@param[in]	col	ƒGƒ~ƒbƒVƒuF
-		@return	‚È‚µ
+		@brief	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã®è¨­å®š
+		@param[in]	col	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetEmissive(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒtƒ…[ƒYF‚Ìæ“¾
-		@return	ƒfƒtƒ…[ƒYF
+		@brief	ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²ã®å–å¾—
+		@return	ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetDiffuse() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒtƒ…[ƒYF‚Ìİ’è
-		@param[in]	col	ƒfƒtƒ…[ƒYF
-		@return	‚È‚µ
+		@brief	ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²ã®è¨­å®š
+		@param[in]	col	ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetDiffuse(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[F‚Ìæ“¾
-		@return	ƒXƒyƒLƒ…ƒ‰[F
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²ã®å–å¾—
+		@return	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetSpecularColor() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[F‚Ìİ’è
-		@param[in]	col	ƒXƒyƒLƒ…ƒ‰[F
-		@return	‚È‚µ
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²ã®è¨­å®š
+		@param[in]	col	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetSpecularColor(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[F‚ğ‚È‚­‚·
-		@return	‚È‚µ
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²ã‚’ãªãã™
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void DisableSpecular();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[ƒpƒ[‚Ìæ“¾
-		@return	ƒXƒyƒLƒ…ƒ‰[ƒpƒ[F
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ãƒ‘ãƒ¯ãƒ¼ã®å–å¾—
+		@return	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ãƒ‘ãƒ¯ãƒ¼è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetSpecularPower() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[ƒpƒ[‚Ìİ’è
-		@param[in]	pow	ƒXƒyƒLƒ…ƒ‰[ƒpƒ[F
-		@return	‚È‚µ
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ãƒ‘ãƒ¯ãƒ¼ã®è¨­å®š
+		@param[in]	pow	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ãƒ‘ãƒ¯ãƒ¼è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetSpecularPower(float pow);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[‚Æƒpƒ[F‚Ìæ“¾
-		@return	ƒXƒyƒLƒ…ƒ‰[‚Æƒpƒ[F
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã¨ãƒ‘ãƒ¯ãƒ¼è‰²ã®å–å¾—
+		@return	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã¨ãƒ‘ãƒ¯ãƒ¼è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetSpecularColorAndPower() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒyƒLƒ…ƒ‰[‚Æƒpƒ[F‚Ìİ’è
-		@param[in]	col	ƒXƒyƒLƒ…ƒ‰[‚Æƒpƒ[F
-		@return	‚È‚µ
+		@brief	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã¨ãƒ‘ãƒ¯ãƒ¼è‰²ã®è¨­å®š
+		@param[in]	col	ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼ã¨ãƒ‘ãƒ¯ãƒ¼è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetSpecularColorAndPower(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒAƒ‹ƒtƒ@’l‚Ìæ“¾
-		@return	ƒAƒ‹ƒtƒ@’l
+		@brief	ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã®å–å¾—
+		@return	ã‚¢ãƒ«ãƒ•ã‚¡å€¤
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetAlpha() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒAƒ‹ƒtƒ@’l‚Ìİ’è
-		@param[in]	pow	ƒAƒ‹ƒtƒ@’l
-		@return	‚È‚µ
+		@brief	ã‚¢ãƒ«ãƒ•ã‚¡å€¤ã®è¨­å®š
+		@param[in]	pow	ã‚¢ãƒ«ãƒ•ã‚¡å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetAlpha(float a);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒJƒ‰[‚ÆƒAƒ‹ƒtƒ@F‚Ìæ“¾
-		@return	ƒJƒ‰[‚ÆƒAƒ‹ƒtƒ@F
+		@brief	ã‚«ãƒ©ãƒ¼ã¨ã‚¢ãƒ«ãƒ•ã‚¡è‰²ã®å–å¾—
+		@return	ã‚«ãƒ©ãƒ¼ã¨ã‚¢ãƒ«ãƒ•ã‚¡è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetColorAndAlpha() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒJƒ‰[‚ÆƒAƒ‹ƒtƒ@F‚Ìİ’è
-		@param[in]	col ƒJƒ‰[‚ÆƒAƒ‹ƒtƒ@F
-		@return	‚È‚µ
+		@brief	ã‚«ãƒ©ãƒ¼ã¨ã‚¢ãƒ«ãƒ•ã‚¡è‰²ã®è¨­å®š
+		@param[in]	col ã‚«ãƒ©ãƒ¼ã¨ã‚¢ãƒ«ãƒ•ã‚¡è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetColorAndAlpha(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsLightingEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetLightingEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©İ’è
-		@param[in] value ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹è¨­å®š
+		@param[in] value ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightingEnabled(bool value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetPerPixelLighting() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsPerPixelLighting() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©İ’è
-		@param[in] value ƒsƒNƒZƒ‹ƒ‰ƒCƒeƒBƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹è¨­å®š
+		@param[in] value ãƒ”ã‚¯ã‚»ãƒ«ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetPerPixelLighting(bool value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‰ƒCƒeƒBƒ“ƒOƒpƒ‰ƒ[ƒ^‚ğİ’è‚·‚é
-		@return	‚È‚µ
+		@brief	ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã‚’è¨­å®šã™ã‚‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightingParamaters();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@ü‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	æ³•ç·šã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetBiasedNormals() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@ü‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚é‚©‚Ç‚¤‚©
-		@return	‚·‚éê‡‚Ítrue
+		@brief	æ³•ç·šã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹
+		@return	ã™ã‚‹å ´åˆã¯true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsBiasedNormals() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@ü‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚é‚©‚Ç‚¤‚©İ’è
-		@param[in] value –@ü‚ÉƒoƒCƒAƒX‚ğ‚©‚¯‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	æ³•ç·šã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹è¨­å®š
+		@param[in] value æ³•ç·šã«ãƒã‚¤ã‚¢ã‚¹ã‚’ã‹ã‘ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetBiasedNormals(bool value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒgF‚Ìæ“¾
-		@return	ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒgF
+		@brief	ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆãƒ©ã‚¤ãƒˆè‰²ã®å–å¾—
+		@return	ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆãƒ©ã‚¤ãƒˆè‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetAmbientLightColor()const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒgF‚Ìİ’è
-		@param[in] value ƒAƒ“ƒrƒGƒ“ƒgƒ‰ƒCƒgF
-		@return	‚È‚µ
+		@brief	ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆãƒ©ã‚¤ãƒˆè‰²ã®è¨­å®š
+		@param[in] value ã‚¢ãƒ³ãƒ“ã‚¨ãƒ³ãƒˆãƒ©ã‚¤ãƒˆè‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetAmbientLightColor(const bsm::Col4& value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒ“ƒfƒbƒNƒX‚ª—LŒø‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN‚·‚éi–³Œø‚È‚ç—áŠOj
+		@brief	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒæœ‰åŠ¹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯ã™ã‚‹ï¼ˆç„¡åŠ¹ãªã‚‰ä¾‹å¤–ï¼‰
 		@param[in] 
-		Light ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	‚È‚µ
+		Light ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void ValidateLightIndex(int whichLight);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‰ƒCƒg‚ÌÅ‘å’l‚ğ“¾‚é
-		@return	ƒ‰ƒCƒg‚ÌÅ‘å’l
+		@brief	ãƒ©ã‚¤ãƒˆã®æœ€å¤§å€¤ã‚’å¾—ã‚‹
+		@return	ãƒ©ã‚¤ãƒˆã®æœ€å¤§å€¤
 		*/
 		//--------------------------------------------------------------------------------------
 		int GetMaxDirectionalLights();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	—LŒø‚È‚çtrue
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetLightEnabled(int whichLight)const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	—LŒø‚È‚çtrue
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsLightEnabled(int whichLight)const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@param[in] value —LŒø‚É‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in] value æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightEnabled(int whichLight, bool value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ÌŒü‚«‚ğ“¾‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	w’è‚Ìƒ‰ƒCƒg‚ÌŒü‚«
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®å‘ãã‚’å¾—ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®å‘ã
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Vec3 GetLightDirection(int whichLight) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ÌŒü‚«‚ğİ’è‚·‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@param[in] value ’l
-		@return	‚È‚µ
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®å‘ãã‚’è¨­å®šã™ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in] value å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightDirection(int whichLight, const bsm::Vec3& value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚Ìƒfƒtƒ…[ƒYF‚ğ“¾‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	w’è‚Ìƒ‰ƒCƒg‚Ìƒfƒtƒ…[ƒYF
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²ã‚’å¾—ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetLightDiffuseColor(int whichLight) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚Ìƒfƒtƒ…[ƒYF‚ğİ’è‚·‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@param[in] value ’l
-		@return	‚È‚µ
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºè‰²ã‚’è¨­å®šã™ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in] value å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightDiffuseColor(int whichLight, const bsm::Col4& value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ÌƒXƒyƒLƒ…ƒ‰[F‚ğ“¾‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@return	w’è‚Ìƒ‰ƒCƒg‚ÌƒXƒyƒLƒ…ƒ‰[F
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²ã‚’å¾—ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetLightSpecularColor(int whichLight) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	w’è‚Ìƒ‰ƒCƒg‚ÌƒXƒyƒLƒ…ƒ‰[F‚ğİ’è‚·‚é
-		@param[in] whichLight ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX
-		@param[in] value ’l
-		@return	‚È‚µ
+		@brief	æŒ‡å®šã®ãƒ©ã‚¤ãƒˆã®ã‚¹ãƒšã‚­ãƒ¥ãƒ©ãƒ¼è‰²ã‚’è¨­å®šã™ã‚‹
+		@param[in] whichLight ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in] value å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetLightSpecularColor(int whichLight, const bsm::Col4& value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ğg‚¤‚©‚Ç‚¤‚©
-		@return	ƒtƒHƒO‚ğg‚¤‚È‚çtrue
+		@brief	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		@return	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetFogEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ğg‚¤‚©‚Ç‚¤‚©
-		@return	ƒtƒHƒO‚ğg‚¤‚È‚çtrue
+		@brief	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		@return	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsFogEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ğg‚¤‚©‚Ç‚¤‚©w’è
-		@param[in]	b	ƒtƒHƒO‚ğg‚¤‚È‚çtrue
-		@return	‚È‚µ
+		@brief	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ã‹ã©ã†ã‹æŒ‡å®š
+		@param[in]	b	ãƒ•ã‚©ã‚°ã‚’ä½¿ã†ãªã‚‰true
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetFogEnabled(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ÌŠJnˆÊ’u‚ğ“¾‚é
-		@return	ƒtƒHƒO‚ÌŠJnˆÊ’u
+		@brief	ãƒ•ã‚©ã‚°ã®é–‹å§‹ä½ç½®ã‚’å¾—ã‚‹
+		@return	ãƒ•ã‚©ã‚°ã®é–‹å§‹ä½ç½®
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetFogStart() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ÌŠJnˆÊ’uw’è
-		@param[in]	value	ƒtƒHƒO‚ÌŠJnˆÊ’u
-		@return	‚È‚µ
+		@brief	ãƒ•ã‚©ã‚°ã®é–‹å§‹ä½ç½®æŒ‡å®š
+		@param[in]	value	ãƒ•ã‚©ã‚°ã®é–‹å§‹ä½ç½®
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetFogStart(float value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ÌI—¹ˆÊ’u‚ğ“¾‚é
-		@return	ƒtƒHƒO‚ÌI—¹ˆÊ’u
+		@brief	ãƒ•ã‚©ã‚°ã®çµ‚äº†ä½ç½®ã‚’å¾—ã‚‹
+		@return	ãƒ•ã‚©ã‚°ã®çµ‚äº†ä½ç½®
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetFogEnd() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒO‚ÌI—¹ˆÊ’uw’è
-		@param[in]	value	ƒtƒHƒO‚ÌI—¹ˆÊ’u
-		@return	‚È‚µ
+		@brief	ãƒ•ã‚©ã‚°ã®çµ‚äº†ä½ç½®æŒ‡å®š
+		@param[in]	value	ãƒ•ã‚©ã‚°ã®çµ‚äº†ä½ç½®
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetFogEnd(float value);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒOF‚Ìæ“¾
-		@return	ƒtƒHƒOF
+		@brief	ãƒ•ã‚©ã‚°è‰²ã®å–å¾—
+		@return	ãƒ•ã‚©ã‚°è‰²
 		*/
 		//--------------------------------------------------------------------------------------
 		bsm::Col4 GetFogColor() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒtƒHƒOF‚Ìİ’è
-		@param[in]	col	ƒtƒHƒOF
-		@return	‚È‚µ
+		@brief	ãƒ•ã‚©ã‚°è‰²ã®è¨­å®š
+		@param[in]	col	ãƒ•ã‚©ã‚°è‰²
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetFogColor(const bsm::Col4& col);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‰e‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©“¾‚é
-		@return	‰e‚ğ•`‰æ‚·‚ê‚Îtrue
+		@brief	å½±ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹å¾—ã‚‹
+		@return	å½±ã‚’æç”»ã™ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetOwnShadowActive() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‰e‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©“¾‚é
-		@return	‰e‚ğ•`‰æ‚·‚ê‚Îtrue
+		@brief	å½±ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹å¾—ã‚‹
+		@return	å½±ã‚’æç”»ã™ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsOwnShadowActive() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‰e‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©İ’è‚·‚é
-		@param[in]	b		‰e‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	å½±ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹è¨­å®šã™ã‚‹
+		@param[in]	b		å½±ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetOwnShadowActive(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚È‚çtrue
+		@brief	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetModelDiffusePriority() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚È‚çtrue
+		@brief	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsModelDiffusePriority() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©İ’è‚·‚é
-		@param[in]	b	ƒfƒtƒB[ƒYF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹è¨­å®šã™ã‚‹
+		@param[in]	b	ãƒ‡ãƒ•ã‚£ãƒ¼ã‚ºè‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetModelDiffusePriority(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚È‚çtrue
+		@brief	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetModelEmissivePriority() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚È‚çtrue
+		@brief	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsModelEmissivePriority() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©İ’è‚·‚é
-		@param[in]	b	ƒGƒ~ƒbƒVƒuF‚ğƒ‚ƒfƒ‹İ’è—Dæ‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹è¨­å®šã™ã‚‹
+		@param[in]	b	ã‚¨ãƒŸãƒƒã‚·ãƒ–è‰²ã‚’ãƒ¢ãƒ‡ãƒ«è¨­å®šå„ªå…ˆã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetModelEmissivePriority(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚È‚çtrue
+		@brief	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetModelTextureEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©“¾‚é
-		@return	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚È‚çtrue
+		@brief	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹å¾—ã‚‹
+		@return	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ãªã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsModelTextureEnabled() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©İ’è‚·‚é
-		@param[in]	b	ƒ‚ƒfƒ‹‚ÌƒeƒNƒXƒ`ƒƒ‚ğ—LŒø‚É‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹è¨­å®šã™ã‚‹
+		@param[in]	b	ãƒ¢ãƒ‡ãƒ«ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚’æœ‰åŠ¹ã«ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetModelTextureEnabled(bool b);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìæ“¾
-		@return	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
+		@brief	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®å–å¾—
+		@return	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		shared_ptr<TextureResource> GetNormalMapTextureResource() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	TextureRes	ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	TextureRes	ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetNormalMapTextureResource(const shared_ptr<TextureResource>& TextureRes);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	TextureKey	ƒeƒNƒXƒ`ƒƒƒL[
-		@return	‚È‚µ
+		@brief	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	TextureKey	ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetNormalMapTextureResource(const wstring& TextureKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX”z—ñ‚Ìæ“¾
-		@return	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX”z—ñ
+		@brief	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹é…åˆ—ã®å–å¾—
+		@return	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹é…åˆ—
 		*/
 		//--------------------------------------------------------------------------------------
 		const vector<weak_ptr<TextureResource>>& GetNormalMapTextureResourceVec() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX”z—ñ‚Ìæ“¾
-		@return	–@üƒ}ƒbƒvƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX”z—ñ
+		@brief	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹é…åˆ—ã®å–å¾—
+		@return	æ³•ç·šãƒãƒƒãƒ—ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹é…åˆ—
 		*/
 		//--------------------------------------------------------------------------------------
 		vector<weak_ptr<TextureResource>>& GetNormalMapTextureResourceVec();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒ{[ƒ“‚Ì‰Šú‰»
-		@return	‚È‚µ
+		@brief ãƒœãƒ¼ãƒ³ã®åˆæœŸåŒ–
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void BoneInit();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ŠJns—ñ‚©‚çI—¹s—ñ‚ÌŠÔ‚ÌtŠÔ‚Ìs—ñ‚ğ•Ô‚·
-		@param[in]	m1	ŠJn‚Ìs—ñ
-		@param[in]	m2	I—¹‚Ìs—ñ
-		@param[in]	t	ŠÔi0‚©‚ç1.0fj
-		@param[out]	out	Œ‹‰Ê‚ğó‚¯æ‚és—ñ
-		@return	‚È‚µ
+		@brief	é–‹å§‹è¡Œåˆ—ã‹ã‚‰çµ‚äº†è¡Œåˆ—ã®é–“ã®tæ™‚é–“æ™‚ã®è¡Œåˆ—ã‚’è¿”ã™
+		@param[in]	m1	é–‹å§‹ã®è¡Œåˆ—
+		@param[in]	m2	çµ‚äº†ã®è¡Œåˆ—
+		@param[in]	t	æ™‚é–“ï¼ˆ0ã‹ã‚‰1.0fï¼‰
+		@param[out]	out	çµæœã‚’å—ã‘å–ã‚‹è¡Œåˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void InterpolationMatrix(const bsm::Mat4x4& m1, const bsm::Mat4x4& m2, float t, bsm::Mat4x4& out);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ’Ç‰Á‚·‚é
-		@param[in]	Name	ƒAƒjƒ[ƒVƒ‡ƒ“–¼
-		@param[in]	StartSample	ŠJnƒTƒ“ƒvƒ‹
-		@param[in]	SampleLength	ƒTƒ“ƒvƒ‹‚Ì’·‚³
-		@param[in]	Loop	ƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©
-		@param[in]	SamplesParSecond = 30.0f	1•b‚ ‚½‚è‚ÌƒTƒ“ƒvƒ‹”
-		@return	‚È‚µ
+		@brief	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’è¿½åŠ ã™ã‚‹
+		@param[in]	Name	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å
+		@param[in]	StartSample	é–‹å§‹ã‚µãƒ³ãƒ—ãƒ«
+		@param[in]	SampleLength	ã‚µãƒ³ãƒ—ãƒ«ã®é•·ã•
+		@param[in]	Loop	ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹
+		@param[in]	SamplesParSecond = 30.0f	1ç§’ã‚ãŸã‚Šã®ã‚µãƒ³ãƒ—ãƒ«æ•°
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void AddAnimation(const wstring& Name, int StartSample, int SampleLength, bool Loop,
 			float SamplesParSecond = 30.0f);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
-		@param[in]	AnemationName	ƒAƒjƒ[ƒVƒ‡ƒ“–¼i‚·‚Å‚É’Ç‰Á‚³‚ê‚Ä‚¢‚é‚à‚Ìj
-		@param[in]	StartTime = 0.0f	ŠJn‚©‚ç‚Ì•b”
-		@return	‚È‚µ
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
+		@param[in]	AnemationName	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åï¼ˆã™ã§ã«è¿½åŠ ã•ã‚Œã¦ã„ã‚‹ã‚‚ã®ï¼‰
+		@param[in]	StartTime = 0.0f	é–‹å§‹ã‹ã‚‰ã®ç§’æ•°
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void ChangeCurrentAnimation(const wstring& AnemationName, float StartTime = 0.0f);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ğ“¾‚é
-		@return	ƒAƒjƒ[ƒVƒ‡ƒ“–¼i•¶š—ñj
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åã‚’å¾—ã‚‹
+		@return	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åï¼ˆæ–‡å­—åˆ—ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		const wstring& GetCurrentAnimation() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ€‚ğ“¾‚é
-		@return	ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ€
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ ã‚’å¾—ã‚‹
+		@return	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ 
 		*/
 		//--------------------------------------------------------------------------------------
 		float GetCurrentAnimationTime() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ªI—¹‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
-		@return	C—¹‚µ‚Ä‚¢‚ê‚Îtrue
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚äº†ã—ã¦ã„ã‚‹ã‹ã©ã†ã‹
+		@return	ä¿®äº†ã—ã¦ã„ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool IsTargetAnimeEnd() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚Íƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã¯ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹
 		@return	true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool GetAnimeLoop() const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ği‚ß‚é
-		@param[in]	ElapsedTime	Œo‰ßŠÔ
-		@return	ƒAƒjƒ[ƒVƒ‡ƒ“‚ªI—¹‚·‚ê‚Îtrue
+		@brief	ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’é€²ã‚ã‚‹
+		@param[in]	ElapsedTime	çµŒéæ™‚é–“
+		@return	ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚äº†ã™ã‚Œã°true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool UpdateAnimation(float ElapsedTime);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ğ“¾‚é
-		@return	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚Ìæ“ªƒ|ƒCƒ“ƒ^
+		@brief	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã‚’å¾—ã‚‹
+		@return	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å…ˆé ­ãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual const vector< bsm::Mat4x4 >* GetVecLocalBonesPtr() const override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ÌQÆ‚ğ“¾‚é(‘‚«Š·‚¦‰Â”\)
-		@return	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ÌQÆ
+		@brief	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å‚ç…§ã‚’å¾—ã‚‹(æ›¸ãæ›ãˆå¯èƒ½)
+		@return	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å‚ç…§
 		*/
 		//--------------------------------------------------------------------------------------
 		vector< bsm::Mat4x4 >& GetVecLocalBones();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ğ“¾‚éiƒ}ƒ‹ƒ`ƒƒbƒVƒ…”Åj
-		@return	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚Ìæ“ªƒ|ƒCƒ“ƒ^
+		@brief	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã‚’å¾—ã‚‹ï¼ˆãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ç‰ˆï¼‰
+		@return	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å…ˆé ­ãƒã‚¤ãƒ³ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual const vector< bsm::Mat4x4 >* GetVecMultiLocalBonesPtr(size_t index) const override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ÌQÆ‚ğ“¾‚é(ƒ}ƒ‹ƒ`ƒƒbƒVƒ…”Å”ÅA‘‚«Š·‚¦‰Â”\)
-		@return	ƒ[ƒJƒ‹ƒ{[ƒ“s—ñ”z—ñ‚ÌQÆi”ÍˆÍŠO‚È‚ç—áŠOj
+		@brief	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å‚ç…§ã‚’å¾—ã‚‹(ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ç‰ˆç‰ˆã€æ›¸ãæ›ãˆå¯èƒ½)
+		@return	ãƒ­ãƒ¼ã‚«ãƒ«ãƒœãƒ¼ãƒ³è¡Œåˆ—é…åˆ—ã®å‚ç…§ï¼ˆç¯„å›²å¤–ãªã‚‰ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		vector< bsm::Mat4x4 >& GetVecMultiLocalBones(size_t index);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…‚Ìƒ[ƒJƒ‹’¸“_”z—ñ‚ğ“¾‚é
-		@param[out]	vertices	ó‚¯æ‚é’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ­ãƒ¼ã‚«ãƒ«é ‚ç‚¹é…åˆ—ã‚’å¾—ã‚‹
+		@param[out]	vertices	å—ã‘å–ã‚‹é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetStaticMeshLocalPositions(vector<bsm::Vec3>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_”z—ñ‚ğ“¾‚é
-		@param[out]	vertices	ó‚¯æ‚é’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹é…åˆ—ã‚’å¾—ã‚‹
+		@param[out]	vertices	å—ã‘å–ã‚‹é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetStaticMeshWorldPositions(vector<bsm::Vec3>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ü•ª‚ÆƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_‚ÌÕ“Ë”»’è
-		@param[in]	StartPos	ü•ª‚ÌŠJn“_
-		@param[in]	EndPos	ü•ª‚ÌI—¹“_
-		@param[out]	HitPoint	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌÕ“Ë“_
-		@param[out]	RetTri	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`
-		@param[out]	RetIndex	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`‚ÌˆÊ’u
-		@return	Õ“Ë‚µ‚Ä‚¢‚½‚çtrue
+		@brief	ç·šåˆ†ã¨ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹ã®è¡çªåˆ¤å®š
+		@param[in]	StartPos	ç·šåˆ†ã®é–‹å§‹ç‚¹
+		@param[in]	EndPos	ç·šåˆ†ã®çµ‚äº†ç‚¹
+		@param[out]	HitPoint	è¡çªã—ã¦ã„ãŸå ´åˆã®è¡çªç‚¹
+		@param[out]	RetTri	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢
+		@param[out]	RetIndex	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢ã®ä½ç½®
+		@return	è¡çªã—ã¦ã„ãŸã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestStaticMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint,TRIANGLE& RetTri,size_t& RetIndex);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‹…‘Ì‚ÆƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_‚ÌÕ“Ë”»’è
-		@param[in]	StartSp	‹…‘Ì‚ÌŠJn“_
-		@param[in]	EndSp	‹…‘Ì‚ÌI—¹“_
-		@param[out]	HitPoint	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌÕ“Ë“_
-		@param[out]	RetTri	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`
-		@param[out]	RetIndex	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`‚ÌˆÊ’u
-		@return	Õ“Ë‚µ‚Ä‚¢‚½‚çtrue
+		@brief	çƒä½“ã¨ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹ã®è¡çªåˆ¤å®š
+		@param[in]	StartSp	çƒä½“ã®é–‹å§‹ç‚¹
+		@param[in]	EndSp	çƒä½“ã®çµ‚äº†ç‚¹
+		@param[out]	HitPoint	è¡çªã—ã¦ã„ãŸå ´åˆã®è¡çªç‚¹
+		@param[out]	RetTri	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢
+		@param[out]	RetIndex	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢ã®ä½ç½®
+		@return	è¡çªã—ã¦ã„ãŸã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestStaticMeshSphereTriangles(const SPHERE& StartSp, const SPHERE& EndSp, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒLƒ“ˆ—Ï‚İ‚ÌƒƒbƒVƒ…‚Ìƒ[ƒJƒ‹’¸“_”z—ñ‚ğ“¾‚é
-		@param[out]	vertices	ó‚¯æ‚é’¸“_‚Ì”z—ñ
-		@return	‚È‚µiƒ{[ƒ“‚ª‚È‚¯‚ê‚Î—áŠOj
+		@brief	ã‚¹ã‚­ãƒ³å‡¦ç†æ¸ˆã¿ã®ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ­ãƒ¼ã‚«ãƒ«é ‚ç‚¹é…åˆ—ã‚’å¾—ã‚‹
+		@param[out]	vertices	å—ã‘å–ã‚‹é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—ï¼ˆãƒœãƒ¼ãƒ³ãŒãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetSkinedMeshLocalPositions(vector<bsm::Vec3>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒXƒLƒ“ˆ—Ï‚İ‚ÌƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_”z—ñ‚ğ“¾‚é
-		@param[out]	vertices	ó‚¯æ‚é’¸“_‚Ì”z—ñ
-		@return	‚È‚µiƒ{[ƒ“‚ª‚È‚¯‚ê‚Î—áŠOj
+		@brief	ã‚¹ã‚­ãƒ³å‡¦ç†æ¸ˆã¿ã®ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹é…åˆ—ã‚’å¾—ã‚‹
+		@param[out]	vertices	å—ã‘å–ã‚‹é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—ï¼ˆãƒœãƒ¼ãƒ³ãŒãªã‘ã‚Œã°ä¾‹å¤–ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		void GetSkinedMeshWorldPositions(vector<bsm::Vec3>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ü•ª‚ÆƒXƒLƒ“ƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_‚ÌÕ“Ë”»’è
-		@param[in]	StartPos	ü•ª‚ÌŠJn“_
-		@param[in]	EndPos	ü•ª‚ÌI—¹“_
-		@param[out]	HitPoint	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌÕ“Ë“_
-		@param[out]	RetTri	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`
-		@param[out]	RetIndex	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`‚ÌˆÊ’u
-		@return	Õ“Ë‚µ‚Ä‚¢‚½‚çtrue
+		@brief	ç·šåˆ†ã¨ã‚¹ã‚­ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹ã®è¡çªåˆ¤å®š
+		@param[in]	StartPos	ç·šåˆ†ã®é–‹å§‹ç‚¹
+		@param[in]	EndPos	ç·šåˆ†ã®çµ‚äº†ç‚¹
+		@param[out]	HitPoint	è¡çªã—ã¦ã„ãŸå ´åˆã®è¡çªç‚¹
+		@param[out]	RetTri	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢
+		@param[out]	RetIndex	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢ã®ä½ç½®
+		@return	è¡çªã—ã¦ã„ãŸã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestSkinedMeshSegmentTriangles(const bsm::Vec3& StartPos, const bsm::Vec3& EndPos, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	‹…‘Ì‚ÆƒXƒLƒ“ƒƒbƒVƒ…‚Ìƒ[ƒ‹ƒh’¸“_‚ÌÕ“Ë”»’è
-		@param[in]	StartSp	‹…‘Ì‚ÌŠJn“_
-		@param[in]	EndSp	‹…‘Ì‚ÌI—¹“_
-		@param[out]	HitPoint	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌÕ“Ë“_
-		@param[out]	RetTri	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`
-		@param[out]	RetIndex	Õ“Ë‚µ‚Ä‚¢‚½ê‡‚ÌOŠpŒ`‚ÌˆÊ’u
-		@return	Õ“Ë‚µ‚Ä‚¢‚½‚çtrue
+		@brief	çƒä½“ã¨ã‚¹ã‚­ãƒ³ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ¯ãƒ¼ãƒ«ãƒ‰é ‚ç‚¹ã®è¡çªåˆ¤å®š
+		@param[in]	StartSp	çƒä½“ã®é–‹å§‹ç‚¹
+		@param[in]	EndSp	çƒä½“ã®çµ‚äº†ç‚¹
+		@param[out]	HitPoint	è¡çªã—ã¦ã„ãŸå ´åˆã®è¡çªç‚¹
+		@param[out]	RetTri	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢
+		@param[out]	RetIndex	è¡çªã—ã¦ã„ãŸå ´åˆã®ä¸‰è§’å½¢ã®ä½ç½®
+		@return	è¡çªã—ã¦ã„ãŸã‚‰true
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestSkinedMeshSphereTriangles(const SPHERE& StartSp, const SPHERE& EndSp, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///BcPCStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///BcPCStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPCStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPCStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPCStaticDraw();
+		virtual â€¾BcPCStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///BcPNStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///BcPNStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPNStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNStaticDraw();
+		virtual â€¾BcPNStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
@@ -1416,84 +1416,84 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPTStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPTStaticDraw();
+		virtual â€¾BcPTStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPCTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPCTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPCTStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPCTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPCTStaticDraw();
+		virtual â€¾BcPCTStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
@@ -1502,42 +1502,42 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	BcPNTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BcPNTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPNTStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTStaticDraw();
+		virtual â€¾BcPNTStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
@@ -1546,158 +1546,158 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTStaticƒ‚ƒfƒ‹•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTStaticãƒ¢ãƒ‡ãƒ«æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPNTStaticModelDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTStaticModelDraw();
+		virtual â€¾BcPNTStaticModelDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	BcPNTBoneModel•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgiƒ{[ƒ“ƒ‚ƒfƒ‹•`‰æ—pj
+	///	BcPNTBoneModelæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼ˆãƒœãƒ¼ãƒ³ãƒ¢ãƒ‡ãƒ«æç”»ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	class BcPNTBoneModelDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTBoneModelDraw();
+		virtual â€¾BcPNTBoneModelDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	MeshRes	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	MeshRes	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMeshResource(const shared_ptr<MeshResource>& MeshRes)override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ì“o˜^
-		@param[in]	MeshKey	“o˜^‚³‚ê‚Ä‚¢‚éƒƒbƒVƒ…ƒL[
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ç™»éŒ²
+		@param[in]	MeshKey	ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ¡ãƒƒã‚·ãƒ¥ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMeshResource(const wstring& MeshKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	MeshResourcePtr	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	MeshResourcePtr	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMultiMeshResource(const shared_ptr<MultiMeshResource>& MeshResourcePtr)override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	ResKey	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ÌƒL[
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	ResKey	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMultiMeshResource(const wstring& ResKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTnTStatic•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTnTStaticæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPNTnTStaticDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTnTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTnTStaticDraw();
+		virtual â€¾BcPNTnTStaticDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
@@ -1705,116 +1705,116 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	BasicPNTnTƒ‚ƒfƒ‹•`‰æƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	BasicPNTnTãƒ¢ãƒ‡ãƒ«æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class BcPNTnTStaticModelDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTnTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTnTStaticModelDraw();
+		virtual â€¾BcPNTnTStaticModelDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	BcPNTnTBoneModelDraw•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgiƒ{[ƒ“ƒ‚ƒfƒ‹•`‰æ—pj
+	///	BcPNTnTBoneModelDrawæç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆï¼ˆãƒœãƒ¼ãƒ³ãƒ¢ãƒ‡ãƒ«æç”»ç”¨ï¼‰
 	//--------------------------------------------------------------------------------------
 	class BcPNTnTBoneModelDraw : public BcBaseDraw {
 	protected:
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	GameObjectPtr	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	GameObjectPtr	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		explicit BcPNTnTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~BcPNTnTBoneModelDraw();
+		virtual â€¾BcPNTnTBoneModelDraw();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìİ’è
-		@param[in]	MeshRes	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®è¨­å®š
+		@param[in]	MeshRes	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMeshResource(const shared_ptr<MeshResource>& MeshRes)override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ì“o˜^
-		@param[in]	MeshKey	“o˜^‚³‚ê‚Ä‚¢‚éƒƒbƒVƒ…ƒL[
-		@return	‚È‚µ
+		@brief	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ç™»éŒ²
+		@param[in]	MeshKey	ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ãƒ¡ãƒƒã‚·ãƒ¥ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMeshResource(const wstring& MeshKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	MeshResourcePtr	ƒƒbƒVƒ…ƒŠƒ\[ƒX
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	MeshResourcePtr	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void SetMultiMeshResource(const shared_ptr<MultiMeshResource>& MeshResourcePtr)override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒ}ƒ‹ƒ`ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ğİ’è‚·‚é
-		@param[in]	ResKey	ƒƒbƒVƒ…ƒŠƒ\[ƒX‚ÌƒL[
-		@return	‚È‚µ
+		@brief	ãƒãƒ«ãƒãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã‚’è¨­å®šã™ã‚‹
+		@param[in]	ResKey	ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ã‚­ãƒ¼
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetMultiMeshResource(const wstring& ResKey);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnCreateˆ—
-		@return	‚È‚µ
+		@brief	OnCreateå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnUpdateˆ—i‹óŠÖ”j
-		@return	‚È‚µ
+		@brief	OnUpdateå‡¦ç†ï¼ˆç©ºé–¢æ•°ï¼‰
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnUpdate()override {}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	OnDrawˆ—
-		@return	‚È‚µ
+		@brief	OnDrawå‡¦ç†
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override;

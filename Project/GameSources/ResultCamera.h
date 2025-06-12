@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -16,7 +16,7 @@ namespace basecross {
 		shared_ptr<Player> m_Player;
 	public:
 		ResultCamera(Vec3 eye, Vec3 at, shared_ptr<Player>& player) : Camera(), m_Eye(eye), m_At(at), m_Player(player) {}
-		virtual ~ResultCamera() {}
+		virtual 窶ｾResultCamera() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate();
 	};

@@ -57,7 +57,7 @@ struct PfxContactPoint
 ///////////////////////////////////////////////////////////////////////////////
 // Contact Manifold
 
-//J	同一ペアの衝突が続く限り保持されるコンタクト情報
+//J	蜷御ｸ繝壹い縺ｮ陦晉ｪ√′邯壹￥髯舌ｊ菫晄戟縺輔ｌ繧九さ繝ｳ繧ｿ繧ｯ繝域ュ蝣ｱ
 //E PfxContactManifold keeps contact information while two rigid bodies are touching.
 
 class SCE_PFX_ALIGNED(128) PfxContactManifold

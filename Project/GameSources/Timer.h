@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｿ繧､繝槭�ｼ縺ｮ螳溯｣�
 */
 
 #pragma once

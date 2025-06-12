@@ -1,6 +1,6 @@
 /*!
 @file VertexHelper.cpp
-@brief ’¸“_’è‹`A“™À‘Ì
+@brief é ‚ç‚¹å®šç¾©ã€ç­‰å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -10,7 +10,7 @@
 namespace basecross{
 
 	//--------------------------------------------------------------------------------------
-	// —p“r: ’¸“_’è‹`ŠÖ˜A‚ÌƒCƒ“ƒvƒŠƒƒ“ƒg
+	// ç”¨é€”: é ‚ç‚¹å®šç¾©é–¢é€£ã®ã‚¤ãƒ³ãƒ—ãƒªãƒ¡ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	void XM_CALLCONV VertexPositionNormalTangentColorTexture::SetColor( FXMVECTOR color )
 	{

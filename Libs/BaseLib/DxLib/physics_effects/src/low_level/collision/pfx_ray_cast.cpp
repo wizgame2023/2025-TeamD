@@ -41,7 +41,7 @@ void pfxRayTraverseForward(
 	for(int i=0;i<numProxies;i++) {
 		PfxBroadphaseProxy &proxy = proxies[i];
 
-		// I—¹ğŒ‚Ìƒ`ƒFƒbƒN
+		// çµ‚äº†æ¡ä»¶ã®ãƒã‚§ãƒƒã‚¯
 		if(pfxGetXYZMax(rayAABB,axis) < pfxGetXYZMin(proxy,axis)) {
 			return;
 		}
@@ -54,7 +54,7 @@ void pfxRayTraverseForward(
 			return;
 		}
 
-		// ƒXƒLƒbƒv
+		// ã‚¹ã‚­ãƒƒãƒ—
 		if(pfxGetXYZMax(proxy,axis) < pfxGetXYZMin(rayAABB,axis)) {
 			continue;
 		}
@@ -109,7 +109,7 @@ void pfxRayTraverseBackward(
 	for(int i=numProxies-1;i>=0;i--) {
 		PfxBroadphaseProxy &proxy = proxies[i];
 
-		// I—¹ğŒ‚Ìƒ`ƒFƒbƒN
+		// çµ‚äº†æ¡ä»¶ã®ãƒã‚§ãƒƒã‚¯
 		if(pfxGetXYZMax(proxy,axis) < pfxGetXYZMin(rayAABB,axis)) {
 			return;
 		}
@@ -122,7 +122,7 @@ void pfxRayTraverseBackward(
 			return;
 		}
 		
-		// ƒXƒLƒbƒv
+		// ã‚¹ã‚­ãƒƒãƒ—
 		if(pfxGetXYZMax(rayAABB,axis) < pfxGetXYZMin(proxy,axis)) {
 			continue;
 		}
@@ -188,13 +188,13 @@ void pfxCastSingleRay(const PfxRayInput &ray,PfxRayOutput &out,const PfxRayCastP
 	out.m_variable = 1.0f;
 	out.m_contactFlag = false;
 	
-	// ’Tõ²
+	// æ¢ç´¢è»¸
 	PfxVector3 chkAxisVec = absPerElem(ray.m_direction);
 	int axis = 0;
 	if(chkAxisVec[1] < chkAxisVec[0]) axis = 1;
 	if(chkAxisVec[2] < chkAxisVec[axis]) axis = 2;
 
-	// ƒŒƒC‚ÌAABBì¬
+	// ãƒ¬ã‚¤ã®AABBä½œæˆ
 	PfxVector3 p1 = ray.m_startPosition;
 	PfxVector3 p2 = ray.m_startPosition + ray.m_direction;
 	PfxVecInt3 rayMin,rayMax;
@@ -208,8 +208,8 @@ void pfxCastSingleRay(const PfxRayInput &ray,PfxRayOutput &out,const PfxRayCastP
 	pfxSetZMin(rayAABB,rayMin.getZ());
 	pfxSetZMax(rayAABB,rayMax.getZ());
 	
-	// AABB’TõŠJn
-	int sign = ray.m_direction[axis] < 0.0f ? -1 : 1; // ’Tõ•ûŒü
+	// AABBæ¢ç´¢é–‹å§‹
+	int sign = ray.m_direction[axis] < 0.0f ? -1 : 1; // æ¢ç´¢æ–¹å‘
 
 	if(sign > 0) {
 		pfxRayTraverseForward(

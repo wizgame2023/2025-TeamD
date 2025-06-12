@@ -1,6 +1,6 @@
 /*!
 @file Enemymaneger.h
-@brief Enemy�̊Ǘ��Ȃ�
+@brief Enemyの管理など
 */
 
 #pragma once
@@ -18,7 +18,7 @@ namespace basecross {
 		vector<weak_ptr<Enemy>> m_GruopEnemy;
 	public:
 		Legion(const shared_ptr<Stage>& stage) : Object(stage),m_PopInterval(0),m_MaxEnemyCount(0) {}
-		~Legion() {};
+		‾Legion() {};
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

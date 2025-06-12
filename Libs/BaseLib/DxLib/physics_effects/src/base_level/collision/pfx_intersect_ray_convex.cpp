@@ -26,12 +26,12 @@ PfxBool pfxIntersectRayConvex(const PfxRayInput &ray,PfxRayOutput &out,const voi
 {
 	const PfxConvexMesh *convex = (const PfxConvexMesh*)shape;
 	
-	// ƒŒƒC‚ğConvex‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’Convexã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformConvex = orthoInverse(transform);
 	PfxVector3 startPosL = transformConvex.getUpper3x3() * ray.m_startPosition + transformConvex.getTranslation();
 	PfxVector3 rayDirL = transformConvex.getUpper3x3() * ray.m_direction;
 
-	// ƒŒƒC‚ÆConvex‚ÌŒğ·”»’è
+	// ãƒ¬ã‚¤ã¨Convexã®äº¤å·®åˆ¤å®š
 	PfxFloat tmpVariable(0.0f);
 	PfxVector3 tmpNormal;
 	bool ret = false;

@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -15,7 +15,7 @@ namespace basecross {
 
 	public:
 		TargetBoard(const shared_ptr<Stage>& stage,shared_ptr<Player>& player) : GameObject(stage),m_Player(player){}
-		virtual ~TargetBoard() {}
+		virtual 窶ｾTargetBoard() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 

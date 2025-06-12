@@ -41,7 +41,7 @@ PfxShapeIterator(const PfxCollidable &coll) : m_shapeIds(coll.m_shapeIds)
 	m_curShape = &coll.m_defShape;
 }
 
-~PfxShapeIterator() {}
+‾PfxShapeIterator() {}
 
 inline PfxShapeIterator& operator++()
 {

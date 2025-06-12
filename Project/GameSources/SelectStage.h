@@ -8,12 +8,12 @@ namespace basecross {
 	class NumberSprite;
 	class Menu;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class SelectStage : public Stage {
-		//ƒRƒ“ƒgƒ[ƒ‰[æ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å–å¾—
 		InputHandler<SelectStage> m_InputHandler;
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		Timer m_TotalTimer;
 		void CreateViewLight();
 		void CreateResource();
@@ -34,10 +34,10 @@ namespace basecross {
 		vector<shared_ptr<Sprite>> m_Difficultys;
 		//bool m_fade;
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		SelectStage() : Stage(), m_TotalTimer(Timer(0.5f, false)){};
-		virtual ~SelectStage() {};
-		//‰Šú‰»
+		virtual â€¾SelectStage() {};
+		//åˆæœŸåŒ–
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 

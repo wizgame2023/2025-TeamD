@@ -16,7 +16,7 @@ namespace basecross {
 		Line m_Line;
 	public:
 		LineCube(shared_ptr<Stage>& stage, float size, Col4 color) : GameObject(stage), m_Color(color), m_Line(Line()), m_LineSize(size) {}
-		virtual ~LineCube() {}
+		virtual ‾LineCube() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -30,7 +30,7 @@ namespace basecross {
 	class BulletLine : public LineCube {
 	public:
 		BulletLine(shared_ptr<Stage>& stage, float size, Col4 color) : LineCube(stage,size,color){}
-		virtual ~BulletLine(){}
+		virtual ‾BulletLine(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

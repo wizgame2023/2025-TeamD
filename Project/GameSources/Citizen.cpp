@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -12,7 +12,7 @@ namespace basecross {
 		Character(stage, position, Vec3(), scale) {
 	}
 
-	Citizen::~Citizen(){}
+	Citizen::â€¾Citizen(){}
 
 	void Citizen::OnCreate()
 	{

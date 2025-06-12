@@ -11,17 +11,17 @@ namespace basecross {
 	class RootPointer;
 	class Legion;
 	/// <summary>
-	/// ObjectInstanceƒNƒ‰ƒX‚ğ“¯‚¶ƒNƒ‰ƒX‚ÅŠÇ—‚·‚é‚½‚ß‚Ì‰¼‘zƒNƒ‰ƒX
+	/// ObjectInstanceã‚¯ãƒ©ã‚¹ã‚’åŒã˜ã‚¯ãƒ©ã‚¹ã§ç®¡ç†ã™ã‚‹ãŸã‚ã®ä»®æƒ³ã‚¯ãƒ©ã‚¹
 	/// </summary>
 	class Instance : public GameObject {
 	public:
 		Instance(const shared_ptr<Stage>& stage) : GameObject(stage) {}
-		virtual ~Instance() {}
+		virtual â€¾Instance() {}
 
 		/// <summary>
-		/// ƒIƒuƒWƒFƒNƒg¶¬
+		/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 		/// </summary>
-		/// <returns>¶¬‚µ‚½Object</returns>
+		/// <returns>ç”Ÿæˆã—ãŸObject</returns>
 		virtual shared_ptr<Object> Create() {
 			return nullptr;
 		}
@@ -29,20 +29,20 @@ namespace basecross {
 	};
 
 	/// <summary>
-	/// ƒIƒuƒWƒFƒNƒg‚ğ¶¬‚·‚éƒCƒ“ƒXƒ^ƒ“ƒXƒNƒ‰ƒX
+	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆã™ã‚‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚¯ãƒ©ã‚¹
 	/// </summary>
-	/// <typeparam name="T">¶¬‚·‚éƒNƒ‰ƒX</typeparam>
+	/// <typeparam name="T">ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹</typeparam>
 	template<typename T>
 	class ObjectInstance : public Instance {
 		shared_ptr<Stage> m_Stage;
 	public:
 		ObjectInstance(const shared_ptr<Stage>& stage) :Instance(stage), m_Stage(stage) {}
-		~ObjectInstance() {}
+		â€¾ObjectInstance() {}
 
 		/// <summary>
-		/// ƒIƒuƒWƒFƒNƒg¶¬
+		/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆç”Ÿæˆ
 		/// </summary>
-		/// <returns>¶¬‚µ‚½Object</returns>
+		/// <returns>ç”Ÿæˆã—ãŸObject</returns>
 		virtual shared_ptr<Object> Create() {
 			return m_Stage->AddGameObject<T>();
 		}
@@ -50,16 +50,16 @@ namespace basecross {
 	};
 	class Object : public GameObject {
 	protected:
-		Vec3 m_Position;//Œ»İ‚ÌˆÊ’u
-		Vec3 m_Scale;//Œ»İ‚ÌƒTƒCƒY
-		Vec3 m_Rotation;//Œ»İ‚Ì‰ñ“]
+		Vec3 m_Position;//ç¾åœ¨ã®ä½ç½®
+		Vec3 m_Scale;//ç¾åœ¨ã®ã‚µã‚¤ã‚º
+		Vec3 m_Rotation;//ç¾åœ¨ã®å›è»¢
 
-		shared_ptr<Transform> m_Transform;//ˆÊ’uŠÇ—
-		shared_ptr<GameStage> m_Stage;//Œ»İ‚ÌƒXƒe[ƒW
+		shared_ptr<Transform> m_Transform;//ä½ç½®ç®¡ç†
+		shared_ptr<GameStage> m_Stage;//ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸
 
-		bool m_IsEndAsyncUpdate;//”ñ“¯Šúˆ—ŠÇ——pƒtƒ‰ƒO
+		bool m_IsEndAsyncUpdate;//éåŒæœŸå‡¦ç†ç®¡ç†ç”¨ãƒ•ãƒ©ã‚°
 		
-		mutex m_Mutex;//”ñ“¯Šúˆ——p
+		mutex m_Mutex;//éåŒæœŸå‡¦ç†ç”¨
 
 	public:
 		Object(const shared_ptr<Stage>& stage, Vec3 position, Vec3 rotation, Vec3 scale) :
@@ -67,26 +67,26 @@ namespace basecross {
 		}
 
 		/// <summary>
-		/// ƒXƒe[ƒW¶¬—p
+		/// ã‚¹ãƒ†ãƒ¼ã‚¸ç”Ÿæˆç”¨
 		/// </summary>
-		/// <param name="stage">Œ»İ‚ÌƒXƒe[ƒW</param>
+		/// <param name="stage">ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸</param>
 		Object(const shared_ptr<Stage>& stage) : Object(stage, Vec3(), Vec3(1.0f), Vec3()) {}
 
-		virtual ~Object() {}
+		virtual â€¾Object() {}
 		virtual void OnCreate()override;
 
 		/// <summary>
-		/// StageBuilder‚Å¶¬‚µ‚½Œã‚ÉŒÄ‚Ño‚³‚ê‚é
+		/// StageBuilderã§ç”Ÿæˆã—ãŸå¾Œã«å‘¼ã³å‡ºã•ã‚Œã‚‹
 		/// </summary>
 		virtual void OnAfterCreate(){}
 
 		/// <summary>
-		/// ”ñ“¯Šúˆ—
+		/// éåŒæœŸå‡¦ç†
 		/// </summary>
 		virtual void AsyncUpdate() {}
 
 		/// <summary>
-		/// Transform‚Ö‚ÌQÆ
+		/// Transformã¸ã®å‚ç…§
 		/// </summary>
 		/// <returns>Transform</returns>
 		shared_ptr<Transform>& GetTransform() {
@@ -94,56 +94,56 @@ namespace basecross {
 		}
 
 		/// <summary>
-		/// ƒQ[ƒ€ŠÔ”{—¦‚ğl—¶‚µ‚½Œo‰ßŠÔ‚ğæ“¾
+		/// ã‚²ãƒ¼ãƒ æ™‚é–“å€ç‡ã‚’è€ƒæ…®ã—ãŸçµŒéæ™‚é–“ã‚’å–å¾—
 		/// </summary>
-		/// <returns>Œo‰ßŠÔ</returns>
+		/// <returns>çµŒéæ™‚é–“</returns>
 		float GetGameElapsed() {
 			return GetElapsed() * GameManager::Instance()->GetTimeRate();
 		}
 
 		/// <summary>
-		/// Œo‰ßŠÔ‚ğæ“¾
+		/// çµŒéæ™‚é–“ã‚’å–å¾—
 		/// </summary>
-		/// <returns>Œo‰ßŠÔ</returns>
+		/// <returns>çµŒéæ™‚é–“</returns>
 		float GetElapsed() {
 			return App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetGameSpeed();
 		}
 		/// <summary>
-		/// ”ñ“¯Šúˆ—ŠJn
+		/// éåŒæœŸå‡¦ç†é–‹å§‹
 		/// </summary>
 		void StartAsync() {
 			m_IsEndAsyncUpdate = false;
 		}
 
 		/// <summary>
-		/// ”ñ“¯Šúˆ—I—¹
+		/// éåŒæœŸå‡¦ç†çµ‚äº†
 		/// </summary>
 		void EndAsync() {
 			m_IsEndAsyncUpdate = true;
 		}
 
 		/// <summary>
-		/// ˆÊ’u‚ğİ’è
+		/// ä½ç½®ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="position">İ’è‚·‚éˆÊ’u</param>
+		/// <param name="position">è¨­å®šã™ã‚‹ä½ç½®</param>
 		void SetPosition(Vec3 position) {
 			m_Position = position;
 			m_Transform->SetPosition(position);
 		}
 
 		/// <summary>
-		/// ƒTƒCƒY‚ğİ’è
+		/// ã‚µã‚¤ã‚ºã‚’è¨­å®š
 		/// </summary>
-		/// <param name="scale">İ’è‚·‚éƒTƒCƒY</param>
+		/// <param name="scale">è¨­å®šã™ã‚‹ã‚µã‚¤ã‚º</param>
 		void SetScale(Vec3 scale) {
 			m_Scale = scale;
 			m_Transform->SetScale(scale);
 		}
 
 		/// <summary>
-		/// ‰ñ“]‚ğİ’è
+		/// å›è»¢ã‚’è¨­å®š
 		/// </summary>
-		/// <param name="rotation">İ’è‚µ‚½‚¢ƒ‰ƒWƒAƒ“Šp</param>
+		/// <param name="rotation">è¨­å®šã—ãŸã„ãƒ©ã‚¸ã‚¢ãƒ³è§’</param>
 		void SetRotation(Vec3 rotation) {
 			m_Rotation = rotation;
 
@@ -151,36 +151,36 @@ namespace basecross {
 		}
 
 		/// <summary>
-		/// Œ»İˆÊ’u‚ğæ“¾
+		/// ç¾åœ¨ä½ç½®ã‚’å–å¾—
 		/// </summary>
-		/// <returns>Œ»İˆÊ’u</returns>
+		/// <returns>ç¾åœ¨ä½ç½®</returns>
 		Vec3 GetPosition() {
 			m_Position = m_Transform->GetPosition();
 			return m_Position;
 		}
 
 		/// <summary>
-		/// Œ»İ‚ÌƒTƒCƒY‚ğæ“¾
+		/// ç¾åœ¨ã®ã‚µã‚¤ã‚ºã‚’å–å¾—
 		/// </summary>
-		/// <returns>Œ»İ‚ÌƒTƒCƒY</returns>
+		/// <returns>ç¾åœ¨ã®ã‚µã‚¤ã‚º</returns>
 		Vec3 GetScale() {
 			m_Scale = m_Transform->GetScale();
 			return m_Scale;
 		}
 
 		/// <summary>
-		/// Œ»İ‚Ì‰ñ“]‚ğæ“¾
+		/// ç¾åœ¨ã®å›è»¢ã‚’å–å¾—
 		/// </summary>
-		/// <returns>Œ»İ‚Ì‰ñ“]</returns>
+		/// <returns>ç¾åœ¨ã®å›è»¢</returns>
 		Vec3 GetRotation() {
 			m_Rotation = m_Transform->GetRotation();
 			return m_Rotation;
 		}
 
 		/// <summary>
-		/// ‘O•ûƒxƒNƒgƒ‹‚ğæ“¾
+		/// å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«ã‚’å–å¾—
 		/// </summary>
-		/// <returns>‘O•ûƒxƒNƒgƒ‹</returns>
+		/// <returns>å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«</returns>
 		Vec3 GetForward() {
 			return m_Transform->GetForward();
 		}
@@ -188,79 +188,79 @@ namespace basecross {
 	};
 
 	/// <summary>
-	/// ƒXƒe[ƒW¶¬‚ğŠÇ—‚·‚éƒNƒ‰ƒX
+	/// ã‚¹ãƒ†ãƒ¼ã‚¸ç”Ÿæˆã‚’ç®¡ç†ã™ã‚‹ã‚¯ãƒ©ã‚¹
 	/// </summary>
 	class StageBuilder : public GameObject
 	{
-		wstring m_CsvFileName;//QÆ‚·‚écsvƒtƒ@ƒCƒ‹–¼
-		CsvFile m_Csv;//csv“Ç‚İ‚İ—p
+		wstring m_CsvFileName;//å‚ç…§ã™ã‚‹csvãƒ•ã‚¡ã‚¤ãƒ«å
+		CsvFile m_Csv;//csvèª­ã¿è¾¼ã¿ç”¨
 
-		shared_ptr<Stage> m_Stage;//Œ»İ‚ÌƒXƒe[ƒW
-		map<wstring, shared_ptr<Instance>> m_Builders;//“o˜^‚³‚ê‚Ä‚¢‚éƒIƒuƒWƒFƒNƒg
-		vector<wstring> m_InfoNames;//î•ñ•Û‘¶—p
-		map<int, shared_ptr<Legion>> m_Legions;//ƒEƒF[ƒuŠÇ—
-		float m_Scale;//¶¬‚·‚éƒXƒe[ƒW‚ÌƒTƒCƒY”ä
+		shared_ptr<Stage> m_Stage;//ç¾åœ¨ã®ã‚¹ãƒ†ãƒ¼ã‚¸
+		map<wstring, shared_ptr<Instance>> m_Builders;//ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+		vector<wstring> m_InfoNames;//æƒ…å ±ä¿å­˜ç”¨
+		map<int, shared_ptr<Legion>> m_Legions;//ã‚¦ã‚§ãƒ¼ãƒ–ç®¡ç†
+		float m_Scale;//ç”Ÿæˆã™ã‚‹ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚µã‚¤ã‚ºæ¯”
 
 	public:
 		StageBuilder(const shared_ptr<Stage>& stage, const wstring& fileName, const float scale = 1.0f) :
 			GameObject(stage), m_CsvFileName(fileName), m_Scale(scale)
 		{
 		};
-		virtual ~StageBuilder() {};
+		virtual â€¾StageBuilder() {};
 		virtual void OnCreate()override;
 
 		/// <summary>
-		/// ¶¬‚·‚éƒNƒ‰ƒX‚Ì“o˜^
+		/// ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹ã®ç™»éŒ²
 		/// </summary>
-		/// <typeparam name="T">¶¬‚·‚éƒNƒ‰ƒX</typeparam>
-		/// <param name="name">“o˜^–¼</param>
+		/// <typeparam name="T">ç”Ÿæˆã™ã‚‹ã‚¯ãƒ©ã‚¹</typeparam>
+		/// <param name="name">ç™»éŒ²å</param>
 		template<typename T>
 		void Register(const wstring& name) {
 			m_Builders.emplace(name, ObjectFactory::Create<ObjectInstance<T>>(m_Stage));
 		}
 		/// <summary>
-		/// csv‚Ì“Ç‚İ‚İ
+		/// csvã®èª­ã¿è¾¼ã¿
 		/// </summary>
 		void LoadCsv();
 
 		/// <summary>
-		/// ƒIƒuƒWƒFƒNƒg‚Ì¶¬
+		/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ç”Ÿæˆ
 		/// </summary>
-		/// <param name="date">•¶šƒf[ƒ^</param>
-		/// <returns>¶¬‚µ‚½shared_ptr</returns>
+		/// <param name="date">æ–‡å­—ãƒ‡ãƒ¼ã‚¿</param>
+		/// <returns>ç”Ÿæˆã—ãŸshared_ptr</returns>
 		shared_ptr<Object> CreateObject(vector<wstring> date);
 
 		/// <summary>
-		/// w’è‚µ‚½î•ñ–¼‚É‘Î‰‚·‚éƒCƒ“ƒfƒbƒNƒX‚ğæ“¾
+		/// æŒ‡å®šã—ãŸæƒ…å ±åã«å¯¾å¿œã™ã‚‹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’å–å¾—
 		/// </summary>
-		/// <param name="infoName">ƒf[ƒ^”z—ñ•¶š—ñ</param>
-		/// <returns>ƒCƒ“ƒfƒbƒNƒX</returns>
+		/// <param name="infoName">ãƒ‡ãƒ¼ã‚¿é…åˆ—æ–‡å­—åˆ—</param>
+		/// <returns>ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹</returns>
 		int GetInfoIndex(const wstring& infoName);
 
 		/// <summary>
-		/// •¶š—ñ‚©‚ç•‚“®¬”“_‚Ö•ÏŠ·
+		/// æ–‡å­—åˆ—ã‹ã‚‰æµ®å‹•å°æ•°ç‚¹ã¸å¤‰æ›
 		/// </summary>
-		/// <param name="data">•¶š—ñ</param>
-		/// <returns>•‚“®¬”“_</returns>
+		/// <param name="data">æ–‡å­—åˆ—</param>
+		/// <returns>æµ®å‹•å°æ•°ç‚¹</returns>
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return 0.0f;
 			return stof(data);
 		}
 
 		/// <summary>
-		/// •¶š—ñ‚©‚ç®”Œ^‚Ö•ÏŠ·
+		/// æ–‡å­—åˆ—ã‹ã‚‰æ•´æ•°å‹ã¸å¤‰æ›
 		/// </summary>
-		/// <param name="data">•¶š—ñ</param>
-		/// <returns>®”Œ^</returns>
+		/// <param name="data">æ–‡å­—åˆ—</param>
+		/// <returns>æ•´æ•°å‹</returns>
 		int WstrToInt(const wstring& date) {
 			if (date == L"") return 0;
 			return stoi(date);
 		}
 
 		/// <summary>
-		/// •¶š—ñ‚©‚çVec3‚Ö‚Ì•ÏŠ·
+		/// æ–‡å­—åˆ—ã‹ã‚‰Vec3ã¸ã®å¤‰æ›
 		/// </summary>
-		/// <param name="data">•¶š—ñ</param>
+		/// <param name="data">æ–‡å­—åˆ—</param>
 		/// <returns>Vec3</returns>
 		Vec3 WstrToVec3(const wstring& data) {
 			vector<wstring> vec3Str = {};

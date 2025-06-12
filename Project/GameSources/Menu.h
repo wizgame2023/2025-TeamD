@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -19,7 +19,7 @@ namespace basecross {
 		wstring m_GroupName;
 	public:
 		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage),m_Stage(stage), m_GroupName(group), m_IsOpen(false),m_IsPouse(false) {}
-		virtual ~Menu() {}
+		virtual 窶ｾMenu() {}
 		virtual void OnCreate()override;
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func);
 		void AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
@@ -63,7 +63,7 @@ namespace basecross {
 		shared_ptr<Menu> m_SoundTestMenu;
 	public:
 		PauseMenu(const shared_ptr<Stage>& stage, const wstring& group, shared_ptr<Menu>& menu) : Menu(stage, group), m_SoundTestMenu(menu) {}
-		virtual ~PauseMenu() {}
+		virtual 窶ｾPauseMenu() {}
 		shared_ptr<GameStage> m_Stage;
 
 		virtual void OnCreate()override;
@@ -77,7 +77,7 @@ namespace basecross {
 		float m_RightX;
 	public:
 		SoundTestMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group),m_LeftX(-100),m_RightX(100) {}
-		virtual ~SoundTestMenu() {}
+		virtual 窶ｾSoundTestMenu() {}
 
 		virtual void OnCreate()override;
 
@@ -108,7 +108,7 @@ namespace basecross {
 	class ResultMenu : public Menu {
 	public:
 		ResultMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group) {}
-		virtual ~ResultMenu() {}
+		virtual 窶ｾResultMenu() {}
 		virtual void OnCreate()override;
 
 		virtual void Open();
@@ -117,7 +117,7 @@ namespace basecross {
 	class GameOverMenu : public Menu {
 	public:
 		GameOverMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group) {}
-		virtual ~GameOverMenu() {}
+		virtual 窶ｾGameOverMenu() {}
 		virtual void OnCreate()override;
 
 		virtual void Open();

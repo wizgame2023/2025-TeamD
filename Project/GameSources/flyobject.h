@@ -18,7 +18,7 @@ namespace basecross {
 
 	public:
 		flyobject(const shared_ptr<Stage>& stage);
-		~flyobject();
+		‾flyobject();
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 		void OnCollisionEnter(shared_ptr<GameObject>& other) override;

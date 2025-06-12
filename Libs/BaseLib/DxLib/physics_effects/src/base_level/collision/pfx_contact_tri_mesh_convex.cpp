@@ -33,7 +33,7 @@ bool pfxContactTriangleConvex(PfxContactCache &contacts,PfxUInt32 facetId,
 							PfxUInt32 edgeChk,
 							const PfxConvexMesh &convex,const PfxTransform3 &transformB)
 {
-	// GJK‚Ì¸“x‚ğŠm•Û‚·‚é‚½‚ßAƒgƒ‰ƒCƒAƒ“ƒOƒ‹‚Ì’†S‚ğŠî€‚É‚Æ‚é
+	// GJKã®ç²¾åº¦ã‚’ç¢ºä¿ã™ã‚‹ãŸã‚ã€ãƒˆãƒ©ã‚¤ã‚¢ãƒ³ã‚°ãƒ«ã®ä¸­å¿ƒã‚’åŸºæº–ã«ã¨ã‚‹
 	PfxVector3 centerA = (p0+p1+p2)/3.0f;
 	PfxTransform3 transformA = PfxTransform3::translation(centerA);
 	
@@ -61,7 +61,7 @@ bool pfxContactTriangleConvex(PfxContactCache &contacts,PfxUInt32 facetId,
 	PfxVector3 pointsOnConvex = PfxVector3(pB);
 	PfxVector3 axis = nml;
 	
-	// –Êã‚ÌÅ‹ßÚ“_‚ª“ÊƒGƒbƒWã‚Å‚È‚¢ê‡‚Í–@ü‚ğ•Ï‚¦‚é
+	// é¢ä¸Šã®æœ€è¿‘æ¥ç‚¹ãŒå‡¸ã‚¨ãƒƒã‚¸ä¸Šã§ãªã„å ´åˆã¯æ³•ç·šã‚’å¤‰ãˆã‚‹
 	if( (((edgeChk&0x03)==0)&&pfxPointOnLine(pointsOnTriangle,p0,p1)) ||
 		(((edgeChk&0x0c)==0)&&pfxPointOnLine(pointsOnTriangle,p1,p2)) ||
 		(((edgeChk&0x30)==0)&&pfxPointOnLine(pointsOnTriangle,p2,p0)) ) {
@@ -85,7 +85,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş.
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€.
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = { 0 };
 
@@ -100,7 +100,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	}
 	
 	//-------------------------------------------
-	// –Ê‚²‚Æ‚ÉÕ“Ë‚ğŒŸo
+	// é¢ã”ã¨ã«è¡çªã‚’æ¤œå‡º
 	
 	PfxDecodedTriMesh decodedMesh;
 	PfxContactCache localContacts;
@@ -108,7 +108,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		const PfxQuantizedFacet &facet = meshA->m_facets[selFacets[f]];
 		
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -189,7 +189,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş.
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€.
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = { 0 };
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,
@@ -201,7 +201,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	}
 	
 	//-------------------------------------------
-	// –Ê‚²‚Æ‚ÉÕ“Ë‚ğŒŸo
+	// é¢ã”ã¨ã«è¡çªã‚’æ¤œå‡º
 	
 	PfxContactCache localContacts;
 	
@@ -301,7 +301,7 @@ PfxInt32 pfxContactTriMeshConvex(
 	for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 		const PfxQuantizedFacetBvh &facet = meshA->m_facets[selFacets[f]];
 		
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 

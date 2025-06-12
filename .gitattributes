@@ -1,3 +1,2 @@
-*.cpp diff=sjis
-*.h diff=sjis
-iconv -f CP932 -t UTF-8 input.txt > output.txt
+*.cpp text working-tree-encoding=sjis diff=sjis
+*.h   text working-tree-encoding=sjis diff=sjis

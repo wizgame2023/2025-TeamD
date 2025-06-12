@@ -1,38 +1,38 @@
 
 /*!
 @file SpriteStudio5.cpp
-@brief ƒXƒvƒ‰ƒCƒgƒXƒ^ƒWƒIÀ‘Ì
+@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚¹ã‚¿ã‚¸ã‚ªå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
 
 namespace basecross {
-	//ƒ[ƒJƒ‹ŠÖ”
+	//ãƒ­ãƒ¼ã‚«ãƒ«é–¢æ•°
 
 	//---------------------------------------------------------------------------
 	/**
-	“™‘¬‰^“®
+	ç­‰é€Ÿé‹å‹•
 	*/
 	//---------------------------------------------------------------------------
-	static float	// now‚É‚¨‚¯‚é•âŠÔ‚³‚ê‚½’l
+	static float	// nowã«ãŠã‘ã‚‹è£œé–“ã•ã‚ŒãŸå€¤
 		linear_(
-		float	start,	// n“_
-		float	end,	// I“_
-		float	now)	// Œ»İ‚ÌŠÔ 0.f~1.f
+		float	start,	// å§‹ç‚¹
+		float	end,	// çµ‚ç‚¹
+		float	now)	// ç¾åœ¨ã®æ™‚é–“ 0.fâ€¾1.f
 	{
 			return start + (now * (end - start));
 		}
 
 	//---------------------------------------------------------------------------
 	/**
-	‰Á‘¬‰^“®
+	åŠ é€Ÿé‹å‹•
 	*/
 	//---------------------------------------------------------------------------
-	static float	// now‚É‚¨‚¯‚é•âŠÔ‚³‚ê‚½’l
+	static float	// nowã«ãŠã‘ã‚‹è£œé–“ã•ã‚ŒãŸå€¤
 		accelerating_(
-		float	start,	// n“_
-		float	end,	// I“_
-		float	now)	// Œ»İ‚ÌŠÔ 0.f~1.f
+		float	start,	// å§‹ç‚¹
+		float	end,	// çµ‚ç‚¹
+		float	now)	// ç¾åœ¨ã®æ™‚é–“ 0.fâ€¾1.f
 	{
 			float rate = now * now;
 			return start + (rate * (end - start));
@@ -40,14 +40,14 @@ namespace basecross {
 
 	//---------------------------------------------------------------------------
 	/**
-	Œ¸‘¬‰^“®
+	æ¸›é€Ÿé‹å‹•
 	*/
 	//---------------------------------------------------------------------------
-	static float	// now‚É‚¨‚¯‚é•âŠÔ‚³‚ê‚½’l
+	static float	// nowã«ãŠã‘ã‚‹è£œé–“ã•ã‚ŒãŸå€¤
 		decelerating_(
-		float	start,	// n“_
-		float	end,	// I“_
-		float	now)	// Œ»İ‚ÌŠÔ 0.f~1.f
+		float	start,	// å§‹ç‚¹
+		float	end,	// çµ‚ç‚¹
+		float	now)	// ç¾åœ¨ã®æ™‚é–“ 0.fâ€¾1.f
 	{
 			float time = 1 - now;
 			float rate = 1 - time * time;
@@ -103,10 +103,10 @@ namespace basecross {
 	}
 
 	/**
-	ƒGƒ‹ƒ~[ƒg‚Å‚Í c->startTime, c->endTime ‚Í•K—v‚È‚¢
+	ã‚¨ãƒ«ãƒŸãƒ¼ãƒˆã§ã¯ c->startTime, c->endTime ã¯å¿…è¦ãªã„
 
-	ƒXƒ[ƒv’l‚ğ–‘OŒvZ‚µ‚Ä‚¨‚¯‚ÎƒJ[ƒuŒvZ—pƒpƒ‰ƒ[ƒ^‚Í‚P‚Â‚É‚È‚é
-	‚ªAƒxƒWƒF‚Æ‹¤—p‚·‚é‚½‚ß‚±‚Ì‚Ü‚Ü‚ÌŒ`‚É‚µ‚Ä‚¨‚­B
+	ã‚¹ãƒ­ãƒ¼ãƒ—å€¤ã‚’äº‹å‰è¨ˆç®—ã—ã¦ãŠã‘ã°ã‚«ãƒ¼ãƒ–è¨ˆç®—ç”¨ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿ã¯ï¼‘ã¤ã«ãªã‚‹
+	ãŒã€ãƒ™ã‚¸ã‚§ã¨å…±ç”¨ã™ã‚‹ãŸã‚ã“ã®ã¾ã¾ã®å½¢ã«ã—ã¦ãŠãã€‚
 	*/
 	static float hermite_(float start, float end, float time, const SsCurve * c)
 	{
@@ -122,11 +122,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5Util;
-	//	—p“r: SpriteStdioƒ†[ƒeƒBƒŠƒeƒB
+	//	ç”¨é€”: SpriteStdioãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
 	//--------------------------------------------------------------------------------------
 	//----------------------------------------------------------------------------
 	/**
-	ƒ^ƒCƒv‚ğw’è‚µ‚Ä•âŠÔ‚·‚é
+	ã‚¿ã‚¤ãƒ—ã‚’æŒ‡å®šã—ã¦è£œé–“ã™ã‚‹
 	*/
 	//----------------------------------------------------------------------------
 	float SS5Util::SsInterpolate(SsInterpolationType::_enum type,
@@ -163,26 +163,26 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeLine;
-	//	—p“r: ƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“iŠî’ê\‘¢‘Ìj
+	//	ç”¨é€”: ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³ï¼ˆåŸºåº•æ§‹é€ ä½“ï¼‰
 	//--------------------------------------------------------------------------------------
 	SS5AnimeLine::SS5AnimeLine() :
 		type(SsAttributeKind::invalid){}
-	SS5AnimeLine::~SS5AnimeLine(){}
+	SS5AnimeLine::â€¾SS5AnimeLine(){}
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeBoolVal::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeBoolVal::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
-			bool val;	//’l
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
+			bool val;	//å€¤
 		};
 		vector< data > line;
 	};
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeBoolVal : public SS5AnimeLine;
-	//	—p“r: boolŒ^ƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: boolå‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeBoolVal::SS5AnimeBoolVal(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -206,9 +206,9 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5AnimeBoolVal::~SS5AnimeBoolVal(){}
+	SS5AnimeBoolVal::â€¾SS5AnimeBoolVal(){}
 
-	//w’èŠÔ‚Ì’l‚ğ•Ô‚·
+	//æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 	bool SS5AnimeBoolVal::GetValue(float Time){
 		if (pImpl->line.size() <= 0){
 			return false;
@@ -227,21 +227,21 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeFloatVal::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeFloatVal::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
 			SsInterpolationType::_enum ipType;
-			float val;	//’l
-			SsCurve curve;	//ƒJ[ƒuî•ñ‚ª‚ ‚éê‡
+			float val;	//å€¤
+			SsCurve curve;	//ã‚«ãƒ¼ãƒ–æƒ…å ±ãŒã‚ã‚‹å ´åˆ
 		};
 		vector< data > line;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeFloatVal : public SS5AnimeLine;
-	//	—p“r: floatŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: floatå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeFloatVal::SS5AnimeFloatVal(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -276,9 +276,9 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5AnimeFloatVal::~SS5AnimeFloatVal(){}
+	SS5AnimeFloatVal::â€¾SS5AnimeFloatVal(){}
 
-	//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+	//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 	float SS5AnimeFloatVal::GetValue(float Time){
 		if (pImpl->line.size() <= 0){
 			return 0;
@@ -313,7 +313,7 @@ namespace basecross {
 
 		if (Type == SsInterpolationType::bezier)
 		{
-			// ƒxƒWƒF‚Ì‚İƒL[‚ÌŠJnEI—¹ŠÔ‚ª•K—v
+			// ãƒ™ã‚¸ã‚§ã®ã¿ã‚­ãƒ¼ã®é–‹å§‹ãƒ»çµ‚äº†æ™‚é–“ãŒå¿…è¦
 			curve.startKeyTime = StartTime;
 			curve.endKeyTime = EndTime;
 		}
@@ -365,7 +365,7 @@ namespace basecross {
 
 		if (Type == SsInterpolationType::bezier)
 		{
-			// ƒxƒWƒF‚Ì‚İƒL[‚ÌŠJnEI—¹ŠÔ‚ª•K—v
+			// ãƒ™ã‚¸ã‚§ã®ã¿ã‚­ãƒ¼ã®é–‹å§‹ãƒ»çµ‚äº†æ™‚é–“ãŒå¿…è¦
 			curve.startKeyTime = StartTime;
 			curve.endKeyTime = EndTime;
 		}
@@ -386,13 +386,13 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeCellVal::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeCellVal::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
-			wstring id;		//ƒ}ƒbƒvID
-			wstring name;	//’l
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
+			wstring id;		//ãƒãƒƒãƒ—ID
+			wstring name;	//å€¤
 		};
 		vector< data > line;
 	};
@@ -401,7 +401,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeCellVal : public SS5AnimeLine;
-	//	—p“r: AnimeCellŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: AnimeCellå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeCellVal::SS5AnimeCellVal(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -429,7 +429,7 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5AnimeCellVal::~SS5AnimeCellVal(){}
+	SS5AnimeCellVal::â€¾SS5AnimeCellVal(){}
 
 	AnimeCell SS5AnimeCellVal::GetValue(float Time){
 		AnimeCell ret;
@@ -452,19 +452,19 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeWstrVal::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeWstrVal::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
-			wstring val;	//’l
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
+			wstring val;	//å€¤
 		};
 		vector< data > line;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeWstrVal : public SS5AnimeLine;
-	//	—p“r: wstrngŒ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: wstrngå‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeWstrVal::SS5AnimeWstrVal(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -491,9 +491,9 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5AnimeWstrVal::~SS5AnimeWstrVal(){}
+	SS5AnimeWstrVal::â€¾SS5AnimeWstrVal(){}
 
-	//w’èŠÔ‚Ì’l‚ğ•Ô‚·
+	//æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 	wstring SS5AnimeWstrVal::GetValue(float Time){
 		if (pImpl->line.size() <= 0){
 			return wstring(L"");
@@ -509,20 +509,20 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5AnimeColorVal::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeColorVal::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
 			SsInterpolationType::_enum ipType;
-			bsm::Col4 val;	//’l
+			bsm::Col4 val;	//å€¤
 		};
 		vector< data > line;
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5AnimeColorVal : public SS5AnimeLine;
-	//	—p“r: bsm::Col4Œ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: bsm::Col4å‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeColorVal::SS5AnimeColorVal(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -549,10 +549,10 @@ namespace basecross {
 		}
 	}
 
-	SS5AnimeColorVal::~SS5AnimeColorVal(){}
+	SS5AnimeColorVal::â€¾SS5AnimeColorVal(){}
 
 
-	//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+	//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 	bsm::Col4 SS5AnimeColorVal::GetValue(float Time){
 		if (pImpl->line.size() <= 0){
 			return bsm::Col4(0, 0, 0, 0);
@@ -584,8 +584,8 @@ namespace basecross {
 		}
 		if (SS5Util::SsNeedsCurveParams(Type)){
 			throw BaseException(
-				L"Œ»İ‚»‚Ì•âŠÔ•û–@‚ÍÀ‘•‚³‚ê‚Ü‚¹‚ñ",
-				L"ƒxƒWƒF‚à‚µ‚­‚ÍƒGƒ‹ƒ~[ƒg‚ğg—p‚µ‚Ä‚Ü‚¹‚ñ‚©H",
+				L"ç¾åœ¨ãã®è£œé–“æ–¹æ³•ã¯å®Ÿè£…ã•ã‚Œã¾ã›ã‚“",
+				L"ãƒ™ã‚¸ã‚§ã‚‚ã—ãã¯ã‚¨ãƒ«ãƒŸãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ã¦ã¾ã›ã‚“ã‹ï¼Ÿ",
 				L"SS5AnimeColorVal::GetValue()"
 				);
 		}
@@ -607,11 +607,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5Animebsm::Vec3Val::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5AnimeVector3Val::Impl{
 		struct data{
-			float time;	//ƒXƒ^[ƒgƒ^ƒCƒ€
+			float time;	//ã‚¹ã‚¿ãƒ¼ãƒˆã‚¿ã‚¤ãƒ 
 			SsInterpolationType::_enum ipType;
 			Vertex2DAnimeData tgt;
 		};
@@ -620,7 +620,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Animebsm::Vec3Val : public SS5AnimeLine;
-	//	—p“r: bsm::Vec3Œ^‚Ì’l‚ğ•Û‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“ƒ‰ƒCƒ“
+	//	ç”¨é€”: bsm::Vec3å‹ã®å€¤ã‚’ä¿æŒã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ©ã‚¤ãƒ³
 	//--------------------------------------------------------------------------------------
 	SS5AnimeVector3Val::SS5AnimeVector3Val(IXMLDOMNodePtr TgtNode, const wstring& typestr) :
 		SS5AnimeLine(),
@@ -677,8 +677,8 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5AnimeVector3Val::~SS5AnimeVector3Val(){}
-	//İ’è‚³‚ê‚½•âŠÔ‚ğ‚à‚Æ‚Éw’èŠÔ‚Ì’l‚ğ•Ô‚·
+	SS5AnimeVector3Val::â€¾SS5AnimeVector3Val(){}
+	//è¨­å®šã•ã‚ŒãŸè£œé–“ã‚’ã‚‚ã¨ã«æŒ‡å®šæ™‚é–“ã®å€¤ã‚’è¿”ã™
 	Vertex2DAnimeData SS5AnimeVector3Val::GetValue(float Time){
 		Vertex2DAnimeData Ret, Start, End;
 		if (pImpl->line.size() <= 0){
@@ -709,8 +709,8 @@ namespace basecross {
 		}
 		if (SS5Util::SsNeedsCurveParams(Type)){
 			throw BaseException(
-				L"Œ»İ‚»‚Ì•âŠÔ•û–@‚ÍÀ‘•‚³‚ê‚Ü‚¹‚ñ",
-				L"ƒxƒWƒF‚à‚µ‚­‚ÍƒGƒ‹ƒ~[ƒg‚ğg—p‚µ‚Ä‚Ü‚¹‚ñ‚©H",
+				L"ç¾åœ¨ãã®è£œé–“æ–¹æ³•ã¯å®Ÿè£…ã•ã‚Œã¾ã›ã‚“",
+				L"ãƒ™ã‚¸ã‚§ã‚‚ã—ãã¯ã‚¨ãƒ«ãƒŸãƒ¼ãƒˆã‚’ä½¿ç”¨ã—ã¦ã¾ã›ã‚“ã‹ï¼Ÿ",
 				L"SS5Animebsm::Vec3Val::GetValue()"
 				);
 		}
@@ -739,21 +739,21 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5Cell::Impl;
-	//	—p“r: SpriteStdioƒZƒ‹“àƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: SpriteStdioã‚»ãƒ«å†…ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5Cell::Impl{
-		wstring	name;			///< ƒZƒ‹–¼Ì
-		Point2D<float> pos;			///< ¶ã‚ÌÀ•W
-		Point2D<float> size;			///< WHƒsƒNƒZƒ‹ƒTƒCƒY
-		Point2D<float> pivot;			///< WHƒsƒNƒZƒ‹ƒTƒCƒY
-		bool	 rotated;		///< ¶•ûŒü‚É‚X‚O“x‰ñ“]‚³‚ê‚Ä‚¢‚éBuvs ‚ÌŠ„‚è“–‚Ä‚ª•Ï‚í‚éB
+		wstring	name;			///< ã‚»ãƒ«åç§°
+		Point2D<float> pos;			///< å·¦ä¸Šã®åº§æ¨™
+		Point2D<float> size;			///< WHãƒ”ã‚¯ã‚»ãƒ«ã‚µã‚¤ã‚º
+		Point2D<float> pivot;			///< WHãƒ”ã‚¯ã‚»ãƒ«ã‚µã‚¤ã‚º
+		bool	 rotated;		///< å·¦æ–¹å‘ã«ï¼™ï¼åº¦å›è»¢ã•ã‚Œã¦ã„ã‚‹ã€‚uvs ã®å‰²ã‚Šå½“ã¦ãŒå¤‰ã‚ã‚‹ã€‚
 
 		Impl(IXMLDOMNodePtr Node);
-		~Impl(){}
+		â€¾Impl(){}
 	};
 	SS5Cell::Impl::Impl(IXMLDOMNodePtr Node){
 		try{
-			//XML‚Ì“Ç‚İ‚İ
+			//XMLã®èª­ã¿è¾¼ã¿
 			name = SS5Util::TextToWstr(Node, L"name");
 			pos = SS5Util::TextToPoint2DF(Node, L"pos");
 			size = SS5Util::TextToPoint2DF(Node, L"size");
@@ -767,15 +767,15 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Cell;
-	//	—p“r: SpriteStdioƒZƒ‹
+	//	ç”¨é€”: SpriteStdioã‚»ãƒ«
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	SS5Cell::SS5Cell(IXMLDOMNodePtr Node) :
 		pImpl(new Impl(Node))
 	{
 	}
-	SS5Cell::~SS5Cell(){}
-	//ƒAƒNƒZƒbƒT
+	SS5Cell::â€¾SS5Cell(){}
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	const wstring& SS5Cell::get_name() const { return pImpl->name; }
 	const Point2D<float>& SS5Cell::get_pos() const { return pImpl->pos; }
 	const Point2D<float>& SS5Cell::get_size() const { return pImpl->size; }
@@ -785,23 +785,23 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5ssce::Impl;
-	//	—p“r: SpriteStdio‚ÌssceƒNƒ‰ƒX“àƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: SpriteStdioã®ssceã‚¯ãƒ©ã‚¹å†…ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5ssce::Impl{
-		wstring	basedir;			///< Šî€ƒfƒBƒŒƒNƒgƒŠi\‚ªÅŒã‚É‚Â‚­j
-		wstring	fname;				///< ƒZƒ‹ƒ}ƒbƒv‚Ìƒtƒ@ƒCƒ‹ƒl[ƒ€
-		wstring	name;				///< ‚±‚ÌƒZƒ‹ƒ}ƒbƒv‚Ì–¼Ì‚Å‚·B
-		wstring	imagePath;			///< QÆ‰æ‘œƒtƒ@ƒCƒ‹ƒpƒXBƒvƒƒWƒFƒNƒg‚Ì‰æ‘œŠî€‘Š‘Î
-		wstring textureResname;		///ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒX–¼
-		Point2D<float> pixelSize;			///< ‰æ‘œ‚ÌƒsƒNƒZƒ‹WHƒTƒCƒY
-		bool overrideTexSettings;///< ƒeƒNƒXƒ`ƒƒİ’è‚ğƒvƒƒWƒFƒNƒg‚Ìİ’è‚Å‚Í‚È‚­‰º‹Lİ’è‚ğg‚¤
-		SsTexWrapMode::_enum		wrapMode;			///< ƒeƒNƒXƒ`ƒƒ‚Ìƒ‰ƒbƒvƒ‚[ƒh
-		SsTexFilterMode::_enum		filterMode;			///< ƒeƒNƒXƒ`ƒƒ‚ÌƒtƒBƒ‹ƒ^ƒ‚[ƒh
+		wstring	basedir;			///< åŸºæº–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆÂ¥ãŒæœ€å¾Œã«ã¤ãï¼‰
+		wstring	fname;				///< ã‚»ãƒ«ãƒãƒƒãƒ—ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ¼ãƒ 
+		wstring	name;				///< ã“ã®ã‚»ãƒ«ãƒãƒƒãƒ—ã®åç§°ã§ã™ã€‚
+		wstring	imagePath;			///< å‚ç…§ç”»åƒãƒ•ã‚¡ã‚¤ãƒ«ãƒ‘ã‚¹ã€‚ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®ç”»åƒåŸºæº–ç›¸å¯¾
+		wstring textureResname;		///ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹å
+		Point2D<float> pixelSize;			///< ç”»åƒã®ãƒ”ã‚¯ã‚»ãƒ«WHã‚µã‚¤ã‚º
+		bool overrideTexSettings;///< ãƒ†ã‚¯ã‚¹ãƒãƒ£è¨­å®šã‚’ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®šã§ã¯ãªãä¸‹è¨˜è¨­å®šã‚’ä½¿ã†
+		SsTexWrapMode::_enum		wrapMode;			///< ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ©ãƒƒãƒ—ãƒ¢ãƒ¼ãƒ‰
+		SsTexFilterMode::_enum		filterMode;			///< ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒ•ã‚£ãƒ«ã‚¿ãƒ¢ãƒ¼ãƒ‰
 		vector< shared_ptr<SS5Cell> > m_CellVec;
-		shared_ptr<TextureResource> m_Texture;			//ƒeƒNƒXƒ`ƒƒ
-		//\’z‚ÆÁ–Å
+		shared_ptr<TextureResource> m_Texture;			//ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		//æ§‹ç¯‰ã¨æ¶ˆæ»…
 		Impl(const wstring& BaseDir, const wstring& Xmlfilename);
-		~Impl(){}
+		â€¾Impl(){}
 	};
 	SS5ssce::Impl::Impl(const wstring& BaseDir, const wstring& Xmlfilename) :
 		basedir(BaseDir),
@@ -810,7 +810,7 @@ namespace basecross {
 		try{
 
 			XmlDocReader doc(basedir + fname);
-			//Šî–{ƒf[ƒ^
+			//åŸºæœ¬ãƒ‡ãƒ¼ã‚¿
 			auto Setting = doc.GetSelectSingleNode(L"SpriteStudioCellMap");
 			name = SS5Util::TextToWstr(Setting, L"name");
 			imagePath = SS5Util::TextToWstr(Setting, L"imagePath");
@@ -820,17 +820,17 @@ namespace basecross {
 			wrapMode = SsTexWrapMode::ws2e(SS5Util::TextToWstr(Setting, L"wrapMode"));
 			filterMode = SsTexFilterMode::ws2e(SS5Util::TextToWstr(Setting, L"filterMode"));
 
-			//ƒeƒNƒXƒ`ƒƒ‚ÌƒŠƒ\[ƒX‰»
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®ãƒªã‚½ãƒ¼ã‚¹åŒ–
 			wstring strTexture = basedir + imagePath;
 			textureResname = name;
 			m_Texture = App::GetApp()->RegisterTexture(textureResname, strTexture);
-			//ŠeƒZƒ‹
+			//å„ã‚»ãƒ«
 			auto Cells = doc.GetSelectNodes(L"SpriteStudioCellMap/cells/cell");
-			// ƒm[ƒhƒŠƒXƒg‚Ìƒm[ƒh‚Ì”‚Ìæ“¾
+			// ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®ãƒãƒ¼ãƒ‰ã®æ•°ã®å–å¾—
 			long lCountNode = XmlDocReader::GetLength(Cells);
 			for (long i = 0; i < lCountNode; i++){
 				auto pXMLDOMNode = XmlDocReader::GetItem(Cells, i);
-				//ƒZƒ‹‚ÍƒIƒuƒWƒFƒNƒg”z—ñ‚É’Ç‰Á‚µ‚È‚¢
+				//ã‚»ãƒ«ã¯ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—ã«è¿½åŠ ã—ãªã„
 				shared_ptr<SS5Cell> cell(new SS5Cell(pXMLDOMNode));
 				m_CellVec.push_back(cell);
 			}
@@ -843,38 +843,38 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5ssce;
-	//	—p“r: SpriteStdio‚ÌssceƒNƒ‰ƒX
+	//	ç”¨é€”: SpriteStdioã®ssceã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	SS5ssce::SS5ssce(const wstring& BaseDir, const wstring& Xmlfilename) :
 		pImpl(new Impl(BaseDir, Xmlfilename))
 	{
 	}
-	SS5ssce::~SS5ssce(){}
-	//ƒAƒNƒZƒbƒT
+	SS5ssce::â€¾SS5ssce(){}
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	const Point2D<float>& SS5ssce::get_pixelSize() const{
 		return pImpl->pixelSize;
 	}
-	//ƒZƒ‹‚ÌŒŸõ
+	//ã‚»ãƒ«ã®æ¤œç´¢
 	shared_ptr<SS5Cell> SS5ssce::GetCell(const wstring& name){
 		for (auto ptr : pImpl->m_CellVec){
 			if (name == ptr->get_name()){
 				return ptr;
 			}
 		}
-		//Œ©‚Â‚©‚ç‚È‚¢
+		//è¦‹ã¤ã‹ã‚‰ãªã„
 		return nullptr;
 	}
-	//ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX–¼
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹å
 	const wstring& SS5ssce::get_textureResname() const{
 		return pImpl->textureResname;
 	}
-	//ƒZƒ‹ƒ}ƒbƒv–¼
+	//ã‚»ãƒ«ãƒãƒƒãƒ—å
 	const wstring& SS5ssce::get_name() const{
 		return pImpl->name;
 	}
 
-	//ƒeƒNƒXƒ`ƒƒ
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 	shared_ptr<TextureResource> SS5ssce::GetTexture() const{
 		return pImpl->m_Texture;
 	}
@@ -882,18 +882,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5PartAnimation::Impl;
-	//	—p“r: ƒp[ƒc‚²‚Æ‚ÌƒAƒjƒ[ƒVƒ‡ƒ““àƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: ãƒ‘ãƒ¼ãƒ„ã”ã¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å†…ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5PartAnimation::Impl{
 		wstring	partName;
-		//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ìƒ|ƒCƒ“ƒ^ithis‚ğ“n‚·‚Ì‚Å¶ƒ|ƒCƒ“ƒ^‚ğg‚¤j
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ãƒã‚¤ãƒ³ã‚¿ï¼ˆthisã‚’æ¸¡ã™ã®ã§ç”Ÿãƒã‚¤ãƒ³ã‚¿ã‚’ä½¿ã†ï¼‰
 		SS5Animation* m_pSS5Animation;
 		vector< shared_ptr<SS5AnimeLine> > m_LineVec;
 		Impl(IXMLDOMNodePtr TgtNode, SS5Animation* pSS5Animation);
-		~Impl(){}
-		//‘€ì
+		â€¾Impl(){}
+		//æ“ä½œ
 		void FloatAnimationSub(IXMLDOMNodePtr TgtNode, const wstring& Key);
-		//Œ»İ‚Ìp¨‚ğ“¾‚é
+		//ç¾åœ¨ã®å§¿å‹¢ã‚’å¾—ã‚‹
 		bsm::Mat4x4 GetLocalMatrix();
 
 		bool GetHide();
@@ -914,18 +914,18 @@ namespace basecross {
 	{
 		try{
 			partName = SS5Util::TextToWstr(TgtNode, L"partName");
-			auto Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=\'HIDE\']");
+			auto Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=Â¥'HIDEÂ¥']");
 			if (Node){
 				auto ptr = make_shared<SS5AnimeBoolVal>(Node, L"HIDE");
 				m_LineVec.push_back(ptr);
 			}
-			Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=\'CELL\']");
+			Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=Â¥'CELLÂ¥']");
 			if (Node){
 				auto ptr = make_shared<SS5AnimeCellVal>(Node, L"CELL");
 				m_LineVec.push_back(ptr);
 			}
 
-			Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=\'VERT\']");
+			Node = XmlDocReader::GetSelectSingleNode(TgtNode, L"attributes/attribute[@tag=Â¥'VERTÂ¥']");
 			if (Node){
 				auto ptr = make_shared<SS5AnimeVector3Val>(Node, L"VERT");
 				m_LineVec.push_back(ptr);
@@ -952,7 +952,7 @@ namespace basecross {
 	}
 
 	void SS5PartAnimation::Impl::FloatAnimationSub(IXMLDOMNodePtr TgtNode, const wstring& Key){
-		wstring str = L"attributes/attribute[@tag=\'" + Key + L"\']";
+		wstring str = L"attributes/attribute[@tag=Â¥'" + Key + L"Â¥']";
 		auto Node = XmlDocReader::GetSelectSingleNode(TgtNode, str.c_str());
 		if (Node){
 			auto ptr = make_shared<SS5AnimeFloatVal>(Node, Key.c_str());
@@ -960,7 +960,7 @@ namespace basecross {
 		}
 	}
 
-	//Œ»İ‚Ìp¨s—ñ‚ğ“¾‚é
+	//ç¾åœ¨ã®å§¿å‹¢è¡Œåˆ—ã‚’å¾—ã‚‹
 	void SS5PartAnimation::Impl::GetIfFloatVal(bool b, shared_ptr<SS5AnimeLine>& ptr, float& dest, float AnimeFrame){
 		if (b){
 			auto v = dynamic_pointer_cast<SS5AnimeFloatVal>(ptr);
@@ -1032,8 +1032,8 @@ namespace basecross {
 
 
 
-	//Œ»İ‚Ìs—ñ‚ğ“¾‚éB
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‚©‚ç‚Ìƒf[ƒ^‚Ìæ‚èo‚µ
+	//ç¾åœ¨ã®è¡Œåˆ—ã‚’å¾—ã‚‹ã€‚
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‹ã‚‰ã®ãƒ‡ãƒ¼ã‚¿ã®å–ã‚Šå‡ºã—
 	bsm::Mat4x4 SS5PartAnimation::Impl::GetLocalMatrix(){
 		float AnimeFrame = m_pSS5Animation->GetAnimationTimer2Frame();
 
@@ -1054,7 +1054,7 @@ namespace basecross {
 
 		Pos.x /= m_pSS5Animation->get_gridSize();
 		Pos.y /= m_pSS5Animation->get_gridSize();
-		//ƒ‰ƒWƒAƒ“‚É•ÏŠ·
+		//ãƒ©ã‚¸ã‚¢ãƒ³ã«å¤‰æ›
 		Rot.x = Rot.x * XM_PI / 180.0f;
 		Rot.y = Rot.y * XM_PI / 180.0f;
 		Rot.z = Rot.z * XM_PI / 180.0f;
@@ -1064,21 +1064,21 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5PartAnimation;
-	//	—p“r: ƒp[ƒc‚²‚Æ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“
+	//	ç”¨é€”: ãƒ‘ãƒ¼ãƒ„ã”ã¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	SS5PartAnimation::SS5PartAnimation(IXMLDOMNodePtr TgtNode, SS5Animation* pSS5Animation) :
 		pImpl(new Impl(TgtNode, pSS5Animation))
 	{
 	}
-	SS5PartAnimation::~SS5PartAnimation(){}
+	SS5PartAnimation::â€¾SS5PartAnimation(){}
 
-	//ƒAƒNƒZƒbƒT
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	const wstring& SS5PartAnimation::GetpartName() const{
 		return pImpl->partName;
 	}
 
-	//ƒOƒŠƒbƒhƒTƒCƒY
+	//ã‚°ãƒªãƒƒãƒ‰ã‚µã‚¤ã‚º
 	float SS5PartAnimation::GetGridSize() const{
 		return pImpl->m_pSS5Animation->get_gridSize();
 	}
@@ -1112,7 +1112,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5Animation::Impl;
-	//	—p“r: ƒAƒjƒ[ƒVƒ‡ƒ“‚ÌƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5Animation::Impl{
 		wstring	name;
@@ -1130,10 +1130,10 @@ namespace basecross {
 		bool m_Looped;
 		bool m_AnimeEnd;
 		vector< shared_ptr<SS5PartAnimation> > m_PartAnimationVec;
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Impl(IXMLDOMNodePtr TgtNode);
-		~Impl(){}
-		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚Ì‰Šú‰»
+		â€¾Impl(){}
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®åˆæœŸåŒ–
 		void SetCurrentTime(float AnimeTime){
 			if (AnimeTime < 0){
 				m_CurrentTime = 0;
@@ -1142,15 +1142,15 @@ namespace basecross {
 				m_CurrentTime = AnimeTime;
 			}
 		}
-		//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ÌXV
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®æ›´æ–°
 		void AddCurrentTime(float TimeSpan){
 			m_CurrentTime += TimeSpan;
 		}
-		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ğ‚à‚Æ‚ÉƒtƒŒ[ƒ€‚ğŒvZ‚µ•Ô‚·
+		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã‚’ã‚‚ã¨ã«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆç®—ã—è¿”ã™
 		float GetAnimationTimer2Frame();
 	};
 
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	SS5Animation::Impl::Impl(IXMLDOMNodePtr TgtNode) :
 		m_CurrentTime(0),
 		m_Looped(true),
@@ -1159,16 +1159,16 @@ namespace basecross {
 		try{
 			name = SS5Util::TextToWstr(TgtNode, L"name");
 			overrideSettings = SS5Util::TextToBool(TgtNode, L"overrideSettings");
-			//Šî–{ƒf[ƒ^
+			//åŸºæœ¬ãƒ‡ãƒ¼ã‚¿
 			auto Setting = XmlDocReader::GetSelectSingleNode(TgtNode, L"settings");
 			if (!Setting){
 				throw BaseException(
-					L"settings‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"settingsãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"settings",
 					L"SS5Animation::Impl::Impl()"
 					);
 			}
-			//ƒfƒtƒHƒ‹ƒg‚ÌFPS
+			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®FPS
 			fps = SS5Util::TextToFloat(Setting, L"fps");
 			frameCount = SS5Util::TextToFloat(Setting, L"frameCount");
 			sortMode = SsPartsSortMode::ws2e(SS5Util::TextToWstr(Setting, L"sortMode"));
@@ -1185,28 +1185,28 @@ namespace basecross {
 		}
 	}
 
-	//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ğ‚à‚Æ‚ÉƒtƒŒ[ƒ€‚ğŒvZ‚µ•Ô‚·
+	//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã‚’ã‚‚ã¨ã«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆç®—ã—è¿”ã™
 	float SS5Animation::Impl::GetAnimationTimer2Frame(){
-		//Œo‰ßŠÔ‚©‚çƒtƒŒ[ƒ€‚ğ‹‚ß‚é
+		//çµŒéæ™‚é–“ã‹ã‚‰ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’æ±‚ã‚ã‚‹
 		float fCurrentFrame = m_CurrentTime * fps;
-		//ƒAƒjƒ[ƒVƒ‡ƒ“‚ªÅŒã‚Ü‚Å‚¢‚Á‚Ä‚é‚©‚Ç‚¤‚©‚ğŠm”F
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒæœ€å¾Œã¾ã§ã„ã£ã¦ã‚‹ã‹ã©ã†ã‹ã‚’ç¢ºèª
 		bool ret = false;
 		if (!m_Looped && fCurrentFrame >= frameCount){
-			//ƒ‹[ƒv‚µ‚È‚¢‚ÅAƒAƒjƒ‚ªÅŒã‚É“’B‚µ‚½‚ç
+			//ãƒ«ãƒ¼ãƒ—ã—ãªã„ã§ã€ã‚¢ãƒ‹ãƒ¡ãŒæœ€å¾Œã«åˆ°é”ã—ãŸã‚‰
 			ret = true;
 		}
 		int iAnimationFrame = static_cast< int >(fCurrentFrame * 10000.0f);
 		if (frameCount > 0) {
 			if (m_Looped){
-				//ƒ‹[ƒv‚·‚é
+				//ãƒ«ãƒ¼ãƒ—ã™ã‚‹
 				iAnimationFrame %= ((int)frameCount) * 10000;
 				iAnimationFrame += outStartNum * 10000;
 				m_AnimeEnd = false;
 			}
 			else{
-				//ƒ‹[ƒv‚µ‚È‚¢
+				//ãƒ«ãƒ¼ãƒ—ã—ãªã„
 				if (ret){
-					//ÅŒã‚ÌƒtƒŒ[ƒ€‚Éƒ|[ƒY‚ğİ’è‚·‚é
+					//æœ€å¾Œã®ãƒ•ãƒ¬ãƒ¼ãƒ ã«ãƒãƒ¼ã‚ºã‚’è¨­å®šã™ã‚‹
 					iAnimationFrame = (outStartNum + ((int)frameCount)) * 10000;
 					m_AnimeEnd = true;
 				}
@@ -1227,9 +1227,9 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5Animation;
-	//	—p“r: ƒAƒjƒ[ƒVƒ‡ƒ“
+	//	ç”¨é€”: ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	SS5Animation::SS5Animation(IXMLDOMNodePtr TgtNode) :
 		pImpl(new Impl(TgtNode))
 	{
@@ -1248,9 +1248,9 @@ namespace basecross {
 			throw;
 		}
 	}
-	SS5Animation::~SS5Animation(){}
+	SS5Animation::â€¾SS5Animation(){}
 
-	//ƒAƒNƒZƒbƒT
+	//ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	const wstring& SS5Animation::get_name() const { return pImpl->name; }
 	vector< shared_ptr<SS5PartAnimation> >& SS5Animation::get_PartAnimationVec(){
 		return pImpl->m_PartAnimationVec;
@@ -1274,49 +1274,49 @@ namespace basecross {
 		pImpl->fps = f;
 	}
 
-	//ƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
+	//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
 	bool SS5Animation::IsLooped() const{
 		return pImpl->m_Looped;
 	}
 	bool SS5Animation::GetLooped() const{
 		return pImpl->m_Looped;
 	}
-	//ƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+	//ãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
 	void SS5Animation::SetLooped(bool b){
 		pImpl->m_Looped = b;
 	}
-	//ƒAƒjƒI—¹‚µ‚½‚©‚Ç‚¤‚©
+	//ã‚¢ãƒ‹ãƒ¡çµ‚äº†ã—ãŸã‹ã©ã†ã‹
 	bool SS5Animation::IsAnimeEnd() const{
 		return pImpl->m_AnimeEnd;
 	}
 
 
-	//‘€ì
-	//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚Ì‰Šú‰»
+	//æ“ä½œ
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®åˆæœŸåŒ–
 	void SS5Animation::SetCurrentTime(float AnimeTime){
 		pImpl->SetCurrentTime(AnimeTime);
 	}
-	//ƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ÌXV
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã®æ›´æ–°
 	void  SS5Animation::AddCurrentTime(float TimeSpan){
 		pImpl->AddCurrentTime(TimeSpan);
 	}
-	//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ}[‚ğ‚à‚Æ‚ÉƒtƒŒ[ƒ€‚ğŒvZ‚µ•Ô‚·
+	//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒãƒ¼ã‚’ã‚‚ã¨ã«ãƒ•ãƒ¬ãƒ¼ãƒ ã‚’è¨ˆç®—ã—è¿”ã™
 	float SS5Animation::GetAnimationTimer2Frame(){
 		return pImpl->GetAnimationTimer2Frame();
 	}
 
 	//--------------------------------------------------------------------------------------
 	//	struct SSPart::Impl;
-	//	—p“r: SSPartƒNƒ‰ƒX“àƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: SSPartã‚¯ãƒ©ã‚¹å†…ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SSPart::Impl{
 		wstring	m_SsaeName;
 		IXMLDOMNodePtr m_ScanNode;
 		IXMLDOMNodePtr m_TgtNode;
 
-		//ƒƒbƒVƒ…
+		//ãƒ¡ãƒƒã‚·ãƒ¥
 		shared_ptr<MeshResource> m_SquareRes;
-		//ƒeƒNƒXƒ`ƒƒ
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£
 		shared_ptr<TextureResource> m_TextureResource;
 
 		wstring	name;
@@ -1326,11 +1326,11 @@ namespace basecross {
 		SsBoundsType::_enum boundsType;
 		SsInheritType::_enum inheritType;
 		struct ineheritRatesTag{
-			bool flph;	//FLPH ¶‰E”½“](ƒZƒ‹‚ÌŒ´“_‚ğ²‚É‚·‚é)
-			bool flpv;	//FLPV ã‰º”½“](ƒZƒ‹‚ÌŒ´“_‚ğ²‚É‚·‚é)
-			bool hide;	//HIDE ”ñ•\¦
-			bool iflh;	//IFLH ƒCƒ[ƒW¶‰E”½“](í‚ÉƒCƒ[ƒW‚Ì’†‰›‚ğŒ´“_‚Æ‚·‚é)
-			bool iflv;	//IFLV ƒCƒ[ƒW¶‰E”½“](í‚ÉƒCƒ[ƒW‚Ì’†‰›‚ğŒ´“_‚Æ‚·‚é)
+			bool flph;	//FLPH å·¦å³åè»¢(ã‚»ãƒ«ã®åŸç‚¹ã‚’è»¸ã«ã™ã‚‹)
+			bool flpv;	//FLPV ä¸Šä¸‹åè»¢(ã‚»ãƒ«ã®åŸç‚¹ã‚’è»¸ã«ã™ã‚‹)
+			bool hide;	//HIDE éè¡¨ç¤º
+			bool iflh;	//IFLH ã‚¤ãƒ¡ãƒ¼ã‚¸å·¦å³åè»¢(å¸¸ã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ä¸­å¤®ã‚’åŸç‚¹ã¨ã™ã‚‹)
+			bool iflv;	//IFLV ã‚¤ãƒ¡ãƒ¼ã‚¸å·¦å³åè»¢(å¸¸ã«ã‚¤ãƒ¡ãƒ¼ã‚¸ã®ä¸­å¤®ã‚’åŸç‚¹ã¨ã™ã‚‹)
 		};
 		ineheritRatesTag ineheritRates;
 		SsBlendType::_enum alphaBlendType;
@@ -1338,39 +1338,39 @@ namespace basecross {
 		bool locked;
 		bool expandAttribute;
 		bool expandChildren;
-		//ƒZƒ‹ƒ}ƒbƒv‚Ì”z—ñ
+		//ã‚»ãƒ«ãƒãƒƒãƒ—ã®é…åˆ—
 		vector< shared_ptr<SS5ssce> >& m_SS5sscePtrVec;
 		size_t m_TgtSS5ssceIndex;
-		//‘Î‰‚·‚éƒZƒ‹
+		//å¯¾å¿œã™ã‚‹ã‚»ãƒ«
 		shared_ptr<SS5Cell> m_SS5CellPtr;
-		//eƒp[ƒc(thisƒ|ƒCƒ“ƒ^‚ğg‚¤‚Ì‚Å¶ƒ|ƒCƒ“ƒ^‚ğg‚¤)
+		//è¦ªãƒ‘ãƒ¼ãƒ„(thisãƒã‚¤ãƒ³ã‚¿ã‚’ä½¿ã†ã®ã§ç”Ÿãƒã‚¤ãƒ³ã‚¿ã‚’ä½¿ã†)
 		weak_ptr<SSPart> m_Parent;
-		//SS5ssaeƒNƒ‰ƒX
+		//SS5ssaeã‚¯ãƒ©ã‚¹
 		weak_ptr<SS5ssae> m_SS5ssae;
-		//qƒp[ƒc‚Ì”z—ñ
+		//å­ãƒ‘ãƒ¼ãƒ„ã®é…åˆ—
 		vector< shared_ptr<SSPart> > m_Childlen;
-		//Œ»İ‚Ì‘Î‰‚·‚éƒAƒjƒ[ƒVƒ‡ƒ“
+		//ç¾åœ¨ã®å¯¾å¿œã™ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 		shared_ptr<SS5PartAnimation> m_PartAnime;
-		//Œ»İHideó‘Ô‚©‚Ç‚¤‚©
+		//ç¾åœ¨HideçŠ¶æ…‹ã‹ã©ã†ã‹
 		bool m_Hide;
-		//Œ»İ‚Ì—Dæ
+		//ç¾åœ¨ã®å„ªå…ˆ
 		float m_Prio;
-		//ƒAƒ‹ƒtƒ@’l
+		//ã‚¢ãƒ«ãƒ•ã‚¡å€¤
 		float m_Alpha;
 
-		//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹
 		bool m_SpriteType;
 
-		//’¸“_•ÏX‚Ìƒf[ƒ^
+		//é ‚ç‚¹å¤‰æ›´æ™‚ã®ãƒ‡ãƒ¼ã‚¿
 		Vertex2DAnimeData m_Vertex2DAnimeData;
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Impl(const wstring& SsaeName, vector< shared_ptr<SS5ssce> >& SS5sscePtrVec, 
 			IXMLDOMNodePtr ScanNode, IXMLDOMNodePtr TgtNode, const shared_ptr<SSPart>& Parent, bool SpriteType);
-		~Impl(){}
-		//‘€ì
+		â€¾Impl(){}
+		//æ“ä½œ
 		bsm::Mat4x4 CaluclateMatrix();
 	};
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	SSPart::Impl::Impl(const wstring& SsaeName, 
 		vector< shared_ptr<SS5ssce> >& SS5sscePtrVec,
 		IXMLDOMNodePtr ScanNode,IXMLDOMNodePtr TgtNode,
@@ -1432,7 +1432,7 @@ namespace basecross {
 		}
 	}
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“Œã‚Ìs—ñ‚ğŒvZ‚·‚é
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã®è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 	bsm::Mat4x4 SSPart::Impl::CaluclateMatrix(){
 		bsm::Mat4x4 ret;
 		ret.identity();
@@ -1466,7 +1466,7 @@ namespace basecross {
 				}
 				else{
 					throw BaseException(
-						L"Ssae‚ªæ“¾‚Å‚«‚Ü‚¹‚ñ",
+						L"SsaeãŒå–å¾—ã§ãã¾ã›ã‚“",
 						L"if (m_SS5ssae.expired())",
 						L"SSPart::Impl::CaluclateMatrix()"
 						);
@@ -1481,30 +1481,30 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class SSPart : public  GameObject;
-	//	—p“r: SSPartƒNƒ‰ƒX(Šeƒp[ƒc)
+	//	ç”¨é€”: SSPartã‚¯ãƒ©ã‚¹(å„ãƒ‘ãƒ¼ãƒ„)
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	SSPart::SSPart(const shared_ptr<Stage>& StagePtr, const wstring& SsaeName, vector< shared_ptr<SS5ssce> >& SS5sscePtrVec,
 		IXMLDOMNodePtr ScanNode, IXMLDOMNodePtr TgtNode, const shared_ptr<SSPart>& Parent, bool SpriteType) :
 		GameObject(StagePtr),
 		pImpl(new Impl(SsaeName, SS5sscePtrVec, ScanNode, TgtNode, Parent, SpriteType))
 	{}
-	SSPart::~SSPart(){}
-	//‰Šú‰»
+	SSPart::â€¾SSPart(){}
+	//åˆæœŸåŒ–
 	void SSPart::OnCreate(){
 		try{
 			AddComponent<Transform>();
-			//’¸“_‚ğ•ÏX‚Å‚«‚é‚æ‚¤‚É‚·‚é‚Ì‚ÅƒfƒtƒHƒ‹ƒg‚ÌƒŠƒ\[ƒX‚Íg‚¦‚È‚¢
+			//é ‚ç‚¹ã‚’å¤‰æ›´ã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹ã®ã§ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒªã‚½ãƒ¼ã‚¹ã¯ä½¿ãˆãªã„
 			wstring ResName = pImpl->m_SsaeName + L"_" + pImpl->name;
-			//ƒŠƒ\[ƒXì¬B•Ê‚ÌƒCƒ“ƒXƒ^ƒ“ƒX‚Å‚à“¯‚¶ƒŠƒ\[ƒX‚ğg‚¤
+			//ãƒªã‚½ãƒ¼ã‚¹ä½œæˆã€‚åˆ¥ã®ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã§ã‚‚åŒã˜ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½¿ã†
 			if (!App::GetApp()->CheckResource<MeshResource>(ResName)){
-				//’¸“_”z—ñ
+				//é ‚ç‚¹é…åˆ—
 				vector<VertexPositionNormalTexture> vertices;
-				//ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
+				//ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
 				vector<uint16_t> indices;
-				//Square‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
+				//Squareã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
 				MeshUtill::CreateSquare(1.0f, vertices, indices);
-				//’¸“_‚ÌŒ^‚ğ•Ï‚¦‚½V‚µ‚¢’¸“_‚ğì¬
+				//é ‚ç‚¹ã®å‹ã‚’å¤‰ãˆãŸæ–°ã—ã„é ‚ç‚¹ã‚’ä½œæˆ
 				vector<VertexPositionColorTexture> new_vertices;
 				for (auto& v : vertices){
 					VertexPositionColorTexture nv;
@@ -1513,9 +1513,9 @@ namespace basecross {
 					nv.textureCoordinate = v.textureCoordinate;
 					new_vertices.push_back(nv);
 				}
-				//V‚µ‚¢’¸“_‚ğg‚Á‚ÄƒƒbƒVƒ…ƒŠƒ\[ƒX‚Ìì¬
+				//æ–°ã—ã„é ‚ç‚¹ã‚’ä½¿ã£ã¦ãƒ¡ãƒƒã‚·ãƒ¥ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 				pImpl->m_SquareRes = MeshResource::CreateMeshResource<VertexPositionColorTexture>(new_vertices, indices, true);
-				//ƒŠƒ\[ƒX‚Ì“o˜^
+				//ãƒªã‚½ãƒ¼ã‚¹ã®ç™»éŒ²
 				App::GetApp()->RegisterResource(ResName, pImpl->m_SquareRes);
 			}
 			else{
@@ -1532,11 +1532,11 @@ namespace basecross {
 					pImpl->m_Childlen.push_back(ChildPtr);
 				}
 			}
-			//ƒXƒNƒGƒA—p
+			//ã‚¹ã‚¯ã‚¨ã‚¢ç”¨
 			auto PtrDraw = AddComponent<PCTStaticDraw>();
-			//ƒXƒvƒ‰ƒCƒg—p
+			//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆç”¨
 			auto PtrSprite = AddComponent<PCTSpriteDraw>();
-			//“§–¾ˆ—‚ğ‚·‚é
+			//é€æ˜å‡¦ç†ã‚’ã™ã‚‹
 			SetAlphaActive(true);
 		}
 		catch (...){
@@ -1551,13 +1551,13 @@ namespace basecross {
 
 	void SSPart::SetSS5ssae(const shared_ptr<SS5ssae>& pSS5ssae){
 		pImpl->m_SS5ssae = pSS5ssae;
-		//q‹Ÿ‚àİ’è
+		//å­ä¾›ã‚‚è¨­å®š
 		for (auto ptr : pImpl->m_Childlen){
 			ptr->SetSS5ssae(pSS5ssae);
 		}
 	}
 
-	//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©(Getter‚Ì‚İ)
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹(Getterã®ã¿)
 	bool SSPart::GetSpriteType() const{
 		return pImpl->m_SpriteType;
 	}
@@ -1566,50 +1566,50 @@ namespace basecross {
 	}
 
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
 	void SSPart::ChangeAnimation(shared_ptr<SS5Animation> AnimationPtr){
-		//q‹Ÿ”z—ñƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
+		//å­ä¾›é…åˆ—ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
 		for (auto ptr : pImpl->m_Childlen){
 			ptr->ChangeAnimation(AnimationPtr);
 		}
 		auto& Vec = AnimationPtr->get_PartAnimationVec();
 		for (auto& PartAnime : Vec){
 			if (PartAnime->GetpartName() == pImpl->name){
-				//ƒ‚ƒfƒ‹‚ªŒ©‚Â‚©‚Á‚½
+				//ãƒ¢ãƒ‡ãƒ«ãŒè¦‹ã¤ã‹ã£ãŸ
 				pImpl->m_PartAnime = PartAnime;
 				return;
 			}
 		}
-		//Œ©‚Â‚©‚ç‚È‚¢
+		//è¦‹ã¤ã‹ã‚‰ãªã„
 		pImpl->m_PartAnime.reset();
 	}
 
-	//’¸“_‚Ì•ÏX
+	//é ‚ç‚¹ã®å¤‰æ›´
 	void SSPart::ResetVirtex(){
 
 #if BASECROSS_DXVERSION == 11
 
-		//À•W‚ğ•ÏX‚·‚é
+		//åº§æ¨™ã‚’å¤‰æ›´ã™ã‚‹
 		auto Dev = App::GetApp()->GetDeviceResources();
 		ID3D11Device* pDx11Device = Dev->GetD3DDevice();
 		ID3D11DeviceContext* pID3D11DeviceContext = Dev->GetD3DDeviceContext();
-		//’¸“_ƒoƒbƒtƒ@‚ğƒŠƒ\[ƒX‚©‚çæ‚èo‚·
+		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã‚’ãƒªã‚½ãƒ¼ã‚¹ã‹ã‚‰å–ã‚Šå‡ºã™
 		auto pVertexBuffer = pImpl->m_SquareRes->GetVertexBuffer().Get();
-		//ƒoƒbƒNƒAƒbƒv‚Ì’¸“_‚ğæ‚èo‚·
+		//ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã®é ‚ç‚¹ã‚’å–ã‚Šå‡ºã™
 		vector<VertexPositionColorTexture>& BacukVertices = pImpl->m_SquareRes->GetBackupVerteces<VertexPositionColorTexture>();
-		//D3D11_MAP_WRITE_DISCARD‚Íd—vB‚±‚Ìˆ—‚É‚æ‚èAGPU‚É×–‚‚³‚ê‚È‚¢
+		//D3D11_MAP_WRITE_DISCARDã¯é‡è¦ã€‚ã“ã®å‡¦ç†ã«ã‚ˆã‚Šã€GPUã«é‚ªé­”ã•ã‚Œãªã„
 		D3D11_MAP mapType = D3D11_MAP_WRITE_DISCARD;
 		D3D11_MAPPED_SUBRESOURCE mappedBuffer;
-		//’¸“_‚Ìƒ}ƒbƒv
+		//é ‚ç‚¹ã®ãƒãƒƒãƒ—
 		if (FAILED(pID3D11DeviceContext->Map(pVertexBuffer, 0, mapType, 0, &mappedBuffer))){
-			// Map¸”s
+			// Mapå¤±æ•—
 			throw BaseException(
-				L"’¸“_‚ÌMap‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"é ‚ç‚¹ã®Mapã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"if(FAILED(pID3D11DeviceContext->Map()))",
 				L"SSPart::ResetVirtex()"
 				);
 		}
-		//UV’l‚Ì•ÏX
+		//UVå€¤ã®å¤‰æ›´
 		VertexPositionColorTexture* vertices = (VertexPositionColorTexture*)mappedBuffer.pData;
 		Rect2D<float> UVRectBase(0, 0, pImpl->m_SS5CellPtr->get_size().x, pImpl->m_SS5CellPtr->get_size().y);
 		UVRectBase += pImpl->m_SS5CellPtr->get_pos();
@@ -1669,7 +1669,7 @@ namespace basecross {
 			0), 
 			bsm::Col4(1.0f, 1.0f, 1.0f, pImpl->m_Alpha),
 			bsm::Vec2(UVRect.right, UVRect.bottom));
-		//ƒAƒ“ƒ}ƒbƒv
+		//ã‚¢ãƒ³ãƒãƒƒãƒ—
 		pID3D11DeviceContext->Unmap(pVertexBuffer, 0);
 #endif
 	}
@@ -1679,7 +1679,7 @@ namespace basecross {
 #if BASECROSS_DXVERSION == 11
 
 		vector<VertexPositionColorTexture> m_VertexVec;
-		//’¸“_‚Ì•ÏX
+		//é ‚ç‚¹ã®å¤‰æ›´
 		Rect2D<float> UVRectBase(0, 0, pImpl->m_SS5CellPtr->get_size().x, pImpl->m_SS5CellPtr->get_size().y);
 		UVRectBase += pImpl->m_SS5CellPtr->get_pos();
 		Rect2D<float> UVRect(
@@ -1741,11 +1741,11 @@ namespace basecross {
 
 	}
 
-	//ƒAƒjƒ[ƒVƒ‡ƒ“Œã‚Ìs—ñ‚ğŒvZ‚·‚é
+	//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³å¾Œã®è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 	void SSPart::CaluclateMatrix(){
 		bsm::Mat4x4 ret = pImpl->CaluclateMatrix();
 		if (pImpl->m_SS5CellPtr){
-			//’¸“_‚Ì•ÏXiUV‚Ì•ÏXj
+			//é ‚ç‚¹ã®å¤‰æ›´ï¼ˆUVã®å¤‰æ›´ï¼‰
 			ResetVirtex();
 			pImpl->m_TextureResource = pImpl->m_SS5sscePtrVec[pImpl->m_TgtSS5ssceIndex]->GetTexture();
 			ResetSpriteVirtex();
@@ -1754,7 +1754,7 @@ namespace basecross {
 		PtrT->SetScale(ret.scaleInMatrix());
 		PtrT->SetQuaternion(ret.quatInMatrix());
 		PtrT->SetWorldPosition(ret.transInMatrix());
-		//q‹Ÿ‚Ìs—ñ‚ğŒvZ‚·‚é
+		//å­ä¾›ã®è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 		for (auto ptr : pImpl->m_Childlen){
 			ptr->CaluclateMatrix();
 		}
@@ -1770,7 +1770,7 @@ namespace basecross {
 	void SSPart::OnDraw(){
 		if (pImpl->type == SsPartType::normal && pImpl->m_SS5CellPtr){
 			if (!pImpl->m_Hide && pImpl->show){
-				//•`‰æ‚·‚é
+				//æç”»ã™ã‚‹
 				if (pImpl->m_SpriteType){
 					auto PtrSprite = GetComponent<PCTSpriteDraw>();
 					PtrSprite->SetTextureResource(pImpl->m_TextureResource);
@@ -1788,14 +1788,14 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SS5ssae::Impl;
-	//	—p“r: SS5ssaeƒNƒ‰ƒX“àƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: SS5ssaeã‚¯ãƒ©ã‚¹å†…ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct SS5ssae::Impl{
 		wstring m_StartAnimeName;
 
 
-		wstring	basedir;			///< Šî€ƒfƒBƒŒƒNƒgƒŠi\‚ªÅŒã‚É‚Â‚­j
-		wstring	fname;				///< ƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒbƒN‚Ìƒtƒ@ƒCƒ‹ƒl[ƒ€
+		wstring	basedir;			///< åŸºæº–ãƒ‡ã‚£ãƒ¬ã‚¯ãƒˆãƒªï¼ˆÂ¥ãŒæœ€å¾Œã«ã¤ãï¼‰
+		wstring	fname;				///< ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒƒã‚¯ã®ãƒ•ã‚¡ã‚¤ãƒ«ãƒãƒ¼ãƒ 
 		wstring	name;
 		float fps;
 		float frameCount;
@@ -1806,28 +1806,28 @@ namespace basecross {
 		float gridSize;
 		bsm::Col4 gridColor;
 		int outStartNum;
-		//•¡”ƒZƒ‹ƒ}ƒbƒv
+		//è¤‡æ•°ã‚»ãƒ«ãƒãƒƒãƒ—
 		vector< shared_ptr<SS5ssce> > m_SS5ssces;
-		//ƒ‹[ƒg‚Ìƒp[ƒc
+		//ãƒ«ãƒ¼ãƒˆã®ãƒ‘ãƒ¼ãƒ„
 		shared_ptr<SSPart> m_RootPart;
-		//ƒAƒjƒ[ƒVƒ‡ƒ“
+		//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³
 		map<wstring, shared_ptr<SS5Animation> > m_AnimeMap;
-		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“i–¼‘Oj
+		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼ˆåå‰ï¼‰
 		wstring m_NowAnimation;
-		//Œ»İ‚ÌƒAƒjƒ[ƒVƒ‡ƒ“iƒ|ƒCƒ“ƒ^j
+		//ç¾åœ¨ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ï¼ˆãƒã‚¤ãƒ³ã‚¿ï¼‰
 		shared_ptr<SS5Animation> m_NowAnimationPtr;
-		//SS5ssae‚©‚çƒAƒjƒ[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ö‚Ìs—ñ
+		//SS5ssaeã‹ã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®è¡Œåˆ—
 		bsm::Mat4x4 m_ToAnimeMatrix;
-		//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©
+		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹
 		bool m_SpriteType;
 
-		//ƒ‰ƒCƒeƒBƒ“ƒO‚µ‚È‚¢‚©‚Ç‚¤‚©iƒfƒtƒHƒ‹ƒgtruej
+		//ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã—ãªã„ã‹ã©ã†ã‹ï¼ˆãƒ‡ãƒ•ã‚©ãƒ«ãƒˆtrueï¼‰
 		bool m_TextureOnlyNoLight;
 
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Impl(const shared_ptr<Stage>& StagePtr, const wstring& BaseDir, const wstring& Xmlfilename, const wstring& StartAnimeName,bool SpriteType);
-		~Impl(){}
-		//‘€ì
+		â€¾Impl(){}
+		//æ“ä½œ
 		void ChangeAnimation(const wstring& AnimationName, float AnimeTime);
 		void UpdateAnimeTime(float TimeSpan);
 
@@ -1845,29 +1845,29 @@ namespace basecross {
 	{
 		try{
 
-			//ƒCƒ“ƒXƒ^ƒ“ƒXƒiƒ“ƒo[
-			//ƒXƒ^ƒeƒBƒbƒN•Ï”
+			//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒŠãƒ³ãƒãƒ¼
+			//ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯å¤‰æ•°
 			static size_t stInstansNumber = 0;
 
 			XmlDocReader doc(basedir + fname);
-			//ƒx[ƒXƒf[ƒ^
+			//ãƒ™ãƒ¼ã‚¹ãƒ‡ãƒ¼ã‚¿
 			auto BaseSetting = doc.GetSelectSingleNode(L"SpriteStudioAnimePack");
 			if (!BaseSetting){
 				throw BaseException(
-					L"ƒAƒjƒƒpƒbƒN‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ã‚¢ãƒ‹ãƒ¡ãƒ‘ãƒƒã‚¯ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					fname,
 					L"SS5ssae::Impl::Impl()"
 					);
 			}
 			name = SS5Util::TextToWstr(BaseSetting, L"name") + Util::SizeTToWStr(stInstansNumber);
-			//ƒCƒ“ƒXƒ^ƒ“ƒXƒiƒ“ƒo[‚ÌƒCƒ“ƒNƒŠƒƒ“ƒg
+			//ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ãƒŠãƒ³ãƒãƒ¼ã®ã‚¤ãƒ³ã‚¯ãƒªãƒ¡ãƒ³ãƒˆ
 			stInstansNumber++;
 
-			//Šî–{ƒf[ƒ^
+			//åŸºæœ¬ãƒ‡ãƒ¼ã‚¿
 			auto Setting = doc.GetSelectSingleNode(L"SpriteStudioAnimePack/settings");
 			if (!Setting){
 				throw BaseException(
-					L"settings‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"settingsãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					fname,
 					L"SS5ssae::Impl::Impl()"
 					);
@@ -1882,12 +1882,12 @@ namespace basecross {
 			gridSize = SS5Util::TextToFloat(Setting, L"gridSize");
 			gridColor = SS5Util::TextARGBToColor4(Setting, L"gridColor");
 			outStartNum = SS5Util::TextToInt(Setting, L"outStartNum");
-			//ƒZƒ‹ƒ}ƒbƒv‚Ì“Ç‚İ‚İ
-			//•¡”ƒZƒ‹ƒtƒ@ƒCƒ‹‚Ö‚Ì‘Î‰
+			//ã‚»ãƒ«ãƒãƒƒãƒ—ã®èª­ã¿è¾¼ã¿
+			//è¤‡æ•°ã‚»ãƒ«ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®å¯¾å¿œ
 			auto CellMaps = doc.GetSelectNodes(L"SpriteStudioAnimePack/cellmapNames/value");
 			if (!CellMaps){
 				throw BaseException(
-					L"ƒZƒ‹ƒ}ƒbƒv‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ã‚»ãƒ«ãƒãƒƒãƒ—ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"SpriteStudioAnimePack/cellmapNames",
 					L"SS5ssae::Impl::Impl()"
 					);
@@ -1895,7 +1895,7 @@ namespace basecross {
 			long lCountNode = XmlDocReader::GetLength(CellMaps);
 			if (lCountNode <= 0){
 				throw BaseException(
-					L"ƒZƒ‹ƒ}ƒbƒv‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ã‚»ãƒ«ãƒãƒƒãƒ—ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"if(lCountNode <= 0)",
 					L"SS5ssae::Impl::Impl()"
 					);
@@ -1904,13 +1904,13 @@ namespace basecross {
 				auto pXMLDOMNode = XmlDocReader::GetItem(CellMaps, i);
 				wstring SsceFilename = XmlDocReader::GetText(pXMLDOMNode);
 				if (SsceFilename != L""){
-					//ƒZƒ‹ƒ}ƒbƒv‚Ìì¬‚Æİ’u
+					//ã‚»ãƒ«ãƒãƒƒãƒ—ã®ä½œæˆã¨è¨­ç½®
 					auto ssce = make_shared<SS5ssce>(BaseDir, SsceFilename);
 					m_SS5ssces.push_back(ssce);
 				}
 				else{
 					throw BaseException(
-						L"ƒZƒ‹ƒ}ƒbƒv–¼‚ª‹ó”’‚Å‚·",
+						L"ã‚»ãƒ«ãƒãƒƒãƒ—åãŒç©ºç™½ã§ã™",
 						L"SpriteStudioAnimePack/cellmapNames",
 						L"SS5ssae::Impl::Impl()"
 						);
@@ -1919,27 +1919,27 @@ namespace basecross {
 			auto PartsRootNode = doc.GetSelectSingleNode(L"SpriteStudioAnimePack/Model/partList");
 			if (!PartsRootNode){
 				throw BaseException(
-					L"ƒp[ƒc‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ãƒ‘ãƒ¼ãƒ„ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					fname,
 					L"SS5ssae::Impl::Impl()"
 					);
 			}
-			//ƒ‹[ƒg‚Ìƒm[ƒh‚ğ’T‚·
+			//ãƒ«ãƒ¼ãƒˆã®ãƒãƒ¼ãƒ‰ã‚’æ¢ã™
 			auto RootNode = XmlDocReader::GetSelectSingleNode(PartsRootNode, L"value[parentIndex/text()=-1]");
 			if (!RootNode){
 				throw BaseException(
-					L"ƒp[ƒc‚Ìroot‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ãƒ‘ãƒ¼ãƒ„ã®rootãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					fname,
 					L"SS5ssae::Impl::Impl()"
 					);
 			}
-			//ƒp[ƒc‚Ì“Ç‚İ‚İ
+			//ãƒ‘ãƒ¼ãƒ„ã®èª­ã¿è¾¼ã¿
 			m_RootPart = ObjectFactory::Create<SSPart>(StagePtr, name, m_SS5ssces, PartsRootNode, RootNode, nullptr, SpriteType);
-			//ƒAƒjƒ[ƒVƒ‡ƒ“‚Ì“Ç‚İ‚İ
+			//ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®èª­ã¿è¾¼ã¿
 			auto Animations = doc.GetSelectNodes(L"SpriteStudioAnimePack/animeList/anime");
 			if (!Animations){
 				throw BaseException(
-					L"ƒAƒjƒ[ƒVƒ‡ƒ“‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					L"SpriteStudioAnimePack/animeList/anime",
 					L"SS5ssae::Impl::Impl()"
 					);
@@ -1965,14 +1965,14 @@ namespace basecross {
 		try{
 			if (AnimationName == L""){
 				throw BaseException(
-					L"ƒAƒjƒ[ƒVƒ‡ƒ“–¼‚ª‹ó”’‚Å‚·",
+					L"ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³åãŒç©ºç™½ã§ã™",
 					L"null",
 					L"SS5ssae::Impl::ChangeAnimation()"
 					);
 			}
 			if (m_NowAnimation == AnimationName){
-				//“¯‚¶–¼‘O‚È‚ç•ÏX‚µ‚È‚¢
-				//ƒ^ƒCƒ}[‚Ì‚İ•ÏX
+				//åŒã˜åå‰ãªã‚‰å¤‰æ›´ã—ãªã„
+				//ã‚¿ã‚¤ãƒãƒ¼ã®ã¿å¤‰æ›´
 				m_NowAnimationPtr->SetCurrentTime(AnimeTime);
 				return;
 			}
@@ -1982,12 +1982,12 @@ namespace basecross {
 				m_NowAnimation = AnimationName;
 				m_NowAnimationPtr = it->second;
 				m_NowAnimationPtr->SetCurrentTime(AnimeTime);
-				//ƒp[ƒc‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ğ•ÏX‚·‚é
+				//ãƒ‘ãƒ¼ãƒ„ã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å¤‰æ›´ã™ã‚‹
 				m_RootPart->ChangeAnimation(m_NowAnimationPtr);
 			}
 			else{
 				throw BaseException(
-					L"w’è‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+					L"æŒ‡å®šã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 					AnimationName,
 					L"SS5ssae::Impl::ChangeAnimation()"
 					);
@@ -1999,38 +1999,38 @@ namespace basecross {
 	}
 
 	void SS5ssae::Impl::UpdateAnimeTime(float TimeSpan){
-		//Å‰‚ÉƒAƒjƒ[ƒVƒ‡ƒ“ƒ^ƒCƒ€‚ğXV‚·‚é
+		//æœ€åˆã«ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ ã‚’æ›´æ–°ã™ã‚‹
 		m_NowAnimationPtr->AddCurrentTime(TimeSpan);
-		//‘±‚¢‚Äƒ‚ƒfƒ‹‚Ìs—ñ‚ğŒvZ‚·‚é
+		//ç¶šã„ã¦ãƒ¢ãƒ‡ãƒ«ã®è¡Œåˆ—ã‚’è¨ˆç®—ã™ã‚‹
 		m_RootPart->CaluclateMatrix();
 	}
 
 	//--------------------------------------------------------------------------------------
 	//	class SS5ssae :  public GameObject;
-	//	—p“r: SpriteStdio‚ÌssaeƒNƒ‰ƒXiƒAƒjƒ[ƒVƒ‡ƒ“ƒpƒbƒNj
+	//	ç”¨é€”: SpriteStdioã®ssaeã‚¯ãƒ©ã‚¹ï¼ˆã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãƒ‘ãƒƒã‚¯ï¼‰
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	SS5ssae::SS5ssae(const shared_ptr<Stage>& StagePtr, const wstring& BaseDir,
 		const wstring& Xmlfilename, const wstring& StartAnimeName, bool SpriteType) :
 		GameObject(StagePtr),
 		pImpl(new Impl(StagePtr, BaseDir, Xmlfilename, StartAnimeName, SpriteType))
 	{}
-	SS5ssae::~SS5ssae(){}
-	//‰Šú‰»
+	SS5ssae::â€¾SS5ssae(){}
+	//åˆæœŸåŒ–
 	void SS5ssae::OnCreate(){
 		AddComponent<Transform>();
 		pImpl->m_RootPart->SetSS5ssae(GetThis<SS5ssae>());
-		//Å‰‚ÌƒAƒjƒ[ƒVƒ‡ƒ“‚Ìİ’u
+		//æœ€åˆã®ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã®è¨­ç½®
 		ChangeAnimation(pImpl->m_StartAnimeName);
 		SetAlphaActive(true);
 		if (IsSpriteType()){
-			//ƒXƒvƒ‰ƒCƒg‚Æ‚µ‚Ä•`‰æ‚·‚é
+			//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã¨ã—ã¦æç”»ã™ã‚‹
 			SetSpriteDraw(true);
 		}
 	}
 
 
-	//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğ“¾‚é
+	//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’å¾—ã‚‹
 	bool SS5ssae::IsLooped() const{
 		if (pImpl->m_NowAnimationPtr){
 			return pImpl->m_NowAnimationPtr->IsLooped();
@@ -2042,13 +2042,13 @@ namespace basecross {
 	bool SS5ssae::GetLooped() const{
 		return IsLooped();
 	}
-	//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªƒ‹[ƒv‚·‚é‚©‚Ç‚¤‚©‚ğİ’è‚·‚é
+	//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒãƒ«ãƒ¼ãƒ—ã™ã‚‹ã‹ã©ã†ã‹ã‚’è¨­å®šã™ã‚‹
 	void SS5ssae::SetLooped(bool b){
 		if (pImpl->m_NowAnimationPtr){
 			return pImpl->m_NowAnimationPtr->SetLooped(b);
 		}
 	}
-	//Œ»İ‘I‘ğ‚³‚ê‚Ä‚¢‚éƒAƒjƒ[ƒVƒ‡ƒ“‚ªI—¹‚µ‚½‚©‚Ç‚¤‚©
+	//ç¾åœ¨é¸æŠã•ã‚Œã¦ã„ã‚‹ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒçµ‚äº†ã—ãŸã‹ã©ã†ã‹
 	bool SS5ssae::IsAnimeEnd() const{
 		if (pImpl->m_NowAnimationPtr){
 			return pImpl->m_NowAnimationPtr->IsAnimeEnd();
@@ -2066,13 +2066,13 @@ namespace basecross {
 		pImpl->UpdateAnimeTime(TimeSpan);
 	}
 
-	//fpsiÄ¶ƒXƒs[ƒhj‚ğİ’è‚·‚é
+	//fpsï¼ˆå†ç”Ÿã‚¹ãƒ”ãƒ¼ãƒ‰ï¼‰ã‚’è¨­å®šã™ã‚‹
 	void SS5ssae::SetFps(float f){
 		if (pImpl->m_NowAnimationPtr){
 			pImpl->m_NowAnimationPtr->set_fps(f);
 		}
 	}
-	//SS5ssae‚©‚çƒAƒjƒ[ƒVƒ‡ƒ“ƒIƒuƒWƒFƒNƒg‚Ö‚Ìs—ñ
+	//SS5ssaeã‹ã‚‰ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¸ã®è¡Œåˆ—
 	const bsm::Mat4x4& SS5ssae::GetToAnimeMatrix() const{
 		return pImpl->m_ToAnimeMatrix;
 	}
@@ -2080,7 +2080,7 @@ namespace basecross {
 		pImpl->m_ToAnimeMatrix = mat;
 	}
 
-	//ƒXƒvƒ‰ƒCƒg‚©‚Ç‚¤‚©
+	//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‹ã©ã†ã‹
 	bool SS5ssae::GetSpriteType() const{
 		return pImpl->m_SpriteType;
 	}
@@ -2103,9 +2103,9 @@ namespace basecross {
 		return pImpl->m_RootPart;
 	}
 
-	//‚·‚×‚Ä‚Ìƒp[ƒc‚Ìƒfƒtƒ…[ƒY‚ğ•ÏX‚·‚é
+	//ã™ã¹ã¦ã®ãƒ‘ãƒ¼ãƒ„ã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºã‚’å¤‰æ›´ã™ã‚‹
 	void SS5ssae::SetAllPartsDiffuse(const bsm::Col4& c) {
-		//ƒp[ƒc‚Ìƒfƒtƒ…[ƒY•ÏX
+		//ãƒ‘ãƒ¼ãƒ„ã®ãƒ‡ãƒ•ãƒ¥ãƒ¼ã‚ºå¤‰æ›´
 		auto& rootParts = GetRootPart();
 		vector<SSPart*> PartVec;
 		rootParts->SetPartInVector(PartVec);
@@ -2122,7 +2122,7 @@ namespace basecross {
 	}
 
 	void SS5ssae::SetAllPartsEmissive(const bsm::Col4& c) {
-		//ƒp[ƒc‚ÌƒGƒ~ƒbƒVƒu•ÏX
+		//ãƒ‘ãƒ¼ãƒ„ã®ã‚¨ãƒŸãƒƒã‚·ãƒ–å¤‰æ›´
 		auto& rootParts = GetRootPart();
 		vector<SSPart*> PartVec;
 		rootParts->SetPartInVector(PartVec);

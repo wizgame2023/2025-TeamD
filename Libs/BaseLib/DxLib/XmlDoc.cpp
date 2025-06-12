@@ -1,6 +1,6 @@
 /*!
 @file XmlDoc.cpp
-@brief XMLŠÖ˜AƒNƒ‰ƒXÀ‘Ì
+@brief XMLé–¢é€£ã‚¯ãƒ©ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -9,17 +9,17 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class XmlDocReader;
-	//	—p“r: XMLƒNƒ‰ƒX
+	//	ç”¨é€”: XMLã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	XmlDocReader::XmlDocReader(const wstring& StrReadContext, bool IsMemory){
 		try{
 			HRESULT hr = m_pXMLDOMDocument.CreateInstance(CLSID_DOMDocument);
 			if (FAILED(hr))
 			{
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"XML‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"XMLåˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if (FAILED(hr))",
 					L"XmlDocReader::XmlDoc()"
 					);
@@ -27,26 +27,26 @@ namespace basecross {
 			m_pXMLDOMDocument->put_async(VARIANT_FALSE);
 			VARIANT_BOOL varbResult;
 			if (!IsMemory){
-				//ƒtƒ@ƒCƒ‹‚Æ‚µ‚Ä“Ç‚İ‚İ
+				//ãƒ•ã‚¡ã‚¤ãƒ«ã¨ã—ã¦èª­ã¿è¾¼ã¿
 				hr = m_pXMLDOMDocument->load(CComVariant(StrReadContext.c_str()), &varbResult);
 				if (FAILED(hr) || !varbResult)
 				{
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"XMLƒtƒ@ƒCƒ‹“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"XMLãƒ•ã‚¡ã‚¤ãƒ«èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if (FAILED(hr) || !varbResult)",
 						L"XmlDocReader::XmlDoc()"
 						);
 				}
 			}
 			else{
-				//•¶š—ñ‚Æ‚µ‚Ä“Ç‚İ‚İ
+				//æ–‡å­—åˆ—ã¨ã—ã¦èª­ã¿è¾¼ã¿
 				hr = m_pXMLDOMDocument->loadXML(BSTR(StrReadContext.c_str()), &varbResult);
 				if (FAILED(hr) || !varbResult)
 				{
-					// ‰Šú‰»¸”s
+					// åˆæœŸåŒ–å¤±æ•—
 					throw BaseException(
-						L"XMLƒf[ƒ^“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"XMLãƒ‡ãƒ¼ã‚¿èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if (FAILED(hr) || !varbResult)",
 						L"XmlDocReader::XmlDoc()"
 						);
@@ -57,29 +57,29 @@ namespace basecross {
 			throw;
 		}
 	}
-	XmlDocReader::~XmlDocReader(){
+	XmlDocReader::â€¾XmlDocReader(){
 	}
 
-	//‘€ì
-	//XPath‚É‚æ‚éæ“¾
+	//æ“ä½œ
+	//XPathã«ã‚ˆã‚‹å–å¾—
 	IXMLDOMNodePtr XmlDocReader::GetSelectSingleNode(const CComBSTR& Query) const{
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDocReader::GetSelectSingleNode()"
 				);
 		}
-		// ƒm[ƒh‚Ìæ“¾
+		// ãƒãƒ¼ãƒ‰ã®å–å¾—
 		IXMLDOMNodePtr pXMLDOMNode = nullptr;
 		HRESULT hr = m_pXMLDOMDocument->selectSingleNode(Query, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
 			wstring errstr(Query);
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				errstr,
 				L"XmlDocReader::GetSelectSingleNode()"
 				);
@@ -89,22 +89,22 @@ namespace basecross {
 
 	IXMLDOMNodeListPtr XmlDocReader::GetSelectNodes(const CComBSTR& Query)const{
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDocReader::GetSelectNodes()"
 				);
 		}
-		// ƒ^ƒO–¼‚Ìƒm[ƒhƒŠƒXƒg‚Ìæ“¾
+		// ã‚¿ã‚°åã®ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—
 		IXMLDOMNodeListPtr pXMLDOMNodeList = nullptr;
 		HRESULT hr = m_pXMLDOMDocument->selectNodes(Query, &pXMLDOMNodeList);
 		if (FAILED(hr))
 		{
 			wstring errstr(Query);
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				errstr,
 				L"XmlDocReader::GetSelectNodes()"
 				);
@@ -112,15 +112,15 @@ namespace basecross {
 		return pXMLDOMNodeList;
 	}
 
-	//staticŠÖ”ŒQ
+	//staticé–¢æ•°ç¾¤
 	long XmlDocReader::GetLength(const IXMLDOMNodeListPtr& NodeList){
 		long lCountNode = 0;
 		HRESULT hr = NodeList->get_length(&lCountNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh”‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰æ•°ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"NodeList->get_length()",
 				L"XmlDocReader::GetLength()"
 				);
@@ -132,9 +132,9 @@ namespace basecross {
 		HRESULT hr = NodeList->get_item(index, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"NodeList->get_item()",
 				L"XmlDocReader::GetItem()"
 				);
@@ -149,9 +149,9 @@ namespace basecross {
 		HRESULT hr = Node->get_childNodes(&NodeList);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_childNodes()",
 				L"XmlDocReader::GetChildNodes()"
 				);
@@ -163,9 +163,9 @@ namespace basecross {
 		HRESULT hr = Node->get_baseName(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"–¼‘O‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"åå‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_baseName()",
 				L"XmlDocReader::GetBaseName()"
 				);
@@ -179,9 +179,9 @@ namespace basecross {
 		HRESULT hr = Node->get_text(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒeƒLƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_text()",
 				L"XmlDocReader::GetText()"
 				);
@@ -195,9 +195,9 @@ namespace basecross {
 		HRESULT hr = Node->get_xml(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒeƒLƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_xml()",
 				L"XmlDocReader::GetXML()"
 				);
@@ -213,9 +213,9 @@ namespace basecross {
 		HRESULT hr = Node->get_attributes(&pMap);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒAƒgƒŠƒrƒ…[ƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_attributes()",
 				L"XmlDocReader::GetAttribute()"
 				);
@@ -233,9 +233,9 @@ namespace basecross {
 
 	IXMLDOMNodePtr XmlDocReader::GetSelectSingleNode(const IXMLDOMNodePtr& Node, const CComBSTR& Query){
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDocReader::GetSelectSingleNode()"
 				);
@@ -244,9 +244,9 @@ namespace basecross {
 		HRESULT hr = Node->selectSingleNode(Query, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->selectSingleNode()",
 				L"XmlDocReader::GetSelectSingleNode()"
 				);
@@ -256,9 +256,9 @@ namespace basecross {
 
 	IXMLDOMNodeListPtr XmlDocReader::GetSelectNodes(const IXMLDOMNodePtr& Node, const CComBSTR& Query){
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDocReader::GetSelectNodes()"
 				);
@@ -267,9 +267,9 @@ namespace basecross {
 		HRESULT hr = Node->selectNodes(Query, &pXMLDOMNodeList);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->selectNodes()",
 				L"XmlDocReader::GetSelectNodes()"
 				);
@@ -279,39 +279,39 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct XmlDoc::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct XmlDoc::Impl{
 		IXMLDOMDocumentPtr m_pXMLDOMDocument;
 		Impl(){}
-		~Impl(){}
+		â€¾Impl(){}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class XmlDoc;
-	//	—p“r: XMLƒNƒ‰ƒX(ƒXƒ^ƒeƒBƒbƒN‚ğg‚í‚È‚¢ƒo[ƒWƒ‡ƒ“)
+	//	ç”¨é€”: XMLã‚¯ãƒ©ã‚¹(ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ã‚’ä½¿ã‚ãªã„ãƒãƒ¼ã‚¸ãƒ§ãƒ³)
 	//--------------------------------------------------------------------------------------
 	void XmlDoc::CheckXmlDoc()const{
 		if (!pImpl->m_pXMLDOMDocument){
-			// ‰Šú‰»¸”s
+			// åˆæœŸåŒ–å¤±æ•—
 			throw BaseException(
-				L"XML‚ª‰Šú‰»‚³‚ê‚Ä‚Ü‚¹‚ñB",
+				L"XMLãŒåˆæœŸåŒ–ã•ã‚Œã¦ã¾ã›ã‚“ã€‚",
 				L"if (!pImpl->m_pXMLDOMDocument)",
 				L"XmlDoc::CheckXmlDoc()"
 				);
 		}
 	}
 
-	//\’z‚ÆÁ–Å
+	//æ§‹ç¯‰ã¨æ¶ˆæ»…
 	XmlDoc::XmlDoc(const wstring& Filename) :
 		pImpl(new Impl){
 		try{
 			HRESULT hr = pImpl->m_pXMLDOMDocument.CreateInstance(CLSID_DOMDocument);
 			if (FAILED(hr))
 			{
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"XML‰Šú‰»‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"XMLåˆæœŸåŒ–ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if (FAILED(hr))",
 					L"XmlDoc::XmlDoc()"
 					);
@@ -321,9 +321,9 @@ namespace basecross {
 			hr = pImpl->m_pXMLDOMDocument->load(CComVariant(Filename.c_str()), &varbResult);
 			if (FAILED(hr) || !varbResult)
 			{
-				// ‰Šú‰»¸”s
+				// åˆæœŸåŒ–å¤±æ•—
 				throw BaseException(
-					L"XML“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"XMLèª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"if (FAILED(hr) || !varbResult)",
 					L"XmlDoc::XmlDoc()"
 					);
@@ -333,31 +333,31 @@ namespace basecross {
 			throw;
 		}
 	}
-	XmlDoc::~XmlDoc(){}
+	XmlDoc::â€¾XmlDoc(){}
 
-	//‘€ì
+	//æ“ä½œ
 	void XmlDoc::Save(const wstring& Filename, bool Exp){
 		try{
 			if (!pImpl->m_pXMLDOMDocument || Filename == L""){
 				if (Exp){
-					//—áŠO”h¶
+					//ä¾‹å¤–æ´¾ç”Ÿ
 					throw BaseException(
-						L"XML•Û‘¶‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"XMLä¿å­˜ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						Filename,
 						L"XmlDoc::Save()"
 						);
 
 				}
 				else{
-					//—áŠO”­¶‚¹‚¸‚ÉƒŠƒ^[ƒ“
+					//ä¾‹å¤–ç™ºç”Ÿã›ãšã«ãƒªã‚¿ãƒ¼ãƒ³
 					return;
 				}
 			}
 			HRESULT hr = pImpl->m_pXMLDOMDocument->save(CComVariant(Filename.c_str()));
 			if (FAILED(hr) && Exp){
-				//—áŠO”h¶
+				//ä¾‹å¤–æ´¾ç”Ÿ
 				throw BaseException(
-					L"XMLsave‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"XMLsaveã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					Filename,
 					L"XmlDoc::Save()"
 					);
@@ -371,10 +371,10 @@ namespace basecross {
 	IXMLDOMNodePtr XmlDoc::CreateNodeBase(const CComBSTR& NodeName){
 		try{
 			if (!pImpl->m_pXMLDOMDocument || NodeName.Length() <= 0){
-				//—áŠO”h¶
+				//ä¾‹å¤–æ´¾ç”Ÿ
 				wstring errstr(NodeName);
 				throw BaseException(
-					L"Node‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"Nodeã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					errstr,
 					L"XmlDoc::CreateNode()"
 					);
@@ -385,7 +385,7 @@ namespace basecross {
 			IXMLDOMNodePtr NewChild;
 			ThrowIfFailed(
 				pImpl->m_pXMLDOMDocument->createNode(NodeType, NodeName, NamespaceURI, &NewChild),
-				L"Node‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"Nodeã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"FAILED(m_pXMLDOMDocument->createNode(NodeType, NodeName, NamespaceURI, &NewChild))",
 				L"XmlDoc::CreateNode()"
 				);
@@ -397,36 +397,36 @@ namespace basecross {
 	}
 	IXMLDOMNodePtr XmlDoc::AddChildNodeBase(const IXMLDOMNodePtr& Node, const IXMLDOMNodePtr& NewChildNode){
 		CheckXmlDoc();
-		//’Ç‰Á‚³‚ê‚éƒm[ƒh‚ÆÀÛ‚É”z’u‚³‚ê‚éƒm[ƒh‚Íˆá‚¤
+		//è¿½åŠ ã•ã‚Œã‚‹ãƒãƒ¼ãƒ‰ã¨å®Ÿéš›ã«é…ç½®ã•ã‚Œã‚‹ãƒãƒ¼ãƒ‰ã¯é•ã†
 		IXMLDOMNodePtr RetNewChild;
 		Node->appendChild(NewChildNode, &RetNewChild);
-		//”z’u‚³‚ê‚½ƒm[ƒh‚ğ•Ô‚·
+		//é…ç½®ã•ã‚ŒãŸãƒãƒ¼ãƒ‰ã‚’è¿”ã™
 		return RetNewChild;
 	}
 
 
 
 
-	//XPath‚É‚æ‚éæ“¾
+	//XPathã«ã‚ˆã‚‹å–å¾—
 	IXMLDOMNodePtr XmlDoc::GetSelectSingleNode(const CComBSTR& Query) const{
 		CheckXmlDoc();
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDoc::GetSelectSingleNode()"
 				);
 		}
-		// ƒm[ƒh‚Ìæ“¾
+		// ãƒãƒ¼ãƒ‰ã®å–å¾—
 		IXMLDOMNodePtr pXMLDOMNode = nullptr;
 		HRESULT hr = pImpl->m_pXMLDOMDocument->selectSingleNode(Query, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
 			wstring errstr(Query);
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				errstr,
 				L"XmlDoc::GetSelectSingleNode()"
 				);
@@ -436,22 +436,22 @@ namespace basecross {
 	IXMLDOMNodeListPtr XmlDoc::GetSelectNodes(const CComBSTR& Query) const{
 		CheckXmlDoc();
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDoc::GetSelectNodes()"
 				);
 		}
-		// ƒ^ƒO–¼‚Ìƒm[ƒhƒŠƒXƒg‚Ìæ“¾
+		// ã‚¿ã‚°åã®ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—
 		IXMLDOMNodeListPtr pXMLDOMNodeList = nullptr;
 		HRESULT hr = pImpl->m_pXMLDOMDocument->selectNodes(Query, &pXMLDOMNodeList);
 		if (FAILED(hr))
 		{
 			wstring errstr(Query);
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				errstr,
 				L"XmlDoc::GetSelectNodes()"
 				);
@@ -459,16 +459,16 @@ namespace basecross {
 		return pXMLDOMNodeList;
 	}
 
-	//Node“™‚©‚çæ“¾‚·‚éstaticŠÖ”
+	//Nodeç­‰ã‹ã‚‰å–å¾—ã™ã‚‹staticé–¢æ•°
 	long XmlDoc::GetLength(const IXMLDOMNodeListPtr& NodeList)const{
 		CheckXmlDoc();
 		long lCountNode = 0;
 		HRESULT hr = NodeList->get_length(&lCountNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh”‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰æ•°ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"NodeList->get_length()",
 				L"XmlDoc::GetLength()"
 				);
@@ -482,9 +482,9 @@ namespace basecross {
 		HRESULT hr = NodeList->get_item(index, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"NodeList->get_item()",
 				L"XmlDoc::GetItem()"
 				);
@@ -498,9 +498,9 @@ namespace basecross {
 		HRESULT hr = Node->get_childNodes(&NodeList);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_childNodes()",
 				L"XmlDoc::GetChildNodes()"
 				);
@@ -513,9 +513,9 @@ namespace basecross {
 		HRESULT hr = Node->get_baseName(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"–¼‘O‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"åå‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_baseName()",
 				L"XmlDoc::GetBaseName()"
 				);
@@ -529,9 +529,9 @@ namespace basecross {
 		HRESULT hr = Node->get_text(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒeƒLƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_text()",
 				L"XmlDoc::GetText()"
 				);
@@ -543,22 +543,22 @@ namespace basecross {
 		CheckXmlDoc();
 		ThrowIfFailed(
 			Node->put_text(text),
-			L"ƒeƒLƒXƒg‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"Node->put_text()",
 			L"XmlDoc::SetText()"
 			);
 	}
 
-	//ƒm[ƒh“àXML‚Ö‚ÌƒAƒNƒZƒX‚ÍƒŠ[ƒhƒIƒ“ƒŠ[
+	//ãƒãƒ¼ãƒ‰å†…XMLã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã¯ãƒªãƒ¼ãƒ‰ã‚ªãƒ³ãƒªãƒ¼
 	wstring XmlDoc::GetXML(const IXMLDOMNodePtr& Node)const{
 		CheckXmlDoc();
 		CComBSTR bstrText;
 		HRESULT hr = Node->get_xml(&bstrText);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒeƒLƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_xml()",
 				L"XmlDoc::GetXML()"
 				);
@@ -574,9 +574,9 @@ namespace basecross {
 		HRESULT hr = Node->get_attributes(&pMap);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒAƒgƒŠƒrƒ…[ƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_attributes()",
 				L"XmlDoc::GetAttribute()"
 				);
@@ -599,23 +599,23 @@ namespace basecross {
 		HRESULT hr = Node->get_attributes(&MapPtr);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒAƒgƒŠƒrƒ…[ƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->get_attributes()",
 				L"XmlDoc::SetAttribute()"
 				);
 		}
 		if (MapPtr){
-			//Map‚ª‚ ‚é
+			//MapãŒã‚ã‚‹
 			IXMLDOMNodePtr pXMLDOMNode = nullptr;
 			MapPtr->getNamedItem(AttTag, &pXMLDOMNode);
 			if (pXMLDOMNode){
-				//‚·‚Å‚É‚»‚ÌƒAƒgƒŠƒrƒ…[ƒg‚ª‚ ‚é
+				//ã™ã§ã«ãã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆãŒã‚ã‚‹
 				SetText(pXMLDOMNode, AttValue);
 			}
 			else{
-				//‚»‚ÌƒAƒgƒŠƒrƒ…[ƒg‚ª‚È‚¢
+				//ãã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆãŒãªã„
 				IXMLDOMAttributePtr AttPtr;
 				pImpl->m_pXMLDOMDocument->createAttribute(AttTag, &AttPtr);
 				IXMLDOMNodePtr pXMLDOMNode = nullptr;
@@ -624,7 +624,7 @@ namespace basecross {
 			}
 		}
 		else{
-			//Map‚ª‚È‚¢
+			//MapãŒãªã„
 			int a = 0;
 		}
 	}
@@ -633,9 +633,9 @@ namespace basecross {
 	IXMLDOMNodePtr XmlDoc::GetSelectSingleNode(const IXMLDOMNodePtr& Node, const CComBSTR& Query)const{
 		CheckXmlDoc();
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDoc::GetSelectSingleNode()"
 				);
@@ -644,9 +644,9 @@ namespace basecross {
 		HRESULT hr = Node->selectSingleNode(Query, &pXMLDOMNode);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒh‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->selectSingleNode()",
 				L"XmlDoc::GetSelectSingleNode()"
 				);
@@ -657,9 +657,9 @@ namespace basecross {
 	IXMLDOMNodeListPtr XmlDoc::GetSelectNodes(const IXMLDOMNodePtr& Node, const CComBSTR& Query)const{
 		CheckXmlDoc();
 		if (Query.Length() <= 0){
-			// ƒNƒGƒŠ¸”s
+			// ã‚¯ã‚¨ãƒªå¤±æ•—
 			throw BaseException(
-				L"XPathƒNƒGƒŠ‚ª‹ó‚Å‚·B",
+				L"XPathã‚¯ã‚¨ãƒªãŒç©ºã§ã™ã€‚",
 				L"if (Query.Length() <= 0)",
 				L"XmlDoc::GetSelectNodes()"
 				);
@@ -668,9 +668,9 @@ namespace basecross {
 		HRESULT hr = Node->selectNodes(Query, &pXMLDOMNodeList);
 		if (FAILED(hr))
 		{
-			// ¸”s
+			// å¤±æ•—
 			throw BaseException(
-				L"ƒm[ƒhƒŠƒXƒg‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒãƒ¼ãƒ‰ãƒªã‚¹ãƒˆã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Node->selectNodes()",
 				L"XmlDoc::GetSelectNodes()"
 				);
