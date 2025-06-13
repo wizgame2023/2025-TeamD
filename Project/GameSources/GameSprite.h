@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -16,7 +16,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_Text;
 	public:
 		BossAppearText(const shared_ptr<Stage>& stage, Vec3 position, Vec3 size);
-		virtual ~BossAppearText() {}
+		virtual 窶ｾBossAppearText() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -34,7 +34,7 @@ namespace basecross {
 		int m_MaxWave;
 	public:
 		NextWaveText(const shared_ptr<Stage>& stage, Vec3 center,int currect,int max);
-		virtual ~NextWaveText(){}
+		virtual 窶ｾNextWaveText(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -51,7 +51,7 @@ namespace basecross {
 		Col4 m_Color;
 	public:
 		HpSprite(const shared_ptr<Stage>& stage, shared_ptr<Character>& owner,Vec3 position,Vec3 size,Col4 color);
-		virtual ~HpSprite(){}
+		virtual 窶ｾHpSprite(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

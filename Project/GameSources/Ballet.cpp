@@ -15,7 +15,7 @@ namespace basecross {
 		m_bulletPally(false)
 	{
 	}
-	Bullet::‾Bullet() {}
+	Bullet::~Bullet() {}
 
 	void Bullet::OnCreate()
 	{

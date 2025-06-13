@@ -50,10 +50,10 @@ namespace
     const char g_sXYZE[] = "32-bit_rle_xyze";
 
     const char g_Header[] =
-        "#?RADIANCE\n"\
-        "FORMAT=32-bit_rle_rgbe\n"\
-        "\n"\
-        "-Y %u +X %u\n";
+        "#?RADIANCE¥n"¥
+        "FORMAT=32-bit_rle_rgbe¥n"¥
+        "¥n"¥
+        "-Y %u +X %u¥n";
 
     inline size_t FindEOL(const char* str, size_t maxlen) noexcept
     {
@@ -61,9 +61,9 @@ namespace
 
         while (pos < maxlen)
         {
-            if (str[pos] == '\n')
+            if (str[pos] == '¥n')
                 return pos;
-            else if (str[pos] == '\0')
+            else if (str[pos] == '¥0')
                 return size_t(-1);
             ++pos;
         }
@@ -105,7 +105,7 @@ namespace
         auto info = static_cast<const char*>(pSource);
         while (size > 0)
         {
-            if (*info == '\n')
+            if (*info == '¥n')
             {
                 ++info;
                 --size;
@@ -120,7 +120,7 @@ namespace
                 size -= formatLen;
 
                 // Trim whitespace
-                while (*info == ' ' || *info == '\t')
+                while (*info == ' ' || *info == '¥t')
                 {
                     if (--size == 0)
                         return E_FAIL;
@@ -158,7 +158,7 @@ namespace
                 size -= exposureLen;
 
                 // Trim whitespace
-                while (*info == ' ' || *info == '\t')
+                while (*info == ' ' || *info == '¥t')
                 {
                     if (--size == 0)
                         return E_FAIL;

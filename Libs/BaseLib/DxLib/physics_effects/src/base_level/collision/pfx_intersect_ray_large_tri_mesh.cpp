@@ -38,7 +38,7 @@ PfxBool pfxIntersectRayTriMesh(
 	PfxUInt32 nearest_f = 0;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 
@@ -53,7 +53,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 	
 	//-------------------------------------------
-	// ƒŒƒCŒğ·”»’è
+	// ãƒ¬ã‚¤äº¤å·®åˆ¤å®š
 	
 	PfxDecodedTriMesh decodedMesh;
 	
@@ -70,7 +70,7 @@ PfxBool pfxIntersectRayTriMesh(
 		
 		if( nearest_t <= cur_t ) continue;
 
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
 	for(int v=0;v<3;v++) {
@@ -109,7 +109,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 	
 	if(ret) {
-		// –Ê‚Ìƒ[ƒJƒ‹À•W‚ğZo
+		// é¢ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã‚’ç®—å‡º
 		const PfxQuantizedFacet &facet = mesh->m_facets[nearest_f];
 
 		PfxTriangle triangle(
@@ -146,7 +146,7 @@ PfxBool pfxIntersectRayTriMesh(
 	PfxUInt32 nearest_f = 0;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 
@@ -159,7 +159,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 
 	//-------------------------------------------
-	// ƒŒƒCŒğ·”»’è
+	// ãƒ¬ã‚¤äº¤å·®åˆ¤å®š
 	
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		const PfxExpandedFacet &facet = mesh->m_facets[selFacets[f]];
@@ -202,7 +202,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 	
 	if(ret) {
-		// –Ê‚Ìƒ[ƒJƒ‹À•W‚ğZo
+		// é¢ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã‚’ç®—å‡º
 		const PfxExpandedFacet &facet = mesh->m_facets[nearest_f];
 
 		PfxTriangle triangle(
@@ -276,7 +276,7 @@ PfxBool pfxIntersectRayTriMesh(
 		{
 			const PfxQuantizedFacetBvh &facet = mesh->m_facets[nodeId];
 			
-			// ƒfƒR[ƒh
+			// ãƒ‡ã‚³ãƒ¼ãƒ‰
 			PfxDecodedFacet decodedFacet;
 			const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -317,7 +317,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 	
 	if(ret) {
-		// –Ê‚Ìƒ[ƒJƒ‹À•W‚ğZo
+		// é¢ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã‚’ç®—å‡º
 		const PfxQuantizedFacetBvh &facet = mesh->m_facets[nearest_f];
 
 		PfxTriangle triangle(
@@ -419,7 +419,7 @@ PfxBool pfxIntersectRayTriMesh(
 	}
 	
 	if(ret) {
-		// –Ê‚Ìƒ[ƒJƒ‹À•W‚ğZo
+		// é¢ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã‚’ç®—å‡º
 		const PfxExpandedFacetBvh &facet = mesh->m_facets[nearest_f];
 
 		PfxTriangle triangle(
@@ -447,7 +447,7 @@ PfxBool pfxIntersectRayLargeTriMeshBvh(const PfxRayInput &ray,PfxRayOutput &out,
 {
 	PfxBool ret = false;
 
-	// ƒŒƒC‚ğƒ‰[ƒWƒƒbƒVƒ…‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformLMesh = orthoInverse(transform);
 	PfxVector3 rayStartPosition = transformLMesh.getUpper3x3() * ray.m_startPosition + transformLMesh.getTranslation();
 	PfxVector3 rayDirection = transformLMesh.getUpper3x3() * ray.m_direction;
@@ -544,7 +544,7 @@ PfxBool pfxIntersectRayLargeTriMeshArray(const PfxRayInput &ray,PfxRayOutput &ou
 {
 	PfxBool ret = false;
 	
-	// ƒŒƒC‚ğƒ‰[ƒWƒƒbƒVƒ…‚Ìƒ[ƒJƒ‹À•W‚Ö•ÏŠ·
+	// ãƒ¬ã‚¤ã‚’ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ã¸å¤‰æ›
 	PfxTransform3 transformLMesh = orthoInverse(transform);
 	PfxVector3 rayStartPosition = transformLMesh.getUpper3x3() * ray.m_startPosition + transformLMesh.getTranslation();
 	PfxVector3 rayDirection = transformLMesh.getUpper3x3() * ray.m_direction;
@@ -582,7 +582,7 @@ PfxBool pfxIntersectRayLargeTriMeshArray(const PfxRayInput &ray,PfxRayOutput &ou
 			
 			if( out.m_variable <= tmpVariable ) continue;
 
-			// ƒAƒCƒ‰ƒ“ƒh‚Æ‚ÌŒğ·ƒ`ƒFƒbƒN
+			// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã¨ã®äº¤å·®ãƒã‚§ãƒƒã‚¯
 			void *island=NULL;
 		if(largeMesh->m_type & 0x01) {
 			island = ((PfxQuantizedTriMesh*)largeMesh->m_islands) + i;

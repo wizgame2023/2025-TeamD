@@ -71,7 +71,7 @@ facetsHead = g_facetsHead;
 edges = g_edges;
 }
 
-PfxGjkSolver::~PfxGjkSolver()
+PfxGjkSolver::â€¾PfxGjkSolver()
 {
 }
 
@@ -133,9 +133,9 @@ bool PfxGjkSolver::silhouette(Facet *facet,int i,PfxVector3 &w)
 		Facet *ft = stk.f;
 
 		if(ft->obsolete==0) {
-			// w‚©‚çŒ©‚¦‚é‚©‚Ç‚¤‚©‚ğ”»’è
+			// wã‹ã‚‰è¦‹ãˆã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 			if(dot(ft->normal,w-ft->closest) < 0.0f) {
-				// Œ©‚¦‚È‚¢‚Ì‚ÅƒGƒbƒW‚ğ“o˜^
+				// è¦‹ãˆãªã„ã®ã§ã‚¨ãƒƒã‚¸ã‚’ç™»éŒ²
 				if((unsigned int)numEdges >= MAX_EDGES) return false;
 				edges[numEdges] = stk;
 				numEdges++;
@@ -164,11 +164,11 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 	PfxMatrix3 matrixAB,matrixBA;
 	PfxVector3 offsetAB,offsetBA;
 	
-	// Bƒ[ƒJƒ‹->Aƒ[ƒJƒ‹•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«->Aãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 	
-	// Aƒ[ƒJƒ‹->Bƒ[ƒJƒ‹•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«->Bãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	matrixBA = transformBA.getUpper3x3();
 	offsetBA = transformBA.getTranslation();
 
@@ -178,7 +178,7 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 	numFacets = 0;
 	numFacetsHead = 0;
 
-	// ‰Šúó‘Ô‚Ì”»’è
+	// åˆæœŸçŠ¶æ…‹ã®åˆ¤å®š
 	SCE_PFX_PUSH_MARKER("EPA init");
 	
 	if(m_simplex.numVertices <= 1) {
@@ -306,13 +306,13 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 		return kPfxGjkResultInvalid;
 	}
 
-	// Œ´“_‚ª’P‘Ì‚Ì“à•”‚É‚ ‚é‚©‚Ç‚¤‚©‚ğ”»’è
+	// åŸç‚¹ãŒå˜ä½“ã®å†…éƒ¨ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’åˆ¤å®š
 	if(SCE_PFX_UNLIKELY(!originInTetrahedron(vertsW[0],vertsW[1],vertsW[2],vertsW[3]))) {
 		SCE_PFX_POP_MARKER();
 		return kPfxGjkResultInvalid;
 	}
 
-	// –Ê‚ÌŒü‚«‚ğƒ`ƒFƒbƒN
+	// é¢ã®å‘ãã‚’ãƒã‚§ãƒƒã‚¯
 	if(dot(-vertsW[0],cross(vertsW[2]-vertsW[0],vertsW[1]-vertsW[0])) > 0.0f) {
 		PfxVector3 vertsP1,vertsQ1,vertsW1;
 		PfxVector3 vertsP3,vertsQ3,vertsW3;
@@ -341,12 +341,12 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 		linkFacets(f2,1,f3,1);
 	}
 	
-	// ’Tõ
+	// æ¢ç´¢
 	Facet *facetMin = NULL;
 	
 	SCE_PFX_PUSH_MARKER("EPA loop");
 	do {
-		// Œ´“_‚©‚çˆê”Ô‹ß‚¢“_‚ğZo‚µA‚»‚ÌƒxƒNƒgƒ‹‚Æx“_‚ğ•Ô‚·
+		// åŸç‚¹ã‹ã‚‰ä¸€ç•ªè¿‘ã„ç‚¹ã‚’ç®—å‡ºã—ã€ãã®ãƒ™ã‚¯ãƒˆãƒ«ã¨æ”¯ç‚¹ã‚’è¿”ã™
 		SCE_PFX_PUSH_MARKER("find closest");
 		int minFacetIdx = 0;
 		{
@@ -361,7 +361,7 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 			}
 		}
 		
-		// ƒŠƒXƒg‚©‚ç‚Í‚¸‚·
+		// ãƒªã‚¹ãƒˆã‹ã‚‰ã¯ãšã™
 		facetsHead[minFacetIdx] = facetsHead[--numFacetsHead];
 		SCE_PFX_POP_MARKER();
 		SCE_PFX_PUSH_MARKER("get support");
@@ -374,7 +374,7 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 		PfxVector3 v = facetMin->closest;
 		SCE_PFX_POP_MARKER();
 		
-		// Å‹ßÚ“_ƒ`ƒFƒbƒN
+		// æœ€è¿‘æ¥ç‚¹ãƒã‚§ãƒƒã‚¯
 		PfxFloat l0 = length(v);
 		PfxFloat l1 = dot(facetMin->normal,w);
 
@@ -382,7 +382,7 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 			break;
 		}
 
-		// ‹‚ß‚½“_‚ğ’Ç‰Á‚µ‚Ä–Ê‚ğ•ªŠ„
+		// æ±‚ã‚ãŸç‚¹ã‚’è¿½åŠ ã—ã¦é¢ã‚’åˆ†å‰²
 		{
 			if((PfxUInt32)numVerts >= MAX_VERTS) break;
 			
@@ -457,7 +457,7 @@ PfxInt32 PfxGjkSolver::detectPenetrationDepth(
 		return kPfxGjkResultInvalid;
 	}
 	
-	// Õ“Ë“_ŒvZ
+	// è¡çªç‚¹è¨ˆç®—
 	int v1 = facetMin->v[0];
 	int v2 = facetMin->v[1];
 	int v3 = facetMin->v[2];
@@ -524,17 +524,17 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 
 	m_simplex.reset();
 
-	// Aƒ[ƒJƒ‹À•WŒn‚É•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»ã«å¤‰æ›
 	PfxTransform3 transformAB,transformBA;
 	PfxMatrix3 matrixAB,matrixBA;
 	PfxVector3 offsetAB,offsetBA;
 	
-	// Bƒ[ƒJƒ‹->Aƒ[ƒJƒ‹•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«->Aãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	transformAB = orthoInverse(transformA) * transformB;
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 	
-	// Aƒ[ƒJƒ‹->Bƒ[ƒJƒ‹•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«->Bãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	transformBA = orthoInverse(transformB) * transformA;
 	matrixBA = transformBA.getUpper3x3();
 	offsetBA = transformBA.getTranslation();
@@ -547,7 +547,7 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 
 	SCE_PFX_PUSH_MARKER("GJK loop");
 	for(;;) {
-		// ƒTƒ|[ƒg’¸“_‚Ìæ“¾
+		// ã‚µãƒãƒ¼ãƒˆé ‚ç‚¹ã®å–å¾—
 		PfxVector3 pInA,qInB;
 
 		getSupportVertexShapeA(shapeA,(-separatingAxis),pInA);
@@ -559,7 +559,7 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 
 		delta = dot(separatingAxis,w);
 
-		// ‘ŠúI—¹ƒ`ƒFƒbƒN
+		// æ—©æœŸçµ‚äº†ãƒã‚§ãƒƒã‚¯
 		if(SCE_PFX_UNLIKELY(delta > 0.0f)) {
 			normal = separatingAxis;
 			SCE_PFX_POP_MARKER();
@@ -568,7 +568,7 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 			return kPfxGjkResultOk;
 		}
 		
-		// ’P‘Ì‚É“¯ˆê’¸“_‚ª‘¶İ‚µ‚È‚¢‚©H
+		// å˜ä½“ã«åŒä¸€é ‚ç‚¹ãŒå­˜åœ¨ã—ãªã„ã‹ï¼Ÿ
 		if(SCE_PFX_UNLIKELY(m_simplex.inSimplex(w))) {
 			break;
 		}
@@ -580,10 +580,10 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 			break;
 		}
 
-		// ’¸“_‚ğ’P‘Ì‚É’Ç‰Á
+		// é ‚ç‚¹ã‚’å˜ä½“ã«è¿½åŠ 
 		m_simplex.addVertex(w,p,q);
 		
-		// Œ´“_‚Æ’P‘Ì‚ÌÅ‹ßÚ“_‚ğ‹‚ßA•ª—£²‚ğ•Ô‚·
+		// åŸç‚¹ã¨å˜ä½“ã®æœ€è¿‘æ¥ç‚¹ã‚’æ±‚ã‚ã€åˆ†é›¢è»¸ã‚’è¿”ã™
 		if(SCE_PFX_UNLIKELY(!m_simplex.closest(separatingAxis))) {
 			// zero triangle error
 			normal = separatingAxis;
@@ -605,7 +605,7 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 	
 	PfxVector3 pA(0.0f),pB(0.0f),nA(0.0f);
 
-	// ‚Q‚Â‚ÌConvex‚ÍŒğ·‚µ‚Ä‚¢‚é‚Ì‚ÅAÚG“_‚ğ’Tõ‚·‚é (Œ‹‰Ê‚ÍAƒ[ƒJƒ‹Œn‚Å•Ô‚³‚ê‚é)
+	// ï¼’ã¤ã®Convexã¯äº¤å·®ã—ã¦ã„ã‚‹ã®ã§ã€æ¥è§¦ç‚¹ã‚’æ¢ç´¢ã™ã‚‹ (çµæœã¯Aãƒ­ãƒ¼ã‚«ãƒ«ç³»ã§è¿”ã•ã‚Œã‚‹)
 	PfxInt32 ret = detectPenetrationDepth(distance_,transformAB,transformBA,pA,pB,nA);
 	if(ret != kPfxGjkResultOk) {
 		SCE_PFX_POP_MARKER();
@@ -614,9 +614,9 @@ PfxInt32 PfxGjkSolver::collide(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 	
 	distance = distance_;
 	
-	//ƒ}[ƒWƒ“l—¶
+	//ãƒãƒ¼ã‚¸ãƒ³è€ƒæ…®
 	if(distance_ < 0.0f) {
-		// ‘S‚ÄAƒ[ƒJƒ‹À•WŒn
+		// å…¨ã¦Aãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»
 		pA += nA * SCE_PFX_GJK_MARGIN;
 		pB -= nA * SCE_PFX_GJK_MARGIN;
 		distance = dot(nA,pA-pB);
@@ -643,17 +643,17 @@ PfxInt32 PfxGjkSolver::closest(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 
 	m_simplex.reset();
 
-	// Aƒ[ƒJƒ‹À•WŒn‚É•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»ã«å¤‰æ›
 	PfxTransform3 transformAB,transformBA;
 	PfxMatrix3 matrixAB,matrixBA;
 	PfxVector3 offsetAB,offsetBA;
 	
-	// Bƒ[ƒJƒ‹->Aƒ[ƒJƒ‹•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«->Aãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	transformAB = orthoInverse(transformA) * transformB;
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 	
-	// Aƒ[ƒJƒ‹->Bƒ[ƒJƒ‹•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«->Bãƒ­ãƒ¼ã‚«ãƒ«å¤‰æ›
 	transformBA = orthoInverse(transformB) * transformA;
 	matrixBA = transformBA.getUpper3x3();
 	offsetBA = transformBA.getTranslation();
@@ -665,7 +665,7 @@ PfxInt32 PfxGjkSolver::closest(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 	PfxFloat distance_ = SCE_PFX_FLT_MAX;
 
 	for(;;) {
-		// ƒTƒ|[ƒg’¸“_‚Ìæ“¾
+		// ã‚µãƒãƒ¼ãƒˆé ‚ç‚¹ã®å–å¾—
 		PfxVector3 pInA,qInB;
 
 		getSupportVertexShapeA(shapeA,(-separatingAxis),pInA);
@@ -677,7 +677,7 @@ PfxInt32 PfxGjkSolver::closest(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 
 		delta = dot(separatingAxis,w);
 		
-		// Šù‚É’P‘Ì‚É“¯ˆê’¸“_‚ª‘¶İ‚µ‚Ä‚¢‚é
+		// æ—¢ã«å˜ä½“ã«åŒä¸€é ‚ç‚¹ãŒå­˜åœ¨ã—ã¦ã„ã‚‹
 		if(SCE_PFX_UNLIKELY(m_simplex.inSimplex(w))) {
 			break;
 		}
@@ -689,23 +689,23 @@ PfxInt32 PfxGjkSolver::closest(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 			break;
 		}
 		
-		// ’¸“_‚ğ’P‘Ì‚É’Ç‰Á
+		// é ‚ç‚¹ã‚’å˜ä½“ã«è¿½åŠ 
 		m_simplex.addVertex(w,p,q);
 		
-		// Œ´“_‚Æ’P‘Ì‚ÌÅ‹ßÚ“_‚ğ‹‚ßA•ª—£²‚ğ•Ô‚·
+		// åŸç‚¹ã¨å˜ä½“ã®æœ€è¿‘æ¥ç‚¹ã‚’æ±‚ã‚ã€åˆ†é›¢è»¸ã‚’è¿”ã™
 		if(SCE_PFX_UNLIKELY(!m_simplex.closest(separatingAxis))) {
 			// zero triangle error
 			return kPfxGjkResultInvalid;
 		}
 		
-		// ƒtƒ‹ƒVƒ“ƒvƒŒƒbƒNƒX‚Ì‚Æ‚«iŒ´“_‚Í“à•”‚É‚ ‚èjŒğ·‚µ‚Ä‚¢‚é
+		// ãƒ•ãƒ«ã‚·ãƒ³ãƒ—ãƒ¬ãƒƒã‚¯ã‚¹ã®ã¨ãï¼ˆåŸç‚¹ã¯å†…éƒ¨ã«ã‚ã‚Šï¼‰äº¤å·®ã—ã¦ã„ã‚‹
 		if(m_simplex.fullSimplex()) {
 			return kPfxGjkResultIntersect;
 		}
 		
 		squaredDistance = lengthSqr(separatingAxis);
 		
-		// ”½•œ‰ñ”‚ª§ŒÀ‚É’B‚µ‚½B‚±‚Ì“_‚Å‚Ì’l‚ğ‹ß—’l‚Æ‚µ‚Ä•Ô‚·
+		// åå¾©å›æ•°ãŒåˆ¶é™ã«é”ã—ãŸã€‚ã“ã®æ™‚ç‚¹ã§ã®å€¤ã‚’è¿‘ä¼¼å€¤ã¨ã—ã¦è¿”ã™
 		if(SCE_PFX_UNLIKELY(gjkIterationCount >= SCE_PFX_GJK_ITERATION_MAX)) {
 			break;
 		}
@@ -724,7 +724,7 @@ PfxInt32 PfxGjkSolver::closest(PfxFloat &distance, PfxVector3& normal, PfxPoint3
 		nA = normalize(separatingAxis);
 	}
 	
-	// ‘S‚ÄAƒ[ƒJƒ‹À•WŒn
+	// å…¨ã¦Aãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™ç³»
 	distance = dot(nA,pA-pB);
 	normal = nA;
 	pointA = PfxPoint3(pA);
@@ -764,17 +764,17 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 	PfxMatrix3 matrixAB, matrixBA;
 	PfxVector3 offsetAB, offsetBA;
 
-	// Bƒ[ƒJƒ‹¨Aƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«â†’Aãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformAB = orthoInverse(transformA) * transformB;
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 
-	// Aƒ[ƒJƒ‹¨Bƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«â†’Bãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformBA = orthoInverse(transformB) * transformA;
 	matrixBA = transformBA.getUpper3x3();
 	offsetBA = transformBA.getTranslation();
 	
-	// ƒ|[ƒ^ƒ‹Œ´“_‚ğì¬
+	// ãƒãƒ¼ã‚¿ãƒ«åŸç‚¹ã‚’ä½œæˆ
 	PfxVector3 portalOrigin(0.0f);
 	{
 		PfxVector3 centerA(0.0f);
@@ -792,7 +792,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 	PfxVector3 P1,P2,P3,Q1,Q2,Q3;
 	PfxVector3 s,pInA,qInB,p,q; // Temporal for support function
 
-	//J ‰Šúƒ|[ƒ^ƒ‹‚Ìì¬
+	//J åˆæœŸãƒãƒ¼ã‚¿ãƒ«ã®ä½œæˆ
 	//E Create the initial portal
 	{
 		s = -portalOrigin;
@@ -822,7 +822,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 		Q3 = qInB;
 		portal3 = p - q;
 
-		//J Œ´“_‚ªƒ|[ƒ^ƒ‹‚Ì“à‘¤‚É‚ ‚é‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒNB‚È‚¯‚ê‚ÎÄ“xƒ|[ƒ^ƒ‹‚ğì‚è’¼‚·
+		//J åŸç‚¹ãŒãƒãƒ¼ã‚¿ãƒ«ã®å†…å´ã«ã‚ã‚‹ã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯ã€‚ãªã‘ã‚Œã°å†åº¦ãƒãƒ¼ã‚¿ãƒ«ã‚’ä½œã‚Šç›´ã™
 		//E Check if the origin is inside of the portal. If the origin is outside of the portal, create new portal again.
 		bool originIsInsidePortal = false;
 		int create_count = 0; // Safety net
@@ -901,7 +901,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 	do {
 		SCE_PFX_PUSH_MARKER("loop");
 
-		//J ƒT[ƒtƒFƒX‚É‹ß‚¢V‚½‚È“_‚ğ‹‚ß‚é
+		//J ã‚µãƒ¼ãƒ•ã‚§ã‚¹ã«è¿‘ã„æ–°ãŸãªç‚¹ã‚’æ±‚ã‚ã‚‹
 		//E Find new point close to the surface.
 		s = cross(portal2-portal1,portal3-portal1);
 		getSupportVertexShapeA(shapeA,s,pInA);
@@ -910,7 +910,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 		q = offsetAB + matrixAB * qInB;
 		PfxVector3 newPortal = p - q;
 
-		//J Œ´“_‚ÆƒTƒ|[ƒg•½–Ê‚ÌˆÊ’uŠÖŒW‚ğƒ`ƒFƒbƒN
+		//J åŸç‚¹ã¨ã‚µãƒãƒ¼ãƒˆå¹³é¢ã®ä½ç½®é–¢ä¿‚ã‚’ãƒã‚§ãƒƒã‚¯
 		//E Check if the origin is outside of the support plane.
 		if(dot(s,-newPortal) > 0.0f) {
 			SCE_PFX_POP_MARKER();
@@ -919,21 +919,21 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 			return SCE_PFX_FLT_MAX;
 		}
 
-		//J ƒ|[ƒ^ƒ‹‚ª[•ªƒT[ƒtƒFƒX‚É‹ß‚Ã‚¢‚½‚©‚Ç‚¤‚©‚ğ”»’è
+		//J ãƒãƒ¼ã‚¿ãƒ«ãŒå……åˆ†ã‚µãƒ¼ãƒ•ã‚§ã‚¹ã«è¿‘ã¥ã„ãŸã‹ã©ã†ã‹ã‚’åˆ¤å®š
 		//E Check distance between the portal and the surface.
 		if(dot(s,newPortal-portal1) < MPR_EPSILON) {
 			SCE_PFX_POP_MARKER();
 			break;
 		}
 
-		//J ƒJƒEƒ“ƒgƒ`ƒFƒbƒN
+		//J ã‚«ã‚¦ãƒ³ãƒˆãƒã‚§ãƒƒã‚¯
 		//E Check counts
 		if((mpr_count++) > MPR_MAX_ITERATION) {
 			SCE_PFX_POP_MARKER();
 			break;
 		}
 
-		//J ƒ|[ƒ^ƒ‹‚ÌƒŠƒtƒ@ƒCƒ“
+		//J ãƒãƒ¼ã‚¿ãƒ«ã®ãƒªãƒ•ã‚¡ã‚¤ãƒ³
 		//E Portal refinement
 		#if 0
 		PfxVector3 n1 = cross(newPortal-portalOrigin,portal1-portalOrigin);
@@ -965,7 +965,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 			portal2 = newPortal;
 		}
 		else {
-			//J ‚±‚±‚É‚Í—ˆ‚È‚¢‚Í‚¸
+			//J ã“ã“ã«ã¯æ¥ãªã„ã¯ãš
 			//E Don't come here.
 		}
 		SCE_PFX_POP_MARKER();
@@ -974,7 +974,7 @@ PfxFloat PfxMprSolver::collide( PfxVector3& normal, PfxPoint3 &pointA, PfxPoint3
 
 	SCE_PFX_PUSH_MARKER("find contact point");
 
-	//J ƒ|[ƒ^ƒ‹‚ÆŒ´“_‚ÌÅ‹ßÚ“_‚ªÕ“Ë“_‚É‚È‚é
+	//J ãƒãƒ¼ã‚¿ãƒ«ã¨åŸç‚¹ã®æœ€è¿‘æ¥ç‚¹ãŒè¡çªç‚¹ã«ãªã‚‹
 	//E Calculate the closest point as the contact point between the portal and the origin.
 
 	PfxMatrix3 mtx(portal1,portal2,portal3);

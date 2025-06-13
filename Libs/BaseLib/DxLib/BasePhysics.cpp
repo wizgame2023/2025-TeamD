@@ -1,6 +1,6 @@
 /*!
 @file BasePhysics.cpp
-@brief •¨—ŒvZƒCƒ“ƒ^[ƒtƒ@ƒCƒXÀ‘Ì
+@brief ç‰©ç†è¨ˆç®—ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚¡ã‚¤ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -22,12 +22,12 @@ namespace basecross {
 		const float separateBias = 0.1f;
 		int iteration = 8;
 
-		//J ƒ[ƒ‹ƒhƒTƒCƒY
+		//J ãƒ¯ãƒ¼ãƒ«ãƒ‰ã‚µã‚¤ã‚º
 		//E World size
 		PfxVector3 worldCenter(0.0f);
 		PfxVector3 worldExtent(500.0f);
 
-		//J „‘Ì
+		//J å‰›ä½“
 		//E Rigid body
 		PfxRigidState states[NUM_RIGIDBODIES];
 		PfxRigidBody  bodies[NUM_RIGIDBODIES];
@@ -36,23 +36,23 @@ namespace basecross {
 		int numRigidBodies = 0;
 		int numProxiesInWorld = 0;
 
-		//J ƒvƒƒLƒV
+		//J ãƒ—ãƒ­ã‚­ã‚·
 		//E Proxies
 		PfxBroadphaseProxy proxies[6][NUM_RIGIDBODIES]; // shared by simulation and raycast
 
-		//J ƒWƒ‡ƒCƒ“ƒg
+		//J ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 		//E Joint
 		PfxConstraintPair jointPairs[NUM_JOINTS];
 		PfxJoint joints[NUM_JOINTS];
 		int numJoints = 0;
 
-		//J ƒyƒA
+		//J ãƒšã‚¢
 		//E Pairs
 		unsigned int pairSwap;
 		unsigned int numPairs[2];
 		PfxBroadphasePair pairsBuff[2][NUM_CONTACTS];
 
-		//J ƒRƒ“ƒ^ƒNƒg
+		//J ã‚³ãƒ³ã‚¿ã‚¯ãƒˆ
 		//E Contacts
 		PfxContactManifold contacts[NUM_CONTACTS];
 		int numContacts;
@@ -60,12 +60,12 @@ namespace basecross {
 		PfxUInt32 contactIdPool[NUM_CONTACTS];
 		int numContactIdPool;
 
-		//J ƒVƒ~ƒ…ƒŒ[ƒVƒ‡ƒ“ƒAƒCƒ‰ƒ“ƒh
+		//J ã‚·ãƒŸãƒ¥ãƒ¬ãƒ¼ã‚·ãƒ§ãƒ³ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰
 		//E Island generation
 		PfxIsland *island = NULL;
 		PfxUInt8 SCE_PFX_ALIGNED(16) islandBuff[32 * NUM_RIGIDBODIES]; // Island buffer should be 32 * the number of rigid bodies.
 
-		//J ƒXƒŠ[ƒv§Œä
+		//J ã‚¹ãƒªãƒ¼ãƒ—åˆ¶å¾¡
 		//E Sleep control
 		/*
 		A sleeping object wakes up, when
@@ -74,20 +74,20 @@ namespace basecross {
 		* a rigid body's velocity or position are updated
 		*/
 
-		//J ƒXƒŠ[ƒv‚É“ü‚éƒJƒEƒ“ƒg
+		//J ã‚¹ãƒªãƒ¼ãƒ—ã«å…¥ã‚‹ã‚«ã‚¦ãƒ³ãƒˆ
 		//E Count to enter sleeping
 		const PfxUInt32 sleepCount = 180;
 
-		//J ‘¬“x‚ªè‡’lˆÈ‰º‚È‚ç‚ÎƒXƒŠ[ƒvƒJƒEƒ“ƒg‚ª‘‰Á
+		//J é€Ÿåº¦ãŒé–¾å€¤ä»¥ä¸‹ãªã‚‰ã°ã‚¹ãƒªãƒ¼ãƒ—ã‚«ã‚¦ãƒ³ãƒˆãŒå¢—åŠ 
 		//E If velocity is under the following value, sleep count is increased.
 		const PfxFloat sleepVelocity = 0.3f;
 
-		//J ˆêƒoƒbƒtƒ@
+		//J ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡
 		//E Temporary buffers
 #define POOL_BYTES (5*1024*1024)
 		unsigned char SCE_PFX_ALIGNED(128) poolBuff[POOL_BYTES];
 
-		//J ˆêƒoƒbƒtƒ@—pƒXƒ^ƒbƒNƒAƒƒP[ƒ^
+		//J ä¸€æ™‚ãƒãƒƒãƒ•ã‚¡ç”¨ã‚¹ã‚¿ãƒƒã‚¯ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿
 		//E Stack allocator for temporary buffers
 		PfxHeapManager pool(poolBuff, POOL_BYTES);
 
@@ -105,7 +105,7 @@ namespace basecross {
 			PfxBroadphasePair *previousPairs = pairsBuff[1 - pairSwap];
 			PfxBroadphasePair *currentPairs = pairsBuff[pairSwap];
 
-			//J „‘Ì‚ªÅ‚à•ªU‚µ‚Ä‚¢‚é²‚ğŒ©‚Â‚¯‚é
+			//J å‰›ä½“ãŒæœ€ã‚‚åˆ†æ•£ã—ã¦ã„ã‚‹è»¸ã‚’è¦‹ã¤ã‘ã‚‹
 			//E Find the axis along which all rigid bodies are most widely positioned
 			int axis = 0;
 			{
@@ -120,13 +120,13 @@ namespace basecross {
 				if (v[2] > v[axis]) axis = 2;
 			}
 
-			//J ƒuƒ[ƒhƒtƒF[ƒYƒvƒƒLƒV‚ÌXV
+			//J ãƒ–ãƒ­ãƒ¼ãƒ‰ãƒ•ã‚§ãƒ¼ã‚ºãƒ—ãƒ­ã‚­ã‚·ã®æ›´æ–°
 
 			numProxiesInWorld = 0;
 
 			//E Create broadpahse proxies
 			{
-				//J ƒŒƒCƒLƒƒƒXƒg‚Æ‹¤—p‚·‚é‚½‚ßA‘S‚Ä‚Ì²‚É‘Î‚·‚éƒvƒƒLƒV”z—ñ‚ğì¬‚·‚é
+				//J ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆã¨å…±ç”¨ã™ã‚‹ãŸã‚ã€å…¨ã¦ã®è»¸ã«å¯¾ã™ã‚‹ãƒ—ãƒ­ã‚­ã‚·é…åˆ—ã‚’ä½œæˆã™ã‚‹
 				//E To share with ray casting, create proxy arrays for all axis
 
 				PfxUpdateBroadphaseProxiesParam param;
@@ -148,14 +148,14 @@ namespace basecross {
 				PfxUpdateBroadphaseProxiesResult result;
 
 				int ret = pfxUpdateBroadphaseProxies(param, result);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxUpdateBroadphaseProxies failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxUpdateBroadphaseProxies failed %dÂ¥n", ret);
 
 				pool.deallocate(param.workBuff);
 
 				numProxiesInWorld = numRigidBodies - result.numOutOfWorldProxies;
 			}
 
-			//J Œğ·ƒyƒA’Tõ
+			//J äº¤å·®ãƒšã‚¢æ¢ç´¢
 			//E Find overlapped pairs
 			{
 				PfxFindPairsParam findPairsParam;
@@ -171,11 +171,11 @@ namespace basecross {
 				PfxFindPairsResult findPairsResult;
 
 				int ret = pfxFindPairs(findPairsParam, findPairsResult);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxFindPairs failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxFindPairs failed %dÂ¥n", ret);
 
 				pool.deallocate(findPairsParam.workBuff);
 
-				//J Œğ·ƒyƒA‡¬
+				//J äº¤å·®ãƒšã‚¢åˆæˆ
 				//E Decompose overlapped pairs into 3 arrays
 				PfxDecomposePairsParam decomposePairsParam;
 				decomposePairsParam.pairBytes = pfxGetPairBytesOfDecomposePairs(numPreviousPairs, findPairsResult.numPairs);
@@ -190,7 +190,7 @@ namespace basecross {
 				PfxDecomposePairsResult decomposePairsResult;
 
 				ret = pfxDecomposePairs(decomposePairsParam, decomposePairsResult);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxDecomposePairs failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxDecomposePairs failed %dÂ¥n", ret);
 
 				pool.deallocate(decomposePairsParam.workBuff);
 
@@ -201,26 +201,26 @@ namespace basecross {
 				PfxUInt32 numOutKeepPairs = decomposePairsResult.numOutKeepPairs;
 				PfxUInt32 numOutRemovePairs = decomposePairsResult.numOutRemovePairs;
 
-				//J ”pŠüƒyƒA‚ÌƒRƒ“ƒ^ƒNƒg‚ğƒv[ƒ‹‚É–ß‚·
+				//J å»ƒæ£„ãƒšã‚¢ã®ã‚³ãƒ³ã‚¿ã‚¯ãƒˆã‚’ãƒ—ãƒ¼ãƒ«ã«æˆ»ã™
 				//E Put removed contacts into the contact pool
 				for (PfxUInt32 i = 0; i<numOutRemovePairs; i++) {
 					contactIdPool[numContactIdPool++] = pfxGetContactId(outRemovePairs[i]);
 
-					//J Q‚Ä‚é„‘Ì‚ğ‹N‚±‚·
+					//J å¯ã¦ã‚‹å‰›ä½“ã‚’èµ·ã“ã™
 					//E Wake up sleeping rigid bodies
 					PfxRigidState &stateA = states[pfxGetObjectIdA(outRemovePairs[i])];
 					PfxRigidState &stateB = states[pfxGetObjectIdB(outRemovePairs[i])];
 					if (stateA.isAsleep()) {
 						stateA.wakeup();
-					//	SCE_PFX_PRINTF("wakeup %u\n", stateA.getRigidBodyId());
+					//	SCE_PFX_PRINTF("wakeup %uÂ¥n", stateA.getRigidBodyId());
 					}
 					if (stateB.isAsleep()) {
 						stateB.wakeup();
-					//	SCE_PFX_PRINTF("wakeup %u\n", stateB.getRigidBodyId());
+					//	SCE_PFX_PRINTF("wakeup %uÂ¥n", stateB.getRigidBodyId());
 					}
 				}
 
-				//J V‹KƒyƒA‚ÌƒRƒ“ƒ^ƒNƒg‚ÌƒŠƒ“ƒN‚Æ‰Šú‰»
+				//J æ–°è¦ãƒšã‚¢ã®ã‚³ãƒ³ã‚¿ã‚¯ãƒˆã®ãƒªãƒ³ã‚¯ã¨åˆæœŸåŒ–
 				//E Add new contacts and initialize
 				for (PfxUInt32 i = 0; i<numOutNewPairs; i++) {
 					int cId = 0;
@@ -238,21 +238,21 @@ namespace basecross {
 					PfxContactManifold &contact = contacts[cId];
 					contact.reset(pfxGetObjectIdA(outNewPairs[i]), pfxGetObjectIdB(outNewPairs[i]));
 
-					//J Q‚Ä‚é„‘Ì‚ğ‹N‚±‚·
+					//J å¯ã¦ã‚‹å‰›ä½“ã‚’èµ·ã“ã™
 					//E Wake up sleeping rigid bodies
 					PfxRigidState &stateA = states[pfxGetObjectIdA(outNewPairs[i])];
 					PfxRigidState &stateB = states[pfxGetObjectIdB(outNewPairs[i])];
 					if (stateA.isAsleep()) {
 						stateA.wakeup();
-						SCE_PFX_PRINTF("wakeup %u\n", stateA.getRigidBodyId());
+						SCE_PFX_PRINTF("wakeup %uÂ¥n", stateA.getRigidBodyId());
 					}
 					if (stateB.isAsleep()) {
 						stateB.wakeup();
-						SCE_PFX_PRINTF("wakeup %u\n", stateB.getRigidBodyId());
+						SCE_PFX_PRINTF("wakeup %uÂ¥n", stateB.getRigidBodyId());
 					}
 				}
 
-				//J V‹KƒyƒA‚ÆˆÛƒyƒA‚ğ‡¬
+				//J æ–°è¦ãƒšã‚¢ã¨ç¶­æŒãƒšã‚¢ã‚’åˆæˆ
 				//E Merge 'new' and 'keep' pairs
 				numCurrentPairs = 0;
 				for (PfxUInt32 i = 0; i<numOutKeepPairs; i++) {
@@ -281,7 +281,7 @@ namespace basecross {
 			unsigned int numCurrentPairs = numPairs[pairSwap];
 			PfxBroadphasePair *currentPairs = pairsBuff[pairSwap];
 
-			//J ƒŠƒtƒŒƒbƒVƒ…
+			//J ãƒªãƒ•ãƒ¬ãƒƒã‚·ãƒ¥
 			//E Refresh contacts
 			{
 				PfxRefreshContactsParam param;
@@ -292,10 +292,10 @@ namespace basecross {
 				param.numRigidBodies = numRigidBodies;
 
 				int ret = pfxRefreshContacts(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxRefreshContacts failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxRefreshContacts failed %dÂ¥n", ret);
 			}
 
-			//J Õ“ËŒŸo
+			//J è¡çªæ¤œå‡º
 			//E Detect collisions
 			{
 				PfxDetectCollisionParam param;
@@ -307,10 +307,10 @@ namespace basecross {
 				param.numRigidBodies = numRigidBodies;
 
 				int ret = pfxDetectCollision(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxDetectCollision failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxDetectCollision failed %dÂ¥n", ret);
 			}
 
-			//J ƒAƒCƒ‰ƒ“ƒh¶¬
+			//J ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ç”Ÿæˆ
 			//E Create simulation islands
 			{
 				PfxGenerateIslandParam param;
@@ -323,13 +323,13 @@ namespace basecross {
 				PfxGenerateIslandResult result;
 
 				int ret = pfxGenerateIsland(param, result);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxGenerateIsland failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxGenerateIsland failed %dÂ¥n", ret);
 				island = result.island;
 
-				//J ƒWƒ‡ƒCƒ“ƒg•ª‚ÌƒyƒA‚ğ’Ç‰Á
+				//J ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆåˆ†ã®ãƒšã‚¢ã‚’è¿½åŠ 
 				//E Add joint pairs to islands
 				ret = pfxAppendPairs(island, jointPairs, numJoints);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxAppendPairs failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxAppendPairs failed %dÂ¥n", ret);
 			}
 		}
 
@@ -349,7 +349,7 @@ namespace basecross {
 				param.numRigidBodies = numRigidBodies;
 
 				int ret = pfxSetupSolverBodies(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupSolverBodies failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupSolverBodies failed %dÂ¥n", ret);
 			}
 			pc.countEnd();
 
@@ -367,7 +367,7 @@ namespace basecross {
 				param.separateBias = separateBias;
 
 				int ret = pfxSetupContactConstraints(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupContactConstraints failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupContactConstraints failed %dÂ¥n", ret);
 			}
 			pc.countEnd();
 
@@ -388,7 +388,7 @@ namespace basecross {
 				}
 
 				int ret = pfxSetupJointConstraints(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupJointConstraints failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSetupJointConstraints failed %dÂ¥n", ret);
 			}
 			pc.countEnd();
 
@@ -409,7 +409,7 @@ namespace basecross {
 				param.iteration = iteration;
 
 				int ret = pfxSolveConstraints(param);
-				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSolveConstraints failed %d\n", ret);
+				if (ret != SCE_PFX_OK) SCE_PFX_PRINTF("pfxSolveConstraints failed %dÂ¥n", ret);
 
 				pool.deallocate(param.workBuff);
 			}
@@ -503,14 +503,14 @@ namespace basecross {
 		uint32_t getNextConvexMesheIndex() {
 			for (uint32_t i = 0; i < NUM_RIGIDBODIES; i++) {
 				if (reservedConvexMeshes.find(i) == reservedConvexMeshes.end()) {
-					//Œ»İi‚Í‹ó‚¢‚Ä‚¢‚é
+					//ç¾åœ¨iã¯ç©ºã„ã¦ã„ã‚‹
 					reservedConvexMeshes.insert(i);
 					return i;
 				}
 			}
-			//‘S•”–„‚Ü‚Á‚Ä‚¢‚é
+			//å…¨éƒ¨åŸ‹ã¾ã£ã¦ã„ã‚‹
 			throw BaseException(
-				L"‚±‚êˆÈã“ÊŒ^ƒƒbƒVƒ…‚Í‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šå‡¸å‹ãƒ¡ãƒƒã‚·ãƒ¥ã¯å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"size >= NUM_RIGIDBODIES",
 				L"ps::getNextConvexMesheIndex()"
 			);
@@ -521,14 +521,14 @@ namespace basecross {
 			reservedConvexMeshes.erase(index);
 		}
 
-		//Combined—pshape‚Ì”z—ñ
+		//Combinedç”¨shapeã®é…åˆ—
 		PfxShape combinedShapes[NUM_KEEP_SHAPES];
-		//shape‚ÌƒCƒ“ƒfƒbƒNƒX‚ÍPfxUInt16
+		//shapeã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã¯PfxUInt16
 		PfxUInt16 numCombinedShapes = 0;
 		void getNewCombinedShapesIndices(vector<PfxUInt16>& indices, PfxUInt16 count) {
 			if ((numCombinedShapes + count) >= NUM_KEEP_SHAPES) {
 				throw BaseException(
-					L"‚±‚êˆÈãCombined—pshape‚Í‘‚â‚¹‚Ü‚¹‚ñ",
+					L"ã“ã‚Œä»¥ä¸ŠCombinedç”¨shapeã¯å¢—ã‚„ã›ã¾ã›ã‚“",
 					L"if ((numCombinedShapes + count) >= NUM_KEEP_SHAPES)",
 					L"ps::getNewCombinedShapesIndices()"
 				);
@@ -545,10 +545,10 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	•¨—ƒIƒuƒWƒFƒNƒg‚Ìe
+	///	ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	PsObject::PsObject() {}
-	PsObject::~PsObject() {}
+	PsObject::â€¾PsObject() {}
 
 	void PsObject::SetParamStatus(const PsParam& param) {
 		ps::states[m_Index].reset();
@@ -590,11 +590,11 @@ namespace basecross {
 	}
 
 
-	//Transform‚©‚ç‰Šú‰»‚·‚éƒpƒ‰ƒ[ƒ^
+	//Transformã‹ã‚‰åˆæœŸåŒ–ã™ã‚‹ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 
 	PsBoxParam::PsBoxParam(const bsm::Mat4x4& mat,
 		float mass, bool UseSleep, PsMotionType mtype) {
-		//DEFAULT_CUBE‚ÌƒXƒP[ƒŠƒ“ƒO‚ÍŠe•ÓŠî€‚È‚Ì‚ÅAƒn[ƒtƒTƒCƒY‚É‚·‚é
+		//DEFAULT_CUBEã®ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯å„è¾ºåŸºæº–ãªã®ã§ã€ãƒãƒ¼ãƒ•ã‚µã‚¤ã‚ºã«ã™ã‚‹
 
 		m_HalfSize = mat.scaleInMatrix() * 0.5f;
 		m_Mass = mass;
@@ -612,10 +612,10 @@ namespace basecross {
 
 
 	PsSphereParam::PsSphereParam(const bsm::Mat4x4& mat, float mass, bool UseSleep, PsMotionType mtype) {
-		//basecross‚ÌƒXƒP[ƒŠƒ“ƒO‚Í’¼ŒaŠî€‚È‚Ì‚ÅA”¼ŒaŠî€‚É‚·‚é
+		//basecrossã®ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯ç›´å¾„åŸºæº–ãªã®ã§ã€åŠå¾„åŸºæº–ã«ã™ã‚‹
 		m_Radius = mat.scaleInMatrix().y * 0.5f;
 		m_Mass = mass;
-		//Šµ«ƒeƒ“ƒ\ƒ‹‚ÌŒvZ
+		//æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã®è¨ˆç®—
 		m_Inertia = BasePhysics::CalcInertiaSphere(m_Radius, m_Mass);
 		m_UseSleep = UseSleep;
 		m_MotionType = mtype;
@@ -626,19 +626,19 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒ{ƒbƒNƒXImplƒCƒfƒBƒIƒ€
+	//	ãƒœãƒƒã‚¯ã‚¹Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsBox::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsBoxParam m_PsBoxParam;
 		Impl(const PsBoxParam& param):
 			m_PsBoxParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ{ƒbƒNƒX•¨—ƒIƒuƒWƒFƒNƒg
+	///	ãƒœãƒƒã‚¯ã‚¹ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsBox::PsBox(const PsBoxParam& param, uint16_t index):
 		pImpl(new Impl(param))
@@ -646,7 +646,7 @@ namespace basecross {
 		m_Index = index;
 	}
 
-	PsBox::~PsBox() {}
+	PsBox::â€¾PsBox() {}
 
 	void PsBox::OnCreate() {
 		PfxBox box((PfxVector3)pImpl->m_PsBoxParam.m_HalfSize);
@@ -672,19 +672,19 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	‹…‘ÌImplƒCƒfƒBƒIƒ€
+	//	çƒä½“Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsSphere::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsSphereParam m_PsSphereParam;
 		Impl(const PsSphereParam& param) :
 			m_PsSphereParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	‹…‘Ì•¨—ƒIƒuƒWƒFƒNƒg
+	///	çƒä½“ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsSphere::PsSphere(const PsSphereParam& param, uint16_t index) :
 		pImpl(new Impl(param))
@@ -692,7 +692,7 @@ namespace basecross {
 		m_Index = index;
 	}
 
-	PsSphere::~PsSphere() {}
+	PsSphere::â€¾PsSphere() {}
 
 	void PsSphere::OnCreate() {
 		PfxSphere sphere((PfxFloat)pImpl->m_PsSphereParam.m_Radius);
@@ -718,27 +718,27 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒJƒvƒZƒ‹ImplƒCƒfƒBƒIƒ€
+	//	ã‚«ãƒ—ã‚»ãƒ«Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsCapsule::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsCapsuleParam m_PsCapsuleParam;
 		Impl(const PsCapsuleParam& param) :
 			m_PsCapsuleParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒJƒvƒZƒ‹•¨—ƒIƒuƒWƒFƒNƒg
+	///	ã‚«ãƒ—ã‚»ãƒ«ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsCapsule::PsCapsule(const PsCapsuleParam& param, uint16_t index):
 		pImpl(new Impl(param))
 	{
 		m_Index = index;
 	}
-	PsCapsule::~PsCapsule() {}
+	PsCapsule::â€¾PsCapsule() {}
 
 	void PsCapsule::OnCreate() {
 		PfxCapsule capsule(
@@ -766,27 +766,27 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	ƒVƒŠƒ“ƒ_[ImplƒCƒfƒBƒIƒ€
+	//	ã‚·ãƒªãƒ³ãƒ€ãƒ¼Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsCylinder::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsCylinderParam m_PsCylinderParam;
 		Impl(const PsCylinderParam& param) :
 			m_PsCylinderParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒŠƒ“ƒ_[•¨—ƒIƒuƒWƒFƒNƒg
+	///	ã‚·ãƒªãƒ³ãƒ€ãƒ¼ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsCylinder::PsCylinder(const PsCylinderParam& param, uint16_t index):
 		pImpl(new Impl(param))
 	{
 		m_Index = index;
 	}
-	PsCylinder::~PsCylinder() {}
+	PsCylinder::â€¾PsCylinder() {}
 
 	void PsCylinder::OnCreate() {
 		PfxCylinder cylinder(
@@ -815,11 +815,11 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	PsConvexMeshResource@ImplƒCƒfƒBƒIƒ€
+	//	PsConvexMeshResourceã€€Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsConvexMeshResource::Impl {
 		uint32_t m_Index;
-		//ƒoƒbƒNƒAƒbƒv—p‚Ì’¸“_(VertexPositionNormalTexture)‚ÆƒCƒ“ƒfƒbƒNƒX
+		//ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ç”¨ã®é ‚ç‚¹(VertexPositionNormalTexture)ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		vector<VertexPositionNormalTexture> m_Vertices;
 		vector<uint16_t> m_Indices;
 		Impl(vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices):
@@ -852,7 +852,7 @@ namespace basecross {
 				PfxInt32 ret = pfxCreateConvexMesh(ps::convexMeshes[m_Index], param);
 				if (ret != SCE_PFX_OK) {
 					throw BaseException(
-						L"ConvexMeshResource‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"ConvexMeshResourceã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						L"if (ret != SCE_PFX_OK)",
 						L"PsConvexMeshResource::Impl::Impl()"
 					);
@@ -862,13 +862,13 @@ namespace basecross {
 				throw;
 			}
 		}
-		~Impl() {
+		â€¾Impl() {
 			ps::rereaseConvexMesheIndex(m_Index);
 		}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ConvexMeshƒŠƒ\[ƒX
+	///	ConvexMeshãƒªã‚½ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	PsConvexMeshResource::PsConvexMeshResource(vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices):
 		BaseResource(),
@@ -885,7 +885,7 @@ namespace basecross {
 	}
 
 
-	PsConvexMeshResource::~PsConvexMeshResource() {}
+	PsConvexMeshResource::â€¾PsConvexMeshResource() {}
 	uint32_t PsConvexMeshResource::GetMeshIndex() const {
 		return pImpl->m_Index;
 	}
@@ -902,34 +902,34 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	PhysicsConvex@ImplƒCƒfƒBƒIƒ€
+	//	PhysicsConvexã€€Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsConvex::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsConvexParam m_PsConvexParam;
 		Impl(const PsConvexParam& param) :
 			m_PsConvexParam(param)
 		{}
-		~Impl() {
+		â€¾Impl() {
 		}
 	};
 
 
 
 	//--------------------------------------------------------------------------------------
-	///	ConvexMesh•¨—ƒIƒuƒWƒFƒNƒg(’¸“_w’è‚ÌƒIƒuƒWƒFƒNƒg)
+	///	ConvexMeshç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(é ‚ç‚¹æŒ‡å®šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ)
 	//--------------------------------------------------------------------------------------
 	PsConvex::PsConvex(const PsConvexParam& param, uint16_t index):
 		pImpl(new Impl(param))
 	{
 		m_Index = index;
 	}
-	PsConvex::~PsConvex() {}
+	PsConvex::â€¾PsConvex() {}
 
 	void PsConvex::OnCreate() {
 		if (!pImpl->m_PsConvexParam.m_ConvexMeshResource) {
 			throw BaseException(
-				L"ConvexMeshResource‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+				L"ConvexMeshResourceãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 				L"if (!pImpl->m_PsConvexParam.m_ConvexMeshResource)",
 				L"PhysicsConvexMesh::OnCreate()"
 			);
@@ -956,21 +956,21 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	PhysicsCombined@ImplƒCƒfƒBƒIƒ€
+	//	PhysicsCombinedã€€Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsCombined::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsCombinedParam m_PsCombinedParam;
 		Impl(const PsCombinedParam& param) :
 			m_PsCombinedParam(param)
 		{}
-		~Impl() {
+		â€¾Impl() {
 		}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒvƒŠƒ~ƒeƒBƒu‡¬•¨—ƒIƒuƒWƒFƒNƒg
+	///	ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–åˆæˆç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsCombined::PsCombined(const PsCombinedParam& param, uint16_t index):
 		pImpl(new Impl(param))
@@ -978,7 +978,7 @@ namespace basecross {
 		m_Index = index;
 	}
 
-	PsCombined::~PsCombined() {}
+	PsCombined::â€¾PsCombined() {}
 
 	void PsCombined::OnCreate() {
 		vector<PfxUInt16> PrimIndices;
@@ -1040,7 +1040,7 @@ namespace basecross {
 				{
 					if (!v.m_ConvexMeshResource) {
 						throw BaseException(
-							L"ConvexMeshResource‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
+							L"ConvexMeshResourceãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
 							L"if (!v.m_ConvexMeshResource)",
 							L"PsCombined::OnCreate()"
 						);
@@ -1070,12 +1070,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	ƒWƒ‡ƒCƒ“ƒg‚Ìe
+	///	ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	PsJoint::PsJoint():
 		m_Index(0)
 	{}
-	PsJoint::~PsJoint() {}
+	PsJoint::â€¾PsJoint() {}
 
 	const sce::PhysicsEffects::PfxJoint& PsJoint::getPfxJoint() const {
 		return ps::joints[GetIndex()];
@@ -1100,26 +1100,26 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒ{[ƒ‹ƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	ãƒœãƒ¼ãƒ«ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsBallJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsBallJointParam m_PsBallJointParam;
 		Impl(const PsBallJointParam& param) :
 			m_PsBallJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ{[ƒ‹ƒWƒ‡ƒCƒ“ƒg
+	///	ãƒœãƒ¼ãƒ«ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsBallJoint::PsBallJoint(const PsBallJointParam& param):
 		pImpl(new Impl(param))
 	{
 		m_Index = ps::numJoints++;
 	}
-	PsBallJoint::~PsBallJoint() {}
+	PsBallJoint::â€¾PsBallJoint() {}
 
 	void PsBallJoint::OnCreate() {
 		PfxBallJointInitParam jparam;
@@ -1152,26 +1152,26 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	‹…ŠÖßƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	çƒé–¢ç¯€ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsSwingTwistJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsSwingTwistJointParam m_PsSwingTwistJointParam;
 		Impl(const PsSwingTwistJointParam& param) :
 			m_PsSwingTwistJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	‹…ŠÖßƒWƒ‡ƒCƒ“ƒg
+	///	çƒé–¢ç¯€ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsSwingTwistJoint::PsSwingTwistJoint(const PsSwingTwistJointParam& param):
 		pImpl(new Impl(param))
 	{
 		m_Index = ps::numJoints++;
 	}
-	PsSwingTwistJoint::~PsSwingTwistJoint() {}
+	PsSwingTwistJoint::â€¾PsSwingTwistJoint() {}
 
 	void PsSwingTwistJoint::OnCreate() {
 		PfxSwingTwistJointInitParam jparam;
@@ -1209,19 +1209,19 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	’±”Ô(‚¿‚å‚¤‚Â‚ª‚¢)ƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	è¶ç•ª(ã¡ã‚‡ã†ã¤ãŒã„)ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsHingeJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsHingeJointParam m_PsHingeJointParam;
 		Impl(const PsHingeJointParam& param) :
 			m_PsHingeJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	’±”Ô(‚¿‚å‚¤‚Â‚ª‚¢)ƒWƒ‡ƒCƒ“ƒg
+	///	è¶ç•ª(ã¡ã‚‡ã†ã¤ãŒã„)ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsHingeJoint::PsHingeJoint(const PsHingeJointParam& param):
 		pImpl(new Impl(param))
@@ -1229,7 +1229,7 @@ namespace basecross {
 		m_Index = ps::numJoints++;
 	}
 
-	PsHingeJoint::~PsHingeJoint() {}
+	PsHingeJoint::â€¾PsHingeJoint() {}
 
 	void PsHingeJoint::OnCreate() {
 		PfxHingeJointInitParam jparam;
@@ -1265,26 +1265,26 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒXƒ‰ƒCƒ_[ƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsSliderJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsSliderJointParam m_PsSliderJointParam;
 		Impl(const PsSliderJointParam& param) :
 			m_PsSliderJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒXƒ‰ƒCƒ_[ƒWƒ‡ƒCƒ“ƒg
+	///	ã‚¹ãƒ©ã‚¤ãƒ€ãƒ¼ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsSliderJoint::PsSliderJoint(const PsSliderJointParam& param):
 		pImpl(new Impl(param))
 	{
 		m_Index = ps::numJoints++;
 	}
-	PsSliderJoint::~PsSliderJoint() {}
+	PsSliderJoint::â€¾PsSliderJoint() {}
 
 	void PsSliderJoint::OnCreate() {
 		PfxSliderJointInitParam jparam;
@@ -1321,26 +1321,26 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ŒÅ’èƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	å›ºå®šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsFixJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsFixJointParam m_PsFixJointParam;
 		Impl(const PsFixJointParam& param) :
 			m_PsFixJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ŒÅ’èƒWƒ‡ƒCƒ“ƒg
+	///	å›ºå®šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsFixJoint::PsFixJoint(const PsFixJointParam& param):
 		pImpl(new Impl(param))
 	{
 		m_Index = ps::numJoints++;
 	}
-	PsFixJoint::~PsFixJoint() {}
+	PsFixJoint::â€¾PsFixJoint() {}
 
 	void PsFixJoint::OnCreate() {
 		PfxFixJointInitParam jparam;
@@ -1373,18 +1373,18 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ƒ†ƒjƒo[ƒTƒ‹ƒWƒ‡ƒCƒ“ƒgImplƒCƒfƒBƒIƒ€
+	//	ãƒ¦ãƒ‹ãƒãƒ¼ã‚µãƒ«ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct PsUniversalJoint::Impl {
-		//‰Šú‰»ƒpƒ‰ƒ[ƒ^
+		//åˆæœŸåŒ–ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿
 		PsUniversalJointParam m_PsUniversalJointParam;
 		Impl(const PsUniversalJointParam& param) :
 			m_PsUniversalJointParam(param)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 	//--------------------------------------------------------------------------------------
-	///	ƒ†ƒjƒo[ƒTƒ‹ƒWƒ‡ƒCƒ“ƒg
+	///	ãƒ¦ãƒ‹ãƒãƒ¼ã‚µãƒ«ã‚¸ãƒ§ã‚¤ãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	PsUniversalJoint::PsUniversalJoint(const PsUniversalJointParam& param):
 		pImpl(new Impl(param))
@@ -1392,7 +1392,7 @@ namespace basecross {
 		m_Index = ps::numJoints++;
 	}
 
-	PsUniversalJoint::~PsUniversalJoint() {}
+	PsUniversalJoint::â€¾PsUniversalJoint() {}
 
 	void PsUniversalJoint::OnCreate() {
 		PfxUniversalJointInitParam jparam;
@@ -1432,7 +1432,7 @@ namespace basecross {
 	}
 
 	struct BasePhysicsImplParam {
-		//d—Í‚ª—LŒø‚©‚Ç‚¤‚©
+		//é‡åŠ›ãŒæœ‰åŠ¹ã‹ã©ã†ã‹
 		bool m_IsGravityActive;
 		BasePhysicsImplParam() :
 			m_IsGravityActive(true)
@@ -1440,13 +1440,13 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	•¨—ŒvZ—p‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒXImpl
+	///	ç‰©ç†è¨ˆç®—ç”¨ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹Impl
 	//--------------------------------------------------------------------------------------
 	struct BasePhysics::Impl {
 		BasePhysicsImplParam Params[NUM_RIGIDBODIES];
 		Impl() 
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 		void Reset() {
 			for (size_t i = 0; i < NUM_RIGIDBODIES; i++) {
 				Params[i].m_IsGravityActive = true;
@@ -1455,18 +1455,18 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	•¨—ŒvZ—p‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
+	///	ç‰©ç†è¨ˆç®—ç”¨ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//--------------------------------------------------------------------------------------
 	BasePhysics::BasePhysics():
 		pImpl(new Impl())
 	{
 	}
-	BasePhysics::~BasePhysics() {}
+	BasePhysics::â€¾BasePhysics() {}
 
 	shared_ptr<PsBox> BasePhysics::AddBox(const PsBoxParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddBox()"
 			);
@@ -1481,7 +1481,7 @@ namespace basecross {
 	shared_ptr<PsSphere> BasePhysics::AddSphere(const PsSphereParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddSphere()"
 			);
@@ -1495,7 +1495,7 @@ namespace basecross {
 	shared_ptr<PsCapsule> BasePhysics::AddCapsule(const PsCapsuleParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddCapsule()"
 			);
@@ -1509,7 +1509,7 @@ namespace basecross {
 	shared_ptr<PsCylinder> BasePhysics::AddCylinder(const PsCylinderParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddCylinder()"
 			);
@@ -1523,7 +1523,7 @@ namespace basecross {
 	shared_ptr<PsConvex> BasePhysics::AddConvex(const PsConvexParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddConvex()"
 			);
@@ -1537,7 +1537,7 @@ namespace basecross {
 	shared_ptr<PsCombined> BasePhysics::AddCombined(const PsCombinedParam& param, uint16_t index) {
 		if (ps::numRigidBodies >= NUM_RIGIDBODIES) {
 			throw BaseException(
-				L"‚±‚êˆÈã•¨—ƒIƒuƒWƒFƒNƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numRigidBodies >= ps::NUM_RIGIDBODIES)",
 				L"BasePhysics::AddCombined()"
 			);
@@ -1551,7 +1551,7 @@ namespace basecross {
 	shared_ptr<PsBallJoint> BasePhysics::AddBallJoint(const PsBallJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddBallJoint()"
 			);
@@ -1563,7 +1563,7 @@ namespace basecross {
 	shared_ptr<PsSwingTwistJoint> BasePhysics::AddSwingTwistJoint(const PsSwingTwistJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddSwingTwistJoint()"
 			);
@@ -1576,7 +1576,7 @@ namespace basecross {
 	shared_ptr<PsHingeJoint> BasePhysics::AddHingeJoint(const PsHingeJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddHingeJoint()"
 			);
@@ -1587,7 +1587,7 @@ namespace basecross {
 	shared_ptr<PsSliderJoint> BasePhysics::AddSliderJoint(const PsSliderJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddSliderJoint()"
 			);
@@ -1598,7 +1598,7 @@ namespace basecross {
 	shared_ptr<PsFixJoint> BasePhysics::AddFixJoint(const PsFixJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddFixJoint()"
 			);
@@ -1610,7 +1610,7 @@ namespace basecross {
 	shared_ptr<PsUniversalJoint> BasePhysics::AddUniversalJoint(const PsUniversalJointParam& param) {
 		if (ps::numJoints >= NUM_JOINTS) {
 			throw BaseException(
-				L"‚±‚êˆÈãƒWƒ‡ƒCƒ“ƒg‚ğ‘‚â‚¹‚Ü‚¹‚ñ",
+				L"ã“ã‚Œä»¥ä¸Šã‚¸ãƒ§ã‚¤ãƒ³ãƒˆã‚’å¢—ã‚„ã›ã¾ã›ã‚“",
 				L"if (ps::numJoints >= NUM_JOINTS)",
 				L"BasePhysics::AddUniversalJoint()"
 			);
@@ -1634,7 +1634,7 @@ namespace basecross {
 	void BasePhysics::SetBodyStatus(uint16_t body_index, const PsBodyUpdateStatus& st) {
 		ps::states[body_index].setAngularVelocity((PfxVector3)st.m_AngularVelocity);
 		ps::states[body_index].setLinearVelocity((PfxVector3)st.m_LinearVelocity);
-		//ƒtƒH[ƒX‚ğ‰Á‚¦‚é
+		//ãƒ•ã‚©ãƒ¼ã‚¹ã‚’åŠ ãˆã‚‹
 		pfxApplyExternalForce(
 			ps::states[body_index], ps::bodies[body_index],
 			ps::bodies[body_index].getMass() * (PfxVector3)st.m_Force,
@@ -1896,7 +1896,7 @@ namespace basecross {
 		::ZeroMemory(ps::contacts, sizeof(PfxContactManifold) * NUM_CONTACTS);
 		::ZeroMemory(ps::contactIdPool, sizeof(PfxUInt32) * NUM_CONTACTS);
 		::ZeroMemory(ps::poolBuff, sizeof(ps::poolBuff));
-		//‡¬—pshape
+		//åˆæˆç”¨shape
 		::ZeroMemory(ps::combinedShapes, sizeof(PfxShape) * NUM_KEEP_SHAPES);
 		ps::numCombinedShapes = 0;
 		pImpl->Reset();

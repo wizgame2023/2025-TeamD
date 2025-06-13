@@ -1,6 +1,6 @@
 /*!
 @file CollisionManager.h
-@brief Õ“Ë”»’èƒ}ƒl[ƒWƒƒÀ‘ÌiŠÈˆÕ•¨—ŒvZ‚às‚¤j
+@brief è¡çªåˆ¤å®šãƒãƒãƒ¼ã‚¸ãƒ£å®Ÿä½“ï¼ˆç°¡æ˜“ç‰©ç†è¨ˆç®—ã‚‚è¡Œã†ï¼‰
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -64,32 +64,32 @@ namespace basecross {
 			auto colAABB = Col->GetWrappedAABB();
 			if (HitTest::AABB_AABB(tgt.m_AABB, colAABB)) {
 				if (tgt.m_Children[0]) {
-					//q‹Ÿƒs[ƒX‚ª‚ ‚Á‚½‚ç
+					//å­ä¾›ãƒ”ãƒ¼ã‚¹ãŒã‚ã£ãŸã‚‰
 					for (int i = 0; i < 4; i++) {
 						SetCollisionBlockSub(*tgt.m_Children[i], Obj);
 					}
 				}
 				else {
-					//q‹Ÿƒs[ƒX‚ª‚È‚©‚Á‚½
-					//AABB‚ª¬‚³‚¢ê‡‚Í‚±‚êˆÈã‘‚â‚³‚È‚¢
+					//å­ä¾›ãƒ”ãƒ¼ã‚¹ãŒãªã‹ã£ãŸ
+					//AABBãŒå°ã•ã„å ´åˆã¯ã“ã‚Œä»¥ä¸Šå¢—ã‚„ã•ãªã„
 					if (tgt.m_AABB.GetWidth() < 0.125f) {
 						tgt.m_ObjVec.push_back(Obj);
 					}
 					else {
 						if (tgt.m_ObjVec.size() < 5) {
-							//AABB‚Ì•‚ª’è”–¢–‚©
-							//‚ ‚é‚¢‚Í‚Ü‚¾—]—T‚ª‚ ‚é
+							//AABBã®å¹…ãŒå®šæ•°æœªæº€ã‹
+							//ã‚ã‚‹ã„ã¯ã¾ã ä½™è£•ãŒã‚ã‚‹
 							tgt.m_ObjVec.push_back(Obj);
 						}
 						else {
-							//—]—T‚ª‚È‚¢q‹ŸƒuƒƒbƒN‚Ìì¬
+							//ä½™è£•ãŒãªã„å­ä¾›ãƒ–ãƒ­ãƒƒã‚¯ã®ä½œæˆ
 							for (int i = 0; i < 4; i++) {
 								tgt.m_Children[i] = &g_PiecePool[g_NextPoolIndex];
 								tgt.m_Children[i]->Clear();
 								g_NextPoolIndex++;
 								if (g_NextPoolIndex >= MAX_PIECE_COUNT) {
 									throw BaseException(
-										L"‚±‚êˆÈãÕ“Ë”»’è‚Ís‚¦‚Ü‚¹‚ñB",
+										L"ã“ã‚Œä»¥ä¸Šè¡çªåˆ¤å®šã¯è¡Œãˆã¾ã›ã‚“ã€‚",
 										L"if (g_NextPoolIndex >= MAX_PIECE_COUNT)",
 										L"CollisionBlocks::SetCollisionBlock2Sub()"
 									);
@@ -115,8 +115,8 @@ namespace basecross {
 								}
 								tgt.m_Children[i]->SetAABB(childAABB);
 							}
-							//q‹Ÿì¬I—¹
-							//ƒIƒuƒWƒFƒNƒg‚ğq‹Ÿ‚ÉU‚è•ª‚¯‚é
+							//å­ä¾›ä½œæˆçµ‚äº†
+							//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å­ä¾›ã«æŒ¯ã‚Šåˆ†ã‘ã‚‹
 							for (auto& v : tgt.m_ObjVec) {
 								auto objCol = v->GetComponent<Collision>();
 								auto objColAABB = objCol->GetWrappedAABB();
@@ -126,9 +126,9 @@ namespace basecross {
 									}
 								}
 							}
-							//U‚è•ª‚¯‚ªI‚í‚Á‚½‚Ì‚Å”z—ñ‚ÍƒNƒŠƒA
+							//æŒ¯ã‚Šåˆ†ã‘ãŒçµ‚ã‚ã£ãŸã®ã§é…åˆ—ã¯ã‚¯ãƒªã‚¢
 							tgt.m_ObjVec.clear();
-							//q‹Ÿƒs[ƒX‚ª‚Å‚«‚½‚Ì‚ÅA‚»‚±‚É’²¸
+							//å­ä¾›ãƒ”ãƒ¼ã‚¹ãŒã§ããŸã®ã§ã€ãã“ã«èª¿æŸ»
 							for (int i = 0; i < 4; i++) {
 								SetCollisionBlockSub(*tgt.m_Children[i], Obj);
 							}
@@ -156,8 +156,8 @@ namespace basecross {
 					auto SrcColl = Src->GetComponent<Collision>();
 					auto DestColl = v->GetComponent<Collision>();
 					if (!manager->IsInPair(SrcColl, DestColl, true) && !manager->IsInPair(SrcColl, DestColl, false)) {
-						//ƒL[ƒv‚³‚ê‚Ä‚¢‚é’†‚É‚È‚©‚Á‚½‚ç
-						//Collision‚É‚æ‚éÕ“Ë”»’è
+						//ã‚­ãƒ¼ãƒ—ã•ã‚Œã¦ã„ã‚‹ä¸­ã«ãªã‹ã£ãŸã‚‰
+						//Collisionã«ã‚ˆã‚‹è¡çªåˆ¤å®š
 						m_CollisionCountOfTern++;
 						DestColl->CollisionCall(SrcColl);
 					}
@@ -191,21 +191,21 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct CollisionManager::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct CollisionManager::Impl {
-		//Õ“Ë”»’èƒ}ƒl[ƒWƒƒ‚Ì“à•”ˆ——pƒpƒtƒH[ƒ}ƒ“ƒX
+		//è¡çªåˆ¤å®šãƒãƒãƒ¼ã‚¸ãƒ£ã®å†…éƒ¨å‡¦ç†ç”¨ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹
 		PerformanceCounter m_MiscPerformance;
-		//Õ“Ë”»’è•ªŠ„—p‚ÌƒuƒƒbƒN
+		//è¡çªåˆ¤å®šåˆ†å‰²ç”¨ã®ãƒ–ãƒ­ãƒƒã‚¯
 		CollisionBlocks m_CollisionBlocks;
 		Impl()
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	//	Õ“Ë”»’èŠÇ—Ò
+	//	è¡çªåˆ¤å®šç®¡ç†è€…
 	//--------------------------------------------------------------------------------------
 	CollisionManager::CollisionManager(const shared_ptr<Stage>& StagePtr) :
 		GameObject(StagePtr),
@@ -224,7 +224,7 @@ namespace basecross {
 		m_TempExitVec.resize(1024);
 		m_TempExitVec.clear();
 	}
-	CollisionManager::~CollisionManager() {}
+	CollisionManager::â€¾CollisionManager() {}
 
 	void CollisionManager::SetRootAABB(const AABB& aabb) {
 		pImpl->m_CollisionBlocks.SetRootAABB(aabb);
@@ -304,12 +304,12 @@ namespace basecross {
 	void CollisionManager::SetNewCollision() {
 		pImpl->m_MiscPerformance.Start();
 		auto& ObjVec = GetStage()->GetGameObjectVec();
-		//ƒRƒŠƒWƒ‡ƒ“ƒuƒƒbƒN‚ÌƒNƒŠƒA
+		//ã‚³ãƒªã‚¸ãƒ§ãƒ³ãƒ–ãƒ­ãƒƒã‚¯ã®ã‚¯ãƒªã‚¢
 		pImpl->m_CollisionBlocks.AllClear();
 		for (auto& v : ObjVec) {
 			pImpl->m_CollisionBlocks.SetCollisionBlock(v);
 		}
-		//ŠeƒuƒƒbƒN‚²‚Æ‚É”»’è‚ğs‚¤
+		//å„ãƒ–ãƒ­ãƒƒã‚¯ã”ã¨ã«åˆ¤å®šã‚’è¡Œã†
 		pImpl->m_CollisionBlocks.SetNewCollision(GetThis<CollisionManager>());
 		pImpl->m_MiscPerformance.End();
 	}
@@ -330,26 +330,26 @@ namespace basecross {
 		bsm::Vec3 SrcLocalVec = SrcCenter - Pair.m_SrcCalcHitCenter - DestMoveVec;
 		float SrcV = bsm::dot(SrcLocalVec, Pair.m_SrcHitNormal);
 		if (SrcV < 0.0f) {
-			//‚Ü‚¾Õ“Ë‚µ‚Ä‚¢‚½‚ç
+			//ã¾ã è¡çªã—ã¦ã„ãŸã‚‰
 			float EscapeLen = abs(SrcV);
 			if (!ShDest->IsFixed()) {
 				EscapeLen *= 0.5f;
 			}
-			//Src‚ÌƒGƒXƒP[ƒv
+			//Srcã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 			SrcCenter += Pair.m_SrcHitNormal * EscapeLen;
 			if (!ShDest->IsFixed()) {
-				//Dest‚ÌƒGƒXƒP[ƒv
+				//Destã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 				DestCenter += -Pair.m_SrcHitNormal * EscapeLen;
 			}
 			SrcCenter.floor(GetEscapeFloor());
 			auto PtrSrcTransform = ShSrc->GetGameObject()->GetComponent<Transform>();
-			//Src‚ÌƒGƒXƒP[ƒv
+			//Srcã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 			PtrSrcTransform->SetWorldPosition(SrcCenter);
 			if (!ShDest->IsFixed()) {
 				DestCenter.floor(GetEscapeFloor());
 				ShDest->WakeUp();
 				auto PtrDestTransform = ShDest->GetGameObject()->GetComponent<Transform>();
-				//Dest‚ÌƒGƒXƒP[ƒv
+				//Destã®ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 				PtrDestTransform->SetWorldPosition(DestCenter);
 			}
 		}
@@ -370,22 +370,22 @@ namespace basecross {
 	}
 
 	void CollisionManager::OnUpdate() {
-		//keep‚Ìƒ`ƒFƒbƒN
+		//keepã®ãƒã‚§ãƒƒã‚¯
 		m_TempKeepVec.clear();
 		m_TempExitVec.clear();
 		for (auto& v : m_CollisionPairVec[m_KeepIndex]) {
 			if (SimpleCollisionPair(v)) {
-				//‚Ü‚¾Õ“Ë‚µ‚Ä‚¢‚é
+				//ã¾ã è¡çªã—ã¦ã„ã‚‹
 				m_TempKeepVec.push_back(v);
 			}
 			else {
 				m_TempExitVec.push_back(v);
 			}
 		}
-		//ƒeƒ“ƒ|ƒ‰ƒŠ‚Ì“à—e‚ğkeepƒyƒA‚ÉƒRƒs[
+		//ãƒ†ãƒ³ãƒãƒ©ãƒªã®å†…å®¹ã‚’keepãƒšã‚¢ã«ã‚³ãƒ”ãƒ¼
 		m_CollisionPairVec[m_KeepIndex].resize(m_TempKeepVec.size());
 		m_CollisionPairVec[m_KeepIndex] = m_TempKeepVec;
-		//ƒL[ƒv‚³‚ê‚Ä‚¢‚éƒyƒA‚ÌSrc‚É‚à‚µGravity‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚½‚ç0‚É‚·‚é
+		//ã‚­ãƒ¼ãƒ—ã•ã‚Œã¦ã„ã‚‹ãƒšã‚¢ã®Srcã«ã‚‚ã—GravityãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ãŸã‚‰0ã«ã™ã‚‹
 		for (auto& v : m_CollisionPairVec[m_KeepIndex]) {
 			auto ShSrc = v.m_Src.lock();
 			auto ShDest = v.m_Dest.lock();
@@ -400,13 +400,13 @@ namespace basecross {
 				}
 			}
 		}
-		//V‹K‚ÌƒyƒA”z—ñ‚ÌƒNƒŠƒA
+		//æ–°è¦ã®ãƒšã‚¢é…åˆ—ã®ã‚¯ãƒªã‚¢
 		m_CollisionPairVec[m_NewIndex].clear();
-		//V‹K‚ÌÕ“Ë”»’è
+		//æ–°è¦ã®è¡çªåˆ¤å®š
 		SetNewCollision();
-		//’Ç‰Á‚³‚ê‚½ƒyƒA‚ğƒL[ƒv‚É’Ç‰Á
+		//è¿½åŠ ã•ã‚ŒãŸãƒšã‚¢ã‚’ã‚­ãƒ¼ãƒ—ã«è¿½åŠ 
 		for (auto& v : m_CollisionPairVec[m_NewIndex]) {
-			//’Ç‰ÁƒyƒA‚ÌSrc‚É‚à‚µGravity‚ªƒZƒbƒg‚³‚ê‚Ä‚¢‚½‚ç0‚É‚·‚é
+			//è¿½åŠ ãƒšã‚¢ã®Srcã«ã‚‚ã—GravityãŒã‚»ãƒƒãƒˆã•ã‚Œã¦ã„ãŸã‚‰0ã«ã™ã‚‹
 			auto ShSrc = v.m_Src.lock();
 			if (ShSrc) {
 				auto Gr = ShSrc->GetGameObject()->GetComponent<Gravity>(false);
@@ -421,7 +421,7 @@ namespace basecross {
 		}
 
 		//--------------------------------------------------------
-		//ƒL[ƒv”z—ñ‚Ìƒ\[ƒg(IsPriorityUnderEscapeY())‚Ìê‡Y‚ª¬‚³‚¢—Dæ
+		//ã‚­ãƒ¼ãƒ—é…åˆ—ã®ã‚½ãƒ¼ãƒˆ(IsPriorityUnderEscapeY())ã®å ´åˆYãŒå°ã•ã„å„ªå…ˆ
 		//--------------------------------------------------------
 		auto func = [&](CollisionPair& Left, CollisionPair& Right)->bool {
 			if (IsPriorityUnderEscapeY()) {
@@ -436,9 +436,9 @@ namespace basecross {
 			}
 			return false;
 		};
-		//Õ“Ë“_‚Åƒ\[ƒg
+		//è¡çªç‚¹ã§ã‚½ãƒ¼ãƒˆ
 		std::sort(m_CollisionPairVec[m_KeepIndex].begin(), m_CollisionPairVec[m_KeepIndex].end(), func);
-		//ƒGƒXƒP[ƒv
+		//ã‚¨ã‚¹ã‚±ãƒ¼ãƒ—
 		for (auto& v : m_CollisionPairVec[m_KeepIndex]) {
 			auto SrcSh = v.m_Src.lock();
 			auto DestSh = v.m_Dest.lock();
@@ -448,7 +448,7 @@ namespace basecross {
 				}
 			}
 		}
-		//Õ“ËƒƒbƒZ[ƒW‚Ì‘—M
+		//è¡çªãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã®é€ä¿¡
 		//Exit
 		for (auto& v : m_TempExitVec) {
 			auto ShSrc = v.m_Src.lock();
@@ -462,7 +462,7 @@ namespace basecross {
 				}
 			}
 		}
-		//ƒL[ƒv
+		//ã‚­ãƒ¼ãƒ—
 		for (auto& v : m_TempKeepVec) {
 			auto ShSrc = v.m_Src.lock();
 			auto ShDest = v.m_Dest.lock();
@@ -475,7 +475,7 @@ namespace basecross {
 				}
 			}
 		}
-		//V‹K
+		//æ–°è¦
 		for (auto& v : m_CollisionPairVec[m_NewIndex]) {
 			auto ShSrc = v.m_Src.lock();
 			auto ShDest = v.m_Dest.lock();

@@ -57,9 +57,9 @@ PfxBool pfxCheckCollidableInBroadphase(const PfxBroadphaseProxy &proxyA, const P
 	ePfxMotionType motionB = (ePfxMotionType)(pfxGetMotionMask(proxyB)&SCE_PFX_MOTION_MASK_TYPE);
 
 	return
-		pfxCheckCollidableTable(motionA,motionB) && // ƒ‚[ƒVƒ‡ƒ“ƒ^ƒCƒv•ÊÕ“Ë”»’èƒe[ƒuƒ‹
-		((pfxGetSelf(proxyA)&pfxGetTarget(proxyB)) && (pfxGetTarget(proxyA)&pfxGetSelf(proxyB))) &&	// Õ“ËƒtƒBƒ‹ƒ^[
-		pfxTestAabb(proxyA,proxyB); // AABBŒğ·”»’è
+		pfxCheckCollidableTable(motionA,motionB) && // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ—åˆ¥è¡çªåˆ¤å®šãƒ†ãƒ¼ãƒ–ãƒ«
+		((pfxGetSelf(proxyA)&pfxGetTarget(proxyB)) && (pfxGetTarget(proxyA)&pfxGetSelf(proxyB))) &&	// è¡çªãƒ•ã‚£ãƒ«ã‚¿ãƒ¼
+		pfxTestAabb(proxyA,proxyB); // AABBäº¤å·®åˆ¤å®š
 }
 
 static SCE_PFX_FORCE_INLINE
@@ -71,8 +71,8 @@ PfxBool pfxCheckCollidableInCollision(const PfxBroadphasePair &pair)
 	PfxUInt32 sleepB = pfxGetMotionMaskB(pair)&SCE_PFX_MOTION_MASK_SLEEPING;
 
 	return
-		pfxCheckCollidableTable((ePfxMotionType)motionA,(ePfxMotionType)motionB) && // ƒ‚[ƒVƒ‡ƒ“ƒ^ƒCƒv•ÊÕ“Ë”»’èƒe[ƒuƒ‹
-		!((sleepA != 0 && sleepB != 0) || (sleepA != 0 && motionB == kPfxMotionTypeFixed) || (sleepB != 0 && motionA == kPfxMotionTypeFixed)); // ƒXƒŠ[ƒv‚Ìƒ`ƒFƒbƒN
+		pfxCheckCollidableTable((ePfxMotionType)motionA,(ePfxMotionType)motionB) && // ãƒ¢ãƒ¼ã‚·ãƒ§ãƒ³ã‚¿ã‚¤ãƒ—åˆ¥è¡çªåˆ¤å®šãƒ†ãƒ¼ãƒ–ãƒ«
+		!((sleepA != 0 && sleepB != 0) || (sleepA != 0 && motionB == kPfxMotionTypeFixed) || (sleepB != 0 && motionA == kPfxMotionTypeFixed)); // ã‚¹ãƒªãƒ¼ãƒ—æ™‚ã®ãƒã‚§ãƒƒã‚¯
 }
 } //namespace PhysicsEffects
 } //namespace sce

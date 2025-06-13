@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief �L�����N�^�[�Ȃ�
+@brief キャラクターなど
 */
 
 #pragma once
@@ -22,15 +22,15 @@ namespace basecross {
 
 	public:
 		CameraCollision(const shared_ptr<Stage>& StagePtr);
-		virtual ~CameraCollision() {}
+		virtual ‾CameraCollision() {}
 
 		Vec3 GetCompareVertex(Vec2 verx, Vec2 very);
 		virtual void OnUpdate()override;
 		virtual void OnCreate()override;
 
-		//����������
+		//当たリ判定
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
-		//�o���Ƃ�
+		//出たとき
 		virtual void OnCollisionExit(shared_ptr<GameObject>& other);
 
 		Vec3 GetAfterPosition(Vec3 beforePosi, Vec3 tergetPosi);
@@ -50,6 +50,10 @@ namespace basecross {
 		float m_Angle;
 		float m_RotateSpeed;
 		bool m_HitCollision;
+		bool m_IsShaking;      // カメラがシェイク中かどうか
+		float m_Duration;         // シェイク継続時間（残り）
+		float m_InitialDuration;  // シェイク開始時の時間（for 減衰計算）
+		float m_Magnitude;        // 最大振幅（単位：画素やワールド単位）
 		shared_ptr<Stage>m_Stage;
 		
 		int m_Width;
@@ -61,7 +65,7 @@ namespace basecross {
 
 	public:
 		FollowCamera(const shared_ptr<Stage>& StagePtr);
-		virtual ~FollowCamera() {}
+		virtual ‾FollowCamera() {}
 		virtual void OnUpdate();
 		virtual void OnCreate();
 		virtual void LogCamera();

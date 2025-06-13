@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©
 */
 
 #pragma once
@@ -10,10 +10,10 @@ namespace basecross {
 	class SkyBackGround : public GameObject
 	{
 	public:
-		static const std::map<std::wstring, Vec3> pairs; // ƒeƒNƒXƒ`ƒƒƒL[(ƒAƒZƒbƒg–¼)‚Æ”z’uÀ•W‚ğŠÖ˜A}‚¯‚é˜A‘z”z—ñ
+		static const std::map<std::wstring, Vec3> pairs; // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼(ã‚¢ã‚»ãƒƒãƒˆå)ã¨é…ç½®åº§æ¨™ã‚’é–¢é€£å›³ã‘ã‚‹é€£æƒ³é…åˆ—
 
 	private:
-		std::vector<std::shared_ptr<GameObject>> m_planes; // ƒXƒJƒCƒLƒ…[ƒu‚Ì‚U–Ê‚ğŠÇ—‚·‚é
+		std::vector<std::shared_ptr<GameObject>> m_planes; // ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ã®ï¼–é¢ã‚’ç®¡ç†ã™ã‚‹
 
 	public:
 		SkyBackGround(const shared_ptr<Stage>& stage)
@@ -22,7 +22,7 @@ namespace basecross {
 		}
 
 		void OnCreate() override;
-		void OnDraw() override; // ©•ª‚Å•`‰æ‚ğs‚¤‚½‚ßƒI[ƒo[ƒ‰ƒCƒh‚·‚é
+		void OnDraw() override; // è‡ªåˆ†ã§æç”»ã‚’è¡Œã†ãŸã‚ã‚ªãƒ¼ãƒãƒ¼ãƒ©ã‚¤ãƒ‰ã™ã‚‹
 	};
 
 }

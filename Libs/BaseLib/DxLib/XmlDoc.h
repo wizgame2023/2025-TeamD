@@ -1,6 +1,6 @@
 /*!
 @file XmlDoc.h
-@brief XMLŠÖ˜AƒNƒ‰ƒX
+@brief XMLé–¢é€£ã‚¯ãƒ©ã‚¹
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #pragma once
@@ -10,7 +10,7 @@
 namespace basecross{
 
 	//--------------------------------------------------------------------------------------
-	///	XML“Ç‚İ‚İƒIƒ“ƒŠ[ƒNƒ‰ƒX
+	///	XMLèª­ã¿è¾¼ã¿ã‚ªãƒ³ãƒªãƒ¼ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class XmlDocReader {
 	protected:
@@ -18,107 +18,107 @@ namespace basecross{
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	StrReadContext XMLƒRƒ“ƒeƒNƒXƒg
-		@param[in]	IsMemory XMLƒRƒ“ƒeƒNƒXƒg‚ªƒƒ‚ƒŠã‚ÌƒeƒLƒXƒg‚©‚Ç‚¤‚©i‚»‚¤‚Å‚È‚¯‚ê‚ÎXMLƒtƒ@ƒCƒ‹j
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	StrReadContext XMLã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒˆ
+		@param[in]	IsMemory XMLã‚³ãƒ³ãƒ†ã‚¯ã‚¹ãƒˆãŒãƒ¡ãƒ¢ãƒªä¸Šã®ãƒ†ã‚­ã‚¹ãƒˆã‹ã©ã†ã‹ï¼ˆãã†ã§ãªã‘ã‚Œã°XMLãƒ•ã‚¡ã‚¤ãƒ«ï¼‰
 		*/
 		//--------------------------------------------------------------------------------------
 		XmlDocReader(const wstring& StrReadContext, bool IsMemory = false);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~XmlDocReader();
+		virtual â€¾XmlDocReader();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é’P‘ÌNode‚Ìæ“¾
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	NodeƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	XPathã«ã‚ˆã‚‹å˜ä½“Nodeã®å–å¾—
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	Nodeã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodePtr GetSelectSingleNode(const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é•¡”Node‚Ìæ“¾
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	•¡”NodeƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	XPathã«ã‚ˆã‚‹è¤‡æ•°Nodeã®å–å¾—
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	è¤‡æ•°Nodeã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodeListPtr GetSelectNodes(const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚Ì”æ“¾
-		@param[in]	NodeList	•¡”Node
-		@return	Node‚Ì”
+		@brief	Nodeã®æ•°å–å¾—
+		@param[in]	NodeList	è¤‡æ•°Node
+		@return	Nodeã®æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		static long GetLength(const IXMLDOMNodeListPtr& NodeList);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒ“ƒfƒbƒNƒX‚©‚çNode‚Ìæ“¾
-		@param[in]	IXMLDOMNodeListPtr	•¡”Node
-		@param[in]	index	ƒCƒ“ƒfƒbƒNƒX
-		@return	ƒ^[ƒQƒbƒg‚ÌNode
+		@brief	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‹ã‚‰Nodeã®å–å¾—
+		@param[in]	IXMLDOMNodeListPtr	è¤‡æ•°Node
+		@param[in]	index	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Node
 		*/
 		//--------------------------------------------------------------------------------------
 		static IXMLDOMNodePtr GetItem(const IXMLDOMNodeListPtr& NodeList, long index);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	q‹ŸNodeƒŠƒXƒg‚Ìæ“¾
-		@param[in]	Node	eNode
-		@return	q‹ŸNodeƒŠƒXƒg
+		@brief	å­ä¾›Nodeãƒªã‚¹ãƒˆã®å–å¾—
+		@param[in]	Node	è¦ªNode
+		@return	å­ä¾›Nodeãƒªã‚¹ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		static IXMLDOMNodeListPtr GetChildNodes(const IXMLDOMNodePtr& Node);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node–¼‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node–¼
+		@brief	Nodeåã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeå
 		*/
 		//--------------------------------------------------------------------------------------
 		static wstring GetBaseName(const IXMLDOMNodePtr& Node);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒeƒLƒXƒg‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node‚ÌƒeƒLƒXƒg
+		@brief	Nodeã®ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeã®ãƒ†ã‚­ã‚¹ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		static wstring GetText(const IXMLDOMNodePtr& Node);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌXML‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node‚ÌXML
+		@brief	Nodeã®XMLã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeã®XML
 		*/
 		//--------------------------------------------------------------------------------------
 		static wstring GetXML(const IXMLDOMNodePtr& Node);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒAƒgƒŠƒrƒ…[ƒg‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	AttTag	ƒAƒgƒŠƒrƒ…[ƒg–¼
-		@return	Node‚ÌƒAƒgƒŠƒrƒ…[ƒg
+		@brief	Nodeã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	AttTag	ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆå
+		@return	Nodeã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		static wstring GetAttribute(const IXMLDOMNodePtr& Node, const CComBSTR& AttTag);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é’P‘ÌNode‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
+		@brief	XPathã«ã‚ˆã‚‹å˜ä½“Nodeã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
 		@return	Node
 		*/
 		//--------------------------------------------------------------------------------------
 		static IXMLDOMNodePtr GetSelectSingleNode(const IXMLDOMNodePtr& Node, const CComBSTR& Query);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é•¡”Node‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	•¡”Node
+		@brief	XPathã«ã‚ˆã‚‹è¤‡æ•°Nodeã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	è¤‡æ•°Node
 		*/
 		//--------------------------------------------------------------------------------------
 		static IXMLDOMNodeListPtr GetSelectNodes(const IXMLDOMNodePtr& Node, const CComBSTR& Query);
@@ -127,7 +127,7 @@ namespace basecross{
 
 
 	//--------------------------------------------------------------------------------------
-	///	XMLƒNƒ‰ƒX
+	///	XMLã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class XmlDoc{
 		void CheckXmlDoc() const;
@@ -136,154 +136,154 @@ namespace basecross{
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒRƒ“ƒXƒgƒ‰ƒNƒ^
-		@param[in]	XMLƒtƒ@ƒCƒ‹–¼
+		@brief	ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
+		@param[in]	XMLãƒ•ã‚¡ã‚¤ãƒ«å
 		*/
 		//--------------------------------------------------------------------------------------
 		XmlDoc(const wstring& Filename);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒfƒXƒgƒ‰ƒNƒ^
+		@brief	ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~XmlDoc();
+		virtual â€¾XmlDoc();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	•Û‘¶‚·‚é
-		@param[in]	Filename	•Û‘¶‚·‚éƒtƒ@ƒCƒ‹–¼
-		@param[in]	Exp	—áŠOˆ—‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	ä¿å­˜ã™ã‚‹
+		@param[in]	Filename	ä¿å­˜ã™ã‚‹ãƒ•ã‚¡ã‚¤ãƒ«å
+		@param[in]	Exp	ä¾‹å¤–å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void Save(const wstring& Filename, bool Exp = true);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é’P‘ÌNode‚Ìæ“¾
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	NodeƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	XPathã«ã‚ˆã‚‹å˜ä½“Nodeã®å–å¾—
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	Nodeã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodePtr GetSelectSingleNode(const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é•¡”Node‚Ìæ“¾
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	•¡”NodeƒCƒ“ƒ^[ƒtƒFƒCƒX
+		@brief	XPathã«ã‚ˆã‚‹è¤‡æ•°Nodeã®å–å¾—
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	è¤‡æ•°Nodeã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodeListPtr GetSelectNodes(const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚Ì”æ“¾
-		@param[in]	NodeList	•¡”Node
-		@return	Node‚Ì”
+		@brief	Nodeã®æ•°å–å¾—
+		@param[in]	NodeList	è¤‡æ•°Node
+		@return	Nodeã®æ•°
 		*/
 		//--------------------------------------------------------------------------------------
 		long GetLength(const IXMLDOMNodeListPtr& NodeList)const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	ƒCƒ“ƒfƒbƒNƒX‚©‚çNode‚Ìæ“¾
-		@param[in]	IXMLDOMNodeListPtr	•¡”Node
-		@param[in]	index	ƒCƒ“ƒfƒbƒNƒX
-		@return	ƒ^[ƒQƒbƒg‚ÌNode
+		@brief	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‹ã‚‰Nodeã®å–å¾—
+		@param[in]	IXMLDOMNodeListPtr	è¤‡æ•°Node
+		@param[in]	index	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@return	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã®Node
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodePtr GetItem(const IXMLDOMNodeListPtr& NodeList, long index) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	q‹ŸNodeƒŠƒXƒg‚Ìæ“¾
-		@param[in]	Node	eNode
-		@return	q‹ŸNodeƒŠƒXƒg
+		@brief	å­ä¾›Nodeãƒªã‚¹ãƒˆã®å–å¾—
+		@param[in]	Node	è¦ªNode
+		@return	å­ä¾›Nodeãƒªã‚¹ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodeListPtr GetChildNodes(const IXMLDOMNodePtr& Node)const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node–¼‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node–¼
+		@brief	Nodeåã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeå
 		*/
 		//--------------------------------------------------------------------------------------
 		wstring GetBaseName(const IXMLDOMNodePtr& Node) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒeƒLƒXƒg‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node‚ÌƒeƒLƒXƒg
+		@brief	Nodeã®ãƒ†ã‚­ã‚¹ãƒˆã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeã®ãƒ†ã‚­ã‚¹ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		wstring GetText(const IXMLDOMNodePtr& Node) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒeƒLƒXƒg‚Ìİ’è
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	text	İ’è‚·‚éƒeƒLƒXƒg
-		@return	‚È‚µ
+		@brief	Nodeã®ãƒ†ã‚­ã‚¹ãƒˆã®è¨­å®š
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	text	è¨­å®šã™ã‚‹ãƒ†ã‚­ã‚¹ãƒˆ
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetText(const IXMLDOMNodePtr& Node, const CComBSTR& text);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌXML‚Ìæ“¾iƒm[ƒh“àXML‚Ö‚ÌƒAƒNƒZƒX‚ÍƒŠ[ƒhƒIƒ“ƒŠ[j
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@return	Node‚ÌXML
+		@brief	Nodeã®XMLã®å–å¾—ï¼ˆãƒãƒ¼ãƒ‰å†…XMLã¸ã®ã‚¢ã‚¯ã‚»ã‚¹ã¯ãƒªãƒ¼ãƒ‰ã‚ªãƒ³ãƒªãƒ¼ï¼‰
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@return	Nodeã®XML
 		*/
 		//--------------------------------------------------------------------------------------
 		wstring GetXML(const IXMLDOMNodePtr& Node) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒAƒgƒŠƒrƒ…[ƒg‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	AttTag	ƒAƒgƒŠƒrƒ…[ƒg–¼
-		@return	Node‚ÌƒAƒgƒŠƒrƒ…[ƒg
+		@brief	Nodeã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	AttTag	ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆå
+		@return	Nodeã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆ
 		*/
 		//--------------------------------------------------------------------------------------
 		wstring GetAttribute(const IXMLDOMNodePtr& Node, const CComBSTR& AttTag)const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Node‚ÌƒAƒgƒŠƒrƒ…[ƒg‚Ìİ’è
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	AttTag	ƒAƒgƒŠƒrƒ…[ƒg–¼
-		@param[in]	AttValue	İ’è‚·‚é’l
-		@return	‚È‚µ
+		@brief	Nodeã®ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆã®è¨­å®š
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	AttTag	ã‚¢ãƒˆãƒªãƒ“ãƒ¥ãƒ¼ãƒˆå
+		@param[in]	AttValue	è¨­å®šã™ã‚‹å€¤
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		void SetAttribute(const IXMLDOMNodePtr& Node, const CComBSTR& AttTag, const CComBSTR& AttValue);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é’P‘ÌNode‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
+		@brief	XPathã«ã‚ˆã‚‹å˜ä½“Nodeã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
 		@return	Node
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodePtr GetSelectSingleNode(const IXMLDOMNodePtr& Node, const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	XPath‚É‚æ‚é•¡”Node‚Ìæ“¾
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	Query	ƒNƒGƒŠ•¶š—ñ
-		@return	•¡”Node
+		@brief	XPathã«ã‚ˆã‚‹è¤‡æ•°Nodeã®å–å¾—
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	Query	ã‚¯ã‚¨ãƒªæ–‡å­—åˆ—
+		@return	è¤‡æ•°Node
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodeListPtr GetSelectNodes(const IXMLDOMNodePtr& Node, const CComBSTR& Query) const;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	q‹ŸNode‚Ì’Ç‰Á
-		@param[in]	Node	ƒ^[ƒQƒbƒgNode
-		@param[in]	NodeName	Node–¼
-		@return	’Ç‰Á‚µ‚½Node
+		@brief	å­ä¾›Nodeã®è¿½åŠ 
+		@param[in]	Node	ã‚¿ãƒ¼ã‚²ãƒƒãƒˆNode
+		@param[in]	NodeName	Nodeå
+		@return	è¿½åŠ ã—ãŸNode
 		*/
 		//--------------------------------------------------------------------------------------
 		IXMLDOMNodePtr AddChildNode(const IXMLDOMNodePtr& Node, const CComBSTR& NodeName);
 	private:
-		// pImplƒCƒfƒBƒIƒ€
+		// pImplã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 		struct Impl;
 		unique_ptr<Impl> pImpl;
-		//ƒRƒs[‹Ö~
+		//ã‚³ãƒ”ãƒ¼ç¦æ­¢
 		XmlDoc(const XmlDoc&) = delete;
 		XmlDoc& operator=(const XmlDoc&) = delete;
-		//ƒ€[ƒu‹Ö~
+		//ãƒ ãƒ¼ãƒ–ç¦æ­¢
 		XmlDoc(const XmlDoc&&) = delete;
 		XmlDoc& operator=(const XmlDoc&&) = delete;
 	};

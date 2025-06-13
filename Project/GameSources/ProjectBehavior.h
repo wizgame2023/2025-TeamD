@@ -1,6 +1,6 @@
 /*!
 @file ProjectBehavior.h
-@brief ƒvƒƒWƒFƒN’è‹`‚Ìs“®ƒNƒ‰ƒX
+@brief ãƒ—ãƒ­ã‚¸ã‚§ã‚¯å®šç¾©ã®è¡Œå‹•ã‚¯ãƒ©ã‚¹
 */
 
 #pragma once
@@ -8,21 +8,21 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	///	ƒRƒ“ƒgƒ[ƒ‰‚Ìƒ{ƒ^ƒ“‚Ìƒnƒ“ƒhƒ‰
+	///	ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®ãƒœã‚¿ãƒ³ã®ãƒãƒ³ãƒ‰ãƒ©
 	//--------------------------------------------------------------------------------------
 	template<typename T>
 	struct InputHandler {
 		void PushHandle(const shared_ptr<T>& Obj) {
-			//ƒL[ƒ{[ƒh‚Ìæ“¾i—Dæj
+			//ã‚­ãƒ¼ãƒœãƒ¼ãƒ‰ã®å–å¾—ï¼ˆå„ªå…ˆï¼‰
 			auto KeyState = App::GetApp()->GetInputDevice().GetKeyState();
 			if (KeyState.m_bPressedKeyTbl[VK_SPACE]) {
 				Obj->OnPushA();
 				return;
 			}
-			//ƒRƒ“ƒgƒ[ƒ‰‚Ìæ“¾
+			//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ã®å–å¾—
 			auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 			if (cntlVec[0].bConnected) {
-				//Aƒ{ƒ^ƒ“
+				//Aãƒœã‚¿ãƒ³
 				if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
 					Obj->OnPushA();
 				}

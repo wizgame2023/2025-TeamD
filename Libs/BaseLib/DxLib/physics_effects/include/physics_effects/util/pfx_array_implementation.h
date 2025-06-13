@@ -274,7 +274,7 @@ PfxMap<KEY,T>::PfxMap(PfxUInt32 maxData) : m_numData(0),m_maxData(maxData==0?1:m
 }
 
 template <class KEY, class T>
-PfxMap<KEY,T>::~PfxMap()
+PfxMap<KEY,T>::â€¾PfxMap()
 {
 	SCE_PFX_UTIL_FREE(m_data);
 	SCE_PFX_UTIL_FREE(m_headers);
@@ -355,7 +355,7 @@ inline bool PfxMap<KEY,T>::erase(const KEY& key)
 	
 	for(PfxMapNode *iterator=m_headers[id];iterator!=NULL;iterator=iterator->next) {
 		if(iterator->key == key) {
-			//J ƒm[ƒhíœ
+			//J ãƒãƒ¼ãƒ‰å‰Šé™¤
 			//E Remove nodes
 			if(iterator->prev) {
 				iterator->prev->next = iterator->next;
@@ -368,7 +368,7 @@ inline bool PfxMap<KEY,T>::erase(const KEY& key)
 				iterator->next->prev = iterator->prev;
 			}
 			
-			//J ƒm[ƒhˆÚ“®
+			//J ãƒãƒ¼ãƒ‰ç§»å‹•
 			//E Move nodes
 			int pos = m_numData-1;
 			PfxMapNode *lastNode = &m_nodes[pos];

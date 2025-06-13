@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -22,7 +22,7 @@ namespace basecross{
 		SoundManager() : m_SEVolume(1.0f),m_BGMVolume(1.0f) {}
 	public:
 		
-		virtual ~SoundManager(){}
+		virtual 窶ｾSoundManager(){}
 
 		void RegisterSounds();
 		void RegisterSound(const wstring& key, const wstring& fileName);

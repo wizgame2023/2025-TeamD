@@ -1,6 +1,6 @@
 /*!
 @file DeviceResources.cpp
-@brief ƒeƒNƒXƒ`ƒƒAƒƒbƒVƒ…ADx12ƒfƒoƒCƒXƒŠƒ\[ƒXÀ‘Ì
+@brief ãƒ†ã‚¯ã‚¹ãƒãƒ£ã€ãƒ¡ãƒƒã‚·ãƒ¥ã€Dx12ãƒ‡ãƒã‚¤ã‚¹ãƒªã‚½ãƒ¼ã‚¹å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -18,20 +18,20 @@ namespace basecross {
 	//	struct TextureResource::Impl;
 	//--------------------------------------------------------------------------------------
 	struct TextureResource::Impl {
-		//ƒeƒNƒXƒ`ƒƒ—p‚ÌƒfƒXƒNƒvƒŠƒ^
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ç”¨ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿
 		D3D12_RESOURCE_DESC m_TextureResDesc;
 		UINT m_TexturePixelSize;
-		//ƒŠƒ\[ƒX
+		//ãƒªã‚½ãƒ¼ã‚¹
 		ComPtr<ID3D12Resource> m_Texture;
-		//GPUƒAƒbƒvƒ[ƒh‚Ì‚½‚ß‚ÌƒŠƒ\[ƒX
+		//GPUã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ã®ãŸã‚ã®ãƒªã‚½ãƒ¼ã‚¹
 		ComPtr<ID3D12Resource> m_TextureUploadHeap;
-		//ƒeƒNƒXƒ`ƒƒƒtƒ@ƒCƒ‹‚Ö‚ÌƒpƒX
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ•ã‚¡ã‚¤ãƒ«ã¸ã®ãƒ‘ã‚¹
 		wstring m_FileName{ L"" };
-		//ƒeƒNƒXƒ`ƒƒƒf[ƒ^
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿
 		vector<uint8_t> m_Data;
 		bool m_DataRefresh;
 		Impl() :m_TexturePixelSize(4), m_DataRefresh(true) {}
-		//ƒeƒNƒXƒ`ƒƒì¬
+		//ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½œæˆ
 		void CreateTexture(uint32_t Width, uint32_t Height) {
 			m_TexturePixelSize = 4;
 			::ZeroMemory(&m_TextureResDesc, sizeof(D3D12_RESOURCE_DESC));
@@ -52,7 +52,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_COPY_DEST,
 					nullptr,
 					IID_PPV_ARGS(&m_Texture)),
-				L"ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"TextureResource::Impl::CreateTexture()"
 			);
@@ -61,7 +61,7 @@ namespace basecross {
 		void CreateTexture(const Image* srcImages, size_t nimages, const DirectX::TexMetadata& metadata) {
 			if (metadata.IsVolumemap()) {
 				ThrowBaseException(
-					L"‚±‚ÌŒ`®‚É‚Í‘Î‰‚µ‚Ä‚Ü‚¹‚ñ",
+					L"ã“ã®å½¢å¼ã«ã¯å¯¾å¿œã—ã¦ã¾ã›ã‚“",
 					L"if (metadata.IsVolumemap())",
 					L"TextureResource::Impl::CreateTexture()"
 				);
@@ -70,7 +70,7 @@ namespace basecross {
 			std::unique_ptr<D3D11CUSTAM_SUBRESOURCE_DATA[]> initData(new (std::nothrow) D3D11CUSTAM_SUBRESOURCE_DATA[metadata.mipLevels * metadata.arraySize]);
 			if (!initData) {
 				ThrowBaseException(
-					L"ƒeƒNƒXƒ`ƒƒƒf[ƒ^‚Ì—Ìˆææ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿ã®é ˜åŸŸå–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"if (!initData)",
 					L"TextureResource::Impl::CreateTexture()"
 				);
@@ -86,7 +86,7 @@ namespace basecross {
 					size_t index = metadata.ComputeIndex(level, item, 0);
 					if (index >= nimages) {
 						ThrowBaseException(
-							L"ƒf[ƒ^‚ÌƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+							L"ãƒ‡ãƒ¼ã‚¿ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 							L"if (index >= nimages)",
 							L"TextureResource::Impl::CreateTexture()"
 						);
@@ -96,21 +96,21 @@ namespace basecross {
 
 					if (img.format != metadata.format) {
 						ThrowBaseException(
-							L"ƒf[ƒ^‚ÌƒtƒH[ƒ}ƒbƒg‚ªˆá‚¢‚Ü‚·",
+							L"ãƒ‡ãƒ¼ã‚¿ã®ãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆãŒé•ã„ã¾ã™",
 							L"if (img.format != metadata.format)",
 							L"TextureResource::Impl::CreateTexture()"
 						);
 					}
 					if (!img.pixels) {
 						ThrowBaseException(
-							L"ƒf[ƒ^‚Ìƒ|ƒCƒ“ƒ^‚ª•s³‚Å‚·",
+							L"ãƒ‡ãƒ¼ã‚¿ã®ãƒã‚¤ãƒ³ã‚¿ãŒä¸æ­£ã§ã™",
 							L"if (!img.pixels)",
 							L"TextureResource::Impl::CreateTexture()"
 						);
 					}
 					if (idx >= (metadata.mipLevels * metadata.arraySize)) {
 						ThrowBaseException(
-							L"ƒf[ƒ^‚Ì•À‚Ñ‚ª•s’è‚Å‚·",
+							L"ãƒ‡ãƒ¼ã‚¿ã®ä¸¦ã³ãŒä¸å®šã§ã™",
 							L"if (idx >= (metadata.mipLevels * metadata.arraySize))",
 							L"TextureResource::Impl::CreateTexture()"
 						);
@@ -187,7 +187,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_COPY_DEST,
 					nullptr,
 					IID_PPV_ARGS(&m_Texture)),
-				L"ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"TextureResource::Impl::CreateTexture()"
 			);
@@ -204,14 +204,14 @@ namespace basecross {
 
 		}
 
-		//ƒf[ƒ^‚ÌƒRƒs[
+		//ãƒ‡ãƒ¼ã‚¿ã®ã‚³ãƒ”ãƒ¼
 		void CopyData(const vector<uint8_t>& data) {
 			m_Data.clear();
 			unsigned int rowPitch = (unsigned int)m_TextureResDesc.Width * m_TexturePixelSize;
 			m_Data.resize(rowPitch * (unsigned int)m_TextureResDesc.Height);
 			if (m_Data.size() > data.size()) {
 				ThrowBaseException(
-					L"“n‚³‚ê‚½ƒf[ƒ^‚ÌƒTƒCƒY‚ªAc‰¡‚Ì”‚É‘«‚è‚Ü‚¹‚ñ",
+					L"æ¸¡ã•ã‚ŒãŸãƒ‡ãƒ¼ã‚¿ã®ã‚µã‚¤ã‚ºãŒã€ç¸¦æ¨ªã®æ•°ã«è¶³ã‚Šã¾ã›ã‚“",
 					L"if (pImpl->m_Data.size() > data.size())",
 					L"TextureResource::Impl::CopyData()"
 				);
@@ -222,7 +222,7 @@ namespace basecross {
 			m_DataRefresh = true;
 		}
 
-		//GPUƒAƒbƒvƒ[ƒhƒoƒbƒtƒ@‚Ìì¬.
+		//GPUã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆ.
 		void CreateTextureUploadHeap() {
 			auto Dev = App::GetApp()->GetDeviceResources();
 			const UINT64 uploadBufferSize = GetRequiredIntermediateSize(m_Texture.Get(), 0, 1);
@@ -235,7 +235,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_GENERIC_READ,
 					nullptr,
 					IID_PPV_ARGS(&m_TextureUploadHeap)),
-				L"GPUƒAƒbƒvƒ[ƒhƒoƒbƒtƒ@‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"GPUã‚¢ãƒƒãƒ—ãƒ­ãƒ¼ãƒ‰ãƒãƒƒãƒ•ã‚¡ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"TextureResource::Impl::CreateTextureUploadHeap()"
 			);
@@ -250,7 +250,7 @@ namespace basecross {
 		BaseResource(),
 		pImpl(new Impl())
 	{}
-	TextureResource::~TextureResource() {}
+	TextureResource::â€¾TextureResource() {}
 
 	void TextureResource::OnCreateWithParam(uint32_t Width, uint32_t Height, const vector<uint8_t>& data) {
 		pImpl->CreateTexture(Width, Height);
@@ -264,14 +264,14 @@ namespace basecross {
 
 	void TextureResource::OnCreateWithParam(const wstring& FileName, const wstring& TexType) {
 
-		//ƒtƒ@ƒCƒ‹‚Å‚Ì\’z
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã§ã®æ§‹ç¯‰
 		try {
 
 			pImpl->m_FileName = FileName;
 			if (FileName == L"") {
 				ThrowBaseException(
-					L"ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
-					L"if(FileName == L\"\")",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“",
+					L"if(FileName == LÂ¥"Â¥")",
 					L"TextureResource::OnCreateWithParam()"
 				);
 			}
@@ -280,17 +280,17 @@ namespace basecross {
 			if (RetCode == -1) {
 				wstring patherr = FileName;
 				ThrowBaseException(
-					L"ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ",
+					L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“",
 					patherr.c_str(),
 					L"TextureResource::OnCreateWithParam()"
 				);
 			}
-			//ƒeƒNƒXƒ`ƒƒì¬
+			//ãƒ†ã‚¯ã‚¹ãƒãƒ£ä½œæˆ
 			DirectX::TexMetadata metadata;
 			DirectX::ScratchImage image;
 
 			if (TexType == L"WIC") {
-				//ƒtƒ@ƒCƒ‹Šg’£q‚Ì’²¸
+				//ãƒ•ã‚¡ã‚¤ãƒ«æ‹¡å¼µå­ã®èª¿æŸ»
 				wchar_t Drivebuff[_MAX_DRIVE];
 				wchar_t Dirbuff[_MAX_DIR];
 				wchar_t FileNamebuff[_MAX_FNAME];
@@ -312,7 +312,7 @@ namespace basecross {
 				if (ExtStr == L".dds" || ExtStr == L".DDS") {
 					ThrowIfFailed(
 						DirectX::LoadFromDDSFile(FileName.c_str(), 0, &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						FileName,
 						L"TextureResource::OnCreateWithParam()"
 					);
@@ -320,7 +320,7 @@ namespace basecross {
 				else if (ExtStr == L".tga" || ExtStr == L".TGA") {
 					ThrowIfFailed(
 						DirectX::LoadFromTGAFile(FileName.c_str(), &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						FileName,
 						L"TextureResource::OnCreateWithParam()"
 					);
@@ -328,7 +328,7 @@ namespace basecross {
 				else {
 					ThrowIfFailed(
 						DirectX::LoadFromWICFile(FileName.c_str(), 0, &metadata, image),
-						L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+						L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 						FileName,
 						L"TextureResource::OnCreateWithParam()"
 					);
@@ -337,7 +337,7 @@ namespace basecross {
 			else if (TexType == L"DDS") {
 				ThrowIfFailed(
 					DirectX::LoadFromDDSFile(FileName.c_str(), 0, &metadata, image),
-					L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					FileName,
 					L"TextureResource::OnCreateWithParam()"
 				);
@@ -345,14 +345,14 @@ namespace basecross {
 			else if (TexType == L"TGA") {
 				ThrowIfFailed(
 					DirectX::LoadFromTGAFile(FileName.c_str(), &metadata, image),
-					L"ƒeƒNƒXƒ`ƒƒ‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					FileName,
 					L"TextureResource::OnCreateWithParam()"
 				);
 			}
 			else {
 				ThrowBaseException(
-					L"‚»‚Ìƒ^ƒCƒv‚Í‘Î‰‚µ‚Ä‚¢‚Ü‚¹‚ñ",
+					L"ãã®ã‚¿ã‚¤ãƒ—ã¯å¯¾å¿œã—ã¦ã„ã¾ã›ã‚“",
 					TexType.c_str(),
 					L"TextureResource::OnCreateWithParam()"
 				);
@@ -372,7 +372,7 @@ namespace basecross {
 		return ObjectFactory::CreateWithParam<TextureResource>(Width, Height, data);
 	}
 
-	//ƒŠƒ\[ƒX
+	//ãƒªã‚½ãƒ¼ã‚¹
 	ComPtr<ID3D12Resource> TextureResource::GetTexture() const {
 		return pImpl->m_Texture;
 
@@ -392,7 +392,7 @@ namespace basecross {
 	}
 
 
-	//ƒeƒNƒXƒ`ƒƒƒf[ƒ^
+	//ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒ‡ãƒ¼ã‚¿
 	vector<uint8_t>& TextureResource::GetData() const {
 		return pImpl->m_Data;
 	}
@@ -404,7 +404,7 @@ namespace basecross {
 	}
 
 
-	//ƒŠƒ\[ƒX‚ÌXV
+	//ãƒªã‚½ãƒ¼ã‚¹ã®æ›´æ–°
 	void TextureResource::UpdateResources(const ComPtr<ID3D12GraphicsCommandList>& commandList) {
 		if (!pImpl->m_DataRefresh) {
 			return;
@@ -435,12 +435,12 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct DeviceResources::Impl;
-	//	—p“r: Direct12ƒfƒoƒCƒXƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Direct12ãƒ‡ãƒã‚¤ã‚¹ã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct DeviceResources::Impl {
 
 		static const UINT FrameCount = 3;
-		//ƒpƒCƒvƒ‰ƒCƒ“objects.
+		//ãƒ‘ã‚¤ãƒ—ãƒ©ã‚¤ãƒ³objects.
 		D3D12_VIEWPORT m_Viewport;
 		D3D12_RECT m_ScissorRect;
 		ComPtr<IDXGISwapChain3> m_SwapChain;
@@ -458,63 +458,63 @@ namespace basecross {
 		//DepsStensilViewHeap
 		ComPtr<ID3D12DescriptorHeap> m_DsvHeap;
 
-		///ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+		///ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 		shared_ptr<ShadowMapRenderTarget> m_ShadowMapRenderTarget;
 
 		UINT m_RtvDescriptorSize;
 		UINT m_DsvDescriptorSize;
 
-		//ƒNƒŠƒAˆ——p‚ÌƒIƒuƒWƒFƒNƒg
+		//ã‚¯ãƒªã‚¢å‡¦ç†ç”¨ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		ComPtr<ID3D12RootSignature> m_RootSignature;
 		ComPtr<ID3D12PipelineState> m_PipelineState;
 		ComPtr<ID3D12GraphicsCommandList> m_CommandList;
 
 
-		//”Ä—pƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìƒ}ƒbƒv
+		//æ±ç”¨ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ãƒãƒƒãƒ—
 		map<wstring, ComPtr<ID3D12RootSignature>> m_RootSignatureMap;
-		//ƒvƒŒƒ[ƒ“ƒgƒoƒŠƒA—p‚ÌƒRƒ}ƒ“ƒhƒŠƒXƒg
+		//ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆãƒãƒªã‚¢ç”¨ã®ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 		ComPtr<ID3D12GraphicsCommandList> m_PresentCommandList;
-		//ƒRƒ}ƒ“ƒhƒŠƒXƒgÀs—p‚Ì”z—ñ
+		//ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆå®Ÿè¡Œç”¨ã®é…åˆ—
 		vector<ID3D12CommandList*> m_DrawCommandLists;
 
-		// Dx11ƒRƒ“ƒeƒLƒXƒg
+		// Dx11ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆ
 		ComPtr<ID3D11DeviceContext> m_d3d11DeviceContext;
 
-		// Direct2D •`‰æƒRƒ“ƒ|[ƒlƒ“ƒgB
+		// Direct2D æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
 		ComPtr<ID2D1Factory3>		m_d2dFactory;
 		ComPtr<ID2D1Device2>		m_d2dDevice;
 		ComPtr<ID2D1DeviceContext2>	m_d2dDeviceContext;
 
-		// DirectWrite •`‰æƒRƒ“ƒ|[ƒlƒ“ƒgB
+		// DirectWrite æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã€‚
 		ComPtr<IDWriteFactory>		m_dwriteFactory;
 		ComPtr<IWICImagingFactory2>	m_wicFactory;
 
 
-		//“¯ŠúƒIƒuƒWƒFƒNƒg
+		//åŒæœŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		UINT m_FrameIndex;
 		HANDLE m_FenceEvent;
 		ComPtr<ID3D12Fence> m_Fence;
 		UINT64 m_FenceValue;
 		float m_dpi;
 		float m_aspectRatio;
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		Impl(HWND hWnd, bool isFullScreen, UINT Width, UINT Height);
-		~Impl();
-		//ƒŠƒ\[ƒX‚Ì\’z
+		â€¾Impl();
+		//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 		void CreateDeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height);
-		//ƒAƒ_ƒvƒ^[æ“¾
+		//ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼å–å¾—
 		void GetHardwareAdapter(_In_ IDXGIFactory2* pFactory, _Outptr_result_maybenull_ IDXGIAdapter1** ppAdapter);
-		//“¯Šúˆ—
+		//åŒæœŸå‡¦ç†
 		void WaitForPreviousFrame(bool ExceptionActive = true);
 	};
-	//\’z
+	//æ§‹ç¯‰
 	DeviceResources::Impl::Impl(HWND hWnd, bool isFullScreen, UINT Width, UINT Height) :
 		m_dpi(96.0f),
 		m_Viewport(),
 		m_ScissorRect()
 	{
 		try {
-			//ƒŠƒ\[ƒX‚Ì\’z
+			//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 			CreateDeviceResources(hWnd, isFullScreen, Width, Height);
 		}
 		catch (...) {
@@ -522,13 +522,13 @@ namespace basecross {
 		}
 	}
 
-	DeviceResources::Impl::~Impl() {
+	DeviceResources::Impl::â€¾Impl() {
 		WaitForPreviousFrame(false);
 		CloseHandle(m_FenceEvent);
 	}
 
 
-	//ƒAƒ_ƒvƒ^[æ“¾ƒwƒ‹ƒp[ŠÖ”
+	//ã‚¢ãƒ€ãƒ—ã‚¿ãƒ¼å–å¾—ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°
 	_Use_decl_annotations_
 		void DeviceResources::Impl::GetHardwareAdapter(IDXGIFactory2* pFactory, IDXGIAdapter1** ppAdapter)
 	{
@@ -559,7 +559,7 @@ namespace basecross {
 	}
 
 
-	//ƒŠƒ\[ƒX‚Ì\’z
+	//ãƒªã‚½ãƒ¼ã‚¹ã®æ§‹ç¯‰
 	void DeviceResources::Impl::CreateDeviceResources(HWND hWnd, bool isFullScreen, UINT Width, UINT Height) {
 
 		m_Viewport.Width = static_cast<float>(Width);
@@ -573,7 +573,7 @@ namespace basecross {
 		m_aspectRatio = static_cast<float>(Width) / static_cast<float>(Height);
 
 /*
-		// Direct2D ƒŠƒ\[ƒX‚ğ‰Šú‰»‚µ‚Ü‚·B
+		// Direct2D ãƒªã‚½ãƒ¼ã‚¹ã‚’åˆæœŸåŒ–ã—ã¾ã™ã€‚
 
 */
 
@@ -582,7 +582,7 @@ namespace basecross {
 		D2D1_FACTORY_OPTIONS d2dFactoryOptions = {};
 
 #if defined(_DEBUG)
-		//D3D12 debug —LŒø.
+		//D3D12 debug æœ‰åŠ¹.
 		{
 			ComPtr<ID3D12Debug> debugController;
 			if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(&debugController))))
@@ -638,30 +638,30 @@ namespace basecross {
 */
 
 
-		//DXGIFactory‚Ìì¬
+		//DXGIFactoryã®ä½œæˆ
 		ComPtr<IDXGIFactory4> factory;
 		ThrowIfFailed(CreateDXGIFactory1(IID_PPV_ARGS(&factory)),
-			L"DXGIFactory‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+			L"DXGIFactoryã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"CreateDXGIFactory1(IID_PPV_ARGS(&factory)",
 			L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 		);
 
-		//ƒAƒ_ƒvƒ^‚Ìæ“¾
+		//ã‚¢ãƒ€ãƒ—ã‚¿ã®å–å¾—
 		{
-			//ƒn[ƒhƒEƒFƒAƒAƒ_ƒvƒ^‚Ìæ“¾
+			//ãƒãƒ¼ãƒ‰ã‚¦ã‚§ã‚¢ã‚¢ãƒ€ãƒ—ã‚¿ã®å–å¾—
 			ComPtr<IDXGIAdapter1> hardwareAdapter;
 			GetHardwareAdapter(factory.Get(), &hardwareAdapter);
 			if (FAILED(D3D12CreateDevice(hardwareAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_Device)))) {
-				//¸”s‚µ‚½‚çƒ‰ƒbƒvƒAƒ_ƒvƒ^‚Ìæ“¾
+				//å¤±æ•—ã—ãŸã‚‰ãƒ©ãƒƒãƒ—ã‚¢ãƒ€ãƒ—ã‚¿ã®å–å¾—
 				ComPtr<IDXGIAdapter> warpAdapter;
 				ThrowIfFailed(factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter)),
-					L"ƒ‰ƒbƒvƒAƒ_ƒvƒ^‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ©ãƒƒãƒ—ã‚¢ãƒ€ãƒ—ã‚¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"factory->EnumWarpAdapter(IID_PPV_ARGS(&warpAdapter))",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
 
 				ThrowIfFailed(D3D12CreateDevice(warpAdapter.Get(), D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&m_Device)),
-					L"ƒfƒoƒCƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ‡ãƒã‚¤ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"D3D12CreateDevice(warpAdapter.Get(),D3D_FEATURE_LEVEL_11_0,IID_PPV_ARGS(&m_Device))",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -669,19 +669,19 @@ namespace basecross {
 			}
 		}
 
-		//ƒRƒ}ƒ“ƒhƒLƒ…[‚Ìì¬.
+		//ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã®ä½œæˆ.
 		{
 			D3D12_COMMAND_QUEUE_DESC queueDesc = {};
 			queueDesc.Flags = D3D12_COMMAND_QUEUE_FLAG_NONE;
 			queueDesc.Type = D3D12_COMMAND_LIST_TYPE_DIRECT;
 			ThrowIfFailed(m_Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_CommandQueue)),
-				L"ƒRƒ}ƒ“ƒhƒLƒ…[‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_Device->CreateCommandQueue(&queueDesc, IID_PPV_ARGS(&m_CommandQueue))",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 		}
 
-		//ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìì¬.
+		//ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ä½œæˆ.
 		{
 			DXGI_SWAP_CHAIN_DESC1 swapChainDesc = {};
 			swapChainDesc.BufferCount = FrameCount;
@@ -703,26 +703,26 @@ namespace basecross {
 				nullptr, 
 				&swapChain
 			),
-				L"ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"factory->CreateSwapChain(m_CommandQueue.Get(), &swapChainDesc, &swapChain)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 
 			ThrowIfFailed(factory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER),
-				L"Windowƒ‚[ƒh‚©‚çƒtƒ‹ƒXƒNƒŠ[ƒ“‚Ö‚Ì•ÏX’â~‚ªİ’è‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½",
+				L"Windowãƒ¢ãƒ¼ãƒ‰ã‹ã‚‰ãƒ•ãƒ«ã‚¹ã‚¯ãƒªãƒ¼ãƒ³ã¸ã®å¤‰æ›´åœæ­¢ãŒè¨­å®šã§ãã¾ã›ã‚“ã§ã—ãŸ",
 				L"factory->MakeWindowAssociation(hWnd, DXGI_MWA_NO_ALT_ENTER)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 
 			ThrowIfFailed(swapChain.As(&m_SwapChain),
-				L"ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìƒo[ƒWƒ‡ƒ“•ÏX‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³å¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"swapChain.As(&m_SwapChain)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
-			//ƒtƒŒ[ƒ€ƒCƒ“ƒfƒbƒNƒX‚ğİ’è‚µ‚Ä‚¨‚­
+			//ãƒ•ãƒ¬ãƒ¼ãƒ ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’è¨­å®šã—ã¦ãŠã
 			m_FrameIndex = m_SwapChain->GetCurrentBackBufferIndex();
 		}
-		//Dx11ƒfƒoƒCƒX‚Ìì¬
+		//Dx11ãƒ‡ãƒã‚¤ã‚¹ã®ä½œæˆ
 		{
 			ComPtr<ID3D11Device> d3d11Device;
 			ThrowIfFailed(D3D11On12CreateDevice(
@@ -737,7 +737,7 @@ namespace basecross {
 				&m_d3d11DeviceContext,
 				nullptr
 			),
-				L"ƒXƒƒbƒvƒ`ƒF[ƒ“‚Ìƒo[ƒWƒ‡ƒ“•ÏX‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ãƒãƒ¼ã‚¸ãƒ§ãƒ³å¤‰æ›´ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"swapChain.As(&m_SwapChain)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
@@ -796,39 +796,39 @@ namespace basecross {
 		);
 		*/
 
-		//ƒfƒXƒNƒvƒŠƒ^ƒq[ƒv‚Ìì¬.
+		//ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ã®ä½œæˆ.
 		{
-			//ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬
+			//ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 			D3D12_DESCRIPTOR_HEAP_DESC rtvHeapDesc = {};
 			rtvHeapDesc.NumDescriptors = FrameCount;
 			rtvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
 			rtvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 			ThrowIfFailed(m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_RtvHeap)),
-				L"ƒŒƒ“ƒ_[ƒ^[ƒQƒbƒgƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ¬ãƒ³ãƒ€ãƒ¼ã‚¿ãƒ¼ã‚²ãƒƒãƒˆãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_Device->CreateDescriptorHeap(&rtvHeapDesc, IID_PPV_ARGS(&m_RtvHeap)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
-			// ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬
+			// ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆ
 			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
 			dsvHeapDesc.NumDescriptors = 1;
 			dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 			dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 			ThrowIfFailed(m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_DsvHeap)),
-				L"ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_Device->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_DsvHeap)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 			m_RtvDescriptorSize = m_Device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 		}
 
-		//RTV‚ÌƒtƒŒ[ƒ€ƒŠƒ\[ƒX‚Ìì¬
+		//RTVã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 		{
 			CD3DX12_CPU_DESCRIPTOR_HANDLE rtvHandle(m_RtvHeap->GetCPUDescriptorHandleForHeapStart());
-			//FrameCount”‚¾‚¯RTV‚ÌƒtƒŒ[ƒ€ƒŠƒ\[ƒX‚Ìì¬
+			//FrameCountæ•°ã ã‘RTVã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 			for (UINT n = 0; n < FrameCount; n++)
 			{
 				ThrowIfFailed(m_SwapChain->GetBuffer(n, IID_PPV_ARGS(&m_RenderTargets[n])),
-					L"RTV‚ÌƒtƒŒ[ƒ€ƒŠƒ\[ƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"RTVã®ãƒ•ãƒ¬ãƒ¼ãƒ ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"m_SwapChain->GetBuffer(n, IID_PPV_ARGS(&m_RenderTargets[n])",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -848,7 +848,7 @@ namespace basecross {
 					D3D12_RESOURCE_STATE_PRESENT,
 					IID_PPV_ARGS(&m_WrappedBackBuffers[n])
 				),
-					L"d3d11On12ƒfƒoƒCƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"d3d11On12ãƒ‡ãƒã‚¤ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"m_d3d11On12Device->CreateWrappedResource()",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -856,7 +856,7 @@ namespace basecross {
 				// Create a render target for D2D to draw directly to this back buffer.
 				ComPtr<IDXGISurface> surface;
 				ThrowIfFailed(m_WrappedBackBuffers[n].As(&surface),
-					L"WrappedBackBuffersD2DRenderTarget‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"WrappedBackBuffersD2DRenderTargetã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"m_WrappedBackBuffers[n].As(&surface)",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -866,7 +866,7 @@ namespace basecross {
 					&bitmapProperties,
 					&m_d2dRenderTargets[n]
 				),
-					L"BitmapFromDxgiSurface‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"BitmapFromDxgiSurfaceã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"m_d2dDeviceContext->CreateBitmapFromDxgiSurface()",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -875,14 +875,14 @@ namespace basecross {
 				rtvHandle.Offset(1, m_RtvDescriptorSize);
 
 				ThrowIfFailed(m_Device->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CommandAllocator[n])),
-					L"ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(&m_CommandAllocator[n])",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
 			}
 		}
 
-		//DSV(ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[)
+		//DSV(ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼)
 		{
 			D3D12_DEPTH_STENCIL_VIEW_DESC depthStencilDesc = {};
 			depthStencilDesc.Format = DXGI_FORMAT_D32_FLOAT;
@@ -902,7 +902,7 @@ namespace basecross {
 				&depthOptimizedClearValue,
 				IID_PPV_ARGS(&m_DepthStencil)
 			),
-				L"ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒŠƒ\[ƒXì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒªã‚½ãƒ¼ã‚¹ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_Device->CreateCommittedResource)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
@@ -918,19 +918,19 @@ namespace basecross {
 			ComPtr<ID3DBlob> error;
 
 			ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error),
-				L"‹ó‚Ìƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ÌƒVƒŠƒAƒ‰ƒCƒY‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ç©ºã®ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 			ThrowIfFailed(m_Device->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&m_RootSignature)),
-				L"ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateRootSignature)",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 		}
 
 
-		// Direct2D ƒfƒoƒCƒX ƒIƒuƒWƒFƒNƒg‚ÆA‘Î‰‚·‚éƒRƒ“ƒeƒLƒXƒg‚ğì¬‚µ‚Ü‚·B
+		// Direct2D ãƒ‡ãƒã‚¤ã‚¹ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¨ã€å¯¾å¿œã™ã‚‹ã‚³ãƒ³ãƒ†ã‚­ã‚¹ãƒˆã‚’ä½œæˆã—ã¾ã™ã€‚
 
 		/*
 
@@ -938,33 +938,33 @@ namespace basecross {
 		*/
 
 
-		//‰æ–ÊƒNƒŠƒA—p‚ÌƒRƒ}ƒ“ƒhƒŠƒXƒg
+		//ç”»é¢ã‚¯ãƒªã‚¢ç”¨ã®ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 		ThrowIfFailed(
 			m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CommandAllocator[m_FrameIndex].Get(), nullptr, IID_PPV_ARGS(&m_CommandList)),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_Device->CreateCommandList()",
 			L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 		);
 		ThrowIfFailed(m_CommandList->Close(),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_CommandList->Close()",
 			L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 		);
-		//ƒvƒŒƒ[ƒ“ƒg—p‚ÌƒRƒ}ƒ“ƒhƒŠƒXƒg
+		//ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆç”¨ã®ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 		ThrowIfFailed(
 			m_Device->CreateCommandList(0, D3D12_COMMAND_LIST_TYPE_DIRECT, m_CommandAllocator[m_FrameIndex].Get(), nullptr, IID_PPV_ARGS(&m_PresentCommandList)),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_Device->CreateCommandList()",
 			L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 		);
 		ThrowIfFailed(m_PresentCommandList->Close(),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_CommandList->Close()",
 			L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 		);
 	}
 
-	//“¯Šúˆ—
+	//åŒæœŸå‡¦ç†
 	void DeviceResources::Impl::WaitForPreviousFrame(bool ExceptionActive) {
 		// WAITING FOR THE FRAME TO COMPLETE BEFORE CONTINUING IS NOT BEST PRACTICE.
 		// This is code implemented as such for simplicity. More advanced samples 
@@ -974,7 +974,7 @@ namespace basecross {
 		const UINT64 fence = m_FenceValue;
 		if (ExceptionActive) {
 			ThrowIfFailed(m_CommandQueue->Signal(m_Fence.Get(), fence),
-				L"ƒRƒ}ƒ“ƒhƒLƒ…[‚ÌƒVƒOƒiƒ‹‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ã‚­ãƒ¥ãƒ¼ã®ã‚·ã‚°ãƒŠãƒ«ã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_CommandQueue->Signal(m_Fence.Get(), fence)",
 				L"Dx12DeviceResources::Impl::WaitForPreviousFrame()"
 			);
@@ -984,7 +984,7 @@ namespace basecross {
 			{
 
 				ThrowIfFailed(m_Fence->SetEventOnCompletion(fence, m_FenceEvent),
-					L"ƒCƒxƒ“ƒg‚Ìİ’è‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ã‚¤ãƒ™ãƒ³ãƒˆã®è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"m_Fence->SetEventOnCompletion(fence, m_FenceEvent)",
 					L"Dx12DeviceResources::Impl::WaitForPreviousFrame()"
 				);
@@ -993,7 +993,7 @@ namespace basecross {
 			m_FrameIndex = m_SwapChain->GetCurrentBackBufferIndex();
 		}
 		else {
-			//—áŠO‚ğ“Š‚°‚È‚¢BƒfƒXƒgƒ‰ƒNƒ^—p
+			//ä¾‹å¤–ã‚’æŠ•ã’ãªã„ã€‚ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿ç”¨
 			m_CommandQueue->Signal(m_Fence.Get(), fence);
 			m_FenceValue++;
 			if (m_Fence->GetCompletedValue() < fence)
@@ -1010,7 +1010,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 
 	shared_ptr<ShadowMapRenderTarget> DeviceResources::CreateShadowMapRenderTarget(float ShadowMapDimension) {
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğì¬
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ä½œæˆ
 		pImpl->m_ShadowMapRenderTarget = make_shared<ShadowMapRenderTarget>(ShadowMapDimension);
 		return pImpl->m_ShadowMapRenderTarget;
 	}
@@ -1019,7 +1019,7 @@ namespace basecross {
 	shared_ptr<ShadowMapRenderTarget> DeviceResources::GetShadowMapRenderTarget(float ShadowMapDimension) {
 		if (!pImpl->m_ShadowMapRenderTarget) {
 			ThrowBaseException(
-				L"ƒVƒƒƒhƒEƒ}ƒbƒv‚ªì¬‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
+				L"ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ãŒä½œæˆã•ã‚Œã¦ã„ã¾ã›ã‚“",
 				L"if (!pImpl->m_ShadowMapRenderTarget)",
 				L"DeviceResources::GetShadowMapRenderTarget()"
 			);
@@ -1047,16 +1047,16 @@ namespace basecross {
 
 
 
-	//’Êí•`‰æ‚ÌƒNƒŠƒA
+	//é€šå¸¸æç”»ã®ã‚¯ãƒªã‚¢
 	void DeviceResources::ClearDefaultViews(const bsm::Col4& col) {
 		ThrowIfFailed(pImpl->m_CommandAllocator[pImpl->m_FrameIndex]->Reset(),
-			L"ƒRƒ}ƒ“ƒhƒAƒƒP[ƒ^‚ÌƒŠƒZƒbƒg‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ã‚¢ãƒ­ã‚±ãƒ¼ã‚¿ã®ãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_CommandAllocator->Reset()",
 			L"Dx12DeviceResources::ClearDefultViews()"
 		);
 
 		ThrowIfFailed(pImpl->m_CommandList->Reset(pImpl->m_CommandAllocator[pImpl->m_FrameIndex].Get(), pImpl->m_PipelineState.Get()),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"pImpl->m_CommandList->Reset()",
 			L"Dx12DeviceResources::ClearDefultViews()"
 		);
@@ -1078,7 +1078,7 @@ namespace basecross {
 		pImpl->m_CommandList->ClearRenderTargetView(rtvHandle, clearColor, 0, nullptr);
 		pImpl->m_CommandList->ClearDepthStencilView(pImpl->m_DsvHeap->GetCPUDescriptorHandleForHeapStart(), D3D12_CLEAR_FLAG_DEPTH, 1.0f, 0, 0, nullptr);
 		ThrowIfFailed(pImpl->m_CommandList->Close(),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_CommandList->Close()",
 			L"Dx12DeviceResources::ClearDefultViews()"
 		);
@@ -1095,18 +1095,18 @@ namespace basecross {
 	void DeviceResources::Present(unsigned int SyncInterval, unsigned int  Flags) {
 
 		ThrowIfFailed(pImpl->m_PresentCommandList->Reset(pImpl->m_CommandAllocator[pImpl->m_FrameIndex].Get(), pImpl->m_PipelineState.Get()),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒŠƒZƒbƒg‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ãƒªã‚»ãƒƒãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"pImpl->m_CommandList->Reset()",
 			L"Dx12DeviceResources::ClearDefultViews()"
 		);
 
-		//ƒvƒŒƒ[ƒ“ƒg—p‚ÌƒoƒŠƒA‚ğ’£‚é
+		//ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆç”¨ã®ãƒãƒªã‚¢ã‚’å¼µã‚‹
 		pImpl->m_PresentCommandList->ResourceBarrier(1,
 			&CD3DX12_RESOURCE_BARRIER::Transition(pImpl->m_RenderTargets[pImpl->m_FrameIndex].Get(),
 				D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT));
 
 		ThrowIfFailed(pImpl->m_PresentCommandList->Close(),
-			L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚ÌƒNƒ[ƒY‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ã‚¯ãƒ­ãƒ¼ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"m_CommandList->Close()",
 			L"Dx12DeviceResources::ClearDefultViews()"
 		);
@@ -1115,14 +1115,14 @@ namespace basecross {
 		// Execute the command list.
 		pImpl->m_CommandQueue->ExecuteCommandLists((UINT)pImpl->m_DrawCommandLists.size(), &pImpl->m_DrawCommandLists[0]);
 
-		// ƒXƒe[ƒg‚ğƒNƒŠƒA‚µCƒfƒtƒHƒ‹ƒgó‘Ô‚É‚µ‚Ü‚·.
-		// TODO : ‚±‚±‚É‹Lq‚µ‚Ä‚¢‚¢‚©Šm”F—v•K—v
+		// ã‚¹ãƒ†ãƒ¼ãƒˆã‚’ã‚¯ãƒªã‚¢ã—ï¼Œãƒ‡ãƒ•ã‚©ãƒ«ãƒˆçŠ¶æ…‹ã«ã—ã¾ã™.
+		// TODO : ã“ã“ã«è¨˜è¿°ã—ã¦ã„ã„ã‹ç¢ºèªè¦å¿…è¦
 		pImpl->m_d3d11DeviceContext->ClearState();
 		pImpl->m_d3d11DeviceContext->Flush();
 
 		// Present the frame.
 		ThrowIfFailed(pImpl->m_SwapChain->Present(SyncInterval, Flags),
-			L"ƒXƒƒbƒvƒ`ƒF[ƒ“‚ÌƒvƒŒƒ[ƒ“ƒg‚É¸”s‚µ‚Ü‚µ‚½",
+			L"ã‚¹ãƒ¯ãƒƒãƒ—ãƒã‚§ãƒ¼ãƒ³ã®ãƒ—ãƒ¬ã‚¼ãƒ³ãƒˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 			L"pImpl->m_SwapChain->Present(1, 0)",
 			L"Dx12DeviceResources::OnDraw()"
 		);
@@ -1147,30 +1147,30 @@ namespace basecross {
 		pImpl(new Impl(hWnd, isFullScreen, Width, Height))
 	{}
 
-	DeviceResources::~DeviceResources() {
+	DeviceResources::â€¾DeviceResources() {
 	}
 
-	//ƒRƒ“ƒeƒ“ƒc‚Ìì¬Œã‚Ìˆ—
+	//ã‚³ãƒ³ãƒ†ãƒ³ãƒ„ã®ä½œæˆå¾Œã®å‡¦ç†
 	void DeviceResources::AfterInitContents(bool ShadowActive) {
 		if (ShadowActive) {
 			CreateShadowMapRenderTarget(2048.0f);
 		}
-		//“¯ŠúƒIƒuƒWƒFƒNƒg‚Ìì¬‚Æ“¯Šúˆ—
+		//åŒæœŸã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆã¨åŒæœŸå‡¦ç†
 		{
 
 			ThrowIfFailed(pImpl->m_Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&pImpl->m_Fence)),
-				L"ƒtƒFƒ“ƒX‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ãƒ•ã‚§ãƒ³ã‚¹ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"m_Device->CreateFence(0, D3D12_FENCE_FLAG_NONE, IID_PPV_ARGS(&m_Fence))",
 				L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 			);
 			pImpl->m_FenceValue = 1;
 
-			//ƒtƒŒ[ƒ€“¯Šú‚Ì‚½‚ß‚ÌƒCƒxƒ“ƒgƒnƒ“ƒhƒ‹‚Ìì¬
+			//ãƒ•ãƒ¬ãƒ¼ãƒ åŒæœŸã®ãŸã‚ã®ã‚¤ãƒ™ãƒ³ãƒˆãƒãƒ³ãƒ‰ãƒ«ã®ä½œæˆ
 			pImpl->m_FenceEvent = CreateEvent(nullptr, FALSE, FALSE, nullptr);
 			if (pImpl->m_FenceEvent == nullptr)
 			{
 				ThrowIfFailed(HRESULT_FROM_WIN32(GetLastError()),
-					L"ƒ‰ƒXƒgƒGƒ‰[‚Ìæ“¾‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ©ã‚¹ãƒˆã‚¨ãƒ©ãƒ¼ã®å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"HRESULT_FROM_WIN32(GetLastError())",
 					L"Dx12DeviceResources::Impl::CreateDeviceResources()"
 				);
@@ -1209,7 +1209,7 @@ namespace basecross {
 	ComPtr<ID3D12Resource> DeviceResources::GetRenderTarget(UINT Index) const {
 		if (Index >= pImpl->FrameCount) {
 			ThrowBaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™",
 				L"if (Index >= pImpl->FrameCount)",
 				L"Dx12DeviceResources::GetRenderTarget()"
 			);
@@ -1222,7 +1222,7 @@ namespace basecross {
 	{
 		if (Index >= pImpl->FrameCount) {
 			ThrowBaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™",
 				L"if (Index >= pImpl->FrameCount)",
 				L"Dx12DeviceResources::GetRenderTarget()"
 			);
@@ -1234,7 +1234,7 @@ namespace basecross {
 	{
 		if (Index >= pImpl->FrameCount) {
 			ThrowBaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ªãŒÀ‚ğ’´‚¦‚Ä‚¢‚Ü‚·",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒä¸Šé™ã‚’è¶…ãˆã¦ã„ã¾ã™",
 				L"if (Index >= pImpl->FrameCount)",
 				L"Dx12DeviceResources::GetRenderTarget()"
 			);
@@ -1289,7 +1289,7 @@ namespace basecross {
 	void  DeviceResources::SetRootSignature(const wstring& Key, const ComPtr<ID3D12RootSignature>& rootsig) {
 		if (GetRootSignature(Key) != nullptr) {
 			ThrowBaseException(
-				L"‚·‚Å‚É‚»‚Ìƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Í‘¶İ‚µ‚Ü‚·",
+				L"ã™ã§ã«ãã®ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã¯å­˜åœ¨ã—ã¾ã™",
 				Key,
 				L"DeviceResources::SetRootSignature()"
 			);
@@ -1312,7 +1312,7 @@ namespace basecross {
 		return dsvHandle;
 	}
 
-	// D2D ƒAƒNƒZƒT[B
+	// D2D ã‚¢ã‚¯ã‚»ã‚µãƒ¼ã€‚
 	ID2D1Factory2*			DeviceResources::GetD2DFactory() const { return pImpl->m_d2dFactory.Get(); }
 	ID2D1Device1*			DeviceResources::GetD2DDevice() const { return pImpl->m_d2dDevice.Get(); }
 	ID2D1DeviceContext2*	DeviceResources::GetD2DDeviceContext() const { return pImpl->m_d2dDeviceContext.Get(); }
@@ -1322,7 +1322,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct RenderTarget::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct RenderTarget::Impl {
 		Impl() {
@@ -1331,56 +1331,56 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class RenderTarget;
-	//	—p“r: ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+	//	ç”¨é€”: ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	//--------------------------------------------------------------------------------------
-	//\’z‚Æ”jŠü
+	//æ§‹ç¯‰ã¨ç ´æ£„
 	RenderTarget::RenderTarget() :
 		pImpl(new Impl())
 	{}
-	RenderTarget::~RenderTarget() {}
+	RenderTarget::â€¾RenderTarget() {}
 
 
 	//--------------------------------------------------------------------------------------
 	//	struct ShadowMapRenderTarget::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct ShadowMapRenderTarget::Impl {
 
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ì‘å‚«‚³
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®å¤§ãã•
 		const float m_ShadowMapDimension;
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 		ComPtr<ID3D12DescriptorHeap> m_ShadowmapDsvHeap;
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒfƒvƒXƒXƒeƒ“ƒVƒ‹
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«
 		ComPtr<ID3D12Resource> m_ShadowmapDepthStencil;
-		//ƒNƒŠƒA—pƒIƒuƒWƒFƒNƒg
+		//ã‚¯ãƒªã‚¢ç”¨ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		ComPtr<ID3D12RootSignature> m_RootSignature;
 		ComPtr<ID3D12GraphicsCommandList> m_CommandList;
-		//End—pƒRƒ}ƒ“ƒhƒŠƒXƒg
+		//Endç”¨ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 		ComPtr<ID3D12GraphicsCommandList> m_EndCommandList;
 
 		Impl(float ShadowMapDimension) :
 			m_ShadowMapDimension(ShadowMapDimension)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒƒƒhƒEƒ}ƒbƒv‚ÌƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg
+	///	ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã®ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆ
 	//--------------------------------------------------------------------------------------
 	ShadowMapRenderTarget::ShadowMapRenderTarget(float ShadowMapDimension):
 		pImpl(new Impl(ShadowMapDimension))
 	{
 		try {
-			//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ícol‚Í–¢g—p
+			//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã¯colã¯æœªä½¿ç”¨
 			auto Dev = App::GetApp()->GetDeviceResources();
 
-			//ƒVƒƒƒhƒEƒ}ƒbƒv—pƒfƒXƒNƒvƒŠƒ^ƒq[ƒv
+			//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ç”¨ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—
 			D3D12_DESCRIPTOR_HEAP_DESC dsvHeapDesc = {};
 			dsvHeapDesc.NumDescriptors = 1;
 			dsvHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
 			dsvHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&pImpl->m_ShadowmapDsvHeap)),
-				L"ƒVƒƒƒhƒEƒ}ƒbƒvƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚ÌƒfƒXƒNƒvƒŠƒ^ƒq[ƒvì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ãƒ‡ã‚¹ã‚¯ãƒ—ãƒªã‚¿ãƒ’ãƒ¼ãƒ—ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateDescriptorHeap(&dsvHeapDesc, IID_PPV_ARGS(&m_ShadowmapDsvHeap)",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
@@ -1413,7 +1413,7 @@ namespace basecross {
 				&depthOptimizedClearValue,
 				IID_PPV_ARGS(&pImpl->m_ShadowmapDepthStencil)
 			),
-				L"ƒVƒƒƒhƒEƒ}ƒbƒvƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒŠƒ\[ƒXì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒªã‚½ãƒ¼ã‚¹ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommittedResource()",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
@@ -1425,11 +1425,11 @@ namespace basecross {
 
 
 
-			//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒrƒ…[‚Ìì¬
+			//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 			Dev->GetD3DDevice()->CreateDepthStencilView(pImpl->m_ShadowmapDepthStencil.Get(), &depthStencilViewDesc,
 				pImpl->m_ShadowmapDsvHeap->GetCPUDescriptorHandleForHeapStart());
 
-			//ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ
+			//ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£
 			{
 				CD3DX12_ROOT_SIGNATURE_DESC rootSignatureDesc;
 				rootSignatureDesc.Init(0, nullptr, 0, nullptr, D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT);
@@ -1438,39 +1438,39 @@ namespace basecross {
 				ComPtr<ID3DBlob> error;
 
 				ThrowIfFailed(D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error),
-					L"‹ó‚Ìƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚ÌƒVƒŠƒAƒ‰ƒCƒY‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ç©ºã®ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ã‚·ãƒªã‚¢ãƒ©ã‚¤ã‚ºã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"D3D12SerializeRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1, &signature, &error)",
 					L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 				);
 				ThrowIfFailed(Dev->GetD3DDevice()->CreateRootSignature(0, signature->GetBufferPointer(), signature->GetBufferSize(), IID_PPV_ARGS(&pImpl->m_RootSignature)),
-					L"ƒ‹[ƒgƒVƒOƒlƒ`ƒƒ‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+					L"ãƒ«ãƒ¼ãƒˆã‚·ã‚°ãƒãƒãƒ£ã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 					L"Dev->GetDevice()->CreateRootSignature)",
 					L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 				);
 			}
 
 			ComPtr<ID3D12PipelineState> PipelineState;
-			//ƒNƒŠƒA—pƒRƒ}ƒ“ƒhƒŠƒXƒg
+			//ã‚¯ãƒªã‚¢ç”¨ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommandList(
 				0,
 				D3D12_COMMAND_LIST_TYPE_DIRECT,
 				Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(),
 				PipelineState.Get(),
 				IID_PPV_ARGS(&pImpl->m_CommandList)),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommandList()",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
 			CommandList::Close(pImpl->m_CommandList);
 
-			//End—pƒRƒ}ƒ“ƒhƒŠƒXƒg
+			//Endç”¨ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆ
 			ThrowIfFailed(Dev->GetD3DDevice()->CreateCommandList(
 				0,
 				D3D12_COMMAND_LIST_TYPE_DIRECT,
 				Dev->GetCommandAllocator(Dev->GetFrameIndex()).Get(),
 				PipelineState.Get(),
 				IID_PPV_ARGS(&pImpl->m_EndCommandList)),
-				L"ƒRƒ}ƒ“ƒhƒŠƒXƒg‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½",
+				L"ã‚³ãƒãƒ³ãƒ‰ãƒªã‚¹ãƒˆã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸ",
 				L"Dev->GetDevice()->CreateCommandList()",
 				L"ShadowMapRenderTarget::ShadowMapRenderTarget()"
 			);
@@ -1483,15 +1483,15 @@ namespace basecross {
 			throw;
 		}
 	}
-	ShadowMapRenderTarget::~ShadowMapRenderTarget() {}
+	ShadowMapRenderTarget::â€¾ShadowMapRenderTarget() {}
 
 	float ShadowMapRenderTarget::GetShadowMapDimension() const {
 		return pImpl->m_ShadowMapDimension;
 	}
 
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğƒNƒŠƒA‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 	void ShadowMapRenderTarget::ClearViews(const bsm::Col4& col) {
-		//ƒVƒƒƒhƒEƒ}ƒbƒv‚Ícol‚Í–¢g—p
+		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã¯colã¯æœªä½¿ç”¨
 		auto Dev = App::GetApp()->GetDeviceResources();
 		CommandList::Reset(pImpl->m_CommandList);
 		pImpl->m_CommandList->SetGraphicsRootSignature(pImpl->m_RootSignature.Get());
@@ -1509,7 +1509,7 @@ namespace basecross {
 		CommandList::Close(pImpl->m_CommandList);
 		Dev->InsertDrawCommandLists(pImpl->m_CommandList.Get());
 	}
-	//ƒŒƒ“ƒ_ƒŠƒ“ƒOƒ^[ƒQƒbƒg‚ğŠJn‚·‚é
+	//ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’é–‹å§‹ã™ã‚‹
 	void ShadowMapRenderTarget::StartRenderTarget() {}
 
 	void ShadowMapRenderTarget::EndRenderTarget() {
@@ -1542,18 +1542,18 @@ namespace basecross {
 
 	namespace Dx12ShaderHelper {
 		//--------------------------------------------------------------------------------------
-		//@void CreateShaderFlomCso(
-		//		const wstring& fileName,	//csoƒtƒ@ƒCƒ‹
+		//ã€€void CreateShaderFlomCso(
+		//		const wstring& fileName,	//csoãƒ•ã‚¡ã‚¤ãƒ«
 		//		ID3DBlob** pResult	//Blob
 		//	);
-		//	—p“r: CSOƒf[ƒ^‚©‚çƒVƒF[ƒ_—p‚ÌBlob‚ğì¬‚·‚é
+		//	ç”¨é€”: CSOãƒ‡ãƒ¼ã‚¿ã‹ã‚‰ã‚·ã‚§ãƒ¼ãƒ€ç”¨ã®Blobã‚’ä½œæˆã™ã‚‹
 		//--------------------------------------------------------------------------------------
 		void CreateShaderFlomCso(const wstring& fileName, ID3DBlob** pResult) {
 			try {
 				if (fileName == L"") {
 					ThrowBaseException(
-						L"ƒtƒ@ƒCƒ‹‚ªw’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñ",
-						L"if(fileName == L\"\")",
+						L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒæŒ‡å®šã•ã‚Œã¦ã„ã¾ã›ã‚“",
+						L"if(fileName == LÂ¥"Â¥")",
 						L"Dx12ShaderResource::Impl::CreateShaderFlomCso()"
 					);
 				}
@@ -1561,14 +1561,14 @@ namespace basecross {
 				RetCode = GetFileAttributes(fileName.c_str());
 				if (RetCode == -1) {
 					ThrowBaseException(
-						L"ƒtƒ@ƒCƒ‹‚ª‘¶İ‚µ‚Ü‚¹‚ñ",
+						L"ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã—ã¾ã›ã‚“",
 						fileName,
 						L"Dx12ShaderResource::Impl::CreateShaderFlomCso()"
 					);
 				}
 				ThrowIfFailed(
 					D3DReadFileToBlob(fileName.c_str(), pResult),
-					L"Blpb‚Ìì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"Blpbã®ä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					fileName,
 					L"Dx12ShaderResource::Impl::CreateShaderFlomCso()"
 				);
@@ -1586,17 +1586,17 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class Dx12ShaderResource;
-	//	—p“r: ƒVƒF[ƒ_ŠÖ˜AƒŠƒ\[ƒX‚ÌƒCƒ“ƒ^[ƒtƒFƒCƒX
+	//	ç”¨é€”: ã‚·ã‚§ãƒ¼ãƒ€é–¢é€£ãƒªã‚½ãƒ¼ã‚¹ã®ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//--------------------------------------------------------------------------------------
 	Dx12ShaderResource::Dx12ShaderResource() {}
-	Dx12ShaderResource::~Dx12ShaderResource() {}
+	Dx12ShaderResource::â€¾Dx12ShaderResource() {}
 
 
-	//ƒVƒF[ƒ_ƒAƒNƒZƒbƒT
+	//ã‚·ã‚§ãƒ¼ãƒ€ã‚¢ã‚¯ã‚»ãƒƒã‚µ
 	ID3DBlob* Dx12ShaderResource::GetShaderBlob(const wstring& Filename, ComPtr<ID3DBlob>& ShaderComPtr) {
-		//ƒ~ƒ…[ƒeƒbƒNƒX
+		//ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 		std::mutex Mutex;
-		//ƒ‰ƒ€ƒ_®—˜—p
+		//ãƒ©ãƒ ãƒ€å¼åˆ©ç”¨
 		return Util::DemandCreate(ShaderComPtr, Mutex, [&](ID3DBlob** pResult)
 		{
 			Dx12ShaderHelper::CreateShaderFlomCso(Filename, pResult);
@@ -1604,9 +1604,9 @@ namespace basecross {
 	}
 
 	ComPtr<ID3DBlob>& Dx12ShaderResource::GetShaderBlobComPtr(const wstring& Filename, ComPtr<ID3DBlob>& ShaderComPtr) {
-		//ƒ~ƒ…[ƒeƒbƒNƒX
+		//ãƒŸãƒ¥ãƒ¼ãƒ†ãƒƒã‚¯ã‚¹
 		std::mutex Mutex;
-		//ƒ‰ƒ€ƒ_®—˜—p
+		//ãƒ©ãƒ ãƒ€å¼åˆ©ç”¨
 		Util::DemandCreate(ShaderComPtr, Mutex, [&](ID3DBlob** pResult)
 		{
 			Dx12ShaderHelper::CreateShaderFlomCso(Filename, pResult);

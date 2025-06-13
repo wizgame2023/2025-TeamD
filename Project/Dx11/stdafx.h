@@ -1,7 +1,7 @@
 
 /*!
 @file stdafx.h
-@brief ƒvƒŠƒRƒ“ƒpƒCƒ‹Ï‚İƒwƒbƒ_ì¬—p
+@brief ãƒ—ãƒªã‚³ãƒ³ãƒ‘ã‚¤ãƒ«æ¸ˆã¿ãƒ˜ãƒƒãƒ€ä½œæˆç”¨
 
 */
 
@@ -9,11 +9,11 @@
 
 #include "targetver.h"
 
-#define WIN32_LEAN_AND_MEAN             // Windows ƒwƒbƒ_[‚©‚çg—p‚³‚ê‚Ä‚¢‚È‚¢•”•ª‚ğœŠO‚µ‚Ü‚·B
-// Windows ƒwƒbƒ_[ ƒtƒ@ƒCƒ‹:
+#define WIN32_LEAN_AND_MEAN             // Windows ãƒ˜ãƒƒãƒ€ãƒ¼ã‹ã‚‰ä½¿ç”¨ã•ã‚Œã¦ã„ãªã„éƒ¨åˆ†ã‚’é™¤å¤–ã—ã¾ã™ã€‚
+// Windows ãƒ˜ãƒƒãƒ€ãƒ¼ ãƒ•ã‚¡ã‚¤ãƒ«:
 #include <windows.h>
 
-// C ƒ‰ƒ“ƒ^ƒCƒ€ ƒwƒbƒ_[ ƒtƒ@ƒCƒ‹
+// C ãƒ©ãƒ³ã‚¿ã‚¤ãƒ  ãƒ˜ãƒƒãƒ€ãƒ¼ ãƒ•ã‚¡ã‚¤ãƒ«
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
@@ -36,7 +36,7 @@
 #include <Winhttp.h>
 
 
-#include <xaudio2.h>	//ƒTƒEƒ“ƒh
+#include <xaudio2.h>	//ã‚µã‚¦ãƒ³ãƒ‰
 #include <xaudio2fx.h>
 #include <mmreg.h>
 #include <mfidl.h>
@@ -96,7 +96,7 @@ using namespace std;
 #pragma comment( lib, "DirectXTex.lib" )
 // XInput
 #pragma comment( lib, "XInput.lib" )
-//ƒI[ƒfƒBƒI
+//ã‚ªãƒ¼ãƒ‡ã‚£ã‚ª
 #pragma comment( lib, "xaudio2.lib" )
 #pragma comment(lib, "Mfplat.lib")
 #pragma comment(lib, "Mfreadwrite.lib")

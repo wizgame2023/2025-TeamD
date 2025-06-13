@@ -150,7 +150,7 @@ PfxBool pfxIntersectRayAABB(
 	PfxVector3 absDir = absPerElem(dir);
 	PfxVector3 sign = copySignPerElem(PfxVector3(1.0),dir);
 
-	// n“_‚ªBox‚Ì“à‘¤‚É‚ ‚é‚©”»’è
+	// å§‹ç‚¹ãŒBoxã®å†…å´ã«ã‚ã‚‹ã‹åˆ¤å®š
 	if( AABBmin[0] < rayStartPosition[0] && rayStartPosition[0] < AABBmax[0] &&
 		AABBmin[1] < rayStartPosition[1] && rayStartPosition[1] < AABBmax[1] &&
 		AABBmin[2] < rayStartPosition[2] && rayStartPosition[2] < AABBmax[2]) {

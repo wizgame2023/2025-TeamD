@@ -1,6 +1,6 @@
 /*!
 @file StringComponents.cpp
-@brief •¶š—ñ•`‰æƒRƒ“ƒ|[ƒlƒ“ƒgÀ‘Ì
+@brief æ–‡å­—åˆ—æç”»ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆå®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -9,10 +9,10 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct StringSprite::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct StringSprite::Impl{
-		// ƒeƒLƒXƒg ƒŒƒ“ƒ_ƒŠƒ“ƒO‚ÉŠÖ˜A‚·‚éƒŠƒ\[ƒXB
+		// ãƒ†ã‚­ã‚¹ãƒˆ ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã«é–¢é€£ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã€‚
 		wstring m_text;
 		float m_FoneSize;
 		float m_TextBlockWidth;
@@ -22,8 +22,8 @@ namespace basecross {
 		Point2D<float> m_StartPosition;
 		StringSprite::TextAlignment m_TextAlignment;
 
-		bsm::Col4 m_BackColor;		//”wŒiF
-		Point2D<float> m_BackTextMargin;	//”wŒiF‚ğ“h‚è‚Â‚Ô‚·ƒeƒLƒXƒg‚Ìƒ}[ƒWƒ“(¶‰E‚Æã‰º)
+		bsm::Col4 m_BackColor;		//èƒŒæ™¯è‰²
+		Point2D<float> m_BackTextMargin;	//èƒŒæ™¯è‰²ã‚’å¡—ã‚Šã¤ã¶ã™ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒ¼ã‚¸ãƒ³(å·¦å³ã¨ä¸Šä¸‹)
 
 		DWRITE_TEXT_METRICS m_textMetrics;
 		ComPtr<ID2D1SolidColorBrush>    m_Brush;
@@ -39,21 +39,21 @@ namespace basecross {
 			m_FoneSize(16.0f),
 			m_TextBlockWidth(128.0f),
 			m_TextBlockHeight(32.0f),
-			m_FontName(L"‚l‚rƒSƒVƒbƒN"),
+			m_FontName(L"ï¼­ï¼³ã‚´ã‚·ãƒƒã‚¯"),
 			m_FontColor(bsm::Col4(1.0f, 1.0f, 1.0f, 1.0f)),
 			m_StartPosition{16.0f,16.0f},
 			m_TextAlignment(StringSprite::TextAlignment::m_Left),
 			m_BackColor(bsm::Col4(0.0f, 0.0f, 0.0f, 0.0f)),
 			m_BackTextMargin(4.0f,0.0f)
 			{}
-		~Impl(){}
+		â€¾Impl(){}
 	};
 
 
 	//--------------------------------------------------------------------------------------
 	//	class StringSprite : public Component;
-	//	—p“r: StringSpriteƒRƒ“ƒ|[ƒlƒ“ƒg
-	//	•¶š—ñ•\¦ƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: StringSpriteã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+	//	æ–‡å­—åˆ—è¡¨ç¤ºã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	StringSprite::StringSprite(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
@@ -61,7 +61,7 @@ namespace basecross {
 		try{
 			ZeroMemory(&pImpl->m_textMetrics, sizeof(DWRITE_TEXT_METRICS));
 
-			// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+			// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto D2DFactory = Dev->GetD2DFactory();
 			auto DWriteFactory = Dev->GetDWriteFactory();
@@ -78,21 +78,21 @@ namespace basecross {
 				L"ja",
 				&pImpl->m_textFormat
 				),
-				L"ƒtƒHƒ“ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"DWriteFactory->CreateTextFormat()",
 				L"StringSprite::StringSprite()"
 				);
 
 			ThrowIfFailed(
 				pImpl->m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR),
-				L"ƒtƒHƒ“ƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"DWriteFactory->CreateTextFormat()",
 				L"StringSprite::StringSprite()"
 				);
 
 			ThrowIfFailed(
 				D2DFactory->CreateDrawingStateBlock(&pImpl->m_stateBlock),
-				L"ƒtƒHƒ“ƒgƒXƒe[ƒgƒuƒƒbƒNİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆã‚¹ãƒ†ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DFactory->CreateDrawingStateBlock()",
 				L"StringSprite::StringSprite()"
 				);
@@ -104,7 +104,7 @@ namespace basecross {
 				Col,
 				&pImpl->m_Brush
 				),
-				L"ƒtƒHƒ“ƒgƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DDeviceContext->CreateSolidColorBrush()",
 				L"StringSprite::StringSprite()"
 				);
@@ -116,7 +116,7 @@ namespace basecross {
 				Col,
 				&pImpl->m_BackBrush
 				),
-				L"ƒoƒbƒNƒOƒ‰ƒEƒ“ƒhƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DDeviceContext->CreateSolidColorBrush()",
 				L"StringSprite::StringSprite()"
 				);
@@ -127,12 +127,12 @@ namespace basecross {
 			throw;
 		}
 	}
-	StringSprite::~StringSprite(){}
-	//ƒAƒNƒZƒT
+	StringSprite::â€¾StringSprite(){}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	void StringSprite::SetFont(const wstring& FontName, float FontSize){
 		ZeroMemory(&pImpl->m_textMetrics, sizeof(DWRITE_TEXT_METRICS));
 
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DFactory = Dev->GetD2DFactory();
 		auto DWriteFactory = Dev->GetDWriteFactory();
@@ -149,24 +149,24 @@ namespace basecross {
 			L"ja",
 			&pImpl->m_textFormat
 			),
-			L"ƒtƒHƒ“ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteFactory->CreateTextFormat()",
 			L"StringSprite::SetFont()"
 			);
-		//ƒtƒHƒ“ƒg‚Ìì¬‚É¬Œ÷‚µ‚½‚Ì‚Å’l‚ğİ’è
+		//ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆã«æˆåŠŸã—ãŸã®ã§å€¤ã‚’è¨­å®š
 		pImpl->m_FontName = FontName;
 		pImpl->m_FoneSize = FontSize;
 
 		ThrowIfFailed(
 			pImpl->m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR),
-			L"ƒtƒHƒ“ƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteFactory->CreateTextFormat()",
 			L"StringSprite::SetFont()"
 			);
 
 		ThrowIfFailed(
 			D2DFactory->CreateDrawingStateBlock(&pImpl->m_stateBlock),
-			L"ƒtƒHƒ“ƒgƒXƒe[ƒgƒuƒƒbƒNİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆã‚¹ãƒ†ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DFactory->CreateDrawingStateBlock()",
 			L"StringSprite::SetFont()"
 			);
@@ -189,7 +189,7 @@ namespace basecross {
 	}
 
 
-	//ÅŒã”ö‚É’Ç‰Á
+	//æœ€å¾Œå°¾ã«è¿½åŠ 
 	void StringSprite::AddText(const wstring& str){
 		wstring TempText = GetText();
 		TempText += str;
@@ -203,7 +203,7 @@ namespace basecross {
 	void StringSprite::SetFontColor(const bsm::Col4& Col){
 		pImpl->m_FontColor = Col;
 		auto ColBrush = D2D1::ColorF(pImpl->m_FontColor.x, pImpl->m_FontColor.y, pImpl->m_FontColor.z, pImpl->m_FontColor.w);
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 		ThrowIfFailed(
@@ -211,7 +211,7 @@ namespace basecross {
 			ColBrush,
 			&pImpl->m_Brush
 			),
-			L"ƒtƒHƒ“ƒgƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DDeviceContext->CreateSolidColorBrush()",
 			L"StringSprite::SetFontColor()"
 			);
@@ -224,7 +224,7 @@ namespace basecross {
 	void StringSprite::SetBackColor(const bsm::Col4& Col){
 		pImpl->m_BackColor = Col;
 		auto ColBrush = D2D1::ColorF(pImpl->m_BackColor.x, pImpl->m_BackColor.y, pImpl->m_BackColor.z, pImpl->m_BackColor.w);
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 		ThrowIfFailed(
@@ -232,7 +232,7 @@ namespace basecross {
 			ColBrush,
 			&pImpl->m_BackBrush
 			),
-			L"ƒoƒbƒNƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒãƒƒã‚¯ãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DDeviceContext->CreateSolidColorBrush()",
 			L"StringSprite::SetCaretColor()"
 			);
@@ -311,17 +311,17 @@ namespace basecross {
 			pImpl->m_text.c_str(),
 			(uint32)pImpl->m_text.length(),
 			pImpl->m_textFormat.Get(),
-			pImpl->m_TextBlockWidth, // “ü—ÍƒeƒLƒXƒg‚ÌÅ‘å•B
-			pImpl->m_TextBlockHeight, // “ü—ÍƒeƒLƒXƒg‚ÌÅ‘å‚‚³B
+			pImpl->m_TextBlockWidth, // å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¤§å¹…ã€‚
+			pImpl->m_TextBlockHeight, // å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¤§é«˜ã•ã€‚
 			&pImpl->m_textLayout
 			),
-			L"ƒtƒHƒ“ƒgƒŒƒCƒAƒEƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteFactory->CreateTextLayout()",
 			L"StringSprite::Update()"
 			);
 		ThrowIfFailed(
 			pImpl->m_textLayout->GetMetrics(&pImpl->m_textMetrics),
-			L"ƒeƒLƒXƒgƒƒgƒŠƒNƒXæ“¾‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒˆãƒªã‚¯ã‚¹å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"pImpl->m_textLayout->GetMetrics()",
 			L"StringSprite::Update()"
 			);
@@ -351,7 +351,7 @@ namespace basecross {
 		D2DDeviceContext->SaveDrawingState(pImpl->m_stateBlock.Get());
 		D2DDeviceContext->BeginDraw();
 
-		//ƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‚Ì•`‰æ
+		//ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã®æç”»
 		D2DDeviceContext->FillRectangle(&BackRectangle,pImpl->m_BackBrush.Get());
 
 
@@ -379,7 +379,7 @@ namespace basecross {
 
 		ThrowIfFailed(
 			pImpl->m_textFormat->SetTextAlignment(Alignment),
-			L"ƒeƒLƒXƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ†ã‚­ã‚¹ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"pImpl->m_textFormat->SetTextAlignment()",
 			L"StringSprite::Draw()"
 			);
@@ -395,7 +395,7 @@ namespace basecross {
 		{
 			if (FAILED(hr)){
 				throw BaseException(
-					L"•¶š—ñ‚ğ•\¦‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½",
+					L"æ–‡å­—åˆ—ã‚’è¡¨ç¤ºã§ãã¾ã›ã‚“ã§ã—ãŸ",
 					L"if (hr != D2DERR_RECREATE_TARGET)",
 					L"StringSprite::Draw()"
 					);
@@ -411,7 +411,7 @@ namespace basecross {
 		Rect2D<float> m_Rect;
 		wstring m_String;
 		bool m_Updated;
-		//ƒNƒŠƒbƒv‚³‚ê‚é‚©‚Ç‚¤‚©
+		//ã‚¯ãƒªãƒƒãƒ—ã•ã‚Œã‚‹ã‹ã©ã†ã‹
 		bool m_Clip;
 		StringSpriteItem():
 			m_textLayout(nullptr),
@@ -426,17 +426,17 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct MultiStringSprite::Impl;
-	//	—p“r: ImplƒCƒfƒBƒIƒ€
+	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
 	//--------------------------------------------------------------------------------------
 	struct MultiStringSprite::Impl {
-		// ƒeƒLƒXƒg ƒŒƒ“ƒ_ƒŠƒ“ƒO‚ÉŠÖ˜A‚·‚éƒŠƒ\[ƒXB
+		// ãƒ†ã‚­ã‚¹ãƒˆ ãƒ¬ãƒ³ãƒ€ãƒªãƒ³ã‚°ã«é–¢é€£ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã€‚
 		float m_FoneSize;
 		wstring m_FontName;
 		bsm::Col4 m_FontColor;
 		StringSprite::TextAlignment m_TextAlignment;
 
-		bsm::Col4 m_BackColor;		//”wŒiF
-		Point2D<float> m_BackTextMargin;	//”wŒiF‚ğ“h‚è‚Â‚Ô‚·ƒeƒLƒXƒg‚Ìƒ}[ƒWƒ“(¶‰E‚Æã‰º)
+		bsm::Col4 m_BackColor;		//èƒŒæ™¯è‰²
+		Point2D<float> m_BackTextMargin;	//èƒŒæ™¯è‰²ã‚’å¡—ã‚Šã¤ã¶ã™ãƒ†ã‚­ã‚¹ãƒˆã®ãƒãƒ¼ã‚¸ãƒ³(å·¦å³ã¨ä¸Šä¸‹)
 
 		ComPtr<ID2D1SolidColorBrush>    m_Brush;
 		ComPtr<ID2D1DrawingStateBlock>  m_stateBlock;
@@ -449,26 +449,26 @@ namespace basecross {
 
 		Impl() :
 			m_FoneSize(16.0f),
-			m_FontName(L"‚l‚rƒSƒVƒbƒN"),
+			m_FontName(L"ï¼­ï¼³ã‚´ã‚·ãƒƒã‚¯"),
 			m_FontColor(bsm::Col4(1.0f, 1.0f, 1.0f, 1.0f)),
 			m_TextAlignment(StringSprite::TextAlignment::m_Left),
 			m_BackColor(bsm::Col4(0.0f, 0.0f, 0.0f, 0.0f)),
 			m_BackTextMargin(4.0f, 0.0f)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class MultiStringSprite : public Component;
-	//	—p“r: MultiStringSpriteƒRƒ“ƒ|[ƒlƒ“ƒg
-	//	•¶š—ñ•\¦ƒRƒ“ƒ|[ƒlƒ“ƒg
+	//	ç”¨é€”: MultiStringSpriteã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
+	//	æ–‡å­—åˆ—è¡¨ç¤ºã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	MultiStringSprite::MultiStringSprite(const shared_ptr<GameObject>& GameObjectPtr) :
 		Component(GameObjectPtr),
 		pImpl(new Impl()) {
 		try {
 
-			// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+			// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 			auto Dev = App::GetApp()->GetDeviceResources();
 			auto D2DFactory = Dev->GetD2DFactory();
 			auto DWriteFactory = Dev->GetDWriteFactory();
@@ -485,21 +485,21 @@ namespace basecross {
 					L"ja",
 					&pImpl->m_textFormat
 				),
-				L"ƒtƒHƒ“ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"DWriteFactory->CreateTextFormat()",
 				L"StringSprite::StringSprite()"
 			);
 
 			ThrowIfFailed(
 				pImpl->m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR),
-				L"ƒtƒHƒ“ƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"DWriteFactory->CreateTextFormat()",
 				L"StringSprite::StringSprite()"
 			);
 
 			ThrowIfFailed(
 				D2DFactory->CreateDrawingStateBlock(&pImpl->m_stateBlock),
-				L"ƒtƒHƒ“ƒgƒXƒe[ƒgƒuƒƒbƒNİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆã‚¹ãƒ†ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DFactory->CreateDrawingStateBlock()",
 				L"StringSprite::StringSprite()"
 			);
@@ -511,7 +511,7 @@ namespace basecross {
 					Col,
 					&pImpl->m_Brush
 				),
-				L"ƒtƒHƒ“ƒgƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚©ãƒ³ãƒˆãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DDeviceContext->CreateSolidColorBrush()",
 				L"StringSprite::StringSprite()"
 			);
@@ -523,7 +523,7 @@ namespace basecross {
 					Col,
 					&pImpl->m_BackBrush
 				),
-				L"ƒoƒbƒNƒOƒ‰ƒEƒ“ƒhƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"D2DDeviceContext->CreateSolidColorBrush()",
 				L"StringSprite::StringSprite()"
 			);
@@ -534,11 +534,11 @@ namespace basecross {
 			throw;
 		}
 	}
-	MultiStringSprite::~MultiStringSprite() {}
-	//ƒAƒNƒZƒT
+	MultiStringSprite::â€¾MultiStringSprite() {}
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	void MultiStringSprite::SetFont(const wstring& FontName, float FontSize) {
 
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DFactory = Dev->GetD2DFactory();
 		auto DWriteFactory = Dev->GetDWriteFactory();
@@ -555,24 +555,24 @@ namespace basecross {
 				L"ja",
 				&pImpl->m_textFormat
 			),
-			L"ƒtƒHƒ“ƒgì¬‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆä½œæˆã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteFactory->CreateTextFormat()",
 			L"MultiStringSprite::SetFont()"
 		);
-		//ƒtƒHƒ“ƒg‚Ìì¬‚É¬Œ÷‚µ‚½‚Ì‚Å’l‚ğİ’è
+		//ãƒ•ã‚©ãƒ³ãƒˆã®ä½œæˆã«æˆåŠŸã—ãŸã®ã§å€¤ã‚’è¨­å®š
 		pImpl->m_FontName = FontName;
 		pImpl->m_FoneSize = FontSize;
 
 		ThrowIfFailed(
 			pImpl->m_textFormat->SetParagraphAlignment(DWRITE_PARAGRAPH_ALIGNMENT_NEAR),
-			L"ƒtƒHƒ“ƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"DWriteFactory->CreateTextFormat()",
 			L"MultiStringSprite::SetFont()"
 		);
 
 		ThrowIfFailed(
 			D2DFactory->CreateDrawingStateBlock(&pImpl->m_stateBlock),
-			L"ƒtƒHƒ“ƒgƒXƒe[ƒgƒuƒƒbƒNİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆã‚¹ãƒ†ãƒ¼ãƒˆãƒ–ãƒ­ãƒƒã‚¯è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DFactory->CreateDrawingStateBlock()",
 			L"MultiStringSprite::SetFont()"
 		);
@@ -593,7 +593,7 @@ namespace basecross {
 	void MultiStringSprite::SetFontColor(const bsm::Col4& Col) {
 		pImpl->m_FontColor = Col;
 		auto ColBrush = D2D1::ColorF(pImpl->m_FontColor.x, pImpl->m_FontColor.y, pImpl->m_FontColor.z, pImpl->m_FontColor.w);
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 		ThrowIfFailed(
@@ -601,7 +601,7 @@ namespace basecross {
 				ColBrush,
 				&pImpl->m_Brush
 			),
-			L"ƒtƒHƒ“ƒgƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒ•ã‚©ãƒ³ãƒˆãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DDeviceContext->CreateSolidColorBrush()",
 			L"MultiStringSprite::SetFontColor()"
 		);
@@ -614,7 +614,7 @@ namespace basecross {
 	void MultiStringSprite::SetBackColor(const bsm::Col4& Col) {
 		pImpl->m_BackColor = Col;
 		auto ColBrush = D2D1::ColorF(pImpl->m_BackColor.x, pImpl->m_BackColor.y, pImpl->m_BackColor.z, pImpl->m_BackColor.w);
-		// ƒfƒoƒCƒX‚ÉˆË‘¶‚·‚éƒŠƒ\[ƒX‚ğì¬‚µ‚Ü‚·B
+		// ãƒ‡ãƒã‚¤ã‚¹ã«ä¾å­˜ã™ã‚‹ãƒªã‚½ãƒ¼ã‚¹ã‚’ä½œæˆã—ã¾ã™ã€‚
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto D2DDeviceContext = Dev->GetD2DDeviceContext();
 		ThrowIfFailed(
@@ -622,7 +622,7 @@ namespace basecross {
 				ColBrush,
 				&pImpl->m_BackBrush
 			),
-			L"ƒoƒbƒNƒuƒ‰ƒVİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+			L"ãƒãƒƒã‚¯ãƒ–ãƒ©ã‚·è¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 			L"D2DDeviceContext->CreateSolidColorBrush()",
 			L"MultiStringSprite::SetCaretColor()"
 		);
@@ -652,7 +652,7 @@ namespace basecross {
 	const wstring& MultiStringSprite::GetText(size_t Index) const {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::GetText()"
 			);
@@ -662,7 +662,7 @@ namespace basecross {
 	void MultiStringSprite::SetText(size_t Index, const wstring& str,bool Clip) {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::SetText()"
 			);
@@ -674,7 +674,7 @@ namespace basecross {
 	void MultiStringSprite::AddText(size_t Index, const wstring& str, bool Clip) {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::AddText()"
 			);
@@ -699,7 +699,7 @@ namespace basecross {
 	void MultiStringSprite::UpdateTextBlock(size_t Index, const Rect2D<float>& Block, const wstring& str, bool Clip) {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::UpdateTextBlock()"
 			);
@@ -722,7 +722,7 @@ namespace basecross {
 	ComPtr<IDWriteTextLayout>& MultiStringSprite::GetTextLayout(size_t Index)const {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::GetTextLayout()"
 			);
@@ -732,7 +732,7 @@ namespace basecross {
 	const DWRITE_TEXT_METRICS& MultiStringSprite::GetDriteTextMetrics(size_t Index) const {
 		if (pImpl->m_Items.size() <= Index) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				L"if (pImpl->m_Items.size() <= Index)",
 				L"MultiStringSprite::GetDriteTextMetrics()"
 			);
@@ -754,17 +754,17 @@ namespace basecross {
 						v.m_String.c_str(),
 						(uint32)v.m_String.length(),
 						pImpl->m_textFormat.Get(),
-						v.m_Rect.Width(), // “ü—ÍƒeƒLƒXƒg‚ÌÅ‘å•B
-						v.m_Rect.Height(), // “ü—ÍƒeƒLƒXƒg‚ÌÅ‘å‚‚³B
+						v.m_Rect.Width(), // å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¤§å¹…ã€‚
+						v.m_Rect.Height(), // å…¥åŠ›ãƒ†ã‚­ã‚¹ãƒˆã®æœ€å¤§é«˜ã•ã€‚
 						&v.m_textLayout
 					),
-					L"ƒtƒHƒ“ƒgƒŒƒCƒAƒEƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ•ã‚©ãƒ³ãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"DWriteFactory->CreateTextLayout()",
 					L"MultiStringSprite::OnUpdate()"
 				);
 				ThrowIfFailed(
 					v.m_textLayout->GetMetrics(&v.m_textMetrics),
-					L"ƒeƒLƒXƒgƒƒgƒŠƒNƒXæ“¾‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"ãƒ†ã‚­ã‚¹ãƒˆãƒ¡ãƒˆãƒªã‚¯ã‚¹å–å¾—ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					L"pImpl->m_textLayout->GetMetrics()",
 					L"MultiStringSprite::OnUpdate()"
 				);
@@ -796,7 +796,7 @@ namespace basecross {
 
 			D2DDeviceContext->SaveDrawingState(pImpl->m_stateBlock.Get());
 
-			//ƒoƒbƒNƒOƒ‰ƒEƒ“ƒh‚Ì•`‰æ
+			//ãƒãƒƒã‚¯ã‚°ãƒ©ã‚¦ãƒ³ãƒ‰ã®æç”»
 			D2DDeviceContext->FillRectangle(&BackRectangle, pImpl->m_BackBrush.Get());
 
 
@@ -824,7 +824,7 @@ namespace basecross {
 
 			ThrowIfFailed(
 				pImpl->m_textFormat->SetTextAlignment(Alignment),
-				L"ƒeƒLƒXƒgƒAƒ‰ƒCƒ“ƒƒ“ƒgİ’è‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ†ã‚­ã‚¹ãƒˆã‚¢ãƒ©ã‚¤ãƒ³ãƒ¡ãƒ³ãƒˆè¨­å®šã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"pImpl->m_textFormat->SetTextAlignment()",
 				L"MultiStringSprite::Draw()"
 			);
@@ -840,7 +840,7 @@ namespace basecross {
 		{
 			if (FAILED(hr)) {
 				throw BaseException(
-					L"•¶š—ñ‚ğ•\¦‚Å‚«‚Ü‚¹‚ñ‚Å‚µ‚½",
+					L"æ–‡å­—åˆ—ã‚’è¡¨ç¤ºã§ãã¾ã›ã‚“ã§ã—ãŸ",
 					L"if (hr != D2DERR_RECREATE_TARGET)",
 					L"MultiStringSprite::Draw()"
 				);

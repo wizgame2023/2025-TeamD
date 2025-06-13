@@ -22,7 +22,7 @@ Physics Effects under the filename: physics_effects_license.txt
 namespace sce {
 namespace PhysicsEffects {
 
-//J フラグに指定する値
+//J 繝輔Λ繧ｰ縺ｫ謖�螳壹☆繧句､
 //E Specify these values to a flag parameter
 #define SCE_PFX_MESH_FLAG_NORMAL_FLIP		0x01
 #define SCE_PFX_MESH_FLAG_16BIT_INDEX		0x02

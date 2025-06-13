@@ -134,15 +134,15 @@ static void pfxOutputDebugString(const char *str, ...)
 #endif
 
 #ifdef _DEBUG
-	#define SCE_PFX_ASSERT(test) {if(!(test)){SCE_PFX_PRINTF("Assert "__FILE__ ":%d ("#test")\n", __LINE__);SCE_PFX_HALT();}}
-	#define SCE_PFX_ASSERT_MSG(test,msg) {if(!(test)){SCE_PFX_PRINTF("Assert " msg " " __FILE__ ":%d ("#test")\n",__LINE__);SCE_PFX_HALT();}}
+	#define SCE_PFX_ASSERT(test) {if(!(test)){SCE_PFX_PRINTF("Assert "__FILE__ ":%d ("#test")¥n", __LINE__);SCE_PFX_HALT();}}
+	#define SCE_PFX_ASSERT_MSG(test,msg) {if(!(test)){SCE_PFX_PRINTF("Assert " msg " " __FILE__ ":%d ("#test")¥n",__LINE__);SCE_PFX_HALT();}}
 #else
 	#define SCE_PFX_ASSERT(test)
 	#define SCE_PFX_ASSERT_MSG(test,msg)
 #endif
 
-#define SCE_PFX_ALWAYS_ASSERT(test) {if(!(test)){SCE_PFX_PRINTF("Assert "__FILE__ ":%d ("#test")\n", __LINE__);SCE_PFX_HALT();}}
-#define SCE_PFX_ALWAYS_ASSERT_MSG(test,msg) {if(!(test)){SCE_PFX_PRINTF("Assert:" msg " " __FILE__ ":%d ("#test")\n",__LINE__);SCE_PFX_HALT();}}
+#define SCE_PFX_ALWAYS_ASSERT(test) {if(!(test)){SCE_PFX_PRINTF("Assert "__FILE__ ":%d ("#test")¥n", __LINE__);SCE_PFX_HALT();}}
+#define SCE_PFX_ALWAYS_ASSERT_MSG(test,msg) {if(!(test)){SCE_PFX_PRINTF("Assert:" msg " " __FILE__ ":%d ("#test")¥n",__LINE__);SCE_PFX_HALT();}}
 
 // Aligned 
 #if defined(_MSC_VER)
@@ -158,17 +158,17 @@ static void pfxOutputDebugString(const char *str, ...)
 #define SCE_PFX_SWAP(type, x, y) do {type t; t=x; x=y; y=t; } while (0)
 #define SCE_PFX_SQR(a) ((a)*(a))
 
-#define SCE_PFX_ALIGN16(count,size)   ((((((count) * (size)) + 15) & (~15)) + (size)-1) / (size))
-#define SCE_PFX_ALIGN128(count,size)  ((((((count) * (size)) + 127) & (~127)) + (size)-1) / (size))
+#define SCE_PFX_ALIGN16(count,size)   ((((((count) * (size)) + 15) & (‾15)) + (size)-1) / (size))
+#define SCE_PFX_ALIGN128(count,size)  ((((((count) * (size)) + 127) & (‾127)) + (size)-1) / (size))
 
 #define SCE_PFX_AVAILABLE_BYTES_ALIGN16(ptr,bytes) (bytes-((uintptr_t)(ptr)&0x0f))
 #define SCE_PFX_AVAILABLE_BYTES_ALIGN128(ptr,bytes) (bytes-((uintptr_t)(ptr)&0x7f))
 
-#define SCE_PFX_BYTES_ALIGN16(bytes) (((bytes)+15)&(~15))
-#define SCE_PFX_BYTES_ALIGN128(bytes) (((bytes)+127)&(~127))
+#define SCE_PFX_BYTES_ALIGN16(bytes) (((bytes)+15)&(‾15))
+#define SCE_PFX_BYTES_ALIGN128(bytes) (((bytes)+127)&(‾127))
 
-#define SCE_PFX_PTR_ALIGN16(ptr) (((uintptr_t)(ptr)+15)&(~15))
-#define SCE_PFX_PTR_ALIGN128(ptr) (((uintptr_t)(ptr)+127)&(~127))
+#define SCE_PFX_PTR_ALIGN16(ptr) (((uintptr_t)(ptr)+15)&(‾15))
+#define SCE_PFX_PTR_ALIGN128(ptr) (((uintptr_t)(ptr)+127)&(‾127))
 
 #define SCE_PFX_PTR_IS_ALIGNED16(ptr) (((uintptr_t)(ptr)&0x0f)==0)
 #define SCE_PFX_PTR_IS_ALIGNED128(ptr) (((uintptr_t)(ptr)&0x7f)==0)

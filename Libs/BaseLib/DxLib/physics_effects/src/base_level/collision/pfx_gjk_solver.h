@@ -55,19 +55,19 @@ private:
 	
 	PfxSimplexSolver m_simplex;
 
-	// –Ê
+	// é¢
 	struct Facet {
-		PfxVector3 normal;		// –Ê‚Ì–@ü
-		PfxVector3 closest;		// Œ´“_‚©‚ç‚ÌÅ‹ßÚ“_
-		PfxUInt32 obsolete;		// ”pŠü
-		PfxFloat distSqr;		// Å‹ßÚ‹——£‚Ì“ñæ
-		PfxInt32 j[3];			// —×Ú–Ê‚©‚çŒ©‚½Index
-		Facet *adj[3];			// —×Ú–Ê
-		PfxInt8	v[3];			// –Ê‚ğ\¬‚·‚é’¸“_
+		PfxVector3 normal;		// é¢ã®æ³•ç·š
+		PfxVector3 closest;		// åŸç‚¹ã‹ã‚‰ã®æœ€è¿‘æ¥ç‚¹
+		PfxUInt32 obsolete;		// å»ƒæ£„
+		PfxFloat distSqr;		// æœ€è¿‘æ¥è·é›¢ã®äºŒä¹—
+		PfxInt32 j[3];			// éš£æ¥é¢ã‹ã‚‰è¦‹ãŸIndex
+		Facet *adj[3];			// éš£æ¥é¢
+		PfxInt8	v[3];			// é¢ã‚’æ§‹æˆã™ã‚‹é ‚ç‚¹
 		SCE_PFX_PADDING(1,13)
 	};
 	
-	// ƒGƒbƒW
+	// ã‚¨ãƒƒã‚¸
 	struct Edge {
 		Facet *f;
 		PfxInt32 i;
@@ -119,7 +119,7 @@ private:
 
 public:
 	PfxGjkSolver();
-	~PfxGjkSolver();
+	â€¾PfxGjkSolver();
 	
 	void setup(void *sA,void *sB,PfxGetSupportVertexFunc fA,PfxGetSupportVertexFunc fB);
 	

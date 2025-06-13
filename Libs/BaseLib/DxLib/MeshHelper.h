@@ -1,6 +1,6 @@
 /*!
 @file MeshHelper.h
-@brief ƒvƒŠƒ~ƒeƒBƒuì¬ŠÖ”“™
+@brief ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–ä½œæˆé–¢æ•°ç­‰
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #pragma once
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	’¸“_ŠÖ˜A‚Ìƒ†[ƒeƒBƒŠƒeƒBŠÖ”ŒQ(staticŒÄ‚Ño‚µ‚ğ‚·)
+	///	é ‚ç‚¹é–¢é€£ã®ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£é–¢æ•°ç¾¤(staticå‘¼ã³å‡ºã—ã‚’ã™)
 	//--------------------------------------------------------------------------------------
 	class MeshUtill {
 		static const float SQRT2;
@@ -17,10 +17,10 @@ namespace basecross {
 		static const float SQRT6;
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Cylinder / Cone‚Åg—p‚³‚ê‚éƒwƒ‹ƒp[(•ªŠ„”‚Æ•ªŠ„ƒCƒ“ƒfƒbƒNƒX‚©‚çAƒxƒNƒgƒ‹‚ğ“¾‚é)
-		@param[in]	i	•ªŠ„ƒCƒ“ƒfƒbƒNƒX
-		@param[in]	tessellation	•ªŠ„”
-		@return	ƒxƒNƒgƒ‹
+		@brief	Cylinder / Coneã§ä½¿ç”¨ã•ã‚Œã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼(åˆ†å‰²æ•°ã¨åˆ†å‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‹ã‚‰ã€ãƒ™ã‚¯ãƒˆãƒ«ã‚’å¾—ã‚‹)
+		@param[in]	i	åˆ†å‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in]	tessellation	åˆ†å‰²æ•°
+		@return	ãƒ™ã‚¯ãƒˆãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		static inline XMVECTOR GetCircleVector(size_t i, size_t tessellation)
@@ -35,10 +35,10 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Cylinder / Cone‚Åg—p‚³‚ê‚éƒwƒ‹ƒp[(•ªŠ„”‚Æ•ªŠ„ƒCƒ“ƒfƒbƒNƒX‚©‚çATangentƒxƒNƒgƒ‹‚ğ“¾‚é)
-		@param[in]	i	•ªŠ„ƒCƒ“ƒfƒbƒNƒX
-		@param[in]	tessellation	•ªŠ„”
-		@return	TangentƒxƒNƒgƒ‹
+		@brief	Cylinder / Coneã§ä½¿ç”¨ã•ã‚Œã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼(åˆ†å‰²æ•°ã¨åˆ†å‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‹ã‚‰ã€Tangentãƒ™ã‚¯ãƒˆãƒ«ã‚’å¾—ã‚‹)
+		@param[in]	i	åˆ†å‰²ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		@param[in]	tessellation	åˆ†å‰²æ•°
+		@return	Tangentãƒ™ã‚¯ãƒˆãƒ«
 		*/
 		//--------------------------------------------------------------------------------------
 		static inline XMVECTOR GetCircleTangent(size_t i, size_t tessellation)
@@ -53,14 +53,14 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	Cylinder / Cone‚Åg—p‚³‚ê‚éƒwƒ‹ƒp[(CylinderCap‚ğì¬‚·‚é)
-		@param[out]	vertices	’¸“_‚Ì”z—ñ
-		@param[out]	indices ƒCƒ“ƒfƒbƒNƒX‚Ì”z—ñ
-		@param[in]	tessellation	•ªŠ„”
-		@param[in]	height	‚‚³
-		@param[in]	radius	”¼Œa
-		@param[in]	isTop	ã•”‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	Cylinder / Coneã§ä½¿ç”¨ã•ã‚Œã‚‹ãƒ˜ãƒ«ãƒ‘ãƒ¼(CylinderCapã‚’ä½œæˆã™ã‚‹)
+		@param[out]	vertices	é ‚ç‚¹ã®é…åˆ—
+		@param[out]	indices ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®é…åˆ—
+		@param[in]	tessellation	åˆ†å‰²æ•°
+		@param[in]	height	é«˜ã•
+		@param[in]	radius	åŠå¾„
+		@param[in]	isTop	ä¸Šéƒ¨ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateCylinderCap(vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices,
@@ -68,17 +68,17 @@ namespace basecross {
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	’¸“_‚ÆƒCƒ“ƒfƒbƒNƒX‚ÌŒü‚«‚ğ”½“]‚³‚¹‚éiLH‚ÆRH•ÏŠ·j
-		@param[out]	indices ƒCƒ“ƒfƒbƒNƒX‚Ì”z—ñ
-		@param[out]	vertices	’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	é ‚ç‚¹ã¨ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®å‘ãã‚’åè»¢ã•ã›ã‚‹ï¼ˆLHã¨RHå¤‰æ›ï¼‰
+		@param[out]	indices ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®é…åˆ—
+		@param[out]	vertices	é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void ReverseWinding(vector<uint16_t>& indices, vector<VertexPositionNormalTexture>& vertices)
 		{
 			if ((indices.size() % 3) != 0) {
 				ThrowBaseException(
-					L"ƒCƒ“ƒfƒbƒNƒX‚Ì”‚ª‡‚¢‚Ü‚¹‚ñ",
+					L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®æ•°ãŒåˆã„ã¾ã›ã‚“",
 					L"if((indices.size() % 3) == 0)",
 					L"VertexUtil::ReverseWinding()"
 				);
@@ -95,49 +95,49 @@ namespace basecross {
 		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì•½–Ê‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size 1‚Â‚Ì•Ó‚ÌƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®å¹³é¢ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size 1ã¤ã®è¾ºã®ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateSquare(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì—§•û‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size 1‚Â‚Ì•Ó‚ÌƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ç«‹æ–¹ä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size 1ã¤ã®è¾ºã®ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateCube(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì‹…‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	diameter ’¼Œa
-		@param[in]	tessellation •ªŠ„”
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®çƒä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	diameter ç›´å¾„
+		@param[in]	tessellation åˆ†å‰²æ•°
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateSphere(float diameter, size_t tessellation,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚ÌƒJƒvƒZƒ‹‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	diameter ’¼Œa
-		@param[in]	PointA ’†ŠÔ•”ü•ª‚ÌŠJn“_i‰ºj
-		@param[in]	PointB ’†ŠÔ•”ü•ª‚ÌI—¹“_iãj
-		@param[in]	tessellation •ªŠ„”
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[in]	landscape ‰¡‚É‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ã‚«ãƒ—ã‚»ãƒ«ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	diameter ç›´å¾„
+		@param[in]	PointA ä¸­é–“éƒ¨ç·šåˆ†ã®é–‹å§‹ç‚¹ï¼ˆä¸‹ï¼‰
+		@param[in]	PointB ä¸­é–“éƒ¨ç·šåˆ†ã®çµ‚äº†ç‚¹ï¼ˆä¸Šï¼‰
+		@param[in]	tessellation åˆ†å‰²æ•°
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[in]	landscape æ¨ªã«ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateCapsule(float diameter,
@@ -146,14 +146,14 @@ namespace basecross {
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices,bool landscape = false);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚ÌƒVƒŠƒ“ƒ_[‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	height ‚‚³
-		@param[in]	diameter ’¼Œa
-		@param[in]	tessellation •ªŠ„”
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[in]	landscape ‰¡‚É‚·‚é‚©‚Ç‚¤‚©
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ã‚·ãƒªãƒ³ãƒ€ãƒ¼ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	height é«˜ã•
+		@param[in]	diameter ç›´å¾„
+		@param[in]	tessellation åˆ†å‰²æ•°
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[in]	landscape æ¨ªã«ã™ã‚‹ã‹ã©ã†ã‹
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateCylinder(float height, float diameter, size_t tessellation,
@@ -161,87 +161,87 @@ namespace basecross {
 			 bool landscape = false);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚ÌƒR[ƒ“‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	diameter ’¼Œa
-		@param[in]	height ‚‚³
-		@param[in]	tessellation •ªŠ„”
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ã‚³ãƒ¼ãƒ³ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	diameter ç›´å¾„
+		@param[in]	height é«˜ã•
+		@param[in]	tessellation åˆ†å‰²æ•°
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateCone(float diameter, float height, size_t tessellation,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ìƒg[ƒ‰ƒX‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	diameter ƒh[ƒiƒbƒc’†S‚Ü‚Å‚Ì’¼Œa
-		@param[in]	thickness ƒh[ƒiƒbƒc‘¾‚³
-		@param[in]	tessellation •ªŠ„”
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒˆãƒ¼ãƒ©ã‚¹ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	diameter ãƒ‰ãƒ¼ãƒŠãƒƒãƒ„ä¸­å¿ƒã¾ã§ã®ç›´å¾„
+		@param[in]	thickness ãƒ‰ãƒ¼ãƒŠãƒƒãƒ„å¤ªã•
+		@param[in]	tessellation åˆ†å‰²æ•°
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateTorus(float diameter, float thickness, size_t tessellation,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì³4–Ê‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size ƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®æ­£4é¢ä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateTetrahedron(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì³8–Ê‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size ƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®æ­£8é¢ä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateOctahedron(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì³12–Ê‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size ƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®æ­£12é¢ä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateDodecahedron(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPosNormalTexƒtƒH[ƒ}ƒbƒg‚Ì³20–Ê‘Ì‚ğì¬‚·‚é(staticŠÖ”)
-		@param[in]	size ƒTƒCƒY
-		@param[out]	vertices	’¸“_‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@param[out]	indices	ƒCƒ“ƒfƒbƒNƒX‚ğì¬‚·‚é‚½‚ß‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPosNormalTexãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®æ­£20é¢ä½“ã‚’ä½œæˆã™ã‚‹(staticé–¢æ•°)
+		@param[in]	size ã‚µã‚¤ã‚º
+		@param[out]	vertices	é ‚ç‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@param[out]	indices	ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã‚’ä½œæˆã™ã‚‹ãŸã‚ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void CreateIcosahedron(float size,
 			vector<VertexPositionNormalTexture>& vertices, vector<uint16_t>& indices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPositionNormalTangentTextureƒtƒH[ƒ}ƒbƒg‚ÌƒƒbƒVƒ…‚Ìƒ^ƒ“ƒWƒFƒ“ƒg‚ğ’Ç‰Á‚·‚é
-		@param[inout]	vertices	’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPositionNormalTangentTextureãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
+		@param[inout]	vertices	é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void SetNormalTangent(vector<VertexPositionNormalTangentTexture>& vertices);
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief	VertexPositionNormalTangentTextureSkinningƒtƒH[ƒ}ƒbƒg‚ÌƒƒbƒVƒ…‚Ìƒ^ƒ“ƒWƒFƒ“ƒg‚ğ’Ç‰Á‚·‚é
-		@param[inout]	vertices	’¸“_‚Ì”z—ñ
-		@return	‚È‚µ
+		@brief	VertexPositionNormalTangentTextureSkinningãƒ•ã‚©ãƒ¼ãƒãƒƒãƒˆã®ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¿ãƒ³ã‚¸ã‚§ãƒ³ãƒˆã‚’è¿½åŠ ã™ã‚‹
+		@param[inout]	vertices	é ‚ç‚¹ã®é…åˆ—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		static void SetNormalTangent(vector<VertexPositionNormalTangentTextureSkinning>& vertices);

@@ -438,7 +438,7 @@ bool PfxSimplexSolver::closestPointTetrahedronFromOrigin(const PfxVector3 &a,con
 	}
 	
 	//////////////////////////////////////////////////////////////////////////////
-	// Å‹ßÚ“_‚Í–ÊABC,ACD,ADB,BDCã‚É‘¶İ
+	// æœ€è¿‘æ¥ç‚¹ã¯é¢ABC,ACD,ADB,BDCä¸Šã«å­˜åœ¨
 	
 	PfxFloat bestSqDist = SCE_PFX_FLT_MAX;
 	

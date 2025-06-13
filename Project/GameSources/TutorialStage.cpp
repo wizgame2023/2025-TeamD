@@ -57,8 +57,6 @@ namespace basecross {
 			CreateSelect();
 			GameStage::OnCreate();
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<GameStage>(), L"AppaerEnemy");
-			//PostEvent(0.0f, GetThis<ObjectInterface>(),  GetThis<GameStage>(), L"EnemyDead");
-			//PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<GameStage>(), L"AppaerBoss");
 
 		}
 		catch (...) {
@@ -70,28 +68,30 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();
-		//auto enemy = GetSharedGameObject<Mob>(L"mob", true);
-		//auto enemyClear = GetSharedGameObject<Mob>(L"enemy", false);
-		//auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", true);
-		//auto bossClear = GetSharedGameObject<BossEnemy>(L"BOSS", false);
-		//backGround->SetDrawActive(true);
+		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 
-		//if (enemy != nullptr) {}
-		//if (enemyClear != nullptr) {}
-		//if (boss != nullptr) {}
-		//if (bossClear != nullptr) {}
+		if (m_BossDead == true && productionCamera->GetEndState()) {
+			m_backGround->SetDrawActive(true);
+			PostEvent(4.0f, GetThis<ObjectInterface>(), GetThis<GameStage>(), L"DeadBoss");
+		}
+		if (m_EnemyDead == true && productionCamera->GetEndState()) {
+			m_backStage->SetDrawActive(true);
+		}
+
+
 	}
 
 	void TutorialStage::OnEvent(const shared_ptr<Event>& event) {
 		auto& msg = event->m_MsgStr;
 
-		if (msg == L"DefeatBoss") {
+		if (msg == L"DeadBoss") {
+			m_BossDead = false;
 			m_backGround->SetDrawActive(false);
 		}
 		else if (msg == L"AppaerBoss") {
-			m_backGround->SetDrawActive(true);
-
+			m_BossDead = true;
 		}
+
 		if (msg == L"DeadWave") {
 			m_backSprite->SetDrawActive(false);
 		}
@@ -100,14 +100,14 @@ namespace basecross {
 		}
 
 		if (msg == L"EnemyDead") {
+			m_EnemyDead = false;
 			m_backStage->SetDrawActive(false);
 		}		
 		else if (msg == L"AppaerEnemy") {
-			m_backStage->SetDrawActive(true);
+			m_EnemyDead = true;
 		}
 
 		GameStage::OnEvent(event);
-
 
 	}
 

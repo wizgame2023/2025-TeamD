@@ -90,7 +90,7 @@ class PfxDebugRender
 
 public:
 	PfxDebugRender();
-	~PfxDebugRender();
+	‾PfxDebugRender();
 
 	//function setting
 	void setDebugRenderPointFunc(PfxDebugRenderPointFunc func);

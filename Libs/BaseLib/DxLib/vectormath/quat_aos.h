@@ -488,12 +488,12 @@ inline const Quat select( const Quat & quat0, const Quat & quat1, bool select1 )
 
 inline void print( const Quat & quat )
 {
-    printf( "( %f %f %f %f )\n", quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
+    printf( "( %f %f %f %f )¥n", quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
 }
 
 inline void print( const Quat & quat, const char * name )
 {
-    printf( "%s: ( %f %f %f %f )\n", name, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
+    printf( "%s: ( %f %f %f %f )¥n", name, quat.getX(), quat.getY(), quat.getZ(), quat.getW() );
 }
 
 #endif
