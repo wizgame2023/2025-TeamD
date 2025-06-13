@@ -130,7 +130,9 @@ namespace basecross {
         m_HitCollision(false), // Initialize m_HitCollision
 		m_IsShaking(false), 
 		m_Duration(0.0f),
-		m_InitialDuration(0.0f)
+		m_InitialDuration(0.0f),
+		m_Magnification(6.0f),
+		m_Up(2.5f)
 	{
 	}
 
@@ -165,9 +167,9 @@ namespace basecross {
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
-
-		m_Eye = m_Position + m_Direction * 6.0f;
-		m_Eye.y = m_Position.y + 2.5f;
+		Vec2 dire = CameraUp(0.5f);
+		m_Eye = m_Position + m_Direction * dire.x;
+		m_Eye.y = m_Position.y + dire.y;
 
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
@@ -193,6 +195,26 @@ namespace basecross {
 	void FollowCamera::SetCameraPause(const bool& StopCamera)
 	{
 		m_StopCamera = StopCamera;
+	}
+
+	Vec2 FollowCamera::CameraUp(float totaltime)
+	{
+		float ElapsedTime = App::GetApp()->GetElapsedTime();
+		if (m_IsShaking)
+		{
+			m_CurrntTime += ElapsedTime;
+
+			if (m_CurrntTime > totaltime) {
+				m_IsShaking = false;
+				m_CurrntTime = 0.0f;
+				return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
+			}
+
+			float interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.5f, 0.0f, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+			float up = Lerp::CalculateLerp(m_Up, m_Up * 0.5f, 0.0f, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+			return Vec2(interpHeight, up);
+		}
+		return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
 	}
 
 	void FollowCamera::LogCamera() {

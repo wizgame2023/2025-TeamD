@@ -280,7 +280,7 @@ namespace basecross {
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 			return 0;
 		}
-		else if (ParrySecond <= 15 && ParrySecond > 5)
+		else if (ParrySecond <= 10 && ParrySecond > 0)
 		{
 			m_EnergyCharge += 0.1;
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);

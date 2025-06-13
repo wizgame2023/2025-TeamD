@@ -202,12 +202,12 @@ namespace basecross {
 			return;
 		}
 
-		RayCastHit hit;
-		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy" };
-		RayCast::HitTestVec(hit, Line(enemy->GetPosition(), m_Player->GetPosition()), m_Stage->GetGameObjectVec(), excludeTags);
-		if (hit.m_Object != nullptr && !hit.m_Object->FindTag(L"Player")) {
-			return;
-		}
+		//RayCastHit hit;
+		//vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy" };
+		//RayCast::HitTestVec(hit, Line(enemy->GetPosition(), m_Player->GetPosition()), m_Stage->GetGameObjectVec(), excludeTags);
+		//if (hit.m_Object != nullptr && !hit.m_Object->FindTag(L"Player")) {
+		//	return;
+		//}
 
 		if(m_BulletRemain > 0)
 		{
