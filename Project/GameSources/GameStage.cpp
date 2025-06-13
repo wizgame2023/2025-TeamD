@@ -420,10 +420,6 @@ namespace basecross {
 				m_Camera->SetCameraPause(true);
 			}
 		}
-
-		if (m_ResultMenu->IsOpen())
-		{
-		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
 			m_Icon->SetDrawActive(false);
@@ -541,20 +537,22 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			GameManager::Instance()->SetGameSpeed(1.0f);
-		}
-		else if (msg == L"HitStop") {
-			GameManager::Instance()->SetGameSpeed(0.1f);
+
 			if (m_cameraState == CameraState::FOLLOWCAMERA)
 			{
 				auto camera = GetView()->GetTargetCamera();;
-				camera->ShakeStart(0.5f, 0.1f);
+				camera->ShakeStart(0.1f, 0.1f);
 			}
+		}
+		else if (msg == L"HitStop") {
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
-			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
+			PostEvent(0.25f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 	}
 }
