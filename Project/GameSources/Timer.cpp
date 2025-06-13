@@ -17,13 +17,13 @@ namespace basecross {
 
 	Timer::‾Timer(){}
 
-	bool Timer::UpdateTimer() {
+	bool Timer::UpdateTimer(float timeRate) {
 		if (m_Timer >= m_MaxTime) {
 			m_Timer = m_IsReset ? 0 : m_MaxTime;
 			return true;
 		}
 
-		float elapsed = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float elapsed = App::GetApp()->GetElapsedTime() * timeRate;
 		m_Timer += elapsed;
 
 		return false;

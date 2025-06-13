@@ -35,7 +35,7 @@ namespace basecross {
 
 	{
 	}
-	Player::~Player()
+	Player::‾Player()
 	{
 	}
 	Vec2 Player::GetInputState() const {
@@ -256,7 +256,7 @@ namespace basecross {
 
 	void Player::UpdateAnim()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 	}
@@ -638,7 +638,7 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::~HitSphere()
+	HitSphere::‾HitSphere()
 	{
 		m_Effect->StopEffect(m_Handle);
 	}
@@ -685,7 +685,7 @@ namespace basecross {
 
 	void HitSphere::OnUpdate()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetGameSpeed();
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)
 		{

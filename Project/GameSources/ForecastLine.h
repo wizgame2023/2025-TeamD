@@ -23,7 +23,12 @@ namespace basecross {
 		void Destroy();
 		void SetLine(const Line& line) {
 			m_Line = line;
-			SetDrawActive(true);
+			if (line.GetLength() > 0) {
+				SetDrawActive(true);
+			}
+			else {
+				SetDrawActive(false);
+			}
 		}
 		shared_ptr<BcPNTStaticDraw> m_Draw;
 		shared_ptr<Transform> m_Transform;

@@ -20,7 +20,7 @@ namespace basecross {
 		radius += m_AreaSize * elapsed / m_ExitTime.GetMaxTime();
 		m_AreaEffect->SetRadius(m_AreaSize * (m_ExitTime.GetTime() / m_ExitTime.GetMaxTime()));
 
-		if (m_ExitTime.UpdateTimer()) {
+		if (m_ExitTime.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 			m_Stage->RemoveGameObject<SharpFan>(m_AreaEffect);
 			m_Stage->RemoveGameObject<SharpFan>(m_AreaSizeEffect);
 			m_Stage->RemoveGameObject<AreaOfEffect>(GetThis<AreaOfEffect>());
