@@ -49,7 +49,7 @@ namespace basecross {
 
 		m_ScreenSize = Vec2(1280, 800);
 
-		SetDrawLayer(3);
+		//SetDrawLayer(3);
 	}
 	void Sprite::OnUpdate() {
 		if (m_IsAnimation) {
