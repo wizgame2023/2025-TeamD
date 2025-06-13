@@ -515,6 +515,9 @@ namespace basecross {
 	void ButtonManager::SetSound(const wstring& sound) {
 		m_ClickSound = sound;
 	}
+	void ButtonManager::SetSelectSound(const wstring& sound) {
+		m_SelectSound = sound;
+	}
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
 		if (m_GroupMovementAmount.find(group) != end(m_GroupMovementAmount)) {
 			if (m_GroupMovementAmount[group].length() == 0) {

@@ -565,6 +565,8 @@ namespace basecross{
 		wstring m_UsingGroup;
 		//クリック音のキー
 		wstring m_ClickSound;
+		//選択音のキー
+		wstring m_SelectSound;
 		//Updateさせるか
 		bool m_IsActive;
 
@@ -668,6 +670,7 @@ namespace basecross{
 			}
 		}
 		void SetSound(const wstring& sound);
+		void SetSelectSound(const wstring& sound);
 
 		void AddAcceptButton(const wstring& group, WORD accept) {
 			if (m_AcceptButtons.find(group) != end(m_AcceptButtons)) {

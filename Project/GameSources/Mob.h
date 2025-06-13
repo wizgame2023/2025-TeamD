@@ -41,6 +41,7 @@ namespace basecross {
 		Vec3 m_Before = Vec3(0);
 		int m_BulletRemain;
 		shared_ptr<SharpFan> m_SearchFan;
+		
 		shared_ptr<HPBar> m_HpBar;
 		shared_ptr<GameObject> m_NearPoint;
 		vector<shared_ptr <GameObject>> m_PointData;

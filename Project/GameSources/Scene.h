@@ -11,11 +11,15 @@ namespace basecross{
 		int stageNum;
 		int level;
 	};
+	struct StageFileData {
+		wstring m_FileName;
+		bool m_IsClear;
+	};
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン
 	//--------------------------------------------------------------------------------------
 	class Scene : public SceneBase{
-		vector<vector<wstring>> m_StageFile;
+		vector<vector<StageFileData>> m_StageFile;
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
@@ -24,9 +28,9 @@ namespace basecross{
 		//--------------------------------------------------------------------------------------
 		Scene() :SceneBase(){
 			m_StageFile = {
-				{L"testStage_Y_Easy.csv",L"testStage_Y_normal.csv",L"testStage_Y_Hard.csv"},
-				{L"testStage_Y_Easy.csv",L"testStage_Y_normal.csv",L"testStage_Y_Hard.csv"},
-				{L"testStage_Y_Easy.csv",L"testStage_Y_normal.csv",L"testStage_Y_Hard.csv"}
+				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"testStage_Y_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"testStage_Y_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}}
 			};
 		}
 		//--------------------------------------------------------------------------------------
@@ -57,6 +61,18 @@ namespace basecross{
 		void CreateModelResource();
 		int GetCount() { return m_Count; }
 		void SetCount(int count) { m_Count = count; }
+
+		wstring GetFileName(StageData data) {
+			return m_StageFile[data.stageNum][data.level].m_FileName;
+		}
+		bool IsClear(StageData data) {
+			return m_StageFile[data.stageNum][data.level].m_IsClear;
+		}
+
+		void Clear(StageData data) {
+			m_StageFile[data.stageNum][data.level].m_IsClear = true;
+		}
+
 	};
 
 }
