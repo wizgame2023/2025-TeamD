@@ -29,6 +29,11 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class Camera :public ObjectInterface, public ShapeInterface {
 	public:
+		bool m_IsShaking = false;      // カメラがシェイク中かどうか
+		float m_Duration = 0.0f;         // シェイク継続時間（残り）
+		float m_InitialDuration = 0.0f;  // シェイク開始時の時間（for 減衰計算）
+		float m_Magnitude = 0.0f;        // 最大振幅（単位：画素やワールド単位）
+
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief	コンストラクタ
@@ -301,6 +306,15 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnDraw()override {}
+
+		/// @brief 指定した時間とメッセージ値でシェイクを開始します。
+		/// @param time シェイクを継続する時間（秒単位）。
+		/// @param msg シェイクの強度や種類などを示すメッセージ値。
+		void ShakeStart(float time, float msg);
+
+		/// @brief カメラの揺れによる移動ベクトルを計算します。
+		/// @return カメラの揺れによる移動を表す bsm::Vec3 型のベクトル。
+		bsm::Vec3 ShakeCameraMove();
 
 	private:
 		// pImplイディオム
@@ -763,6 +777,7 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate()override {}
+
 	private:
 		// pImplイディオム
 		struct Impl;

@@ -17,7 +17,7 @@ namespace basecross {
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
 	}
-	BossEnemy::~BossEnemy()
+	BossEnemy::‾BossEnemy()
 	{
 	}
 	void BossEnemy::AddAnimation() {
@@ -40,6 +40,10 @@ namespace basecross {
 		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
 		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps * 0.5f);
 		draw->AddAnimation(L"Landing", 2437, 67, false, fps * 0.5f);//16
+
+		draw->AddAnimation(L"ShakeOff_First", 2205, 14, false, fps);
+		draw->AddAnimation(L"ShakeOff", 2220, 87, false, fps);
+		draw->AddAnimation(L"ShakeOff_Parry", 2561, 114, false, fps);
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -133,21 +137,6 @@ namespace basecross {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
 		m_InvincibleTimer.UpdateTimer();
-		if (GetCurrentAnimationKey() == L"Landing") {
-			if (GetAnimationFinish()) {
-				m_IsGround = true;
-			}
-		}
-		if (GetCurrentAnimationKey() == L"Landing_First") {
-			if (GetAnimationFinish()) {
-				m_Effect->PlayEffect(m_SmokeHandle, L"Trampling", GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
-				m_Effect->SetScale(m_SmokeHandle, Vec3(0.5f));
-				m_Effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
-				SetAnimation(L"Landing");
-			}
-		}
-		if (!m_IsGround) return;
-
 		if (!m_IsStun) {
 			m_currentState->Execute();
 		}
@@ -182,8 +171,7 @@ namespace basecross {
 		float rotationY = atan2f(direction.x, direction.z);
 		SetRotation(Vec3(0, rotationY, 0));
 
-		SetAnimation(L"Jump");
-		m_IsGround = false;
+		ChangeState<BossStarting>();
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
@@ -238,7 +226,7 @@ namespace basecross {
 	{
 	}
 
-	BossEnemyLeg::~BossEnemyLeg()
+	BossEnemyLeg::‾BossEnemyLeg()
 	{
 	}
 

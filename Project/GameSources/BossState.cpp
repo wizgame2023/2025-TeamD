@@ -7,6 +7,37 @@
 #include "Project.h"
 
 namespace basecross {
+	void BossStarting::Enter() {
+		EnemyState::Enter();
+		m_Enemy->SetAnimation(L"Jump");
+	}
+	void BossStarting::Execute() {
+		if (m_Enemy->GetCurrentAnimationKey() == L"Landing") {
+			if (m_Enemy->GetAnimationFinish()) {
+				auto cameraman = m_Stage->GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+				if (cameraman != nullptr) {
+					if (cameraman->GetEndState()) {
+						m_Enemy->ChangeState<BossHostility>();
+						return;
+					}
+				}
+			}
+		}
+		if (m_Enemy->GetCurrentAnimationKey() == L"Landing_First") {
+			if (m_Enemy->GetAnimationFinish()) {
+				auto& stage = dynamic_pointer_cast<GameStage>(m_Stage);
+				auto& effect = stage->GetCreateEffect();
+				effect->PlayEffect(m_SmokeHandle, L"Trampling", m_Enemy->GetPosition() - Vec3(0, 1.5f, 0), 0.0f);
+				effect->SetScale(m_SmokeHandle, Vec3(0.5f));
+				effect->SetEffectSpeed(m_SmokeHandle, 0.4f);
+				m_Enemy->SetAnimation(L"Landing");
+			}
+		}
+	}
+
+	void BossStarting::Exit() {
+
+	}
 
 	void BossHostility::Enter()
 	{
@@ -39,7 +70,7 @@ namespace basecross {
 		float distance = direction.length();
 		direction = direction.normalize();
 
-		if (m_CooldownTimer.UpdateTimer()) {
+		if (m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
 			if (rnd < 40.0f) {
 				m_Enemy->ChangeState<BossGun>();
@@ -92,7 +123,7 @@ namespace basecross {
 				m_Enemy->SetAnimation(L"Crush");
 			}
 			if (m_IsReady) {
-				if (m_ReadyTimer.UpdateTimer()) {
+				if (m_ReadyTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 					SoundManager::Instance().PlaySE(L"SE_CRUSH");
 					m_Attack->Play(m_AttackPosition);
 					m_CooldownTimer.SetTime(m_Attack->GetCharaCooldown(), true);
@@ -110,7 +141,7 @@ namespace basecross {
 			}
 		}
 		else {
-			if (m_CooldownTimer.UpdateTimer()) {
+			if (m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 				if (LerpRotatePlayer(direction)) {
 					m_Enemy->ChangeState<BossHostility>();
 				}
@@ -152,7 +183,7 @@ namespace basecross {
 					m_FinishedForward = m_Enemy->GetForward();
 					m_Enemy->SetAnimation(L"Missile_Finish");
 				}
-				else if (m_ReadyTimer.UpdateTimer() && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
+				else if (m_ReadyTimer.UpdateTimer(GameManager::Instance()->GetTimeRate()) && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
 					m_Attack->Play(position + Vec3(0, m_Enemy->GetScale().y / 2.0f, 0.0f));
 					m_Enemy->SetAnimation(L"Missile");
 				}
@@ -174,6 +205,53 @@ namespace basecross {
 		}
 	}
 	void BossGun::Exit()
+	{
+
+	}
+
+	void BossShakeOff::Enter()
+	{
+		EnemyState::Enter();
+		//m_Attack = m_Enemy->m_Missile;
+
+	}
+	void BossShakeOff::Execute()
+	{
+		Vec3 position = m_Enemy->GetPosition();
+		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
+
+		Vec3 direction = intruderPosition - position;
+		float distance = direction.length();
+		direction = direction.normalize();
+
+		if (!m_IsFinish) {
+			if (m_Attack->IsInRange(distance) && !m_IsReady) {
+				m_Enemy->SetAnimation(L"ShakeOff_First");
+				Ready(0.5f * m_Enemy->GetMotionRate());
+			}
+			if (m_IsReady) {
+				if (m_ReadyTimer.UpdateTimer(GameManager::Instance()->GetTimeRate()) && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
+					m_Attack->Play(position + Vec3(0, m_Enemy->GetScale().y / 2.0f, 0.0f));
+					m_Enemy->SetAnimation(L"ShakeOff");
+				}
+			}
+			else {
+				m_Enemy->Move(direction);
+			}
+			float rotationY = atan2f(direction.x, direction.z);
+			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
+		}
+		else {
+
+			if (m_Enemy->GetAnimationFinish()) {
+				m_Enemy->SetAnimation(L"Idle");
+			}
+			if (m_Enemy->GetCurrentAnimationKey() == L"Idle" && LerpRotatePlayer(direction)) {
+				m_Enemy->ChangeState<BossHostility>();
+			}
+		}
+	}
+	void BossShakeOff::Exit()
 	{
 
 	}

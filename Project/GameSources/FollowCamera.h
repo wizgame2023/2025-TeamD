@@ -50,6 +50,10 @@ namespace basecross {
 		float m_Angle;
 		float m_RotateSpeed;
 		bool m_HitCollision;
+		bool m_IsShaking;      // カメラがシェイク中かどうか
+		float m_Duration;         // シェイク継続時間（残り）
+		float m_InitialDuration;  // シェイク開始時の時間（for 減衰計算）
+		float m_Magnitude;        // 最大振幅（単位：画素やワールド単位）
 		shared_ptr<Stage>m_Stage;
 		
 		int m_Width;
