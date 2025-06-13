@@ -327,7 +327,6 @@ namespace basecross {
 		AddSprite(gameOverSprite);
 		gameOverSprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(150.0f, -180.0f, 0.0f), Vec2(280, 130));
 		AddSprite(gameOverSprite);
-
 		//タイトル
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-240.0f, -250.0f, 0.0f), Vec2(70, 90),
 			[](shared_ptr<ObjectInterface> object) {
