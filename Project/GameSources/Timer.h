@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief タイマーの実装
+@brief キャラクターなど
 */
 
 #pragma once

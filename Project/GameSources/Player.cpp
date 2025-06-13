@@ -410,6 +410,7 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
+
 		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
 		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		ptrDraw->SetOwnShadowActive(false);
