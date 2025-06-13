@@ -33,7 +33,7 @@ namespace PhysicsEffects {
 PfxInt32 checkFlagsForConvexMesh(const PfxCreateConvexMeshParam& param)
 {
 	//	check flag ranged
-	const PfxUInt32 all_flag =	~(	SCE_PFX_MESH_FLAG_NORMAL_FLIP|
+	const PfxUInt32 all_flag =	â€¾(	SCE_PFX_MESH_FLAG_NORMAL_FLIP|
 									SCE_PFX_MESH_FLAG_16BIT_INDEX|
 									SCE_PFX_MESH_FLAG_32BIT_INDEX|
 									SCE_PFX_MESH_FLAG_AUTO_ELIMINATION
@@ -99,7 +99,7 @@ PfxUInt32 checkLargeMeshParams(const PfxCreateLargeTriMeshParam &param)
 			{
 				if (param.flag & SCE_PFX_MESH_FLAG_OUTPUT_INFO)
 				{
-					SCE_PFX_PRINTF("found an invalid index while creating largemsh\n");
+					SCE_PFX_PRINTF("found an invalid index while creating largemshÂ¥n");
 				}
 				return SCE_PFX_ERR_OUT_OF_RANGE_VERTEX;
 			}
@@ -111,7 +111,7 @@ PfxUInt32 checkLargeMeshParams(const PfxCreateLargeTriMeshParam &param)
 	{
 		if (param.flag & SCE_PFX_MESH_FLAG_OUTPUT_INFO)
 		{
-			SCE_PFX_PRINTF("found an exceeding the max number of vertice swhile creating largemsh\n");
+			SCE_PFX_PRINTF("found an exceeding the max number of vertice swhile creating largemshÂ¥n");
 		}
 		return SCE_PFX_ERR_OUT_OF_RANGE_VERTEX;
 	}
@@ -165,7 +165,7 @@ PfxInt32 checkFlagsForLargeTriMesh(const PfxCreateLargeTriMeshParam& param)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// “ÊƒƒbƒVƒ…ì¬‚Ég—p‚·‚éŠÖ”
+// å‡¸ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆæ™‚ã«ä½¿ç”¨ã™ã‚‹é–¢æ•°
 
 PfxInt32 pfxCreateConvexMesh(PfxConvexMesh &convex,const PfxCreateConvexMeshParam &param)
 {
@@ -275,7 +275,7 @@ void pfxReleaseConvexMesh(PfxConvexMesh &cmesh)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// ƒ‰[ƒWƒƒbƒVƒ…ì¬‚Ég—p‚·‚é\‘¢‘Ì
+// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆæ™‚ã«ä½¿ç”¨ã™ã‚‹æ§‹é€ ä½“
 
 struct PfxMcVert {
 	PfxInt16 i;
@@ -286,11 +286,11 @@ struct PfxMcVert {
 
 struct PfxMcEdge {
 	PfxUInt32 vertId[2];  // 
-	PfxUInt32 edgeId[2];  // –Ê‚É‚¨‚¯‚éƒGƒbƒW‚ÌƒCƒ“ƒfƒbƒNƒX
+	PfxUInt32 edgeId[2];  // é¢ã«ãŠã‘ã‚‹ã‚¨ãƒƒã‚¸ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 	PfxUInt32 facetId[2]; // 
 	PfxUInt32 numFacets;
-	PfxUInt32 angleType;  // •Ó‚Ìí—Ş
-	PfxFloat angle;		 // •Ó‚ÌŠp“x
+	PfxUInt32 angleType;  // è¾ºã®ç¨®é¡
+	PfxFloat angle;		 // è¾ºã®è§’åº¦
 	PfxMcEdge *next;
 	
 	PfxBool isAcuteAngle()
@@ -302,10 +302,10 @@ struct PfxMcEdge {
 struct PfxMcFacet {
 	PfxMcVert *v[3];
 	PfxMcEdge *e[3];
-	PfxInt32 neighbor[3];	// —×Ú–Ê‚ÌƒCƒ“ƒfƒbƒNƒX
-	PfxInt32 neighborEdgeId[3];	// —×Ú–Ê‚ÌƒGƒbƒWƒCƒ“ƒfƒbƒNƒX
-	PfxFloat thickness;	// Œú‚İ
-	PfxFloat area;		// –ÊÏ
+	PfxInt32 neighbor[3];	// éš£æ¥é¢ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	PfxInt32 neighborEdgeId[3];	// éš£æ¥é¢ã®ã‚¨ãƒƒã‚¸ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+	PfxFloat thickness;	// åšã¿
+	PfxFloat area;		// é¢ç©
 	PfxBool obsolete;
 	SCE_PFX_PADDING(1,3)
 	PfxUInt32  userData;
@@ -388,7 +388,7 @@ struct PfxMcBvhNode {
 
 
 ///////////////////////////////////////////////////////////////////////////////
-// ƒ‰[ƒWƒƒbƒVƒ…ì¬‚Ég—p‚·‚é•â•ŠÖ”
+// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆæ™‚ã«ä½¿ç”¨ã™ã‚‹è£œåŠ©é–¢æ•°
 
 static
 bool intersect(const PfxMcFacet &facetA,const PfxMcFacet &facetB,PfxFloat &closestDistance)
@@ -407,9 +407,9 @@ bool intersect(const PfxMcFacet &facetA,const PfxMcFacet &facetB,PfxFloat &close
 		facetB.v[2]->coord
 	};
 
-	// –ÊB‚ª–ÊA‚ÌŒú‚İ‚ğl—¶‚µ‚½”ÍˆÍ“à‚É—L‚é‚©‚Ç‚¤‚©ƒ`ƒFƒbƒN
+	// é¢BãŒé¢Aã®åšã¿ã‚’è€ƒæ…®ã—ãŸç¯„å›²å†…ã«æœ‰ã‚‹ã‹ã©ã†ã‹ãƒã‚§ãƒƒã‚¯
 
-	// ã‰º–Ê
+	// ä¸Šä¸‹é¢
 	{
 		PfxPlane planeA(facetA.n,pA[0]);
 		PfxFloat dmin = SCE_PFX_FLT_MAX;
@@ -422,13 +422,13 @@ bool intersect(const PfxMcFacet &facetA,const PfxMcFacet &facetB,PfxFloat &close
 		
 		if(dmin > -epsilon || dmax < -facetA.thickness) return false;
 		
-		// –ÊA‚Æ–ÊB‚ÌÅ‹ßÚ‹——£
+		// é¢Aã¨é¢Bã®æœ€è¿‘æ¥è·é›¢
 		if(dmax > 0.0f) {
-			// –ÊA,B‚ÍŒğ·
+			// é¢A,Bã¯äº¤å·®
 			return false;
 		}
 		else if(dmax > -epsilon) {
-			// —×Ú–Ê
+			// éš£æ¥é¢
 			return false;
 		}
 		else {
@@ -436,7 +436,7 @@ bool intersect(const PfxMcFacet &facetA,const PfxMcFacet &facetB,PfxFloat &close
 		}
 	}
 	
-	// ‘¤–Ê
+	// å´é¢
 	for(int p=0;p<3;p++) {
 		PfxVector3 sideVec = normalize(cross((pA[(p+1)%3]-pA[p]),facetA.n));
 		PfxPlane planeA(sideVec,pA[p]);
@@ -462,7 +462,7 @@ PfxInt32 divideMeshes(
 {
 	PfxFloat halfLimit = length(half) * islandsRatio;
 	
-	// ŠÜ‚Ü‚ê‚é–Ê”‚ª‹K’è’lˆÈ‰º‚Å‚ ‚ê‚ÎAƒAƒCƒ‰ƒ“ƒh‚É“o˜^
+	// å«ã¾ã‚Œã‚‹é¢æ•°ãŒè¦å®šå€¤ä»¥ä¸‹ã§ã‚ã‚Œã°ã€ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã«ç™»éŒ²
 	if((facets.size() <= SCE_PFX_NUMMESHFACETS && length(half) < halfLimit) || 
 		(facets.size() <= numFacetsLimit ) ) {
 		if(islands.numIslands >= SCE_PFX_MAX_LARGETRIMESH_ISLANDS) {
@@ -474,7 +474,7 @@ PfxInt32 divideMeshes(
 		}
 	}
 
-	// ‚³‚ç‚É•ªŠ„
+	// ã•ã‚‰ã«åˆ†å‰²
 	PfxVector3 newCenter0,newCenter1;
 	PfxVector3 newHalf0,newHalf1;
 	PfxArray<PfxMcFacetPtr> newFacets0(facets.size());
@@ -482,7 +482,7 @@ PfxInt32 divideMeshes(
 	
 	if(!(newFacets0.ptr()&&newFacets1.ptr())) return SCE_PFX_ERR_OUT_OF_BUFFER;
 	
-	// Å‚à“KØ‚Æv‚í‚ê‚é•ª—£²‚ğ’T‚·
+	// æœ€ã‚‚é©åˆ‡ã¨æ€ã‚ã‚Œã‚‹åˆ†é›¢è»¸ã‚’æ¢ã™
 	int divAxis;
 	{
 		if(half[0] > half[1]) {
@@ -509,7 +509,7 @@ PfxInt32 divideMeshes(
 		}
 	}
 
-	// ’†S‚Å•ªŠ„‚µ‚ÄA‚³‚ç‚ÉÄ‹A“I‚Éˆ—‚ğ‘±‚¯‚é
+	// ä¸­å¿ƒã§åˆ†å‰²ã—ã¦ã€ã•ã‚‰ã«å†å¸°çš„ã«å‡¦ç†ã‚’ç¶šã‘ã‚‹
 	{
 		PfxVector3 movCenter(0.0f);
 		movCenter[divAxis] = 0.5f*half[divAxis];
@@ -521,19 +521,19 @@ PfxInt32 divideMeshes(
 		newHalf1 = newHalf0;
 	}
 	
-	// V‚µ‚¢AABB‚ÉŠÜ‚Ü‚ê‚é–Ê‚ğ‚»‚ê‚¼‚ê‚Ì—Ìˆæ‚É•ª”z
+	// æ–°ã—ã„AABBã«å«ã¾ã‚Œã‚‹é¢ã‚’ãã‚Œãã‚Œã®é ˜åŸŸã«åˆ†é…
 	for(PfxUInt32 f=0;f<facets.size();f++) {
-		// –Ê‚ÌAABB
+		// é¢ã®AABB
 		PfxVector3 facetCenter = (facets[f]->aabbMin + facets[f]->aabbMax) * 0.5f;
 		PfxVector3 facetHalf = (facets[f]->aabbMax - facets[f]->aabbMin) * 0.5f;
 		
-		// AABB”»’è
+		// AABBåˆ¤å®š
 		if(!(pfxAbsf(newCenter0[divAxis]-facetCenter[divAxis]) > (newHalf0[divAxis]+facetHalf[divAxis]))) {
-			// ‚±‚Ì–Ê‚ÍAABB0‚É“o˜^
+			// ã“ã®é¢ã¯AABB0ã«ç™»éŒ²
 			newFacets0.push(facets[f]);
 		}
 		else {
-			// ‚±‚Ì–Ê‚ÍAABB1‚É“o˜^
+			// ã“ã®é¢ã¯AABB1ã«ç™»éŒ²
 			newFacets1.push(facets[f]);
 		}
 	}
@@ -589,7 +589,7 @@ PfxInt32 countIsland(const PfxArray<PfxMcFacetPtr> &facets,PfxUInt32 &numEdges,P
 					return SCE_PFX_ERR_OUT_OF_RANGE_VERTEX;
 				}
                 vertsFlag[idx>>5] |= mask;
-				vert->flag = vcnt++;// ƒAƒCƒ‰ƒ“ƒh’PˆÊ‚Ì’¸“_ƒCƒ“ƒfƒbƒNƒX
+				vert->flag = vcnt++;// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰å˜ä½ã®é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 			}
 		}
 		
@@ -676,7 +676,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 				}
 				vertsFlag[idx>>5] |= mask;
 				SCE_PFX_ALWAYS_ASSERT(vcnt < island.m_numVerts);
-				vert->flag = vcnt++;// ƒAƒCƒ‰ƒ“ƒh’PˆÊ‚Ì’¸“_ƒCƒ“ƒfƒbƒNƒX
+				vert->flag = vcnt++;// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰å˜ä½ã®é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 				island.m_verts[vert->flag] = (PfxFloat3)vert->coord;
 			}
 
@@ -707,7 +707,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 					
 					PfxEdge edge;
 					edge.m_angleType = iEdge[v]->angleType;
-					// Œú‚İŠp‚Ìİ’è 0`ƒÎ‚ğ0`255‚Ì®”’l‚É•ÏŠ·‚µ‚ÄŠi”[
+					// åšã¿è§’ã®è¨­å®š 0ã€œÏ€ã‚’0ã€œ255ã®æ•´æ•°å€¤ã«å¤‰æ›ã—ã¦æ ¼ç´
 					if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS)
 						edge.m_tilt = (PfxUInt8)((iEdge[v]->angle/(0.5f*SCE_PFX_PI))*255.0f);
 					edge.m_vertId[0] = viMin;
@@ -744,7 +744,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 	
 	if(facets.empty()) return SCE_PFX_OK;
 	
-	// BVH‚Ì\’z
+	// BVHã®æ§‹ç¯‰
 	{
 		PfxMcBvhNode *bvhNodes = (PfxMcBvhNode*)SCE_PFX_UTIL_ALLOC(16,sizeof(PfxMcBvhNode)*(island.m_numFacets*2-1));
 		if(!bvhNodes) return SCE_PFX_ERR_OUT_OF_BUFFER;
@@ -752,7 +752,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 		PfxArray<PfxUInt32> bvhNodeIndices(island.m_numFacets*2-1);
 		if(!bvhNodeIndices.ptr()) return SCE_PFX_ERR_OUT_OF_BUFFER;
 
-		// AABB”z—ñ‚ğì¬‚·‚é
+		// AABBé…åˆ—ã‚’ä½œæˆã™ã‚‹
 		PfxUInt32 numBvhNodes = facets.size();
 		for(PfxUInt32 i=0;i<numBvhNodes;i++) {
 			bvhNodes[i].aabbMin = facets[i]->aabbMin;
@@ -763,9 +763,9 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 			bvhNodeIndices.push(i);
 		}
 
-		// Å‰º‘w‚©‚ç‡‚ÉÅ‚àAABBƒTƒCƒY‚Ì¬‚³‚­‚È‚é‘g‚İ‡‚í‚¹‚ğŒŸo‚·‚é ¦O(n^2)
+		// æœ€ä¸‹å±¤ã‹ã‚‰é †ã«æœ€ã‚‚AABBã‚µã‚¤ã‚ºã®å°ã•ããªã‚‹çµ„ã¿åˆã‚ã›ã‚’æ¤œå‡ºã™ã‚‹ â€»O(n^2)
 		while(bvhNodeIndices.size() > 1) {
-			// AABB‚ªÅ¬‚Æ‚È‚éƒyƒA‚ğŒŸo
+			// AABBãŒæœ€å°ã¨ãªã‚‹ãƒšã‚¢ã‚’æ¤œå‡º
 			PfxUInt32 i=0,j=0;
 			{
 				PfxUInt32 pMin=0,qMin=0;
@@ -791,7 +791,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 				SCE_PFX_ALWAYS_ASSERT(i!=j);
 			}
 
-			// V‚µ‚¢ƒm[ƒh‚ğì¬
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ä½œæˆ
 			PfxUInt32 newId = numBvhNodes++;
 			PfxMcBvhNode &newNode = bvhNodes[newId];
 			PfxMcBvhNode &leftNode = bvhNodes[bvhNodeIndices[i]];
@@ -802,22 +802,22 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 			newNode.left = &leftNode;
 			newNode.right = &rightNode;
 
-			// ƒyƒA‚Ìƒm[ƒh‚ğœ‹
+			// ãƒšã‚¢ã®ãƒãƒ¼ãƒ‰ã‚’é™¤å»
 			bvhNodeIndices.remove(SCE_PFX_MAX(i,j));
 			bvhNodeIndices.remove(SCE_PFX_MIN(i,j));
 
-			// V‚µ‚¢ƒm[ƒh‚ğ“o˜^
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ç™»éŒ²
 			bvhNodeIndices.push(newId);
 		}
 
 		//PfxMcBvhNode *root = &bvhNodes[bvhNodeIndices[0]];
 		//printBvh(root);
 
-		//SCE_PFX_PRINTF("numFacets %d numBvhNodes %d\n",island.m_numFacets,numBvhNodes);
+		//SCE_PFX_PRINTF("numFacets %d numBvhNodes %dÂ¥n",island.m_numFacets,numBvhNodes);
 		
 		island.m_bvhRootId = bvhNodeIndices[0];
 		
-		// BVH‚ğƒGƒ“ƒR[ƒh
+		// BVHã‚’ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰
 		for(PfxUInt32 i=0;i<numBvhNodes;i++) {
 			PfxMcBvhNode &node = bvhNodes[i];
 
@@ -847,7 +847,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 		SCE_PFX_UTIL_FREE(bvhNodes);
 	}
 	
-	// ƒAƒCƒ‰ƒ“ƒhì¬
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ä½œæˆ
 	{
 		PfxUInt32 vertsFlag[(SCE_PFX_MAX_LARGETRIMESH_ISLANDS*SCE_PFX_NUMMESHFACETS*3+31)/32];
 		memset(vertsFlag,0,sizeof(PfxUInt32)*((SCE_PFX_MAX_LARGETRIMESH_ISLANDS*SCE_PFX_NUMMESHFACETS*3+31)/32));
@@ -887,7 +887,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 					}
 					vertsFlag[idx>>5] |= mask;
 					SCE_PFX_ALWAYS_ASSERT(vcnt < island.m_numVerts);
-					vert->flag = vcnt++;// ƒAƒCƒ‰ƒ“ƒh’PˆÊ‚Ì’¸“_ƒCƒ“ƒfƒbƒNƒX
+					vert->flag = vcnt++;// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰å˜ä½ã®é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 					island.m_verts[vert->flag] = (PfxFloat3)vert->coord;
 				}
 
@@ -918,7 +918,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxExpandedTriMesh
 						
 						PfxEdge edge;
 						edge.m_angleType = iEdge[v]->angleType;
-						// Œú‚İŠp‚Ìİ’è 0`ƒÎ‚ğ0`255‚Ì®”’l‚É•ÏŠ·‚µ‚ÄŠi”[
+						// åšã¿è§’ã®è¨­å®š 0ã€œÏ€ã‚’0ã€œ255ã®æ•´æ•°å€¤ã«å¤‰æ›ã—ã¦æ ¼ç´
 						if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS)
 							edge.m_tilt = (PfxUInt8)((iEdge[v]->angle/(0.5f*SCE_PFX_PI))*255.0f);
 						edge.m_vertId[0] = viMin;
@@ -1002,13 +1002,13 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 				}
 				vertsFlag[idx>>5] |= mask;
 				SCE_PFX_ALWAYS_ASSERT(vcnt < island.m_numVerts);
-				vert->flag = vcnt++;// ƒAƒCƒ‰ƒ“ƒh’PˆÊ‚Ì’¸“_ƒCƒ“ƒfƒbƒNƒX
+				vert->flag = vcnt++;// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰å˜ä½ã®é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 				island.m_verts[vert->flag] = lmesh.quantizePosition(vert->coord);
 			}
 
 			oFacet.m_vertIds[v] = (PfxUInt8)vert->flag;
 		}
-		//—Êq‰»Œã‚Ì–ÊÏƒ`ƒFƒbƒN
+		//é‡å­åŒ–å¾Œã®é¢ç©ãƒã‚§ãƒƒã‚¯
 		const PfxFloat epsilon = 0.00001f;
 		PfxVector3 tp0 = lmesh.decodePosition(island.m_verts[oFacet.m_vertIds[0]]);
 		PfxVector3 tp1 = lmesh.decodePosition(island.m_verts[oFacet.m_vertIds[1]]);
@@ -1043,7 +1043,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 					
 					PfxEdge edge;
 					edge.m_angleType = iEdge[v]->angleType;
-					// Œú‚İŠp‚Ìİ’è 0`ƒÎ‚ğ0`255‚Ì®”’l‚É•ÏŠ·‚µ‚ÄŠi”[
+					// åšã¿è§’ã®è¨­å®š 0ã€œÏ€ã‚’0ã€œ255ã®æ•´æ•°å€¤ã«å¤‰æ›ã—ã¦æ ¼ç´
 					if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS)
 						edge.m_tilt = (PfxUInt8)((iEdge[v]->angle/(0.5f*SCE_PFX_PI))*255.0f);
 					edge.m_vertId[0] = viMin;
@@ -1100,7 +1100,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 	
 	if(facets.empty()) return SCE_PFX_OK;
 	
-	// BVH‚Ì\’z
+	// BVHã®æ§‹ç¯‰
 	{
 		PfxMcBvhNode *bvhNodes = (PfxMcBvhNode*)SCE_PFX_UTIL_ALLOC(16,sizeof(PfxMcBvhNode)*(island.m_numFacets*2-1));
 		if(!bvhNodes) return SCE_PFX_ERR_OUT_OF_BUFFER;
@@ -1108,7 +1108,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 		PfxArray<PfxUInt32> bvhNodeIndices(island.m_numFacets*2-1);
 		if(!bvhNodeIndices.ptr()) return SCE_PFX_ERR_OUT_OF_BUFFER;
 
-		// AABB”z—ñ‚ğì¬‚·‚é
+		// AABBé…åˆ—ã‚’ä½œæˆã™ã‚‹
 		PfxUInt32 numBvhNodes = facets.size();
 		for(PfxUInt32 i=0;i<numBvhNodes;i++) {
 			bvhNodes[i].aabbMin = facets[i]->aabbMin;
@@ -1119,9 +1119,9 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 			bvhNodeIndices.push(i);
 		}
 
-		// Å‰º‘w‚©‚ç‡‚ÉÅ‚àAABBƒTƒCƒY‚Ì¬‚³‚­‚È‚é‘g‚İ‡‚í‚¹‚ğŒŸo‚·‚é ¦O(n^2)
+		// æœ€ä¸‹å±¤ã‹ã‚‰é †ã«æœ€ã‚‚AABBã‚µã‚¤ã‚ºã®å°ã•ããªã‚‹çµ„ã¿åˆã‚ã›ã‚’æ¤œå‡ºã™ã‚‹ â€»O(n^2)
 		while(bvhNodeIndices.size() > 1) {
-			// AABB‚ªÅ¬‚Æ‚È‚éƒyƒA‚ğŒŸo
+			// AABBãŒæœ€å°ã¨ãªã‚‹ãƒšã‚¢ã‚’æ¤œå‡º
 			PfxUInt32 i=0,j=0;
 			{
 				PfxUInt32 pMin=0,qMin=0;
@@ -1147,7 +1147,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 				SCE_PFX_ALWAYS_ASSERT(i!=j);
 			}
 
-			// V‚µ‚¢ƒm[ƒh‚ğì¬
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ä½œæˆ
 			PfxUInt32 newId = numBvhNodes++;
 			PfxMcBvhNode &newNode = bvhNodes[newId];
 			PfxMcBvhNode &leftNode = bvhNodes[bvhNodeIndices[i]];
@@ -1158,22 +1158,22 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 			newNode.left = &leftNode;
 			newNode.right = &rightNode;
 
-			// ƒyƒA‚Ìƒm[ƒh‚ğœ‹
+			// ãƒšã‚¢ã®ãƒãƒ¼ãƒ‰ã‚’é™¤å»
 			bvhNodeIndices.remove(SCE_PFX_MAX(i,j));
 			bvhNodeIndices.remove(SCE_PFX_MIN(i,j));
 
-			// V‚µ‚¢ƒm[ƒh‚ğ“o˜^
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ç™»éŒ²
 			bvhNodeIndices.push(newId);
 		}
 
 		//PfxMcBvhNode *root = &bvhNodes[bvhNodeIndices[0]];
 		//printBvh(root);
 
-		//SCE_PFX_PRINTF("numFacets %d numBvhNodes %d\n",island.m_numFacets,numBvhNodes);
+		//SCE_PFX_PRINTF("numFacets %d numBvhNodes %dÂ¥n",island.m_numFacets,numBvhNodes);
 		
 		island.m_bvhRootId = bvhNodeIndices[0];
 		
-		// BVH‚ğƒGƒ“ƒR[ƒh
+		// BVHã‚’ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰
 		for(PfxUInt32 i=0;i<numBvhNodes;i++) {
 			PfxMcBvhNode &node = bvhNodes[i];
 
@@ -1207,7 +1207,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 		SCE_PFX_UTIL_FREE(bvhNodes);
 	}
 	
-	// ƒAƒCƒ‰ƒ“ƒhì¬
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ä½œæˆ
 	{
 		PfxUInt32 vertsFlag[(SCE_PFX_MAX_LARGETRIMESH_ISLANDS*SCE_PFX_NUMMESHFACETS*3+31)/32];
 		memset(vertsFlag,0,sizeof(PfxUInt32)*((SCE_PFX_MAX_LARGETRIMESH_ISLANDS*SCE_PFX_NUMMESHFACETS*3+31)/32));
@@ -1247,13 +1247,13 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 					}
 					vertsFlag[idx>>5] |= mask;
 					SCE_PFX_ALWAYS_ASSERT(vcnt < island.m_numVerts);
-					vert->flag = vcnt++;// ƒAƒCƒ‰ƒ“ƒh’PˆÊ‚Ì’¸“_ƒCƒ“ƒfƒbƒNƒX
+					vert->flag = vcnt++;// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰å˜ä½ã®é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 					island.m_verts[vert->flag] = lmesh.quantizePosition(vert->coord);
 				}
 
 				oFacet.m_vertIds[v] = (PfxUInt8)vert->flag;
 			}
-			//—Êq‰»Œã‚Ì–ÊÏƒ`ƒFƒbƒN
+			//é‡å­åŒ–å¾Œã®é¢ç©ãƒã‚§ãƒƒã‚¯
 			const PfxFloat epsilon = 0.00001f;
 			PfxVector3 tp0 = lmesh.decodePosition(island.m_verts[oFacet.m_vertIds[0]]);
 			PfxVector3 tp1 = lmesh.decodePosition(island.m_verts[oFacet.m_vertIds[1]]);
@@ -1288,7 +1288,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 						
 						PfxEdge edge;
 						edge.m_angleType = iEdge[v]->angleType;
-						// Œú‚İŠp‚Ìİ’è 0`ƒÎ‚ğ0`255‚Ì®”’l‚É•ÏŠ·‚µ‚ÄŠi”[
+						// åšã¿è§’ã®è¨­å®š 0ã€œÏ€ã‚’0ã€œ255ã®æ•´æ•°å€¤ã«å¤‰æ›ã—ã¦æ ¼ç´
 						if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS)
 							edge.m_tilt = (PfxUInt8)((iEdge[v]->angle/(0.5f*SCE_PFX_PI))*255.0f);
 						edge.m_vertId[0] = viMin;
@@ -1345,7 +1345,7 @@ PfxInt32 submitIsland(const PfxCreateLargeTriMeshParam &param,PfxQuantizedTriMes
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// ƒ‰[ƒWƒƒbƒVƒ…
+// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥
 
 PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMeshParam &param)
 {
@@ -1386,16 +1386,16 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 	}
 	const PfxFloat epsilon = 0.00001f;
 	
-	PfxArray<PfxMcVert>  vertList(param.numVerts);		// ’¸“_”z—ñ
-	PfxArray<PfxMcFacet> facetList(param.numTriangles);	// –Ê”z—ñ
-	PfxArray<PfxMcEdge>  edgeList(param.numTriangles*3);// ƒGƒbƒW”z—ñ
+	PfxArray<PfxMcVert>  vertList(param.numVerts);		// é ‚ç‚¹é…åˆ—
+	PfxArray<PfxMcFacet> facetList(param.numTriangles);	// é¢é…åˆ—
+	PfxArray<PfxMcEdge>  edgeList(param.numTriangles*3);// ã‚¨ãƒƒã‚¸é…åˆ—
 	PfxArray<PfxMcEdge*> edgeHead(param.numTriangles*3);
 	
 	if(!(vertList.ptr()&&facetList.ptr()&&edgeList.ptr()&&edgeHead.ptr())) {
 		return SCE_PFX_ERR_OUT_OF_BUFFER;
 	}
 	
-	//J ’¸“_”z—ñì¬
+	//J é ‚ç‚¹é…åˆ—ä½œæˆ
 	for(PfxUInt32 i=0;i<param.numVerts;i++) {
 		PfxFloat *vtx = (PfxFloat*)((uintptr_t)param.verts + param.vertexStrideBytes * i);
 		PfxMcVert mcv;
@@ -1405,7 +1405,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		vertList.push(mcv);
 	}
 	
-	// –Ê”z—ñì¬
+	// é¢é…åˆ—ä½œæˆ
 	for(PfxUInt32 i=0;i<param.numTriangles;i++) {
 		void *ids = (void*)((uintptr_t)param.
 							triangles + param.triangleStrideBytes * i);
@@ -1446,7 +1446,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			vertList[idx[2]].coord,
 		};
 
-		// –ÊÏ‚ª‚O‚Ì–Ê‚ğ”rœ
+		// é¢ç©ãŒï¼ã®é¢ã‚’æ’é™¤
 		PfxFloat area = lengthSqr(cross(pnts[1]-pnts[0],pnts[2]-pnts[0]));
 
 		if((param.flag & SCE_PFX_MESH_FLAG_AUTO_ELIMINATION) && area < epsilon) {
@@ -1473,7 +1473,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 
 	{
 		PfxArray<PfxMcTriList> triEntry(numTriangles*3);
-		PfxArray<PfxMcTriList*> triHead(param.numVerts);	// ’¸“_‚©‚ç–Ê‚Ö‚ÌQÆƒŠƒXƒg
+		PfxArray<PfxMcTriList*> triHead(param.numVerts);	// é ‚ç‚¹ã‹ã‚‰é¢ã¸ã®å‚ç…§ãƒªã‚¹ãƒˆ
 		PfxInt32 cnt = 0;
 		
 		if(!(triEntry.ptr()&&triHead.ptr())) {
@@ -1484,7 +1484,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		triEntry.assign(numTriangles*3,PfxMcTriList());
 		triHead.assign(param.numVerts,nl);//	the capacity of trihead should be "numVerts", beacause there will be the vertices that are not held by the facets.
 		
-		// ’¸“_‚©‚ç–Ê‚Ö‚ÌQÆƒŠƒXƒg‚ğì¬
+		// é ‚ç‚¹ã‹ã‚‰é¢ã¸ã®å‚ç…§ãƒªã‚¹ãƒˆã‚’ä½œæˆ
 		for(PfxUInt32 i=0;i<numTriangles;i++) {
 			for(PfxUInt32 v=0;v<3;v++) {
 				PfxUInt32 vertId = facetList[i].v[v]->i;
@@ -1494,7 +1494,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			}
 		}
 		
-		// “¯ˆê’¸“_‚ğ‚Ü‚Æ‚ß‚é
+		// åŒä¸€é ‚ç‚¹ã‚’ã¾ã¨ã‚ã‚‹
 		if(param.flag & SCE_PFX_MESH_FLAG_AUTO_ELIMINATION) {
 			for(PfxUInt32 i=0;i<param.numVerts;i++) {
 				if(vertList[i].flag == 1) continue;
@@ -1504,14 +1504,14 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 					PfxFloat lenSqr = lengthSqr(vertList[i].coord-vertList[j].coord);
 					
 					if(lenSqr < epsilon) {
-						//SCE_PFX_PRINTF("same position %d,%d\n",i,j);
-						vertList[j].flag = 1; // “¯ˆê“_‚È‚Ì‚Åƒtƒ‰ƒO‚ğ—§‚Ä‚é
+						//SCE_PFX_PRINTF("same position %d,%dÂ¥n",i,j);
+						vertList[j].flag = 1; // åŒä¸€ç‚¹ãªã®ã§ãƒ•ãƒ©ã‚°ã‚’ç«‹ã¦ã‚‹
 						if (triHead[j])//	this is needed beacause if there will be the vertices that are not heald by the facets.
 						{
 							for(PfxMcTriList *f=triHead[j];f!=NULL;f=f->next) {
 								for(PfxInt32 k=0;k<3;k++) {
 									if(f->facet->v[k] == &vertList[j]) {
-										f->facet->v[k] = &vertList[i]; // ’¸“_‚ğ•t‚¯‘Ö‚¦‚é
+										f->facet->v[k] = &vertList[i]; // é ‚ç‚¹ã‚’ä»˜ã‘æ›¿ãˆã‚‹
 										break;
 									}
 								}
@@ -1523,12 +1523,12 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 
-	// Ú‘±–ÊŠÔ‚ÌŠp“x‚ğZo‚µ‚Ä–Ê‚ÉƒZƒbƒg
+	// æ¥ç¶šé¢é–“ã®è§’åº¦ã‚’ç®—å‡ºã—ã¦é¢ã«ã‚»ãƒƒãƒˆ
 	PfxMcEdge *nl = NULL;
 	edgeHead.assign(numTriangles*3,nl);
 	edgeList.assign(numTriangles*3,PfxMcEdge());
 	
-	// ƒGƒbƒW”z—ñ‚Ìì¬
+	// ã‚¨ãƒƒã‚¸é…åˆ—ã®ä½œæˆ
 	PfxUInt32 ecnt = 0;
 	for(PfxUInt32 i=0;i<numTriangles;i++) {
 		PfxMcFacet &f = facetList[i];
@@ -1558,9 +1558,9 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				if(e->vertId[0] == viMin && e->vertId[1] == viMax) {
 					if(e->numFacets > 1) {
 						// return SCE_PFX_ERR_EDGE_SHARED_BY_3;
-						// 3‚ÂˆÈã‚Ì–Ê‚ğ‹¤—LË3‚Â–ÚˆÈ~‚Í–³‹
+						// 3ã¤ä»¥ä¸Šã®é¢ã‚’å…±æœ‰â‡’3ã¤ç›®ä»¥é™ã¯ç„¡è¦–
 						if(param.flag & SCE_PFX_MESH_FLAG_OUTPUT_INFO) {
-							SCE_PFX_PRINTF("Warning : An edge shared by over 2 triangles is invalid.\n");
+							SCE_PFX_PRINTF("Warning : An edge shared by over 2 triangles is invalid.Â¥n");
 							f.obsolete = true;
 						}
 					}
@@ -1579,7 +1579,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 	
-	// Šp“x‚ğŒvZ
+	// è§’åº¦ã‚’è¨ˆç®—
 	for(PfxUInt32 i=0;i<numTriangles;i++) {
 		PfxMcFacet &facetA = facetList[i];
 		if(facetA.obsolete) continue;
@@ -1607,14 +1607,14 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			PfxMcFacet &ofacet = facetList[link.ofacetId];
 			PfxMcEdge *edge = ofacet.e[link.oedgeId];
 			
-			// facetA‚Æ‚Ì‚È‚·Šp‚ğŒvZ
+			// facetAã¨ã®ãªã™è§’ã‚’è¨ˆç®—
 			{
-				// –Ê‚ÉŠÜ‚Ü‚ê‚é‚ªA‚±‚ÌƒGƒbƒW‚ÉŠÜ‚Ü‚ê‚È‚¢“_
+				// é¢ã«å«ã¾ã‚Œã‚‹ãŒã€ã“ã®ã‚¨ãƒƒã‚¸ã«å«ã¾ã‚Œãªã„ç‚¹
 				PfxUInt32 ids[3] = {2,0,1};
 				PfxVector3 v1 = facetA.v[ids[link.baseEdgeId]]->coord;
 				PfxVector3 v2 = ofacet.v[ids[link.oedgeId]]->coord;
 				
-				// ƒGƒbƒW‚Ì‰š“Ê”»’è
+				// ã‚¨ãƒƒã‚¸ã®å‡¹å‡¸åˆ¤å®š
 				PfxVector3 midPnt = (v1 + v2) * 0.5f;
 				PfxVector3 pntOnEdge = facetA.v[link.baseEdgeId]->coord;
 				
@@ -1628,18 +1628,18 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				else if(chk1 < -epsilon && chk2 < -epsilon) {
 					if(link.ifacetId == i) edge->angleType = SCE_PFX_EDGE_CONVEX;
 
-					// Œú‚İŠp‚Ì”»’è‚Ég‚¤Šp“x‚ğƒZƒbƒg
+					// åšã¿è§’ã®åˆ¤å®šã«ä½¿ã†è§’åº¦ã‚’ã‚»ãƒƒãƒˆ
 					edge->angle = 0.5f*acosf(dot(facetA.n,ofacet.n));
 				}
 				else if(chk1 > epsilon && chk2 > epsilon) {
 					if(link.ifacetId == i) edge->angleType = SCE_PFX_EDGE_CONCAVE;
 
-					// Œú‚İŠp‚Ì”»’è‚Ég‚¤Šp“x‚ğƒZƒbƒg
+					// åšã¿è§’ã®åˆ¤å®šã«ä½¿ã†è§’åº¦ã‚’ã‚»ãƒƒãƒˆ
 					edge->angle = 0.5f*acosf(chk3);
 				}
 			}
 			
-			// Ÿ‚ÌÚ‘±–Ê‚ğ“o˜^iƒRƒƒ“ƒgƒAƒEƒg‚·‚é‚Æ’¸“_‚ÅÚ‘±‚³‚ê‚½–Ê‚ğl—¶‚µ‚È‚¢j
+			// æ¬¡ã®æ¥ç¶šé¢ã‚’ç™»éŒ²ï¼ˆã‚³ãƒ¡ãƒ³ãƒˆã‚¢ã‚¦ãƒˆã™ã‚‹ã¨é ‚ç‚¹ã§æ¥ç¶šã•ã‚ŒãŸé¢ã‚’è€ƒæ…®ã—ãªã„ï¼‰
 			if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS) {
 				PfxInt32 nextEdgeId = (link.oedgeId+1)%3;
 				PfxMcEdge *nextEdge = ofacet.e[nextEdgeId];
@@ -1667,14 +1667,14 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 	
-	// –Ê‚ÉŒú‚İ‚ğ•t‚¯‚é
+	// é¢ã«åšã¿ã‚’ä»˜ã‘ã‚‹
 	if(param.flag & SCE_PFX_MESH_FLAG_AUTO_THICKNESS) {
 		for(PfxUInt32 i=0;i<numTriangles;i++) {
 			PfxMcFacet &facetA = facetList[i];
 			if(facetA.obsolete) continue;
 			
 			for(PfxUInt32 j=0;j<numTriangles;j++) {
-				// —×Ú–Ê‚Í”äŠr‘ÎÛ‚É‚µ‚È‚¢
+				// éš£æ¥é¢ã¯æ¯”è¼ƒå¯¾è±¡ã«ã—ãªã„
 				if( i==j ||
 					j == (PfxInt32)facetA.e[0]->facetId[0] ||
 					j == (PfxInt32)facetA.e[0]->facetId[1] ||
@@ -1688,10 +1688,10 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				PfxMcFacet &facetB = facetList[j];
 				if(facetB.obsolete) continue;
 				
-				// Œğ·”»’è
+				// äº¤å·®åˆ¤å®š
 				PfxFloat closestDistance=0;
 				if(intersect(facetA,facetB,closestDistance)) {
-					// Å‹ßÚ‹——£/2‚ğŒú‚İ‚Æ‚µ‚ÄÌ—p
+					// æœ€è¿‘æ¥è·é›¢/2ã‚’åšã¿ã¨ã—ã¦æ¡ç”¨
 					facetA.thickness = SCE_PFX_MAX(param.defaultThickness,SCE_PFX_MIN(facetA.thickness,closestDistance * 0.5f));
 				}
 			}
@@ -1699,7 +1699,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 
-	// –Ê‚Ì–ÊÏ‚É‚æ‚Á‚Ä‚Rí—Ş‚É•ª—Ş‚·‚é
+	// é¢ã®é¢ç©ã«ã‚ˆã£ã¦ï¼“ç¨®é¡ã«åˆ†é¡ã™ã‚‹
 	PfxFloat areaMin=SCE_PFX_FLT_MAX,areaMax=-SCE_PFX_FLT_MAX;
 	for(PfxUInt32 f=0;f<(PfxUInt32)numTriangles;f++) {
 		PfxMcFacet &facet = facetList[f];
@@ -1717,7 +1717,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		areaMin = SCE_PFX_MIN(areaMin,facet.area);
 		areaMax = SCE_PFX_MAX(areaMax,facet.area);
 		
-		// –Ê‚ÌAABB‚ğZo
+		// é¢ã®AABBã‚’ç®—å‡º
 		facetList[f].aabbMin = minPerElem(pnts[5],minPerElem(pnts[4],minPerElem(pnts[3],minPerElem(pnts[2],minPerElem(pnts[1],pnts[0])))));
 		facetList[f].aabbMax = maxPerElem(pnts[5],maxPerElem(pnts[4],maxPerElem(pnts[3],maxPerElem(pnts[2],maxPerElem(pnts[1],pnts[0])))));
 		
@@ -1753,14 +1753,14 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 
-	// ƒAƒCƒ‰ƒ“ƒh‚Ì”z—ñ
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã®é…åˆ—
 	PfxMcIslands islands;
 	PfxVector3 largeMeshAabbMin(SCE_PFX_FLT_MAX);
 	PfxVector3 largeMeshAabbMax(-SCE_PFX_FLT_MAX);
 
-	// ƒŒƒxƒ‹–ˆ‚ÉƒAƒCƒ‰ƒ“ƒh‚ğì¬
+	// ãƒ¬ãƒ™ãƒ«æ¯ã«ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã‚’ä½œæˆ
 	if(!facetsLv0.empty()) {
-		// ‘S‘Ì‚ÌAABB‚ğ‹‚ß‚é
+		// å…¨ä½“ã®AABBã‚’æ±‚ã‚ã‚‹
 		PfxVector3 aabbMin,aabbMax,center,half;
 		aabbMin = facetsLv0[0]->aabbMin;
 		aabbMax = facetsLv0[0]->aabbMax;
@@ -1771,7 +1771,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		center = ( aabbMin + aabbMax ) * 0.5f;
 		half = ( aabbMax - aabbMin ) * 0.5f;
 
-		// Ä‹A“I‚Éˆ—
+		// å†å¸°çš„ã«å‡¦ç†
 		PfxInt32 ret = divideMeshes(
 			param.numFacetsLimit,param.islandsRatio,
 			islands,
@@ -1785,7 +1785,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 	}
 
 	if(!facetsLv1.empty()) {
-		// ‘S‘Ì‚ÌAABB‚ğ‹‚ß‚é
+		// å…¨ä½“ã®AABBã‚’æ±‚ã‚ã‚‹
 		PfxVector3 aabbMin,aabbMax,center,half;
 		aabbMin =facetsLv1[0]->aabbMin;
 		aabbMax = facetsLv1[0]->aabbMax;
@@ -1796,7 +1796,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		center = ( aabbMin + aabbMax ) * 0.5f;
 		half = ( aabbMax - aabbMin ) * 0.5f;
 
-		// Ä‹A“I‚Éˆ—
+		// å†å¸°çš„ã«å‡¦ç†
 		PfxInt32 ret = divideMeshes(
 			param.numFacetsLimit,param.islandsRatio,
 			islands,
@@ -1810,7 +1810,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 	}
 
 	if(!facetsLv2.empty()) {
-		// ‘S‘Ì‚ÌAABB‚ğ‹‚ß‚é
+		// å…¨ä½“ã®AABBã‚’æ±‚ã‚ã‚‹
 		PfxVector3 aabbMin,aabbMax,center,half;
 		aabbMin =facetsLv2[0]->aabbMin;
 		aabbMax = facetsLv2[0]->aabbMax;
@@ -1821,7 +1821,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		center = ( aabbMin + aabbMax ) * 0.5f;
 		half = ( aabbMax - aabbMin ) * 0.5f;
 
-		// Ä‹A“I‚Éˆ—
+		// å†å¸°çš„ã«å‡¦ç†
 		PfxInt32 ret = divideMeshes(
 			param.numFacetsLimit,param.islandsRatio,
 			islands,
@@ -1834,24 +1834,24 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		largeMeshAabbMax = maxPerElem(largeMeshAabbMax,aabbMax);
 	}
 
-	// ƒ‰[ƒWƒƒbƒVƒ…‚ÌƒIƒtƒZƒbƒg‚ÆƒTƒCƒY‚ğİ’è
+	// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚ªãƒ•ã‚»ãƒƒãƒˆã¨ã‚µã‚¤ã‚ºã‚’è¨­å®š
 	lmesh.m_offset = ( largeMeshAabbMax + largeMeshAabbMin ) * 0.5f;
 	lmesh.m_half = ( largeMeshAabbMax - largeMeshAabbMin ) * 0.5f;
 	lmesh.m_length = length(lmesh.m_half);
 
 	// Check Islands
 	//for(PfxInt32 i=0;i<islands.numIslands;i++) {
-	//	SCE_PFX_PRINTF("island %d\n",i);
+	//	SCE_PFX_PRINTF("island %dÂ¥n",i);
 	//	for(PfxInt32 f=0;f<islands.facetsInIsland[i].size();f++) {
 	//		PfxMcFacet *facet = islands.facetsInIsland[i][f];
-	//		SCE_PFX_PRINTF("   %d %d %d\n",facet->v[0]->i,facet->v[1]->i,facet->v[2]->i);
+	//		SCE_PFX_PRINTF("   %d %d %dÂ¥n",facet->v[0]->i,facet->v[1]->i,facet->v[2]->i);
 	//	}
 	//}
 
 	//	building bv-tree or aabb array
 	if (param.flag & SCE_PFX_MESH_FLAG_USE_BVH)
 	{
-		// BVHƒm[ƒh”z—ñ‚Ìì¬
+		// BVHãƒãƒ¼ãƒ‰é…åˆ—ã®ä½œæˆ
 		PfxMcBvhNode *bvhNodes = (PfxMcBvhNode*)SCE_PFX_UTIL_ALLOC(16,sizeof(PfxMcBvhNode)*(islands.numIslands*2-1));
 		
 		if(!bvhNodes) return SCE_PFX_ERR_OUT_OF_BUFFER;
@@ -1860,7 +1860,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		
 		if(!bvhNodeIndices.ptr()) return SCE_PFX_ERR_OUT_OF_BUFFER;
 		
-		// AABB”z—ñ‚ğì¬‚·‚é
+		// AABBé…åˆ—ã‚’ä½œæˆã™ã‚‹
 		PfxUInt32 numBvhNodes = islands.numIslands;
 		for(PfxUInt32 i=0;i<numBvhNodes;i++) {
 			PfxVector3 aabbMin = islands.facetsInIsland[i][0]->aabbMin;
@@ -1878,9 +1878,9 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			bvhNodeIndices.push(i);
 		}
 
-		// Å‰º‘w‚©‚ç‡‚ÉÅ‚àAABBƒTƒCƒY‚Ì¬‚³‚­‚È‚é‘g‚İ‡‚í‚¹‚ğŒŸo‚·‚é ¦O(n^2)
+		// æœ€ä¸‹å±¤ã‹ã‚‰é †ã«æœ€ã‚‚AABBã‚µã‚¤ã‚ºã®å°ã•ããªã‚‹çµ„ã¿åˆã‚ã›ã‚’æ¤œå‡ºã™ã‚‹ â€»O(n^2)
 		while(bvhNodeIndices.size() > 1) {
-			// AABB‚ªÅ¬‚Æ‚È‚éƒyƒA‚ğŒŸo
+			// AABBãŒæœ€å°ã¨ãªã‚‹ãƒšã‚¢ã‚’æ¤œå‡º
 			PfxUInt32 i=0,j=0;
 			{
 				PfxUInt32 pMin=0,qMin=0;
@@ -1906,7 +1906,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				SCE_PFX_ALWAYS_ASSERT(i!=j);
 			}
 
-			// V‚µ‚¢ƒm[ƒh‚ğì¬
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ä½œæˆ
 			PfxUInt32 newId = numBvhNodes++;
 			PfxMcBvhNode &newNode = bvhNodes[newId];
 			PfxMcBvhNode &leftNode = bvhNodes[bvhNodeIndices[i]];
@@ -1917,18 +1917,18 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			newNode.left = &leftNode;
 			newNode.right = &rightNode;
 
-			// ƒyƒA‚Ìƒm[ƒh‚ğœ‹
+			// ãƒšã‚¢ã®ãƒãƒ¼ãƒ‰ã‚’é™¤å»
 			bvhNodeIndices.remove(SCE_PFX_MAX(i,j));
 			bvhNodeIndices.remove(SCE_PFX_MIN(i,j));
 
-			// V‚µ‚¢ƒm[ƒh‚ğ“o˜^
+			// æ–°ã—ã„ãƒãƒ¼ãƒ‰ã‚’ç™»éŒ²
 			bvhNodeIndices.push(newId);
 		}
 
 		//PfxMcBvhNode *root = &bvhNodes[bvhNodeIndices[0]];
 		//printBvh(root);
 
-		// BVH‚ğƒGƒ“ƒR[ƒh
+		// BVHã‚’ã‚¨ãƒ³ã‚³ãƒ¼ãƒ‰
 
 		lmesh.m_bvhNodes = (PfxAabb16*)SCE_PFX_UTIL_ALLOC(128,sizeof(PfxAabb16)*numBvhNodes);
 		lmesh.m_numBvhNodes = numBvhNodes;
@@ -1973,7 +1973,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		
 		if(!lmesh.m_aabbList) return SCE_PFX_ERR_OUT_OF_BUFFER;
 		
-		// AABB”z—ñ‚ğì¬‚·‚é
+		// AABBé…åˆ—ã‚’ä½œæˆã™ã‚‹
 		PfxUInt32 numIslands = islands.numIslands;
 		for(PfxUInt32 i=0;i<numIslands;i++) {
 			PfxVector3 aabbMin(SCE_PFX_FLT_MAX),aabbMax(-SCE_PFX_FLT_MAX);
@@ -1994,9 +1994,9 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 	}
 	
-	// ƒ‰[ƒWƒƒbƒVƒ…‚Ìì¬
+	// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆ
 	if(islands.numIslands <= SCE_PFX_MAX_LARGETRIMESH_ISLANDS) {
-		// ƒ‰[ƒWƒƒbƒVƒ…‚Ìƒ^ƒCƒv‚ğ”»’è‚·‚é
+		// ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚¿ã‚¤ãƒ—ã‚’åˆ¤å®šã™ã‚‹
 		lmesh.m_type = 0;
 		if(param.flag & SCE_PFX_MESH_FLAG_USE_QUANTIZED) {
 			lmesh.m_type |= 0x01;
@@ -2034,7 +2034,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		
 		PfxUInt32 facetBuffBytes=0,edgeBuffBytes=0,vertexBuffBytes=0,bvhNodeBuffBytes=0;
 		for(PfxUInt32 i=0;i<islands.numIslands;i++) {
-			// ’¸“_AƒGƒbƒW”‚ğƒAƒCƒ‰ƒ“ƒh‚ÉƒZƒbƒg
+			// é ‚ç‚¹ã€ã‚¨ãƒƒã‚¸æ•°ã‚’ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã«ã‚»ãƒƒãƒˆ
 			PfxUInt32 numFacets = islands.facetsInIsland[i].size();
 			PfxUInt32 numEdges=0,numVerts=0;
 			PfxInt32 ret = countIsland(islands.facetsInIsland[i],numEdges,numVerts);
@@ -2085,7 +2085,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			}
 		}
 		
-		// ‹¤—Lƒoƒbƒtƒ@‚ğŠm•Û
+		// å…±æœ‰ãƒãƒƒãƒ•ã‚¡ã‚’ç¢ºä¿
 		lmesh.m_facetBuffer = SCE_PFX_UTIL_ALLOC(128,facetBuffBytes);
 		lmesh.m_edgeBuffer = SCE_PFX_UTIL_ALLOC(128,edgeBuffBytes);
 		lmesh.m_vertexBuffer = SCE_PFX_UTIL_ALLOC(128,vertexBuffBytes);
@@ -2097,7 +2097,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		
 		if(!(lmesh.m_facetBuffer&&lmesh.m_edgeBuffer&&lmesh.m_vertexBuffer&&lmesh.m_bvhNodeBuffer)) return SCE_PFX_ERR_OUT_OF_BUFFER;
 		
-		// ‹¤—Lƒoƒbƒtƒ@‚ğŠeƒAƒCƒ‰ƒ“ƒh‚ÉŠ„‚è“–‚Ä‚é
+		// å…±æœ‰ãƒãƒƒãƒ•ã‚¡ã‚’å„ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã«å‰²ã‚Šå½“ã¦ã‚‹
 		if(param.flag & SCE_PFX_MESH_FLAG_USE_BVH) {
 			PfxUInt8 *ptrFacetBuffer = (PfxUInt8*)lmesh.m_facetBuffer;
 			PfxUInt8 *ptrEdgeBuffer = (PfxUInt8*)lmesh.m_edgeBuffer;
@@ -2182,7 +2182,7 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 			}
 		}
 		
-		// ƒAƒCƒ‰ƒ“ƒh‚ğì¬
+		// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã‚’ä½œæˆ
 		PfxUInt32 maxFacets=0,maxVerts=0,maxEdges=0;
 		
 		if(param.flag & SCE_PFX_MESH_FLAG_USE_BVH) {
@@ -2247,11 +2247,11 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 		}
 		
 		if(param.flag & SCE_PFX_MESH_FLAG_OUTPUT_INFO) {
-			SCE_PFX_PRINTF("generate completed!\n\tinput mesh verts %u triangles %u\n\tislands %u max triangles %u verts %u edges %u\n",
+			SCE_PFX_PRINTF("generate completed!Â¥nÂ¥tinput mesh verts %u triangles %uÂ¥nÂ¥tislands %u max triangles %u verts %u edges %uÂ¥n",
 				param.numVerts,param.numTriangles,(PfxUInt32)lmesh.m_numIslands,maxFacets,maxVerts,maxEdges);
 			
 			PfxUInt32 totalbytes = sizeof(PfxLargeTriMesh);
-			SCE_PFX_PRINTF("large mesh        %u bytes\n",sizeof(PfxLargeTriMesh));
+			SCE_PFX_PRINTF("large mesh        %u bytesÂ¥n",sizeof(PfxLargeTriMesh));
 
 			if(param.flag & SCE_PFX_MESH_FLAG_USE_BVH) {
 				PfxUInt32 bvhIslandBytes;
@@ -2263,12 +2263,12 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				}
 				PfxUInt32 bvhTreeBytes = sizeof(PfxAabb16) * lmesh.m_numBvhNodes;
 				totalbytes += bvhIslandBytes + bvhTreeBytes + facetBuffBytes + edgeBuffBytes + vertexBuffBytes + bvhNodeBuffBytes;
-				SCE_PFX_PRINTF("bvh tree          %u bytes\n",bvhTreeBytes);
-				SCE_PFX_PRINTF("bvh island buffer %u bytes\n",bvhIslandBytes);
-				SCE_PFX_PRINTF("facet buffer      %u bytes\n",facetBuffBytes);
-				SCE_PFX_PRINTF("edge buffer       %u bytes\n",edgeBuffBytes);
-				SCE_PFX_PRINTF("vertex buffer     %u bytes\n",vertexBuffBytes);
-				SCE_PFX_PRINTF("bvh node buffer   %u bytes\n",bvhNodeBuffBytes);
+				SCE_PFX_PRINTF("bvh tree          %u bytesÂ¥n",bvhTreeBytes);
+				SCE_PFX_PRINTF("bvh island buffer %u bytesÂ¥n",bvhIslandBytes);
+				SCE_PFX_PRINTF("facet buffer      %u bytesÂ¥n",facetBuffBytes);
+				SCE_PFX_PRINTF("edge buffer       %u bytesÂ¥n",edgeBuffBytes);
+				SCE_PFX_PRINTF("vertex buffer     %u bytesÂ¥n",vertexBuffBytes);
+				SCE_PFX_PRINTF("bvh node buffer   %u bytesÂ¥n",bvhNodeBuffBytes);
 			}
 			else {
 				PfxUInt32 islandBytes;
@@ -2280,14 +2280,14 @@ PfxInt32 pfxCreateLargeTriMesh(PfxLargeTriMesh &lmesh,const PfxCreateLargeTriMes
 				}
 				PfxUInt32 aabbListBytes = sizeof(PfxAabb16) * lmesh.m_numIslands;
 				totalbytes += aabbListBytes + islandBytes + facetBuffBytes + edgeBuffBytes + vertexBuffBytes;
-				SCE_PFX_PRINTF("aabb buffer       %u bytes\n",aabbListBytes);
-				SCE_PFX_PRINTF("island buffer     %u bytes\n",islandBytes);
-				SCE_PFX_PRINTF("facet buffer      %u bytes\n",facetBuffBytes);
-				SCE_PFX_PRINTF("edge buffer       %u bytes\n",edgeBuffBytes);
-				SCE_PFX_PRINTF("vertex buffer     %u bytes\n",vertexBuffBytes);
+				SCE_PFX_PRINTF("aabb buffer       %u bytesÂ¥n",aabbListBytes);
+				SCE_PFX_PRINTF("island buffer     %u bytesÂ¥n",islandBytes);
+				SCE_PFX_PRINTF("facet buffer      %u bytesÂ¥n",facetBuffBytes);
+				SCE_PFX_PRINTF("edge buffer       %u bytesÂ¥n",edgeBuffBytes);
+				SCE_PFX_PRINTF("vertex buffer     %u bytesÂ¥n",vertexBuffBytes);
 			}
-			SCE_PFX_PRINTF("----------------------------\n");
-			SCE_PFX_PRINTF("total             %u bytes\n",totalbytes);
+			SCE_PFX_PRINTF("----------------------------Â¥n");
+			SCE_PFX_PRINTF("total             %u bytesÂ¥n",totalbytes);
 		}
 	}
 	else {

@@ -21,8 +21,8 @@ namespace sce {
 namespace PhysicsEffects {
 
 #define SCE_PFX_CONTACT_SAME_POINT			0.01f
-#define SCE_PFX_CONTACT_THRESHOLD_NORMAL	0.01f	// Õ“Ë“_‚Ìè‡’li–@ü•ûŒüj
-#define SCE_PFX_CONTACT_THRESHOLD_TANGENT	0.002f	// Õ“Ë“_‚Ìè‡’li•½–Êãj
+#define SCE_PFX_CONTACT_THRESHOLD_NORMAL	0.01f	// è¡çªç‚¹ã®é–¾å€¤ï¼ˆæ³•ç·šæ–¹å‘ï¼‰
+#define SCE_PFX_CONTACT_THRESHOLD_TANGENT	0.002f	// è¡çªç‚¹ã®é–¾å€¤ï¼ˆå¹³é¢ä¸Šï¼‰
 
 int PfxContactManifold::findNearestContactPoint(const PfxPoint3 &newPointA,const PfxPoint3 &newPointB,const PfxVector3 &newNormal,PfxSubData subData)
 {
@@ -74,7 +74,7 @@ int PfxContactManifold::sort4ContactPoints(const PfxPoint3 &newCP,PfxFloat newDi
 	int maxPenetrationIndex = -1;
 	PfxFloat maxPenetration = newDistance;
 
-	// Å‚à[‚¢Õ“Ë“_‚Í”rœ‘ÎÛ‚©‚ç‚Í‚¸‚·
+	// æœ€ã‚‚æ·±ã„è¡çªç‚¹ã¯æ’é™¤å¯¾è±¡ã‹ã‚‰ã¯ãšã™
 	for(int i=0;i<m_numContacts;i++) {
 		if(m_contactPoints[i].m_distance < maxPenetration) {
 			maxPenetrationIndex = i;
@@ -84,7 +84,7 @@ int PfxContactManifold::sort4ContactPoints(const PfxPoint3 &newCP,PfxFloat newDi
 	
 	PfxFloat res[4] = {0.0f};
 	
-	// Še“_‚ğœ‚¢‚½‚Æ‚«‚ÌÕ“Ë“_‚ªì‚é–ÊÏ‚Ì‚¤‚¿AÅ‚à‘å‚«‚­‚È‚é‚à‚Ì‚ğ‘I‘ğ
+	// å„ç‚¹ã‚’é™¤ã„ãŸã¨ãã®è¡çªç‚¹ãŒä½œã‚‹é¢ç©ã®ã†ã¡ã€æœ€ã‚‚å¤§ãããªã‚‹ã‚‚ã®ã‚’é¸æŠ
 	PfxVector3 newp(newCP);
 	PfxVector3 p[4];
 	p[0] = pfxReadVector3(m_contactPoints[0].m_localPointA);
@@ -165,12 +165,12 @@ void PfxContactManifold::addContactPoint(
 	int id = findNearestContactPoint(newPointA,newPointB,newNormal,subData);
 
 	if(id < 0 && m_numContacts < SCE_PFX_NUMCONTACTS_PER_BODIES) {
-		// Õ“Ë“_‚ğV‹K’Ç‰Á
+		// è¡çªç‚¹ã‚’æ–°è¦è¿½åŠ 
 		id = m_numContacts++;
 		m_contactPoints[id].reset();
 	}
 	else if(id < 0){
-		// ƒ\[ƒg
+		// ã‚½ãƒ¼ãƒˆ
 		id = sort4ContactPoints(newPointA,newDistance);
 		m_contactPoints[id].reset();
 	}
@@ -194,7 +194,7 @@ void PfxContactManifold::addContactPoint(const PfxContactPoint &cp)
 		PfxVector3 nml1(pfxReadVector3(m_contactPoints[id].m_constraintRow[0].m_normal));
 		PfxVector3 nml2(pfxReadVector3(cp.m_constraintRow[0].m_normal));
 		if(pfxAbsf(dot(nml1,nml2)) > 0.99f ) {
-			// “¯ˆê“_‚ğ”­Œ©A’~Ï‚³‚ê‚½î•ñ‚ğŒp‘±
+			// åŒä¸€ç‚¹ã‚’ç™ºè¦‹ã€è“„ç©ã•ã‚ŒãŸæƒ…å ±ã‚’ç¶™ç¶š
 			m_contactPoints[id].m_distance = cp.m_distance;
 			m_contactPoints[id].m_localPointA[0] = cp.m_localPointA[0];
 			m_contactPoints[id].m_localPointA[1] = cp.m_localPointA[1];
@@ -207,12 +207,12 @@ void PfxContactManifold::addContactPoint(const PfxContactPoint &cp)
 			m_contactPoints[id].m_constraintRow[0].m_normal[2] = cp.m_constraintRow[0].m_normal[2];
 		}
 		else {
-			// “¯ˆê“_‚Å‚Í‚ ‚é‚ª–@ü‚ªˆá‚¤‚½‚ßXV
+			// åŒä¸€ç‚¹ã§ã¯ã‚ã‚‹ãŒæ³•ç·šãŒé•ã†ãŸã‚æ›´æ–°
 			m_contactPoints[id] = cp;
 		}
 #else
 		if(m_contactPoints[id].m_distance > cp.m_distance) {
-			// “¯ˆê“_‚ğ”­Œ©AÕ“Ë“_î•ñ‚ğXV
+			// åŒä¸€ç‚¹ã‚’ç™ºè¦‹ã€è¡çªç‚¹æƒ…å ±ã‚’æ›´æ–°
 			m_contactPoints[id].m_distance = cp.m_distance;
 			m_contactPoints[id].m_localPointA[0] = cp.m_localPointA[0];
 			m_contactPoints[id].m_localPointA[1] = cp.m_localPointA[1];
@@ -227,14 +227,14 @@ void PfxContactManifold::addContactPoint(const PfxContactPoint &cp)
 #endif
 	}
 	else if(m_numContacts < SCE_PFX_NUMCONTACTS_PER_BODIES) {
-		// Õ“Ë“_‚ğV‹K’Ç‰Á
+		// è¡çªç‚¹ã‚’æ–°è¦è¿½åŠ 
 		m_contactPoints[m_numContacts++] = cp;
 	}
 	else {
-		// ƒ\[ƒg
+		// ã‚½ãƒ¼ãƒˆ
 		id = sort4ContactPoints(pA,cp.m_distance);
 		
-		// ƒRƒ“ƒ^ƒNƒgƒ|ƒCƒ“ƒg“ü‚ê‘Ö‚¦
+		// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒã‚¤ãƒ³ãƒˆå…¥ã‚Œæ›¿ãˆ
 		m_contactPoints[id] = cp;
 	}
 }
@@ -251,14 +251,14 @@ void PfxContactManifold::merge(const PfxContactManifold &contact)
 
 void PfxContactManifold::refresh(const PfxVector3 &pA,const PfxQuat &qA,const PfxVector3 &pB,const PfxQuat &qB)
 {
-	// Õ“Ë“_‚ÌXV
-	// —¼Õ“Ë“_ŠÔ‚Ì‹——£‚ªè‡’liCONTACT_THRESHOLDj‚ğ’´‚¦‚½‚çÁ‹
+	// è¡çªç‚¹ã®æ›´æ–°
+	// ä¸¡è¡çªç‚¹é–“ã®è·é›¢ãŒé–¾å€¤ï¼ˆCONTACT_THRESHOLDï¼‰ã‚’è¶…ãˆãŸã‚‰æ¶ˆå»
 	for(int i=0;i<(int)m_numContacts;i++) {
 		PfxVector3 normal = pfxReadVector3(m_contactPoints[i].m_constraintRow[0].m_normal);
 		PfxVector3 cpA = pA + rotate(qA,pfxReadVector3(m_contactPoints[i].m_localPointA));
 		PfxVector3 cpB = pB + rotate(qB,pfxReadVector3(m_contactPoints[i].m_localPointB));
 
-		// ŠÑ’Ê[“x‚ªƒvƒ‰ƒX‚É“]‚¶‚½‚©‚Ç‚¤‚©‚ğƒ`ƒFƒbƒN
+		// è²«é€šæ·±åº¦ãŒãƒ—ãƒ©ã‚¹ã«è»¢ã˜ãŸã‹ã©ã†ã‹ã‚’ãƒã‚§ãƒƒã‚¯
 		PfxFloat distance = dot(normal,cpA - cpB);
 		if(distance > SCE_PFX_CONTACT_THRESHOLD_NORMAL) {
 			removeContactPoint(i);
@@ -267,7 +267,7 @@ void PfxContactManifold::refresh(const PfxVector3 &pA,const PfxQuat &qA,const Pf
 		}
 		m_contactPoints[i].m_distance = distance;
 
-		// [“x•ûŒü‚ğœ‹‚µ‚Ä—¼“_‚Ì‹——£‚ğƒ`ƒFƒbƒN
+		// æ·±åº¦æ–¹å‘ã‚’é™¤å»ã—ã¦ä¸¡ç‚¹ã®è·é›¢ã‚’ãƒã‚§ãƒƒã‚¯
 		cpA = cpA - m_contactPoints[i].m_distance * normal;
 		PfxFloat distanceAB = lengthSqr(cpA - cpB);
 		if(distanceAB > SCE_PFX_CONTACT_THRESHOLD_TANGENT) {

@@ -26,8 +26,9 @@ namespace basecross {
 		shared_ptr<EffectManeger> m_Effect;
 	public:
 		//構築と破棄
+
 		GameStageK(const wstring& file) : GameStage(file, {}), m_IsPose(false) {}
-		virtual ‾GameStageK() {}
+		virtual ~GameStageK() {}
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

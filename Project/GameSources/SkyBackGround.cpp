@@ -1,6 +1,6 @@
 /*!
 @file Skybox.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -8,7 +8,7 @@
 #include <string>
 
 namespace basecross {
-	// ƒXƒ^ƒeƒBƒbƒNƒƒ“ƒo•Ï”‚Æ‚µ‚Ä‰Šú‰»‚·‚é‚±‚Æ‚ÅAGameStage.cpp‚Å‚ÌƒeƒNƒXƒ`ƒƒ“Ç‚İ‚İ‚ÌÛ‚É—¬—p‚µ‚Ä‚¢‚é
+	// ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ãƒ¡ãƒ³ãƒå¤‰æ•°ã¨ã—ã¦åˆæœŸåŒ–ã™ã‚‹ã“ã¨ã§ã€GameStage.cppã§ã®ãƒ†ã‚¯ã‚¹ãƒãƒ£èª­ã¿è¾¼ã¿ã®éš›ã«æµç”¨ã—ã¦ã„ã‚‹
 	const std::map<std::wstring, Vec3> SkyBackGround::pairs = {
 		{L"000_000_000", Vec3(0   ,  0,   +0.5f)},
 		{L"000_090_000", Vec3(+0.5f, 0,    0)},
@@ -22,25 +22,25 @@ namespace basecross {
 	{
 		for (const auto& pair : pairs)
 		{
-			// ƒvƒŒ[ƒ“ƒNƒ‰ƒX‚ğŒ³‚ÉƒXƒJƒCƒLƒ…[ƒu‚ğì¬‚·‚é
+			// ãƒ—ãƒ¬ãƒ¼ãƒ³ã‚¯ãƒ©ã‚¹ã‚’å…ƒã«ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ã‚’ä½œæˆã™ã‚‹
 			auto plane = ObjectFactory::Create<Plane>(GetStage());
 
-			auto planeDrawComp = plane->GetComponent<PTStaticDraw>(); // ƒ‰ƒCƒeƒBƒ“ƒO‚ÍŠ|‚¯‚½‚­‚È‚¢‚Ì‚ÅAPNT‚Íg‚í‚È‚¢iƒ‰ƒCƒeƒBƒ“ƒO‚Å‰e‚ª‚Â‚­‚ÆƒLƒ…[ƒuŒ`ó‚ª‚Î‚ê‚éj
+			auto planeDrawComp = plane->GetComponent<PTStaticDraw>(); // ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã¯æ›ã‘ãŸããªã„ã®ã§ã€PNTã¯ä½¿ã‚ãªã„ï¼ˆãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã§å½±ãŒã¤ãã¨ã‚­ãƒ¥ãƒ¼ãƒ–å½¢çŠ¶ãŒã°ã‚Œã‚‹ï¼‰
 			planeDrawComp->SetTextureResource(pair.first);
-			planeDrawComp->SetDepthStencilState(DepthStencilState::None); // Zƒoƒbƒtƒ@‚Ì‰e‹¿‚ğó‚¯‚È‚­‚·‚éiÅ‰‚É•`‰æ‚·‚ê‚ÎA‘¼‚ÌƒIƒuƒWƒFƒNƒg‚ğÕ‚ç‚È‚¢j
-			planeDrawComp->SetSamplerState(SamplerState::LinearClamp); // ƒeƒNƒXƒ`ƒƒ‚ÌØ‚ê–Ú‚ğ–Ú—§‚½‚È‚­‚·‚éi‚±‚ê‚ğ‚â‚ç‚È‚¢‚ÆƒvƒŒ[ƒ“‚Ì‹«–Ú‚Éü‚ª“ü‚Á‚½‚æ‚¤‚ÉŒ©‚¦‚Ä‚µ‚Ü‚¤j
+			planeDrawComp->SetDepthStencilState(DepthStencilState::None); // Zãƒãƒƒãƒ•ã‚¡ã®å½±éŸ¿ã‚’å—ã‘ãªãã™ã‚‹ï¼ˆæœ€åˆã«æç”»ã™ã‚Œã°ã€ä»–ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é®ã‚‰ãªã„ï¼‰
+			planeDrawComp->SetSamplerState(SamplerState::LinearClamp); // ãƒ†ã‚¯ã‚¹ãƒãƒ£ã®åˆ‡ã‚Œç›®ã‚’ç›®ç«‹ãŸãªãã™ã‚‹ï¼ˆã“ã‚Œã‚’ã‚„ã‚‰ãªã„ã¨ãƒ—ãƒ¬ãƒ¼ãƒ³ã®å¢ƒç›®ã«ç·šãŒå…¥ã£ãŸã‚ˆã†ã«è¦‹ãˆã¦ã—ã¾ã†ï¼‰
 
 			auto planeTransComp = plane->GetComponent<Transform>();
-			// ƒeƒNƒXƒ`ƒƒƒL[‚Ì•¶š—ñ‚ğŠp“x‚É•ÏŠ·‚·‚é
-			float rotX = XMConvertToRadians(std::stof(pair.first.substr(0, 3))); // 0•¶š–Ú‚©‚ç3•¶šØ‚èo‚·
-			float rotY = XMConvertToRadians(std::stof(pair.first.substr(4, 3))); // 4•¶š–Ú‚©‚ç3•¶šØ‚èo‚·
-			float rotZ = XMConvertToRadians(std::stof(pair.first.substr(8, 3))); // 8•¶š–Ú‚©‚ç3•¶šØ‚èo‚·
-			// ‹–ì”ÍˆÍ‚ÌŒÀŠE‚Ü‚ÅŠg‘å‚·‚éiZƒoƒbƒtƒ@‚ğƒIƒt‚É‚µ‚Ä‚¢‚é‚Ì‚Å•s•K—v‚©‚Æv‚¤‚ªA”O‚Ì‚½‚ßj
+			// ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼ã®æ–‡å­—åˆ—ã‚’è§’åº¦ã«å¤‰æ›ã™ã‚‹
+			float rotX = XMConvertToRadians(std::stof(pair.first.substr(0, 3))); // 0æ–‡å­—ç›®ã‹ã‚‰3æ–‡å­—åˆ‡ã‚Šå‡ºã™
+			float rotY = XMConvertToRadians(std::stof(pair.first.substr(4, 3))); // 4æ–‡å­—ç›®ã‹ã‚‰3æ–‡å­—åˆ‡ã‚Šå‡ºã™
+			float rotZ = XMConvertToRadians(std::stof(pair.first.substr(8, 3))); // 8æ–‡å­—ç›®ã‹ã‚‰3æ–‡å­—åˆ‡ã‚Šå‡ºã™
+			// è¦–é‡ç¯„å›²ã®é™ç•Œã¾ã§æ‹¡å¤§ã™ã‚‹ï¼ˆZãƒãƒƒãƒ•ã‚¡ã‚’ã‚ªãƒ•ã«ã—ã¦ã„ã‚‹ã®ã§ä¸å¿…è¦ã‹ã¨æ€ã†ãŒã€å¿µã®ãŸã‚ï¼‰
 			const float scale = 707.0f;
 			planeTransComp->SetPosition(pair.second * scale);
 			planeTransComp->SetRotation(rotX, rotY, rotZ);
 			planeTransComp->SetScale(Vec3(scale));
-			planeTransComp->SetParent(GetThis<GameObject>()); // ƒXƒJƒCƒLƒ…[ƒu‚ğ\¬‚·‚éƒvƒŒ[ƒ“‚ğSkybox2ƒIƒuƒWƒFƒNƒg‚Ìq‚É‚·‚é‚±‚Æ‚ÅÀ•W‚ÌŠÇ—‚ğŠÈ—ª‰»‚Å‚«‚é
+			planeTransComp->SetParent(GetThis<GameObject>()); // ã‚¹ã‚«ã‚¤ã‚­ãƒ¥ãƒ¼ãƒ–ã‚’æ§‹æˆã™ã‚‹ãƒ—ãƒ¬ãƒ¼ãƒ³ã‚’Skybox2ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å­ã«ã™ã‚‹ã“ã¨ã§åº§æ¨™ã®ç®¡ç†ã‚’ç°¡ç•¥åŒ–ã§ãã‚‹
 
 			m_planes.push_back(plane);
 		}
@@ -49,7 +49,7 @@ namespace basecross {
 
 	void SkyBackGround::OnDraw()
 	{
-		// ŠÇ—‚µ‚Ä‚¢‚é‚·‚×‚Ä‚Ì–Ê‚ğ•`‰æ‚·‚é
+		// ç®¡ç†ã—ã¦ã„ã‚‹ã™ã¹ã¦ã®é¢ã‚’æç”»ã™ã‚‹
 		for (auto& plane : m_planes)
 		{
 			plane->OnDraw();

@@ -1,6 +1,6 @@
 /*!
 @file BaseHelper.cpp
-@brief —áŠOˆ—Aƒwƒ‹ƒp[ŠÖ”“™À‘Ì
+@brief ä¾‹å¤–å‡¦ç†ã€ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ç­‰å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -15,9 +15,9 @@ namespace basecross{
 		HRESULT hr = ReadEntireFile(fileName, mOwnedData, &dataSize);
 		if (FAILED(hr))
 		{
-			// ‰Šú‰»¸”s
+			// åˆæœŸåŒ–å¤±æ•—
 			throw BaseException(
-				L"ƒtƒ@ƒCƒ‹‚Ì“Ç‚İ‚İ‚É¸”s‚µ‚Ü‚µ‚½B",
+				L"ãƒ•ã‚¡ã‚¤ãƒ«ã®èª­ã¿è¾¼ã¿ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 				L"if (FAILED(hr))",
 				L"BinaryReader::BinaryReader()"
 				);
@@ -37,7 +37,7 @@ namespace basecross{
 
 	HRESULT BinaryReader::ReadEntireFile(const wstring& fileName, _Inout_ std::unique_ptr<uint8_t[]>& data, _Out_ size_t* dataSize)
 	{
-		//ƒtƒ@ƒCƒ‹‚ÌƒI[ƒvƒ“
+		//ãƒ•ã‚¡ã‚¤ãƒ«ã®ã‚ªãƒ¼ãƒ—ãƒ³
 #if (_WIN32_WINNT >= _WIN32_WINNT_WIN8)
 		ScopedHandle hFile(safe_handle(CreateFile2(fileName.c_str(), GENERIC_READ, FILE_SHARE_READ, OPEN_EXISTING, nullptr)));
 #else
@@ -47,7 +47,7 @@ namespace basecross{
 		if (!hFile)
 			return HRESULT_FROM_WIN32(GetLastError());
 
-		// ƒTƒCƒY‚Ìæ“¾
+		// ã‚µã‚¤ã‚ºã®å–å¾—
 		LARGE_INTEGER fileSize = { 0 };
 
 #if (_WIN32_WINNT >= _WIN32_WINNT_VISTA)
@@ -63,17 +63,17 @@ namespace basecross{
 		GetFileSizeEx(hFile.get(), &fileSize);
 #endif
 
-		// ƒtƒ@ƒCƒ‹‚ª§ŒÀ‚ğ’´‚¦‚½‚çƒGƒ‰[
+		// ãƒ•ã‚¡ã‚¤ãƒ«ãŒåˆ¶é™ã‚’è¶…ãˆãŸã‚‰ã‚¨ãƒ©ãƒ¼
 		if (fileSize.HighPart > 0)
 			return E_FAIL;
 
-		// “¯‚¶ƒTƒCƒY‚Ìƒƒ‚ƒŠ‚ğì¬
+		// åŒã˜ã‚µã‚¤ã‚ºã®ãƒ¡ãƒ¢ãƒªã‚’ä½œæˆ
 		data.reset(new uint8_t[fileSize.LowPart]);
 
 		if (!data)
 			return E_OUTOFMEMORY;
 
-		// ƒf[ƒ^‚Ì“Ç‚İ‚İ
+		// ãƒ‡ãƒ¼ã‚¿ã®èª­ã¿è¾¼ã¿
 		DWORD bytesRead = 0;
 
 		if (!ReadFile(hFile.get(), data.get(), fileSize.LowPart, &bytesRead, nullptr))
@@ -92,14 +92,14 @@ namespace basecross{
 
 	//--------------------------------------------------------------------------------------
 	//	struct CsvFile::Impl;
-	//	—p“r: ƒRƒ“ƒ|[ƒlƒ“ƒgImplƒNƒ‰ƒX
+	//	ç”¨é€”: ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆImplã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct CsvFile::Impl{
-		wstring m_FileName;					//ƒtƒ@ƒCƒ‹–¼
-		vector< wstring > m_CsvVec;	//•¶š—ñ‚ğ•Û‚·‚é”z—ñ
+		wstring m_FileName;					//ãƒ•ã‚¡ã‚¤ãƒ«å
+		vector< wstring > m_CsvVec;	//æ–‡å­—åˆ—ã‚’ä¿æŒã™ã‚‹é…åˆ—
 		Impl()
 		{}
-		~Impl(){
+		â€¾Impl(){
 			m_CsvVec.clear();
 		}
 	};
@@ -117,7 +117,7 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	explicit CsvFile(
-	//	const wstring& FileName	//CSVƒtƒ@ƒCƒ‹–¼
+	//	const wstring& FileName	//CSVãƒ•ã‚¡ã‚¤ãƒ«å
 	//	);
 	//--------------------------------------------------------------------------------------
 	CsvFile::CsvFile(const wstring& FileName):
@@ -126,8 +126,8 @@ namespace basecross{
 		try{
 			if (FileName == L""){
 				throw BaseException(
-					L"Csvƒtƒ@ƒCƒ‹–¼‚ª•s’è‚Å‚·B",
-					L"FileName == L\"\"",
+					L"Csvãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸å®šã§ã™ã€‚",
+					L"FileName == LÂ¥"Â¥"",
 					L"CsvFile::CsvFile()"
 					);
 			}
@@ -138,9 +138,9 @@ namespace basecross{
 		}
 	}
 	//--------------------------------------------------------------------------------------
-	//	virtual CsvFile::~CsvFile();
+	//	virtual CsvFile::â€¾CsvFile();
 	//--------------------------------------------------------------------------------------
-	CsvFile::~CsvFile(){}
+	CsvFile::â€¾CsvFile(){}
 	//--------------------------------------------------------------------------------------
 	//	const wstring& CsvFile::GetFileName() const;
 	//--------------------------------------------------------------------------------------
@@ -149,15 +149,15 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::SetFileName(
-	//	const wstring& FileName	//CSVƒtƒ@ƒCƒ‹–¼
+	//	const wstring& FileName	//CSVãƒ•ã‚¡ã‚¤ãƒ«å
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::SetFileName(const wstring& FileName){
 		try{
 			if (FileName == L""){
 				throw BaseException(
-					L"Csvƒtƒ@ƒCƒ‹–¼‚ª•s’è‚Å‚·B",
-					L"FileName == L\"\"",
+					L"Csvãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸å®šã§ã™ã€‚",
+					L"FileName == LÂ¥"Â¥"",
 					L"CsvFile::SetFileName()"
 					);
 			}
@@ -183,37 +183,37 @@ namespace basecross{
 		try{
 			if (pImpl->m_FileName == L""){
 				throw BaseException(
-					L"Csvƒtƒ@ƒCƒ‹–¼‚ª•s’è‚Å‚·B",
-					L"(m_FileName == L\"\")",
+					L"Csvãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸å®šã§ã™ã€‚",
+					L"(m_FileName == LÂ¥"Â¥")",
 					L"CsvFile::ReadCsv()"
 					);
 			}
-			//CSVƒtƒ@ƒCƒ‹‚Ì‘¶İ‚ğŠm”F
+			//CSVãƒ•ã‚¡ã‚¤ãƒ«ã®å­˜åœ¨ã‚’ç¢ºèª
 			DWORD RetCode;
 			RetCode = GetFileAttributes(pImpl->m_FileName.c_str());
 			if (RetCode == 0xFFFFFFFF){
-				//ƒtƒ@ƒCƒ‹‚ª‚È‚¢B
-				//“Ç‚İ‚İˆ—I—¹
+				//ãƒ•ã‚¡ã‚¤ãƒ«ãŒãªã„ã€‚
+				//èª­ã¿è¾¼ã¿å‡¦ç†çµ‚äº†
 				return false;
 			}
 			wifstream ifs(pImpl->m_FileName.c_str());
 			if (!ifs){
-				//ƒI[ƒvƒ“‚É¸”s‚µ‚½B
-				//ƒtƒ@ƒCƒ‹‚ª‘¶İ‚·‚é‚ª¸”s‚µ‚½‚±‚Æ‚ªl‚¦‚ç‚ê‚é
+				//ã‚ªãƒ¼ãƒ—ãƒ³ã«å¤±æ•—ã—ãŸã€‚
+				//ãƒ•ã‚¡ã‚¤ãƒ«ãŒå­˜åœ¨ã™ã‚‹ãŒå¤±æ•—ã—ãŸã“ã¨ãŒè€ƒãˆã‚‰ã‚Œã‚‹
 				throw BaseException(
-					L"Csvƒtƒ@ƒCƒ‹–¼‚ÌƒI[ƒvƒ“‚É¸”s‚µ‚Ü‚µ‚½B",
+					L"Csvãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚ªãƒ¼ãƒ—ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 					pImpl->m_FileName.c_str(),
 					L"CsvFile::ReadCsv()"
 					);
 			}
 			locale loc("japanese");
 			ifs.imbue(loc);
-			//ƒf[ƒ^‚ğƒNƒŠƒA‚·‚é
+			//ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 			pImpl->m_CsvVec.clear();
 			wstring line;
-			//‚Ps‚¸‚Âline‚É“Ç‚İ‚Ş
+			//ï¼‘è¡Œãšã¤lineã«èª­ã¿è¾¼ã‚€
 			while (getline(ifs, line)){
-				//s‚ğƒf[ƒ^‚É’Ç‰Á‚·‚é
+				//è¡Œã‚’ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ ã™ã‚‹
 				pImpl->m_CsvVec.push_back(line);
 			}
 			ifs.close();
@@ -225,15 +225,15 @@ namespace basecross{
 	}
 
 	bool CsvFile::ReadCsv(const wstring& str){
-		//ƒf[ƒ^‚ğƒNƒŠƒA‚·‚é
+		//ãƒ‡ãƒ¼ã‚¿ã‚’ã‚¯ãƒªã‚¢ã™ã‚‹
 		pImpl->m_CsvVec.clear();
 		vector<wstring> lineVec;
-		Util::WStrToTokenVector(lineVec, str, L'\n');
+		Util::WStrToTokenVector(lineVec, str, L'Â¥n');
 		for (auto& v : lineVec){
 			auto Len = v.size();
 			wstring setstr;
 			if (Len > 0){
-				if (v[Len - 1] == L'\r'){
+				if (v[Len - 1] == L'Â¥r'){
 					setstr = v.substr(0, Len - 1);
 
 				}
@@ -249,37 +249,37 @@ namespace basecross{
 
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::SaveCsv(
-	//	bool Exp = true	//—áŠOˆ—‚·‚é‚©‚Ç‚¤‚©
+	//	bool Exp = true	//ä¾‹å¤–å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::SaveCsv(bool Exp){
 		try{
 			if (pImpl->m_FileName == L""){
 				if (Exp){
-					//—áŠOˆ—‚·‚éê‡
+					//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 					throw BaseException(
-						L"Csvƒtƒ@ƒCƒ‹–¼‚ª•s’è‚Å‚·B",
-						L"m_FileName == L\"\"",
+						L"Csvãƒ•ã‚¡ã‚¤ãƒ«åãŒä¸å®šã§ã™ã€‚",
+						L"m_FileName == LÂ¥"Â¥"",
 						L"CsvFile::SaveCsv()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
 			wofstream ofs(pImpl->m_FileName.c_str());
-			//—áŠOˆ—‚·‚éê‡
+			//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 			if (!ofs){
 				if (Exp){
 					throw BaseException(
-						L"Csvƒtƒ@ƒCƒ‹–¼‚ÌƒI[ƒvƒ“‚É¸”s‚µ‚Ü‚µ‚½B",
+						L"Csvãƒ•ã‚¡ã‚¤ãƒ«åã®ã‚ªãƒ¼ãƒ—ãƒ³ã«å¤±æ•—ã—ã¾ã—ãŸã€‚",
 						pImpl->m_FileName.c_str(),
 						L"CsvFile::SaveCsv()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
@@ -297,13 +297,13 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	size_t AddRow(
-	//	wstring& Row	//Csv‚Ì1si•¶š—ñ‚ÍAu,v‚Å‹æØ‚ç‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚éj
+	//	wstring& Row	//Csvã®1è¡Œï¼ˆæ–‡å­—åˆ—ã¯ã€ã€Œ,ã€ã§åŒºåˆ‡ã‚‰ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼‰
 	//	);
 	//--------------------------------------------------------------------------------------
 
 	//--------------------------------------------------------------------------------------
 	//	size_t CsvFile::AddRow(
-	//	vector<wstring>& Row	//Csv‚Ì1siŠeƒZƒ‹‚Í”z—ñ‰»‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚éj
+	//	vector<wstring>& Row	//Csvã®1è¡Œï¼ˆå„ã‚»ãƒ«ã¯é…åˆ—åŒ–ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼‰
 	//	);
 	//--------------------------------------------------------------------------------------
 	size_t CsvFile::AddRow(vector<wstring>& Row){
@@ -322,35 +322,35 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	size_t CsvFile::AddRow(
-	//	wstring& Row	//Csv‚Ì1si•¶š—ñ‚ÍAu,v‚Å‹æØ‚ç‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚éj
+	//	wstring& Row	//Csvã®1è¡Œï¼ˆæ–‡å­—åˆ—ã¯ã€ã€Œ,ã€ã§åŒºåˆ‡ã‚‰ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼‰
 	//	);
 	//--------------------------------------------------------------------------------------
 	size_t CsvFile::AddRow(wstring& Row){
 		size_t ret = pImpl->m_CsvVec.size();
-		//ƒf[ƒ^‚É’Ç‰Á‚·‚é
+		//ãƒ‡ãƒ¼ã‚¿ã«è¿½åŠ ã™ã‚‹
 		pImpl->m_CsvVec.push_back(Row);
 		return ret;
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::UpdateRow(
-	//	size_t RowNum,			//•ÏX‚µ‚½‚¢s
-	//	vector<wstring>& Row.	//Csv‚Ì1siŠeƒZƒ‹‚Í”z—ñ‰»‚³‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚éj
-	//	bool Exp = true			//—áŠOˆ—‚·‚é‚©‚Ç‚¤‚©
+	//	size_t RowNum,			//å¤‰æ›´ã—ãŸã„è¡Œ
+	//	vector<wstring>& Row.	//Csvã®1è¡Œï¼ˆå„ã‚»ãƒ«ã¯é…åˆ—åŒ–ã•ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼‰
+	//	bool Exp = true			//ä¾‹å¤–å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::UpdateRow(size_t RowNum, vector<wstring>& Row, bool Exp){
 		try{
 			if (pImpl->m_CsvVec.size() <= RowNum){
 				if (Exp){
-					//—áŠOˆ—‚·‚éê‡
+					//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 					throw BaseException(
-						L"w’è‚Ìs‚ª”ÍˆÍŠO‚Å‚·B",
+						L"æŒ‡å®šã®è¡ŒãŒç¯„å›²å¤–ã§ã™ã€‚",
 						MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"RowNum", RowNum).c_str(),
 						L"CsvFile::UpdateRow()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
@@ -371,24 +371,24 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::UpdateRow(
-	//	size_t RowNum,	//•ÏX‚µ‚½‚¢s
-	//	wstring& Row,	//Csv‚Ì1si•¶š—ñ‚ÍAu,v‚Å‹æØ‚ç‚ê‚Ä‚¢‚é•K—v‚ª‚ ‚éj
-	//	bool Exp = true	//—áŠOˆ—‚·‚é‚©‚Ç‚¤‚©
+	//	size_t RowNum,	//å¤‰æ›´ã—ãŸã„è¡Œ
+	//	wstring& Row,	//Csvã®1è¡Œï¼ˆæ–‡å­—åˆ—ã¯ã€ã€Œ,ã€ã§åŒºåˆ‡ã‚‰ã‚Œã¦ã„ã‚‹å¿…è¦ãŒã‚ã‚‹ï¼‰
+	//	bool Exp = true	//ä¾‹å¤–å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::UpdateRow(size_t RowNum, wstring& Row, bool Exp){
 		try{
 			if (pImpl->m_CsvVec.size() <= RowNum){
 				if (Exp){
-					//—áŠOˆ—‚·‚éê‡
+					//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 					throw BaseException(
-						L"w’è‚Ìs‚ª”ÍˆÍŠO‚Å‚·B",
+						L"æŒ‡å®šã®è¡ŒãŒç¯„å›²å¤–ã§ã™ã€‚",
 						MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"RowNum", RowNum).c_str(),
 						L"CsvFile::UpdateRow()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
@@ -400,25 +400,25 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::UpdateCell(
-	//	size_t RowNum,	//•ÏXs
-	//	size_t ColNum,	//•ÏX—ñ
-	//	wstring& Cell,	//·‚µ‘Ö‚¦‚é•¶š—ñ
-	//	bool Exp = true			//—áŠOˆ—‚·‚é‚©‚Ç‚¤‚©
+	//	size_t RowNum,	//å¤‰æ›´è¡Œ
+	//	size_t ColNum,	//å¤‰æ›´åˆ—
+	//	wstring& Cell,	//å·®ã—æ›¿ãˆã‚‹æ–‡å­—åˆ—
+	//	bool Exp = true			//ä¾‹å¤–å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::UpdateCell(size_t RowNum, size_t ColNum, wstring& Cell, bool Exp){
 		try{
 			if (pImpl->m_CsvVec.size() <= RowNum){
 				if (Exp){
-					//—áŠOˆ—‚·‚éê‡
+					//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 					throw BaseException(
-						L"w’è‚Ìs‚ª”ÍˆÍŠO‚Å‚·B",
+						L"æŒ‡å®šã®è¡ŒãŒç¯„å›²å¤–ã§ã™ã€‚",
 						MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"RowNum", RowNum).c_str(),
 						L"CsvFile::UpdateCell()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
@@ -426,19 +426,19 @@ namespace basecross{
 			Util::WStrToTokenVector(LineVec, pImpl->m_CsvVec[RowNum], L',');
 			if (LineVec.size() <= ColNum){
 				if (Exp){
-					//—áŠOˆ—‚·‚éê‡
+					//ä¾‹å¤–å‡¦ç†ã™ã‚‹å ´åˆ
 					throw BaseException(
-						L"w’è‚Ì—ñ‚ª”ÍˆÍŠO‚Å‚·B",
+						L"æŒ‡å®šã®åˆ—ãŒç¯„å›²å¤–ã§ã™ã€‚",
 						MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"ColNum", ColNum).c_str(),
 						L"CsvFile::UpdateCell()"
 						);
 				}
 				else{
-					//—áŠOˆ—‚µ‚È‚¢
+					//ä¾‹å¤–å‡¦ç†ã—ãªã„
 					return;
 				}
 			}
-			//w’è‚ÌˆÊ’u‚ÌƒZƒ‹‚ğ·‚µ‘Ö‚¦
+			//æŒ‡å®šã®ä½ç½®ã®ã‚»ãƒ«ã‚’å·®ã—æ›¿ãˆ
 			LineVec[ColNum] = Cell;
 			wstring temp = L"";
 			bool flg = false;
@@ -463,22 +463,22 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::GetRowVec(
-	//	size_t RowNum,			//ó‚¯æ‚è‚½‚¢s
-	//	vector<wstring>& Row	//1s‚ğó‚¯æ‚é•¶š—ñ‚Ì”z—ñ
+	//	size_t RowNum,			//å—ã‘å–ã‚ŠãŸã„è¡Œ
+	//	vector<wstring>& Row	//1è¡Œã‚’å—ã‘å–ã‚‹æ–‡å­—åˆ—ã®é…åˆ—
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::GetRowVec(size_t RowNum, vector<wstring>& Row){
 		try{
 			if (pImpl->m_CsvVec.size() <= RowNum){
 				throw BaseException(
-					L"w’è‚Ìs‚ª”ÍˆÍŠO‚Å‚·B",
+					L"æŒ‡å®šã®è¡ŒãŒç¯„å›²å¤–ã§ã™ã€‚",
 					MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"RowNum", RowNum).c_str(),
 					L"CsvFile::GetLineVec()"
 					);
 			}
-			//“n‚³‚ê‚½”z—ñ‚É’l‚ª“ü‚Á‚Ä‚éê‡‚ª‚ ‚é‚Ì‚ÅƒNƒŠƒA
+			//æ¸¡ã•ã‚ŒãŸé…åˆ—ã«å€¤ãŒå…¥ã£ã¦ã‚‹å ´åˆãŒã‚ã‚‹ã®ã§ã‚¯ãƒªã‚¢
 			Row.clear();
-			//w’ès‚ğAƒfƒŠƒ~ƒ^u,v‚Å‹æØ‚Á‚Ä•Ô‚·
+			//æŒ‡å®šè¡Œã‚’ã€ãƒ‡ãƒªãƒŸã‚¿ã€Œ,ã€ã§åŒºåˆ‡ã£ã¦è¿”ã™
 			Util::WStrToTokenVector(Row, pImpl->m_CsvVec[RowNum], L',');
 		}
 		catch (...){
@@ -487,15 +487,15 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	wstring CsvFile::GetCell(
-	//	size_t RowNum,	//ó‚¯æ‚è‚½‚¢s
-	//	size_t ColNum	//ó‚¯æ‚è‚½‚¢—ñ
+	//	size_t RowNum,	//å—ã‘å–ã‚ŠãŸã„è¡Œ
+	//	size_t ColNum	//å—ã‘å–ã‚ŠãŸã„åˆ—
 	//	);
 	//--------------------------------------------------------------------------------------
 	wstring CsvFile::GetCell(size_t RowNum, size_t ColNum){
 		try{
 			if (pImpl->m_CsvVec.size() <= RowNum){
 				throw BaseException(
-					L"w’è‚Ìs‚ª”ÍˆÍŠO‚Å‚·B",
+					L"æŒ‡å®šã®è¡ŒãŒç¯„å›²å¤–ã§ã™ã€‚",
 					MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"RowNum", RowNum).c_str(),
 					L"CsvFile::GetCell()"
 					);
@@ -504,7 +504,7 @@ namespace basecross{
 			Util::WStrToTokenVector(LineVec, pImpl->m_CsvVec[RowNum], L',');
 			if (LineVec.size() <= ColNum){
 				throw BaseException(
-					L"w’è‚Ì—ñ‚ª”ÍˆÍŠO‚Å‚·B",
+					L"æŒ‡å®šã®åˆ—ãŒç¯„å›²å¤–ã§ã™ã€‚",
 					MakeRangeErr(L"m_CsvVec.size()", pImpl->m_CsvVec.size(), L"ColNum", ColNum).c_str(),
 					L"CsvFile::GetCell()"
 					);
@@ -517,13 +517,13 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void GetSelect(
-	//	vector< wstring >& RetVec	//Œ‹‰Ê‚ğó‚¯æ‚é•¶š—ñ‚Ì”z—ñ
-	//	size_t ColNum,			//ğŒ‚ğŒŸ¸‚·‚é—ñ
-	//	const wstring& Key,		//ğŒƒL[
+	//	vector< wstring >& RetVec	//çµæœã‚’å—ã‘å–ã‚‹æ–‡å­—åˆ—ã®é…åˆ—
+	//	size_t ColNum,			//æ¡ä»¶ã‚’æ¤œæŸ»ã™ã‚‹åˆ—
+	//	const wstring& Key,		//æ¡ä»¶ã‚­ãƒ¼
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::GetSelect(vector< wstring >& RetVec,size_t ColNum, const wstring& Key){
-		//“n‚³‚ê‚½”z—ñ‚É’l‚ª“ü‚Á‚Ä‚éê‡‚ª‚ ‚é‚Ì‚ÅƒNƒŠƒA
+		//æ¸¡ã•ã‚ŒãŸé…åˆ—ã«å€¤ãŒå…¥ã£ã¦ã‚‹å ´åˆãŒã‚ã‚‹ã®ã§ã‚¯ãƒªã‚¢
 		RetVec.clear();
 		size_t sz = pImpl->m_CsvVec.size();
 		for (size_t i = 0; i < sz; i++){
@@ -538,25 +538,25 @@ namespace basecross{
 	}
 	//--------------------------------------------------------------------------------------
 	//	void CsvFile::GetSelect(
-	//	vector< wstring >& RetVec,		//Œ‹‰Ê‚ğó‚¯æ‚é•¶š—ñ‚Ì”z—ñ
-	//	bool (Func)(const wstring&),	//ğŒ‚ğŒŸ¸‚·‚éƒR[ƒ‹ƒoƒbƒNŠÖ”
+	//	vector< wstring >& RetVec,		//çµæœã‚’å—ã‘å–ã‚‹æ–‡å­—åˆ—ã®é…åˆ—
+	//	bool (Func)(const wstring&),	//æ¡ä»¶ã‚’æ¤œæŸ»ã™ã‚‹ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°
 	//	);
 	//--------------------------------------------------------------------------------------
 	void CsvFile::GetSelect(vector< wstring >& RetVec,bool(Func)(const wstring&)){
-		//“n‚³‚ê‚½”z—ñ‚É’l‚ª“ü‚Á‚Ä‚éê‡‚ª‚ ‚é‚Ì‚ÅƒNƒŠƒA
+		//æ¸¡ã•ã‚ŒãŸé…åˆ—ã«å€¤ãŒå…¥ã£ã¦ã‚‹å ´åˆãŒã‚ã‚‹ã®ã§ã‚¯ãƒªã‚¢
 		RetVec.clear();
 		size_t sz = pImpl->m_CsvVec.size();
 		for (size_t i = 0; i < sz; i++){
-			//ƒR[ƒ‹ƒoƒbƒNŠÖ”‚ğŒÄ‚Ño‚·
+			//ã‚³ãƒ¼ãƒ«ãƒãƒƒã‚¯é–¢æ•°ã‚’å‘¼ã³å‡ºã™
 			if (Func(pImpl->m_CsvVec[i])){
-				//ğŒ‚ª‚ ‚ê‚Î’Ç‰Á
+				//æ¡ä»¶ãŒã‚ã‚Œã°è¿½åŠ 
 				RetVec.push_back(pImpl->m_CsvVec[i]);
 			}
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	Create‚ÆPreCreate‚ğ‚¿AThisƒXƒ}[ƒgƒ|ƒCƒ“ƒ^‚ª‚Æ‚ê‚éƒCƒ“ƒ^[ƒtƒFƒCƒX
+	///	Createã¨PreCreateã‚’æŒã¡ã€Thisã‚¹ãƒãƒ¼ãƒˆãƒã‚¤ãƒ³ã‚¿ãŒã¨ã‚Œã‚‹ã‚¤ãƒ³ã‚¿ãƒ¼ãƒ•ã‚§ã‚¤ã‚¹
 	//--------------------------------------------------------------------------------------
 	void ObjectInterface::PostEvent(float DispatchTime, const shared_ptr<ObjectInterface>& Sender, const shared_ptr<ObjectInterface>& Receiver,
 		const wstring& MsgStr,const shared_ptr<void>& Info) {

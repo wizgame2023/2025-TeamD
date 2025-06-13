@@ -1,6 +1,6 @@
 /*!
 @file SharedResources.cpp
-@brief ‹¤—L‚ÌƒŠƒ\[ƒXiƒrƒ…[AƒJƒƒ‰Aƒ‰ƒCƒg‚È‚ÇjÀ‘Ì
+@brief å…±æœ‰ã®ãƒªã‚½ãƒ¼ã‚¹ï¼ˆãƒ“ãƒ¥ãƒ¼ã€ã‚«ãƒ¡ãƒ©ã€ãƒ©ã‚¤ãƒˆãªã©ï¼‰å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -8,28 +8,28 @@
 namespace basecross {
 	//--------------------------------------------------------------------------------------
 	//	struct Camera::Impl;
-	//	—p“r: ImplƒNƒ‰ƒX
+	//	ç”¨é€”: Implã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	struct Camera::Impl {
-		bsm::Vec3 m_Eye;	//ƒJƒƒ‰ˆÊ’u
-		bsm::Vec3 m_At;	//’–Ú“_
-		bsm::Vec3 m_Up;   //ƒJƒƒ‰‚ÌŒX‚«iƒAƒbƒvj
-		bool m_Pers;	//‰“‹ß–@‚ğg‚¤‚©‚Ç‚¤‚©
-		//ƒJƒƒ‰‘ã‚í‚è‚ÌƒIƒuƒWƒFƒNƒg
+		bsm::Vec3 m_Eye;	//ã‚«ãƒ¡ãƒ©ä½ç½®
+		bsm::Vec3 m_At;	//æ³¨ç›®ç‚¹
+		bsm::Vec3 m_Up;   //ã‚«ãƒ¡ãƒ©ã®å‚¾ãï¼ˆã‚¢ãƒƒãƒ—ï¼‰
+		bool m_Pers;	//é è¿‘æ³•ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		//ã‚«ãƒ¡ãƒ©ä»£ã‚ã‚Šã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		weak_ptr<GameObject> m_CameraObject;
 
-		float m_FovY;   //Ë‰eŠp“x
-		float m_Aspect;	//ƒAƒXƒyƒNƒg”ä
+		float m_FovY;   //å°„å½±è§’åº¦
+		float m_Aspect;	//ã‚¢ã‚¹ãƒšã‚¯ãƒˆæ¯”
 
-		float m_Width;	//‰“‹ß–@‚ğg‚í‚È‚¢ê‡i³Ë‰ej‚Ì•
-		float m_Height;	//‰“‹ß–@‚ğg‚í‚È‚¢ê‡i³Ë‰ej‚Ì‚‚³
-		float m_Near;	//è‘O‚ÌÅ¬‹——£
-		float m_Far;	//‰œ‚ÌÅ‘å‹——£
+		float m_Width;	//é è¿‘æ³•ã‚’ä½¿ã‚ãªã„å ´åˆï¼ˆæ­£å°„å½±ï¼‰ã®å¹…
+		float m_Height;	//é è¿‘æ³•ã‚’ä½¿ã‚ãªã„å ´åˆï¼ˆæ­£å°„å½±ï¼‰ã®é«˜ã•
+		float m_Near;	//æ‰‹å‰ã®æœ€å°è·é›¢
+		float m_Far;	//å¥¥ã®æœ€å¤§è·é›¢
 
 		bsm::Mat4x4 m_ViewMatrix;
 		bsm::Mat4x4 m_ProjMatrix;
 		Impl() :
-			m_Eye(0, 0.0f, -20.0f),	//ƒfƒtƒHƒ‹ƒg‚ÍŒã•û
+			m_Eye(0, 0.0f, -20.0f),	//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯å¾Œæ–¹
 			m_At(0, 0, 0),
 			m_Up(0, 1.0f, 0),
 			m_Pers(true),
@@ -51,7 +51,7 @@ namespace basecross {
 				throw;
 			}
 		}
-		~Impl() {}
+		â€¾Impl() {}
 
 
 
@@ -61,7 +61,7 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	class Camera : public Object, public ShapeInterface ;
-	//	—p“r: ƒJƒƒ‰iƒRƒ“ƒ|[ƒlƒ“ƒg‚Å‚Í‚È‚¢j
+	//	ç”¨é€”: ã‚«ãƒ¡ãƒ©ï¼ˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã§ã¯ãªã„ï¼‰
 	//--------------------------------------------------------------------------------------
 	Camera::Camera()
 		:ObjectInterface(),
@@ -69,9 +69,9 @@ namespace basecross {
 	{
 
 	}
-	Camera::~Camera() {}
+	Camera::â€¾Camera() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	const bsm::Vec3& Camera::GetEye() const { return pImpl->m_Eye; }
 	void Camera::SetEye(const bsm::Vec3& Eye) { 
 		pImpl->m_Eye = Eye;
@@ -210,8 +210,48 @@ namespace basecross {
 		CalculateMatrix();
 	}
 
+	void Camera::ShakeStart(float time, float msg)
+	{
+		m_Duration = time; // æŒ¯å‹•ã®æŒç¶šæ™‚é–“ï¼ˆç§’ï¼‰
+		m_InitialDuration = time;
+		m_Magnitude = msg; // æŒ¯å‹•ã®å¼·ã•
+		m_IsShaking = true;
+	}
+
+	Vec3 Camera::ShakeCameraMove()
+	{
+		auto& app = App::GetApp();
+		float elapsed = app->GetElapsedTime();
+
+		if (m_IsShaking) {
+			if (m_Duration <= 0.0f)
+			{
+				m_IsShaking = false;
+				m_Duration = 0.0f;
+				return Vec3(0);
+			}
+
+			m_Duration = max(0.0f, m_Duration - elapsed);
+
+			// æ®‹ã‚Šæ™‚é–“ã«å¿œã˜ã¦æ¸›è¡°ç‡ï¼ˆ0â†’1â†’0ï¼‰
+			float progress = m_Duration / m_InitialDuration;      // [1â†’0]
+			float damper = 1.0f - std::pow(progress-1, 2); // å±±å½¢ã‚«ãƒ¼ãƒ–
+
+			// -1.0ã€œ1.0 ã®ãƒ©ãƒ³ãƒ€ãƒ å€¤ã‚’ç”Ÿæˆ
+			auto randUnit = []() {
+				return (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f - 1.0f;
+				};
+
+			float offsetX = randUnit() * m_Magnitude * damper;
+			float offsetY = randUnit() * m_Magnitude * damper;
+			return Vec3(offsetX, offsetY, 0);
+		}
+		return Vec3(0); // æŒ¯å‹•ãŒãªã„å ´åˆã¯ã‚¼ãƒ­ãƒ™ã‚¯ãƒˆãƒ«ã‚’è¿”ã™
+	}
+
+
 	//--------------------------------------------------------------------------------------
-	//	ƒrƒ…[‚ÌƒAƒCƒeƒ€
+	//	ãƒ“ãƒ¥ãƒ¼ã®ã‚¢ã‚¤ãƒ†ãƒ 
 	//--------------------------------------------------------------------------------------
 	struct ViewItem {
 		shared_ptr<Camera> m_Camera;
@@ -240,10 +280,10 @@ namespace basecross {
 			m_Stage(StagePtr),
 			m_UpdateActive(true)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 	//--------------------------------------------------------------------------------------
-	///	ƒrƒ…[iej
+	///	ãƒ“ãƒ¥ãƒ¼ï¼ˆè¦ªï¼‰
 	//--------------------------------------------------------------------------------------
 	ViewBase::ViewBase(const shared_ptr<Stage>& StagePtr) :
 		ObjectInterface(),
@@ -252,9 +292,9 @@ namespace basecross {
 	{
 	}
 
-	ViewBase::~ViewBase() {}
+	ViewBase::â€¾ViewBase() {}
 
-	//ƒAƒNƒZƒT
+	//ã‚¢ã‚¯ã‚»ã‚µ
 	bool ViewBase::IsUpdateActive() const { return pImpl->m_UpdateActive; }
 	bool ViewBase::GetUpdateActive() const { return pImpl->m_UpdateActive; }
 	void ViewBase::SetUpdateActive(bool b) { pImpl->m_UpdateActive = b; }
@@ -268,23 +308,23 @@ namespace basecross {
 		Impl()
 		{
 		}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒ“ƒOƒ‹ƒrƒ…[ƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	ã‚·ãƒ³ã‚°ãƒ«ãƒ“ãƒ¥ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	SingleView::SingleView(const shared_ptr<Stage>& StagePtr) :
 		ViewBase(StagePtr), pImpl(new Impl())
 	{}
 
-	SingleView::~SingleView() {}
+	SingleView::â€¾SingleView() {}
 
 	void SingleView::OnCreate() {
 	}
 
 	void SingleView::OnUpdate() {
-		//ƒJƒƒ‰‚ÌŒvZ‚ğ‚·‚é
+		//ã‚«ãƒ¡ãƒ©ã®è¨ˆç®—ã‚’ã™ã‚‹
 		pImpl->m_ViewItem.m_Camera->OnUpdate();
 	}
 
@@ -297,7 +337,7 @@ namespace basecross {
 	}
 	void SingleView::SetCamera(const shared_ptr<Camera>& c) {
 		pImpl->m_ViewItem.m_Camera = c;
-		//ƒJƒƒ‰‚ÌŒvZ‚ğ‚·‚é
+		//ã‚«ãƒ¡ãƒ©ã®è¨ˆç®—ã‚’ã™ã‚‹
 		pImpl->m_ViewItem.m_Camera->CalculateMatrix();
 	}
 	const shared_ptr<Camera>& SingleView::GetCamera()const {
@@ -320,14 +360,14 @@ namespace basecross {
 			m_TargetIndex(0)
 		{
 		}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	MultiView::MultiView(const shared_ptr<Stage>& StagePtr) :
 		ViewBase(StagePtr), pImpl(new Impl())
 	{}
 
-	MultiView::~MultiView() {}
+	MultiView::â€¾MultiView() {}
 
 	size_t MultiView::AddView(const Viewport& v, const shared_ptr<Camera>& c) {
 		ViewItem Item;
@@ -343,7 +383,7 @@ namespace basecross {
 	void MultiView::SetViewport(size_t Index, const Viewport& v) {
 		if (Index >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(Index),
 				L"MultiView::SetViewport()"
 			);
@@ -353,7 +393,7 @@ namespace basecross {
 	const Viewport& MultiView::GetViewport(size_t Index) const {
 		if (Index >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(Index),
 				L"MultiView::GetViewport()"
 			);
@@ -363,7 +403,7 @@ namespace basecross {
 	void MultiView::SetCamera(size_t Index, const shared_ptr<Camera>& c) {
 		if (Index >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(Index),
 				L"MultiView::SetCamera()"
 			);
@@ -373,7 +413,7 @@ namespace basecross {
 	const shared_ptr<Camera>& MultiView::GetCamera(size_t Index)const {
 		if (Index >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(Index),
 				L"MultiView::GetCamera()"
 			);
@@ -383,7 +423,7 @@ namespace basecross {
 	size_t MultiView::GetTargetIndex()const {
 		if (pImpl->m_ViewItemVec.empty()) {
 			throw BaseException(
-				L"ƒrƒ…[‚ªİ’è‚³‚ê‚Ä‚È‚¢‚Ì‚Å‚±‚ÌƒRƒ}ƒ“ƒh‚Í–³ˆÓ–¡‚Å‚·",
+				L"ãƒ“ãƒ¥ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ãªã„ã®ã§ã“ã®ã‚³ãƒãƒ³ãƒ‰ã¯ç„¡æ„å‘³ã§ã™",
 				L"if (pImpl->m_ViewItemVec.empty())",
 				L"MultiView::GetTargetIndex()"
 			);
@@ -393,7 +433,7 @@ namespace basecross {
 	void MultiView::SetTargetIndex(size_t Index) {
 		if (Index >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(Index),
 				L"MultiView::SetTargetIndex()"
 			);
@@ -409,7 +449,7 @@ namespace basecross {
 	const shared_ptr<Camera>& MultiView::GetTargetCamera() const {
 		if (pImpl->m_TargetIndex >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(pImpl->m_TargetIndex),
 				L"MultiView::GetTargetCamera()"
 			);
@@ -419,7 +459,7 @@ namespace basecross {
 	const Viewport& MultiView::GetTargetViewport() const {
 		if (pImpl->m_TargetIndex >= pImpl->m_ViewItemVec.size()) {
 			throw BaseException(
-				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B",
+				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚",
 				Util::SizeTToWStr(pImpl->m_TargetIndex),
 				L"MultiView::GetTargetViewport()"
 			);
@@ -451,10 +491,10 @@ namespace basecross {
 			m_Stage(StagePtr),
 			m_AmbientLightColor(0, 0, 0, 0)
 		{}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 	//--------------------------------------------------------------------------------------
-	///	ƒXƒe[ƒW‚Éİ’è‚·‚éƒ‰ƒCƒgiej
+	///	ã‚¹ãƒ†ãƒ¼ã‚¸ã«è¨­å®šã™ã‚‹ãƒ©ã‚¤ãƒˆï¼ˆè¦ªï¼‰
 	//--------------------------------------------------------------------------------------
 	LightBase::LightBase(const shared_ptr<Stage>& StagePtr) :
 		ObjectInterface(),
@@ -462,7 +502,7 @@ namespace basecross {
 	{
 	}
 
-	LightBase::~LightBase() {}
+	LightBase::â€¾LightBase() {}
 
 	bsm::Col4 LightBase::GetAmbientLightColor()const {
 		return pImpl->m_AmbientLightColor;
@@ -481,18 +521,18 @@ namespace basecross {
 		Impl() 
 		{
 		}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ƒVƒ“ƒOƒ‹ƒ‰ƒCƒg
+	///	ã‚·ãƒ³ã‚°ãƒ«ãƒ©ã‚¤ãƒˆ
 	//--------------------------------------------------------------------------------------
 	SingleLight::SingleLight(const shared_ptr<Stage>& StagePtr) :
 		LightBase(StagePtr),
 		pImpl(new Impl())
 	{}
 
-	SingleLight::~SingleLight() {}
+	SingleLight::â€¾SingleLight() {}
 
 	void SingleLight::SetLight(const Light& l) {
 		pImpl->m_Light = l;
@@ -527,13 +567,13 @@ namespace basecross {
 				v.m_SpecularColor = bsm::Col4(1, 1, 1, 1);
 			}
 		}
-		~Impl() {}
+		â€¾Impl() {}
 	};
 
 
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒ‹ƒ`ƒ‰ƒCƒg
+	///	ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆ
 	//--------------------------------------------------------------------------------------
 
 	void MultiLight::ValidateLightIndex(size_t index)const
@@ -541,7 +581,7 @@ namespace basecross {
 		if (index >= 3)
 		{
 			throw BaseException(
-				L"ƒ‰ƒCƒg‚ÌƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·B0‚©‚ç2‚ÌŠÔ‚Åw’è‚µ‚Ä‚­‚¾‚³‚¢B",
+				L"ãƒ©ã‚¤ãƒˆã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™ã€‚0ã‹ã‚‰2ã®é–“ã§æŒ‡å®šã—ã¦ãã ã•ã„ã€‚",
 				L"if (index >= 3)",
 				L"MultiLight::ValidateLightIndex()"
 			);
@@ -554,7 +594,7 @@ namespace basecross {
 	{
 	}
 
-	MultiLight::~MultiLight() {}
+	MultiLight::â€¾MultiLight() {}
 
 	void MultiLight::SetMainIndex(size_t index) {
 		ValidateLightIndex(index);
@@ -656,30 +696,30 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Steering;
-	//	—p“r: ‘€‘ÇŠÖ˜Aƒ†[ƒeƒBƒŠƒeƒB
-	//	–staticŒÄ‚Ño‚µ‚ğ‚·‚é
+	//	ç”¨é€”: æ“èˆµé–¢é€£ãƒ¦ãƒ¼ãƒ†ã‚£ãƒªãƒ†ã‚£
+	//	ï¼Šstaticå‘¼ã³å‡ºã—ã‚’ã™ã‚‹
 	//--------------------------------------------------------------------------------------
-	//ƒXƒ^ƒeƒBƒbƒNƒƒ“ƒo
+	//ã‚¹ã‚¿ãƒ†ã‚£ãƒƒã‚¯ãƒ¡ãƒ³ãƒ
 	bool Steering::AccumulateForce(bsm::Vec3& Force, const bsm::Vec3& ForceToAdd, float MaxForce) {
-		//Œ»İ‚Ì—Í‚Ì’·‚³‚ğ“¾‚é
+		//ç¾åœ¨ã®åŠ›ã®é•·ã•ã‚’å¾—ã‚‹
 		float MagnitudeSoFar = bsm::length(Force);
-		//Å‘å’l‚Æ‚Ì·‚ğ‹‚ß‚é
+		//æœ€å¤§å€¤ã¨ã®å·®ã‚’æ±‚ã‚ã‚‹
 		float magnitudeRemaining = MaxForce - MagnitudeSoFar;
-		//·‚ª0ˆÈ‰ºi‚Â‚Ü‚èÅ‘å’l‚ğ’´‚¦‚Ä‚¢‚½‚çj
-		//’Ç‰Á‚µ‚È‚¢‚ÅƒŠƒ^[ƒ“
+		//å·®ãŒ0ä»¥ä¸‹ï¼ˆã¤ã¾ã‚Šæœ€å¤§å€¤ã‚’è¶…ãˆã¦ã„ãŸã‚‰ï¼‰
+		//è¿½åŠ ã—ãªã„ã§ãƒªã‚¿ãƒ¼ãƒ³
 		if (magnitudeRemaining <= 0.0f) {
 			return false;
 		}
-		//’Ç‰Á‚·‚é—Í‚Ì‘å‚«‚³‚ğ‹‚ß‚é
+		//è¿½åŠ ã™ã‚‹åŠ›ã®å¤§ãã•ã‚’æ±‚ã‚ã‚‹
 		float MagnitudeToAdd = bsm::length(ForceToAdd);
-		//—Í‚Ì’Ç‰Á
+		//åŠ›ã®è¿½åŠ 
 		if (MagnitudeToAdd < magnitudeRemaining) {
 			Force += ForceToAdd;
 		}
 		else {
 			Force += (bsm::normalize(ForceToAdd) * MagnitudeToAdd);
 		}
-		//’Ç‰Á‚³‚ê‚½w•W‚ğ•Ô‚·  
+		//è¿½åŠ ã•ã‚ŒãŸæŒ‡æ¨™ã‚’è¿”ã™  
 		return true;
 	}
 
@@ -769,7 +809,7 @@ namespace basecross {
 	bsm::Vec3 Steering::ObstacleAvoidance(const bsm::Mat4x4 Matrix,
 		const bsm::Vec3& Velocity, float MaxSpeed, float Width, float Height,
 		const vector<SPHERE>& SphereVec) {
-		//Œ»İ‚Ì‘¬“x‚ÆˆÊ’u‚Æ“¹•‚©‚çAÕ“Ë”»’èOBB‚ğì¬‚·‚é
+		//ç¾åœ¨ã®é€Ÿåº¦ã¨ä½ç½®ã¨é“å¹…ã‹ã‚‰ã€è¡çªåˆ¤å®šOBBã‚’ä½œæˆã™ã‚‹
 		bsm::Vec3 Scale(Width, Height, bsm::length(Velocity));
 		bsm::Mat4x4 ObbMat;
 		ObbMat.affineTransformation(
@@ -784,20 +824,20 @@ namespace basecross {
 			ObstacleAvoidanceSphere Sp(SphereVec[i], len);
 			ChangeVec.push_back(Sp);
 		}
-		//‡˜‚ğ•ÏXƒ\[ƒg
+		//é †åºã‚’å¤‰æ›´ã‚½ãƒ¼ãƒˆ
 		std::sort(ChangeVec.begin(), ChangeVec.end(), SortSphereObstacleAvoidanceHandle);
-		//‹ß‚¢‡‚ÉŒŸ¸‚µ‚Ä‰½‚©‚ÆÕ“Ë‚µ‚Ä‚¢‚½‚çAƒ^[ƒQƒbƒg‚ğŒˆ‚ßSEEK
+		//è¿‘ã„é †ã«æ¤œæŸ»ã—ã¦ä½•ã‹ã¨è¡çªã—ã¦ã„ãŸã‚‰ã€ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’æ±ºã‚SEEK
 		for (size_t i = 0; i < ChangeVec.size(); i++) {
 			bsm::Vec3 RetVec;
 			if (HitTest::SPHERE_OBB(ChangeVec[i].m_Sp, Obb, RetVec)) {
-				//is•ûŒü‚ÌOBB‚ÆÕ“Ë‚µ‚½
-				//OBBis•ûŒü‚Ìü•ª‚ÆRetVec‚Æ‚ÌÅ‹ßÚ“_‚ğ‹‚ß‚é
+				//é€²è¡Œæ–¹å‘ã®OBBã¨è¡çªã—ãŸ
+				//OBBé€²è¡Œæ–¹å‘ã®ç·šåˆ†ã¨RetVecã¨ã®æœ€è¿‘æ¥ç‚¹ã‚’æ±‚ã‚ã‚‹
 				float t;
 				bsm::Vec3 d;
 				HitTest::ClosetPtPointSegment(RetVec, Matrix.transInMatrix(), Matrix.transInMatrix() + Velocity, t, d);
-				//‘Ş”ğ•ûŒü‚ğŒvZ‚·‚é
+				//é€€é¿æ–¹å‘ã‚’è¨ˆç®—ã™ã‚‹
 				bsm::Vec3 AvoidanceVec = (d - RetVec);
-				//³‹K‰»
+				//æ­£è¦åŒ–
 				AvoidanceVec.normalize();
 				AvoidanceVec *= (Width + MaxSpeed);
 				return AvoidanceVec;
@@ -820,7 +860,7 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	bsm::Vec3 Steering::WallAvoidance(const bsm::Mat4x4 Matrix,
 		const bsm::Vec3& Velocity, float MaxSpeed, const vector<PLANE>& PlaneVec) {
-		//‚Ü‚¸GŠo‚É‚È‚éü•ª”z—ñ‚ğì¬
+		//ã¾ãšè§¦è¦šã«ãªã‚‹ç·šåˆ†é…åˆ—ã‚’ä½œæˆ
 		float Len = bsm::length(Velocity) * 0.5f;
 		vector<AvoidanceSegment> Segments;
 		Segments.push_back(AvoidanceSegment(bsm::Vec3(0, 0, Len), bsm::Vec3(0, 0, 0)));
@@ -832,10 +872,10 @@ namespace basecross {
 		Segments.push_back(AvoidanceSegment(bsm::Vec3(-cos(XM_PIDIV4) * Len, 0, -sin(XM_PIDIV4) * Len), bsm::Vec3(0, 0, 0)));
 		Segments.push_back(AvoidanceSegment(bsm::Vec3(0, 0, -Len), bsm::Vec3(0, 0, 0)));
 		for (size_t i = 0; i < Segments.size(); i++) {
-			//GŠo‚ÌŠe’¸“_‚És—ñ‚ğŒvZ‚µ‚ÄAƒ[ƒ‹ƒhÀ•W‚É•ÏŠ·
+			//è§¦è¦šã®å„é ‚ç‚¹ã«è¡Œåˆ—ã‚’è¨ˆç®—ã—ã¦ã€ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™ã«å¤‰æ›
 			Segments[i].m_PointA *= Matrix;
 			Segments[i].m_PointB *= Matrix;
-			//ü•ª‚Æ•Ç‚ÌÕ“Ë”»’è
+			//ç·šåˆ†ã¨å£ã®è¡çªåˆ¤å®š
 			bsm::Vec3 RetVec;
 			float t;
 			for (size_t j = 0; j < PlaneVec.size(); j++) {
@@ -843,8 +883,8 @@ namespace basecross {
 					return PlaneVec[j].m_Normal * MaxSpeed;
 				}
 				if (HitTest::SEGMENT_PLANE(Segments[i].m_PointA, Segments[i].m_PointB, PlaneVec[j], t, RetVec)) {
-					//ü•ª‚Æ–Ê‚ªÕ“Ë‚µ‚Ä‚¢‚é
-					//–Ê‚Ì–@ü‚Ì•ûŒü‚ÉŒ»İ‚Ì‘¬“x‚ÅƒtƒH[ƒX‚ğ•Ô‚·
+					//ç·šåˆ†ã¨é¢ãŒè¡çªã—ã¦ã„ã‚‹
+					//é¢ã®æ³•ç·šã®æ–¹å‘ã«ç¾åœ¨ã®é€Ÿåº¦ã§ãƒ•ã‚©ãƒ¼ã‚¹ã‚’è¿”ã™
 					return PlaneVec[j].m_Normal * bsm::length(Velocity);
 				}
 			}
@@ -897,11 +937,11 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static bsm::Vec3 Alignment(
-	//	const shared_ptr<GameObjectGroup>& Group,	//İ’è‚·‚éƒOƒ‹[ƒv‚Ì”z—ñ
-	//	const shared_ptr<GameObject>& MyObj				//©•ª©g
+	//	const shared_ptr<GameObjectGroup>& Group,	//è¨­å®šã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã®é…åˆ—
+	//	const shared_ptr<GameObject>& MyObj				//è‡ªåˆ†è‡ªèº«
 	//	);
-	//	—p“r: ®—ñs“®
-	//	–ß‚è’l: ƒtƒH[ƒX
+	//	ç”¨é€”: æ•´åˆ—è¡Œå‹•
+	//	æˆ»ã‚Šå€¤: ãƒ•ã‚©ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	bsm::Vec3 Steering::Alignment(const shared_ptr<GameObjectGroup>& Group, const shared_ptr<GameObject>& MyObj) {
 		bsm::Vec3 AverageHeading(0, 0, 0);
@@ -927,19 +967,19 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	static bsm::Vec3 Cohesion(
-	//	const shared_ptr<GameObjectGroup>& Group,	//İ’è‚·‚éƒOƒ‹[ƒv‚Ì”z—ñ
-	//	const shared_ptr<GameObject>& MyObj			//©•ª©g
-	//	const bsm::Vec3& Velocity,	//Œ»İ‚Ì‘¬“x
-	//	float MaxSpeed				//Å‚‘¬“x
+	//	const shared_ptr<GameObjectGroup>& Group,	//è¨­å®šã™ã‚‹ã‚°ãƒ«ãƒ¼ãƒ—ã®é…åˆ—
+	//	const shared_ptr<GameObject>& MyObj			//è‡ªåˆ†è‡ªèº«
+	//	const bsm::Vec3& Velocity,	//ç¾åœ¨ã®é€Ÿåº¦
+	//	float MaxSpeed				//æœ€é«˜é€Ÿåº¦
 	//	);
-	//	—p“r: Œ‹‡s“®
-	//	–ß‚è’l: ƒtƒH[ƒX
+	//	ç”¨é€”: çµåˆè¡Œå‹•
+	//	æˆ»ã‚Šå€¤: ãƒ•ã‚©ãƒ¼ã‚¹
 	//--------------------------------------------------------------------------------------
 	bsm::Vec3 Steering::Cohesion(const shared_ptr<GameObjectGroup>& Group, const shared_ptr<GameObject>& MyObj,
 		const bsm::Vec3& Velocity, float MaxSpeed) {
 		auto Vec = Group->GetGroupVector();
 		bsm::Vec3 SteeringForce(0, 0, 0);
-		//dS
+		//é‡å¿ƒ
 		bsm::Vec3 CenterOfMass(0, 0, 0);
 		int count = 0;
 		for (auto Ptr : Vec) {

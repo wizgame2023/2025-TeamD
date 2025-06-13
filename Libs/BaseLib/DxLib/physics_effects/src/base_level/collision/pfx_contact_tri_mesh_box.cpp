@@ -24,21 +24,21 @@ Physics Effects under the filename: physics_effects_license.txt
 namespace sce {
 namespace PhysicsEffects {
 
-#define CHECK_SAT(axis,AMin,AMax,BMin,BMax) \
-{\
-	PfxFloat d1 = AMin - BMax;\
-	PfxFloat d2 = BMin - AMax;\
-	if(distMin < d1) {\
-		distMin = d1;\
-		axisMin = sepAxis;\
-	}\
-	if(distMin < d2) {\
-		distMin = d2;\
-		axisMin = -sepAxis;\
-	}\
-	if(d1 > 0.0f || d2 > 0.0f) {\
-		return false;\
-	}\
+#define CHECK_SAT(axis,AMin,AMax,BMin,BMax) Â¥
+{Â¥
+	PfxFloat d1 = AMin - BMax;Â¥
+	PfxFloat d2 = BMin - AMax;Â¥
+	if(distMin < d1) {Â¥
+		distMin = d1;Â¥
+		axisMin = sepAxis;Â¥
+	}Â¥
+	if(distMin < d2) {Â¥
+		distMin = d2;Â¥
+		axisMin = -sepAxis;Â¥
+	}Â¥
+	if(d1 > 0.0f || d2 > 0.0f) {Â¥
+		return false;Â¥
+	}Â¥
 }
 
 static inline
@@ -61,7 +61,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 {
 	const PfxFloat epsilon = 0.00001f;
 	
-	// Å‚àó‚¢ŠÑ’Ê[“x‚Æ‚»‚Ì‚Æ‚«‚Ì•ª—£²
+	// æœ€ã‚‚æµ…ã„è²«é€šæ·±åº¦ã¨ãã®ã¨ãã®åˆ†é›¢è»¸
 	PfxFloat distMin = -SCE_PFX_FLT_MAX;
 	PfxVector3 axisMin(0.0f);
 	
@@ -69,7 +69,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 	PfxMatrix3 boxOri = transformB.getUpper3x3();
 	
 	//-------------------------------------------
-	// ‚PD•ª—£²”»’è
+	// ï¼‘ï¼åˆ†é›¢è»¸åˆ¤å®š
 	
 	{
 		PfxVector3 facetPnts[6] = {
@@ -83,19 +83,19 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 		};
 
 
-		// Triangles‚Ì–Ê -> Box
+		// Trianglesã®é¢ -> Box
 		{
-			// •ª—£²
+			// åˆ†é›¢è»¸
 			const PfxVector3 sepAxis = normal;
 
-			// •ª—£•½–Ê
+			// åˆ†é›¢å¹³é¢
 			PfxPlane planeA(sepAxis,p0);
 			
-			// Box‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+			// Boxã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 			PfxFloat boxMax,boxMin;
 			projection(boxHalf,boxPos-p0,boxOri,sepAxis,boxMin,boxMax);
 			
-			// ”»’è
+			// åˆ¤å®š
 			if(boxMin > 0.0f || boxMax < -thickness) {
 				return false;
 			}
@@ -108,37 +108,37 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 
 		// Box -> Triangles
 		for(int bf=0;bf<3;bf++) {
-			// •ª—£²
+			// åˆ†é›¢è»¸
 			PfxVector3 sepAxis = boxOri.getCol(bf);
 
-			// Triangles‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+			// Trianglesã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 			PfxFloat triMin,triMax;
 			pfxGetProjAxisPnts6(facetPnts,sepAxis,triMin,triMax);
 
-			// Box‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+			// Boxã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 			PfxFloat boxMin = dot(boxPos,sepAxis)-boxHalf[bf];
 			PfxFloat boxMax = dot(boxPos,sepAxis)+boxHalf[bf];
 			
 			CHECK_SAT(sepAxis,triMin,triMax,boxMin,boxMax)
 		}
 
-		// ƒGƒbƒW Triangles–Ê‚ÌƒGƒbƒW(x3)~Box‚ÌƒGƒbƒW(x3)
+		// ã‚¨ãƒƒã‚¸ Trianglesé¢ã®ã‚¨ãƒƒã‚¸(x3)Ã—Boxã®ã‚¨ãƒƒã‚¸(x3)
 		for(int e=0;e<3;e++) {
 			PfxVector3 dir = normalize(facetPnts[(e+1)%3] - facetPnts[e]);
 
 			for(int i=0;i<3;i++) {
 				PfxVector3 boxEdge = boxOri.getCol(i);
 				
-				// ƒGƒbƒW‚ª•½s‚Å‚ ‚ê‚Î”»’è‚µ‚È‚¢
+				// ã‚¨ãƒƒã‚¸ãŒå¹³è¡Œã§ã‚ã‚Œã°åˆ¤å®šã—ãªã„
 				if(pfxIsSameDirection(dir,boxEdge)) continue;
 
 				PfxVector3 sepAxis = normalize(cross(dir,boxEdge));
 
-				// Triangles‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// Trianglesã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat triMin,triMax;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,triMin,triMax);
 
-				// Box‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// Boxã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat boxMax,boxMin;
 				projection(boxHalf,boxPos,boxOri,sepAxis,boxMin,boxMax);
 
@@ -146,14 +146,14 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 			}
 		}
 
-		// –Ê‚ÉŒú‚İ‚ª‚ ‚éê‡‚Ì•â•“I‚È”»’èiŒğ·‚·‚é‚©‚µ‚È‚¢‚©‚¾‚¯‚ğ”»’èj
+		// é¢ã«åšã¿ãŒã‚ã‚‹å ´åˆã®è£œåŠ©çš„ãªåˆ¤å®šï¼ˆäº¤å·®ã™ã‚‹ã‹ã—ãªã„ã‹ã ã‘ã‚’åˆ¤å®šï¼‰
 		if(thickness > SCE_PFX_THICKNESS_THRESHOLD) {
-			// Œú‚İ‘¤–Ê‚Ì–@ü
+			// åšã¿å´é¢ã®æ³•ç·š
 			for(int i=0;i<3;i++) {
-				// •ª—£•½–Ê
+				// åˆ†é›¢å¹³é¢
 				PfxPlane planeA(sideNml[i],facetPnts[i]);
 
-				// Box‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// Boxã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat r = dot(boxHalf,absPerElem(sideNml[i]));
 				PfxFloat boxOffset = planeA.onPlane(boxPos);
 				PfxFloat boxMin = boxOffset - r;
@@ -163,7 +163,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 				}
 			}
 
-			// ‚Q‚Â‚ÌŒú‚İ‘¤–Ê‚Ì‚È‚·ƒGƒbƒW3~ƒ{ƒbƒNƒX‚ÌƒGƒbƒW3
+			// ï¼’ã¤ã®åšã¿å´é¢ã®ãªã™ã‚¨ãƒƒã‚¸3Ã—ãƒœãƒƒã‚¯ã‚¹ã®ã‚¨ãƒƒã‚¸3
 			for(int e=0;e<3;e++) {
 				PfxVector3 edgeVec = normalize(cross(sideNml[(e+1)%3],sideNml[e]));
 
@@ -171,16 +171,16 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 					PfxVector3 boxEdge(0.0f);
 					boxEdge[i] = 1.0f;
 					
-					// ƒGƒbƒW‚ª•½s‚Å‚ ‚ê‚Î”»’è‚µ‚È‚¢
+					// ã‚¨ãƒƒã‚¸ãŒå¹³è¡Œã§ã‚ã‚Œã°åˆ¤å®šã—ãªã„
 					if(pfxIsSameDirection(edgeVec,boxEdge)) continue;
 
 					PfxVector3 sepAxis = normalize(cross(edgeVec,boxEdge));
 
-					// Triangles‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+					// Trianglesã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 					PfxFloat triMin,triMax;
 					pfxGetProjAxisPnts3(facetPnts,sepAxis,triMin,triMax);
 
-					// Box‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+					// Boxã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 					PfxFloat boxMax,boxMin;
 					projection(boxHalf,boxPos,boxOri,sepAxis,boxMin,boxMax);
 
@@ -194,7 +194,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 	
 
 	//-------------------------------------------
-	// ‚QDÅ‹ßÚ–Ê‚Ì’Tõ
+	// ï¼’ï¼æœ€è¿‘æ¥é¢ã®æ¢ç´¢
 
 	int faceB=0; // X
 	int signB=1; // +
@@ -217,10 +217,10 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 	}
 	
 	//-------------------------------------------
-	// ‚RDÕ“Ë“_‚Ì’Tõ
+	// ï¼“ï¼è¡çªç‚¹ã®æ¢ç´¢
 	
 	{
-		// •ª—£²•ûŒü‚Éˆø‚«—£‚·(Å‹ßÚ‚ğ”»’è‚·‚é‚½‚ßAŒğ·‰ñ”ğ‚³‚¹‚é)
+		// åˆ†é›¢è»¸æ–¹å‘ã«å¼•ãé›¢ã™(æœ€è¿‘æ¥ã‚’åˆ¤å®šã™ã‚‹ãŸã‚ã€äº¤å·®å›é¿ã•ã›ã‚‹)
 		PfxVector3 sepAxis = 1.1f * pfxAbsf(distMin) * axisMin;
 		
 		const PfxVector3 facetPnts[3] = {
@@ -245,12 +245,12 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 		};
 		
 		//--------------------------------------------------------------------
-		// Õ“Ë“_‚Ì’Tõ
+		// è¡çªç‚¹ã®æ¢ç´¢
 		
 		PfxClosestPoints cp;
 		PfxVector3 sA,sB;
 		
-		// ƒGƒbƒWŠÔ‚ÌÅ’Z‹——£‚ÆÀ•W’l‚ğZo
+		// ã‚¨ãƒƒã‚¸é–“ã®æœ€çŸ­è·é›¢ã¨åº§æ¨™å€¤ã‚’ç®—å‡º
 		{
 			for(int i=0;i<3;i++) {
 				for(int j=0;j<4;j++) {
@@ -260,7 +260,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 			}
 		}
 		
-		// Triangle‚Ì’¸“_ -> Box‚Ì–Ê
+		// Triangleã®é ‚ç‚¹ -> Boxã®é¢
 		{
 			PfxTransform3 transformBInv = orthoInverse(transformB);
 			pfxClosestPointAABB(PfxVector3(transformBInv * PfxPoint3(facetPnts[0])),boxHalf,sB);
@@ -276,7 +276,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 			cp.add(PfxPoint3(facetPnts[2]),PfxPoint3(sB),lengthSqr(sB-facetPnts[2]));
 		}
 
-		// Box‚Ì’¸“_ -> Triangles‚Ì–Ê
+		// Boxã®é ‚ç‚¹ -> Trianglesã®é¢
 		PfxTriangle triangleA(facetPnts[0],facetPnts[1],facetPnts[2]);
 		for(int i=0;i<4;i++) {
 			pfxClosestPointTriangle(boxPnts[i],triangleA,sA);
@@ -287,7 +287,7 @@ bool pfxContactTriangleBox(PfxContactCache &contacts,PfxUInt32 facetId,
 			if(cp.distSqr[i] < cp.closestDistSqr + epsilon) {
 				cp.pA[i] -= sepAxis;
 				
-				// Õ“Ë“_‚ª•½’R‚ÈƒGƒbƒWã‚Å‚ ‚ê‚Î–@ü‚ğ•Ï‚¦‚é
+				// è¡çªç‚¹ãŒå¹³å¦ãªã‚¨ãƒƒã‚¸ä¸Šã§ã‚ã‚Œã°æ³•ç·šã‚’å¤‰ãˆã‚‹
 				if( (((edgeChk&0x03)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p0,p1)) ||
 					(((edgeChk&0x0c)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p1,p2)) ||
 					(((edgeChk&0x30)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p2,p0)) ) {
@@ -314,7 +314,7 @@ PfxInt32 pfxContactTriMeshBox(
 	(void) distanceThreshold;
 	
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 
@@ -329,8 +329,8 @@ PfxInt32 pfxContactTriMeshBox(
 	}
 	
 	//-------------------------------------------
-	// •ª—£²”»’è(SAT)
-	// ¦BoxÀ•WŒn (Bƒ[ƒJƒ‹)‚Å”»’è
+	// åˆ†é›¢è»¸åˆ¤å®š(SAT)
+	// â€»Boxåº§æ¨™ç³» (Bãƒ­ãƒ¼ã‚«ãƒ«)ã§åˆ¤å®š
 	
 	PfxDecodedTriMesh decodedMesh;
 	PfxContactCache localContacts;
@@ -338,7 +338,7 @@ PfxInt32 pfxContactTriMeshBox(
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		const PfxQuantizedFacet &facet = meshA->m_facets[selFacets[f]];
 		
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -412,14 +412,14 @@ PfxInt32 pfxContactTriMeshBox(
 	PfxContactCache &contacts,
 	const PfxLargeTriMesh *largeMeshA,const PfxExpandedTriMesh *meshA,
 	const PfxBox &boxB,
-	const PfxTransform3 &transformB, // Aƒ[ƒJƒ‹‚ÌB
+	const PfxTransform3 &transformB, // Aãƒ­ãƒ¼ã‚«ãƒ«ã®B
 	PfxFloat distanceThreshold)
 {
 	(void) largeMeshA;
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,
@@ -431,8 +431,8 @@ PfxInt32 pfxContactTriMeshBox(
 	}
 	
 	//-------------------------------------------
-	// •ª—£²”»’è(SAT)
-	// ¦BoxÀ•WŒn (Bƒ[ƒJƒ‹)‚Å”»’è
+	// åˆ†é›¢è»¸åˆ¤å®š(SAT)
+	// â€»Boxåº§æ¨™ç³» (Bãƒ­ãƒ¼ã‚«ãƒ«)ã§åˆ¤å®š
 	
 	PfxContactCache localContacts;
 	
@@ -503,7 +503,7 @@ PfxInt32 pfxContactTriMeshBox(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// Box‚ÌAABB
+	// Boxã®AABB
 
 	PfxVecInt3 aabbMinL,aabbMaxL;
 
@@ -522,7 +522,7 @@ PfxInt32 pfxContactTriMeshBox(
 	pfxSetZMax(aabbB,aabbMaxL.getZ());
 
 	//-------------------------------------------
-	// BVH’Tõ
+	// BVHæ¢ç´¢
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,aabbB,selFacets);
@@ -536,12 +536,12 @@ PfxInt32 pfxContactTriMeshBox(
 	
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		//-------------------------------------------
-		// Œğ·‚µ‚½–Ê‚Æ‚Ì•ª—£²”»’è(SAT)
-		// ¦BoxÀ•WŒn (Bƒ[ƒJƒ‹)‚Å”»’è
+		// äº¤å·®ã—ãŸé¢ã¨ã®åˆ†é›¢è»¸åˆ¤å®š(SAT)
+		// â€»Boxåº§æ¨™ç³» (Bãƒ­ãƒ¼ã‚«ãƒ«)ã§åˆ¤å®š
 
 		const PfxQuantizedFacetBvh &facet = meshA->m_facets[selFacets[f]];
 		
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -618,7 +618,7 @@ PfxInt32 pfxContactTriMeshBox(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// Box‚ÌAABB
+	// Boxã®AABB
 
 	PfxVecInt3 aabbMinL,aabbMaxL;
 
@@ -637,7 +637,7 @@ PfxInt32 pfxContactTriMeshBox(
 	pfxSetZMax(aabbB,aabbMaxL.getZ());
 
 	//-------------------------------------------
-	// BVH’Tõ
+	// BVHæ¢ç´¢
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,aabbB,selFacets);
@@ -650,8 +650,8 @@ PfxInt32 pfxContactTriMeshBox(
 	
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		//-------------------------------------------
-		// Œğ·‚µ‚½–Ê‚Æ‚Ì•ª—£²”»’è(SAT)
-		// ¦BoxÀ•WŒn (Bƒ[ƒJƒ‹)‚Å”»’è
+		// äº¤å·®ã—ãŸé¢ã¨ã®åˆ†é›¢è»¸åˆ¤å®š(SAT)
+		// â€»Boxåº§æ¨™ç³» (Bãƒ­ãƒ¼ã‚«ãƒ«)ã§åˆ¤å®š
 
 		const PfxExpandedFacetBvh &facet = meshA->m_facets[selFacets[f]];
 		

@@ -116,15 +116,21 @@ namespace basecross {
 		return crox.x * croy.y - crox.y * croy.x;
 	}
 
-	FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
-		Camera(),
-		m_Direction(Vec3(0)),
-		m_Eye(Vec3(0)),
-		m_Position(Vec3(0)),
-		m_Angle(-XM_PIDIV2),
-		m_RotateSpeed(XMConvertToRadians(180)),
-		m_Stage(StagePtr),
-		m_StopCamera(false)
+    FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
+        Camera(),
+        m_Direction(Vec3(0)),
+        m_Eye(Vec3(0)),
+        m_Position(Vec3(0)),
+        m_Angle(-XM_PIDIV2),
+        m_RotateSpeed(XMConvertToRadians(180)),
+        m_Stage(StagePtr),
+        m_StopCamera(false),
+        m_Width(0), // Initialize m_Width
+        m_Height(0), // Initialize m_Height
+        m_HitCollision(false), // Initialize m_HitCollision
+		m_IsShaking(false), 
+		m_Duration(0.0f),
+		m_InitialDuration(0.0f)
 	{
 	}
 
@@ -169,6 +175,8 @@ namespace basecross {
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}
+		Vec3 m_addEye = ShakeCameraMove();
+		m_Eye += m_addEye; // カメラの振動を適用
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
 			//自分の位置

@@ -42,17 +42,17 @@ PfxInt32 pfxContactLargeTriMesh(
 	PfxMatrix3 matrixAB;
 	PfxVector3 offsetAB;
 	
-	// Bƒ[ƒJƒ‹¨Aƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«â†’Aãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformAB = orthoInverse(transformA) * transformB;
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 	
-	// Aƒ[ƒJƒ‹¨Bƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«â†’Bãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformBA = orthoInverse(transformAB);
 	
 	// -----------------------------------------------------
-	// LargeTriMesh‚ÉŠÜ‚Ü‚ê‚éTriMesh‚ÌAABB‚Æ“Ê‘Ì‚ÌAABB‚ğ”»’è‚µA
-	// Œğ·‚·‚é‚à‚Ì‚ğŒÂ•Ê‚ÉÕ“Ë”»’è‚·‚éB¦LargeMeshÀ•WŒn
+	// LargeTriMeshã«å«ã¾ã‚Œã‚‹TriMeshã®AABBã¨å‡¸ä½“ã®AABBã‚’åˆ¤å®šã—ã€
+	// äº¤å·®ã™ã‚‹ã‚‚ã®ã‚’å€‹åˆ¥ã«è¡çªåˆ¤å®šã™ã‚‹ã€‚â€»LargeMeshåº§æ¨™ç³»
 	
 	PfxVector3 shapeHalf(0.0f);
 	PfxVector3 shapeCenter = offsetAB;
@@ -95,7 +95,7 @@ PfxInt32 pfxContactLargeTriMesh(
 	}
 
 	// -----------------------------------------------------
-	// ƒAƒCƒ‰ƒ“ƒh‚Æ‚ÌÕ“Ë”»’è
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã¨ã®è¡çªåˆ¤å®š
 
 	PfxVecInt3 aabbMinL,aabbMaxL;
 	lmeshA->getLocalPosition((shapeCenter-shapeHalf),(shapeCenter+shapeHalf),aabbMinL,aabbMaxL);
@@ -104,7 +104,7 @@ PfxInt32 pfxContactLargeTriMesh(
 	
 	{
 	for(PfxUInt32 i=0;i<numIslands;i++) {
-		// AABBƒ`ƒFƒbƒN
+		// AABBãƒã‚§ãƒƒã‚¯
 		PfxAabb16 aabbB = lmeshA->m_aabbList[i];
 		if(aabbMaxL.getX() < pfxGetXMin(aabbB) || aabbMinL.getX() > pfxGetXMax(aabbB)) continue;
 		if(aabbMaxL.getY() < pfxGetYMin(aabbB) || aabbMinL.getY() > pfxGetYMax(aabbB)) continue;
@@ -119,7 +119,7 @@ PfxInt32 pfxContactLargeTriMesh(
 			island = ((PfxExpandedTriMesh*)lmeshA->m_islands) + i;
 		}
 
-			// Õ“Ë”»’è
+			// è¡çªåˆ¤å®š
 			PfxContactCache localContacts;
 			if(lmeshA->m_type & 0x01) {
 				switch(shapeB.getType()) {
@@ -175,8 +175,8 @@ PfxInt32 pfxContactLargeTriMesh(
 			}
 
 			
-			// Õ“Ë“_‚ğ’Ç‰Á
-			// Œ‹‰Ê‚ÍAƒ[ƒJƒ‹‚È‚Ì‚ÅA•ÏŠ·‚·‚é
+			// è¡çªç‚¹ã‚’è¿½åŠ 
+			// çµæœã¯Aãƒ­ãƒ¼ã‚«ãƒ«ãªã®ã§ã€å¤‰æ›ã™ã‚‹
 			for(int j=0;j<localContacts.getNumContacts();j++) {
 				PfxSubData subData = localContacts.getSubData(j);
 				subData.setIslandId(i);
@@ -207,17 +207,17 @@ PfxInt32 pfxContactLargeTriMeshBvh(
 	PfxMatrix3 matrixAB;
 	PfxVector3 offsetAB;
 	
-	// Bƒ[ƒJƒ‹¨Aƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Bãƒ­ãƒ¼ã‚«ãƒ«â†’Aãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformAB = orthoInverse(transformA) * transformB;
 	matrixAB = transformAB.getUpper3x3();
 	offsetAB = transformAB.getTranslation();
 	
-	// Aƒ[ƒJƒ‹¨Bƒ[ƒJƒ‹‚Ö‚Ì•ÏŠ·
+	// Aãƒ­ãƒ¼ã‚«ãƒ«â†’Bãƒ­ãƒ¼ã‚«ãƒ«ã¸ã®å¤‰æ›
 	transformBA = orthoInverse(transformAB);
 	
 	// -----------------------------------------------------
-	// LargeTriMesh‚ÉŠÜ‚Ü‚ê‚éTriMesh‚ÌAABB‚Æ“Ê‘Ì‚ÌAABB‚ğ”»’è‚µA
-	// Œğ·‚·‚é‚à‚Ì‚ğŒÂ•Ê‚ÉÕ“Ë”»’è‚·‚éB¦LargeMeshÀ•WŒn
+	// LargeTriMeshã«å«ã¾ã‚Œã‚‹TriMeshã®AABBã¨å‡¸ä½“ã®AABBã‚’åˆ¤å®šã—ã€
+	// äº¤å·®ã™ã‚‹ã‚‚ã®ã‚’å€‹åˆ¥ã«è¡çªåˆ¤å®šã™ã‚‹ã€‚â€»LargeMeshåº§æ¨™ç³»
 	
 	PfxVector3 shapeHalf(0.0f);
 	PfxVector3 shapeCenter = offsetAB;
@@ -259,7 +259,7 @@ PfxInt32 pfxContactLargeTriMeshBvh(
 	}
 
 	// -----------------------------------------------------
-	// ƒAƒCƒ‰ƒ“ƒh‚Æ‚ÌÕ“Ë”»’è
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã¨ã®è¡çªåˆ¤å®š
 
 	PfxVecInt3 aabbMinL,aabbMaxL;
 	lmeshA->getLocalPosition((shapeCenter-shapeHalf),(shapeCenter+shapeHalf),aabbMinL,aabbMaxL);
@@ -299,7 +299,7 @@ PfxInt32 pfxContactLargeTriMeshBvh(
 			
 			PfxUInt32 i = nodeId;
 			
-			// Õ“Ë”»’è
+			// è¡çªåˆ¤å®š
 			PfxContactCache localContacts;
 			
 			if(lmeshA->m_type & 0x01) {
@@ -355,7 +355,7 @@ PfxInt32 pfxContactLargeTriMeshBvh(
 				}
 			}
 			
-			// Õ“Ë“_‚ğ’Ç‰Á
+			// è¡çªç‚¹ã‚’è¿½åŠ 
 			for(int j=0;j<localContacts.getNumContacts();j++) {
 				PfxSubData subData = localContacts.getSubData(j);
 				subData.setIslandId(i);

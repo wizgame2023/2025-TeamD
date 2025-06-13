@@ -1,6 +1,6 @@
 /*!
 @file ProjectShader.cpp
-@brief ƒvƒƒWƒFƒNƒg‚Åg—p‚·‚éƒVƒF[ƒ_[À‘Ì
+@brief ãƒ—ãƒ­ã‚¸ã‚§ã‚¯ãƒˆã§ä½¿ç”¨ã™ã‚‹ã‚·ã‚§ãƒ¼ãƒ€ãƒ¼å®Ÿä½“
 */
 
 #include "stdafx.h"

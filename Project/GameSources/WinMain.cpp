@@ -7,17 +7,17 @@ using namespace basecross;
 
 LRESULT CALLBACK	WndProc(HWND, UINT, WPARAM, LPARAM);
 
-const wchar_t* pClassName = L"Œ‚Íe‚æ‚è‹­‚µ";
-const wchar_t* pWndTitle = L"Œ‚Íe‚æ‚è‹­‚µ";
+const wchar_t* pClassName = L"æ‹³ã¯éŠƒã‚ˆã‚Šå¼·ã—";
+const wchar_t* pWndTitle = L"æ‹³ã¯éŠƒã‚ˆã‚Šå¼·ã—";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
 BOOL IsMouseCursor = FALSE;
 //--------------------------------------------------------------------------------------
 //
-//  ŠÖ”: MyRegisterClass()
+//  é–¢æ•°: MyRegisterClass()
 //
-//  –Ú“I: ƒEƒBƒ“ƒhƒE ƒNƒ‰ƒX‚ğ“o˜^‚µ‚Ü‚·B
+//  ç›®çš„: ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ ã‚¯ãƒ©ã‚¹ã‚’ç™»éŒ²ã—ã¾ã™ã€‚
 //
 //--------------------------------------------------------------------------------------
 ATOM MyRegisterClass(HINSTANCE hInstance)
@@ -43,14 +43,14 @@ ATOM MyRegisterClass(HINSTANCE hInstance)
 
 //--------------------------------------------------------------------------------------
 //
-//   ŠÖ”: InitInstance(HINSTANCE, int)
+//   é–¢æ•°: InitInstance(HINSTANCE, int)
 //
-//   –Ú“I: ƒCƒ“ƒXƒ^ƒ“ƒX ƒnƒ“ƒhƒ‹‚ğ•Û‘¶‚µ‚ÄAƒƒCƒ“ ƒEƒBƒ“ƒhƒE‚ğì¬‚µ‚Ü‚·B
+//   ç›®çš„: ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜ã—ã¦ã€ãƒ¡ã‚¤ãƒ³ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆã—ã¾ã™ã€‚
 //
-//   ƒRƒƒ“ƒg:
+//   ã‚³ãƒ¡ãƒ³ãƒˆ:
 //
-//        ‚±‚ÌŠÖ”‚ÅAƒOƒ[ƒoƒ‹•Ï”‚ÅƒCƒ“ƒXƒ^ƒ“ƒX ƒnƒ“ƒhƒ‹‚ğ•Û‘¶‚µA
-//        ƒƒCƒ“ ƒvƒƒOƒ‰ƒ€ ƒEƒBƒ“ƒhƒE‚ğì¬‚¨‚æ‚Ñ•\¦‚µ‚Ü‚·B
+//        ã“ã®é–¢æ•°ã§ã€ã‚°ãƒ­ãƒ¼ãƒãƒ«å¤‰æ•°ã§ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ ãƒãƒ³ãƒ‰ãƒ«ã‚’ä¿å­˜ã—ã€
+//        ãƒ¡ã‚¤ãƒ³ ãƒ—ãƒ­ã‚°ãƒ©ãƒ  ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã‚’ä½œæˆãŠã‚ˆã³è¡¨ç¤ºã—ã¾ã™ã€‚
 //--------------------------------------------------------------------------------------
 HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iClientWidth, int iClientHeight)
 {
@@ -109,7 +109,7 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 
 //--------------------------------------------------------------------------------------
 //	int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth, int iClientHeight);
-//	—p“r: ƒƒCƒ“ƒ‹[ƒv
+//	ç”¨é€”: ãƒ¡ã‚¤ãƒ³ãƒ«ãƒ¼ãƒ—
 //--------------------------------------------------------------------------------------
 int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth, int iClientHeight) {
 	int RetCode = 0;
@@ -182,7 +182,7 @@ int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth
 
 //--------------------------------------------------------------------------------------
 //	int APIENTRY _tWinMain();
-//	—p“r: ƒGƒ“ƒgƒŠƒ|ƒCƒ“ƒg
+//	ç”¨é€”: ã‚¨ãƒ³ãƒˆãƒªãƒã‚¤ãƒ³ãƒˆ
 //--------------------------------------------------------------------------------------
 int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_In_opt_ HINSTANCE hPrevInstance,
@@ -215,9 +215,9 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 
 //--------------------------------------------------------------------------------------
 //
-//  ŠÖ” : MakeWindowModeRectFunc()
+//  é–¢æ•° : MakeWindowModeRectFunc()
 //
-//	•¶š‰»‚¯‚É‚æ‚è•s–¾
+//	æ–‡å­—åŒ–ã‘ã«ã‚ˆã‚Šä¸æ˜
 //
 //--------------------------------------------------------------------------------------
 void MakeWindowModeRectFunc(RECT& rc) {
@@ -234,13 +234,13 @@ void MakeWindowModeRectFunc(RECT& rc) {
 
 //--------------------------------------------------------------------------------------
 //
-//  ŠÖ”: WndProc(HWND, UINT, WPARAM, LPARAM)
+//  é–¢æ•°: WndProc(HWND, UINT, WPARAM, LPARAM)
 //
-//  –Ú“I:    ƒƒCƒ“ ƒEƒBƒ“ƒhƒE‚ÌƒƒbƒZ[ƒW‚ğˆ—‚µ‚Ü‚·B
+//  ç›®çš„:    ãƒ¡ã‚¤ãƒ³ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’å‡¦ç†ã—ã¾ã™ã€‚
 //
-//  WM_COMMAND	- ƒAƒvƒŠƒP[ƒVƒ‡ƒ“ ƒƒjƒ…[‚Ìˆ—
-//  WM_PAINT	- ƒƒCƒ“ ƒEƒBƒ“ƒhƒE‚Ì•`‰æ
-//  WM_DESTROY	- ’†~ƒƒbƒZ[ƒW‚ğ•\¦‚µ‚Ä–ß‚é
+//  WM_COMMAND	- ã‚¢ãƒ—ãƒªã‚±ãƒ¼ã‚·ãƒ§ãƒ³ ãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®å‡¦ç†
+//  WM_PAINT	- ãƒ¡ã‚¤ãƒ³ ã‚¦ã‚£ãƒ³ãƒ‰ã‚¦ã®æç”»
+//  WM_DESTROY	- ä¸­æ­¢ãƒ¡ãƒƒã‚»ãƒ¼ã‚¸ã‚’è¡¨ç¤ºã—ã¦æˆ»ã‚‹
 //
 //--------------------------------------------------------------------------------------
 LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)

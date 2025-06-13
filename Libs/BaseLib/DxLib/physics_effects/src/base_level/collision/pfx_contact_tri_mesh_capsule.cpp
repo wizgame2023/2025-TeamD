@@ -24,46 +24,46 @@ Physics Effects under the filename: physics_effects_license.txt
 namespace sce {
 namespace PhysicsEffects {
 
-// •ª—£²‚ªŒ©‚Â‚©‚Á‚½ê‡‚Í‚·‚®‚Éˆ—‚ğ”²‚¯‚é‚½‚ßÅ’Z‹——£‚ª•Ô‚³‚ê‚é‚í‚¯‚Å‚Í‚È‚¢‚±‚Æ‚É’ˆÓ
+// åˆ†é›¢è»¸ãŒè¦‹ã¤ã‹ã£ãŸå ´åˆã¯ã™ãã«å‡¦ç†ã‚’æŠœã‘ã‚‹ãŸã‚æœ€çŸ­è·é›¢ãŒè¿”ã•ã‚Œã‚‹ã‚ã‘ã§ã¯ãªã„ã“ã¨ã«æ³¨æ„
 
 /*
-	› ƒJƒvƒZƒ‹•ª—£²(x19)
-	–Ê–@ü
-	ƒJƒvƒZƒ‹² x ƒGƒbƒW0
-	ƒJƒvƒZƒ‹² x ƒGƒbƒW1
-	ƒJƒvƒZƒ‹² x ƒGƒbƒW2
-	((ƒJƒvƒZƒ‹“_0-–Ê“_0) x ƒGƒbƒW0) x ƒGƒbƒW0
-	((ƒJƒvƒZƒ‹“_0-–Ê“_1) x ƒGƒbƒW1) x ƒGƒbƒW1
-	((ƒJƒvƒZƒ‹“_0-–Ê“_2) x ƒGƒbƒW2) x ƒGƒbƒW2
-	((ƒJƒvƒZƒ‹“_1-–Ê“_0) x ƒGƒbƒW0) x ƒGƒbƒW0
-	((ƒJƒvƒZƒ‹“_1-–Ê“_1) x ƒGƒbƒW1) x ƒGƒbƒW1
-	((ƒJƒvƒZƒ‹“_1-–Ê“_2) x ƒGƒbƒW2) x ƒGƒbƒW2
-	((–Ê“_0-ƒJƒvƒZƒ‹“_0) x ƒJƒvƒZƒ‹²) x ƒJƒvƒZƒ‹²
-	((–Ê“_1-ƒJƒvƒZƒ‹“_0) x ƒJƒvƒZƒ‹²) x ƒJƒvƒZƒ‹²
-	((–Ê“_2-ƒJƒvƒZƒ‹“_0) x ƒJƒvƒZƒ‹²) x ƒJƒvƒZƒ‹²
-	–Ê“_0-ƒJƒvƒZƒ‹“_0
-	–Ê“_1-ƒJƒvƒZƒ‹“_0
-	–Ê“_2-ƒJƒvƒZƒ‹“_0
-	–Ê“_0-ƒJƒvƒZƒ‹“_1
-	–Ê“_1-ƒJƒvƒZƒ‹“_1
-	–Ê“_2-ƒJƒvƒZƒ‹“_1
+	â—‹ ã‚«ãƒ—ã‚»ãƒ«åˆ†é›¢è»¸(x19)
+	é¢æ³•ç·š
+	ã‚«ãƒ—ã‚»ãƒ«è»¸ x ã‚¨ãƒƒã‚¸0
+	ã‚«ãƒ—ã‚»ãƒ«è»¸ x ã‚¨ãƒƒã‚¸1
+	ã‚«ãƒ—ã‚»ãƒ«è»¸ x ã‚¨ãƒƒã‚¸2
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹0-é¢ç‚¹0) x ã‚¨ãƒƒã‚¸0) x ã‚¨ãƒƒã‚¸0
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹0-é¢ç‚¹1) x ã‚¨ãƒƒã‚¸1) x ã‚¨ãƒƒã‚¸1
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹0-é¢ç‚¹2) x ã‚¨ãƒƒã‚¸2) x ã‚¨ãƒƒã‚¸2
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹1-é¢ç‚¹0) x ã‚¨ãƒƒã‚¸0) x ã‚¨ãƒƒã‚¸0
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹1-é¢ç‚¹1) x ã‚¨ãƒƒã‚¸1) x ã‚¨ãƒƒã‚¸1
+	((ã‚«ãƒ—ã‚»ãƒ«ç‚¹1-é¢ç‚¹2) x ã‚¨ãƒƒã‚¸2) x ã‚¨ãƒƒã‚¸2
+	((é¢ç‚¹0-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0) x ã‚«ãƒ—ã‚»ãƒ«è»¸) x ã‚«ãƒ—ã‚»ãƒ«è»¸
+	((é¢ç‚¹1-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0) x ã‚«ãƒ—ã‚»ãƒ«è»¸) x ã‚«ãƒ—ã‚»ãƒ«è»¸
+	((é¢ç‚¹2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0) x ã‚«ãƒ—ã‚»ãƒ«è»¸) x ã‚«ãƒ—ã‚»ãƒ«è»¸
+	é¢ç‚¹0-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0
+	é¢ç‚¹1-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0
+	é¢ç‚¹2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0
+	é¢ç‚¹0-ã‚«ãƒ—ã‚»ãƒ«ç‚¹1
+	é¢ç‚¹1-ã‚«ãƒ—ã‚»ãƒ«ç‚¹1
+	é¢ç‚¹2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹1
  */
 
-#define CHECK_SAT(axis,AMin,AMax,BMin,BMax) \
-{\
-	PfxFloat d1 = AMin - BMax;\
-	PfxFloat d2 = BMin - AMax;\
-	if(distMin < d1) {\
-		distMin = d1;\
-		axisMin = sepAxis;\
-	}\
-	if(distMin < d2) {\
-		distMin = d2;\
-		axisMin = -sepAxis;\
-	}\
-	if(d1 > 0.0f || d2 > 0.0f) {\
-		return true;\
-	}\
+#define CHECK_SAT(axis,AMin,AMax,BMin,BMax) Â¥
+{Â¥
+	PfxFloat d1 = AMin - BMax;Â¥
+	PfxFloat d2 = BMin - AMax;Â¥
+	if(distMin < d1) {Â¥
+		distMin = d1;Â¥
+		axisMin = sepAxis;Â¥
+	}Â¥
+	if(distMin < d2) {Â¥
+		distMin = d2;Â¥
+		axisMin = -sepAxis;Â¥
+	}Â¥
+	if(d1 > 0.0f || d2 > 0.0f) {Â¥
+		return true;Â¥
+	}Â¥
 }
 
 static
@@ -75,12 +75,12 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 {
 	const PfxFloat epsilon = 0.00001f;
 
-	// Å‚àó‚¢ŠÑ’Ê[“x‚Æ‚»‚Ì‚Æ‚«‚Ì•ª—£²
+	// æœ€ã‚‚æµ…ã„è²«é€šæ·±åº¦ã¨ãã®ã¨ãã®åˆ†é›¢è»¸
 	PfxFloat distMin = -SCE_PFX_FLT_MAX;
 	PfxVector3 axisMin(0.0f);
 
 	//-------------------------------------------
-	// ‚PD•ª—£²”»’è
+	// ï¼‘ï¼åˆ†é›¢è»¸åˆ¤å®š
 	{
 		PfxVector3 facetPnts[6] = {
 			p0,p1,p2,p0-thickness*normal,p1-thickness*normal,p2-thickness*normal
@@ -100,17 +100,17 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		{
 			const PfxVector3 &sepAxis = normal;
 
-			// •ª—£•½–Ê
+			// åˆ†é›¢å¹³é¢
 			PfxPlane plane(sepAxis,facetPnts[0]);
 
-			// Capsule(B)‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+			// Capsule(B)ã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 			PfxFloat test1,test2,BMin,BMax;
 			test1 = plane.onPlane(capP0);
 			test2 = plane.onPlane(capP1);
 			BMax = SCE_PFX_MAX(test1,test2) + capsuleRadius;
 			BMin = SCE_PFX_MIN(test1,test2) - capsuleRadius;
 
-			// ”»’è
+			// åˆ¤å®š
 			if(BMin > 0.0f || BMax < -thickness) {
 				return false;
 			}
@@ -122,8 +122,8 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// ƒJƒvƒZƒ‹² x –ÊƒGƒbƒW0,1,2
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// ã‚«ãƒ—ã‚»ãƒ«è»¸ x é¢ã‚¨ãƒƒã‚¸0,1,2
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 
 		{
 			for(int e=0;e<3;e++) {
@@ -135,11 +135,11 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 				//if(dot(normal,sepAxis) > 0.0f)
 				//	sepAxis = -sepAxis;
 				
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -150,8 +150,8 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// ((ƒJƒvƒZƒ‹“_0-–Ê“_0,1,2) x ƒGƒbƒW0,1,2) x ƒGƒbƒW0,1,2
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// ((ã‚«ãƒ—ã‚»ãƒ«ç‚¹0-é¢ç‚¹0,1,2) x ã‚¨ãƒƒã‚¸0,1,2) x ã‚¨ãƒƒã‚¸0,1,2
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 		
 		{
 			for(int e=0;e<3;e++) {
@@ -161,11 +161,11 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 				//if(dot(normal,sepAxis) > 0.0f)
 				//	sepAxis = -sepAxis;
 				
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -176,8 +176,8 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// ((ƒJƒvƒZƒ‹“_1-–Ê“_0,1,2) x ƒGƒbƒW0,1,2) x ƒGƒbƒW0,1,2
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// ((ã‚«ãƒ—ã‚»ãƒ«ç‚¹1-é¢ç‚¹0,1,2) x ã‚¨ãƒƒã‚¸0,1,2) x ã‚¨ãƒƒã‚¸0,1,2
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 		
 		{
 			for(int e=0;e<3;e++) {
@@ -187,11 +187,11 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 				//if(dot(normal,sepAxis) > 0.0f)
 				//	sepAxis = -sepAxis;
 				
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -202,8 +202,8 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// ((–Ê“_0,1,2-ƒJƒvƒZƒ‹“_0) x ƒJƒvƒZƒ‹²) x ƒJƒvƒZƒ‹²
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// ((é¢ç‚¹0,1,2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0) x ã‚«ãƒ—ã‚»ãƒ«è»¸) x ã‚«ãƒ—ã‚»ãƒ«è»¸
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 
 		{
 			for(int e=0;e<3;e++) {
@@ -216,11 +216,11 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 				//if(dot(normal,sepAxis) > 0.0f)
 				//	sepAxis = -sepAxis;
 
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -231,18 +231,18 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// –Ê“_0,1,2-ƒJƒvƒZƒ‹“_0
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// é¢ç‚¹0,1,2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹0
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 
 		{
 			for(int e=0;e<3;e++) {
 				PfxVector3 sepAxis = normalize(facetPnts[e]-capP0);
 
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -253,18 +253,18 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		}
 
 		//-------------------------------------------
-		// –Ê“_0,1,2-ƒJƒvƒZƒ‹“_1
-		// ¦TrianglesÀ•WŒn (Aƒ[ƒJƒ‹)
+		// é¢ç‚¹0,1,2-ã‚«ãƒ—ã‚»ãƒ«ç‚¹1
+		// â€»Trianglesåº§æ¨™ç³» (Aãƒ­ãƒ¼ã‚«ãƒ«)
 
 		{
 			for(int e=0;e<3;e++) {
 				PfxVector3 sepAxis = normalize(facetPnts[e]-capP1);
 				
-				// Triangle‚ğ•ª—£²‚É“Š‰e
+				// Triangleã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat AMin=SCE_PFX_FLT_MAX,AMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts6(facetPnts,sepAxis,AMin,AMax);
 				
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -274,15 +274,15 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 			}
 		}
 
-		// –Ê‚ÉŒú‚İ‚ª‚ ‚éê‡‚Ì•â•“I‚È”»’èi–Ê–@ü x ƒJƒvƒZƒ‹²j
-		// Œğ·‚·‚é‚©‚µ‚È‚¢‚©‚¾‚¯‚ğ”»’è
+		// é¢ã«åšã¿ãŒã‚ã‚‹å ´åˆã®è£œåŠ©çš„ãªåˆ¤å®šï¼ˆé¢æ³•ç·š x ã‚«ãƒ—ã‚»ãƒ«è»¸ï¼‰
+		// äº¤å·®ã™ã‚‹ã‹ã—ãªã„ã‹ã ã‘ã‚’åˆ¤å®š
 		if(thickness > SCE_PFX_THICKNESS_THRESHOLD) {
-			// Œú‚İ‘¤–Ê‚Ì–@ü
+			// åšã¿å´é¢ã®æ³•ç·š
 			for(int i=0;i<3;i++) {
-				// •ª—£•½–Ê
+				// åˆ†é›¢å¹³é¢
 				PfxPlane plane(sideNml[i],facetPnts[i]);
 
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat test1,test2,BMin;
 				test1 = plane.onPlane(capP0);
 				test2 = plane.onPlane(capP1);
@@ -293,21 +293,21 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 				}
 			}
 
-			// ‚Q‚Â‚ÌŒú‚İ‘¤–Ê‚Ì‚È‚·ƒGƒbƒW3~ƒJƒvƒZƒ‹²
+			// ï¼’ã¤ã®åšã¿å´é¢ã®ãªã™ã‚¨ãƒƒã‚¸3Ã—ã‚«ãƒ—ã‚»ãƒ«è»¸
 			for(int e=0;e<3;e++) {
 				PfxVector3 edgeVec = normalize(cross(sideNml[(e+1)%3],sideNml[e]));
 				PfxVector3 capVec = capP1-capP0;
 
-				// ƒGƒbƒW‚ª•½s‚Å‚ ‚ê‚Î”»’è‚µ‚È‚¢
+				// ã‚¨ãƒƒã‚¸ãŒå¹³è¡Œã§ã‚ã‚Œã°åˆ¤å®šã—ãªã„
 				if(pfxIsSameDirection(edgeVec,capVec)) continue;
 
 				PfxVector3 sepAxis = normalize(cross(edgeVec,capVec));
 
-				// Triangles‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// Trianglesã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat triMin,triMax;
 				pfxGetProjAxisPnts3(facetPnts,sepAxis,triMin,triMax);
 
-				// ƒJƒvƒZƒ‹‚ğ•ª—£²‚É“Š‰e‚µ‚Ä”ÍˆÍ‚ğæ“¾
+				// ã‚«ãƒ—ã‚»ãƒ«ã‚’åˆ†é›¢è»¸ã«æŠ•å½±ã—ã¦ç¯„å›²ã‚’å–å¾—
 				PfxFloat BMin=SCE_PFX_FLT_MAX,BMax=-SCE_PFX_FLT_MAX;
 				pfxGetProjAxisPnts2(capPnts,sepAxis,BMin,BMax);
 				BMin -= capsuleRadius;
@@ -321,10 +321,10 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 	}
 	
 	//-------------------------------------------
-	// ‚QDÕ“Ë“_‚Ì’Tõ
+	// ï¼’ï¼è¡çªç‚¹ã®æ¢ç´¢
 	
 	{
-		// •ª—£²•ûŒü‚Éˆø‚«—£‚·(Å‹ßÚ‚ğ”»’è‚·‚é‚½‚ßAŒğ·‰ñ”ğ‚³‚¹‚é)
+		// åˆ†é›¢è»¸æ–¹å‘ã«å¼•ãé›¢ã™(æœ€è¿‘æ¥ã‚’åˆ¤å®šã™ã‚‹ãŸã‚ã€äº¤å·®å›é¿ã•ã›ã‚‹)
 		PfxVector3 sepAxis = 1.1f * pfxAbsf(distMin) * axisMin;
 		
 		const PfxVector3 facetPnts[3] = {
@@ -334,15 +334,15 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		};
 
 		//--------------------------------------------------------------------
-		// Õ“Ë“_‚Ì’Tõ
+		// è¡çªç‚¹ã®æ¢ç´¢
 
 		PfxClosestPoints cp;
 		PfxVector3 sA,sB;
 
 		//--------------------------------------------------------------------
-		//Triangle‚Ì’¸“_ -> Capsule
+		//Triangleã®é ‚ç‚¹ -> Capsule
 
-		// ƒJƒvƒZƒ‹‚Ìü•ª‚Æ–Ê‚ÌƒGƒbƒWx3‚ÌÅ‹ßÚ“_‚ÌZo
+		// ã‚«ãƒ—ã‚»ãƒ«ã®ç·šåˆ†ã¨é¢ã®ã‚¨ãƒƒã‚¸x3ã®æœ€è¿‘æ¥ç‚¹ã®ç®—å‡º
 #ifdef SCE_PFX_USE_GEOMETRY
 		PfxGeomSegment segmentC((PfxPoint3)capP0,(PfxPoint3)capP1);
 
@@ -375,7 +375,7 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		cp.add(PfxPoint3(sA),PfxPoint3(sB + normalize(sA-sB)*capsuleRadius),lengthSqr(sA-sB));
 #endif
 
-		// ƒJƒvƒZƒ‹‚Ì’[“_‚Æ–Ê‚ÌÅ‹ßÚ“_‚ÌZo
+		// ã‚«ãƒ—ã‚»ãƒ«ã®ç«¯ç‚¹ã¨é¢ã®æœ€è¿‘æ¥ç‚¹ã®ç®—å‡º
 		PfxTriangle triangleA(facetPnts[0],facetPnts[1],facetPnts[2]);
 		pfxClosestPointTriangle(capP0,triangleA,sA);
 		cp.add(PfxPoint3(sA),PfxPoint3(capP0+normalize(sA-capP0)*capsuleRadius),lengthSqr(sA-capP0));
@@ -386,7 +386,7 @@ bool pfxContactTriangleCapsule(PfxContactCache &contacts,PfxUInt32 facetId,
 		for(int i=0;i<cp.numPoints;i++) {
 			if(cp.distSqr[i] < cp.closestDistSqr + epsilon) {
 				cp.pA[i] -= sepAxis;
-				// –Êã‚ÌÅ‹ßÚ“_‚ª“ÊƒGƒbƒWã‚Å‚È‚¢ê‡‚Í–@ü‚ğ•Ï‚¦‚é
+				// é¢ä¸Šã®æœ€è¿‘æ¥ç‚¹ãŒå‡¸ã‚¨ãƒƒã‚¸ä¸Šã§ãªã„å ´åˆã¯æ³•ç·šã‚’å¤‰ãˆã‚‹
 				if( (((edgeChk&0x03)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p0,p1)) ||
 					(((edgeChk&0x0c)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p1,p2)) ||
 					(((edgeChk&0x30)==0)&&pfxPointOnLine(PfxVector3(cp.pA[i]),p2,p0)) ) {
@@ -413,7 +413,7 @@ PfxInt32 pfxContactTriMeshCapsule(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş.
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€.
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = { 0 };
 
@@ -428,8 +428,8 @@ PfxInt32 pfxContactTriMeshCapsule(
 	}
 	
 	//-------------------------------------------
-	// •ª—£²”»’è(SAT)
-	// ¦CapsuleBÀ•WŒn (Bƒ[ƒJƒ‹)‚Å”»’è
+	// åˆ†é›¢è»¸åˆ¤å®š(SAT)
+	// â€»CapsuleBåº§æ¨™ç³» (Bãƒ­ãƒ¼ã‚«ãƒ«)ã§åˆ¤å®š
 
 	PfxVector3 vCapAB[2] = {
 		PfxVector3(transformB * PfxPoint3(-capsuleB.m_halfLen, 0.0f, 0.0f)),
@@ -442,7 +442,7 @@ PfxInt32 pfxContactTriMeshCapsule(
 	for(PfxUInt32 f = 0; f < numSelFacets; f++) {
 		const PfxQuantizedFacet &facet = meshA->m_facets[selFacets[f]];
 
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -523,7 +523,7 @@ PfxInt32 pfxContactTriMeshCapsule(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş.
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€.
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = { 0 };
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,
@@ -535,7 +535,7 @@ PfxInt32 pfxContactTriMeshCapsule(
 	}
 	
 	//-------------------------------------------
-	// •ª—£²”»’è(SAT)
+	// åˆ†é›¢è»¸åˆ¤å®š(SAT)
 
 	PfxVector3 vCapAB[2] = {
 		PfxVector3(transformB * PfxPoint3(-capsuleB.m_halfLen, 0.0f, 0.0f)),
@@ -647,7 +647,7 @@ PfxInt32 pfxContactTriMeshCapsule(
 	for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 		const PfxQuantizedFacetBvh &facet = meshA->m_facets[selFacets[f]];
 		
-		// ƒfƒR[ƒh
+		// ãƒ‡ã‚³ãƒ¼ãƒ‰
 		PfxDecodedFacet decodedFacet;
 		const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 

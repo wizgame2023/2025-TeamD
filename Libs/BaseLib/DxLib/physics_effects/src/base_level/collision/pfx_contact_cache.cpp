@@ -64,7 +64,7 @@ int PfxContactCache::sort4ContactPoints(const PfxPoint3 &newCP,PfxFloat newDista
 	int maxPenetrationIndex = -1;
 	PfxFloat maxPenetration = newDistance;
 
-	// Å‚à[‚¢Õ“Ë“_‚Í”rœ‘ÎÛ‚©‚ç‚Í‚¸‚·
+	// æœ€ã‚‚æ·±ã„è¡çªç‚¹ã¯æ’é™¤å¯¾è±¡ã‹ã‚‰ã¯ãšã™
 	for(int i=0;i<SCE_PFX_MAX_CACHED_CONTACT_POINTS;i++) {
 		if(m_cachedContactPoints[i].m_distance < maxPenetration) {
 			maxPenetrationIndex = i;
@@ -74,7 +74,7 @@ int PfxContactCache::sort4ContactPoints(const PfxPoint3 &newCP,PfxFloat newDista
 	
 	PfxFloat res[4] = {0.0f};
 	
-	// Še“_‚ğœ‚¢‚½‚Æ‚«‚ÌÕ“Ë“_‚ªì‚é–ÊÏ‚Ì‚¤‚¿AÅ‚à‘å‚«‚­‚È‚é‚à‚Ì‚ğ‘I‘ğ
+	// å„ç‚¹ã‚’é™¤ã„ãŸã¨ãã®è¡çªç‚¹ãŒä½œã‚‹é¢ç©ã®ã†ã¡ã€æœ€ã‚‚å¤§ãããªã‚‹ã‚‚ã®ã‚’é¸æŠ
 	PfxVector3 newp(newCP);
 	PfxVector3 p[4];
 	p[0] = (PfxVector3)m_cachedContactPoints[0].m_localPointA;
@@ -155,12 +155,12 @@ void PfxContactCache::addContactPoint(
 	int id = findNearestContactPoint(newPointA,newPointB,newNormal);
 
 	if(id < 0 && m_numContacts < SCE_PFX_MAX_CACHED_CONTACT_POINTS) {
-		// Õ“Ë“_‚ğV‹K’Ç‰Á
+		// è¡çªç‚¹ã‚’æ–°è¦è¿½åŠ 
 		id = m_numContacts++;
 		m_cachedContactPoints[id].reset();
 	}
 	else if(id < 0){
-		// ƒ\[ƒg
+		// ã‚½ãƒ¼ãƒˆ
 		id = sort4ContactPoints(newPointA,newDistance);
 		m_cachedContactPoints[id].reset();
 	}
@@ -181,7 +181,7 @@ void PfxContactCache::addContactPoint(const PfxCachedContactPoint &cp)
 	
 	if(id >= 0) {
 		if(m_cachedContactPoints[id].m_distance > cp.m_distance) {
-			// “¯ˆê“_‚ğ”­Œ©AÕ“Ë“_î•ñ‚ğXV
+			// åŒä¸€ç‚¹ã‚’ç™ºè¦‹ã€è¡çªç‚¹æƒ…å ±ã‚’æ›´æ–°
 			m_cachedContactPoints[id].m_distance = cp.m_distance;
 			m_cachedContactPoints[id].m_normal = cp.m_normal;
 			m_cachedContactPoints[id].m_localPointA = cp.m_localPointA;
@@ -189,14 +189,14 @@ void PfxContactCache::addContactPoint(const PfxCachedContactPoint &cp)
 		}
 	}
 	else if(m_numContacts < SCE_PFX_MAX_CACHED_CONTACT_POINTS) {
-		// Õ“Ë“_‚ğV‹K’Ç‰Á
+		// è¡çªç‚¹ã‚’æ–°è¦è¿½åŠ 
 		m_cachedContactPoints[m_numContacts++] = cp;
 	}
 	else {
-		// ƒ\[ƒg
+		// ã‚½ãƒ¼ãƒˆ
 		id = sort4ContactPoints(pA,cp.m_distance);
 		
-		// ƒRƒ“ƒ^ƒNƒgƒ|ƒCƒ“ƒg“ü‚ê‘Ö‚¦
+		// ã‚³ãƒ³ã‚¿ã‚¯ãƒˆãƒã‚¤ãƒ³ãƒˆå…¥ã‚Œæ›¿ãˆ
 		m_cachedContactPoints[id] = cp;
 	}
 }
