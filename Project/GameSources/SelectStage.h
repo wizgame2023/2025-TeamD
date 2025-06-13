@@ -43,6 +43,7 @@ namespace basecross {
 
 		void OnPushA();
 
+		void t(shared_ptr<ObjectInterface> object){}
 
 		void AcceptStage(int index);
 		void AcceptDifficulty(int index);

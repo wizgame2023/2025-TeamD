@@ -1,6 +1,6 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸
 */
 
 #pragma once
@@ -12,7 +12,7 @@ namespace basecross {
 	class NumberSprite;
 	class SharpFan;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class GameStageS : public GameStage {
 
@@ -20,7 +20,7 @@ namespace basecross {
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void RegisterObjects();
@@ -30,10 +30,10 @@ namespace basecross {
 			return 100.0f - (static_cast<float>(m_EnemyCount) / static_cast<float>(m_MaxEnemyCount)) * 100.0f;
 		}
 	public:
-		//\’z‚Æ”jŠü
-		GameStageS(const wstring& file) :GameStage(file), m_IsPose(false) {}
-		virtual ~GameStageS() {}
-		//‰Šú‰»
+		//æ§‹ç¯‰ã¨ç ´æ£„
+		GameStageS(const wstring& file) :GameStage(file,{}), m_IsPose(false) {}
+		virtual â€¾GameStageS() {}
+		//åˆæœŸåŒ–
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 

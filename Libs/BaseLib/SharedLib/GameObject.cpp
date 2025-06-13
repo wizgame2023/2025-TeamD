@@ -1,6 +1,6 @@
-ï»¿/*!
+/*!
 @file GameObject.cpp
-@brief ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã€ã‚¹ãƒ†ãƒ¼ã‚¸å®Ÿä½“
+@brief ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgAƒXƒe[ƒWÀ‘Ì
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	ã‚²ãƒ¼ãƒ é…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¦ªã‚¯ãƒ©ã‚¹å®Ÿä½“
+	///	ƒQ[ƒ€”z’uƒIƒuƒWƒFƒNƒgeƒNƒ‰ƒXÀ‘Ì
 	//--------------------------------------------------------------------------------------
 	GameObject::GameObject(const shared_ptr<Stage>& StagePtr) :
 		ObjectInterface(),
@@ -17,7 +17,7 @@ namespace basecross {
 		m_Stage(StagePtr)
 	{}
 
-	GameObject::â€¾GameObject() {}
+	GameObject::~GameObject() {}
 
 	shared_ptr<Stage> GameObject::GetStage(bool ExceptionActive) const {
 		auto shptr = m_Stage.lock();
@@ -27,7 +27,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"æ‰€å±ã‚¹ãƒ†ãƒ¼ã‚¸ãŒnullã§ã™",
+					L"Š‘®ƒXƒe[ƒW‚ªnull‚Å‚·",
 					L"if (!shptr)",
 					L"GameObject::GetStage()"
 				);
@@ -36,8 +36,8 @@ namespace basecross {
 				return nullptr;
 			}
 		}
-		// æ‰€å±ã‚¹ãƒ†ãƒ¼ã‚¸ãŒnullã ã£ãŸ
-		// è‡ªåˆ†è‡ªèº«ãŒã‚¹ãƒ†ãƒ¼ã‚¸ã®å¯èƒ½æ€§ãŒã‚ã‚‹
+		// Š‘®ƒXƒe[ƒW‚ªnull‚¾‚Á‚½
+		// ©•ª©g‚ªƒXƒe[ƒW‚Ì‰Â”\«‚ª‚ ‚é
 		return nullptr;
 	}
 
@@ -49,7 +49,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"æ‰€å±ã‚¹ãƒ†ãƒ¼ã‚¸ãŒnullã§ã™ã€‚è‡ªåˆ†è‡ªèº«ãŒã‚¹ãƒ†ãƒ¼ã‚¸ã§ã¯ã‚ã‚Šã¾ã›ã‚“ã‹ï¼Ÿ",
+					L"Š‘®ƒXƒe[ƒW‚ªnull‚Å‚·B©•ª©g‚ªƒXƒe[ƒW‚Å‚Í‚ ‚è‚Ü‚¹‚ñ‚©H",
 					L"if (!shptr)",
 					L"GameObject::GetStage()"
 				);
@@ -58,8 +58,8 @@ namespace basecross {
 				return nullptr;
 			}
 		}
-		// æ‰€å±ã‚¹ãƒ†ãƒ¼ã‚¸ãŒnullã ã£ãŸ
-		// è‡ªåˆ†è‡ªèº«ãŒã‚¹ãƒ†ãƒ¼ã‚¸ã®å¯èƒ½æ€§ãŒã‚ã‚‹
+		// Š‘®ƒXƒe[ƒW‚ªnull‚¾‚Á‚½
+		// ©•ª©g‚ªƒXƒe[ƒW‚Ì‰Â”\«‚ª‚ ‚é
 		return nullptr;
 	}
 
@@ -71,13 +71,13 @@ namespace basecross {
 	void GameObject::ComponentUpdate() {
 		auto Transptr = GetComponent<Transform>();
 		auto RightPtr = GetComponent<Rigidbody>(false);
-		//ãƒãƒƒãƒ—ã‚’æ¤œè¨¼ã—ã¦Update
+		//ƒ}ƒbƒv‚ğŒŸØ‚µ‚ÄUpdate
 		list<type_index>::iterator it = m_CompOrder.begin();
 		while (it != m_CompOrder.end()) {
 			map<type_index, shared_ptr<Component> >::const_iterator it2;
 			it2 = m_CompMap.find(*it);
 			if (it2 != m_CompMap.end()) {
-				//æŒ‡å®šã®å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã£ãŸ
+				//w’è‚ÌŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚Á‚½
 				if (it2->second->IsUpdateActive()
 					&& (it2->second != Transptr)
 					&& (it2->second != RightPtr)
@@ -90,7 +90,7 @@ namespace basecross {
 		if (RightPtr && RightPtr->IsUpdateActive()) {
 			RightPtr->OnUpdate();
 		}
-		//Transformã®Update
+		//Transform‚ÌUpdate
 		if (Transptr->IsUpdateActive()) {
 			Transptr->OnUpdate();
 		}
@@ -104,21 +104,21 @@ namespace basecross {
 	}
 
 	void GameObject::ComponentDraw() {
-		//TransformãŒãªã‘ã‚Œã°ä¾‹å¤–
+		//Transform‚ª‚È‚¯‚ê‚Î—áŠO
 		auto Transptr = GetComponent<Transform>();
 		auto RightPtr = GetComponent<Rigidbody>(false);
 		auto CollisionPtr = GetComponent<Collision>(false);
 		auto StringSpritePtr = GetComponent<StringSprite>(false);
 
-		//ãƒãƒƒãƒ—ã‚’æ¤œè¨¼ã—ã¦Draw
+		//ƒ}ƒbƒv‚ğŒŸØ‚µ‚ÄDraw
 		list<type_index>::iterator it = m_CompOrder.begin();
 		while (it != m_CompOrder.end()) {
 			map<type_index, shared_ptr<Component> >::const_iterator it2;
 			it2 = m_CompMap.find(*it);
-			//æŒ‡å®šã®å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã£ãŸ
+			//w’è‚ÌŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚Á‚½
 			if (it2 != m_CompMap.end() && !dynamic_pointer_cast<Shadowmap>(it2->second)) {
-				//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ä»¥å¤–ãªã‚‰å®Ÿè¡Œ
-				//ãã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å­ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®æç”»
+				//ƒVƒƒƒhƒEƒ}ƒbƒvˆÈŠO‚È‚çÀs
+				//‚»‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ÌqƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì•`‰æ
 				if (it2->second->IsDrawActive()
 					&& (it2->second != Transptr)
 					&& (it2->second != RightPtr)
@@ -131,35 +131,35 @@ namespace basecross {
 			it++;
 		}
 		if (RightPtr && RightPtr->IsDrawActive()) {
-			//RigidbodyãŒã‚ã‚Œã°Draw()
+			//Rigidbody‚ª‚ ‚ê‚ÎDraw()
 			RightPtr->OnDraw();
 		}
 		if (CollisionPtr && CollisionPtr->IsDrawActive()) {
-			//CollisionãŒã‚ã‚Œã°Draw()
+			//Collision‚ª‚ ‚ê‚ÎDraw()
 			CollisionPtr->OnDraw();
 		}
 		if (Transptr->IsDrawActive()) {
 			Transptr->OnDraw();
 		}
 		if (StringSpritePtr && StringSpritePtr->IsDrawActive()) {
-			//StringSpriteã®Draw()
+			//StringSprite‚ÌDraw()
 			StringSpritePtr->OnDraw();
 		}
 	}
 
 	void GameObject::OnPreCreate(){
-		//Transformå¿…é ˆ
+		//Transform•K{
 		AddComponent<Transform>();
 	}
 
 	const shared_ptr<Camera>& GameObject::OnGetDrawCamera()const{
-		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã¯ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã‹ã‚‰å–ã‚Šå‡ºã™
+		//ƒfƒtƒHƒ‹ƒg‚Íƒrƒ…[‚ÌƒJƒƒ‰‚©‚çæ‚èo‚·
 		auto StageView = GetStage()->GetView();
 		return StageView->GetTargetCamera();
 	}
 
 	const Light& GameObject::OnGetDrawLight() const {
-		//ã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã‚‰ãƒ©ã‚¤ãƒˆã‚’å–ã‚Šå‡ºã™
+		//ƒXƒe[ƒW‚©‚çƒ‰ƒCƒg‚ğæ‚èo‚·
 		auto StageLight = GetStage()->GetLight();
 		return StageLight->GetTargetLight();
 	}
@@ -172,10 +172,10 @@ namespace basecross {
 	}
 
 	void GameObject::OnDraw(){
-		//ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆæç”»
-		//æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã§å¤šé‡å®šç¾©ã™ã‚‹å ´åˆã¯
-		//ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆæç”»ã™ã‚‹å ´åˆã¯
-		//GameObject::Draw()ã‚’å‘¼ã³å‡ºã™
+		//ƒRƒ“ƒ|[ƒlƒ“ƒg•`‰æ
+		//”h¶ƒNƒ‰ƒX‚Å‘½d’è‹`‚·‚éê‡‚Í
+		//ƒRƒ“ƒ|[ƒlƒ“ƒg•`‰æ‚·‚éê‡‚Í
+		//GameObject::Draw()‚ğŒÄ‚Ño‚·
 		ComponentDraw();
 	}
 
@@ -183,13 +183,13 @@ namespace basecross {
 		auto TMptr = GetComponent<Transform>();
 		auto RightPtr = GetComponent<Rigidbody>(false);
 		auto CollisionPtr = GetComponent<Collision>(false);
-		//ãƒãƒƒãƒ—ã‚’æ¤œè¨¼ã—ã¦OnDestroy
+		//ƒ}ƒbƒv‚ğŒŸØ‚µ‚ÄOnDestroy
 		list<type_index>::iterator it = m_CompOrder.begin();
 		while (it != m_CompOrder.end()) {
 			map<type_index, shared_ptr<Component> >::const_iterator it2;
 			it2 = m_CompMap.find(*it);
 			if (it2 != m_CompMap.end()) {
-				//æŒ‡å®šã®å‹ã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆãŒè¦‹ã¤ã‹ã£ãŸ
+				//w’è‚ÌŒ^‚ÌƒRƒ“ƒ|[ƒlƒ“ƒg‚ªŒ©‚Â‚©‚Á‚½
 				if (it2->second->IsUpdateActive()) {
 					it2->second->OnDestroy();
 				}
@@ -197,26 +197,26 @@ namespace basecross {
 			it++;
 		}
 		if (RightPtr) {
-			//RigidbodyãŒã‚ã‚Œã°OnDestroy()
+			//Rigidbody‚ª‚ ‚ê‚ÎOnDestroy()
 			RightPtr->OnDestroy();
 		}
 		if (CollisionPtr) {
-			//CollisionãŒã‚ã‚Œã°OnDestroy()
+			//Collision‚ª‚ ‚ê‚ÎOnDestroy()
 			CollisionPtr->OnDestroy();
 		}
-		//Transformã®OnDestroy
+		//Transform‚ÌOnDestroy
 		TMptr->OnDestroy();
-		//è‡ªåˆ†è‡ªèº«ã®OnDestroy()
+		//©•ª©g‚ÌOnDestroy()
 		OnDestroy();
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct GameObjectGroup::Impl {
 		vector< weak_ptr<GameObject> > m_Group;
 		Impl() {}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
@@ -227,7 +227,7 @@ namespace basecross {
 		pImpl(new Impl())
 	{}
 	GameObjectGroup::~GameObjectGroup() {}
-	//ã‚¢ã‚¯ã‚»ã‚µ
+	//ƒAƒNƒZƒT
 	const vector< weak_ptr<GameObject> >& GameObjectGroup::GetGroupVector() const {
 		return pImpl->m_Group;
 	}
@@ -240,7 +240,7 @@ namespace basecross {
 			msg += L" >= ";
 			msg += Util::SizeTToWStr(pImpl->m_Group.size());
 			throw BaseException(
-				L"ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
+				L"ƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
 				msg,
 				L"GameObjectGroup::at()"
 			);
@@ -248,7 +248,7 @@ namespace basecross {
 		if (pImpl->m_Group.at(index).expired()) {
 			wstring msg = Util::SizeTToWStr(index);
 			throw BaseException(
-				L"ãã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã¯ç„¡åŠ¹ã§ã™ã€‚",
+				L"‚»‚ÌƒCƒ“ƒfƒbƒNƒX‚ÌƒIƒuƒWƒFƒNƒg‚Í–³Œø‚Å‚·B",
 				msg,
 				L"GameObjectGroup::at()"
 			);
@@ -258,7 +258,7 @@ namespace basecross {
 	size_t GameObjectGroup::size() const {
 		return pImpl->m_Group.size();
 	}
-	//æ“ä½œ
+	//‘€ì
 	void GameObjectGroup::IntoGroup(const shared_ptr<GameObject>& Obj) {
 		pImpl->m_Group.push_back(Obj);
 	}
@@ -269,15 +269,15 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Particle::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct Particle::Impl {
-		DrawOption m_DrawOption;		//è¡¨ç¤ºã‚ªãƒ—ã‚·ãƒ§ãƒ³
-		vector<ParticleSprite> m_ParticleSpriteVec;	//ä¿å­˜ã—ã¦ãŠãã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã®é…åˆ—
-		bsm::Vec3 m_EmitterPos;			//ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ä½ç½®
-		float m_TotalTime;				//ã‚¿ã‚¤ãƒãƒ¼åˆ¶å¾¡ã™ã‚‹å ´åˆã«ä½¿ç”¨ã™ã‚‹å¤‰æ•°
-		float m_MaxTime;				//ã“ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«é›†åˆä½“ã®è¡¨ç¤ºæ™‚é–“
-		weak_ptr<TextureResource> m_TextureResource;	//ãƒ†ã‚¯ã‚¹ãƒãƒ£
+		DrawOption m_DrawOption;		//•\¦ƒIƒvƒVƒ‡ƒ“
+		vector<ParticleSprite> m_ParticleSpriteVec;	//•Û‘¶‚µ‚Ä‚¨‚­ƒXƒvƒ‰ƒCƒg‚Ì”z—ñ
+		bsm::Vec3 m_EmitterPos;			//ƒGƒ~ƒbƒ^[ˆÊ’u
+		float m_TotalTime;				//ƒ^ƒCƒ}[§Œä‚·‚éê‡‚Ég—p‚·‚é•Ï”
+		float m_MaxTime;				//‚±‚Ìƒp[ƒeƒBƒNƒ‹W‡‘Ì‚Ì•\¦ŠÔ
+		weak_ptr<TextureResource> m_TextureResource;	//ƒeƒNƒXƒ`ƒƒ
 		Impl(size_t Count, DrawOption Option) :
 			m_DrawOption(Option),
 			m_ParticleSpriteVec(Count),
@@ -285,20 +285,20 @@ namespace basecross {
 			m_TotalTime(0),
 			m_MaxTime(0)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
 	//	class Particle;
-	//	ç”¨é€”: ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«
-	//	*1ã¤ã®ã‚¨ãƒŸãƒƒã‚¿ãƒ¼ã‚’æŒã¡ã€è¤‡æ•°ã®ParticleSpriteã‚’ä¿æŒã™ã‚‹
+	//	—p“r: ƒp[ƒeƒBƒNƒ‹
+	//	*1‚Â‚ÌƒGƒ~ƒbƒ^[‚ğ‚¿A•¡”‚ÌParticleSprite‚ğ•Û‚·‚é
 	//--------------------------------------------------------------------------------------
 	Particle::Particle(size_t Count, DrawOption Option) :
 		ObjectInterface(),
 		pImpl(new Impl(Count, Option))
 	{}
-	Particle::â€¾Particle() {}
+	Particle::~Particle() {}
 
 	Particle::DrawOption Particle::GetDrawOption()const {
 		return pImpl->m_DrawOption;
@@ -336,7 +336,7 @@ namespace basecross {
 	bool Particle::IsActive() const {
 		for (auto Psp : pImpl->m_ParticleSpriteVec) {
 			if (Psp.m_Active) {
-				//1ã¤ã§ã‚‚ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãŒã‚ã‚Œã°true
+				//1‚Â‚Å‚àƒAƒNƒeƒBƒu‚ª‚ ‚ê‚Îtrue
 				return true;
 			}
 		}
@@ -345,7 +345,7 @@ namespace basecross {
 	bool Particle::IsAllActive() const {
 		for (auto Psp : pImpl->m_ParticleSpriteVec) {
 			if (!Psp.m_Active) {
-				//1ã¤ã§ã‚‚éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãŒã‚ã‚Œã°false
+				//1‚Â‚Å‚à”ñƒAƒNƒeƒBƒu‚ª‚ ‚ê‚Îfalse
 				return false;
 			}
 		}
@@ -385,7 +385,7 @@ namespace basecross {
 		else {
 			if (ExceptionActive) {
 				throw BaseException(
-					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ãƒªã‚½ãƒ¼ã‚¹ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
+					L"ƒeƒNƒXƒ`ƒƒƒŠƒ\[ƒX‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
 					L"if (pImpl->m_Texture.expired())",
 					L"Particle::GetTextureResource()"
 				);
@@ -397,7 +397,7 @@ namespace basecross {
 		try {
 			if (ResKey == L"") {
 				throw BaseException(
-					L"ãƒ†ã‚¯ã‚¹ãƒãƒ£ã‚­ãƒ¼ãŒç©ºç™½ã§ã™",
+					L"ƒeƒNƒXƒ`ƒƒƒL[‚ª‹ó”’‚Å‚·",
 					L"if (ResKey == L""",
 					L"Particle::SetTextureResource()"
 				);
@@ -424,28 +424,28 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct MultiParticle::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct MultiParticle::Impl {
 		vector< shared_ptr<Particle> > m_ParticleVec;
-		//åŠ ç®—å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
+		//‰ÁZˆ—‚·‚é‚©‚Ç‚¤‚©
 		bool m_AddType;
 		Impl():
 			m_AddType(false)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
 	//	class MultiParticle : public GameObject;
-	//	ç”¨é€”: ãƒãƒ«ãƒã‚¨ãƒ•ã‚§ã‚¯ãƒˆ 
+	//	—p“r: ƒ}ƒ‹ƒ`ƒGƒtƒFƒNƒg 
 	//--------------------------------------------------------------------------------------
 	MultiParticle::MultiParticle(const shared_ptr<Stage>& StagePtr) :
 		GameObject(StagePtr),
 		pImpl(new Impl())
 	{}
-	MultiParticle::â€¾MultiParticle() {}
+	MultiParticle::~MultiParticle() {}
 
 	vector< shared_ptr<Particle> >& MultiParticle::GetParticleVec() const {
 		return pImpl->m_ParticleVec;
@@ -465,13 +465,13 @@ namespace basecross {
 
 	shared_ptr<Particle> MultiParticle::InsertParticle(size_t Count, Particle::DrawOption Option) {
 		for (size_t i = 0; i < pImpl->m_ParticleVec.size(); i++) {
-			//ã‚‚ã—éã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã®ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãŒã‚ã‚Œã°åˆæœŸåŒ–ã—ã¦ãƒªã‚¿ãƒ¼ãƒ³
+			//‚à‚µ”ñƒAƒNƒeƒBƒu‚Ìƒp[ƒeƒBƒNƒ‹‚ª‚ ‚ê‚Î‰Šú‰»‚µ‚ÄƒŠƒ^[ƒ“
 			if (!pImpl->m_ParticleVec[i]->IsActive()) {
 				pImpl->m_ParticleVec[i]->Reflesh(Count, Option);
 				return pImpl->m_ParticleVec[i];
 			}
 		}
-		//æ–°ã—ã„ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã‚’è¿½åŠ 
+		//V‚µ‚¢ƒp[ƒeƒBƒNƒ‹‚ğ’Ç‰Á
 		shared_ptr<Particle> ParticlePtr = ObjectFactory::Create<Particle>(Count, Option);
 		pImpl->m_ParticleVec.push_back(ParticlePtr);
 		return ParticlePtr;
@@ -479,22 +479,22 @@ namespace basecross {
 
 	void MultiParticle::OnPreCreate() {
 		GameObject::OnPreCreate();
-		//é€æ˜å‡¦ç†ã®ã¿æŒ‡å®šã—ã¦ãŠã
+		//“§–¾ˆ—‚Ì‚İw’è‚µ‚Ä‚¨‚­
 		SetAlphaActive(true);
 	}
 
 
 	void MultiParticle::OnUpdate() {
-		//å‰å›ã®ã‚¿ãƒ¼ãƒ³ã‹ã‚‰ã®æ™‚é–“
+		//‘O‰ñ‚Ìƒ^[ƒ“‚©‚ç‚ÌŠÔ
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		for (auto ParticlePtr : GetParticleVec()) {
 			ParticlePtr->AddTotalTime(ElapsedTime);
 			for (auto& rParticleSprite : ParticlePtr->GetParticleSpriteVec()) {
 				if (rParticleSprite.m_Active) {
-					//ç§»å‹•é€Ÿåº¦ã«å¾“ã£ã¦ç§»å‹•ã•ã›ã‚‹
+					//ˆÚ“®‘¬“x‚É]‚Á‚ÄˆÚ“®‚³‚¹‚é
 					rParticleSprite.m_LocalPos += rParticleSprite.m_Velocity * ElapsedTime;
 					if (ParticlePtr->GetTotalTime() >= ParticlePtr->GetMaxTime()) {
-						//åˆ¶é™æ™‚é–“ã«ãªã£ãŸã‚‰
+						//§ŒÀŠÔ‚É‚È‚Á‚½‚ç
 						rParticleSprite.m_Active = false;
 					}
 				}
@@ -515,38 +515,38 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct ParticleManager::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct ParticleManager::Impl {
-		bool m_ZBufferUse;				//Zãƒãƒƒãƒ•ã‚¡ã‚’ä½¿ç”¨ã™ã‚‹ã‹ã©ã†ã‹
-		bool m_SamplerWrap;				//ã‚µãƒ³ãƒ—ãƒ©ãƒ¼ã®ãƒ©ãƒƒãƒ”ãƒ³ã‚°ã™ã‚‹ã‹ã©ã†ã‹
-		//åŠ ç®—å‡¦ç†ã™ã‚‹ã‹ã©ã†ã‹
+		bool m_ZBufferUse;				//Zƒoƒbƒtƒ@‚ğg—p‚·‚é‚©‚Ç‚¤‚©
+		bool m_SamplerWrap;				//ƒTƒ“ƒvƒ‰[‚Ìƒ‰ƒbƒsƒ“ƒO‚·‚é‚©‚Ç‚¤‚©
+		//‰ÁZˆ—‚·‚é‚©‚Ç‚¤‚©
 		bool m_AddType;
 		Impl(bool AddType) :
 			m_ZBufferUse(true),
 			m_SamplerWrap(false),
 			m_AddType(AddType)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
 	//	class ParticleManager : public GameObject;
-	//	ç”¨é€”: ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£
+	//	—p“r: ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ
 	//--------------------------------------------------------------------------------------
-	//æ§‹ç¯‰ã¨æ¶ˆæ»…
+	//\’z‚ÆÁ–Å
 	ParticleManager::ParticleManager(const shared_ptr<Stage>& StagePtr, bool AddType) :
 		GameObject(StagePtr),
 		pImpl(new Impl(AddType))
 	{}
-	ParticleManager::â€¾ParticleManager() {}
+	ParticleManager::~ParticleManager() {}
 
-	//åˆæœŸåŒ–
+	//‰Šú‰»
 	void ParticleManager::OnCreate() {
 		try {
-			//ä¸Šé™2000ã§ãƒãƒãƒ¼ã‚¸ãƒ£ä½œæˆ
+			//ãŒÀ2000‚Åƒ}ƒl[ƒWƒƒì¬
 			AddComponent<PCTParticleDraw>(2000,pImpl->m_AddType);
-			//é€æ˜å‡¦ç†ã®ã¿æŒ‡å®šã—ã¦ãŠã
+			//“§–¾ˆ—‚Ì‚İw’è‚µ‚Ä‚¨‚­
 			SetAlphaActive(true);
 		}
 		catch (...) {
@@ -582,7 +582,7 @@ namespace basecross {
 		auto StageView = GetStage()->GetView();
 
 		auto PtrCamera = StageView->GetTargetCamera();
-		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+		//ƒJƒƒ‰‚ÌˆÊ’u
 		bsm::Vec3 CameraEye = PtrCamera->GetEye();
 		bsm::Vec3 CameraAt = PtrCamera->GetAt();
 
@@ -658,54 +658,54 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct Stage::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct Stage::Impl {
-		//updateã™ã‚‹ã‹ã©ã†ã‹
+		//update‚·‚é‚©‚Ç‚¤‚©
 		bool m_UpdateActive;
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£(é€æ˜å‡¦ç†)
+		//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ(“§–¾ˆ—)
 		shared_ptr<ParticleManager> m_AlphaParticleManager;
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£(åŠ ç®—å‡¦ç†)
+		//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ(‰ÁZˆ—)
 		shared_ptr<ParticleManager> m_AddParticleManager;
-		//ã‚³ãƒªã‚¸ãƒ§ãƒ³ç®¡ç†è€…
+		//ƒRƒŠƒWƒ‡ƒ“ŠÇ—Ò
 		shared_ptr<CollisionManager> m_CollisionManager;
-		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®é…åˆ—
+		//ƒIƒuƒWƒFƒNƒg‚Ì”z—ñ
 		vector< shared_ptr<GameObject> > m_GameObjectVec;
-		//é€”ä¸­ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¿½åŠ ã•ã‚ŒãŸå ´åˆã€ã‚¿ãƒ¼ãƒ³ã®é–‹å§‹ã¾ã§å¾…ã¤é…åˆ—
+		//“r’†‚ÉƒIƒuƒWƒFƒNƒg‚ª’Ç‰Á‚³‚ê‚½ê‡Aƒ^[ƒ“‚ÌŠJn‚Ü‚Å‘Ò‚Â”z—ñ
 		vector< shared_ptr<GameObject> > m_WaitAddObjectVec;
-		//é€”ä¸­ã«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒå‰Šé™¤ã•ã‚ŒãŸå ´åˆã€ã‚¿ãƒ¼ãƒ³ã®é–‹å§‹ã¾ã§å¾…ã¤é…åˆ—
+		//“r’†‚ÉƒIƒuƒWƒFƒNƒg‚ªíœ‚³‚ê‚½ê‡Aƒ^[ƒ“‚ÌŠJn‚Ü‚Å‘Ò‚Â”z—ñ
 		vector< shared_ptr<GameObject> > m_WaitRemoveObjectVec;
-		//Spriteã‹ãã†ã§ãªã„ã‹ã‚’åˆ†é›¢ã™ã‚‹é…åˆ—
+		//Sprite‚©‚»‚¤‚Å‚È‚¢‚©‚ğ•ª—£‚·‚é”z—ñ
 		vector< shared_ptr<GameObject> > m_SpriteVec;
 		vector< shared_ptr<GameObject> > m_Object3DVec;
-		//3Dã®é€æ˜ã¨éé€æ˜ã‚’åˆ†é›¢ã™ã‚‹é…åˆ—
+		//3D‚Ì“§–¾‚Æ”ñ“§–¾‚ğ•ª—£‚·‚é”z—ñ
 		vector< shared_ptr<GameObject> > m_Object3DNormalVec;
 		vector< shared_ptr<GameObject> > m_Object3DAlphaVec;
-		//ç‰©ç†è¨ˆç®—
+		//•¨—ŒvZ
 		BasePhysics m_BasePhysics;
-		//ç‰©ç†è¨ˆç®—ã§ä½¿ã†ç©ºç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®set
+		//•¨—ŒvZ‚Åg‚¤‹ó•¨—ƒIƒuƒWƒFƒNƒg‚Ìset
 		set<uint16_t> m_VacantPhysicsIndices;
-		//ç¾åœ¨Drawã•ã‚Œã¦ã„ã‚‹ãƒ“ãƒ¥ãƒ¼ã®ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
+		//Œ»İDraw‚³‚ê‚Ä‚¢‚éƒrƒ…[‚ÌƒCƒ“ƒfƒbƒNƒX
 		size_t m_DrawViewIndex;
-		//ãƒ“ãƒ¥ãƒ¼ã®ãƒã‚¤ãƒ³ã‚¿
+		//ƒrƒ…[‚Ìƒ|ƒCƒ“ƒ^
 		shared_ptr<ViewBase> m_ViewBase;
-		//ãƒ©ã‚¤ãƒˆã®ãƒã‚¤ãƒ³ã‚¿
+		//ƒ‰ƒCƒg‚Ìƒ|ƒCƒ“ƒ^
 		shared_ptr<LightBase> m_LightBase;
-		//ã‚·ã‚§ã‚¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒã‚¤ãƒ³ã‚¿ã®ãƒãƒƒãƒ—
+		//ƒVƒFƒAƒIƒuƒWƒFƒNƒgƒ|ƒCƒ“ƒ^‚Ìƒ}ƒbƒv
 		map<const wstring, weak_ptr<GameObject> > m_SharedMap;
-		//ã‚·ã‚§ã‚¢ã‚°ãƒ«ãƒ¼ãƒ—ã®ãƒã‚¤ãƒ³ã‚¿ã®ãƒãƒƒãƒ—
+		//ƒVƒFƒAƒOƒ‹[ƒv‚Ìƒ|ƒCƒ“ƒ^‚Ìƒ}ƒbƒv
 		map<const wstring, shared_ptr<GameObjectGroup> >  m_SharedGroupMap;
-		vector< shared_ptr<Stage> > m_ChildStageVec;	//å­ä¾›ã‚¹ãƒ†ãƒ¼ã‚¸ã®é…åˆ—
-		weak_ptr<Stage> m_ParentStage;		//è¦ªã‚¹ãƒ†ãƒ¼ã‚¸
-		//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		vector< shared_ptr<Stage> > m_ChildStageVec;	//q‹ŸƒXƒe[ƒW‚Ì”z—ñ
+		weak_ptr<Stage> m_ParentStage;		//eƒXƒe[ƒW
+		//ƒVƒƒƒhƒEƒ}ƒbƒv‚ğg‚¤‚©‚Ç‚¤‚©
 		bool m_IsShadowmapDraw;
-		//ç‰©ç†è¨ˆç®—ã‚’ä½¿ã†ã‹ã©ã†ã‹
+		//•¨—ŒvZ‚ğg‚¤‚©‚Ç‚¤‚©
 		bool m_IsPhysicsActive;
-		//è¡çªåˆ¤å®šãƒãƒãƒ¼ã‚¸ãƒ£ã®ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿
+		//Õ“Ë”»’èƒ}ƒl[ƒWƒƒ‚ÌƒpƒtƒH[ƒ}ƒ“ƒXƒJƒEƒ“ƒ^
 		PerformanceCounter m_CollisionPerformance;
-		//Updateã®ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿
+		//Update‚ÌƒpƒtƒH[ƒ}ƒ“ƒXƒJƒEƒ“ƒ^
 		PerformanceCounter m_UpdatePerformance;
-		//Drawã®ãƒ‘ãƒ•ã‚©ãƒ¼ãƒãƒ³ã‚¹ã‚«ã‚¦ãƒ³ã‚¿
+		//Draw‚ÌƒpƒtƒH[ƒ}ƒ“ƒXƒJƒEƒ“ƒ^
 		PerformanceCounter m_DrawPerformance;
 		Impl() :
 			m_UpdateActive(true),
@@ -713,14 +713,14 @@ namespace basecross {
 			m_IsShadowmapDraw(true),
 			m_IsPhysicsActive(false)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 		void RemoveTargetGameObject(const shared_ptr<GameObject>& targetobj);
 	};
 	void Stage::Impl::RemoveTargetGameObject(const shared_ptr<GameObject>& targetobj) {
 		auto it = m_GameObjectVec.begin();
 		while (it != m_GameObjectVec.end()) {
 			if (*it == targetobj) {
-				//å‰Šé™¤ã•ã‚Œã‚‹ã“ã¨ã‚’ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã«ä¼ãˆã‚‹
+				//íœ‚³‚ê‚é‚±‚Æ‚ğƒIƒuƒWƒFƒNƒg‚É“`‚¦‚é
 				targetobj->DestroyGameObject();
 				m_GameObjectVec.erase(it);
 				return;
@@ -731,45 +731,45 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
+	//	ƒXƒe[ƒWƒNƒ‰ƒX
 	//--------------------------------------------------------------------------------------
 	Stage::Stage() :
 		ObjectInterface(),
 		ShapeInterface(),
 		pImpl(new Impl())
 	{}
-	Stage::â€¾Stage() {}
+	Stage::~Stage() {}
 
-	//ãƒ—ãƒ©ã‚¤ãƒ™ãƒ¼ãƒˆã‚µãƒ–é–¢æ•°
+	//ƒvƒ‰ƒCƒx[ƒgƒTƒuŠÖ”
 	void Stage::PushBackGameObject(const shared_ptr<GameObject>& Ptr) {
-		//ã“ã®ã‚¹ãƒ†ãƒ¼ã‚¸ã¯ã‚¯ãƒªã‚¨ã‚¤ãƒˆå¾Œã§ã‚ã‚‹
+		//‚±‚ÌƒXƒe[ƒW‚ÍƒNƒŠƒGƒCƒgŒã‚Å‚ ‚é
 		if (IsCreated()) {
 			pImpl->m_WaitAddObjectVec.push_back(Ptr);
 		}
 		else {
-			//ã‚¯ãƒªã‚¨ã‚¤ãƒˆå‰
+			//ƒNƒŠƒGƒCƒg‘O
 			pImpl->m_GameObjectVec.push_back(Ptr);
 		}
 		Ptr->TransformInit();
 	}
 
-	//å‰Šé™¤ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¨­å®š
+	//íœƒIƒuƒWƒFƒNƒg‚Ìİ’è
 	void Stage::RemoveBackGameObject(const shared_ptr<GameObject>& Ptr) {
 		pImpl->m_WaitRemoveObjectVec.push_back(Ptr);
 	}
 
 	shared_ptr<GameObject> Stage::GetSharedGameObjectEx(const wstring& Key, bool ExceptionActive)const {
 		map<const wstring, weak_ptr<GameObject> >::const_iterator it;
-		//é‡è¤‡ã‚­ãƒ¼ã®æ¤œæŸ»
+		//d•¡ƒL[‚ÌŒŸ¸
 		it = pImpl->m_SharedMap.find(Key);
 		if (it != pImpl->m_SharedMap.end()) {
 			if (it->second.expired()) {
-				//ã™ã§ã«ç„¡åŠ¹
+				//‚·‚Å‚É–³Œø
 				if (ExceptionActive) {
-					//ä¾‹å¤–ç™ºç”Ÿ
+					//—áŠO”­¶
 					wstring keyerr = Key;
 					throw BaseException(
-						L"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒç„¡åŠ¹ã§ã™",
+						L"ƒIƒuƒWƒFƒNƒg‚ª–³Œø‚Å‚·",
 						keyerr,
 						L"Stage::GetSharedGameObject()"
 					);
@@ -778,12 +778,12 @@ namespace basecross {
 			return it->second.lock();
 		}
 		else {
-			//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+			//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 			if (ExceptionActive) {
-				//ä¾‹å¤–ç™ºç”Ÿ
+				//—áŠO”­¶
 				wstring keyerr = Key;
 				throw BaseException(
-					L"ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
+					L"ƒIƒuƒWƒFƒNƒg‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
 					keyerr,
 					L"Stage::GetSharedGameObject()"
 				);
@@ -804,7 +804,7 @@ namespace basecross {
 	BasePhysics& Stage::GetBasePhysics() const {
 		if (!IsPhysicsActive()) {
 			throw BaseException(
-				L"ç‰©ç†æ¼”ç®—ãŒç„¡åŠ¹ã«ãªã£ã¦ã„ã¾ã™ã€‚æœ‰åŠ¹ã«ã—ã¦ã‹ã‚‰å–å¾—ã—ã¦ãã ã•ã„ã€‚",
+				L"•¨—‰‰Z‚ª–³Œø‚É‚È‚Á‚Ä‚¢‚Ü‚·B—LŒø‚É‚µ‚Ä‚©‚çæ“¾‚µ‚Ä‚­‚¾‚³‚¢B",
 				L"if (!IsPhysicsActive())",
 				L"Stage::GetBasePhysics()()"
 			);
@@ -825,10 +825,10 @@ namespace basecross {
 	uint16_t Stage::GetVacantPhysicsIndex(){
 		uint16_t ret = UINT16_MAX;
 		if (pImpl->m_VacantPhysicsIndices.size() > 0) {
-			//ç©ºã„ã¦ã„ã‚‹IDãŒã‚ã‚‹ã€‚å…ˆé ­ã‚’å–å¾—
+			//‹ó‚¢‚Ä‚¢‚éID‚ª‚ ‚éBæ“ª‚ğæ“¾
 			auto it = pImpl->m_VacantPhysicsIndices.begin();
 			ret = *it;
-			//IDã‚’ä½¿ã†ã®ã§ãã®IDã‚’å‰Šé™¤
+			//ID‚ğg‚¤‚Ì‚Å‚»‚ÌID‚ğíœ
 			pImpl->m_VacantPhysicsIndices.erase(ret);
 		}
 		return ret;
@@ -847,7 +847,7 @@ namespace basecross {
 	vector< shared_ptr<GameObject> >& Stage::GetGameObjectVec() const{ return pImpl->m_GameObjectVec; }
 
 
-	//è¿½åŠ ã‚„å‰Šé™¤å¾…ã¡ã«ãªã£ã¦ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’è¿½åŠ ãƒ»å‰Šé™¤ã™ã‚‹
+	//’Ç‰Á‚âíœ‘Ò‚¿‚É‚È‚Á‚Ä‚éƒIƒuƒWƒFƒNƒg‚ğ’Ç‰ÁEíœ‚·‚é
 	void Stage::SetWaitToObjectVec(){
 		if (!pImpl->m_WaitRemoveObjectVec.empty()) {
 			for (auto Ptr : pImpl->m_WaitRemoveObjectVec) {
@@ -873,14 +873,14 @@ namespace basecross {
 
 	void Stage::SetSharedGameObject(const wstring& Key, const shared_ptr<GameObject>& Ptr) {
 		map<const wstring, weak_ptr<GameObject> >::iterator it;
-		//é‡è¤‡ã‚­ãƒ¼ã®æ¤œæŸ»
+		//d•¡ƒL[‚ÌŒŸ¸
 		it = pImpl->m_SharedMap.find(Key);
 		if (it != pImpl->m_SharedMap.end()) {
-			//æ—¢ã«å­˜åœ¨ã—ãŸ
-			//ä¾‹å¤–ç™ºç”Ÿ
+			//Šù‚É‘¶İ‚µ‚½
+			//—áŠO”­¶
 			wstring keyerr = Key;
 			throw BaseException(
-				L"åŒåã®ã‚·ã‚§ã‚¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚ã‚Šã¾ã™",
+				L"“¯–¼‚ÌƒVƒFƒAƒIƒuƒWƒFƒNƒg‚ª‚ ‚è‚Ü‚·",
 				keyerr,
 				L"Stage::SetSharedGameObjectEx()"
 			);
@@ -893,14 +893,14 @@ namespace basecross {
 	shared_ptr<GameObjectGroup> Stage::CreateSharedObjectGroup(const wstring& Key) {
 		try {
 			map<const wstring, shared_ptr<GameObjectGroup> >::iterator it;
-			//é‡è¤‡ã‚­ãƒ¼ã®æ¤œæŸ»
+			//d•¡ƒL[‚ÌŒŸ¸
 			it = pImpl->m_SharedGroupMap.find(Key);
 			if (it != pImpl->m_SharedGroupMap.end()) {
-				//æ—¢ã«å­˜åœ¨ã—ãŸ
-				//ä¾‹å¤–ç™ºç”Ÿ
+				//Šù‚É‘¶İ‚µ‚½
+				//—áŠO”­¶
 				wstring keyerr = Key;
 				throw BaseException(
-					L"åŒåã®ã‚·ã‚§ã‚¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—ãŒã‚ã‚Šã¾ã™",
+					L"“¯–¼‚ÌƒVƒFƒAƒIƒuƒWƒFƒNƒg”z—ñ‚ª‚ ‚è‚Ü‚·",
 					keyerr,
 					L"Stage::CreateSharedObjectGroup()"
 				);
@@ -917,19 +917,19 @@ namespace basecross {
 	}
 
 	shared_ptr<GameObjectGroup> Stage::GetSharedObjectGroup(const wstring& Key, bool ExceptionActive)const {
-		//é‡è¤‡ã‚­ãƒ¼ã®æ¤œæŸ»
+		//d•¡ƒL[‚ÌŒŸ¸
 		auto it = pImpl->m_SharedGroupMap.find(Key);
 		if (it != pImpl->m_SharedGroupMap.end()) {
-			//ãƒšã‚¢ã®secondã‚’è¿”ã™
+			//ƒyƒA‚Ìsecond‚ğ•Ô‚·
 			return it->second;
 		}
 		else {
-			//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
+			//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
 			if (ExceptionActive) {
-				//ä¾‹å¤–ç™ºç”Ÿ
+				//—áŠO”­¶
 				wstring keyerr = Key;
 				throw BaseException(
-					L"æŒ‡å®šã®ã‚­ãƒ¼ãŒè¦‹ã¤ã‹ã‚Šã¾ã›ã‚“",
+					L"w’è‚ÌƒL[‚ªŒ©‚Â‚©‚è‚Ü‚¹‚ñ",
 					keyerr,
 					L"Stage::GetSharedObjectGroup() const"
 				);
@@ -939,20 +939,20 @@ namespace basecross {
 	}
 
 	void Stage::SetSharedObjectGroup(const wstring& Key, const shared_ptr<GameObjectGroup>& NewPtr) {
-		//é‡è¤‡ã‚­ãƒ¼ã®æ¤œæŸ»
+		//d•¡ƒL[‚ÌŒŸ¸
 		auto it = pImpl->m_SharedGroupMap.find(Key);
 		if (it != pImpl->m_SharedGroupMap.end()) {
-			//ä¾‹å¤–ç™ºç”Ÿ
+			//—áŠO”­¶
 			wstring keyerr = Key;
 			throw BaseException(
-				L"åŒåã®ã‚·ã‚§ã‚¢ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆé…åˆ—ãŒã‚ã‚Šã¾ã™",
+				L"“¯–¼‚ÌƒVƒFƒAƒIƒuƒWƒFƒNƒg”z—ñ‚ª‚ ‚è‚Ü‚·",
 				keyerr,
 				L"Stage::SetSharedObjectGroup()"
 			);
 		}
 		else {
-			//æŒ‡å®šã®åå‰ãŒè¦‹ã¤ã‹ã‚‰ãªã‹ã£ãŸ
-			//ç™»éŒ²ã§ãã‚‹
+			//w’è‚Ì–¼‘O‚ªŒ©‚Â‚©‚ç‚È‚©‚Á‚½
+			//“o˜^‚Å‚«‚é
 			pImpl->m_SharedGroupMap[Key] = NewPtr;
 		}
 	}
@@ -989,7 +989,7 @@ namespace basecross {
 		if (ExceptionActive) {
 			if (!pImpl->m_ViewBase) {
 				throw BaseException(
-					L"ã‚¹ãƒ†ãƒ¼ã‚¸ã«ãƒ“ãƒ¥ãƒ¼ãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚",
+					L"ƒXƒe[ƒW‚Éƒrƒ…[‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB",
 					L"if (!pImpl->m_ViewBase)",
 					L"Stage::GetView()"
 				);
@@ -1005,7 +1005,7 @@ namespace basecross {
 	const shared_ptr<LightBase>& Stage::GetLight()const {
 		if (!pImpl->m_LightBase) {
 			throw BaseException(
-				L"ã‚¹ãƒ†ãƒ¼ã‚¸ã«ãƒ©ã‚¤ãƒˆãŒè¨­å®šã•ã‚Œã¦ã„ã¾ã›ã‚“ã€‚",
+				L"ƒXƒe[ƒW‚Éƒ‰ƒCƒg‚ªİ’è‚³‚ê‚Ä‚¢‚Ü‚¹‚ñB",
 				L"if (!pImpl->m_LightBase)",
 				L"Stage::GetLight()"
 			);
@@ -1014,83 +1014,83 @@ namespace basecross {
 	}
 
 
-	//ã‚¢ã‚¯ã‚»ã‚µ
+	//ƒAƒNƒZƒT
 	bool Stage::IsUpdateActive() const { return pImpl->m_UpdateActive; }
 	bool Stage::GetUpdateActive() const { return pImpl->m_UpdateActive; }
 	void Stage::SetUpdateActive(bool b) { pImpl->m_UpdateActive = b; }
 
 	void Stage::OnPreCreate() {
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ã®ä½œæˆ(é€æ˜å‡¦ç†)
+		//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ‚Ìì¬(“§–¾ˆ—)
 		pImpl->m_AlphaParticleManager = ObjectFactory::Create<ParticleManager>(GetThis<Stage>(),false);
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ã®ä½œæˆ(åŠ ç®—å‡¦ç†)
+		//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ‚Ìì¬(‰ÁZˆ—)
 		pImpl->m_AddParticleManager = ObjectFactory::Create<ParticleManager>(GetThis<Stage>(),true);
-		//ã‚³ãƒªã‚¸ãƒ§ãƒ³ç®¡ç†è€…ã®ä½œæˆ
+		//ƒRƒŠƒWƒ‡ƒ“ŠÇ—Ò‚Ìì¬
 		pImpl->m_CollisionManager = ObjectFactory::Create<CollisionManager>(GetThis<Stage>());
-		//ç‰©ç†è¨ˆç®—ãƒªã‚»ãƒƒãƒˆ
+		//•¨—ŒvZƒŠƒZƒbƒg
 		pImpl->m_BasePhysics.Reset();
 	}
 
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®æ›´æ–°ï¼ˆã‚·ãƒ¼ãƒ³ã‹ã‚‰ã‚ˆã°ã‚Œã‚‹ï¼‰
+	//ƒXƒe[ƒW“à‚ÌXViƒV[ƒ“‚©‚ç‚æ‚Î‚ê‚éj
 	void Stage::UpdateStage() {
 		if (IsUpdatePerformanceActive()) {
 			pImpl->m_UpdatePerformance.Start();
 		}
-		//è¿½åŠ ãƒ»å‰Šé™¤ã¾ã¡ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®è¿½åŠ ã¨å‰Šé™¤
+		//’Ç‰ÁEíœ‚Ü‚¿ƒIƒuƒWƒFƒNƒg‚Ì’Ç‰Á‚Æíœ
 		SetWaitToObjectVec();
-		//Transformã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å€¤ã‚’ãƒãƒƒã‚¯ã‚¢ãƒƒãƒ—ã«ã‚³ãƒ”ãƒ¼
+		//TransformƒRƒ“ƒ|[ƒlƒ“ƒg‚Ì’l‚ğƒoƒbƒNƒAƒbƒv‚ÉƒRƒs[
 		for (auto& ptr : GetGameObjectVec()) {
 			if (ptr->IsUpdateActive()) {
 				auto ptr2 = ptr->GetComponent<Transform>();
 				ptr2->SetToBefore();
 			}
 		}
-		//ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ãƒ•ã‚©ãƒ¼ã‚¹ã®åˆæœŸåŒ–
+		//•¨—ƒIƒuƒWƒFƒNƒg‚ÌƒtƒH[ƒX‚Ì‰Šú‰»
 		if (IsPhysicsActive()) {
 			pImpl->m_BasePhysics.InitForce();
 		}
 
-		//é…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°å‡¦ç†
+		//”z’uƒIƒuƒWƒFƒNƒg‚ÌXVˆ—
 		for (auto& ptr : GetGameObjectVec()) {
 			if (ptr->IsUpdateActive()) {
 				ptr->OnUpdate();
 			}
 		}
 
-		//è‡ªèº«ã®æ›´æ–°å‡¦ç†
+		//©g‚ÌXVˆ—
 		if (IsUpdateActive()) {
 			OnUpdate();
 		}
-		//ç‰©ç†ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°
+		//•¨—ƒIƒuƒWƒFƒNƒg‚ÌXV
 		if (IsPhysicsActive()) {
 			pImpl->m_BasePhysics.Update(false);
 		}
-		//é…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆæ›´æ–°
+		//”z’uƒIƒuƒWƒFƒNƒg‚ÌƒRƒ“ƒ|[ƒlƒ“ƒgXV
 		for (auto& ptr : GetGameObjectVec()) {
 			if (ptr->IsUpdateActive()) {
 				ptr->ComponentUpdate();
 			}
 		}
 
-		////è¡çªåˆ¤å®š
+		////Õ“Ë”»’è
 		UpdateCollision();
-		//é…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°å¾Œå‡¦ç†
+		//”z’uƒIƒuƒWƒFƒNƒg‚ÌXVŒãˆ—
 		for (auto& ptr : GetGameObjectVec()) {
 			if (ptr->IsUpdateActive()) {
 				ptr->OnUpdate2();
 			}
 		}
-		//è‡ªèº«ã®æ›´æ–°å¾Œå‡¦ç†
+		//©g‚ÌXVŒãˆ—
 		if (IsUpdateActive()) {
 			OnUpdate2();
 		}
 
-		//è‡ªèº«ã®ãƒ“ãƒ¥ãƒ¼ã‚’ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+		//©g‚Ìƒrƒ…[‚ğƒAƒbƒvƒf[ƒg
 		auto& ViewPtr = GetView(false);
 		if (ViewPtr && ViewPtr->IsUpdateActive()) {
 			ViewPtr->OnUpdate();
 		}
-		//å­ä¾›ã‚¹ãƒ†ãƒ¼ã‚¸ã®æ›´æ–°
+		//q‹ŸƒXƒe[ƒW‚ÌXV
 		for (auto& PtrChileStage : GetChileStageVec()) {
 			PtrChileStage->UpdateStage();
 		}
@@ -1100,24 +1100,24 @@ namespace basecross {
 	}
 
 
-	//è¡çªåˆ¤å®šã®æ›´æ–°ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã‚‰å‘¼ã¶ï¼‰
-	//è¡çªåˆ¤å®šã‚’ã‚«ã‚¹ã‚¿ãƒã‚¤ã‚ºã™ã‚‹ãŸã‚ã«ã¯
-	//ã“ã®é–¢æ•°ã‚’å¤šé‡å®šç¾©ã™ã‚‹
+	//Õ“Ë”»’è‚ÌXViƒXƒe[ƒW‚©‚çŒÄ‚Ôj
+	//Õ“Ë”»’è‚ğƒJƒXƒ^ƒ}ƒCƒY‚·‚é‚½‚ß‚É‚Í
+	//‚±‚ÌŠÖ”‚ğ‘½d’è‹`‚·‚é
 	void Stage::UpdateCollision() {
 		if (pImpl->m_CollisionPerformance.IsAvtive()) {
 			pImpl->m_CollisionPerformance.Start();
-			//è¡çªåˆ¤å®šç®¡ç†è€…ã®Update(åˆ¤å®š)
+			//Õ“Ë”»’èŠÇ—Ò‚ÌUpdate(”»’è)
 			pImpl->m_CollisionManager->OnUpdate();
 			pImpl->m_CollisionPerformance.End();
 		}
 		else {
-			//è¡çªåˆ¤å®šç®¡ç†è€…ã®Update(åˆ¤å®š)
+			//Õ“Ë”»’èŠÇ—Ò‚ÌUpdate(”»’è)
 			pImpl->m_CollisionManager->OnUpdate();
 		}
 	}
 
 
-	//ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’ä½¿ã†ã‹ã©ã†ã‹
+	//ƒVƒƒƒhƒEƒ}ƒbƒv‚ğg‚¤‚©‚Ç‚¤‚©
 	bool Stage::IsShadowmapDraw() const {
 		return pImpl->m_IsShadowmapDraw;
 	}
@@ -1160,7 +1160,7 @@ namespace basecross {
 		return pImpl->m_DrawPerformance.GetPerformanceTime();
 	}
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®ã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—æç”»ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã‚‰ã‚ˆã°ã‚Œã‚‹ï¼‰
+	//ƒXƒe[ƒW“à‚ÌƒVƒƒƒhƒEƒ}ƒbƒv•`‰æiƒXƒe[ƒW‚©‚ç‚æ‚Î‚ê‚éj
 	void Stage::DrawShadowmapStage() {
 		for (auto ptr : pImpl->m_GameObjectVec) {
 			if (ptr->IsDrawActive()) {
@@ -1169,16 +1169,16 @@ namespace basecross {
 		}
 	}
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®æç”»ï¼ˆã‚¹ãƒ†ãƒ¼ã‚¸ã‹ã‚‰ã‚ˆã°ã‚Œã‚‹ï¼‰
+	//ƒXƒe[ƒW“à‚Ì•`‰æiƒXƒe[ƒW‚©‚ç‚æ‚Î‚ê‚éj
 	void Stage::DrawStage() {
-		//ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®å–å¾—ã¨è¨­å®š
+		//ƒŒƒCƒ„[‚Ìæ“¾‚Æİ’è
 		set<int> DrawLayers;
-		//Spriteã‹ãã†ã§ãªã„ã‹ã‚’åˆ†é›¢
+		//Sprite‚©‚»‚¤‚Å‚È‚¢‚©‚ğ•ª—£
 		for (auto& ptr : GetGameObjectVec()) {
 			if (ptr->IsDrawActive()) {
-				//æç”»ãƒ¬ã‚¤ãƒ¤ãƒ¼ã«ç™»éŒ²
+				//•`‰æƒŒƒCƒ„[‚É“o˜^
 				DrawLayers.insert(ptr->GetDrawLayer());
-				//Spriteã‹ãã®æ´¾ç”Ÿã‚¯ãƒ©ã‚¹ãªã‚‰åˆ†é›¢
+				//Sprite‚©‚»‚Ì”h¶ƒNƒ‰ƒX‚È‚ç•ª—£
 				if (ptr->GetComponent<SpriteBaseDraw>(false) || ptr->IsSpriteDraw()) {
 					pImpl->m_SpriteVec.push_back(ptr);
 				}
@@ -1187,7 +1187,7 @@ namespace basecross {
 				}
 			}
 		}
-		//3Dã®é€æ˜ã¨éé€æ˜ã‚’åˆ†é›¢
+		//3D‚Ì“§–¾‚Æ”ñ“§–¾‚ğ•ª—£
 		for (auto& ptr : pImpl->m_Object3DVec) {
 			if (ptr->IsDrawActive()) {
 				if (ptr->IsAlphaActive()) {
@@ -1200,10 +1200,10 @@ namespace basecross {
 		}
 
 		auto PtrCamera = pImpl->m_ViewBase->GetTargetCamera();
-		//ã‚«ãƒ¡ãƒ©ã®ä½ç½®
+		//ƒJƒƒ‰‚ÌˆÊ’u
 		bsm::Vec3 CameraEye = PtrCamera->GetEye();
-		//é€æ˜ã®3Dã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ã‚«ãƒ¡ãƒ©ã‹ã‚‰ã®è·é›¢ã§ã‚½ãƒ¼ãƒˆ
-		//ä»¥ä¸‹ã¯ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¼•æ•°ã«å–ã‚Šboolã‚’è¿”ã™ãƒ©ãƒ ãƒ€å¼
+		//“§–¾‚Ì3DƒIƒuƒWƒFƒNƒg‚ğƒJƒƒ‰‚©‚ç‚Ì‹——£‚Åƒ\[ƒg
+		//ˆÈ‰º‚ÍAƒIƒuƒWƒFƒNƒg‚ğˆø”‚Éæ‚èbool‚ğ•Ô‚·ƒ‰ƒ€ƒ_®
 		//--------------------------------------------------------
 		auto func = [&](shared_ptr<GameObject>& Left, shared_ptr<GameObject>& Right)->bool {
 			auto PtrLeftTrans = Left->GetComponent<Transform>();
@@ -1220,26 +1220,26 @@ namespace basecross {
 
 		std::sort(pImpl->m_Object3DAlphaVec.begin(), pImpl->m_Object3DAlphaVec.end(), func);
 
-		//3Dãƒãƒ¼ãƒãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»æº–å‚™
+		//3Dƒm[ƒ}ƒ‹ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ€”õ
 		for (auto& ptr : pImpl->m_Object3DNormalVec) {
 			ptr->OnPreDraw();
 		}
-		//3Dé€æ˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»æº–å‚™
+		//3D“§–¾ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ€”õ
 		for (auto& ptr : pImpl->m_Object3DAlphaVec) {
 			ptr->OnPreDraw();
 		}
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»æº–å‚™ï¼ˆé€æ˜ï¼‰
+		//ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ€”õi“§–¾j
 		GetParticleManager(false)->OnPreDraw();
-		//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»æº–å‚™ï¼ˆåŠ ç®—ï¼‰
+		//ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ€”õi‰ÁZj
 		GetParticleManager(true)->OnPreDraw();
-		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»æº–å‚™
+		//ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚Ì•`‰æ€”õ
 		for (auto& ptr : pImpl->m_SpriteVec) {
 			ptr->OnPreDraw();
 		}
 
 		//--------------------------------------------------------
-		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚’Zåº§æ¨™è·é›¢ã§ã‚½ãƒ¼ãƒˆ
-		//ä»¥ä¸‹ã¯ã€ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’å¼•æ•°ã«å–ã‚Šboolã‚’è¿”ã™ãƒ©ãƒ ãƒ€å¼
+		//ƒXƒvƒ‰ƒCƒg‚ğZÀ•W‹——£‚Åƒ\[ƒg
+		//ˆÈ‰º‚ÍAƒIƒuƒWƒFƒNƒg‚ğˆø”‚Éæ‚èbool‚ğ•Ô‚·ƒ‰ƒ€ƒ_®
 		//--------------------------------------------------------
 		auto funcSprite = [&](shared_ptr<GameObject>& Left, shared_ptr<GameObject>& Right)->bool {
 			auto PtrLeftTrans = Left->GetComponent<Transform>();
@@ -1257,49 +1257,49 @@ namespace basecross {
 
 		for (auto it = DrawLayers.begin(); it != DrawLayers.end(); it++) {
 			int Tgt = *it;
-			//3Dãƒãƒ¼ãƒãƒ«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
+			//3Dƒm[ƒ}ƒ‹ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
 			for (auto& ptr : pImpl->m_Object3DNormalVec) {
 				if (ptr->GetDrawLayer() == Tgt) {
 					ptr->OnDraw();
 				}
 			}
-			//3Dé€æ˜ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
+			//3D“§–¾ƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
 			for (auto& ptr : pImpl->m_Object3DAlphaVec) {
 				if (ptr->GetDrawLayer() == Tgt) {
 					ptr->OnDraw();
 				}
 			}
-			//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ã®æç”»
-			//ãƒ‘ãƒ¼ãƒ†ã‚£ã‚¯ãƒ«ãƒãƒãƒ¼ã‚¸ãƒ£ã¯æç”»ãƒ¬ã‚¤ãƒ¤ãƒ¼ã”ã¨ã«åˆæœŸåŒ–ã•ã‚Œã‚‹ã®ã§
-			//æ¯ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»ã™ã‚‹
-			//é€æ˜å‡¦ç†
+			//ƒp[ƒeƒBƒNƒ‹‚Ì•`‰æ
+			//ƒp[ƒeƒBƒNƒ‹ƒ}ƒl[ƒWƒƒ‚Í•`‰æƒŒƒCƒ„[‚²‚Æ‚É‰Šú‰»‚³‚ê‚é‚Ì‚Å
+			//–ˆƒŒƒCƒ„[•`‰æ‚·‚é
+			//“§–¾ˆ—
 			GetParticleManager(false)->OnDraw();
-			//åŠ ç®—å‡¦ç†
+			//‰ÁZˆ—
 			GetParticleManager(true)->OnDraw();
-			//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æç”»
+			//ƒXƒvƒ‰ƒCƒgƒIƒuƒWƒFƒNƒg‚Ì•`‰æ
 			for (auto& ptr : pImpl->m_SpriteVec) {
 				if (ptr->GetDrawLayer() == Tgt) {
 					ptr->OnDraw();
 				}
 			}
 		}
-		//ã‚¹ãƒ†ãƒ¼ã‚¸ã®Draw();
+		//ƒXƒe[ƒW‚ÌDraw();
 		OnDraw();
-		//ãƒ¯ãƒ¼ã‚¯ç”¨é…åˆ—ã®ã‚¯ãƒªã‚¢
-		//ãƒ¯ãƒ¼ã‚¯é…åˆ—ã¯æ¯ã‚¿ãƒ¼ãƒ³ã”ã¨ã«åˆæœŸåŒ–ã•ã‚Œã‚‹ãŒã€
-		//æœ€å¤§å€¤ã¯æ¸›ã‚‰ãªã„ã®ã§2å›ç›®ã®ã‚¿ãƒ¼ãƒ³ä»¥é™ã¯é«˜é€Ÿã«å‹•ä½œã™ã‚‹
+		//ƒ[ƒN—p”z—ñ‚ÌƒNƒŠƒA
+		//ƒ[ƒN”z—ñ‚Í–ˆƒ^[ƒ“‚²‚Æ‚É‰Šú‰»‚³‚ê‚é‚ªA
+		//Å‘å’l‚ÍŒ¸‚ç‚È‚¢‚Ì‚Å2‰ñ–Ú‚Ìƒ^[ƒ“ˆÈ~‚Í‚‘¬‚É“®ì‚·‚é
 		pImpl->m_Object3DVec.clear();
 		pImpl->m_SpriteVec.clear();
 		pImpl->m_Object3DNormalVec.clear();
 		pImpl->m_Object3DAlphaVec.clear();
 	}
 
-	//ã‚¹ãƒ†ãƒ¼ã‚¸å†…ã®ã™ã¹ã¦ã®æç”»ï¼ˆã‚·ãƒ¼ãƒ³ã‹ã‚‰ã‚ˆã°ã‚Œã‚‹ï¼‰
+	//ƒXƒe[ƒW“à‚Ì‚·‚×‚Ä‚Ì•`‰æiƒV[ƒ“‚©‚ç‚æ‚Î‚ê‚éj
 	void Stage::RenderStage() {
 		if (IsDrawPerformanceActive()) {
 			pImpl->m_DrawPerformance.Start();
 		}
-		//æç”»ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
+		//•`‰æƒfƒoƒCƒX‚Ìæ“¾
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto MultiPtr = dynamic_pointer_cast<MultiView>(GetView());
 		if (MultiPtr) {
@@ -1311,16 +1311,16 @@ namespace basecross {
 					DrawShadowmapStage();
 					Dev->EndShadowmapDraw();
 				}
-				//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæç”»ã®é–‹å§‹
+				//ƒfƒtƒHƒ‹ƒg•`‰æ‚ÌŠJn
 				Dev->StartDefaultDraw();
 #if (BASECROSS_DXVERSION == 11)
 				RsSetViewport(MultiPtr->GetTargetViewport());
 #endif
 				DrawStage();
-				//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæç”»ã®çµ‚äº†
+				//ƒfƒtƒHƒ‹ƒg•`‰æ‚ÌI—¹
 				Dev->EndDefaultDraw();
 			}
-			//æç”»ãŒçµ‚ã‚ã£ãŸã‚‰æ›´æ–°å‡¦ç†ç”¨ã«å…ˆé ­ã®ã‚«ãƒ¡ãƒ©ã«ã‚¿ãƒ¼ã‚²ãƒƒãƒˆã‚’è¨­å®šã™ã‚‹
+			//•`‰æ‚ªI‚í‚Á‚½‚çXVˆ——p‚Éæ“ª‚ÌƒJƒƒ‰‚Éƒ^[ƒQƒbƒg‚ğİ’è‚·‚é
 			MultiPtr->SetTargetIndex(0);
 		}
 		else {
@@ -1330,16 +1330,16 @@ namespace basecross {
 				DrawShadowmapStage();
 				Dev->EndShadowmapDraw();
 			}
-			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæç”»ã®é–‹å§‹
+			//ƒfƒtƒHƒ‹ƒg•`‰æ‚ÌŠJn
 			Dev->StartDefaultDraw();
 #if (BASECROSS_DXVERSION == 11)
 			RsSetViewport(GetView()->GetTargetViewport());
 #endif
 			DrawStage();
-			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆæç”»ã®çµ‚äº†
+			//ƒfƒtƒHƒ‹ƒg•`‰æ‚ÌI—¹
 			Dev->EndDefaultDraw();
 		}
-		//å­ä¾›ã‚¹ãƒ†ãƒ¼ã‚¸ã®æç”»
+		//q‹ŸƒXƒe[ƒW‚Ì•`‰æ
 		for (auto PtrChileStage : GetChileStageVec()) {
 			PtrChileStage->RenderStage();
 		}
@@ -1349,15 +1349,15 @@ namespace basecross {
 	}
 
 	void Stage::DestroyStage() {
-		//å­ä¾›ã‚¹ãƒ†ãƒ¼ã‚¸ã®å‰Šé™¤å‡¦ç†
+		//q‹ŸƒXƒe[ƒW‚Ìíœˆ—
 		for (auto PtrChileStage : pImpl->m_ChildStageVec) {
 			PtrChileStage->DestroyStage();
 		}
-		//é…ç½®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®å‰Šé™¤å‡¦ç†
+		//”z’uƒIƒuƒWƒFƒNƒg‚Ìíœˆ—
 		for (auto ptr : GetGameObjectVec()) {
 				ptr->DestroyGameObject();
 		}
-		//è‡ªèº«ã®å‰Šé™¤å‡¦ç†
+		//©g‚Ìíœˆ—
 		OnDestroy();
 	}
 
@@ -1371,12 +1371,12 @@ namespace basecross {
 		Impl() :
 			m_AutoRepeat(true)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	//	ãƒ ãƒ¼ãƒ“ãƒ¼ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
+	//	ƒ€[ƒr[ƒXƒe[ƒWƒNƒ‰ƒX
 	//--------------------------------------------------------------------------------------
 	MovieStage::MovieStage():
 		Stage(),
@@ -1389,7 +1389,7 @@ namespace basecross {
 	{
 		pImpl->m_MovieFileName = MivieFileName;
 	}
-	MovieStage::â€¾MovieStage() {}
+	MovieStage::~MovieStage() {}
 
 	void MovieStage::OnCreate() {
 		auto ptrView = CreateView<SingleView>();
@@ -1421,14 +1421,14 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	ãƒ‡ãƒãƒƒã‚°æ–‡å­—åˆ—ç”¨ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
+	///	ƒfƒoƒbƒO•¶š—ñ—p‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg
 	//--------------------------------------------------------------------------------------
 	DebugString::DebugString(const shared_ptr<Stage>& StagePtr):
 		GameObject(StagePtr)
 	{}
-	DebugString::â€¾DebugString(){}
+	DebugString::~DebugString(){}
 	void DebugString::OnCreate() {
-		//æ–‡å­—åˆ—ã‚’ã¤ã‘ã‚‹
+		//•¶š—ñ‚ğ‚Â‚¯‚é
 		auto ptrString = AddComponent<StringSprite>();
 		ptrString->SetText(L"");
 		ptrString->SetTextRect(Rect2D<float>(16.0f,16.0f,1200.0f,720.0f));
@@ -1437,22 +1437,22 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct SceneBase::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct SceneBase::Impl {
-		//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¹ãƒ†ãƒ¼ã‚¸
+		//ƒAƒNƒeƒBƒu‚ÈƒXƒe[ƒW
 		shared_ptr<Stage> m_ActiveStage;
-		//ã‚¯ãƒªã‚¢ã™ã‚‹è‰²
+		//ƒNƒŠƒA‚·‚éF
 		bsm::Col4 m_ClearColor;
 		Impl():
 			m_ActiveStage(),
 			m_ClearColor(0,0,0,1.0f)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 	//--------------------------------------------------------------------------------------
-	///	ã‚·ãƒ¼ãƒ³è¦ªã‚¯ãƒ©ã‚¹
+	///	ƒV[ƒ“eƒNƒ‰ƒX
 	//--------------------------------------------------------------------------------------
 	void SceneBase::ConvertVertex(const vector<VertexPositionNormalTexture>& vertices,
 		vector<VertexPositionColor>& new_pc_vertices,
@@ -1502,7 +1502,7 @@ namespace basecross {
 		pImpl(new Impl())
 	{
 		try {
-			//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+			//ƒfƒtƒHƒ‹ƒg‚ÌƒŠƒ\[ƒX‚Ìì¬
 			App::GetApp()->RegisterResource(L"DEFAULT_SQUARE", MeshResource::CreateSquare(1.0f));
 			App::GetApp()->RegisterResource(L"DEFAULT_CUBE", MeshResource::CreateCube(1.0f));
 			App::GetApp()->RegisterResource(L"DEFAULT_SPHERE", MeshResource::CreateSphere(1.0f, 18));
@@ -1555,7 +1555,7 @@ namespace basecross {
 
 			bsm::Vec3 PointA(0, -1.0f / 2.0f, 0);
 			bsm::Vec3 PointB(0, 1.0f / 2.0f, 0);
-			//Capsuleã®ä½œæˆ(ãƒ˜ãƒ«ãƒ‘ãƒ¼é–¢æ•°ã‚’åˆ©ç”¨)
+			//Capsule‚Ìì¬(ƒwƒ‹ƒp[ŠÖ”‚ğ—˜—p)
 			MeshUtill::CreateCapsule(1.0f, PointA, PointB,18, vertices, indices);
 			ConvertVertex(vertices, new_pc_vertices, new_pn_vertices, new_pt_vertices, new_pntnt_vertices);
 			MeshUtill::SetNormalTangent(new_pntnt_vertices);
@@ -1635,7 +1635,7 @@ namespace basecross {
 			App::GetApp()->RegisterResource(L"DEFAULT_PNTnT_ICOSAHEDRON", MeshResource::CreateMeshResource(new_pntnt_vertices, indices, false));
 			vertices.clear();
 			indices.clear();
-			//ç‰©ç†ãƒ¯ã‚¤ãƒ•ãƒ¬ãƒ¼ãƒ ç”¨
+			//•¨—ƒƒCƒtƒŒ[ƒ€—p
 			MeshUtill::CreateSphere(2.0f, 6, vertices, indices);
 			vector<VertexPositionColor> col_vertices;
 			for (auto& v : vertices) {
@@ -1678,14 +1678,14 @@ namespace basecross {
 			throw;
 		}
 	}
-	SceneBase::â€¾SceneBase() {}
+	SceneBase::~SceneBase() {}
 
 	shared_ptr<Stage> SceneBase::GetActiveStage(bool ExceptionActive) const {
 		if (!pImpl->m_ActiveStage) {
-			//ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¹ãƒ†ãƒ¼ã‚¸ãŒç„¡åŠ¹ãªã‚‰
+			//ƒAƒNƒeƒBƒu‚ÈƒXƒe[ƒW‚ª–³Œø‚È‚ç
 			if (ExceptionActive) {
 				throw BaseException(
-					L"ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ãªã‚¹ãƒ†ãƒ¼ã‚¸ãŒã‚ã‚Šã¾ã›ã‚“",
+					L"ƒAƒNƒeƒBƒu‚ÈƒXƒe[ƒW‚ª‚ ‚è‚Ü‚¹‚ñ",
 					L"if(!m_ActiveStage.get())",
 					L"SceneBase::GetActiveStage()"
 				);
@@ -1711,13 +1711,13 @@ namespace basecross {
 
 	void SceneBase::OnUpdate() {
 		if (pImpl->m_ActiveStage) {
-			//ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚¢ãƒƒãƒ—ãƒ‡ãƒ¼ãƒˆ
+			//ƒXƒe[ƒW‚ÌƒAƒbƒvƒf[ƒg
 			pImpl->m_ActiveStage->UpdateStage();
 		}
 	}
 	void SceneBase::OnDraw() {
 		if (pImpl->m_ActiveStage) {
-			//æç”»ãƒ‡ãƒã‚¤ã‚¹ã®å–å¾—
+			//•`‰æƒfƒoƒCƒX‚Ìæ“¾
 			auto Dev = App::GetApp()->GetDeviceResources();
 			Dev->ClearDefaultViews(GetClearColor());
 			pImpl->m_ActiveStage->RenderStage();
@@ -1733,31 +1733,31 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct StageCellMap::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct StageCellMap::Impl {
-		//ã‚»ãƒ«ã®ãƒã‚¤ãƒ³ã‚¿ã®é…åˆ—ï¼ˆ2æ¬¡å…ƒï¼‰
+		//ƒZƒ‹‚Ìƒ|ƒCƒ“ƒ^‚Ì”z—ñi2ŸŒ³j
 		vector<vector<CellPiece>> m_CellVec;
 		const UINT m_MaxCellSize = 100;
-		//ã‚»ãƒ«ã®XZæ–¹å‘ã®æ•°
+		//ƒZƒ‹‚ÌXZ•ûŒü‚Ì”
 		UINT m_SizeX;
 		UINT m_SizeZ;
-		//ã‚»ãƒ«1å€‹ã®ã‚¹ãƒ†ãƒ¼ã‚¸ä¸Šã®ã‚µã‚¤ã‚º
+		//ƒZƒ‹1ŒÂ‚ÌƒXƒe[ƒWã‚ÌƒTƒCƒY
 		float m_PieceSize;
-		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ã‚³ã‚¹ãƒˆ
+		//ƒfƒtƒHƒ‹ƒg‚ÌƒRƒXƒg
 		int m_DefaultCost;
-		//ã‚¹ãƒ†ãƒ¼ã‚¸ä¸Šã§ã“ã®ã‚»ãƒ«ãƒãƒƒãƒ—ã‚’å±•é–‹ã™ã‚‹AABB
+		//ƒXƒe[ƒWã‚Å‚±‚ÌƒZƒ‹ƒ}ƒbƒv‚ğ“WŠJ‚·‚éAABB
 		AABB m_MapAABB;
-		//ãƒ¡ãƒƒã‚·ãƒ¥
+		//ƒƒbƒVƒ…
 		shared_ptr<MeshResource> m_LineMesh;
-		//ãƒ¡ãƒƒã‚·ãƒ¥ä½œæˆã®ãŸã‚ã®é ‚ç‚¹ã®é…åˆ—
+		//ƒƒbƒVƒ…ì¬‚Ì‚½‚ß‚Ì’¸“_‚Ì”z—ñ
 		vector<VertexPositionColor> m_Vertices;
-		//ã‚»ãƒ«æ–‡å­—ã‚’æç”»ã™ã‚‹ã‹ã©ã†ã‹
+		//ƒZƒ‹•¶š‚ğ•`‰æ‚·‚é‚©‚Ç‚¤‚©
 		bool m_IsCellStringActive;
 		Impl() :
 			m_IsCellStringActive(false)
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 		void Init(const bsm::Vec3& MiniPos,
 			float PieceSize, UINT PieceCountX, UINT PieceCountZ, int DefaultCost);
 		void Create(const shared_ptr<MultiStringSprite>& StringPtr, const shared_ptr<Stage>& StagePtr);
@@ -1765,17 +1765,17 @@ namespace basecross {
 		bsm::Vec3 WorldToSCreen(const bsm::Vec3& v,const bsm::Mat4x4& m, float ViewWidth, float ViewHeight) {
 			Vec4 Pos4(v,1.0f);
 			Pos4.w = 1.0f;
-			//åº§æ¨™å¤‰æ›
+			//À•W•ÏŠ·
 			Pos4 *= m;
-			//é è¿‘
+			//‰“‹ß
 			Pos4.x /= Pos4.w;
 			Pos4.y /= Pos4.w;
 			Pos4.z /= Pos4.w;
-			//åº§æ¨™å˜ä½ã®ä¿®æ­£
+			//À•W’PˆÊ‚ÌC³
 			Pos4.x += 1.0f;
 			Pos4.y += 1.0f;
 			Pos4.y = 2.0f - Pos4.y;
-			//ãƒ“ãƒ¥ãƒ¼ãƒãƒ¼ãƒˆå¤‰æ›
+			//ƒrƒ…[ƒ|[ƒg•ÏŠ·
 			Pos4.x *= (ViewWidth * 0.5f);
 			Pos4.y *= (ViewHeight * 0.5f);
 			return (Vec3)Pos4;
@@ -1792,7 +1792,7 @@ namespace basecross {
 		}
 		if (m_SizeX >= m_MaxCellSize) {
 			throw BaseException(
-				L"ã‚»ãƒ«ã®Xæ–¹å‘ãŒæœ€å¤§å€¤ã‚’è¶…ãˆã¾ã—ãŸ",
+				L"ƒZƒ‹‚ÌX•ûŒü‚ªÅ‘å’l‚ğ’´‚¦‚Ü‚µ‚½",
 				L"if (m_SizeX >= m_MaxCellSize)",
 				L"StageCellMap::Impl::Init()"
 			);
@@ -1803,7 +1803,7 @@ namespace basecross {
 		}
 		if (m_SizeZ >= m_MaxCellSize) {
 			throw BaseException(
-				L"ã‚»ãƒ«ã®Zæ–¹å‘ãŒæœ€å¤§å€¤ã‚’è¶…ãˆã¾ã—ãŸ",
+				L"ƒZƒ‹‚ÌZ•ûŒü‚ªÅ‘å’l‚ğ’´‚¦‚Ü‚µ‚½",
 				L"if (m_SizeZ >= m_MaxCellSize)",
 				L"StageCellMap::Impl::Init()"
 			);
@@ -1813,7 +1813,7 @@ namespace basecross {
 		m_MapAABB.m_Max.y = m_MapAABB.m_Min.y + m_PieceSize;
 		m_MapAABB.m_Max.z = m_MapAABB.m_Min.z + m_PieceSize * (float)m_SizeZ;
 		bsm::Vec3 PieceVec(m_PieceSize, m_PieceSize, m_PieceSize);
-		//é…åˆ—ã®åˆæœŸåŒ–
+		//”z—ñ‚Ì‰Šú‰»
 		m_CellVec.resize(m_SizeX);
 		for (UINT x = 0; x < m_SizeX; x++) {
 			m_CellVec[x].resize(m_SizeZ);
@@ -1857,20 +1857,20 @@ namespace basecross {
 			LineFrom.x += m_PieceSize;
 			LineTo.x += m_PieceSize;
 		}
-		//ãƒ¡ãƒƒã‚·ãƒ¥ã®ä½œæˆï¼ˆå¤‰æ›´ã§ããªã„ï¼‰
+		//ƒƒbƒVƒ…‚Ìì¬i•ÏX‚Å‚«‚È‚¢j
 		m_LineMesh = MeshResource::CreateMeshResource(m_Vertices, false);
 
-		//ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæ–‡å­—åˆ—ã®åˆæœŸåŒ–
+		//ƒXƒvƒ‰ƒCƒg•¶š—ñ‚Ì‰Šú‰»
 		bsm::Mat4x4 World, View, Proj;
 
-		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
+		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
 		bsm::Quat Qt;
 		Qt.normalize();
 		World.affineTransformation(
-			bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
-			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
-			Qt,				//å›è»¢è§’åº¦
-			bsm::Vec3(0, 0.01f, 0)				//ä½ç½®
+			bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
+			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
+			Qt,				//‰ñ“]Šp“x
+			bsm::Vec3(0, 0.01f, 0)				//ˆÊ’u
 		);
 
 		auto PtrCamera = StagePtr->GetView()->GetTargetCamera();
@@ -1906,7 +1906,7 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	//	ã‚¹ãƒ†ãƒ¼ã‚¸ã®ã‚»ãƒ«ãƒãƒƒãƒ—ï¼ˆæ´¾ç”Ÿã‚¯ãƒ©ã‚¹ã‚’ä½œã‚‹ã‹ã‚¤ãƒ³ã‚¹ã‚¿ãƒ³ã‚¹ã‚’ä½œæˆã™ã‚‹ï¼‰
+	//	ƒXƒe[ƒW‚ÌƒZƒ‹ƒ}ƒbƒvi”h¶ƒNƒ‰ƒX‚ğì‚é‚©ƒCƒ“ƒXƒ^ƒ“ƒX‚ğì¬‚·‚éj
 	//--------------------------------------------------------------------------------------
 
 
@@ -1921,7 +1921,7 @@ namespace basecross {
 
 
 
-	StageCellMap::â€¾StageCellMap() {}
+	StageCellMap::~StageCellMap() {}
 
 	bool StageCellMap::IsCellStringActive() {
 		return pImpl->m_IsCellStringActive;
@@ -1934,7 +1934,7 @@ namespace basecross {
 	vector<vector<CellPiece>>& StageCellMap::GetCellVec() const {
 		return pImpl->m_CellVec;
 	}
-	//åˆæœŸåŒ–
+	//‰Šú‰»
 	void StageCellMap::OnCreate(){
 		pImpl->Create(AddComponent<MultiStringSprite>(), GetStage());
 		SetDrawActive(false);
@@ -2036,7 +2036,7 @@ namespace basecross {
 					str += Util::IntToWStr(x);
 					str += L",";
 					str += Util::IntToWStr(z);
-					str += L"Â¥nCost: ";
+					str += L"?nCost: ";
 					str += Util::IntToWStr(pImpl->m_CellVec[x][z].m_Cost);
 
 					if (Pos.z < viewport.MinDepth || Pos.z > viewport.MaxDepth) {
@@ -2053,7 +2053,7 @@ namespace basecross {
 
 
 	void StageCellMap::OnDraw() {
-		//Dx12ãŒå¯¾å¿œã§ãã‚‹ã¾ã§è¨˜è¿°ã‚’æ¶ˆã™
+		//Dx12‚ª‘Î‰‚Å‚«‚é‚Ü‚Å‹Lq‚ğÁ‚·
 #if (BASECROSS_DXVERSION == 11)
 
 		if (pImpl->m_IsCellStringActive) {
@@ -2064,71 +2064,71 @@ namespace basecross {
 		auto pD3D11DeviceContext = Dev->GetD3DDeviceContext();
 		auto RenderState = Dev->GetRenderState();
 
-		//è¡Œåˆ—ã®å®šç¾©
+		//s—ñ‚Ì’è‹`
 		bsm::Mat4x4 World, View, Proj;
-		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
+		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
 		bsm::Quat Qt;
 		Qt.normalize();
 		World.affineTransformation(
-			bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
-			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
-			Qt,				//å›è»¢è§’åº¦
-			bsm::Vec3(0, 0.01f, 0)				//ä½ç½®
+			bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
+			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
+			Qt,				//‰ñ“]Šp“x
+			bsm::Vec3(0, 0.01f, 0)				//ˆÊ’u
 		);
-		//è»¢ç½®ã™ã‚‹
+		//“]’u‚·‚é
 		World = bsm::transpose(World);
-		//ã‚«ãƒ¡ãƒ©ã‚’å¾—ã‚‹
+		//ƒJƒƒ‰‚ğ“¾‚é
 		auto CameraPtr = OnGetDrawCamera();
-		//ãƒ“ãƒ¥ãƒ¼ã¨å°„å½±è¡Œåˆ—ã‚’å¾—ã‚‹
+		//ƒrƒ…[‚ÆË‰es—ñ‚ğ“¾‚é
 		View = CameraPtr->GetViewMatrix();
-		//è»¢ç½®ã™ã‚‹
+		//“]’u‚·‚é
 		View = bsm::transpose(View);
-		//è»¢ç½®ã™ã‚‹
+		//“]’u‚·‚é
 		Proj = CameraPtr->GetProjMatrix();
 		Proj = bsm::transpose(Proj);
 
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æº–å‚™
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ì€”õ
 		SimpleConstants sb;
 		sb.World = World;
 		sb.View = View;
 		sb.Projection = Proj;
-		//ã‚¨ãƒŸãƒƒã‚·ãƒ–åŠ ç®—ã¯è¡Œã‚ãªã„ã€‚
+		//ƒGƒ~ƒbƒVƒu‰ÁZ‚Ís‚í‚È‚¢B
 		sb.Emissive = bsm::Col4(0, 0, 0, 0);
 		sb.Diffuse = bsm::Col4(1, 1, 1, 1);
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®æ›´æ–°
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚ÌXV
 		pD3D11DeviceContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &sb, 0, 0);
 
-		//ã‚¹ãƒˆãƒ©ã‚¤ãƒ‰ã¨ã‚ªãƒ•ã‚»ãƒƒãƒˆ
+		//ƒXƒgƒ‰ƒCƒh‚ÆƒIƒtƒZƒbƒg
 		UINT stride = sizeof(VertexPositionColor);
 		UINT offset = 0;
-		//é ‚ç‚¹ãƒãƒƒãƒ•ã‚¡ã®ã‚»ãƒƒãƒˆ
+		//’¸“_ƒoƒbƒtƒ@‚ÌƒZƒbƒg
 		pD3D11DeviceContext->IASetVertexBuffers(0, 1, pImpl->m_LineMesh->GetVertexBuffer().GetAddressOf(), &stride, &offset);
 
-		//æç”»æ–¹æ³•ï¼ˆãƒ©ã‚¤ãƒ³ï¼‰
+		//•`‰æ•û–@iƒ‰ƒCƒ“j
 		pD3D11DeviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_LINELIST);
 
-		//ã‚³ãƒ³ã‚¹ã‚¿ãƒ³ãƒˆãƒãƒƒãƒ•ã‚¡ã®è¨­å®š
+		//ƒRƒ“ƒXƒ^ƒ“ƒgƒoƒbƒtƒ@‚Ìİ’è
 		ID3D11Buffer* pConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 		ID3D11Buffer* pNullConstantBuffer = nullptr;
-		//é ‚ç‚¹ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
+		//’¸“_ƒVƒF[ƒ_‚É“n‚·
 		pD3D11DeviceContext->VSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ãƒ”ã‚¯ã‚»ãƒ«ã‚·ã‚§ãƒ¼ãƒ€ã«æ¸¡ã™
+		//ƒsƒNƒZƒ‹ƒVƒF[ƒ_‚É“n‚·
 		pD3D11DeviceContext->PSSetConstantBuffers(0, 1, &pConstantBuffer);
-		//ã‚·ã‚§ãƒ¼ãƒ€ã®è¨­å®š
+		//ƒVƒF[ƒ_‚Ìİ’è
 		pD3D11DeviceContext->VSSetShader(VSPCStatic::GetPtr()->GetShader(), nullptr, 0);
 		pD3D11DeviceContext->PSSetShader(PSPCStatic::GetPtr()->GetShader(), nullptr, 0);
-		//ã‚¤ãƒ³ãƒ—ãƒƒãƒˆãƒ¬ã‚¤ã‚¢ã‚¦ãƒˆã®è¨­å®š
+		//ƒCƒ“ƒvƒbƒgƒŒƒCƒAƒEƒg‚Ìİ’è
 		pD3D11DeviceContext->IASetInputLayout(VSPCStatic::GetPtr()->GetInputLayout());
-		//ãƒ–ãƒ¬ãƒ³ãƒ‰ã‚¹ãƒ†ãƒ¼ãƒˆ
+		//ƒuƒŒƒ“ƒhƒXƒe[ƒg
 		pD3D11DeviceContext->OMSetBlendState(RenderState->GetOpaque(), nullptr, 0xffffffff);
-		//ãƒ‡ãƒ—ã‚¹ã‚¹ãƒ†ãƒ³ã‚·ãƒ«ã‚¹ãƒ†ãƒ¼ãƒˆ
+		//ƒfƒvƒXƒXƒeƒ“ƒVƒ‹ƒXƒe[ƒg
 		pD3D11DeviceContext->OMSetDepthStencilState(RenderState->GetDepthDefault(), 0);
-		//ãƒ©ã‚¹ã‚¿ãƒ©ã‚¤ã‚¶ã‚¹ãƒ†ãƒ¼ãƒˆ
+		//ƒ‰ƒXƒ^ƒ‰ƒCƒUƒXƒe[ƒg
 		pD3D11DeviceContext->RSSetState(RenderState->GetCullNone());
 
-		//æç”»
+		//•`‰æ
 		pD3D11DeviceContext->Draw((UINT)pImpl->m_Vertices.size(), 0);
-		//å¾Œå§‹æœ«
+		//Œãn––
 		Dev->InitializeStates();
 #endif
 
@@ -2138,18 +2138,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct GameObjecttCSVBuilder::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct GameObjecttCSVBuilder::Impl {
 		map<wstring, shared_ptr<GameObjectCreatorBaseCSV> > m_CreatorMap;
 		Impl()
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	//	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ“ãƒ«ãƒ€ãƒ¼CSV
+	//	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒrƒ‹ƒ_[CSV
 	//--------------------------------------------------------------------------------------
 
 	GameObjecttCSVBuilder::GameObjecttCSVBuilder() :
@@ -2157,7 +2157,7 @@ namespace basecross {
 	{
 
 	}
-	GameObjecttCSVBuilder::â€¾GameObjecttCSVBuilder() {}
+	GameObjecttCSVBuilder::~GameObjecttCSVBuilder() {}
 
 	map<wstring, shared_ptr<GameObjectCreatorBaseCSV>>& GameObjecttCSVBuilder::GetCreatorMap() const {
 		return pImpl->m_CreatorMap;
@@ -2176,14 +2176,14 @@ namespace basecross {
 
 	void GameObjecttCSVBuilder::Build(const shared_ptr<Stage>& StagePtr, const wstring& CSVFileName) {
 		try {
-			//CSVãƒ•ã‚¡ã‚¤ãƒ«
+			//CSVƒtƒ@ƒCƒ‹
 			CsvFile GameStageCsv(CSVFileName);
 			GameStageCsv.ReadCsv();
-			//CSVã®å…¨ä½“ã®é…åˆ—
-			//CSVã‹ã‚‰ã™ã¹ã¦ã®è¡Œã‚’æŠœãå‡ºã™
+			//CSV‚Ì‘S‘Ì‚Ì”z—ñ
+			//CSV‚©‚ç‚·‚×‚Ä‚Ìs‚ğ”²‚«o‚·
 			auto& LineVec = GameStageCsv.GetCsvVec();
 			for (auto& v : LineVec) {
-				//ãƒˆãƒ¼ã‚¯ãƒ³ï¼ˆã‚«ãƒ©ãƒ ï¼‰ã®é…åˆ—
+				//ƒg[ƒNƒ“iƒJƒ‰ƒ€j‚Ì”z—ñ
 				vector<wstring> Tokens;
 				Util::WStrToTokenVector(Tokens,v, L',');
 				CreateFromCSV(Tokens[0], StagePtr, v);
@@ -2197,18 +2197,18 @@ namespace basecross {
 
 	//--------------------------------------------------------------------------------------
 	//	struct GameObjecttXMLBuilder::Impl;
-	//	ç”¨é€”: Implã‚¤ãƒ‡ã‚£ã‚ªãƒ 
+	//	—p“r: ImplƒCƒfƒBƒIƒ€
 	//--------------------------------------------------------------------------------------
 	struct GameObjecttXMLBuilder::Impl {
 		map<wstring, shared_ptr<GameObjectCreatorBaseXML> > m_CreatorMap;
 		Impl()
 		{}
-		â€¾Impl() {}
+		~Impl() {}
 	};
 
 
 	//--------------------------------------------------------------------------------------
-	//	ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ“ãƒ«ãƒ€ãƒ¼XML
+	//	ƒQ[ƒ€ƒIƒuƒWƒFƒNƒgƒrƒ‹ƒ_[XML
 	//--------------------------------------------------------------------------------------
 
 	GameObjecttXMLBuilder::GameObjecttXMLBuilder() :
@@ -2216,7 +2216,7 @@ namespace basecross {
 	{
 
 	}
-	GameObjecttXMLBuilder::â€¾GameObjecttXMLBuilder() {}
+	GameObjecttXMLBuilder::~GameObjecttXMLBuilder() {}
 
 	map<wstring, shared_ptr<GameObjectCreatorBaseXML>>& GameObjecttXMLBuilder::GetCreatorMap() const {
 		return pImpl->m_CreatorMap;
@@ -2235,7 +2235,7 @@ namespace basecross {
 
 	void GameObjecttXMLBuilder::Build(const shared_ptr<Stage>& StagePtr, const wstring& XMLFileName, const wstring& GameObjectsPath) {
 		try {
-			//XMLãƒªãƒ¼ãƒ€ãƒ¼
+			//XMLƒŠ[ƒ_[
 			XmlDocReader Reader(XMLFileName);
 			auto Nodes = Reader.GetSelectNodes(GameObjectsPath.c_str());
 			long CountNode = XmlDocReader::GetLength(Nodes);

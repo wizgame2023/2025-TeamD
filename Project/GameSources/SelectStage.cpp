@@ -43,37 +43,22 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_BACK", uiPath + L"SelectBack.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 
+		app->RegisterTexture(L"CHECKMARK", uiPath + L"Check_ClearStage.png");
 
 	}
 
 	void SelectStage::CreateSelect() {
+		int cityCount = 3;
+		int levelCount = 3;
+		float leftX = -340.0f;
+
 		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
-
-		//auto titleSprite = AddGameObject<Sprite>(L"SELECTSPRITE", Vec3(0.0f, 100.0f, 0.0f), Vec2(600.0f, 200.0f), true);
-		//m_Number = AddGameObject<NumberSprite>(L"SELECT_NUMBER", Vec3(120.0f, -140.0f, 0.0f), Vec2(33, 100), 1);
-		//m_TitleSprite = AddGameObject<Sprite>(L"SELECT_TITLE", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 150.0f), true);
-		//m_LowSprite = AddGameObject<Sprite>(L"DANGER_LOW", Vec3(0.0f, -300.0f, 0.0f), Vec2(100.0f, 80.0f), true);
-		//m_MiddleSprite = AddGameObject<Sprite>(L"DANGER_MIDDLE", Vec3(0.0f, -300.0f, 0.0f), Vec2(100.0f, 80.0f), true);
-		//m_HighSprite = AddGameObject<Sprite>(L"DANGER_HIGH", Vec3(0.0f, -300.0f, 0.0f), Vec2(100.0f, 80.0f), true);
-		////auto stratASprite = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -200.0f, 0.0f), Vec2(300.0f, 200.0f), true);
-		////auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
-		////stratASprite->AddComponent<SpriteFlash>(0.8f);
-		////m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
-		////m_Fade->FadeOut();
-		////m_Fade->Stop();
-
-		//m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_EASY", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
-		//m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_NORMAL", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
-		//m_Difficultys.push_back(AddGameObject<Sprite>(L"SELECT_HARD", Vec3(0.0f, -200.0f, 0.0f), Vec2(250.0f, 150.0f), true));
-
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
-		int cityCount = 3;
-		float leftX = -340.0f;
 		vector<wstring> dangerKey = { L"DANGER_LOW",L"DANGER_MIDDLE",L"DANGER_HIGH" };
 		vector<Col4> dangerColor = { Col4(0,1,0,1),Col4(1,1,0,1),Col4(1,0,0,1) };
-
+		auto& scene = App::GetApp()->GetScene<Scene>();
 
 		for (int i = 0; i < cityCount; i++) {
 			Vec3 position = Vec3(leftX - leftX * i, 0, 0);
@@ -93,12 +78,16 @@ namespace basecross {
 					dangerLow - Vec3(90.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f),
 					[](shared_ptr<ObjectInterface> object) {
 						auto stage = static_pointer_cast<SelectStage>(object);
-						stage->AcceptDifficulty(ButtonManager::instance->GetSelectIndex(L"City"));
+						int selectCity = ButtonManager::instance->GetSelectIndex(L"City");
+						stage->AcceptDifficulty(ButtonManager::instance->GetSelectIndex(L"Difficulty" + to_wstring(selectCity)));
 					});
 
 				auto sprite = AddGameObject<Sprite>(dangerKey[j], dangerLow - Vec3(0,100.0f * j,0.0f), Vec2(60.0f, 60.0f), true);
 				sprite->SetDiffuse(dangerColor[j]);
 
+				if (scene->IsClear({ i,j })) {
+					sprite = AddGameObject<Sprite>(L"CHECKMARK", dangerLow - Vec3(-100.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f),true);
+				}
 			}
 			ButtonManager::instance->AddAcceptButton(L"Difficulty" + to_wstring(i), XINPUT_GAMEPAD_A);
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
@@ -138,98 +127,6 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<SelectStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		//if (m_Fade->IsFinish())
-		//{
-		//	PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageSatou");
-		//}
-
-		//float rot;
-		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX > 0.5f) {
-		//	m_Count = (m_Count + 1) % 4;
-		//	m_TotalTimer.Reset();
-		//}
-		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLX < -0.5f) {
-		//	m_Count = (m_Count + 3) % 4;
-		//	m_TotalTimer.Reset();
-		//}
-		//m_Number->SetDrawActive(false);
-		//switch (m_Count) {
-		//case 0:
-		//	//m_Number->UpdateNumber(1);
-		//	m_TitleSprite->SetDrawActive(false);
-		//	m_StageSprite->SetDrawActive(false);
-		//	break;
-		//case 1:
-		//	//m_Number->UpdateNumber(2);
-		//	m_TitleSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//case 2:
-		//	//m_Number->UpdateNumber(3);
-		//	m_TitleSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//case 3:
-		//	//m_Number->UpdateNumber(4);
-		//	m_TitleSprite->SetDrawActive(true);
-		//	m_StageSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-
-		//}
-		////m_LowSprite->SetDrawActive(true);
-		////m_MiddleSprite->SetDrawActive(true);
-		////m_HighSprite->SetDrawActive(true);
-		//m_LowSprite->SetDrawActive(false);
-		//m_MiddleSprite->SetDrawActive(false);
-		//m_HighSprite->SetDrawActive(false);
-		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLY > 0.5f) {
-		//	m_DifficultyLevel = (m_DifficultyLevel + 1) % 4;
-		//	m_TotalTimer.Reset();
-		//}
-		//if (m_TotalTimer.UpdateTimer() && cntlVec.fThumbLY < -0.5f) {
-		//	m_DifficultyLevel = (m_DifficultyLevel + 3) % 4;
-		//	m_TotalTimer.Reset();
-		//}
-		//switch (m_DifficultyLevel) {
-		//case 0:
-		//	//m_Number->UpdateNumber(2);
-		//	m_LowSprite->SetDiffuse(Col4(0, 1, 0, 1));
-		//	m_MiddleSprite->SetDrawActive(false);
-		//	m_HighSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//case 1:
-		//	//m_Number->UpdateNumber(3);
-		// 	m_LowSprite->SetDrawActive(false);
-		//	m_MiddleSprite->SetDiffuse(Col4(1, 1, 0, 1));
-		// 	m_HighSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//case 2:
-		//	//m_Number->UpdateNumber(4);
-		// 	m_LowSprite->SetDrawActive(false);
-		// 	m_MiddleSprite->SetDrawActive(false);
-		//	m_HighSprite->SetDiffuse(Col4(1, 0, 0, 1));
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//case 3:
-		//	//m_Number->UpdateNumber(4);
-		//	m_LowSprite->SetDrawActive(false);
-		//	m_MiddleSprite->SetDrawActive(false);
-		//	m_HighSprite->SetDrawActive(false);
-		//	//m_StageSprite->SetDrawActive(true);
-		//	break;
-		//}
-
-		/*for (int i = 0; i < m_Difficultys.size(); i++) {
-			if (m_Count != 4 && i == m_Count - 0) {
-				m_Difficultys[i]->SetDrawActive(true);
-			}
-			else {
-				m_Difficultys[i]->SetDrawActive(false);
-			}
-		}*/
 	}
 
 	void SelectStage::OnPushA() {

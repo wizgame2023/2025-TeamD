@@ -8,9 +8,9 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
+	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
 	//--------------------------------------------------------------------------------------
-	void GameStage::CreateViewLight() {		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
+	void GameStage::CreateViewLight() {		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
 		m_ProductionCameraView = ObjectFactory::Create<SingleView>(GetThis<GameStage>());
 		auto ptrOpeningCamera = ObjectFactory::Create<ProductionCamera>();
 		m_ProductionCameraView->SetCamera(ptrOpeningCamera);
@@ -19,9 +19,9 @@ namespace basecross {
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStage>());
 		m_MyCameraView->SetCamera(PtrCamera);
 		m_Camera = PtrCamera;
-		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
+		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
+		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
 		PtrMultiLight->SetDefaultLighting();
 	}
 	void GameStage::CreateResource() {
@@ -110,7 +110,7 @@ namespace basecross {
 	}
 
 	/// <summary>
-	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
+	/// ƒŠƒ\[ƒX‚Ìì¬
 	/// </summary>
 	void GameStage::RegisterObjects() {
 		auto& builder = AddGameObject<StageBuilder>(m_MapFileName, 1.0f);
@@ -127,21 +127,21 @@ namespace basecross {
 
 	}
 	/// </summary>
-	/// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// ƒ|[ƒYƒƒjƒ…[‚Ìì¬
 	/// <summary>
 	void GameStage::CreatePose() {
 		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
 		m_PauseMenu->SetIsPouse(true);
 	}
 	/// <summary>
-	/// ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// ƒTƒEƒ“ƒhƒeƒXƒgƒƒjƒ…[‚Ìì¬
 	/// </summary>
 	void GameStage::CreateSoundTest() {
 		m_SoundTestMenu = AddGameObject<SoundTestMenu>(L"SOUND_TEST");
 		m_SoundTestMenu->SetIsPouse(true);
 	}
 	/// <summary>
-	/// ãƒªã‚¶ãƒ«ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
+	/// ƒŠƒUƒ‹ƒgƒƒjƒ…[‚Ìì¬
 	/// </summary>
 	void GameStage::CreateResult() {
 		m_ResultMenu = AddGameObject<ResultMenu>(L"RESULT");
@@ -175,9 +175,9 @@ namespace basecross {
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 	}
 	/// <summary>
-	/// ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ›´æ–°ã‚’ONOFF
+	/// ƒIƒuƒWƒFƒNƒg‚ÌXV‚ğONOFF
 	/// </summary>
-	/// <param name="flag">æç”»ONOFF</param>
+	/// <param name="flag">•`‰æONOFF</param>
 	void GameStage::SetAllGameObjectActive(bool flag) {
 		for (auto& obj : GetGameObjectVec()) {
 			if (!obj->FindTag(L"Button") && !obj->FindTag(L"Manager") && !obj->FindTag(L"Menu") && !obj->FindTag(L"Camera")) {
@@ -216,13 +216,13 @@ namespace basecross {
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire/ 1.5f);
 			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
 			m_cameraState = CameraState::OPENINGCAMERA;
-			// è£œé–“é–‹å§‹æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®
-			// è£œé–“çµ‚äº†æ™‚ã®ã‚«ãƒ¡ãƒ©ä½ç½®ï¼ˆæœ€çµ‚ä½ç½®ï¼‰
-			// è£œé–“é–‹å§‹æ™‚ã«ã‚«ãƒ¡ãƒ©ãŒæ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®
-			// è£œé–“çµ‚äº†æ™‚ã«ã‚«ãƒ¡ãƒ©ãŒæ³¨è¦–ã™ã‚‹ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®
-			// ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®ã‚«ãƒ¡ãƒ©æœ€çµ‚ä½ç½®ï¼ˆå¿…è¦ã«å¿œã˜ã¦åˆ©ç”¨ï¼‰
-			// ç¬¬äºŒãƒ•ã‚§ãƒ¼ã‚ºç”¨ã®æ³¨è¦–ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ï¼ˆå¿…è¦ã«å¿œã˜ã¦åˆ©ç”¨ï¼‰
-			// ã‚«ãƒ¡ãƒ©ã®è£œé–“ã«ã‹ã‘ã‚‹ç·æ™‚é–“ï¼ˆå¤–éƒ¨ã‹ã‚‰ã®å‚ç…§ï¼‰
+			// •âŠÔŠJn‚ÌƒJƒƒ‰ˆÊ’u
+			// •âŠÔI—¹‚ÌƒJƒƒ‰ˆÊ’uiÅIˆÊ’uj
+			// •âŠÔŠJn‚ÉƒJƒƒ‰‚ª’‹‚·‚éƒ^[ƒQƒbƒgˆÊ’u
+			// •âŠÔI—¹‚ÉƒJƒƒ‰‚ª’‹‚·‚éƒ^[ƒQƒbƒgˆÊ’u
+			// ‘æ“ñƒtƒF[ƒY—p‚ÌƒJƒƒ‰ÅIˆÊ’ui•K—v‚É‰‚¶‚Ä—˜—pj
+			// ‘æ“ñƒtƒF[ƒY—p‚Ì’‹ƒ^[ƒQƒbƒgˆÊ’ui•K—v‚É‰‚¶‚Ä—˜—pj
+			// ƒJƒƒ‰‚Ì•âŠÔ‚É‚©‚¯‚é‘ŠÔiŠO•”‚©‚ç‚ÌQÆj
 
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
 			ptrOpeningCameraman->SetReverse(false);
@@ -241,6 +241,9 @@ namespace basecross {
 	}
 
 	void GameStage::GameClear() {
+
+		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
+
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
@@ -272,6 +275,7 @@ namespace basecross {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
+			
 			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
@@ -362,7 +366,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"Legion");
 			CreateSharedObjectGroup(L"Citizen");
 
-			//ãƒ“ãƒ¥ãƒ¼ã¨ãƒ©ã‚¤ãƒˆã®ä½œæˆ
+			//ƒrƒ…[‚Æƒ‰ƒCƒg‚Ìì¬
 			CreateViewLight();
 			CreateResource();
 			auto& app = App::GetApp();
@@ -398,6 +402,7 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
+		RayCast::InitRay(10);
 		auto& app = App::GetApp();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();

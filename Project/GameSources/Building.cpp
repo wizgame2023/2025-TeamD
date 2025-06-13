@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	Ground::Ground(const shared_ptr<Stage>& stage) : Object(stage){}
-	Ground::â€¾Ground(){}
+	Ground::~Ground(){}
 
 	void Ground::OnCreate() {
 		Object::OnCreate();
@@ -17,7 +17,7 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"GROUND");
@@ -33,7 +33,7 @@ namespace basecross {
 	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
-	LimitArea::â€¾LimitArea() {}
+	LimitArea::~LimitArea() {}
 
 	void LimitArea::OnCreate() {
 		Object::OnCreate();
@@ -44,7 +44,7 @@ namespace basecross {
 	}
 
 	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
-	Building::â€¾Building() {}
+	Building::~Building() {}
 
 	void Building::OnCreate() {
 		Object::OnCreate();
@@ -52,7 +52,7 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//æç”»è¨­å®š
+		//•`‰æİ’è
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		/*ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"BUILDING");*/

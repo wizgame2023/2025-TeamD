@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -36,7 +36,7 @@ namespace basecross {
 		Attack(const shared_ptr<Stage>& stage, AttackDate date) :
 			Object(stage,Vec3(1000,1000,1000), Vec3(), Vec3(1)),m_IsFinish(false),
 			m_Date(date) {}
-		virtual ~Attack() {}
+		virtual 窶ｾAttack() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -99,7 +99,7 @@ namespace basecross {
 		AttackCollision(const shared_ptr<Stage>& stage,Vec3 size,AttackDate date) :
 			Attack(stage,date),
 			m_Size(size){}
-		virtual ~AttackCollision() {}
+		virtual 窶ｾAttackCollision() {}
 
 		virtual void OnCreate()override {
 			Attack::OnCreate();
@@ -121,7 +121,7 @@ namespace basecross {
 	public:
 		CrushAttack(const shared_ptr<Stage>& stage,Vec3 size,AttackDate date,float force) :
 			AttackCollision(stage,size,date),m_BlowForce(force){}
-		virtual~CrushAttack(){}
+		virtual窶ｾCrushAttack(){}
 
 		virtual void ContactPlayer(shared_ptr<GameObject>& player)override;
 
@@ -135,7 +135,7 @@ namespace basecross {
 		MachineGun(const shared_ptr<Stage>& stage, const shared_ptr<GameObject>& target,AttackDate date,float num) :
 			Attack(stage, date), m_Target(target),m_LaunchNum(num),m_ShotInterval(0.0f){
 		}
-		virtual ~MachineGun() {}
+		virtual 窶ｾMachineGun() {}
 		virtual void OnUpdate()override;
 	};
 	class Missile : public Attack {
@@ -152,7 +152,7 @@ namespace basecross {
 			m_MissileCount(count),m_MissileMaxCount(count),
 			m_MuzzleIndex(0),
 			m_MissileTimer(Timer(time,false)) { }
-		virtual ~Missile(){}
+		virtual 窶ｾMissile(){}
 		virtual void OnUpdate()override;
 
 		virtual void Play(Vec3 position)override;
@@ -161,6 +161,14 @@ namespace basecross {
 			m_MuzzlePositions.push_back(position);
 		}
 
+	};
+
+	class ShakeOffAttack : public CrushAttack {
+	public:
+		ShakeOffAttack(const shared_ptr<Stage>& stage, Vec3 size, AttackDate date, float force) :
+			CrushAttack(stage, size, date,force){
+		}
+		virtual void ReflectParry(Vec3 position)override;
 	};
 }
 

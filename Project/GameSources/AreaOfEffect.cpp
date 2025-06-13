@@ -2,8 +2,9 @@
 #include "Project.h"
 
 namespace basecross {
-	AreaOfEffect::AreaOfEffect(const shared_ptr<Stage>& stage, Vec3 position, float size, int vertexCount, float time) : 
-		Object(stage,position,Vec3(),Vec3(1)),m_AreaSize(size),m_AreaVertexCount(vertexCount),m_ExitTime(Timer(time)) {}
+	AreaOfEffect::AreaOfEffect(const shared_ptr<Stage>& stage, Vec3 position, float size, int vertexCount, float time) :
+		Object(stage, position, Vec3(), Vec3(1)), m_AreaSize(size), m_AreaVertexCount(vertexCount), m_ExitTime(Timer(time)) {
+	}
 
 	void AreaOfEffect::OnCreate() {
 		Object::OnCreate();
