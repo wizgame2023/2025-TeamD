@@ -72,7 +72,8 @@ namespace basecross {
 	public:
 		//構築と破棄
 		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameStater(false){}
-		virtual ‾GameStage() {}
+		virtual ‾GameStage() {
+		}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;

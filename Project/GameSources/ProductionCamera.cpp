@@ -229,6 +229,12 @@ namespace basecross {
 			m_eyePos = Lerp::CalculateLerp(eyeStart, eyeEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 			m_atPos = Lerp::CalculateLerp(atStart, atEnd, 0.0f, totaltime, m_currntTime, Lerp::rate::Cube);
 		}
+		auto camera = dynamic_pointer_cast<ProductionCamera>(GetStage()->GetView()->GetTargetCamera());
+		Vec3 addEye = camera->ShakeCameraMove();
+		if (addEye != Vec3(0))
+		{
+			m_eyePos += addEye; // カメラの振動を適用
+		}
 
 		auto ptrTrans = GetComponent<Transform>();
 		ptrTrans->SetPosition(m_eyePos);

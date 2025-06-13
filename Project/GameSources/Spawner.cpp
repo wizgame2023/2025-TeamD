@@ -102,6 +102,7 @@ namespace basecross {
 
 				//カメラ移動
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+				PostEvent(4.25f, GetThis<ObjectInterface>(), m_Stage, L"ShakeBoss");
 				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;
 				return;
