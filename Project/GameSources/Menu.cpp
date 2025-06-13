@@ -214,6 +214,7 @@ namespace basecross {
 		AddSprite(number);
 
 
+		auto menu = GetThis<ResultMenu>();
 
 		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,230.0f,0.0f), Vec2(33, 100), 1);
 		int damegeRank = ScoreManager::Instance()->GetDamageRank();
@@ -272,7 +273,7 @@ namespace basecross {
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70), 
 			[](shared_ptr<ObjectInterface> object) {
 				auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();

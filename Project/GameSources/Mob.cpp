@@ -111,6 +111,11 @@ namespace basecross {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			draw->UpdateAnimation(elapsed);
 		}
+
+		Line line = Line(GetPosition(), m_Intruder->GetPosition());
+		line.SetMaxLength(10.0f);
+		RayCast::DebugRay(line, Col4(1, 0, 0, 1), static_pointer_cast<Stage>(m_Stage));
+		RayCast::HitTestVec(RayCastHit(), line, m_Stage->GetGameObjectVec(), {L"Bullet",L"Line",L"Player",L"Ground"}, GetThis<Mob>());
 	}
 	void Mob::AsyncUpdate()
 	{
@@ -173,7 +178,7 @@ namespace basecross {
 	{
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
-		ptrDraw->AddAnimation(L"Walk", 21, 206, true, anim_fps * 3);
+		ptrDraw->AddAnimation(L"Walk", 20, 170, true, anim_fps * 1.75f);
 		ptrDraw->AddAnimation(L"SetUp", 288, 72, false, anim_fps);
 		ptrDraw->AddAnimation(L"Set", 318, 30, true, anim_fps);
 		ptrDraw->AddAnimation(L"SetDown", 361, 103, false, anim_fps);

@@ -35,7 +35,7 @@ namespace basecross {
 
 	{
 	}
-	Player::~Player()
+	Player::‾Player()
 	{
 	}
 	Vec2 Player::GetInputState() const {
@@ -274,15 +274,10 @@ namespace basecross {
 
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
-			XINPUT_VIBRATION vibration;
-			vibration.wLeftMotorSpeed = 65535;
-			vibration.wRightMotorSpeed = 65535;
-			XInputSetState(0, &vibration);
-
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
-			PostEvent(0.5f, nullptr, GetStage(), L"StopVibration");
+			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 			return 0;
 		}
 		else if (ParrySecond <= 15 && ParrySecond > 5)
@@ -298,6 +293,7 @@ namespace basecross {
 			//XInputSetState(0, &vibration);
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
+			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 
 			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 			return 0;
@@ -338,15 +334,15 @@ namespace basecross {
 	{
 		auto scene = App::GetApp()->GetScene<Scene>();
 		wstringstream wss(L"");
-		wss << L"¥nZoneCharge : "
+		wss << L"?nZoneCharge : "
 			<< m_EnergyCharge
-			<< L"¥nHP"
+			<< L"?nHP"
 			<< m_HP
-			<< L"¥nx"
+			<< L"?nx"
 			<< m_Rotation.x
-			<< L"¥ny"
+			<< L"?ny"
 			<< m_Rotation.y
-			<< L"¥nz"
+			<< L"?nz"
 			<< m_Rotation.z
 			<< endl;
 		scene->SetDebugString(wss.str());
@@ -414,8 +410,14 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"PLAYER");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
-		ptrDraw->SetOwnShadowActive(true);
+
+		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
+		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
+		ptrDraw->SetOwnShadowActive(false);
+		ptrDraw->SetFogEnabled(true);
+		ptrDraw->SetModelDiffusePriority(true);
 		AddAnimation();
+
 		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -637,7 +639,7 @@ namespace basecross {
 	{
 	}
 
-	HitSphere::~HitSphere()
+	HitSphere::‾HitSphere()
 	{
 		m_Effect->StopEffect(m_Handle);
 	}

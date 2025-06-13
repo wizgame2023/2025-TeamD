@@ -125,7 +125,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
-		mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+		mob->m_BalletInterval = mob->m_BalletInterval;
 		mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f; /*Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)*/
 		m_BulletRemain = mob->m_BulletRemain;
 		auto stage = static_pointer_cast<GameStage>(m_Stage);

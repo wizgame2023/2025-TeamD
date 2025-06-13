@@ -210,6 +210,46 @@ namespace basecross {
 		CalculateMatrix();
 	}
 
+	void Camera::ShakeStart(float time, float msg)
+	{
+		m_Duration = time; // 振動の持続時間（秒）
+		m_InitialDuration = time;
+		m_Magnitude = msg; // 振動の強さ
+		m_IsShaking = true;
+	}
+
+	Vec3 Camera::ShakeCameraMove()
+	{
+		auto& app = App::GetApp();
+		float elapsed = app->GetElapsedTime();
+
+		if (m_IsShaking) {
+			if (m_Duration <= 0.0f)
+			{
+				m_IsShaking = false;
+				m_Duration = 0.0f;
+				return Vec3(0);
+			}
+
+			m_Duration = max(0.0f, m_Duration - elapsed);
+
+			// 残り時間に応じて減衰率（0→1→0）
+			float progress = m_Duration / m_InitialDuration;      // [1→0]
+			float damper = 1.0f - std::pow(progress-1, 2); // 山形カーブ
+
+			// -1.0〜1.0 のランダム値を生成
+			auto randUnit = []() {
+				return (static_cast<float>(std::rand()) / RAND_MAX) * 2.0f - 1.0f;
+				};
+
+			float offsetX = randUnit() * m_Magnitude * damper;
+			float offsetY = randUnit() * m_Magnitude * damper;
+			return Vec3(offsetX, offsetY, 0);
+		}
+		return Vec3(0); // 振動がない場合はゼロベクトルを返す
+	}
+
+
 	//--------------------------------------------------------------------------------------
 	//	ビューのアイテム
 	//--------------------------------------------------------------------------------------

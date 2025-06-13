@@ -162,6 +162,14 @@ namespace basecross {
 		}
 
 	};
+
+	class ShakeOffAttack : public CrushAttack {
+	public:
+		ShakeOffAttack(const shared_ptr<Stage>& stage, Vec3 size, AttackDate date, float force) :
+			CrushAttack(stage, size, date,force){
+		}
+		virtual void ReflectParry(Vec3 position)override;
+	};
 }
 
 

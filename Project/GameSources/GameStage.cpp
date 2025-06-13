@@ -199,6 +199,7 @@ namespace basecross {
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				if (player != nullptr) {
 					player->SetIsGaol(false);
+					m_cameraState = CameraState::FOLLOWCAMERA;
 				}
 			}
 		}
@@ -241,6 +242,9 @@ namespace basecross {
 	}
 
 	void GameStage::GameClear() {
+
+		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
+
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
@@ -272,6 +276,7 @@ namespace basecross {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
+			
 			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
@@ -400,6 +405,7 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
+		RayCast::InitRay(10);
 		auto& app = App::GetApp();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
@@ -499,7 +505,16 @@ namespace basecross {
 		}
 		else if (msg == L"AppaerBoss") {
 			BossAppaerCamera();
+		}
+		else if (msg == L"ShakeBoss") {
+			auto camera = GetView()->GetTargetCamera();;
+			camera->ShakeStart(0.5f, 0.5f);
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
 
+			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 		else if (msg == L"SpawnBoss") {
 			AddGameObject<BossAppearText>(Vec3(-150, 300, 0.0f), Vec3(300, 100, 1.0f));
@@ -528,8 +543,12 @@ namespace basecross {
 			GameManager::Instance()->SetGameSpeed(1.0f);
 		}
 		else if (msg == L"HitStop") {
-			GameManager::Instance()->SetGameSpeed(1.0f);
-
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			if (m_cameraState == CameraState::FOLLOWCAMERA)
+			{
+				auto camera = GetView()->GetTargetCamera();;
+				camera->ShakeStart(0.5f, 0.1f);
+			}
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;

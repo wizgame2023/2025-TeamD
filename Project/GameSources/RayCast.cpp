@@ -8,6 +8,7 @@
 #include <chrono>
 namespace basecross {
 	vector<RayCast> RayCast::m_RayCasts = {};
+	vector<shared_ptr<LineCube>> RayCast::m_DebugRay = {};
 	int RayCast::count = 0;
 
 	/// <summary>
@@ -75,8 +76,8 @@ namespace basecross {
 		else if (bcDraw) {
 			bcDraw->GetStaticMeshWorldPositions(tempPositions);
 		}
-		//vector<TRIANGLE> triangles;
-		//triangles.reserve(tempPositions.size() / 3);
+		vector<TRIANGLE> triangles;
+		triangles.reserve(tempPositions.size() / 3);
 		for (size_t i = 0, size = tempPositions.size(); i < size; i += 3) {
 			TRIANGLE triangle;
 			triangle.m_A = tempPositions[i];
@@ -89,7 +90,8 @@ namespace basecross {
 			Vec3 center = (triangle.m_A + triangle.m_B + triangle.m_C) / 3.0f;
 
 			float distance = CalcDistancePointToLine(center, line);
-			if (distance * distance > (center - triangle.m_A).lengthSqr()) {
+			float radius = max((center - triangle.m_A).lengthSqr(), max((center - triangle.m_B).lengthSqr(), (center - triangle.m_C).lengthSqr()));
+			if (distance * distance > radius) {
 				continue;
 			}
 			bsm::Vec3 hitPosition;
@@ -142,6 +144,29 @@ namespace basecross {
 		return abs(product.x + product.y + product.z);
 	}
 
+	void RayCast::InitRay(int size) {
+		for (int i = 0; i < m_DebugRay.size(); i++) {
+			if (i >= size) {
+				m_DebugRay[i]->Destroy();
+			}
+			else {
+				m_DebugRay[i]->SetLine(Line());
+			}
+		}
+		if (m_DebugRay.size() >= size) {
+			m_DebugRay.erase(m_DebugRay.begin() + size, m_DebugRay.end());
+		}
+	}
+	void RayCast::DebugRay(const Line& line,Col4& color, shared_ptr<Stage>& stage) {
+		for (auto& ray : m_DebugRay) {
+			if (!ray->GetDrawActive()) {
+				ray->SetLine(line);
+				return;
+			}
+		}
+		auto ray = stage->AddGameObject<LineCube>(0.02f, color);
+		m_DebugRay.push_back(ray);
+	}
 	void RayCast::CreateRayCast(int size) {
 		m_RayCasts.clear();
 		m_RayCasts.reserve(size);
