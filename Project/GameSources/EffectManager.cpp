@@ -34,12 +34,12 @@ namespace basecross {
 	void EffectManeger::OnUpdate()
 	{
 		auto elps = App::GetApp()->GetElapsedTime();
+		
 		m_TotalTime += elps;
 
 		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
-
 	}
 
 	void EffectManeger::OnDraw()
