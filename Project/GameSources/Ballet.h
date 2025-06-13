@@ -25,7 +25,7 @@ namespace basecross {
 		bool m_bulletPally;
 	public:
 		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
-		~Bullet();
+		‾Bullet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);

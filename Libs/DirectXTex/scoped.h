@@ -41,7 +41,7 @@ public:
     auto_delete_file(const auto_delete_file&) = delete;
     auto_delete_file& operator=(const auto_delete_file&) = delete;
 
-    ~auto_delete_file()
+    ‾auto_delete_file()
     {
         if (m_handle)
         {

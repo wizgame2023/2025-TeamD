@@ -34,28 +34,28 @@ namespace PhysicsEffects {
 
 struct SCE_PFX_ALIGNED(16) PfxLargeTriMesh
 {
-	//J ƒ‰[ƒWƒƒbƒVƒ…‚Ìí•Ê‚ğŒˆ‚ß‚é
+	//J ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ç¨®åˆ¥ã‚’æ±ºã‚ã‚‹
 	//E Defines the structure of the large mesh
 	PfxUInt32 m_type;
 
 	SCE_PFX_PADDING(1,12)
 
-	//J ƒIƒtƒZƒbƒgÀ•W
+	//J ã‚ªãƒ•ã‚»ãƒƒãƒˆåº§æ¨™
 	//E Offset position
 	PfxVector3 m_offset;
 	
-	//J ƒ‰[ƒWƒƒbƒVƒ…‚ÌƒTƒCƒY
+	//J ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ã®ã‚µã‚¤ã‚º
 	//E Size of a large mesh
 	PfxVector3 m_half;
 	PfxFloat m_length; //E length of m_half
 	
-	//J ŠÜ‚Ü‚ê‚éƒAƒCƒ‰ƒ“ƒh‚Ì‘”
+	//J å«ã¾ã‚Œã‚‹ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ã®ç·æ•°
 	//E Number of islands
 	PfxUInt16 m_numIslands;
 	
 	SCE_PFX_PADDING(2,2)
 
-	//J ƒAƒCƒ‰ƒ“ƒhAABB”z—ñ
+	//J ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰AABBé…åˆ—
 	//E Array of island AABB
 	PfxAabb16 *m_aabbList;
 	
@@ -66,7 +66,7 @@ struct SCE_PFX_ALIGNED(16) PfxLargeTriMesh
 	PfxAabb16 *m_bvhNodes;
 	PfxUInt32 m_bvhRootId;
 
-	//J ƒoƒbƒtƒ@
+	//J ãƒãƒƒãƒ•ã‚¡
 	//E Buffer
 	/*
 		type                                   |facet                |vertex         |island
@@ -109,18 +109,18 @@ struct SCE_PFX_ALIGNED(16) PfxLargeTriMesh
 	{
 	}
 	
-	//J ƒ[ƒ‹ƒhÀ•W’l‚ğƒ‰[ƒWƒƒbƒVƒ…ƒ[ƒJƒ‹‚É•ÏŠ·‚·‚é
+	//J ãƒ¯ãƒ¼ãƒ«ãƒ‰åº§æ¨™å€¤ã‚’ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ãƒ­ãƒ¼ã‚«ãƒ«ã«å¤‰æ›ã™ã‚‹
 	//E Convert a position in the world coordinate into a position in the local coordinate
 	inline PfxVecInt3 getLocalPosition(const PfxVector3 &worldPosition) const;
 	inline void getLocalPosition(
 		const PfxVector3 &worldMinPosition,const PfxVector3 &worldMaxPosition,
 		PfxVecInt3 &localMinPosition,PfxVecInt3 &localMaxPosition) const;
 	
-	//J ƒ‰[ƒWƒƒbƒVƒ…ƒ[ƒJƒ‹À•W’l‚ğƒ[ƒ‹ƒh‚É•ÏŠ·‚·‚é
+	//J ãƒ©ãƒ¼ã‚¸ãƒ¡ãƒƒã‚·ãƒ¥ãƒ­ãƒ¼ã‚«ãƒ«åº§æ¨™å€¤ã‚’ãƒ¯ãƒ¼ãƒ«ãƒ‰ã«å¤‰æ›ã™ã‚‹
 	//E Convert a position in the local coordinate into a position in the world coordinate
 	inline PfxVector3 getWorldPosition(const PfxVecInt3 &localPosition) const;
 
-	//J —Êq‰»
+	//J é‡å­åŒ–
 	//E Quantize
 	inline PfxQuantize3 quantizePosition(const PfxVector3 &p) const;
 	inline PfxQuantize3 quantizeVector(const PfxVector3 &v) const;
@@ -200,8 +200,8 @@ inline PfxQuantize2 PfxLargeTriMesh::quantizeNormal(const PfxVector3 &n) const
 {
 	const PfxFloat PI2 = SCE_PFX_PI * 2.0f;
 	PfxFloat r1=0.0f,r2=0.0f;
-	r1 = acosf(n[2]); // ‚O`ƒÎ
-	r2 = atan2f(n[1],n[0]); // -ƒÎ`ƒÎ
+	r1 = acosf(n[2]); // ï¼ã€œÏ€
+	r2 = atan2f(n[1],n[0]); // -Ï€ã€œÏ€
 	return PfxQuantize2(
 		(PfxInt16)(((r1-0.5f*SCE_PFX_PI)/SCE_PFX_PI)*SCE_PFX_QUANTIZE_MAX),
 		(PfxInt16)((r2/PI2)*SCE_PFX_QUANTIZE_MAX));

@@ -48,7 +48,7 @@ struct CD3DX12_RECT : public D3D12_RECT
         right = Right;
         bottom = Bottom;
     }
-    ~CD3DX12_RECT() {}
+    ‾CD3DX12_RECT() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -111,7 +111,7 @@ struct CD3DX12_VIEWPORT : public D3D12_VIEWPORT
         MinDepth = minDepth;
         MaxDepth = maxDepth;
     }
-    ~CD3DX12_VIEWPORT() {}
+    ‾CD3DX12_VIEWPORT() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -160,7 +160,7 @@ struct CD3DX12_BOX : public D3D12_BOX
         bottom = Bottom;
         back = Back;
     }
-    ~CD3DX12_BOX() {}
+    ‾CD3DX12_BOX() {}
 };
 inline bool operator==( const D3D12_BOX& l, const D3D12_BOX& r )
 {
@@ -221,7 +221,7 @@ struct CD3DX12_DEPTH_STENCIL_DESC : public D3D12_DEPTH_STENCIL_DESC
         BackFace.StencilPassOp = backStencilPassOp;
         BackFace.StencilFunc = backStencilFunc;
     }
-    ~CD3DX12_DEPTH_STENCIL_DESC() {}
+    ‾CD3DX12_DEPTH_STENCIL_DESC() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -296,7 +296,7 @@ struct CD3DX12_DEPTH_STENCIL_DESC1 : public D3D12_DEPTH_STENCIL_DESC1
         BackFace.StencilFunc = backStencilFunc;
         DepthBoundsTestEnable = depthBoundsTestEnable;
     }
-    ~CD3DX12_DEPTH_STENCIL_DESC1() {}
+    ‾CD3DX12_DEPTH_STENCIL_DESC1() {}
     operator D3D12_DEPTH_STENCIL_DESC() const
     {
         D3D12_DEPTH_STENCIL_DESC D;
@@ -340,7 +340,7 @@ struct CD3DX12_BLEND_DESC : public D3D12_BLEND_DESC
         for (UINT i = 0; i < D3D12_SIMULTANEOUS_RENDER_TARGET_COUNT; ++i)
             RenderTarget[ i ] = defaultRenderTargetBlendDesc;
     }
-    ~CD3DX12_BLEND_DESC() {}
+    ‾CD3DX12_BLEND_DESC() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -389,7 +389,7 @@ struct CD3DX12_RASTERIZER_DESC : public D3D12_RASTERIZER_DESC
         ForcedSampleCount = forcedSampleCount;
         ConservativeRaster = conservativeRaster;
     }
-    ~CD3DX12_RASTERIZER_DESC() {}
+    ‾CD3DX12_RASTERIZER_DESC() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -1851,7 +1851,7 @@ struct CD3DX12_VIEW_INSTANCING_DESC : public D3D12_VIEW_INSTANCING_DESC
         pViewInstanceLocations = InViewInstanceLocations;
         Flags = InFlags;
     }
-    ~CD3DX12_VIEW_INSTANCING_DESC() {}
+    ‾CD3DX12_VIEW_INSTANCING_DESC() {}
 };
 
 //------------------------------------------------------------------------------------------------
@@ -2451,7 +2451,7 @@ struct CD3DX12_PIPELINE_STATE_STREAM_PARSE_HELPER : public ID3DX12PipelineParser
         // Depth disabled if no DSV format specified.
         static_cast<D3D12_DEPTH_STENCIL_DESC1&>(PipelineStream.DepthStencilState).DepthEnable = false;
     }
-    virtual ~CD3DX12_PIPELINE_STATE_STREAM_PARSE_HELPER() {}
+    virtual ‾CD3DX12_PIPELINE_STATE_STREAM_PARSE_HELPER() {}
 
     // ID3DX12PipelineParserCallbacks
     void FlagsCb(D3D12_PIPELINE_STATE_FLAGS Flags) {PipelineStream.Flags = Flags;}

@@ -21,7 +21,7 @@ namespace basecross {
 		float m_Speed;
 	public:
 		SharpFan(const shared_ptr<Stage>& stage, const wstring& texKey, int vertexSize, float drawAngle, float radius);
-		virtual ~SharpFan() {}
+		virtual ‾SharpFan() {}
 
 		void InitializeVertex();
 

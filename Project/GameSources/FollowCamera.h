@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚Ç
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©
 */
 
 #pragma once
@@ -22,15 +22,15 @@ namespace basecross {
 
 	public:
 		CameraCollision(const shared_ptr<Stage>& StagePtr);
-		virtual ~CameraCollision() {}
+		virtual â€¾CameraCollision() {}
 
 		Vec3 GetCompareVertex(Vec2 verx, Vec2 very);
 		virtual void OnUpdate()override;
 		virtual void OnCreate()override;
 
-		//“–‚½ƒŠ”»’è
+		//å½“ãŸãƒªåˆ¤å®š
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
-		//o‚½‚Æ‚«
+		//å‡ºãŸã¨ã
 		virtual void OnCollisionExit(shared_ptr<GameObject>& other);
 
 		Vec3 GetAfterPosition(Vec3 beforePosi, Vec3 tergetPosi);
@@ -61,7 +61,7 @@ namespace basecross {
 
 	public:
 		FollowCamera(const shared_ptr<Stage>& StagePtr);
-		virtual ~FollowCamera() {}
+		virtual â€¾FollowCamera() {}
 		virtual void OnUpdate();
 		virtual void OnCreate();
 		virtual void LogCamera();

@@ -19,8 +19,8 @@ Physics Effects under the filename: physics_effects_license.txt
 
 #include "pfx_common.h"
 
-//J �p�t�H�[�}���X���肷��ꍇ��PFX_USE_PERFCOUNTER���`
-//J �u�b�N�}�[�N���g�p����ꍇ��PFX_USE_BOOKMARK���`
+//J パフォーマンス測定する場合はPFX_USE_PERFCOUNTERを定義
+//J ブックマークを使用する場合はPFX_USE_BOOKMARKを定義
 
 //E Define SCE_PFX_USE_PERFCOUNTER to check performance
 //E Define SCE_PFX_USE_BOOKMARK to use bookmark
@@ -66,7 +66,7 @@ public:
 		resetCount();
 	}
 
-	~PfxPerfCounter()
+	‾PfxPerfCounter()
 	{
 		//printCount();
 	}
@@ -99,15 +99,15 @@ public:
 	void printCount()
 	{
 		if(m_count%2 != 0) countEnd();
-		SCE_PFX_PRINTF("*** PfxPerfCounter results ***\n");
+		SCE_PFX_PRINTF("*** PfxPerfCounter results ***¥n");
 		float total = 0.0f;
 		for(int i=0;i+1<m_count;i+=2) {
 			total += getCountTime(i);
 		}
 		for(int i=0;i+1<m_count;i+=2) {
-			SCE_PFX_PRINTF(" -- %s %fms(%.2f%%)\n",m_str[i>>1],getCountTime(i),getCountTime(i)/total*100.0f);
+			SCE_PFX_PRINTF(" -- %s %fms(%.2f%%)¥n",m_str[i>>1],getCountTime(i),getCountTime(i)/total*100.0f);
 		}
-		SCE_PFX_PRINTF(" -- Total %fms\n",total);
+		SCE_PFX_PRINTF(" -- Total %fms¥n",total);
 	}
 };
 
@@ -117,7 +117,7 @@ class PfxPerfCounter
 {
 public:
 	PfxPerfCounter() {}
-	~PfxPerfCounter() {}
+	‾PfxPerfCounter() {}
 	void countBegin(const char *name) {(void) name;}
 	void countEnd() {}
 	void resetCount() {}

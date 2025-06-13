@@ -558,12 +558,12 @@ inline const Vector3 select( const Vector3 & vec0, const Vector3 & vec1, bool se
 
 inline void print( const Vector3 & vec )
 {
-    printf( "( %f %f %f )\n", vec.getX(), vec.getY(), vec.getZ() );
+    printf( "( %f %f %f )¥n", vec.getX(), vec.getY(), vec.getZ() );
 }
 
 inline void print( const Vector3 & vec, const char * name )
 {
-    printf( "%s: ( %f %f %f )\n", name, vec.getX(), vec.getY(), vec.getZ() );
+    printf( "%s: ( %f %f %f )¥n", name, vec.getX(), vec.getY(), vec.getZ() );
 }
 
 #endif
@@ -1140,12 +1140,12 @@ inline const Vector4 select( const Vector4 & vec0, const Vector4 & vec1, bool se
 
 inline void print( const Vector4 & vec )
 {
-    printf( "( %f %f %f %f )\n", vec.getX(), vec.getY(), vec.getZ(), vec.getW() );
+    printf( "( %f %f %f %f )¥n", vec.getX(), vec.getY(), vec.getZ(), vec.getW() );
 }
 
 inline void print( const Vector4 & vec, const char * name )
 {
-    printf( "%s: ( %f %f %f %f )\n", name, vec.getX(), vec.getY(), vec.getZ(), vec.getW() );
+    printf( "%s: ( %f %f %f %f )¥n", name, vec.getX(), vec.getY(), vec.getZ(), vec.getW() );
 }
 
 #endif
@@ -1529,12 +1529,12 @@ inline const Point3 select( const Point3 & pnt0, const Point3 & pnt1, bool selec
 
 inline void print( const Point3 & pnt )
 {
-    printf( "( %f %f %f )\n", pnt.getX(), pnt.getY(), pnt.getZ() );
+    printf( "( %f %f %f )¥n", pnt.getX(), pnt.getY(), pnt.getZ() );
 }
 
 inline void print( const Point3 & pnt, const char * name )
 {
-    printf( "%s: ( %f %f %f )\n", name, pnt.getX(), pnt.getY(), pnt.getZ() );
+    printf( "%s: ( %f %f %f )¥n", name, pnt.getX(), pnt.getY(), pnt.getZ() );
 }
 
 #endif

@@ -19,7 +19,7 @@ Physics Effects under the filename: physics_effects_license.txt
 
 #include "../../base_level/base/pfx_common.h"
 
-//J ƒXƒŒƒbƒhŠÔ‚Ì“¯Šú‚ğ‚Æ‚é‚½‚ß‚Ì“¯ŠúƒRƒ“ƒ|ƒlƒ“ƒg
+//J ã‚¹ãƒ¬ãƒƒãƒ‰é–“ã®åŒæœŸã‚’ã¨ã‚‹ãŸã‚ã®åŒæœŸã‚³ãƒ³ãƒãƒãƒ³ãƒˆ
 //E Components for threads sychronization
 namespace sce {
 namespace PhysicsEffects {
@@ -27,7 +27,7 @@ namespace PhysicsEffects {
 class PfxBarrier {
 public:
 	PfxBarrier() {}
-	virtual ~PfxBarrier() {}
+	virtual â€¾PfxBarrier() {}
 
 	virtual void sync() = 0;
 	virtual void setMaxCount(int n) = 0;
@@ -37,7 +37,7 @@ public:
 class PfxCriticalSection {
 public:
 	PfxCriticalSection() {}
-	virtual ~PfxCriticalSection() {}
+	virtual â€¾PfxCriticalSection() {}
 
 PfxUInt32 m_commonBuff[32];
 

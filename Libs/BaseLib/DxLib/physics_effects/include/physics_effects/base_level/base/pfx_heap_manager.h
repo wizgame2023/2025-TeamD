@@ -19,7 +19,7 @@ Physics Effects under the filename: physics_effects_license.txt
 
 #include "pfx_common.h"
 
-//J ƒv[ƒ‹‚³‚ê‚½ƒƒ‚ƒŠ‚ğŠÇ—‚·‚éƒXƒ^ƒbƒN‚ÌƒTƒCƒY
+//J ãƒ—ãƒ¼ãƒ«ã•ã‚ŒãŸãƒ¡ãƒ¢ãƒªã‚’ç®¡ç†ã™ã‚‹ã‚¹ã‚¿ãƒƒã‚¯ã®ã‚µã‚¤ã‚º
 //E Size of a stack which used to manage pool memory
 #define SCE_PFX_HEAP_STACK_SIZE 64
 
@@ -31,10 +31,10 @@ Physics Effects under the filename: physics_effects_license.txt
 ///////////////////////////////////////////////////////////////////////////////
 // PfxHeapManager
 
-//J ƒ•â‘«„
-//J ƒƒ‚ƒŠ‚ÍƒXƒ^ƒbƒN‚ÅŠÇ—‚³‚ê‚Ä‚¢‚Ü‚·Bæ“¾‚µ‚½‡‚Æ‹t‚ÉŠJ•ú‚·‚é•K—v‚ª‚ ‚è‚Ü‚·B
-//J ƒƒ‚ƒŠ‚ğˆê‹C‚ÉŠJ•ú‚µ‚½‚¢ê‡‚Íclear()‚ğŒÄ‚Ño‚µ‚Ä‚­‚¾‚³‚¢B
-//J Å¬Š„‚è“–‚ÄƒTƒCƒY‚ÍSCE_PFX_MIN_ALLOC_SIZE‚Å’è‹`‚³‚ê‚Ü‚·B
+//J ï¼œè£œè¶³ï¼
+//J ãƒ¡ãƒ¢ãƒªã¯ã‚¹ã‚¿ãƒƒã‚¯ã§ç®¡ç†ã•ã‚Œã¦ã„ã¾ã™ã€‚å–å¾—ã—ãŸé †ã¨é€†ã«é–‹æ”¾ã™ã‚‹å¿…è¦ãŒã‚ã‚Šã¾ã™ã€‚
+//J ãƒ¡ãƒ¢ãƒªã‚’ä¸€æ°—ã«é–‹æ”¾ã—ãŸã„å ´åˆã¯clear()ã‚’å‘¼ã³å‡ºã—ã¦ãã ã•ã„ã€‚
+//J æœ€å°å‰²ã‚Šå½“ã¦ã‚µã‚¤ã‚ºã¯SCE_PFX_MIN_ALLOC_SIZEã§å®šç¾©ã•ã‚Œã¾ã™ã€‚
 
 //E <Notes>
 //E Memory is managed as a stack, so deallocate() needs to be called in reverse order.
@@ -63,7 +63,7 @@ public:
 		clear();
 	}
 	
-	~PfxHeapManager()
+	â€¾PfxHeapManager()
 	{
 	}
 	
@@ -86,12 +86,12 @@ public:
 	uintptr_t p = (uintptr_t)m_poolStack[m_curStack];
 
 	if(alignment == ALIGN128) {
-		p = (p+127) & ~127;
-		bytes = (bytes+127) & ~127;
+		p = (p+127) & â€¾127;
+		bytes = (bytes+127) & â€¾127;
 	}
 	else {
-		p = (p+15) & ~15;
-		bytes = (bytes+15) & ~15;
+		p = (p+15) & â€¾15;
+		bytes = (bytes+15) & â€¾15;
 	}
 
 	SCE_PFX_ALWAYS_ASSERT_MSG(bytes <= (m_heapBytes-(p-(uintptr_t)m_heap)),"Memory overflow");
@@ -124,7 +124,7 @@ public:
 
 	void printStack()
 	{
-		SCE_PFX_PRINTF("memStack %d/%d\n",m_curStack,SCE_PFX_HEAP_STACK_SIZE);
+		SCE_PFX_PRINTF("memStack %d/%dÂ¥n",m_curStack,SCE_PFX_HEAP_STACK_SIZE);
 	}
 };
 
