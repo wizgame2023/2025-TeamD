@@ -358,6 +358,7 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ResultCamera.cpp">
       <Filter>Camera</Filter>
+
     </ClCompile>
   </ItemGroup>
 </Project>

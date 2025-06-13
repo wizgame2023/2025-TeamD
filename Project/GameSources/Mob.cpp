@@ -111,6 +111,11 @@ namespace basecross {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			draw->UpdateAnimation(elapsed);
 		}
+
+		Line line = Line(GetPosition(), m_Intruder->GetPosition());
+		line.SetMaxLength(10.0f);
+		RayCast::DebugRay(line, Col4(1, 0, 0, 1), static_pointer_cast<Stage>(m_Stage));
+		RayCast::HitTestVec(RayCastHit(), line, m_Stage->GetGameObjectVec(), {L"Bullet",L"Line",L"Player",L"Ground"}, GetThis<Mob>());
 	}
 	void Mob::AsyncUpdate()
 	{

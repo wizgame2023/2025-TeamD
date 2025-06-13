@@ -21,7 +21,7 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		m_KnockBack = false;
 		m_KnockBackTime = 0.5f;
-		//CollisionSphereの設定
+		//CollisionSphere�̐ݒ�
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);

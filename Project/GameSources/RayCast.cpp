@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
+@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
 */
 
 #include "stdafx.h"
@@ -8,16 +8,17 @@
 #include <chrono>
 namespace basecross {
 	vector<RayCast> RayCast::m_RayCasts = {};
+	vector<shared_ptr<LineCube>> RayCast::m_DebugRay = {};
 	int RayCast::count = 0;
 
 	/// <summary>
-	/// ãƒ¬ã‚¤ã‚­ãƒ£ã‚¹ãƒˆå‡¦ç†
+	/// ƒŒƒCƒLƒƒƒXƒgˆ—
 	/// </summary>
-	/// <param name="hit">çµæœ</param>
-	/// <param name="line">ç·šåˆ†</param>
-	/// <param name="object">èª¿ã¹ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ</param>
-	/// <param name="excludeTags">é™¤å¤–ã™ã‚‹ã‚¿ã‚°</param>
-	/// <returns>å½“ãŸã£ãŸã‹</returns>
+	/// <param name="hit">Œ‹‰Ê</param>
+	/// <param name="line">ü•ª</param>
+	/// <param name="object">’²‚×‚éƒIƒuƒWƒFƒNƒg</param>
+	/// <param name="excludeTags">œŠO‚·‚éƒ^ƒO</param>
+	/// <returns>“–‚½‚Á‚½‚©</returns>
 	bool RayCast::HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags) {
 		if (object == nullptr) return false;
 		for (auto& tag : excludeTags) {
@@ -75,21 +76,22 @@ namespace basecross {
 		else if (bcDraw) {
 			bcDraw->GetStaticMeshWorldPositions(tempPositions);
 		}
-		//vector<TRIANGLE> triangles;
-		//triangles.reserve(tempPositions.size() / 3);
+		vector<TRIANGLE> triangles;
+		triangles.reserve(tempPositions.size() / 3);
 		for (size_t i = 0, size = tempPositions.size(); i < size; i += 3) {
 			TRIANGLE triangle;
 			triangle.m_A = tempPositions[i];
 			triangle.m_B = tempPositions[i + 1];
 			triangle.m_C = tempPositions[i + 2];
 			if (!triangle.IsValid()) {
-				//ä¸‰è§’å½¢ãŒç„¡åŠ¹ãªã‚‰æ¬¡ã«ã†ã¤ã‚‹
+				//OŠpŒ`‚ª–³Œø‚È‚çŸ‚É‚¤‚Â‚é
 				continue;
 			}
 			Vec3 center = (triangle.m_A + triangle.m_B + triangle.m_C) / 3.0f;
 
 			float distance = CalcDistancePointToLine(center, line);
-			if (distance * distance > (center - triangle.m_A).lengthSqr()) {
+			float radius = max((center - triangle.m_A).lengthSqr(), max((center - triangle.m_B).lengthSqr(), (center - triangle.m_C).lengthSqr()));
+			if (distance * distance > radius) {
 				continue;
 			}
 			bsm::Vec3 hitPosition;
@@ -127,14 +129,14 @@ namespace basecross {
 		return length(point - closestPoint);
 	}
 	float RayCast::CalcDistancePoint(const Vec3& point, const Line& line) {
-		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);//å§‹ç‚¹
-		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);//çµ‚ç‚¹
+		Vec3 startToPoi = Vec3(point.x - line.m_Start.x, point.y - line.m_Start.y, point.z - line.m_Start.z);//n“_
+		Vec3 startToE = Vec3(line.m_End.x - line.m_Start.x, line.m_End.y - line.m_Start.y, line.m_End.z - line.m_Start.z);//I“_
 		Vec3 endToStr = Vec3(line.m_Start.x - line.m_End.x, line.m_Start.y - line.m_End.y, line.m_Start.z - line.m_End.z);
 		Vec3 endToPoi = Vec3(point.x - line.m_End.x, point.y - line.m_End.y, point.z - line.m_End.z);
 		if (startToPoi.dot(startToE) < 0.0) return startToPoi.length();
 		if (endToPoi.dot(endToStr) < 0.0) return endToPoi.length();
-		//return abs(startToE.x * startToPoi.y * startToPoi.z - startToE.y * startToPoi.x * startToPoi.z) / startToE.length();//å¤–ç©
-		//return abs(startToPoi.x * startToE.x + startToPoi.y *  startToE.y  + startToPoi.z * startToE.z);//å†…ç©
+		//return abs(startToE.x * startToPoi.y * startToPoi.z - startToE.y * startToPoi.x * startToPoi.z) / startToE.length();//ŠOÏ
+		//return abs(startToPoi.x * startToE.x + startToPoi.y *  startToE.y  + startToPoi.z * startToE.z);//“àÏ
 		Vec3 product;
 		product.z = (startToE.x * startToPoi.y - startToE.y * startToPoi.x) / startToE.length();
 		product.y = (startToE.z * startToPoi.x - startToE.x * startToPoi.z) / startToE.length();
@@ -142,6 +144,29 @@ namespace basecross {
 		return abs(product.x + product.y + product.z);
 	}
 
+	void RayCast::InitRay(int size) {
+		for (int i = 0; i < m_DebugRay.size(); i++) {
+			if (i >= size) {
+				m_DebugRay[i]->Destroy();
+			}
+			else {
+				m_DebugRay[i]->SetLine(Line());
+			}
+		}
+		if (m_DebugRay.size() >= size) {
+			m_DebugRay.erase(m_DebugRay.begin() + size, m_DebugRay.end());
+		}
+	}
+	void RayCast::DebugRay(const Line& line,Col4& color, shared_ptr<Stage>& stage) {
+		for (auto& ray : m_DebugRay) {
+			if (!ray->GetDrawActive()) {
+				ray->SetLine(line);
+				return;
+			}
+		}
+		auto ray = stage->AddGameObject<LineCube>(0.02f, color);
+		m_DebugRay.push_back(ray);
+	}
 	void RayCast::CreateRayCast(int size) {
 		m_RayCasts.clear();
 		m_RayCasts.reserve(size);

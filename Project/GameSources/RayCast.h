@@ -23,7 +23,7 @@ namespace basecross {
 		}
 		void SetMaxLength(float length) {
 			if (GetLength() > length) {
-				m_End = m_Start + GetDirection() * length;
+				m_End = m_Start + GetDirection().normalize() * length;
 			}
 		}
 	};
@@ -52,7 +52,7 @@ namespace basecross {
 	};
 	class RayCast {
 		static vector<RayCast> m_RayCasts;
-		
+		static vector<shared_ptr<LineCube>> m_DebugRay;
 		void Init(){}
 		static bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
 	public:
@@ -63,6 +63,8 @@ namespace basecross {
 		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
 		static float CalcDistancePoint(const Vec3& point, const Line& line);
 
+		static void InitRay(int size);
+		static void DebugRay(const Line& line,Col4& color,shared_ptr<Stage>& stage);
 		static void CreateRayCast(int size);
 	};
 

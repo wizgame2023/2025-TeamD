@@ -36,8 +36,8 @@ namespace basecross {
 	public:
 
 		//構築と破棄
-		TutorialStage(const wstring& file) : GameStage(file), m_IsPose(false) {}
 		virtual ~TutorialStage() {}
+		TutorialStage(const wstring& file) :GameStage(file,{}), m_IsPose(false) {}
 		//初期化
 
 		virtual void OnCreate()override;

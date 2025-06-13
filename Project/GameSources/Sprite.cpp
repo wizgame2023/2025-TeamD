@@ -1,6 +1,6 @@
 /*!
 @file Sprite.cpp
-@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
+@brief ƒXƒvƒ‰ƒCƒg
 */
 
 #include "stdafx.h"
@@ -55,7 +55,7 @@ namespace basecross {
 		if (m_IsAnimation) {
 			Animation();
 		}
-		//æƒ…å ±æ›´æ–°
+		//î•ñXV
 		m_Pos = m_Transform->GetPosition();
 	}
 	void Sprite::Animation() {
@@ -95,7 +95,7 @@ namespace basecross {
 		vector<vector<Vec2>> uv;
 		for (int y = 0; y < cut.y; y++) {
 			for (int x = 0; x < cut.x; x++) {
-				//æœ€å¤§å€¤ã«é”ã—ãŸã‚‰ã‚‚ã†ä½œã‚‰ãªã„
+				//Å‘å’l‚É’B‚µ‚½‚ç‚à‚¤ì‚ç‚È‚¢
 				if (cut.x * y + x > maxIndex) return uv;
 				uv.push_back({
 					{(1.0f / cut.x) * x,(1.0f / cut.y) * y},
@@ -459,7 +459,7 @@ namespace basecross {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;//ç§»å‹•é€Ÿåº¦
+				movementAmount *= 30.0f;//ˆÚ“®‘¬“x
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
 				}
@@ -514,6 +514,9 @@ namespace basecross {
 	}
 	void ButtonManager::SetSound(const wstring& sound) {
 		m_ClickSound = sound;
+	}
+	void ButtonManager::SetSelectSound(const wstring& sound) {
+		m_SelectSound = sound;
 	}
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
 		if (m_GroupMovementAmount.find(group) != end(m_GroupMovementAmount)) {

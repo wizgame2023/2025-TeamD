@@ -219,6 +219,7 @@ namespace basecross {
 			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -1.0f, -dire/ 1.5f);
 			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
+			m_cameraState = CameraState::OPENINGCAMERA;
 			// 補間開始時のカメラ位置
 			// 補間終了時のカメラ位置（最終位置）
 			// 補間開始時にカメラが注視するターゲット位置
@@ -245,6 +246,9 @@ namespace basecross {
 	}
 
 	void GameStage::GameClear() {
+
+		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
+
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
@@ -278,6 +282,7 @@ namespace basecross {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
+			
 			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
@@ -410,6 +415,7 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
+		RayCast::InitRay(10);
 		auto& app = App::GetApp();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
