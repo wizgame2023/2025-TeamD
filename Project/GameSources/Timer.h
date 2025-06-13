@@ -34,7 +34,7 @@ namespace basecross {
 		float GetMaxTime() {
 			return m_MaxTime;
 		}
-		bool UpdateTimer();
+		bool UpdateTimer(float timeRate = 1.0f);
 	};
 }
 

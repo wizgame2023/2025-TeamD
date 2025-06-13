@@ -42,6 +42,9 @@ namespace basecross{
 		void SetZoneRate(float rate) {
 			m_ZoneRate = rate;
 		}
+		float GetZonerate() {
+			return m_ZoneRate;
+		}
 		void SetGameSpeed(float speed) {
 			m_GameSpeed = speed;
 		}
@@ -50,7 +53,7 @@ namespace basecross{
 			return m_GameSpeed;
 		}
 		float GetTimeRate() {
-			return m_TimeRate;
+			return m_TimeRate * m_GameSpeed;
 		}
 
 		void SetDifficulty(Difficulty difficulty) {
