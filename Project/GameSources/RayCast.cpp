@@ -165,6 +165,7 @@ namespace basecross {
 			}
 		}
 		auto ray = stage->AddGameObject<LineCube>(0.02f, color);
+		ray->SetLine(line);
 		m_DebugRay.push_back(ray);
 	}
 	void RayCast::CreateRayCast(int size) {

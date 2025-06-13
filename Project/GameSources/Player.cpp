@@ -82,7 +82,7 @@ namespace basecross {
 	}
 
 	void Player::MovePlayer(const float Speed) {
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
@@ -105,7 +105,7 @@ namespace basecross {
 	}
 
 	void Player::BoostMove(const float Speed, const Vec3 Angle) {
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		m_TotalTime += elapsedTime;
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
@@ -119,7 +119,7 @@ namespace basecross {
 	void Player::ZoneActivation()
 	{
 
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_EnergyCharge >= 1.0)
 		{
@@ -445,7 +445,7 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 
 		UpdateAnim();
 		float spped = 0.0f;
@@ -567,6 +567,10 @@ namespace basecross {
 				SetAnim(L"Idle");
 			}
 		}
+
+		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
+		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
 	}
 
 	void Player::OnDraw()
@@ -686,7 +690,7 @@ namespace basecross {
 
 	void HitSphere::OnUpdate()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetGameSpeed();
 		Vec3 hitPosition = GetComponent<Transform>()->GetPosition();
 		if (m_FlyingTime > m_TotalTime)
 		{
@@ -699,6 +703,9 @@ namespace basecross {
 		m_Effect->SetLocation(m_Handle, hitPosition);
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
+
+		m_Effect->SetEffectSpeed(m_HitHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed());
 	}
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)
