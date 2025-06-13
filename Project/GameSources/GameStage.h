@@ -71,8 +71,8 @@ namespace basecross {
 		shared_ptr<SingleView> m_MyCameraView;      
 	public:
 
-		GameStage(const wstring& file) : Stage(), m_MapFileName(file), m_IsPose(false), m_IsGameStater(false){}
-		virtual ~GameStage() {
+		GameStage(const wstring& file, StageData data) : Stage(), m_MapFileName(file),m_StageData(data), m_IsPose(false), m_IsGameStater(false){}
+		virtual ‾GameStage() {
 		}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
