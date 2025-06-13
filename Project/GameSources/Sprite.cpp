@@ -1,6 +1,6 @@
 /*!
 @file Sprite.cpp
-@brief ƒXƒvƒ‰ƒCƒg
+@brief ã‚¹ãƒ—ãƒ©ã‚¤ãƒˆ
 */
 
 #include "stdafx.h"
@@ -55,7 +55,7 @@ namespace basecross {
 		if (m_IsAnimation) {
 			Animation();
 		}
-		//î•ñXV
+		//æƒ…å ±æ›´æ–°
 		m_Pos = m_Transform->GetPosition();
 	}
 	void Sprite::Animation() {
@@ -95,7 +95,7 @@ namespace basecross {
 		vector<vector<Vec2>> uv;
 		for (int y = 0; y < cut.y; y++) {
 			for (int x = 0; x < cut.x; x++) {
-				//Å‘å’l‚É’B‚µ‚½‚ç‚à‚¤ì‚ç‚È‚¢
+				//æœ€å¤§å€¤ã«é”ã—ãŸã‚‰ã‚‚ã†ä½œã‚‰ãªã„
 				if (cut.x * y + x > maxIndex) return uv;
 				uv.push_back({
 					{(1.0f / cut.x) * x,(1.0f / cut.y) * y},
@@ -459,7 +459,7 @@ namespace basecross {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;//ˆÚ“®‘¬“x
+				movementAmount *= 30.0f;//ç§»å‹•é€Ÿåº¦
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
 				}
