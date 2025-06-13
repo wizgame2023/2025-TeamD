@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.cpp
-@brief ƒ{ƒX“G‚ÌÀ‘•
+@brief ãƒœã‚¹æ•µã®å®Ÿè£…
 */
 
 #include "stdafx.h"
@@ -17,7 +17,7 @@ namespace basecross {
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
 	}
-	BossEnemy::~BossEnemy()
+	BossEnemy::â€¾BossEnemy()
 	{
 	}
 	void BossEnemy::AddAnimation() {
@@ -74,7 +74,7 @@ namespace basecross {
 			SetIntruder(player);
 		}
 		m_Stage->SetSharedGameObject(L"BOSS", GetThis<BossEnemy>());
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"BOSS");
 		Mat4x4 meshMat;
@@ -85,9 +85,9 @@ namespace basecross {
 			Vec3(0.0f, -1.0f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"BOSS");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
 
@@ -226,7 +226,7 @@ namespace basecross {
 	{
 	}
 
-	BossEnemyLeg::~BossEnemyLeg()
+	BossEnemyLeg::â€¾BossEnemyLeg()
 	{
 	}
 
@@ -240,13 +240,13 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(true);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 	}
