@@ -152,6 +152,7 @@ namespace basecross {
 		Vec3 position = enemy->GetPosition();
 		float rotate = atan2f(forward.x, forward.z);
 
+		enemy->SetAnim(L"Set", 0.0f);
 
 		Vec3 objDirection = Vec3();
 		float objRenge = 0;
@@ -211,7 +212,6 @@ namespace basecross {
 
 		if(m_BulletRemain > 0)
 		{
-			enemy->SetAnim(L"Set", 0.0f);
 			if (enemy->m_BalletInterval < 0.4f && enemy->m_ShotRandomInterval < 0.4f && m_BulletEffect != true)
 			{
 

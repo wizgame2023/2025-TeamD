@@ -316,10 +316,10 @@ namespace basecross {
 			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 			Vec3 CameraPos = camera->GetEye();
 
-			Vec3 CameraEndPos = Playpos + (-Playrot) + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 CameraEndPos = Playpos + (Playrot / 2) + Vec3(0.0f, 1.0f, 0.0f);
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot), -CameraPos, Playpos, 3.0f,0.0f, false);
+			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot / 2), -CameraPos, Playpos, 3.0f,0.0f, false);
 			productionCamera->SetMoveType(0);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
@@ -327,6 +327,7 @@ namespace basecross {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
+			m_cameraState = CameraState::OPENINGCAMERA;
 		}
 	}
 
@@ -545,16 +546,16 @@ namespace basecross {
 			}
 		}
 		else if (msg == L"HitStop") {
-			GameManager::Instance()->SetGameSpeed(0.1f);
+			GameManager::Instance()->SetGameSpeed(0.3f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
-			auto camera = GetView()->GetTargetCamera();;
-			auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
-			followcamera->SetShaking(true);
-			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
+			//auto camera = GetView()->GetTargetCamera();;
+			//auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
+			//followcamera->SetShaking(true);
+			PostEvent(0.25f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 	}
 }

@@ -167,7 +167,7 @@ namespace basecross {
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
-		Vec2 dire = CameraUp(0.5f);
+		Vec2 dire = CameraUp(0.25f);
 		m_Eye = m_Position + m_Direction * dire.x;
 		m_Eye.y = m_Position.y + dire.y;
 

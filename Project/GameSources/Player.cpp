@@ -140,7 +140,6 @@ namespace basecross {
 					GameManager::Instance()->StartZone(5.0f);
 				}
 			}
-			m_EnergyCharge = 1.0f;
 		}
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
@@ -301,7 +300,6 @@ namespace basecross {
 		else
 		{
 			m_DamageIntervalStart = true;
-			m_EnergyCharge += 0.2;
 			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 			return damage;
 		}
@@ -475,7 +473,10 @@ namespace basecross {
 			}
 
 			Vec3 rot = SearchRange();
-
+			if (m_EnergyCharge >= 1.0f)
+			{
+				m_EnergyCharge = 1.0f;
+			}
 			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
 				m_BoostTime -= elapsedTime;
