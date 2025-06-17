@@ -25,6 +25,7 @@ namespace basecross {
 		float m_EnergyCharge;
 		float m_ZoneTime;
 		float m_ParryTime;
+		float m_ParryDamageIntervalTime;
 		float m_TotalTime;
 		float m_BoostTime;
 		float m_BoostInterval;
@@ -34,6 +35,7 @@ namespace basecross {
 		float m_BlinkingInterval;
 		float m_Damage;
 		bool m_ParryJudge;
+		bool m_ParryDamageInterval;
 		bool m_DamageIntervalStart;
 		bool m_IsGoal;
 		float m_ParryDamage;
@@ -73,6 +75,7 @@ namespace basecross {
 		virtual bool Damage(bool parry,  float damage,const shared_ptr<GameObject> sorce = nullptr);
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
 
+		void IntervalManagement();
 		Vec2 GetInputState() const;
 		Vec3 GetMoveVector(float& rot);
 		void MovePlayer(const float Speed);
