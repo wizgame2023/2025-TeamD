@@ -80,25 +80,10 @@ namespace basecross {
 		virtual ‾SoundTestMenu() {}
 
 		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
 
-		void TuningSE() {
-			WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-			if (press & XINPUT_GAMEPAD_DPAD_RIGHT) {
-				SoundManager::Instance().SEVolumeUp(0.1f);
-			}
-			else if (press & XINPUT_GAMEPAD_DPAD_LEFT) {
-				SoundManager::Instance().SEVolumeDown(0.1f);
-			}
-		}
-		void TuningBGM() {
-			WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
-			if (press & XINPUT_GAMEPAD_DPAD_RIGHT) {
-				SoundManager::Instance().BGMVolumeUp(0.1f);
-			}
-			else if (press & XINPUT_GAMEPAD_DPAD_LEFT) {
-				SoundManager::Instance().BGMVolumeDown(0.1f);
-			}
-		}
+		void TuningSE();
+		void TuningBGM();
 
 		float GetPositionX(float volume) {
 			return m_LeftX + abs(m_LeftX - m_RightX) * volume;

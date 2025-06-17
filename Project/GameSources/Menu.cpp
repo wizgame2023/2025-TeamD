@@ -114,7 +114,52 @@ namespace basecross {
 		AddAcceptButton(XINPUT_GAMEPAD_A);
 		Close();
 	}
+	void SoundTestMenu::TuningSE() {
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+		if (cntlVec.bConnected) {
+			if (cntlVec.fThumbLX > 0.5f) {
+				SoundManager::Instance().SEVolumeUp(0.01f);
+			}
+			else if (cntlVec.fThumbLX < -0.5f) {
+				SoundManager::Instance().SEVolumeDown(0.01f);
+			}
+		}
+		float volume = SoundManager::Instance().GetSEVolume();
+		auto button = GetSprite<Sprite>(6);
+		Vec3 pos = button->GetPos();
+		pos.x = GetPositionX(volume);
+		button->SetPos(pos);
 
+	}
+	void SoundTestMenu::TuningBGM() {
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
+		if (cntlVec.bConnected) {
+			if (cntlVec.fThumbLX > 0.5f) {
+				SoundManager::Instance().BGMVolumeUp(0.01f);
+			}
+			else if (cntlVec.fThumbLX < -0.5f) {
+				SoundManager::Instance().BGMVolumeDown(0.01f);
+			}
+		}
+		float volume = SoundManager::Instance().GetBGMVolume();
+		auto button = GetSprite<Sprite>(9);
+		Vec3 pos = button->GetPos();
+		pos.x = GetPositionX(volume);
+		button->SetPos(pos);
+
+	}
+
+	void SoundTestMenu::OnUpdate() {
+		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
+			TuningSE();
+		}
+		else {
+			TuningBGM();
+		}
+
+	}
 	void SoundTestMenu::OnCreate() {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(600, 600), true);
@@ -191,10 +236,7 @@ namespace basecross {
 				button->SetPos(pos);
 			});
 
-		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
-		//AddSelectButton(InputData(StickMode::LX, 1, 0.5f));
-		AddAcceptButton(XINPUT_GAMEPAD_DPAD_LEFT);
-		AddAcceptButton(XINPUT_GAMEPAD_DPAD_RIGHT);
+		AddSelectButton(InputData(StickMode::LY, 1, 0.2f));
 
 
 		Close();
@@ -202,7 +244,7 @@ namespace basecross {
 
 	void ResultMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 320, 0), Vec2(600, 650));
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-650.0f, 350, 0), Vec2(700, 750));
 		AddSprite(sprite);
 		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
 		AddSprite(number);
