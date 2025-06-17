@@ -199,6 +199,7 @@ namespace basecross {
 		if (!m_DeadEffect)
 		{
 			effect->PlayEffect(m_EffectBombHandle, L"Bomb", GetPosition(), 0.0f);
+			effect->SetScale(m_EffectBombHandle, Vec3(0.5f));
 			m_DeadEffect = true;
 		}
 		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
