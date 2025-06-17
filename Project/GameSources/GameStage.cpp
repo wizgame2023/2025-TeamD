@@ -414,7 +414,7 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 
 		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
+			if (device.wPressedButtons & XINPUT_GAMEPAD_START && m_cameraState == CameraState::FOLLOWCAMERA) {
 				m_SoundTestMenu->Close();
 				m_PauseMenu->Open();
 				m_Effect->SetEffectPause(true);
@@ -559,9 +559,6 @@ namespace basecross {
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
-			//auto camera = GetView()->GetTargetCamera();;
-			//auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
-			//followcamera->SetShaking(true);
 			PostEvent(0.25f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
 	}
