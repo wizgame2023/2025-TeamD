@@ -31,6 +31,7 @@ namespace basecross {
 		float m_Attacktime;
 		float m_AttackInterval;
 		float m_DamageInterval;
+		float m_BlinkingInterval;
 		float m_Damage;
 		bool m_ParryJudge;
 		bool m_DamageIntervalStart;
@@ -97,7 +98,7 @@ namespace basecross {
 		float Parry(float damage, const float& ParrySecond);
 		void AddAnimation();
 		void PlayAnimation();
-
+		void Blinking();
 		float GetLength()
 		{
 			return m_SearchDistance;
