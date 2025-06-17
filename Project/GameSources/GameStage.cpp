@@ -538,7 +538,14 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			GameManager::Instance()->SetGameSpeed(1.0f);
+		}
+		else if (msg == L"HitStopVibration") {
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 0;
+			vibration.wRightMotorSpeed = 0;
+			XInputSetState(0, &vibration);
 
+			GameManager::Instance()->SetGameSpeed(1.0f);
 			if (m_cameraState == CameraState::FOLLOWCAMERA)
 			{
 				auto camera = GetView()->GetTargetCamera();;
@@ -555,7 +562,7 @@ namespace basecross {
 			//auto camera = GetView()->GetTargetCamera();;
 			//auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
 			//followcamera->SetShaking(true);
-			PostEvent(0.25f, nullptr, GetThis<Stage>(), L"StopVibration");
+			PostEvent(0.25f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
 	}
 }
