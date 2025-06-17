@@ -31,8 +31,8 @@ namespace basecross {
 		m_zoneAnim(1.0f),
 		m_HitScale(Vec3(1)),
 		m_SearchDistance(2.0),
-		m_Length(4.0f)
-
+		m_Length(4.0f),
+		m_BlinkingInterval(0.1f)
 	{
 	}
 	Player::‾Player()
@@ -82,7 +82,7 @@ namespace basecross {
 	}
 
 	void Player::MovePlayer(const float Speed) {
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		float rot;
 		auto angle = GetMoveVector(rot);
 		if (angle.length() > 0.0f) {
@@ -105,7 +105,7 @@ namespace basecross {
 	}
 
 	void Player::BoostMove(const float Speed, const Vec3 Angle) {
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
 		m_TotalTime += elapsedTime;
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
@@ -119,7 +119,7 @@ namespace basecross {
 	void Player::ZoneActivation()
 	{
 
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_EnergyCharge >= 1.0)
 		{
@@ -140,7 +140,6 @@ namespace basecross {
 					GameManager::Instance()->StartZone(5.0f);
 				}
 			}
-			m_EnergyCharge = 1.0f;
 		}
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0)
@@ -280,7 +279,7 @@ namespace basecross {
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 			return 0;
 		}
-		else if (ParrySecond <= 15 && ParrySecond > 5)
+		else if (ParrySecond <= 10 && ParrySecond > 0)
 		{
 			m_EnergyCharge += 0.1;
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
@@ -301,7 +300,6 @@ namespace basecross {
 		else
 		{
 			m_DamageIntervalStart = true;
-			m_EnergyCharge += 0.2;
 			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 			return damage;
 		}
@@ -327,6 +325,28 @@ namespace basecross {
 	{
 		if ((m_PlayerStateNum & PlayerState::ZONE) == 1)
 		{
+		}
+	}
+
+	void Player::Blinking()
+	{
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto state = ptrDraw->GetBlendState();
+		float elapsedTime = GetElapsed();
+		if (m_BlinkingInterval <= 0.0f)
+		{
+			if (state == BlendState::AlphaToCoverage)
+			{
+				ptrDraw->SetBlendState(BlendState::Additive);
+			}
+			else
+			{
+				ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
+			}
+			m_BlinkingInterval = 0.1f;
+		}
+		else {
+			m_BlinkingInterval -= elapsedTime;
 		}
 	}
 
@@ -372,7 +392,6 @@ namespace basecross {
 	void Player::SetParryPosition(const Vec3& position)
 	{
 		m_EffectVec = position;
-		m_ParryJudge = true;
 	}
 	void Player::SetDamage(const float& damage)
 	{
@@ -445,7 +464,8 @@ namespace basecross {
 	{
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
-		float elapsedTime = App::GetApp()->GetElapsedTime();
+		float elapsedTime = GetElapsed();
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 
 		UpdateAnim();
 		float spped = 0.0f;
@@ -466,16 +486,22 @@ namespace basecross {
 			}
 			if (m_DamageIntervalStart)
 			{
+				Blinking();
 				m_DamageInterval -= elapsedTime;
 				if (m_DamageInterval <= 0.0f)
 				{
 					m_DamageIntervalStart = false;
 					m_DamageInterval = 0.5f;
+					m_BlinkingInterval = 0.1f;
+					ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
 				}
 			}
 
 			Vec3 rot = SearchRange();
-
+			if (m_EnergyCharge >= 1.0f)
+			{
+				m_EnergyCharge = 1.0f;
+			}
 			if ((m_PlayerStateNum & PlayerState::DASH) != 0)
 			{
 				m_BoostTime -= elapsedTime;
@@ -567,6 +593,10 @@ namespace basecross {
 				SetAnim(L"Idle");
 			}
 		}
+
+		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
+		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
 	}
 
 	void Player::OnDraw()
@@ -594,6 +624,10 @@ namespace basecross {
 					if (sorce && sorce->FindTag(L"Attack")) {
 						auto attack = static_pointer_cast<Attack>(sorce);
 						attack->ReflectParry(GetPosition());
+
+						auto camera = GetStage()->GetView()->GetTargetCamera();;
+						auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
+						followcamera->SetShaking(true);
 					}
 				}
 				if (parryDamage == 0 && rot != Vec3())
@@ -608,6 +642,7 @@ namespace basecross {
 			}
 			else {
 				SetAnim(L"Nock");
+				m_DamageIntervalStart = true;
 				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				Character::Damage(damage, true);
 				ScoreManager::Instance()->AddDamage(damage);
@@ -619,7 +654,7 @@ namespace basecross {
 			}
 		}
 		m_HP = max(m_HP, 0);
-
+		return false;
 	}
 
 	void Player::OnCollisionEnter(shared_ptr<GameObject>& other)
@@ -679,7 +714,7 @@ namespace basecross {
 			m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
 			m_Effect->SetScale(m_Handle, m_HitScale + 0.5f);
 
-			m_FlyingTime = 0.5f;
+			m_FlyingTime = 1.0f;
 		}
 		m_Speed = m_Length / m_FlyingTime;
 	}
@@ -699,6 +734,9 @@ namespace basecross {
 		m_Effect->SetLocation(m_Handle, hitPosition);
 		GetComponent<Transform>()->SetPosition(hitPosition);
 		m_TotalTime += elapsedTime;
+
+		m_Effect->SetEffectSpeed(m_HitHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed());
 	}
 
 	void HitSphere::OnCollisionEnter(shared_ptr<GameObject>& other)

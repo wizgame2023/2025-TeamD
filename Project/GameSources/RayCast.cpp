@@ -76,8 +76,6 @@ namespace basecross {
 		else if (bcDraw) {
 			bcDraw->GetStaticMeshWorldPositions(tempPositions);
 		}
-		vector<TRIANGLE> triangles;
-		triangles.reserve(tempPositions.size() / 3);
 		for (size_t i = 0, size = tempPositions.size(); i < size; i += 3) {
 			TRIANGLE triangle;
 			triangle.m_A = tempPositions[i];
