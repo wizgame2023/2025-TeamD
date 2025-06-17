@@ -455,7 +455,9 @@ namespace basecross {
 		{
 			if (m_IsGameStater == 1)
 			{
-				m_ResultMenu->Open();
+				if (!m_ResultMenu->IsOpen()) {
+					m_ResultMenu->Open();
+				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Clear");
 				player->UpdateAnim();
@@ -463,7 +465,9 @@ namespace basecross {
 			}
 			else if (m_IsGameStater == 2)
 			{
-				m_GameOverMenu->Open();
+				if (!m_GameOverMenu->IsOpen()) {
+					m_GameOverMenu->Open();
+				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");
 				player->UpdateAnim();
