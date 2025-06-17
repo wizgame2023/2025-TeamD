@@ -47,6 +47,9 @@ namespace basecross {
 		Vec3 m_Direction;
 		Vec3 m_Eye;
 		Vec3 m_Position;
+		float m_Magnification;
+		float m_Up;
+
 		float m_Angle;
 		float m_RotateSpeed;
 		bool m_HitCollision;
@@ -54,6 +57,7 @@ namespace basecross {
 		float m_Duration;         // シェイク継続時間（残り）
 		float m_InitialDuration;  // シェイク開始時の時間（for 減衰計算）
 		float m_Magnitude;        // 最大振幅（単位：画素やワールド単位）
+		float m_CurrntTime;
 		shared_ptr<Stage>m_Stage;
 		
 		int m_Width;
@@ -71,9 +75,13 @@ namespace basecross {
 		virtual void LogCamera();
 		
 		void SetCameraPause(const bool& StopCamera);
+		Vec2 CameraUp(float totaltime);
 
 		void SetTarget(const shared_ptr<Transform> playerTransform) {
 			m_PlayerTransform = playerTransform;
+		}
+		void SetShaking(const bool& sh) {
+			m_IsShaking = sh;
 		}
 
 		float GetAngle() const
