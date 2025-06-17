@@ -202,7 +202,7 @@ namespace basecross {
 
 	void ResultMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 320, 0), Vec2(600, 650));
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-650.0f, 350, 0), Vec2(700, 750));
 		AddSprite(sprite);
 		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
 		AddSprite(number);

@@ -39,8 +39,8 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_NORMAL", uiPath + L"SelectNormal.png");
 		app->RegisterTexture(L"SELECT_HARD", uiPath + L"SelectHard.png");
 
-		app->RegisterTexture(L"SELECT_BACK_SELCT", uiPath + L"SelectBackSelected.png");
-		app->RegisterTexture(L"SELECT_BACK", uiPath + L"SelectBack.png");
+		app->RegisterTexture(L"SELECT_BACK_SELCT", uiPath + L"Result_Back_Sel.png");
+		app->RegisterTexture(L"SELECT_BACK", uiPath + L"Result_Back.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 
 		app->RegisterTexture(L"CHECKMARK", uiPath + L"Check_ClearStage.png");
