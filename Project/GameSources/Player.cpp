@@ -32,7 +32,9 @@ namespace basecross {
 		m_HitScale(Vec3(1)),
 		m_SearchDistance(2.0),
 		m_Length(4.0f),
-		m_BlinkingInterval(0.1f)
+		m_BlinkingInterval(0.1f),
+		m_ParryDamageInterval(false),
+		m_ParryDamageIntervalTime(0.5f)
 	{
 	}
 	Player::‾Player()
@@ -118,7 +120,6 @@ namespace basecross {
 
 	void Player::ZoneActivation()
 	{
-
 		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (m_EnergyCharge >= 1.0)
@@ -270,13 +271,13 @@ namespace basecross {
 
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
-
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
+			m_ParryDamageInterval = true;
 			return 0;
 		}
 		else if (ParrySecond <= 10 && ParrySecond > 0)
@@ -293,17 +294,15 @@ namespace basecross {
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
-
+			m_ParryDamageInterval = true;
 			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
 			return 0;
 		}
-		else
-		{
+		else {
 			m_DamageIntervalStart = true;
 			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 			return damage;
 		}
-
 	}
 
 	void Player::AddAnimation()
@@ -347,6 +346,43 @@ namespace basecross {
 		}
 		else {
 			m_BlinkingInterval -= elapsedTime;
+		}
+	}
+
+	void Player::IntervalManagement()
+	{
+		float elapsedTime = GetElapsed();
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		if (m_ParryJudge)
+		{
+			m_ParryTime--;
+			if (m_ParryTime < 0.0f)
+			{
+				m_ParryJudge = false;
+				m_ParryTime = 15.0f;
+			}
+		}
+
+		if (m_ParryDamageInterval)
+		{
+			m_ParryDamageIntervalTime -= elapsedTime;
+			if (m_ParryDamageIntervalTime < 0.0f)
+			{
+				m_ParryDamageInterval = false;
+				m_ParryDamageIntervalTime = 0.5f;
+			}
+		}
+
+		if (m_DamageIntervalStart)
+		{
+			m_DamageInterval -= elapsedTime;
+			Blinking();
+			if (m_DamageInterval <= 0.0f)
+			{
+				m_DamageIntervalStart = false;
+				m_DamageInterval = 0.5f;
+				ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
+			}
 		}
 	}
 
@@ -468,34 +504,13 @@ namespace basecross {
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 
 		UpdateAnim();
-		float spped = 0.0f;
 		if (m_IsGoal == false)
 		{
 			ZoneActivation();
 			//Debug();
 			Vec3 forward = GetForward();
 
-			if (m_ParryJudge)
-			{
-				m_ParryTime--;
-				if (m_ParryTime < 0.0f)
-				{
-					m_ParryJudge = false;
-					m_ParryTime = 15.0f;
-				}
-			}
-			if (m_DamageIntervalStart)
-			{
-				Blinking();
-				m_DamageInterval -= elapsedTime;
-				if (m_DamageInterval <= 0.0f)
-				{
-					m_DamageIntervalStart = false;
-					m_DamageInterval = 0.5f;
-					m_BlinkingInterval = 0.1f;
-					ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
-				}
-			}
+			IntervalManagement();
 
 			Vec3 rot = SearchRange();
 			if (m_EnergyCharge >= 1.0f)
@@ -585,6 +600,7 @@ namespace basecross {
 		}
 		else
 		{
+			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			if (m_HP <= 0)
 			{
 				SetAnim(L"Died");
@@ -611,7 +627,8 @@ namespace basecross {
 	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> sorce)
 	{
 		bool isPinch = false, isBeforePinch = true;
-		if (m_DamageIntervalStart == false)
+		m_HP = max(m_HP, 0);
+		if (m_DamageIntervalStart == false && !m_ParryDamageInterval)
 		{
 			if (m_HP >= m_MaxHP / 3.0f) {
 				isBeforePinch = false;
@@ -633,11 +650,13 @@ namespace basecross {
 				if (parryDamage == 0 && rot != Vec3())
 				{
 					parry = m_ParryJudge;
+					m_ParryTime = 0.0f;
+					m_ParryJudge = false;
 					return true;
 				}
 				Character::Damage(parryDamage, true);
 				ScoreManager::Instance()->AddDamage(parryDamage);
-				m_ParryTime = false;
+				m_ParryTime = 0.0f;
 				return false;
 			}
 			else {
@@ -653,7 +672,6 @@ namespace basecross {
 				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
 			}
 		}
-		m_HP = max(m_HP, 0);
 		return false;
 	}
 
