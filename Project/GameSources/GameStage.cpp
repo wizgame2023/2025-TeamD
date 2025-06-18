@@ -186,8 +186,7 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::ToMainCamera()
-	{
+	void GameStage::ToMainCamera(){
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 
 		if (player != nullptr) {
@@ -205,8 +204,7 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::ToOpeningCamera()
-	{
+	void GameStage::ToOpeningCamera(){
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			player->SetIsGaol(true);
@@ -228,7 +226,7 @@ namespace basecross {
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
 			ptrOpeningCameraman->SetReverse(false);
 			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, 0.0f,true);
-			ptrOpeningCameraman->SetMoveType(1);
+			ptrOpeningCameraman->SetMoveType(ProductionCameraman::MoveType::Orbit);
 			SetSharedGameObject(L"ProductionCamera", ptrOpeningCameraman);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
@@ -266,11 +264,18 @@ namespace basecross {
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetReverse(false);
-			productionCamera->SetMoveType(0);
-			productionCamera->StartOpeningAnimation(cameraStartPos,	animEndPos1+ side,  cameraStartAt,	animAtPos - side,  
-													animEndPos2, animAtPos, 3.0f,0.0f,false);
-
-
+			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+			productionCamera->StartOpeningAnimation(
+				cameraStartPos,	
+				animEndPos1+ side, 
+				cameraStartAt,	
+				animAtPos - side,  
+				animEndPos2, 
+				animAtPos,
+				3.0f,
+				0.0f,
+				false
+			);
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
 				SetView(m_ProductionCameraView);
@@ -306,8 +311,7 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::GameOverCamera()
-	{
+	void GameStage::GameOverCamera(){
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr) {
 			player->SetIsGaol(true);
@@ -319,8 +323,18 @@ namespace basecross {
 			Vec3 CameraEndPos = Playpos + (Playrot / 2) + Vec3(0.0f, 1.0f, 0.0f);
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
-			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos, Playpos, Playpos + (-Playrot / 2), -CameraPos, Playpos, 3.0f,0.0f, false);
-			productionCamera->SetMoveType(0);
+			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+			productionCamera->StartOpeningAnimation(
+				CameraPos, 
+				CameraEndPos, 
+				Playpos, 
+				Playpos + (-Playrot / 2),
+				-CameraPos,
+				Playpos,
+				3.0f,
+				0.0f,
+				false
+			);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
@@ -331,8 +345,7 @@ namespace basecross {
 		}
 	}
 
-	void GameStage::BossAppaerCamera()
-	{
+	void GameStage::BossAppaerCamera(){
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
@@ -347,8 +360,19 @@ namespace basecross {
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetReverse(true);
-			productionCamera->StartOpeningAnimation(CameraPos, CameraEndPos - bossRot * 7, playerPos, CameraEndPos, -CameraPos, bossPos, 4.5f, 0.0f, true);
-			productionCamera->SetMoveType(0);
+			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+			productionCamera->StartOpeningAnimation(
+				CameraPos,
+				CameraEndPos - bossRot * 7,
+				playerPos,
+				CameraEndPos,
+				-CameraPos,
+				bossPos,
+				4.5f,
+				0.0f,
+				true
+			);
+
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
@@ -453,29 +477,25 @@ namespace basecross {
 
 		if (productionCamera->GetEndState())
 		{
-			if (m_IsGameStater == 1)
-			{
+			if (m_IsGameStater == 1){
 				m_ResultMenu->Open();
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Clear");
 				player->UpdateAnim();
 
 			}
-			else if (m_IsGameStater == 2)
-			{
+			else if (m_IsGameStater == 2){
 				m_GameOverMenu->Open();
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");
 				player->UpdateAnim();
 
 			}
-			else 
-			{
+			else {
 				spawner->Start();
 			}
 		}
-		else
-		{
+		else{
 			if (spawner) {
 				spawner->Stop();
 			}
@@ -484,8 +504,7 @@ namespace basecross {
 	}
 
 
-	void GameStage::OnDraw()
-	{
+	void GameStage::OnDraw(){
 		auto& camera = GetView()->GetTargetCamera();
 	}
 

@@ -103,14 +103,9 @@ namespace basecross {
 
 		/// @brief 移動タイプを指定された値に設定します。
 		/// @param type 設定する移動タイプを表す整数値。0は直線移動、1は円軌道移動を指定します。
-		void SetMoveType(const int type)
+		void SetMoveType(const MoveType type)
 		{
-			if (type == 0) {
-				m_moveType = MoveType::Linear; // 直線移動
-			}
-			else if (type == 1) {
-				m_moveType = MoveType::Orbit; // 円軌道移動
-			}
+			m_moveType = type;
 		}
 
 		bool GetEndState() const {
