@@ -9,7 +9,8 @@
 namespace basecross {
 	class NumberSprite;
 	class Sprite;
-	class Menu; 
+	class Menu;
+	class SoundTestMenu;
 	class NormalIcon;
 	class UltIcon;
 	class FollowCamera;
@@ -34,7 +35,7 @@ namespace basecross {
 		float m_TotalTime;
 
 		shared_ptr<Menu> m_PauseMenu;
-		shared_ptr<Menu> m_SoundTestMenu;
+		shared_ptr<SoundTestMenu> m_SoundTestMenu;
 		shared_ptr<Menu> m_ResultMenu;
 		shared_ptr<Menu> m_GameOverMenu;
 

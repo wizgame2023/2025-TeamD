@@ -75,8 +75,9 @@ namespace basecross {
 	class SoundTestMenu : public Menu {
 		float m_LeftX;
 		float m_RightX;
+		shared_ptr<Menu> m_PauseMenu;
 	public:
-		SoundTestMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group),m_LeftX(-100),m_RightX(100) {}
+		SoundTestMenu(const shared_ptr<Stage>& stage, const wstring& group) : Menu(stage, group),m_LeftX(-100),m_RightX(100){}
 		virtual ‾SoundTestMenu() {}
 
 		virtual void OnCreate()override;
@@ -88,6 +89,17 @@ namespace basecross {
 		float GetPositionX(float volume) {
 			return m_LeftX + abs(m_LeftX - m_RightX) * volume;
 		}
+
+
+		void SetPauseMenu(const shared_ptr<Menu>& menu) {
+			m_PauseMenu = menu;
+		}
+
+		void OpenPauseMenu() {
+			Close();
+			m_PauseMenu->Open();
+		}
+
 	};
 
 	class ResultMenu : public Menu {
