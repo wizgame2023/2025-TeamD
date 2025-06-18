@@ -175,11 +175,18 @@ namespace basecross {
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
-			stun /= (float)GameManager::Instance()->GetDifficulty();
+			float rate = (float)GameManager::Instance()->GetDifficulty();
+			stun /= rate;
 			m_Stun += stun;
 			if (m_Stun > 1.0f) {
-				m_IsStun = true;
-				SetAnimation(L"Stan_First",true);
+				if (stun > 0.25f * rate) {
+					m_IsStun = true;
+					SetAnimation(L"Stan_First", true);
+				}
+				else {
+					m_Stun -= stun;
+				}
+				
 			}
 		}
 	}
