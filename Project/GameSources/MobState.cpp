@@ -243,7 +243,6 @@ namespace basecross {
 			}
 		}
 		else {
-			//ƒŠƒ[ƒh
 			enemy->SetAnim(L"Reload", 0.0f);
 
 			m_BulletRelord -= elapsedTime;

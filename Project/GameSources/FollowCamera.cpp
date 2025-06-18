@@ -167,7 +167,7 @@ namespace basecross {
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
-		Vec2 dire = CameraUp(0.25f);
+		Vec2 dire = CameraUp(0.75f);
 		m_Eye = m_Position + m_Direction * dire.x;
 		m_Eye.y = m_Position.y + dire.y;
 
@@ -200,18 +200,33 @@ namespace basecross {
 	Vec2 FollowCamera::CameraUp(float totaltime)
 	{
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
+		float up = m_Up;
+		float interpHeight = m_Magnification;
 		if (m_IsShaking)
 		{
 			m_CurrntTime += ElapsedTime;
 
+			if(m_CurrntTime <= totaltime / 3)
+			{
+				interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.65f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
+			}
+			else if (m_CurrntTime <= totaltime / 1.5)
+			{
+				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.65f, m_Magnification * 0.8f, totaltime / 3, totaltime / 1.5, m_CurrntTime, Lerp::rate::Easein);
+				up = Lerp::CalculateLerp(0.5f, m_Up /2, totaltime / 3, totaltime / 1.5, m_CurrntTime, Lerp::rate::Easein);
+			}
+			else if(m_CurrntTime <= totaltime)
+			{
+				ShakeStart(0.1f, 0.1f);
+				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.8f, m_Magnification , totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up / 2,m_Up, totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+			}
 			if (m_CurrntTime > totaltime) {
 				m_IsShaking = false;
 				m_CurrntTime = 0.0f;
 				return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
 			}
-
-			float interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.5f, 0.0f, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
-			float up = Lerp::CalculateLerp(m_Up, m_Up * 0.5f, 0.0f, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
 			return Vec2(interpHeight, up);
 		}
 		return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
