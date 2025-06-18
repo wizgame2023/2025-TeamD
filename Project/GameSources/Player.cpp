@@ -190,10 +190,6 @@ namespace basecross {
 		m_EnergyCharge += charge;
 	}
 
-	void Player::PlayerState()
-	{
-
-	}
 
 	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
 		// 目標方向ベクトルを計算
@@ -487,6 +483,7 @@ namespace basecross {
 
 		UpdateAnim();
 		if (m_IsGoal == false){
+			PlayAnimation();
 			ZoneActivation();
 			//Debug();
 			Vec3 forward = GetForward();
