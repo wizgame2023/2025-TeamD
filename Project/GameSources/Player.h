@@ -102,10 +102,6 @@ namespace basecross {
 		void AddAnimation();
 		void PlayAnimation();
 		void Blinking();
-		float GetLength()
-		{
-			return m_SearchDistance;
-		}
 		const void SetAnim(wstring animname, float time = 0.0f) {
 			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
@@ -113,6 +109,19 @@ namespace basecross {
 				else 
 					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
 		}
+
+		/// @brief 指定されたタイマー値とフレーム値に基づいて、インターバルタイマーが最大時間に達したかどうかを判定します。
+		/// @param TimerStart タイマーを開始するかどうかを示すフラグ。
+		/// @param MaxTimer タイマーが到達すべき最大時間（秒単位）。
+		/// @param frame 経過したフレームまたは時間（秒単位）。
+		/// @param Timer 現在のタイマー値。
+		/// @return タイマーが最大時間に達した場合は true、それ以外は false を返します。
+		bool IntervalTimer(const bool& TimerStart, const float& MaxTimer, const float& frame, float& Timer, const bool& Return);
+		float GetLength()
+		{
+			return m_SearchDistance;
+		}
+
 	};
 
 	class HitSphere : public Object
