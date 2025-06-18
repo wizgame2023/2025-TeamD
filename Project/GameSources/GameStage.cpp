@@ -477,15 +477,21 @@ namespace basecross {
 
 		if (productionCamera->GetEndState())
 		{
-			if (m_IsGameStater == 1){
-				m_ResultMenu->Open();
+			if (m_IsGameStater == 1)
+			{
+				if (!m_ResultMenu->IsOpen()) {
+					m_ResultMenu->Open();
+				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Clear");
 				player->UpdateAnim();
 
 			}
-			else if (m_IsGameStater == 2){
-				m_GameOverMenu->Open();
+			else if (m_IsGameStater == 2)
+			{
+				if (!m_GameOverMenu->IsOpen()) {
+					m_GameOverMenu->Open();
+				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");
 				player->UpdateAnim();
