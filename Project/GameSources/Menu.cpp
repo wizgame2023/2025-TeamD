@@ -66,9 +66,10 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(700, 700), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 230, 0), Vec2(200, 100), true);
+		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
@@ -155,21 +156,24 @@ namespace basecross {
 		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
 			TuningSE();
 		}
-		else {
+		else if(ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 1) {
 			TuningBGM();
 		}
 
 	}
 	void SoundTestMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 0, 0), Vec2(600, 600), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
-		AddSprite(sprite);
+		sprite->SetDiffuse(Col4(0, 0, 0, 1));
+		AddSprite(sprite);		
 
 		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, 100, 0), Vec2(120, 80), true);
+		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, -50, 0), Vec2(120, 80), true);
+		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
 		//auto choice = GetStage()->AddGameObject<Sprite>(L"POSE_CIRCLE", Vec3(-50.0f, 85.0f, 0.0f), Vec2(60, 80), true);
@@ -235,9 +239,24 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
+		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(10.0f, -200.0f, 0), Vec2(220, 100), true);
+		AddSprite(sprited);
+
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, -200.0f, 0.0f), Vec2(60, 80), menu,
+			[](shared_ptr<ObjectInterface> object) {
+				auto menu = static_pointer_cast<SoundTestMenu>(object);
+				menu->OpenPauseMenu();
+				auto getStage = menu->GetTypeStage<GameStage>();
+				auto setEffect = getStage->GetCreateEffect();
+				setEffect->SetEffectPause(false);
+				auto getCamera = menu->OnGetDrawCamera();
+				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
+				setCamera->SetCameraPause(false);
+
+			});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.2f));
-
+		AddAcceptButton(XINPUT_GAMEPAD_A);
 
 		Close();
 	}
