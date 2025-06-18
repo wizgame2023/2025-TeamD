@@ -159,7 +159,7 @@ namespace basecross {
 		
 
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
-		Vec3 playerHpPosition = Vec3(-210.0f, -353.0f, 0.0f);
+		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(393.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
