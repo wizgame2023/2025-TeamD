@@ -9,9 +9,7 @@
 namespace basecross {
 
 	ProductionCamera::ProductionCamera() :
-		Camera()
-	{
-	}
+		Camera(){}
 	ProductionCamera::~ProductionCamera() {}
 
 	void ProductionCamera::OnCreate() {

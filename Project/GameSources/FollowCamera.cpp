@@ -206,23 +206,27 @@ namespace basecross {
 		{
 			m_CurrntTime += ElapsedTime;
 
+			if(m_CurrntTime <= totaltime / 3)
+			{
+				interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.65f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
+			}
+			else if (m_CurrntTime <= totaltime / 1.5)
+			{
+				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.65f, m_Magnification * 0.8f, totaltime / 3, totaltime / 1.5, m_CurrntTime, Lerp::rate::Easein);
+				up = Lerp::CalculateLerp(0.5f, m_Up /2, totaltime / 3, totaltime / 1.5, m_CurrntTime, Lerp::rate::Easein);
+			}
+			else if(m_CurrntTime <= totaltime)
+			{
+				ShakeStart(0.1f, 0.1f);
+				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.8f, m_Magnification , totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up / 2,m_Up, totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+			}
 			if (m_CurrntTime > totaltime) {
 				m_IsShaking = false;
 				m_CurrntTime = 0.0f;
 				return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
 			}
-			else if(m_CurrntTime <= totaltime - totaltime / 3)
-			{
-				interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.65f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
-				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
-			}
-			else 
-			{
-				//ShakeStart(0.1f, 0.1f);
-				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.65f, m_Magnification, totaltime - totaltime / 3, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
-				up = Lerp::CalculateLerp(0.5f,m_Up, totaltime - totaltime / 3, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
-			}
-
 			return Vec2(interpHeight, up);
 		}
 		return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
