@@ -80,6 +80,8 @@ namespace basecross {
 		{
 			m_EffectPos = m_EffectPos + Vec3(0, 0, -0.1f);
 			m_Effect->SetLocation(m_Handle, m_EffectPos);
+			m_Titlemodel->SetFlag(true);
+
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{
@@ -96,14 +98,13 @@ namespace basecross {
 		auto camera = GetView()->GetTargetCamera();
 		auto forward = camera->GetEye() - camera->GetAt();
 		float rotate = atan2f(forward.x, forward.z);
-		m_EffectPos = Vec3(0.01f, 2.05f, -2.0f);
+		m_EffectPos = Vec3(0.01f, 2.05f, -3.0f);
 		m_Effect->PlayEffect(m_Handle, L"Panchi", m_EffectPos, 0.0f);
 		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
 		m_Effect->SetEffectSpeed(m_Handle, 0.1f);
-		m_Titlemodel->SetFlag(true);
 		m_Start->SetDrawActive(false);
 		m_Title->SetDrawActive(false);
-		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		SoundManager::Instance().PlaySE(L"SE_CRACK", 1.0f);
 	}
 
 	void TirleStageModel::OnCreate() {
@@ -126,13 +127,13 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"TITLEBREAK");
 		ptrDraw->SetTextureResource(L"BACKTIRLEBRAKE");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		ptrDraw->SetBlendState(BlendState::Opaque);
-		//ptrDraw->SetOwnShadowActive(true);
-		SetDrawLayer(5);
-		ptrDraw->AddAnimation(L"TITLEBREAK", 0.0f, 120.0f, false, 240.0f);
+		ptrDraw->SetBlendState(BlendState::Additive);
+		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
+		ptrDraw->AddAnimation(L"TITLEBREAK", 0.0f, 60.0f, false, 120.0f);
 		ptrDraw->AddAnimation(L"TITLEFALL", 60.0f, 120.0f, false, 60.0f);
 		SetAnim(L"TITLEBREAK");
-
+		SetAlphaActive(true);
+		SetDrawLayer(5);
 	}
 
 	void TirleStageModel::OnUpdate() {
