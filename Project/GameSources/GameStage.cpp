@@ -126,12 +126,14 @@ namespace basecross {
 		builder->LoadCsv();
 
 	}
+	
 	/// </summary>
 	/// ポーズメニューの作成
 	/// <summary>
 	void GameStage::CreatePose() {
-		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", m_SoundTestMenu);
+		m_PauseMenu = AddGameObject<PauseMenu>(L"PAUSE", static_pointer_cast<Menu>(m_SoundTestMenu));
 		m_PauseMenu->SetIsPouse(true);
+		m_SoundTestMenu->SetPauseMenu(m_PauseMenu);
 	}
 	/// <summary>
 	/// サウンドテストメニューの作成
