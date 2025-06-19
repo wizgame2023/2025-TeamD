@@ -61,6 +61,8 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
 		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
+		app->RegisterTexture(L"HP_BAR_FRAME", uiPath + L"HP_kazari.png");
+
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
@@ -159,7 +161,7 @@ namespace basecross {
 		
 
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
-		Vec3 playerHpPosition = Vec3(-210.0f, -353.0f, 0.0f);
+		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(393.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
@@ -167,7 +169,10 @@ namespace basecross {
 		m_UltIcon = AddGameObject<UltIcon>();
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
-		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(400.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
+		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(540.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
+		auto frame = m_PlayerHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0), Vec2(600.0f, 40.0f));
+		m_PlayerHpBar->SetBackColor(Col4(1, 1, 1, 1));
+		frame->SetDrawLayer(1);
 
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
@@ -577,21 +582,22 @@ namespace basecross {
 			vibration.wRightMotorSpeed = 0;
 			XInputSetState(0, &vibration);
 
-			GameManager::Instance()->SetGameSpeed(1.0f);
+			GameManager::Instance()->SetGameSpeed(0.5f);
 			if (m_cameraState == CameraState::FOLLOWCAMERA)
 			{
 				auto camera = GetView()->GetTargetCamera();;
-				camera->ShakeStart(0.1f, 0.1f);
+				camera->ShakeStart(0.3f, 0.3f);
 			}
+			PostEvent(0.1f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 		else if (msg == L"HitStop") {
-			GameManager::Instance()->SetGameSpeed(0.2f);
+			GameManager::Instance()->SetGameSpeed(0.1f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
-			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"HitStopVibration");
+			PostEvent(0.4f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
 	}
 }

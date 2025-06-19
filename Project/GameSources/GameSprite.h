@@ -44,6 +44,7 @@ namespace basecross {
 	class HpSprite : public Object {
 		shared_ptr<Character> m_Owner;
 
+		vector<shared_ptr<Sprite>> m_Items;
 		vector<shared_ptr<Sprite>> m_Edge;
 		shared_ptr<Sprite> m_HpBar;
 		shared_ptr<Sprite> m_HpBarBackGround;
@@ -55,6 +56,11 @@ namespace basecross {
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
+		void SetBackColor(Col4 color) {
+			m_HpBarBackGround->SetDiffuse(color);
+		}
+		shared_ptr<Sprite> AddSprite(const wstring& key, Vec3 offset, Vec2 size);
 	};
 }
 

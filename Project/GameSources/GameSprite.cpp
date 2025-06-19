@@ -135,6 +135,16 @@ namespace basecross {
 		for (auto& edge : m_Edge) {
 			edge->SetDrawActive(isActive);
 		}
+		for (auto& item : m_Items) {
+			item->SetDrawActive(isActive);
+		}
+	}
+
+	shared_ptr<Sprite> HpSprite::AddSprite(const wstring& key, Vec3 offset, Vec2 size) {
+		auto sprite = m_Stage->AddGameObject<Sprite>(key, GetPosition() + offset, size);
+		m_Items.push_back(sprite);
+
+		return sprite;
 	}
 }
 //end basecross
