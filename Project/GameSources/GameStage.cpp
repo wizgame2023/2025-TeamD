@@ -248,6 +248,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -292,6 +294,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		SoundManager::Instance().StopBGM();
@@ -457,10 +461,11 @@ namespace basecross {
 		}
 		else {
 			//SetAllGameObjectActive(true);
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				m_UltIcon->SetCharge(player->GetEnergy());
-
+			if (m_cameraState == CameraState::FOLLOWCAMERA) {
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				if (player != nullptr) {
+					m_UltIcon ->SetCharge(player->GetEnergy());
+				}
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
