@@ -31,6 +31,11 @@ namespace basecross {
 
 		auto rocketModel = MeshResource::CreateStaticModelMesh(modelPath, L"Rocket.bmf");
 		app->RegisterResource(L"ROCKET", rocketModel);
+
+		auto titlemodel = MeshResource::CreateBoneModelMesh(modelPath, L"Title_break.bmf");
+		app->RegisterResource(L"TITLEBREAK", titlemodel);
+		app->RegisterTexture(L"BACKTIRLEBRAKE", modelPath + L"Title_break.png");
+
 		//app->RegisterResource(L"MOB", modelEnemy);
 	}
 	//--------------------------------------------------------------------------------------

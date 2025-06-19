@@ -28,6 +28,7 @@ namespace basecross {
 		app->RegisterTexture(L"SELECTSPRITE", uiPath + L"SelectStageToTitle.png");
 		app->RegisterTexture(L"SELECT_TITLE", uiPath + L"ResultToTitle.png");
 		app->RegisterTexture(L"SELECT_STAGE", uiPath + L"SelectStage.png");
+		app->RegisterTexture(L"SELECT_GOING", uiPath + L"SelectStageToGoing.png");
 		app->RegisterTexture(L"SELECT_NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		//app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
@@ -93,10 +94,12 @@ namespace basecross {
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
 		}
 
-		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_STAGE", Col4(1,1,1,1),
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_GOING", Col4(1,1,1,1),
 			Vec3(0,-300,0), Vec2(200,100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->StartStage();
+				ButtonManager::instance->OpenAndUse(L"Accept");
+
 			});
 
 		ButtonManager::instance->SetInput(L"City", InputData(StickMode::LX, 1, 0.1f));

@@ -23,7 +23,7 @@ namespace basecross {
 		m_ParryJudge(false),
 		m_BoostTime(0.2f),
 		m_BulletDire(Vec3(0)),
-		m_Attacktime(1.0f),
+		m_Attacktime(0.25f),
 		m_Damage(1.0f),
 		m_DamageInterval(0.5f),
 		m_BoostInterval(0.0f),
@@ -189,7 +189,6 @@ namespace basecross {
 	void Player::SetCharge(const float& charge){
 		m_EnergyCharge += charge;
 	}
-
 
 	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
 		// 目標方向ベクトルを計算
@@ -489,7 +488,7 @@ namespace basecross {
 			Vec3 forward = GetForward();
 
 			IntervalManagement();
-
+			PlayAnimation();
 			Vec3 rot = SearchRange();
 			if (m_EnergyCharge >= 1.0f){
 				m_EnergyCharge = 1.0f;
