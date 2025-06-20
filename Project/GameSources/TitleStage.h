@@ -25,6 +25,7 @@ namespace basecross {
 		void CreateTitle();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 		shared_ptr<SpriteFade> m_Fade;
+		shared_ptr<Sprite> m_BackGround;
 		shared_ptr<Sprite> m_Title;
 		shared_ptr<Sprite> m_Start;
 		shared_ptr<TirleStageModel> m_Titlemodel;
@@ -57,11 +58,12 @@ namespace basecross {
 		virtual void OnUpdate()override;
 
 		const void SetAnim(wstring animname, float time = 0.0f) {
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			auto draw = GetComponent<PNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
-				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				draw->ChangeCurrentAnimation(animname, time);
+				/*if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
 				else
-					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);
+					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);*/
 		}
 
 		void SetFlag(bool flag) { 
