@@ -44,13 +44,16 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateTitle() {
-		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 5.0f), Vec2(1280.0f, 800.0f), true);
+		m_BackGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 5.0f), Vec2(1280.0f, 800.0f), true);
+		//auto borad = AddGameObject<Board>(L"BACKGROUND", Vec3(0.0f, 2.5f, 0.0f), Vec3(6.75f, 4.25f,1));
+		//borad->SetColor(Col4(0, 0, 0, 1));
 		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		m_Title->SetDrawLayer(6);
 		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
 		m_Start->SetDrawLayer(6);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		m_Titlemodel = AddGameObject<TirleStageModel>();
+		m_Titlemodel->SetDrawActive(false);
 		//点滅設定
 		m_Start->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
@@ -82,7 +85,8 @@ namespace basecross {
 			m_EffectPos = m_EffectPos + Vec3(0, 0, -0.1f);
 			m_Effect->SetLocation(m_Handle, m_EffectPos);
 			m_Titlemodel->SetFlag(true);
-
+			m_Titlemodel->SetDrawActive(true);
+			m_BackGround->SetDrawActive(false);
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{
@@ -92,6 +96,13 @@ namespace basecross {
 		if (m_Fade->IsFinish())
 		{
 			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+		}
+
+		if (cntlVec.bConnected) {
+			//Aボタン
+			if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B) {
+				m_Titlemodel->SetDrawActive(!m_Titlemodel->GetDrawActive());
+			}
 		}
 	}
 
@@ -117,7 +128,7 @@ namespace basecross {
 		SetRotation(Vec3(0));
 
 
-		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(1.0f), //(.1f, .1f, .1f),
@@ -125,11 +136,12 @@ namespace basecross {
 			Vec3(0.0f, 0.0, 0.0f),
 			Vec3(0.0f, 0.25f, 0.0f)
 		);
+
 		ptrDraw->SetMeshResource(L"TITLEBREAK");
 		ptrDraw->SetTextureResource(L"BACKTIRLEBRAKE");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
+		//ptrDraw->SetBlendState(BlendState::Additive);
 
-		ptrDraw->SetBlendState(BlendState::Additive);
 		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
 		ptrDraw->AddAnimation(L"TITLEBREAK", 0.0f, 60.0f, false, 120.0f);
 		ptrDraw->AddAnimation(L"TITLEFALL", 60.0f, 120.0f, false, 60.0f);
@@ -157,7 +169,7 @@ namespace basecross {
 		Qt.normalize();
 
 		GetComponent<Transform>()->SetQuaternion(Qt);
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		if (m_Flag)
 		{

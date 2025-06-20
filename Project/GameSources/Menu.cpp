@@ -153,6 +153,7 @@ namespace basecross {
 	}
 
 	void SoundTestMenu::OnUpdate() {
+		if (!IsOpen()) return;
 		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
 			TuningSE();
 		}
@@ -316,7 +317,7 @@ namespace basecross {
 
 		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -220.0f, 0.0f), Vec2(180, 80));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -220.0f, 0.0f), Vec2(220, 80));
+		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -220.0f, 0.0f), Vec2(240, 80));
 		AddSprite(choices);
 		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -210.0f, 0.0f), Vec2(210, 100));
 		AddSprite(choices);
