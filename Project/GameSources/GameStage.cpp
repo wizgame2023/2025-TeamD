@@ -74,6 +74,7 @@ namespace basecross {
 
 
 		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu_Score.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"Result_Texts.png");
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
