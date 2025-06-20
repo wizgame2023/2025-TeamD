@@ -85,6 +85,11 @@ namespace basecross {
 		shared_ptr<FollowCamera> SetCameraPause();
 		void SetAllGameObjectActive(bool flag);
 		void ToMainCamera();
+
+		StageData GetStageData()
+		{
+			return m_StageData;
+		}
 	};
 
 }
