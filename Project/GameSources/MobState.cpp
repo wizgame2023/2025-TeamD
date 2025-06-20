@@ -187,6 +187,14 @@ namespace basecross {
             return;
         }
 
+        Line line = Line(m_Enemy->GetPosition(), m_Player->GetPosition());
+        line.SetMaxLength(10.0f);
+        //DirectX::XMFLOAT3 = {x=-6.20100021 y=0.999000013 z=-2.09200001 }
+        //DirectX::XMFLOAT3 = {x=-5.38600016 y=0.875000000 z=-7.01900005 }
+        if (RayCast::HitTestVec(RayCastHit(), line, m_Stage->GetGameObjectVec(), {L"Line",L"Bullet",L"Player"}, m_Enemy)) {
+            return;
+        }
+
         // 弾の残数がある場合の処理
         if (m_BulletRemain > 0)
         {

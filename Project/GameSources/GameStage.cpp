@@ -33,6 +33,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		wstring skypath = mediaPath + L"BackGround/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
+		app->RegisterTexture(L"WAY", texPath + L"Asphalt2.png");
 
 		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
 		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
@@ -123,6 +124,7 @@ namespace basecross {
 		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
+		builder->Register<Way>(L"way");
 		builder->Register<LimitArea>(L"area");
 		builder->Register<Building>(L"building");
 		builder->Register<flyobject>(L"flyobject");
@@ -443,7 +445,6 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
-		RayCast::InitRay(10);
 		auto& app = App::GetApp();
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();

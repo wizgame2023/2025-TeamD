@@ -20,6 +20,7 @@ namespace basecross {
 		app->RegisterResource(L"OBJECT", modelBuild);
 
 		modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"Break_Build.bmf");
+		app->RegisterTexture(L"BUILD_BREAK_TEX", modelPath + L"Build.png");
 		app->RegisterResource(L"OBJECT_BREAK", modelBuild);
 
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
@@ -64,6 +65,11 @@ namespace basecross {
 		catch (...) {
 			throw;
 		}
+	}
+
+	void Scene::OnUpdate() {
+		SceneBase::OnUpdate();
+		RayCast::InitRay(10);
 	}
 
 	Scene::‾Scene() {
