@@ -61,6 +61,8 @@ namespace basecross {
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
 		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
+		app->RegisterTexture(L"HP_BAR_FRAME", uiPath + L"HP_kazari.png");
+
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
@@ -72,6 +74,7 @@ namespace basecross {
 
 
 		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu_Score.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"Result_Texts.png");
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
@@ -159,7 +162,7 @@ namespace basecross {
 		
 
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
-		Vec3 playerHpPosition = Vec3(-210.0f, -353.0f, 0.0f);
+		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(393.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
@@ -167,7 +170,10 @@ namespace basecross {
 		m_UltIcon = AddGameObject<UltIcon>();
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
-		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(400.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
+		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(540.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
+		auto frame = m_PlayerHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0), Vec2(600.0f, 40.0f));
+		m_PlayerHpBar->SetBackColor(Col4(1, 1, 1, 1));
+		frame->SetDrawLayer(1);
 
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
@@ -248,6 +254,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -292,6 +300,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		SoundManager::Instance().StopBGM();
@@ -458,10 +468,11 @@ namespace basecross {
 		}
 		else {
 			//SetAllGameObjectActive(true);
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				m_UltIcon->SetCharge(player->GetEnergy());
-
+			if (m_cameraState == CameraState::FOLLOWCAMERA) {
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				if (player != nullptr) {
+					m_UltIcon ->SetCharge(player->GetEnergy());
+				}
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {

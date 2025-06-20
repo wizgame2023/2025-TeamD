@@ -482,6 +482,7 @@ namespace basecross {
 
 		UpdateAnim();
 		if (m_IsGoal == false){
+			PlayAnimation();
 			ZoneActivation();
 			//Debug();
 			Vec3 forward = GetForward();

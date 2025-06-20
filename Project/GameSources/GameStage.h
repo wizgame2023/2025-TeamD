@@ -33,6 +33,7 @@ namespace basecross {
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 		float m_TotalTime;
+		float m_UltEnege;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<SoundTestMenu> m_SoundTestMenu;
