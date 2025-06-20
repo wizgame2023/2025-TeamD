@@ -327,6 +327,7 @@ namespace basecross {
 
 			bool isBoost = IntervalTimer(true, 1.0f, elapsedTime, m_BoostInterval, false);
 			bool isAttack = IntervalTimer(true, 0.25f, elapsedTime, m_AttackInterval, false);
+
 			Vec3 rot = SearchRange();
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X && isBoost) {
 				m_BoostAngle = GetForward();
@@ -339,29 +340,32 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A && isAttack) {
-				if (m_AttackAnim == L"Attack2") {
-					m_AttackAnim = L"Attack";
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A ) {
+				if (isAttack)
+				{
+					if (m_AttackAnim == L"Attack2") {
+						m_AttackAnim = L"Attack";
+					}
+					else {
+						m_AttackAnim = L"Attack2";
+					}
+
+					m_ParryJudge = true;
+					m_ParryTime = 15.0f;
+					AimRock(rot);
+					m_Position = GetPosition();
+					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
+					float rotate = atan2f(forward.x, forward.z);
+
+					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
+
+					m_PlayerStateNum += PlayerState::ATTACK;
+					m_PlayerStateNum -= PlayerState::NORMAL;
+
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
-				else {
-					m_AttackAnim = L"Attack2";
-				}
-
-				m_ParryJudge = true;
-				m_ParryTime = 15.0f;
-				AimRock(rot);
-				m_Position = GetPosition();
-				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
-				float rotate = atan2f(forward.x, forward.z);
-
-				m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
-				m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-				m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
-
-				m_PlayerStateNum += PlayerState::ATTACK;
-				m_PlayerStateNum -= PlayerState::NORMAL;
-
-				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 			}
 		}
 

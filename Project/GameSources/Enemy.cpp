@@ -104,14 +104,6 @@ namespace basecross {
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-					RayCastHit hit;
-					
-					if (hit.m_Object) {
-						m_IntruderAlert = false;
-						return m_IntruderAlert;
-					}
-				}
 				m_IntruderAlert = true;
 				return m_IntruderAlert;
 			}
