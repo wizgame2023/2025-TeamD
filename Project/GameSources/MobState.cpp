@@ -199,7 +199,6 @@ namespace basecross {
             m_Enemy->ChangeState<MobSearch>();
             return;
         }
-
         // 弾の残数がある場合の処理 
         if (m_BulletRemain > 0)
         {

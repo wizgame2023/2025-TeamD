@@ -31,6 +31,33 @@ namespace basecross {
 
 		AddTag(L"Ground");
 	}
+	Way::Way(const shared_ptr<Stage>& stage) : Object(stage) {}
+	Way::‾Way() {}
+
+	void Way::OnCreate() {
+		Object::OnCreate();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetFixed(true);
+
+		//描画設定
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"WAY");
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
+
+		auto shadowPtr = AddComponent<Shadowmap>();
+		shadowPtr->SetLightHeight(150.0f);
+		shadowPtr->SetViewWidth(64.0f);
+		shadowPtr->SetViewHeight(64.0f);
+
+		AddTag(L"Ground");
+	}
+	void Way::OnUpdate() {
+		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+		ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+	}
 
 	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
 	LimitArea::‾LimitArea() {}
