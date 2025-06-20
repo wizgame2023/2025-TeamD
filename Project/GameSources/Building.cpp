@@ -57,7 +57,7 @@ namespace basecross {
 		/*ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"BUILDING");*/
 		ptrDraw->SetMeshResource(L"OBJECT");
-		ptrDraw->SetTextureResource(L"BUILD_TEX");
+		//ptrDraw->SetTextureResource(L"BUILD_TEX");
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.03f, 0.05f, 0.027f), //(.1f, .1f, .1f),

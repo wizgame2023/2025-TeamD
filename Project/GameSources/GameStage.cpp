@@ -52,11 +52,11 @@ namespace basecross {
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
-		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
-		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
+		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch_A.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
-		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
+		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
@@ -163,7 +163,7 @@ namespace basecross {
 
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
-		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(393.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);

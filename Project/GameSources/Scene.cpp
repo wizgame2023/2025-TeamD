@@ -17,17 +17,20 @@ namespace basecross {
 		//モデル関係
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
 		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
+		app->RegisterResource(L"OBJECT", modelBuild);
+
+		modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"Break_Build.bmf");
+		app->RegisterResource(L"OBJECT_BREAK", modelBuild);
+
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
 		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
 		app->RegisterResource(L"MOB", mobMesh);
-
 		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
 		app->RegisterResource(L"BOSS", modelMesh);
 		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");
 		app->RegisterResource(L"BULLET", bulletModelMesh);
-		app->RegisterResource(L"OBJECT", modelBuild);
 
 		auto rocketModel = MeshResource::CreateStaticModelMesh(modelPath, L"Rocket.bmf");
 		app->RegisterResource(L"ROCKET", rocketModel);
