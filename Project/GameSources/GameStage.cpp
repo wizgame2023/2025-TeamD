@@ -336,6 +336,7 @@ namespace basecross {
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+			productionCamera->SetReverse(false);
 			productionCamera->StartOpeningAnimation(
 				CameraPos, 
 				CameraEndPos, 

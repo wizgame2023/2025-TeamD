@@ -45,7 +45,6 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 
 		app->RegisterTexture(L"CHECKMARK", uiPath + L"Check_ClearStage.png");
-
 	}
 
 	void SelectStage::CreateSelect() {
@@ -152,6 +151,7 @@ namespace basecross {
 		ButtonManager::instance->UseGroup(L"Accept");
 	}
 	void SelectStage::StartStage() {
+
 		auto data = make_shared<StageData>(StageData{ m_StageNumber,m_DifficultyLevel });
 		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToGameStage", data);
 	}

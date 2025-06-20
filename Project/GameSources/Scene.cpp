@@ -32,7 +32,7 @@ namespace basecross {
 		auto rocketModel = MeshResource::CreateStaticModelMesh(modelPath, L"Rocket.bmf");
 		app->RegisterResource(L"ROCKET", rocketModel);
 
-		auto titlemodel = MeshResource::CreateBoneModelMesh(modelPath, L"Title_break.bmf");
+		auto titlemodel = MeshResource::CreateBoneModelMesh(modelPath, L"Title_break 1.bmf");
 		app->RegisterResource(L"TITLEBREAK", titlemodel);
 		app->RegisterTexture(L"BACKTIRLEBRAKE", modelPath + L"Title_break.png");
 
@@ -98,9 +98,14 @@ namespace basecross {
 		}
 		else if (event->m_MsgStr == L"ToGameStage") {
 			auto count = static_pointer_cast<StageData>(event->m_Info).get();
-			if (count->stageNum >= m_StageFile.size() || count->level >= m_StageFile[count->stageNum].size()) {
+			if (count->stageNum >= m_StageFile.size() && count->level >= m_StageFile[count->stageNum].size()) {
 				ResetActiveStage<TitleStage>();
 				return;
+			}
+			else if (count->stageNum >= m_StageFile.size()) {
+				count->stageNum = 0;
+				count->level += 1;
+				ResetActiveStage<GameStage>(GetFileName(*count), *count);
 			}
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(GetFileName(*count),*count);
