@@ -153,6 +153,7 @@ namespace basecross {
 	}
 
 	void SoundTestMenu::OnUpdate() {
+		if (!IsOpen()) return;
 		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
 			TuningSE();
 		}
@@ -336,7 +337,8 @@ namespace basecross {
 		//次のステージ
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70), 
 			[](shared_ptr<ObjectInterface> object) {
-				auto scene = App::GetApp()->GetScene<Scene>();
+				
+				/*auto scene = App::GetApp()->GetScene<Scene>();
 				int count = scene->GetCount();
 				auto stage = static_pointer_cast<Stage>(object);
 				if (count == scene->GetMaxCount()) {
@@ -344,7 +346,7 @@ namespace basecross {
 				}
 				else {
 					scene->ChangeCountStage(++count);
-				}
+				}*/
 
 			});
 
