@@ -152,7 +152,7 @@ namespace basecross {
 	}
 	void SelectStage::StartStage() {
 
-		auto data = make_shared<StageData>(StageData{ m_StageNumber,m_DifficultyLevel });
+		auto data = make_shared<StageData>(StageData{m_StageNumber,m_DifficultyLevel });
 		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToGameStage", data);
 	}
 

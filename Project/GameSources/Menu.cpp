@@ -153,6 +153,7 @@ namespace basecross {
 	}
 
 	void SoundTestMenu::OnUpdate() {
+		if (!IsOpen()) return;
 		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
 			TuningSE();
 		}
