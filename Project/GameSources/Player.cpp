@@ -316,31 +316,30 @@ namespace basecross {
 			if (IntervalTimer(true, 0.25f, elapsedTime, m_Attacktime, true)) {
 				m_PlayerStateNum -= PlayerState::ATTACK;
 				m_PlayerStateNum += PlayerState::NORMAL;
+				m_AttackInterval = 0.25f;
 			}
 			else {
 				SetAnim(m_AttackAnim);
 			}
 		}
 		else {
-			m_AttackInterval -= elapsedTime;
 			MovePlayer(6.0f);
 
 			bool isBoost = IntervalTimer(true, 1.0f, elapsedTime, m_BoostInterval, false);
+			bool isAttack = IntervalTimer(true, 0.25f, elapsedTime, m_AttackInterval, false);
 			Vec3 rot = SearchRange();
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X && isBoost) {
 				m_BoostAngle = GetForward();
-				if (isBoost) {
-					float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
-					m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
-					m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
+				float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
+				m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
+				m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
 
-					m_PlayerStateNum -= PlayerState::NORMAL;
-					m_PlayerStateNum += PlayerState::DASH;
-					SoundManager::Instance().PlaySE(L"SE_ACCEPT");
-				}
+				m_PlayerStateNum -= PlayerState::NORMAL;
+				m_PlayerStateNum += PlayerState::DASH;
+				SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A && isAttack) {
 				if (m_AttackAnim == L"Attack2") {
 					m_AttackAnim = L"Attack";
 				}
