@@ -33,6 +33,7 @@ namespace basecross {
 		int m_MaxEnemyCount;
 		int m_EnemyCount;
 		float m_TotalTime;
+		float m_UltEnege;
 
 		shared_ptr<Menu> m_PauseMenu;
 		shared_ptr<SoundTestMenu> m_SoundTestMenu;
@@ -85,6 +86,11 @@ namespace basecross {
 		shared_ptr<FollowCamera> SetCameraPause();
 		void SetAllGameObjectActive(bool flag);
 		void ToMainCamera();
+
+		StageData GetStageData()
+		{
+			return m_StageData;
+		}
 	};
 
 }

@@ -74,6 +74,7 @@ namespace basecross {
 
 
 		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu_Score.png");
+		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"Result_Texts.png");
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
@@ -253,6 +254,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -297,6 +300,8 @@ namespace basecross {
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
+		m_UltEnege = 0.0f;
+		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		SoundManager::Instance().StopBGM();
@@ -331,6 +336,7 @@ namespace basecross {
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+			productionCamera->SetReverse(false);
 			productionCamera->StartOpeningAnimation(
 				CameraPos, 
 				CameraEndPos, 
@@ -462,10 +468,11 @@ namespace basecross {
 		}
 		else {
 			//SetAllGameObjectActive(true);
-			auto player = GetSharedGameObject<Player>(L"Player", false);
-			if (player != nullptr) {
-				m_UltIcon->SetCharge(player->GetEnergy());
-
+			if (m_cameraState == CameraState::FOLLOWCAMERA) {
+				auto player = GetSharedGameObject<Player>(L"Player", false);
+				if (player != nullptr) {
+					m_UltIcon ->SetCharge(player->GetEnergy());
+				}
 			}
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {

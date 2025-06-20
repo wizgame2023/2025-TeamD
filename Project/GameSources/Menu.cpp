@@ -266,88 +266,87 @@ namespace basecross {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-650.0f, 350, 0), Vec2(700, 750));
 		AddSprite(sprite);
-		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
+		//auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-187.0f, 230, 0), Vec2(75, 100), 2);
+		//AddSprite(number);
+		auto number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-220.0f, 150, 0), Vec2(50, 100), 1);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-255.0f, 125, 0), Vec2(50, 100), 1);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-155.0f, 150, 0), Vec2(75, 100), 2);
 		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-190.0f, 125, 0), Vec2(75, 100), 2);
-		AddSprite(number);
-		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-225.0f, 20, 0), Vec2(110, 100), 3);
+		number = GetStage()->AddGameObject<NumberSprite>(L"NUMBER", Vec3(-190.0f, 0, 0), Vec2(110, 100), 3);
 		AddSprite(number);
 
 
 		auto menu = GetThis<ResultMenu>();
 
-		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,230.0f,0.0f), Vec2(33, 100), 1);
-		int damegeRank = ScoreManager::Instance()->GetDamageRank();
-		score->UpdateNumber(damegeRank);
-		score->SetDiffuse(Col4(0, 0, 0, 1));
-		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
+		//auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f,230.0f,0.0f), Vec2(33, 100), 1);
+		////int damegeRank = ScoreManager::Instance()->GetDamageRank();
+		////score->UpdateNumber(damegeRank);
+		//score->SetDiffuse(Col4(0, 0, 0, 0));
+		//AddSprite(score);
+		//AddSprite(score);
+		auto score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-60.0f, 150.0f, 0.0f), Vec2(33, 100), 1);
 		int timeRank = ScoreManager::Instance()->GetTimeRank();
 		score->UpdateNumber(timeRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, 20.0f, 0.0f), Vec2(33, 100), 1);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-60.0f, 0.0f, 0.0f), Vec2(33, 100), 1);
 		int parryRank =  ScoreManager::Instance()->GetParryRank();
 		score->UpdateNumber(parryRank);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, -110.0f, 0.0f), Vec2(33, 90), 1);
-		int totalRank = ScoreManager::Instance()->GetTotalRank();
-		score->UpdateNumber(totalRank);
-		score->SetDiffuse(Col4(0, 0, 0, 1));
-		AddSprite(score);
-		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-215.0f, 125.0f, 0.0f), Vec2(33, 100), 1);
+		//score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-100.0f, -110.0f, 0.0f), Vec2(33, 90), 1);
+		////int totalRank = ScoreManager::Instance()->GetTotalRank();
+		////score->UpdateNumber(totalRank);
+		//score->SetDiffuse(Col4(0, 0, 0, 0));
+		//AddSprite(score);
+		score = GetStage()->AddGameObject<NumberSprite>(L"RESULT_SCORE", Vec3(-180.0f, 150.0f, 0.0f), Vec2(33, 100), 1);
 		score->UpdateNumber(5);
 		score->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(score);
 
 
-		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT2", Vec3(-600, 250, 0.0f), Vec2(455, 345));
+		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT", Vec3(-600, 180, 0.0f), Vec2(455, 345));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-400, 330, 0.0f), Vec2(130, 130));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
-		text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-600, -100, 0.0f), Vec2(120, 120));
-		text->SetDiffuse(Col4(0, 0, 0, 1));
-		AddSprite(text);
+		//text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-600, -100, 0.0f), Vec2(120, 120));
+		//text->SetDiffuse(Col4(0, 0, 0, 1));
+		//AddSprite(text);
 
-		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -240.0f, 0.0f), Vec2(180, 80));
+		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -220.0f, 0.0f), Vec2(180, 80));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -240.0f, 0.0f), Vec2(220, 80));
+		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -220.0f, 0.0f), Vec2(240, 80));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -230.0f, 0.0f), Vec2(210, 100));
+		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -210.0f, 0.0f), Vec2(210, 100));
 		AddSprite(choices);
 
 		//タイトル
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-580.0f, -280.0f, 0.0f), Vec2(50, 70),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-580.0f, -260.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 
 		//セレクト
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -280.0f, 0.0f), Vec2(50, 70),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -260.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		//次のステージ
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -280.0f, 0.0f), Vec2(50, 70), 
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-220.0f, -260.0f, 0.0f), Vec2(50, 70), 
 			[](shared_ptr<ObjectInterface> object) {
-				
-				/*auto scene = App::GetApp()->GetScene<Scene>();
-				int count = scene->GetCount();
+				//auto gamestage = static_pointer_cast<GameStage>(object);
 				auto stage = static_pointer_cast<Stage>(object);
-				if (count == scene->GetMaxCount()) {
-					scene->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
-				}
-				else {
-					scene->ChangeCountStage(++count);
-				}*/
+				auto scene = App::GetApp()->GetScene<Scene>();
+				auto gameStage = dynamic_pointer_cast<GameStage>(stage);
 
+				auto data = gameStage->GetStageData();
+				auto shareddata = make_shared<StageData>(data);
+				shareddata->stageNum += 1;
+				stage->PostEvent(0.0f, stage, scene, L"ToGameStage", shareddata);
 			});
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
@@ -356,27 +355,27 @@ namespace basecross {
 	}
 	void ResultMenu::Open() {
 		Menu::Open();
-		auto damage = static_pointer_cast<NumberSprite>(m_MenuObjects[1]);
-		auto time_min = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
-		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
-		auto parry = static_pointer_cast<NumberSprite>(m_MenuObjects[4]);
+		//auto damage = static_pointer_cast<NumberSprite>(m_MenuObjects[1]);
+		auto time_min = static_pointer_cast<NumberSprite>(m_MenuObjects[1]);
+		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
+		auto parry = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
 
 		int minute = ScoreManager::Instance()->GetTime() / 60;
 		int second = static_cast<int>(ScoreManager::Instance()->GetTime()) % 60;
 		time_min->UpdateNumber(minute);
 		time_sec->UpdateNumber(second);
 		parry->UpdateNumber(ScoreManager::Instance()->GetParryCount());
-		damage->UpdateNumber(ScoreManager::Instance()->GetDamage());
+		//damage->UpdateNumber(ScoreManager::Instance()->GetDamage());
 
-		auto damageRank = static_pointer_cast<NumberSprite>(m_MenuObjects[5]);
-		auto timeRank = static_pointer_cast<NumberSprite>(m_MenuObjects[6]);
-		auto parryRank = static_pointer_cast<NumberSprite>(m_MenuObjects[7]);
-		auto totalRank = static_pointer_cast<NumberSprite>(m_MenuObjects[7]);
+		//auto damageRank = static_pointer_cast<NumberSprite>(m_MenuObjects[5]);
+		auto timeRank = static_pointer_cast<NumberSprite>(m_MenuObjects[4]);
+		auto parryRank = static_pointer_cast<NumberSprite>(m_MenuObjects[5]);
+		//auto totalRank = static_pointer_cast<NumberSprite>(m_MenuObjects[7]);
 
-		damageRank->UpdateNumber(ScoreManager::Instance()->GetDamageRank());
+		//damageRank->UpdateNumber(ScoreManager::Instance()->GetDamageRank());
 		timeRank->UpdateNumber(ScoreManager::Instance()->GetTimeRank());
 		parryRank->UpdateNumber(ScoreManager::Instance()->GetParryRank());
-		totalRank->UpdateNumber(ScoreManager::Instance()->GetTotalRank());
+		//totalRank->UpdateNumber(ScoreManager::Instance()->GetTotalRank());
 	}
 
 	void GameOverMenu::OnCreate() {

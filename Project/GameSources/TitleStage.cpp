@@ -79,6 +79,7 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<TitleStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (m_Titlemodel == nullptr) return;
 		if (m_EffectPos != Vec3())
 		{
 			m_EffectPos = m_EffectPos + Vec3(0, 0, -0.1f);
@@ -140,6 +141,7 @@ namespace basecross {
 		ptrDraw->SetTextureResource(L"BACKTIRLEBRAKE");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		//ptrDraw->SetBlendState(BlendState::Additive);
+
 		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
 		ptrDraw->AddAnimation(L"TITLEBREAK", 0.0f, 60.0f, false, 120.0f);
 		ptrDraw->AddAnimation(L"TITLEFALL", 60.0f, 120.0f, false, 60.0f);
