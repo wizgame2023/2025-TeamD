@@ -220,9 +220,12 @@ namespace basecross {
         // 攻撃状態のアニメーションに切り替え
         enemy->SetAnim(L"Set", 0.0f);
 
-        // ---------- 弾の発射処理（ここから下は元の処理と同様） ----------
-        if (m_BulletRemain > 0) {
-            if (enemy->m_BalletInterval < 0.4f && enemy->m_ShotRandomInterval < 0.4f && !m_BulletEffect) {
+        // 弾の残数がある場合の処理 
+        if (m_BulletRemain > 0)
+        {
+            // エフェクト発動条件チェック
+            if (enemy->m_BalletInterval < 0.4f && enemy->m_ShotRandomInterval < 0.4f && !m_BulletEffect)
+            {
                 m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye",
                     Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
                 m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);

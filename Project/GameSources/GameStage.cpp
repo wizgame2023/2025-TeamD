@@ -33,9 +33,11 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 		wstring skypath = mediaPath + L"BackGround/";
 		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
+		app->RegisterTexture(L"WAY", texPath + L"Asphalt2.png");
 
 		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
-		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE2", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"Result_GoTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
 		app->RegisterTexture(L"RESULT_SELECT_BACK", uiPath + L"ResultSelectBackUI.png");
@@ -52,11 +54,11 @@ namespace basecross {
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
-		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch.png");
-		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash.png");
+		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch_A.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
-		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku.png");
+		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
@@ -78,7 +80,7 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
-		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
+		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"Game_Over.png");
 		
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
@@ -123,6 +125,7 @@ namespace basecross {
 		builder->Register<Mob>(L"enemy");
 		builder->Register<BossEnemy>(L"boss");
 		builder->Register<Ground>(L"Ground");
+		builder->Register<Way>(L"way");
 		builder->Register<LimitArea>(L"area");
 		builder->Register<Building>(L"building");
 		builder->Register<flyobject>(L"flyobject");
@@ -163,7 +166,7 @@ namespace basecross {
 
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
-		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(393.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);

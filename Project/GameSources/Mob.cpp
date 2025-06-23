@@ -36,7 +36,7 @@ namespace basecross {
 			Vec3(0.25f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -1.00f, 0.0f)
+			Vec3(0.0f, -0.975f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
@@ -60,6 +60,7 @@ namespace basecross {
 	void Mob::OnUpdate()
 	{
 		Enemy::OnUpdate();
+		RayCast::DebugRay(Line(Vec3(-6.20100021f, 0.999000013f, -2.09200001f), Vec3(-5.38600016f, 0.875000000f, -7.01900005)), Col4(1, 0, 0, 1), static_pointer_cast<Stage>(m_Stage));
 		if (m_Update)
 		{
 			float elapsed = GetGameElapsed();

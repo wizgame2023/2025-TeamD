@@ -34,7 +34,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title_Rogo.png");
-		app->RegisterTexture(L"STRATA", uiPath + L"StartA.png");
+		app->RegisterTexture(L"STRATA", uiPath + L"Start_A.png");
 		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		m_Effect = AddGameObject<EffectManeger>();
@@ -50,7 +50,7 @@ namespace basecross {
 		//borad->SetColor(Col4(0, 0, 0, 1));
 		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		m_Title->SetDrawLayer(6);
-		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
+		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(250.0f, 120.0f),true);
 		m_Start->SetDrawLayer(6);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		fadeSprite->SetDrawLayer(6);
