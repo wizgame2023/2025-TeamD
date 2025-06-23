@@ -36,7 +36,8 @@ namespace basecross {
 		app->RegisterTexture(L"WAY", texPath + L"Asphalt2.png");
 
 		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
-		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE2", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"Result_GoTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
 		app->RegisterTexture(L"RESULT_SELECT_BACK", uiPath + L"ResultSelectBackUI.png");
@@ -79,7 +80,7 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
-		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
+		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"Game_Over.png");
 		
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
