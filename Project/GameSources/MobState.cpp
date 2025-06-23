@@ -176,27 +176,25 @@ namespace basecross {
                 RayCastHit hit;
                 auto line = Line(enemy->GetPosition(), m_Player->GetPosition());
                 line.SetMaxLength(10.0f);
-                vector<wstring> excludeTags = { L"Bullet", L"Line", L"Ground" };
+                vector<wstring> excludeTags = { L"Bullet", L"Line", L"Ground", L"Player"};
                 if (RayCast::HitTestVec(hit, line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
                     // ヒットした対象がプレイヤーでなければ回避処理へ
-                    if (!hit.m_Object->FindTag(L"Player")) {
-                        auto hitTransform = hit.m_Object->GetComponent<Transform>();
-                        if (hitTransform) {
-                            Vec3 avoidDir = enemy->GetPosition() - hitTransform->GetPosition();
-                            if (avoidDir.length() > 0.001f) {
-                                avoidDir.normalize();
-                                enemy->m_AvoidDirection = avoidDir;
-                                enemy->m_IsAvoiding = true;
-                                enemy->m_AvoidTime = 0.8f;  // 回避状態を0.8秒維持
-                                enemy->SetMoveDirection(avoidDir);
-                                return;
-                            }
+                    auto hitTransform = hit.m_Object->GetComponent<Transform>();
+                    if (hitTransform) {
+                        Vec3 avoidDir = enemy->GetPosition() - hitTransform->GetPosition();
+                        if (avoidDir.length() > 0.001f) {
+                            avoidDir.normalize();
+                            enemy->m_AvoidDirection = avoidDir;
+                            enemy->m_IsAvoiding = true;
+                            enemy->m_AvoidTime = 0.8f;  // 回避状態を0.8秒維持
+                            enemy->SetMoveDirection(avoidDir);
+                            return;
                         }
                     }
-                    else {
-                        // プレイヤー方向へ通常移動
-                        enemy->AlartMove(m_Player);
-                    }
+                }
+                else {
+                    // プレイヤー方向へ通常移動
+                    enemy->AlartMove(m_Player);
                 }
             }
             direction = enemy->GetDirectionToIntruderObject(m_Player);
