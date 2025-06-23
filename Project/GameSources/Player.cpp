@@ -15,7 +15,7 @@ namespace basecross {
 		Character(stage, position, rotation, scale),
 		m_ParryHandle(-1),
 		m_Handle(-1),
-		m_MoveSpeed(6.0f),
+		m_MoveSpeed(24.0f),
 		m_EnergyCharge(0.0f),
 		m_PlayerStateNum(PlayerState::NORMAL),
 		m_ZoneTime(0.0f),
