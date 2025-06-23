@@ -158,31 +158,45 @@ namespace basecross {
                     enemy->m_IsAvoiding = false;
                 }
             }
+            float elapsedTime = App::GetApp()->GetElapsedTime();
 
-            // プレイヤー方向までの線分上の障害物検出（プレイヤーは除外しない）
-            RayCastHit hit;
-            auto line = Line(enemy->GetPosition(), m_Player->GetPosition());
-            line.SetMaxLength(10.0f);
-            vector<wstring> excludeTags = { L"Bullet", L"Line", L"Ground" };
-            if (RayCast::HitTestVec(hit, line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
-                // ヒットした対象がプレイヤーでなければ回避処理へ
-                if (!hit.m_Object->FindTag(L"Player")) {
-                    auto hitTransform = hit.m_Object->GetComponent<Transform>();
-                    if (hitTransform) {
-                        Vec3 avoidDir = enemy->GetPosition() - hitTransform->GetPosition();
-                        if (avoidDir.length() > 0.001f) {
-                            avoidDir.normalize();
-                            enemy->m_AvoidDirection = avoidDir;
-                            enemy->m_IsAvoiding = true;
-                            enemy->m_AvoidTime = 0.8f;  // 回避状態を0.8秒維持
-                            enemy->SetMoveDirection(avoidDir);
-                            return;
+            // RayCast クールダウンを減らす
+            enemy->m_RayCastCooldown -= elapsedTime;
+
+            // クールタイムが残っていればレイキャストをスキップして、前回の方向で移動継続
+            if (enemy->m_RayCastCooldown > 0.0f) {
+                if (enemy->m_IsAvoiding && enemy->m_AvoidTime > 0.0f) {
+                    enemy->m_AvoidTime -= elapsedTime;
+                    enemy->SetMoveDirection(enemy->m_AvoidDirection);
+                    return;
+                }
+            }
+            else {
+                // プレイヤー方向までの線分上の障害物検出（プレイヤーは除外しない）
+                RayCastHit hit;
+                auto line = Line(enemy->GetPosition(), m_Player->GetPosition());
+                line.SetMaxLength(10.0f);
+                vector<wstring> excludeTags = { L"Bullet", L"Line", L"Ground" };
+                if (RayCast::HitTestVec(hit, line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
+                    // ヒットした対象がプレイヤーでなければ回避処理へ
+                    if (!hit.m_Object->FindTag(L"Player")) {
+                        auto hitTransform = hit.m_Object->GetComponent<Transform>();
+                        if (hitTransform) {
+                            Vec3 avoidDir = enemy->GetPosition() - hitTransform->GetPosition();
+                            if (avoidDir.length() > 0.001f) {
+                                avoidDir.normalize();
+                                enemy->m_AvoidDirection = avoidDir;
+                                enemy->m_IsAvoiding = true;
+                                enemy->m_AvoidTime = 0.8f;  // 回避状態を0.8秒維持
+                                enemy->SetMoveDirection(avoidDir);
+                                return;
+                            }
                         }
                     }
-                }
-                else {
-                    // プレイヤー方向へ通常移動
-                    enemy->AlartMove(m_Player);
+                    else {
+                        // プレイヤー方向へ通常移動
+                        enemy->AlartMove(m_Player);
+                    }
                 }
             }
             direction = enemy->GetDirectionToIntruderObject(m_Player);

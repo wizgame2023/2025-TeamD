@@ -51,6 +51,9 @@ namespace basecross {
 		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
 		bool m_Update;
+		// Mob.h などに追加
+		float m_RayCastCooldown = 0.0f;
+		const float MAX_RAYCAST_INTERVAL = 0.2f; // 例：0.2秒に1回だけレイキャスト実行
 	public:
 		// Mobクラスに状態変数を追加して管理
 		bool m_IsAvoiding = false;

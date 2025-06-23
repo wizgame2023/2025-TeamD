@@ -30,26 +30,17 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-
-		/*auto draw = GetComponent<BcPNTStaticDraw>();
-		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
-		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
-
-		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.25f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.75f, 0.0f)
+			Vec3(0.0f, -1.00f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		ptrDraw->SetOwnShadowActive(true);
 
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
