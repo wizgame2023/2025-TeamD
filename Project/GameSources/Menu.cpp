@@ -68,18 +68,18 @@ namespace basecross {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 230, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), true);
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(0, 125.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(-40.0f, 125.0f, 0), Vec2(180, 90), true);
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(0, 25.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-20.0f, - 75.0f, 0), Vec2(180, 80), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(0, -75.0f, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, 25.0f, 0), Vec2(280, 110), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(50.0f, -175.0f, 0), Vec2(300, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-40.0f, -175.0f, 0), Vec2(180, 90), true);
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
@@ -92,12 +92,12 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 25.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -75.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
-				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
@@ -166,7 +166,7 @@ namespace basecross {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 200, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 210, 0), Vec2(200, 100), true);
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);		
 
@@ -240,7 +240,7 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPos(pos);
 			});
-		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(10.0f, -200.0f, 0), Vec2(220, 100), true);
+		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-60.0f, -200.0f, 0), Vec2(140, 80), true);
 		AddSprite(sprited);
 
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, -200.0f, 0.0f), Vec2(60, 80), menu,
@@ -315,9 +315,9 @@ namespace basecross {
 		//text->SetDiffuse(Col4(0, 0, 0, 1));
 		//AddSprite(text);
 
-		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-560.0f, -220.0f, 0.0f), Vec2(180, 80));
+		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-565.0f, -220.0f, 0.0f), Vec2(180, 80));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-320.0f, -220.0f, 0.0f), Vec2(240, 80));
+		choices = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-350.0f, -225.0f, 0.0f), Vec2(120, 70));
 		AddSprite(choices);
 		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -210.0f, 0.0f), Vec2(210, 100));
 		AddSprite(choices);
@@ -330,7 +330,7 @@ namespace basecross {
 			});
 
 		//セレクト
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-340.0f, -260.0f, 0.0f), Vec2(50, 70),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-355.0f, -260.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
@@ -383,12 +383,12 @@ namespace basecross {
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
 		sprite->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(sprite);
-		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-400, 340, 0.0f), Vec2(800, 400));
+		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-300, 300, 0.0f), Vec2(600, 300));
 		text->SetDiffuse(Col4(1, 1, 1, 1));
 		AddSprite(text);
-		auto gameOverSprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE",Vec3(-220.0f,-180.0f,0.0f),Vec2(250,150));
+		auto gameOverSprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE",Vec3(-220.0f,-200.0f,0.0f),Vec2(180,90));
 		AddSprite(gameOverSprite);
-		gameOverSprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(150.0f, -180.0f, 0.0f), Vec2(280, 130));
+		gameOverSprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(130.0f, -200.0f, 0.0f), Vec2(180, 90));
 		AddSprite(gameOverSprite);
 		//タイトル
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-240.0f, -250.0f, 0.0f), Vec2(70, 90),
