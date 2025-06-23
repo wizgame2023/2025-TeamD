@@ -485,17 +485,16 @@ namespace basecross {
 
 		UpdateAnim();
 		if (m_IsGoal == false){
-			PlayAnimation();
 			ZoneActivation();
 			//Debug();
 			Vec3 forward = GetForward();
 
 			IntervalManagement();
-			PlayAnimation();
 			Vec3 rot = SearchRange();
 			if (m_EnergyCharge >= 1.0f){
 				m_EnergyCharge = 1.0f;
 			}
+			PlayAnimation();
 		}
 		else{
 			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
