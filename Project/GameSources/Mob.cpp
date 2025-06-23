@@ -12,7 +12,7 @@ namespace basecross {
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(1.0f), m_ShotRandomInterval(1.0f),
-		m_BalletSpeed(50.0f), m_MuzzleOffset(0.5f),
+		m_BalletSpeed(50.0f), m_MuzzleOffset(1.5f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
 		m_NearPoint(nullptr),
@@ -133,7 +133,7 @@ namespace basecross {
 		m_KnockBackTime -= elapsedTime;
 		if (m_KnockBackTime > 0.0f)
 		{
-			SetAnim(L"Down", 0.0f, true);
+			SetAnim(L"Down", 0.0f);
 			KnockBackTime();
 		}
 		else if(draw->IsTargetAnimeEnd())
@@ -163,7 +163,7 @@ namespace basecross {
 	{
 		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
-			SetAnim(L"Damage", 0.0f, true);
+			SetAnim(L"Damage", 0.0f);
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;
 		}
@@ -225,5 +225,20 @@ namespace basecross {
 		rot.normalize();
 		float rotate = atan2f(rot.x, rot.z);
 		SetRotation(Vec3(0, rotate, 0));
+	}
+
+	void Mob::SetMoveDirection(const Vec3& direction)
+	{
+		// 無効な方向なら何もしない
+		if (direction.length() < 0.001f)
+			return;
+
+		// 目標方向（正規化済み）
+		Vec3 targetDir = direction;
+		// 経過時間×タイムレートによる移動量の算出
+		float deltaTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		Vec3 pos = m_Transform->GetPosition();
+		pos += targetDir * m_Speed * deltaTime;
+		m_Transform->SetPosition(pos);
 	}
 }
