@@ -104,6 +104,7 @@ namespace basecross {
     {
         EnemyState::Enter();
         auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
+        m_Stage = m_Enemy->GetStage();
 
         // 弾発射用の間隔を初期化（必要に応じてランダムな値も利用可能）  
         mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f; // 例：Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)
@@ -118,6 +119,7 @@ namespace basecross {
 
     void MobAlert::Execute()
     {
+        auto stage = static_pointer_cast<Stage>(m_Stage);
         // 経過時間にタイムレートを掛ける
         float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
         auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
@@ -161,6 +163,17 @@ namespace basecross {
         // intruder 状況か近い Citizen 対象へ移動かを判断
         if (m_IntruderAlert)
         {
+            RayCastHit hit;
+            auto line = Line(enemy->GetPosition(), m_Player->GetPosition());
+            line.SetMaxLength(10.0f);
+            vector<wstring> excludeTags = { L"Bullet",L"Line",L"Player",L"Ground" };
+            if (RayCast::HitTestVec(hit, line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
+
+                RayCast::DebugRay(Line(enemy->GetPosition(), hit.m_Object->GetComponent<Transform>()->GetPosition()), Col4(1, 0, 0, 1), m_Stage);
+
+                return;
+            }
+
             enemy->AlartMove(m_Player);
             direction = m_Enemy->GetDirectionToIntruderObject(m_Player);
         }
@@ -186,8 +199,7 @@ namespace basecross {
             m_Enemy->ChangeState<MobSearch>();
             return;
         }
-
-        // 弾の残数がある場合の処理
+        // 弾の残数がある場合の処理 
         if (m_BulletRemain > 0)
         {
             // エフェクト発動条件チェック
