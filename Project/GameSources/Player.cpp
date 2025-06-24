@@ -24,7 +24,7 @@ namespace basecross {
 		m_BoostTime(0.2f),
 		m_BulletDire(Vec3(0)),
 		m_Attacktime(0.25f),
-		m_Damage(1.0f),
+		m_Damage(3.0f),
 		m_DamageInterval(0.5f),
 		m_BoostInterval(0.0f),
 		m_IsGoal(false),
@@ -139,8 +139,8 @@ namespace basecross {
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0){
 			SetAttackDamage(3.0f);
 			m_ZoneTime += elapsedTime;
-			if (m_ZoneTime > 5.0f + m_zoneAnim){
-				m_Damage = 1.0f;
+			if (m_ZoneTime > 3.0f + m_zoneAnim){
+				m_Damage = 3.0f;
 				m_ZoneTime = 0;
 				SetAttackDamage(1.0f);
 				m_HitScale = Vec3(1.0f);
@@ -168,7 +168,7 @@ namespace basecross {
 			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
 			if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
 				m_TargetBoard->SetTarget(targetEnemyVector);
-				if ((position - targetEnemy).length() <= m_SearchDistance + 1.0f + 0.85f){
+				if ((position - targetEnemy).length() <= 10.0f){
 					//この方向に少し動く、動いている間はコントローラで移動できない
 					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
 					return rot;
@@ -241,10 +241,9 @@ namespace basecross {
 	}
 
 	float Player::Parry(float damage, const float& ParrySecond){
-		float parryTime = 30.0f;
 		Vec3 forward = GetForward();
-		if (ParrySecond > 15){
-			m_EnergyCharge += 0.2;
+		if (ParrySecond > 20){
+			m_EnergyCharge += 0.5;
 
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
@@ -257,22 +256,21 @@ namespace basecross {
 			m_ParryDamageInterval = true;
 			return 0;
 		}
-		else if (ParrySecond <= 10 && ParrySecond > 0){
-			m_EnergyCharge += 0.1;
+		else if (ParrySecond <= 20 && ParrySecond > 15) {
+			m_EnergyCharge += 0.25;
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-
-			//XINPUT_VIBRATION vibration;
-			//vibration.wLeftMotorSpeed = 65535 * 0.5f;
-			//vibration.wRightMotorSpeed = 65535 * 0.5f;
-			//XInputSetState(0, &vibration);
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
-			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 			m_ParryDamageInterval = true;
-			//PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
-			return 0;
+			return damage / 4;
+		}
+		else if (ParrySecond <= 15 && ParrySecond > 5) {
+			m_EnergyCharge += 0.1;
+			m_ParryDamageInterval = true;
+
+			return damage / 2;
 		}
 		else {
 			m_DamageIntervalStart = true;
@@ -351,7 +349,7 @@ namespace basecross {
 					}
 
 					m_ParryJudge = true;
-					m_ParryTime = 15.0f;
+					m_ParryTime = 30.0f;
 					AimRock(rot);
 					m_Position = GetPosition();
 					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
@@ -538,18 +536,19 @@ namespace basecross {
 
 						auto camera = GetStage()->GetView()->GetTargetCamera();;
 						auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
-						followcamera->SetShaking(true);
+						if (followcamera != nullptr)
+						{
+							followcamera->SetShaking(true);
+						}
 					}
 				}
 				if (parryDamage == 0 && rot != Vec3()){
 					parry = m_ParryJudge;
-					m_ParryTime = 0.0f;
 					m_ParryJudge = false;
 					return true;
 				}
 				Character::Damage(parryDamage, true);
 				ScoreManager::Instance()->AddDamage(parryDamage);
-				m_ParryTime = 0.0f;
 				return false;
 			}
 			else {
@@ -558,7 +557,6 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
 				Character::Damage(damage, true);
 				ScoreManager::Instance()->AddDamage(damage);
-				m_ParryTime = false;
 				return false;
 			}
 			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {

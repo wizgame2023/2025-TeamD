@@ -55,7 +55,7 @@ namespace basecross {
 			m_Transform->SetRotation(Vec3(0, objRotate, 0));
 			float objRange = objDirection.length();
 
-			if (enemy->m_kariState == Mob::kariState::hakai && objRange <= enemy->m_BalletRange / 2){
+			if (enemy->m_kariState == Mob::kariState::hakai && objRange <= enemy->m_BalletRange){
 				m_Enemy->ChangeState<MobAlert>();
 			}
 			else{
@@ -69,7 +69,7 @@ namespace basecross {
 			m_Transform->SetRotation(Vec3(0, rotate, 0));
 			float range = direction.length();
 
-			if (range > enemy->m_BalletRange / 2){
+			if (range > enemy->m_BalletRange){
 				pos += direction.normalize() * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
 				enemy->SetPosition(pos);
 			}
@@ -229,7 +229,7 @@ namespace basecross {
                 m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
                 m_BulletEffect = true;
             }
-            else if (enemy->m_BalletInterval < 0.25f && enemy->m_ShotRandomInterval < 0.25f && !m_BulletSound) {
+            else if (enemy->m_BalletInterval < 0.2f && enemy->m_ShotRandomInterval < 0.2f && !m_BulletSound) {
                 SoundManager::Instance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
                 m_BulletSound = true;
             }

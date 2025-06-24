@@ -22,6 +22,7 @@ namespace basecross {
 		RegisterSound(L"BGM_TITLE", L"BGM/Title.wav");
 		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
 		RegisterSound(L"BGM_GAMEOVER", L"BGM/testGameOver1.wav");
+		RegisterSound(L"BGM_GAMECLEAR", L"BGM/testGameClear.wav");
 		//SE
 		RegisterSound(L"SE_CRACK", L"SE/CrackGlass.wav");
 		RegisterSound(L"SE_GUARD", L"SE/Guard.wav");

@@ -253,7 +253,7 @@ namespace basecross {
 	void GameStage::GameClear() {
 
 		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
-
+		SoundManager::Instance().StopBGM();
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
@@ -498,6 +498,7 @@ namespace basecross {
 			{
 				if (!m_ResultMenu->IsOpen()) {
 					m_ResultMenu->Open();
+					SoundManager::Instance().PlaySE(L"BGM_GAMECLEAR", 1.0f);
 				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Clear");
