@@ -80,7 +80,7 @@ namespace basecross {
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
-			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty));
+			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty / 2));
 			if (m_bulletPally)
 			{
 				player->SetParryPosition(GetPosition());
