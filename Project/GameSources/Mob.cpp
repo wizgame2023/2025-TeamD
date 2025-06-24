@@ -224,7 +224,7 @@ namespace basecross {
 		// 無効な方向なら何もしない
 		if (direction.length() < 0.001f)
 			return;
-
+		
 		// 目標方向（正規化済み）
 		Vec3 targetDir = direction;
 		// 経過時間×タイムレートによる移動量の算出

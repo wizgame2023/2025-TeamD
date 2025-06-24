@@ -696,8 +696,8 @@ namespace basecross {
 			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
 
 			XINPUT_VIBRATION vibration;
-			vibration.wLeftMotorSpeed = 65535 * 0.5f;
-			vibration.wRightMotorSpeed = 65535 * 0.5f;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
 			PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");

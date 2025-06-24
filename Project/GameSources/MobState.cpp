@@ -12,7 +12,7 @@ namespace basecross {
 	void MobSearch::Enter(){
 		EnemyState::Enter();
 		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		enemy->SetAnim(L"Walk", 0.0f);
+		enemy->SetAnim(L"Walk", 0.0f, true);
 		m_Path.clear();
 		Execute();
 	}
@@ -26,8 +26,6 @@ namespace basecross {
 		shared_ptr<Object> obj;
 		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
 		auto groups = group->GetGroupVector();
-
-		enemy->SetAnim(L"Walk", 0.0f);
 		Vec3 objDirection;
 		float objRange = FLT_MAX;
 
@@ -142,6 +140,7 @@ namespace basecross {
         // 【＜IntruderAlert が有効な場合＞】
         if (m_IntruderAlert)
         {
+            enemy->SetAnim(L"Set", 0.0f);
             float frameElapsedTime = App::GetApp()->GetElapsedTime();
             // 既に障害物回避中ならその方向を一定時間維持する
             if (enemy->m_IsAvoiding)
@@ -215,8 +214,6 @@ namespace basecross {
             m_Enemy->ChangeState<MobSearch>();
             return;
         }
-        // 攻撃状態のアニメーションに切り替え
-        enemy->SetAnim(L"Set", 0.0f);
 
         // 弾の残数がある場合の処理 
         if (m_BulletRemain > 0)
