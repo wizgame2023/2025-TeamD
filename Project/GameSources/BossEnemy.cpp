@@ -192,7 +192,6 @@ namespace basecross {
 	}
 	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
-			Damage(2.0f, false);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 

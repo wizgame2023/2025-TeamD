@@ -6,21 +6,12 @@
 #pragma once
 #include "stdafx.h"
 
-#include <Effekseer.h>
-#include <EffekseerRendererDX11.h>
-
-
-#pragma comment(lib, "Effekseer.lib" )
-#pragma comment(lib, "EffekseerRendererDX11.lib" )
-
-
 namespace basecross {
 	class Character;
 	class TargetBoard;
 
 	class Player : public Character
 	{
-		//入力ハンドラー
 		float m_MoveSpeed;
 		float m_EnergyCharge;
 		float m_ZoneTime;

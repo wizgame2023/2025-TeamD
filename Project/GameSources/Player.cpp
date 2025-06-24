@@ -23,7 +23,7 @@ namespace basecross {
 		m_ParryJudge(false),
 		m_BoostTime(0.2f),
 		m_BulletDire(Vec3(0)),
-		m_Attacktime(0.25f),
+		m_Attacktime(0.15f),
 		m_Damage(3.0f),
 		m_DamageInterval(0.5f),
 		m_BoostInterval(0.0f),
@@ -32,6 +32,7 @@ namespace basecross {
 		m_HitScale(Vec3(1)),
 		m_SearchDistance(2.0),
 		m_Length(4.0f),
+		m_AttackInterval(0.0f),
 		m_BlinkingInterval(0.1f),
 		m_ParryDamageInterval(false),
 		m_ParryDamageIntervalTime(0.5f)
@@ -122,7 +123,6 @@ namespace basecross {
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B){
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
 					SetAnim(L"Zone");
-					m_Damage = 3.0f;
 					m_zoneAnim = 1.0f;
 					m_HitScale = Vec3(3.0f);
 					m_SearchDistance = 24.0f;
@@ -137,12 +137,11 @@ namespace basecross {
 		}
 
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0){
-			SetAttackDamage(3.0f);
+			SetAttackDamage(10.0f);
 			m_ZoneTime += elapsedTime;
 			if (m_ZoneTime > 3.0f + m_zoneAnim){
-				m_Damage = 3.0f;
 				m_ZoneTime = 0;
-				SetAttackDamage(1.0f);
+				SetAttackDamage(3.0f);
 				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
 				m_SearchDistance = 2.0f;
@@ -311,10 +310,10 @@ namespace basecross {
 			}
 		}
 		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0) {
-			if (IntervalTimer(true, 0.25f, elapsedTime, m_Attacktime, true)) {
+			if (IntervalTimer(true, 0.15f, elapsedTime, m_Attacktime, true)) {
 				m_PlayerStateNum -= PlayerState::ATTACK;
 				m_PlayerStateNum += PlayerState::NORMAL;
-				m_AttackInterval = 0.25f;
+				m_AttackInterval = 0.15f;
 			}
 			else {
 				SetAnim(m_AttackAnim);
@@ -324,7 +323,7 @@ namespace basecross {
 			MovePlayer(6.0f);
 
 			bool isBoost = IntervalTimer(true, 1.0f, elapsedTime, m_BoostInterval, false);
-			bool isAttack = IntervalTimer(true, 0.25f, elapsedTime, m_AttackInterval, false);
+			bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
 			Vec3 rot = SearchRange();
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X && isBoost) {
@@ -421,7 +420,7 @@ namespace basecross {
 	void Player::OnCreate(){
 		Character::OnCreate();
 		InitHP(20);
-		SetAttackDamage(1.0f);
+		SetAttackDamage(3.0f);
 		SetSpeed(4.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
@@ -690,7 +689,7 @@ namespace basecross {
 			auto enemy = dynamic_pointer_cast<Character>(other);
 			float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
 			player->SetCharge(0.1f);
-			enemy->Damage(player->GetDamage(), false);
+			enemy->Damage(player->GetAttackDamage(), false);
 
 			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
 			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
