@@ -85,6 +85,8 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
+		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
+		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
 
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
@@ -184,6 +186,13 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+
+		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		fadeSprite->SetDrawLayer(1);
+		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
+		m_Fade->FadeOut();
+		m_Fade->Stop();
+
 	}
 	/// <summary>
 	/// オブジェクトの更新をONOFF
@@ -350,6 +359,7 @@ namespace basecross {
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
+
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
@@ -503,6 +513,7 @@ namespace basecross {
 			{
 				if (!m_GameOverMenu->IsOpen()) {
 					m_GameOverMenu->Open();
+					//m_Fade->Play();
 				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");

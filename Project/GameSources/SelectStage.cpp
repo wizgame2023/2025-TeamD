@@ -45,6 +45,8 @@ namespace basecross {
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 
 		app->RegisterTexture(L"CHECKMARK", uiPath + L"Check_ClearStage.png");
+		app->RegisterTexture(L"SELECT_START", uiPath + L"BackSelect.png");
+		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 	}
 
 	void SelectStage::CreateSelect() {
@@ -53,6 +55,8 @@ namespace basecross {
 		float leftX = -340.0f;
 
 		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
+		auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
+		auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
@@ -73,7 +77,6 @@ namespace basecross {
 			AddGameObject<Sprite>(L"SELECT_STAGE", position + Vec3(0.0f,175.0f,0.0f), Vec2(150.0f, 50.0f), true);
 			Vec3 dangerLow = Vec3(leftX - leftX * i, 90.0f, 0.0f);
 			for (int j = 0; j < dangerKey.size(); j++) {
-
 				ButtonManager::Create(GetThis<Stage>(), L"Difficulty" + to_wstring(i), L"POSE_CIRCLE", Col4(1, 1, 1, 1),
 					dangerLow - Vec3(90.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f),
 					[](shared_ptr<ObjectInterface> object) {
@@ -92,14 +95,20 @@ namespace basecross {
 			ButtonManager::instance->AddAcceptButton(L"Difficulty" + to_wstring(i), XINPUT_GAMEPAD_A);
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
 		}
-
-		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_GOING", Col4(1,1,1,1),
-			Vec3(0,-300,0), Vec2(200,100), [](shared_ptr<ObjectInterface> object) {
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"POSE_CIRCLE", Col4(1,1,1,1),
+			Vec3(-320,-300,0), Vec2(100, 100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->StartStage();
 				ButtonManager::instance->OpenAndUse(L"Accept");
-
 			});
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"POSE_CIRCLE", Col4(1, 1, 1, 1),
+			Vec3(80, -300, 0), Vec2(100, 100), [](shared_ptr<ObjectInterface> object) {
+				auto stage = static_pointer_cast<SelectStage>(object);
+				stage->Select();
+				//stage->AcceptStage(ButtonManager::instance->GetSelectIndex(L"City"));
+			});
+
+
 
 		ButtonManager::instance->SetInput(L"City", InputData(StickMode::LX, 1, 0.1f));
 		ButtonManager::instance->SetInput(L"Accept", InputData(StickMode::LY, 1, 0.1f));
@@ -155,5 +164,7 @@ namespace basecross {
 		auto data = make_shared<StageData>(StageData{m_StageNumber,m_DifficultyLevel });
 		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToGameStage", data);
 	}
-
+	void SelectStage::Select() {
+		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+	}
 }
