@@ -15,6 +15,7 @@ namespace basecross {
 	class UltIcon;
 	class FollowCamera;
 	class HpSprite;
+	class SpriteFade;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
@@ -49,7 +50,8 @@ namespace basecross {
 		shared_ptr<HpSprite> m_BossHpBar;
 		//shared_ptr<Sprite> m_BossHpBarBackGround;
 		shared_ptr<Sprite> m_BossText;
-
+		shared_ptr<SpriteFade> m_Fade;
+		shared_ptr<Sprite>fadeSprite;
 
 		//ビューの作成
 		void CreateViewLight();

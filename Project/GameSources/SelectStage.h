@@ -20,6 +20,7 @@ namespace basecross {
 		void CreateSelect();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 		
+		bool m_IsOpen;
 		int m_Count;
 		int m_DifficultyLevel;
 		int m_StageNumber;
@@ -40,7 +41,6 @@ namespace basecross {
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-
 		void OnPushA();
 
 		void t(shared_ptr<ObjectInterface> object){}
@@ -48,6 +48,7 @@ namespace basecross {
 		void AcceptStage(int index);
 		void AcceptDifficulty(int index);
 		void StartStage();
+		void Select();
 	};
 
 }
