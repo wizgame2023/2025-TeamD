@@ -81,7 +81,6 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<TitleStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (m_Titlemodel == nullptr) return;
 		if (m_EffectPos != Vec3())
 		{
 			m_EffectPos = m_EffectPos + Vec3(0, 0, -0.1f);
@@ -109,6 +108,7 @@ namespace basecross {
 	}
 
 	void TitleStage::OnPushA() {
+		if (m_Titlemodel->GetDrawActive()) return;
 		auto camera = GetView()->GetTargetCamera();
 		auto forward = camera->GetEye() - camera->GetAt();
 		float rotate = atan2f(forward.x, forward.z);

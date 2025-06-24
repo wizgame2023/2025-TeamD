@@ -80,7 +80,7 @@ namespace basecross {
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
-			m_bulletPally = player->Damage(false, 2.0f);
+			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty));
 			if (m_bulletPally)
 			{
 				player->SetParryPosition(GetPosition());
@@ -102,7 +102,7 @@ namespace basecross {
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto enemy = dynamic_pointer_cast<Enemy>(other);
-			enemy->Damage(1.0f + ((float)difficulty * 1.5f),  false);
+			enemy->Damage(enemy->GetMaxHP() / 2,  false);
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))

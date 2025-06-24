@@ -65,6 +65,7 @@ namespace basecross {
 	void LimitArea::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->AddExcludeCollisionTag(L"Enemy");
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
