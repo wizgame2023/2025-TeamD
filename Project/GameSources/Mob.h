@@ -1,4 +1,4 @@
-/*!
+﻿/*!
 @file Enemy.h
 @brief
 */
@@ -51,10 +51,18 @@ namespace basecross {
 		unique_ptr<EnemyState<Mob>> m_nextState;     //次のステート
 
 		bool m_Update;
+		// Mob.h などに追加
+		float m_RayCastCooldown = 0.0f;
+		const float MAX_RAYCAST_INTERVAL = 0.2f; // 例：0.2秒に1回だけレイキャスト実行
 	public:
+		// Mobクラスに状態変数を追加して管理
+		bool m_IsAvoiding = false;
+		float m_AvoidTime = 0.0f;
+		Vec3 m_AvoidDirection;
+
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
-		‾Mob();
+		~Mob();
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnAfterCreate()override;
@@ -80,6 +88,7 @@ namespace basecross {
 		}
 
 		void AlartMove(shared_ptr<Object> obj);
+		void SetMoveDirection(const Vec3& direction);
 
 		template <class NextState>
 		void ChangeState() {
@@ -97,6 +106,11 @@ namespace basecross {
 				{
 					if (draw->IsTargetAnimeEnd() || enforce) draw->ChangeCurrentAnimation(animname, time);
 				}
+		}
+
+		// ベクトルa, b間をt（0〜1）で補間する関数
+		Vec3 Lerp(const Vec3& a, const Vec3& b, float t) {
+			return a * (1.0f - t) + b * t;
 		}
 
 	private:
