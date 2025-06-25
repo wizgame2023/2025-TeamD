@@ -28,9 +28,9 @@ namespace basecross{
 		//--------------------------------------------------------------------------------------
 		Scene() :SceneBase(){
 			m_StageFile = {
-				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"testStage_Y_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"testStage01.csv",false},{L"testStage02.csv",false},{L"testStage03.csv",false}},
-				{{L"testStage_Y_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}}
+				{{L"testStage_K_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}}
 			};
 		}
 		//--------------------------------------------------------------------------------------
