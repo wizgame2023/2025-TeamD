@@ -111,7 +111,7 @@ namespace basecross {
 
 
 		ButtonManager::instance->SetInput(L"City", InputData(StickMode::LX, 1, 0.1f));
-		ButtonManager::instance->SetInput(L"Accept", InputData(StickMode::LY, 1, 0.1f));
+		ButtonManager::instance->SetInput(L"Accept", InputData(StickMode::LX, 1, 0.1f));
 
 		ButtonManager::instance->AddAcceptButton(L"City",XINPUT_GAMEPAD_A);
 		ButtonManager::instance->AddAcceptButton(L"Accept", XINPUT_GAMEPAD_A);
