@@ -67,8 +67,8 @@ namespace basecross {
 		}
 	}
 	void Scene::OnUpdate() {
-		RayCast::InitRay(10);
 		SceneBase::OnUpdate();
+		RayCast::InitRay(10);
 	}
 
 	Scene::‾Scene() {
