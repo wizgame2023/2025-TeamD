@@ -68,7 +68,7 @@ namespace basecross {
 		ptrColl->AddExcludeCollisionTag(L"Enemy");
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
-
+		AddTag(L"LimitArea");
 	}
 
 	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
