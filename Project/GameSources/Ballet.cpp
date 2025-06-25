@@ -103,6 +103,7 @@ namespace basecross {
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto enemy = dynamic_pointer_cast<Enemy>(other);
 			enemy->Damage(enemy->GetMaxHP() / 2,  false);
+			enemy->OnCollisionEnter(GetThis<GameObject>());
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))

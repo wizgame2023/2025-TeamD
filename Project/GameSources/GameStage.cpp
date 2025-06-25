@@ -218,7 +218,6 @@ namespace basecross {
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				if (player != nullptr) {
 					player->SetIsGaol(false);
-					m_cameraState = CameraState::FOLLOWCAMERA;
 				}
 			}
 		}

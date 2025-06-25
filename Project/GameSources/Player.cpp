@@ -139,7 +139,7 @@ namespace basecross {
 		if ((m_PlayerStateNum & PlayerState::ZONE) != 0){
 			SetAttackDamage(10.0f);
 			m_ZoneTime += elapsedTime;
-			if (m_ZoneTime > 3.0f + m_zoneAnim){
+			if (m_ZoneTime > 2.0f + m_zoneAnim){
 				m_ZoneTime = 0;
 				SetAttackDamage(3.0f);
 				m_HitScale = Vec3(1.0f);
