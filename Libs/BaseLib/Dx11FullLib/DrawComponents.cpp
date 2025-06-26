@@ -1980,6 +1980,11 @@ namespace basecross {
 	}
 
 
+	bool SmBaseDraw::GetAnimeLoop(){
+		auto& AnimData = pImpl->m_SmDrawObject.GetAnimationData();
+		return AnimData.m_IsLoop;
+	}
+
 	//--------------------------------------------------------------------------------------
 	///	PCStatic描画コンポーネント
 	//--------------------------------------------------------------------------------------

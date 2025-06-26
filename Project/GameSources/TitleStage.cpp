@@ -130,7 +130,7 @@ namespace basecross {
 		SetRotation(Vec3(0));
 
 
-		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
+		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(1.0f), //(.1f, .1f, .1f),
@@ -171,7 +171,7 @@ namespace basecross {
 		Qt.normalize();
 
 		GetComponent<Transform>()->SetQuaternion(Qt);
-		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		auto elapsedTime = App::GetApp()->GetElapsedTime();
 		if (m_Flag)
 		{
