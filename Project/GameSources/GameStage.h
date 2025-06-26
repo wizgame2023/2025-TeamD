@@ -15,6 +15,7 @@ namespace basecross {
 	class UltIcon;
 	class FollowCamera;
 	class HpSprite;
+	class StunSprite;
 	class SpriteFade;
 	//--------------------------------------------------------------------------------------
 	//--------------------------------------------------------------------------------------
@@ -48,6 +49,7 @@ namespace basecross {
 		//shared_ptr<Sprite> m_PlayerHpBarBackGround;
 
 		shared_ptr<HpSprite> m_BossHpBar;
+		shared_ptr<StunSprite> m_BossStunBar;
 		//shared_ptr<Sprite> m_BossHpBarBackGround;
 		shared_ptr<Sprite> m_BossText;
 		shared_ptr<SpriteFade> m_Fade;
