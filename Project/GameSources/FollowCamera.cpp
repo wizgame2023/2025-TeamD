@@ -220,11 +220,11 @@ namespace basecross {
 			if (m_CurrntTime > totaltime) {
 				m_IsShaking = false;
 				m_CurrntTime = 0.0f;
-				return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
+				return Vec2(m_Magnification = 4.0f, m_Up = 1.5f);
 			}
 			return Vec2(interpHeight, up);
 		}
-		return Vec2(m_Magnification = 6.0f, m_Up = 2.5f);
+		return Vec2(m_Magnification = 4.0f, m_Up = 1.5f);
 	}
 
 	void FollowCamera::LogCamera() {

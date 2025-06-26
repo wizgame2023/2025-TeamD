@@ -2403,6 +2403,9 @@ namespace basecross {
 		*/
 		//--------------------------------------------------------------------------------------
 		bool HitTestSkinedMeshSphereTriangles(const SPHERE& StartSp, const SPHERE& EndSp, bsm::Vec3& HitPoint, TRIANGLE& RetTri, size_t& RetIndex);
+
+		bool GetAnimeLoop();
+
 	private:
 		// pImplイディオム
 		struct Impl;
