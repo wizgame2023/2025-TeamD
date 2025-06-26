@@ -245,7 +245,7 @@ namespace basecross {
 			m_EnergyCharge += 0.5;
 
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 
 			ScoreManager::Instance()->AddParryCount();
@@ -519,7 +519,7 @@ namespace basecross {
 	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> sorce){
 		bool isPinch = false, isBeforePinch = true;
 		m_HP = max(m_HP, 0);
-		if (m_DamageIntervalStart == false && !m_ParryDamageInterval)
+		if (m_DamageIntervalStart == false)
 		{
 			if (m_HP >= m_MaxHP / 3.0f) {
 				isBeforePinch = false;
@@ -544,10 +544,15 @@ namespace basecross {
 				if (parryDamage == 0 && rot != Vec3()){
 					parry = m_ParryJudge;
 					m_ParryJudge = false;
+					m_ParryTime = 0;
+					m_AttackInterval = 0;
 					return true;
 				}
-				Character::Damage(parryDamage, true);
-				ScoreManager::Instance()->AddDamage(parryDamage);
+				if (!m_ParryDamageInterval)
+				{
+					Character::Damage(parryDamage, true);
+					ScoreManager::Instance()->AddDamage(parryDamage);
+				}
 				return false;
 			}
 			else {

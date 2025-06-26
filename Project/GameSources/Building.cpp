@@ -96,6 +96,9 @@ namespace basecross {
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 
 		ptrDraw->SetOwnShadowActive(true);
+		auto shadow = AddComponent<Shadowmap>();
+		shadow->SetMeshResource(L"OBJECT");
+
 	}
 }
 //end basecross
