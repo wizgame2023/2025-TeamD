@@ -240,9 +240,17 @@ namespace basecross {
 	}
 
 	float Player::Parry(float damage, const float& ParrySecond){
-		Vec3 forward = GetForward();
-		if (ParrySecond > 20){
-			m_EnergyCharge += 0.5;
+		// 関数ローカル定数
+		static constexpr float PerfectThreshold = 20.0f;
+		static constexpr float GreatThreshold = 15.0f;
+		static constexpr float GoodThreshold = 5.0f;
+		static constexpr float EnergyPerfectBonus = 0.5f;
+		static constexpr float EnergyGreatBonus = 0.25f;
+		static constexpr float EnergyGoodBonus = 0.1f;
+
+		if (ParrySecond > PerfectThreshold) {
+			m_EnergyCharge += EnergyPerfectBonus;
+			m_ParryDamageInterval = true;
 
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
@@ -252,31 +260,33 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
-			m_ParryDamageInterval = true;
-			return 0;
+			m_ParryTime = 0.0f;
+			return 0.0f;
 		}
-		else if (ParrySecond <= 20 && ParrySecond > 15) {
-			m_EnergyCharge += 0.25;
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.25f));
-			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-			ScoreManager::Instance()->AddParryCount();
-			SoundManager::Instance().PlaySE(L"SE_GUARD");
+		else if (ParrySecond > GreatThreshold) {
+			m_EnergyCharge += EnergyGreatBonus;
 			m_ParryDamageInterval = true;
-			return damage / 4;
-		}
-		else if (ParrySecond <= 15 && ParrySecond > 5) {
-			m_EnergyCharge += 0.1;
-			m_ParryDamageInterval = true;
+			m_ParryTime = 0.0f;
 
-			return damage / 2;
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+
+			return damage / 4.0f;
+		}
+		else if (ParrySecond > GoodThreshold) {
+			m_EnergyCharge += EnergyGoodBonus;
+			m_ParryTime = 0.0f;
+			return damage / 2.0f;
 		}
 		else {
 			m_DamageIntervalStart = true;
 			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+			m_ParryTime = 0.0f;
 			return damage;
 		}
 	}
+
 
 	void Player::AddAnimation(){
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
@@ -415,6 +425,13 @@ namespace basecross {
 		else if(m_DamageIntervalStart) {
 			Blinking();
 		}
+
+		if (IntervalTimer(m_ParryComboActive, ParryComboWindow,elapsedTime,m_ParryComboTimer,false)){
+			// 猶予切れ
+			m_ParryComboActive = false;
+			m_ParryComboCount = 0;
+		}
+
 	}
 
 	void Player::OnCreate(){
@@ -515,58 +532,50 @@ namespace basecross {
 	void Player::Dead() {
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
+	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> source)
+	{
+		if (m_DamageIntervalStart) return false;
+		bool wasHighHP = (m_HP >= m_MaxHP / 3.0f);
 
-	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> sorce){
-		bool isPinch = false, isBeforePinch = true;
-		m_HP = max(m_HP, 0);
-		if (m_DamageIntervalStart == false)
-		{
-			if (m_HP >= m_MaxHP / 3.0f) {
-				isBeforePinch = false;
-			}
-			if (m_ParryJudge)
-			{
-				Vec3 rot = SearchRange();
-				float parryDamage = Parry(damage, m_ParryTime);
-				if (parryDamage < damage) {
-					if (sorce && sorce->FindTag(L"Attack")) {
-						auto attack = static_pointer_cast<Attack>(sorce);
-						attack->ReflectParry(GetPosition());
+		if (m_ParryJudge) {
+			Vec3 rot = SearchRange();
+			float parryDamage = Parry(damage, m_ParryTime);
 
-						auto camera = GetStage()->GetView()->GetTargetCamera();;
-						auto followcamera = dynamic_pointer_cast<FollowCamera>(camera);
-						if (followcamera != nullptr)
-						{
-							followcamera->SetShaking(true);
-						}
-					}
-				}
-				if (parryDamage == 0 && rot != Vec3()){
-					parry = m_ParryJudge;
-					m_ParryJudge = false;
-					m_ParryTime = 0;
-					m_AttackInterval = 0;
-					return true;
-				}
-				if (!m_ParryDamageInterval)
-				{
-					Character::Damage(parryDamage, true);
-					ScoreManager::Instance()->AddDamage(parryDamage);
-				}
-				return false;
+			// 完璧パリィ（0ダメージ＆有効範囲内）の場合
+			if (parryDamage == 0.0f && rot != Vec3()) {
+				++m_ParryComboCount;                // コンボ回数増加
+				m_ParryComboActive = true;          // 猶予タイマー開始
+				m_ParryComboTimer = ParryComboWindow;
+				// m_ParryJudge はクリアせずそのまま → 連続判定可能
+				return true;
 			}
-			else {
-				SetAnim(L"Nock");
-				m_DamageIntervalStart = true;
-				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
-				Character::Damage(damage, true);
-				ScoreManager::Instance()->AddDamage(damage);
-				return false;
+
+			// それ以外のパリィ――判定終了
+			m_ParryJudge = false;
+			m_ParryTime = 0.0f;
+
+			if (!m_ParryDamageInterval) {
+				Character::Damage(parryDamage, true);
+				ScoreManager::Instance()->AddDamage(parryDamage);
 			}
-			if (!isBeforePinch && m_HP < m_MaxHP / 3.0f) {
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
-			}
+			return false;
 		}
+		else {
+			// 通常被弾
+			SetAnim(L"Nock");
+			m_DamageIntervalStart = true;
+			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+			Character::Damage(damage, true);
+			ScoreManager::Instance()->AddDamage(damage);
+			return false;
+		}
+
+
+		// ピンチ演出（到達しないなら不要）
+		if (wasHighHP && m_HP < m_MaxHP / 3.0f) {
+			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
+		}
+
 		return false;
 	}
 
