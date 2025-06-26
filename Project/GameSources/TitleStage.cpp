@@ -34,7 +34,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title_Rogo.png");
-		app->RegisterTexture(L"STRATA", uiPath + L"StartA.png");
+		app->RegisterTexture(L"STRATA", uiPath + L"Start_A.png");
 		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		m_Effect = AddGameObject<EffectManeger>();
@@ -45,13 +45,15 @@ namespace basecross {
 
 	void TitleStage::CreateTitle() {
 		m_BackGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 5.0f), Vec2(1280.0f, 800.0f), true);
+		m_BackGround->SetDrawLayer(4);
 		//auto borad = AddGameObject<Board>(L"BACKGROUND", Vec3(0.0f, 2.5f, 0.0f), Vec3(6.75f, 4.25f,1));
 		//borad->SetColor(Col4(0, 0, 0, 1));
 		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		m_Title->SetDrawLayer(6);
-		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -250.0f, 0.0f), Vec2(400.0f, 160.0f),true);
+		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(250.0f, 120.0f),true);
 		m_Start->SetDrawLayer(6);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		fadeSprite->SetDrawLayer(6);
 		m_Titlemodel = AddGameObject<TirleStageModel>();
 		m_Titlemodel->SetDrawActive(false);
 		//点滅設定
@@ -79,14 +81,13 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<TitleStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (m_Titlemodel == nullptr) return;
 		if (m_EffectPos != Vec3())
 		{
 			m_EffectPos = m_EffectPos + Vec3(0, 0, -0.1f);
 			m_Effect->SetLocation(m_Handle, m_EffectPos);
 			m_Titlemodel->SetFlag(true);
 			m_Titlemodel->SetDrawActive(true);
-			m_BackGround->SetDrawActive(false);
+			m_BackGround->SetDrawActive(true);
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{
@@ -107,6 +108,7 @@ namespace basecross {
 	}
 
 	void TitleStage::OnPushA() {
+		if (m_Titlemodel->GetDrawActive()) return;
 		auto camera = GetView()->GetTargetCamera();
 		auto forward = camera->GetEye() - camera->GetAt();
 		float rotate = atan2f(forward.x, forward.z);
@@ -140,7 +142,7 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"TITLEBREAK");
 		ptrDraw->SetTextureResource(L"BACKTIRLEBRAKE");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//ptrDraw->SetBlendState(BlendState::Additive);
+		ptrDraw->SetBlendState(BlendState::Additive);
 
 		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
 		ptrDraw->AddAnimation(L"TITLEBREAK", 0.0f, 60.0f, false, 120.0f);

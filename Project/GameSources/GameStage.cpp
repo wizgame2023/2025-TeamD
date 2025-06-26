@@ -22,7 +22,7 @@ namespace basecross {
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
-		PtrMultiLight->SetDefaultLighting();
+		PtrMultiLight->SetDefaultLighting2();
 	}
 	void GameStage::CreateResource() {
 		auto& app = App::GetApp();
@@ -36,7 +36,8 @@ namespace basecross {
 		app->RegisterTexture(L"WAY", texPath + L"Asphalt2.png");
 
 		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
-		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE2", uiPath + L"ResultToTitle.png");
+		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"Result_GoTitle.png");
 		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
 		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
 		app->RegisterTexture(L"RESULT_SELECT_BACK", uiPath + L"ResultSelectBackUI.png");
@@ -79,11 +80,13 @@ namespace basecross {
 		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
 		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
 		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
-		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"GameOver.png");
+		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"Game_Over.png");
 		
 		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
 		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
+		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
+		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
 
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
@@ -183,6 +186,13 @@ namespace basecross {
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
+
+		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		fadeSprite->SetDrawLayer(1);
+		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
+		m_Fade->FadeOut();
+		m_Fade->Stop();
+
 	}
 	/// <summary>
 	/// オブジェクトの更新をONOFF
@@ -208,7 +218,6 @@ namespace basecross {
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				if (player != nullptr) {
 					player->SetIsGaol(false);
-					m_cameraState = CameraState::FOLLOWCAMERA;
 				}
 			}
 		}
@@ -252,7 +261,6 @@ namespace basecross {
 	void GameStage::GameClear() {
 
 		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
-
 		m_NormalIcon->SetDraw(false);
 		m_Icon->SetDraw(false);
 		m_UltIcon->SetDraw(false);
@@ -262,11 +270,11 @@ namespace basecross {
 		m_PlayerHpBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
-		if (player != nullptr && camera != nullptr) {
+		if (player != nullptr && camera != nullptr && m_cameraState == CameraState::FOLLOWCAMERA) {
 			player->SetIsGaol(true);
+			SoundManager::Instance().PlayBGM(L"BGM_GAMECLEAR", 1.0f);
 			Vec3 playerPos = player->GetPosition();
 			Vec3 playerForwardOffset = player->GetForward() * 2.0f;
-
 			Vec3 cameraStartPos = camera->GetEye();
 			Vec3 cameraStartAt = camera->GetAt();
 			Vec3 animAtPos = playerPos + Vec3(0.0f, 0.5f, 0.0f);
@@ -306,18 +314,15 @@ namespace basecross {
 		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
-		SoundManager::Instance().StopBGM();
-		SoundManager::Instance().PlaySE(L"BGM_GAMEOVER", 1.0f);
+		SoundManager::Instance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
 
 			auto enemygruop = GetSharedObjectGroup(L"EnemyGroup");
 			auto enemys = enemygruop->GetGroupVectors();
-			for (auto& enemy : enemys)
-			{
+			for (auto& enemy : enemys){
 				auto shEnemy = enemy.lock();
-				if (shEnemy->GetUpdateActive() == true)
-				{
+				if (shEnemy->GetUpdateActive() == true){
 					shEnemy->SetUpdateActive(false);
 				}
 			}
@@ -353,6 +358,7 @@ namespace basecross {
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
+
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
@@ -387,7 +393,6 @@ namespace basecross {
 				0.0f,
 				true
 			);
-
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
@@ -507,6 +512,7 @@ namespace basecross {
 			{
 				if (!m_GameOverMenu->IsOpen()) {
 					m_GameOverMenu->Open();
+					//m_Fade->Play();
 				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");
@@ -551,7 +557,7 @@ namespace basecross {
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
-
+			SoundManager::Instance().PlaySE(L"SE_CRUSH");
 			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 		else if (msg == L"SpawnBoss") {
