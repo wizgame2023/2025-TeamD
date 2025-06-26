@@ -22,7 +22,7 @@ namespace basecross {
 		//マルチライトの作成
 		auto PtrMultiLight = CreateLight<MultiLight>();
 		//デフォルトのライティングを指定
-		PtrMultiLight->SetDefaultLighting();
+		PtrMultiLight->SetDefaultLighting2();
 	}
 	void GameStage::CreateResource() {
 		auto& app = App::GetApp();
