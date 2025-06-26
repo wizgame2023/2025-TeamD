@@ -58,7 +58,7 @@ namespace basecross {
 		virtual void OnUpdate()override;
 
 		const void SetAnim(wstring animname, float time = 0.0f) {
-			auto draw = GetComponent<PNTBoneModelDraw>();
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
 				draw->ChangeCurrentAnimation(animname, time);
 				/*if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);

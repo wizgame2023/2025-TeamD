@@ -43,6 +43,7 @@ namespace basecross {
 		vector<shared_ptr<Bone>> m_Bones;
 
 		shared_ptr<BcPNTBoneModelDraw> m_ObjectDraw;
+		shared_ptr<BcPNTBoneModelDraw> m_NoneObjectDraw;
 		shared_ptr<Transform> m_ObjectTransform;
 
 	public:

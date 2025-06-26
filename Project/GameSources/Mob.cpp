@@ -155,7 +155,7 @@ namespace basecross {
 	{
 		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge")) && m_IntervalStart)
 		{
-			SetAnim(L"Damage", 0.0f);
+			SetAnim(L"Damage", 0.0f, true);
 			Enemy::OnCollisionEnter(other);
 			m_IntervalStart = false;
 		}

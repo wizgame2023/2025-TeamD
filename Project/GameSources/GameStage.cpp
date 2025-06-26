@@ -88,6 +88,10 @@ namespace basecross {
 		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
 		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
 
+		app->RegisterTexture(L"POSE_START2", uiPath + L"BackGame2.png");
+		app->RegisterTexture(L"RESULT_TITLE3", uiPath + L"Result_GoTitle2.png");
+		app->RegisterTexture(L"POSE_SOUND2", uiPath + L"Sound_Menu2.png");
+
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
 		m_Effect = AddGameObject<EffectManeger>();
@@ -166,7 +170,7 @@ namespace basecross {
 	void GameStage::CreateUI() {
 		
 
-		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 20.0f, 0.0f);
+		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 40.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
@@ -177,14 +181,19 @@ namespace basecross {
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(540.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
 		auto frame = m_PlayerHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0), Vec2(600.0f, 40.0f));
-		m_PlayerHpBar->SetBackColor(Col4(1, 1, 1, 1));
+		m_PlayerHpBar->SetBackColor(Col4(0, 0, 0, 1));
 		frame->SetDrawLayer(1);
 
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		m_BossStunBar = AddGameObject<StunSprite>(boss, bossHpPosition - Vec3(0.0f, 12.0f, 0.0f), Vec3(600.0f, 4.5f, 0.0f));
 		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
 
-		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
+		auto bossFrame = m_BossHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0) , Vec2(865.0f, 30.0f));
+		bossFrame->SetDrawActive(false);
+		m_BossHpBar->SetBackColor(Col4(0, 0, 0, 1));
+
+
+		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 
 		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
