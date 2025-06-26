@@ -88,6 +88,10 @@ namespace basecross {
 		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
 		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
 
+		app->RegisterTexture(L"POSE_START2", uiPath + L"BackGame2.png");
+		app->RegisterTexture(L"RESULT_TITLE3", uiPath + L"Result_GoTitle2.png");
+		app->RegisterTexture(L"POSE_SOUND2", uiPath + L"Sound_Menu2.png");
+
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
 		m_Effect = AddGameObject<EffectManeger>();
