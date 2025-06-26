@@ -260,13 +260,11 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
-			m_ParryTime = 0.0f;
 			return 0.0f;
 		}
 		else if (ParrySecond > GreatThreshold) {
 			m_EnergyCharge += EnergyGreatBonus;
 			m_ParryDamageInterval = true;
-			m_ParryTime = 0.0f;
 
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
@@ -276,13 +274,11 @@ namespace basecross {
 		}
 		else if (ParrySecond > GoodThreshold) {
 			m_EnergyCharge += EnergyGoodBonus;
-			m_ParryTime = 0.0f;
 			return damage / 2.0f;
 		}
 		else {
 			m_DamageIntervalStart = true;
 			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
-			m_ParryTime = 0.0f;
 			return damage;
 		}
 	}
@@ -414,7 +410,7 @@ namespace basecross {
 			m_ParryJudge = false;
 		}
 
-		if (IntervalTimer(m_ParryDamageInterval,0.5f, elapsedTime, m_ParryDamageIntervalTime, true)){
+		if (IntervalTimer(m_ParryDamageInterval,0.75f, elapsedTime, m_ParryDamageIntervalTime, true)){
 			m_ParryDamageInterval = false;
 		}
 
@@ -537,6 +533,11 @@ namespace basecross {
 		if (m_DamageIntervalStart) return false;
 		bool wasHighHP = (m_HP >= m_MaxHP / 3.0f);
 
+		// ピンチ演出（到達しないなら不要）
+		if (wasHighHP && m_HP < m_MaxHP / 3.0f) {
+			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
+		}
+
 		if (m_ParryJudge) {
 			Vec3 rot = SearchRange();
 			float parryDamage = Parry(damage, m_ParryTime);
@@ -552,7 +553,6 @@ namespace basecross {
 
 			// それ以外のパリィ――判定終了
 			m_ParryJudge = false;
-			m_ParryTime = 0.0f;
 
 			if (!m_ParryDamageInterval) {
 				Character::Damage(parryDamage, true);
@@ -561,21 +561,17 @@ namespace basecross {
 			return false;
 		}
 		else {
-			// 通常被弾
-			SetAnim(L"Nock");
-			m_DamageIntervalStart = true;
-			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
-			Character::Damage(damage, true);
-			ScoreManager::Instance()->AddDamage(damage);
-			return false;
+			if (!m_ParryDamageInterval)
+			{
+				// 通常被弾
+				SetAnim(L"Nock");
+				m_DamageIntervalStart = true;
+				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+				Character::Damage(damage, true);
+				ScoreManager::Instance()->AddDamage(damage);
+				return false;
+			}
 		}
-
-
-		// ピンチ演出（到達しないなら不要）
-		if (wasHighHP && m_HP < m_MaxHP / 3.0f) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
-		}
-
 		return false;
 	}
 
