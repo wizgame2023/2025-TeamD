@@ -181,8 +181,8 @@ namespace basecross {
 		frame->SetDrawLayer(1);
 
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		m_BossStunBar = AddGameObject<StunSprite>(boss, bossHpPosition - Vec3(0.0f, 12.0f, 0.0f), Vec3(600.0f, 4.5f, 0.0f));
 		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
-		
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 20.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
@@ -268,6 +268,7 @@ namespace basecross {
 		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
+		m_BossStunBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 		if (player != nullptr && camera != nullptr && m_cameraState == CameraState::FOLLOWCAMERA) {
@@ -314,6 +315,7 @@ namespace basecross {
 		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
+		m_BossStunBar->SetDrawActive(false);
 		SoundManager::Instance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {

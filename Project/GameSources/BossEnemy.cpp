@@ -12,7 +12,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(2.0f,false)),
 		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
@@ -139,6 +139,9 @@ namespace basecross {
 		m_InvincibleTimer.UpdateTimer();
 		if (!m_IsStun) {
 			m_currentState->Execute();
+			if (m_HealStun.UpdateTimer() && m_Stun >= 0.25f) {
+				m_Stun -= 0.05f * elapsed;
+			}
 		}
 		else {
 			auto& effect = m_Stage->GetCreateEffect();
@@ -178,6 +181,7 @@ namespace basecross {
 			float rate = (float)GameManager::Instance()->GetDifficulty();
 			stun /= rate;
 			m_Stun += stun;
+			m_HealStun.Reset();
 			if (m_Stun > 1.0f) {
 				if (stun > 0.25f * rate) {
 					m_IsStun = true;
