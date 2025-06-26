@@ -44,6 +44,11 @@ namespace basecross {
 		Effekseer::Handle m_ParryHandle;
 		shared_ptr<TargetBoard> m_TargetBoard;
 		wstring m_AttackAnim = L"Attack";
+		bool  m_ParryComboActive = false;  // コンボ猶予中フラグ
+		int    m_ParryComboCount = 0;     // 連続パリィの回数
+		float  m_ParryComboTimer = 0.0f;  // 連続パリィ猶予時間
+
+		static constexpr float ParryComboWindow = 1.0f;  // 完璧パリィから次のパリィまでの猶予[s]
 
 	public:
 		int m_PlayerStateNum;
@@ -87,9 +92,10 @@ namespace basecross {
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
-
 		void UpdateAnim();
 		float Parry(float damage, const float& ParrySecond);
+		void ApplyDamage(float dmg, bool shakeCamera);
+		void PlayParryEffect();
 		void AddAnimation();
 		void PlayAnimation();
 		void Blinking();
