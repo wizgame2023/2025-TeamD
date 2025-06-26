@@ -72,14 +72,14 @@ namespace basecross {
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND", Vec3(-40.0f, 125.0f, 0), Vec2(180, 90), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND2", Vec3(35.0f, 125.0f, 0), Vec2(280, 110), true);
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-20.0f, - 75.0f, 0), Vec2(180, 80), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE3", Vec3(35.0f, - 75.0f, 0), Vec2(280, 110), true);
 		AddSprite(sprite);
 		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, 25.0f, 0), Vec2(280, 110), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-40.0f, -175.0f, 0), Vec2(180, 90), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), true);
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
@@ -166,7 +166,7 @@ namespace basecross {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 210, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), true);
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);		
 
