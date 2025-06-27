@@ -548,6 +548,13 @@ namespace basecross {
 				m_ParryComboActive = true;          // 猶予タイマー開始
 				m_ParryComboTimer = ParryComboWindow;
 				// m_ParryJudge はクリアせずそのまま → 連続判定可能
+
+				if (source && source->FindTag(L"Attack")) {
+					auto attack = dynamic_pointer_cast<Attack>(source);
+					if (attack) {
+						attack->ReflectParry(GetPosition());
+					}
+				}
 				return true;
 			}
 
