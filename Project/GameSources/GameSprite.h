@@ -62,6 +62,23 @@ namespace basecross {
 		}
 		shared_ptr<Sprite> AddSprite(const wstring& key, Vec3 offset, Vec2 size);
 	};
+
+	class StunSprite : public Object {
+		shared_ptr<BossEnemy> m_Owner;
+
+		vector<shared_ptr<Sprite>> m_Edge;
+		shared_ptr<Sprite> m_HpBar;
+		shared_ptr<Sprite> m_HpBarBackGround;
+
+	public:
+		StunSprite(const shared_ptr<Stage>& stage, shared_ptr<BossEnemy>& owner, Vec3 position, Vec3 size);
+		virtual ‾StunSprite() {}
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+		void SetBackColor(Col4 color) {
+			m_HpBarBackGround->SetDiffuse(color);
+		}
+	};
 }
 
 //end basecross

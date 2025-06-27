@@ -35,6 +35,7 @@ namespace basecross {
 
 		float m_Stun;
 		bool m_IsStun;
+		Timer m_HealStun;
 		bool m_DeadEffect;
 		Timer m_ComboTimer;
 		int m_ComboCount;
@@ -71,6 +72,7 @@ namespace basecross {
 		wstring GetCurrentAnimationKey();
 
 		void AddStun(float stun);
+		float GetStun() const { return m_Stun; }
 		
 		void SetCondition(float time, int defeatCount) {
 			m_IsAppearance = false;
