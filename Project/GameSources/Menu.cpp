@@ -315,9 +315,9 @@ namespace basecross {
 		//text->SetDiffuse(Col4(0, 0, 0, 1));
 		//AddSprite(text);
 
-		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-585.0f, -220.0f, 0.0f), Vec2(180, 80));
+		auto  choices = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-585.0f, -225.0f, 0.0f), Vec2(160, 70));
 		AddSprite(choices);
-		choices = GetStage()->AddGameObject<Sprite>(L"SELECT_RESULT", Vec3(-385.0f, -225.0f, 0.0f), Vec2(180, 80));
+		choices = GetStage()->AddGameObject<Sprite>(L"SELECT_RESULT", Vec3(-395.0f, -225.0f, 0.0f), Vec2(160, 70));
 		AddSprite(choices);
 		choices = GetStage()->AddGameObject<Sprite>(L"RESULT_NEXT_STAGE", Vec3(-210.0f, -210.0f, 0.0f), Vec2(210, 100));
 		AddSprite(choices);
@@ -330,7 +330,7 @@ namespace basecross {
 			});
 
 		//セレクト
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-395.0f, -260.0f, 0.0f), Vec2(50, 70),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-405.0f, -260.0f, 0.0f), Vec2(50, 70),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
