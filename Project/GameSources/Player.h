@@ -100,7 +100,7 @@ namespace basecross {
 		void PlayAnimation();
 		void Blinking();
 		const void SetAnim(wstring animname, float time = 0.0f) {
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			auto draw = GetComponent<PNTBoneModelDraw>();
 			if (draw->GetCurrentAnimation() != animname)
 				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
 				else 
