@@ -462,7 +462,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		RayCast::DebugRay(Line(Vec3(0,1,0), Vec3(0,1,10)), Col4(1,0,0,1), GetThis<Stage>());
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
