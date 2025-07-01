@@ -243,14 +243,6 @@ namespace basecross {
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -0.5f, -dire/ 1.5f);
 			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 1.0f, -dire * 1.25f);
 			m_cameraState = CameraState::OPENINGCAMERA;
-			// 補間開始時のカメラ位置
-			// 補間終了時のカメラ位置（最終位置）
-			// 補間開始時にカメラが注視するターゲット位置
-			// 補間終了時にカメラが注視するターゲット位置
-			// 第二フェーズ用のカメラ最終位置（必要に応じて利用）
-			// 第二フェーズ用の注視ターゲット位置（必要に応じて利用）
-			// カメラの補間にかける総時間（外部からの参照）
-
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
 			ptrOpeningCameraman->SetReverse(false);
 			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, 0.0f,true);
@@ -349,7 +341,6 @@ namespace basecross {
 			Vec3 Playrot = player->GetForward();
 			auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 			Vec3 CameraPos = camera->GetEye();
-
 			Vec3 CameraEndPos = Playpos + (Playrot / 2) + Vec3(0.0f, 1.0f, 0.0f);
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);

@@ -1,6 +1,6 @@
 /*!
-@file Enemy.cpp
-@brief
+ @file   MobState.cpp
+ @brief  MobSearch / MobAlert の実装
 */
 
 #include "stdafx.h"
@@ -8,266 +8,280 @@
 #include "MobState.h"
 
 namespace basecross {
+    //―――――――――――――――――――――――――――
+    // 障害物回避ロジック
+    //―――――――――――――――――――――――――――
+    static void HandleObstacleAvoidance(std::shared_ptr<Mob> mob, Stage* stage){
+        // レイキャストのクールダウン減衰
+        float frameTime = App::GetApp()->GetElapsedTime();
+        mob->m_RayCastCooldown -= frameTime;
+        if (mob->m_RayCastCooldown > 0.0f) return;
+        auto enemy = dynamic_pointer_cast<Enemy>(mob);
+        // プレイヤー方向へのレイキャスト
+        RayCastHit hit;
+        Line ray(mob->GetPosition(), enemy->GetIntruder()->GetPosition());
+        ray.SetMaxLength(10.0f);
 
-	void MobSearch::Enter(){
-		EnemyState::Enter();
-		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		enemy->SetAnim(L"Walk", 0.0f, true);
-		m_Path.clear();
-		Execute();
-	}
-
-	void MobSearch::Execute(){
-		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
-		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		Vec3 pos = enemy->GetPosition();
-		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
-
-		shared_ptr<Object> obj;
-		auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
-		auto groups = group->GetGroupVector();
-		Vec3 objDirection;
-		float objRange = FLT_MAX;
-
-		for (const auto& citizen : groups){
-			auto shObj = citizen.lock();
-			Vec3 direction = shObj->GetComponent<Transform>()->GetPosition() - pos;
-			float range = direction.length();
-			if (range < objRange){
-				objRange = range;
-				objDirection = direction;
-				obj = dynamic_pointer_cast<Object>(shObj);
-			}
-		}
-
-		if (obj){
-			objDirection = obj->GetComponent<Transform>()->GetPosition() - pos;
-			m_IntruderAlert = m_Enemy->GetIntruderAlert();
-
-			if (m_IntruderAlert){
-				m_Enemy->ChangeState<MobAlert>();
-				return;
-			}
-
-			float objRotate = atan2f(-objDirection.z, objDirection.x);
-			m_Transform->SetRotation(Vec3(0, objRotate, 0));
-			float objRange = objDirection.length();
-
-			if (enemy->m_kariState == Mob::kariState::hakai && objRange <= enemy->m_BalletRange){
-				m_Enemy->ChangeState<MobAlert>();
-			}
-			else{
-				pos += objDirection.normalize() * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
-				enemy->SetPosition(pos);
-			}
-		}
-		else{
-			Vec3 direction = m_Player->GetPosition() - pos;
-			float rotate = atan2f(direction.x, direction.z);
-			m_Transform->SetRotation(Vec3(0, rotate, 0));
-			float range = direction.length();
-
-			if (range > enemy->m_BalletRange){
-				pos += direction.normalize() * elapsedTime * m_Enemy->m_ZoneElapsedTime * ((int)difficulty * 2);
-				enemy->SetPosition(pos);
-			}
-			else{
-				m_IntruderAlert = m_Enemy->GetIntruderAlert();
-				if (m_IntruderAlert){
-					m_Enemy->ChangeState<MobAlert>();
-				}
-			}
-		}
-	}
-
-	void MobSearch::Exit(){
-		auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-		enemy->SetAnim(L"SetUp", 0.0f);
-	}
-
-    void MobAlert::Enter(){
-        EnemyState::Enter();
-        auto mob = dynamic_pointer_cast<Mob>(m_Enemy);
-        m_Stage = m_Enemy->GetStage();
-
-        // 弾発射用の間隔を初期化（必要に応じてランダムな値も利用可能）  
-        mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f; // 例：Util::RandZeroToOne() * (mob->MAX_BALLET_INTERVAL * 0.5f)
-        m_BulletRemain = mob->m_BulletRemain;
-
-        // ステージからエフェクト管理オブジェクトを取得  
-        auto stage = static_pointer_cast<GameStage>(m_Stage);
-        m_Effect = (stage != nullptr) ? stage->GetCreateEffect() : nullptr;
-
-        Execute();
-    }
-
-    void MobAlert::Execute() {
-        auto stage = static_pointer_cast<Stage>(m_Stage);
-        // タイムレートを掛けた経過時間
-        float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
-        auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-
-        // intruder 状況の確認
-        m_IntruderAlert = enemy->GetIntruderAlert();
-
-        // Citizen グループ内の最も近いオブジェクトを検索
-        shared_ptr<Object> obj;
-        auto group = m_Stage->GetSharedObjectGroup(L"Citizen");
-        auto groups = group->GetGroupVector();
-        Vec3 objDirection;
-        float objRange = FLT_MAX;
-        for (const auto& citizen : groups) {
-            auto shObj = citizen.lock();
-            if (shObj) {
-                Vec3 currentDir = shObj->GetComponent<Transform>()->GetPosition() - m_Enemy->GetPosition();
-                float currentRange = currentDir.length();
-                if (currentRange < objRange) {
-                    objRange = currentRange;
-                    objDirection = currentDir;
-                    obj = dynamic_pointer_cast<Object>(shObj);
+        std::vector<std::wstring> excludeTags{ L"Bullet", L"Line", L"Ground", L"Player" };
+        if (RayCast::HitTestVec(hit, ray, stage->GetGameObjectVec(), excludeTags, mob)) {
+            // 障害物を検出したら回避方向を設定
+            auto ht = hit.m_Object->GetComponent<Transform>();
+            if (ht) {
+                Vec3 avoid = mob->GetPosition() - ht->GetPosition();
+                if (avoid.length() > 0.001f) {
+                    avoid.normalize();
+                    mob->m_AvoidDirection = avoid;
+                    mob->m_IsAvoiding = true;
+                    mob->m_AvoidTime = AVOID_DURATION;
+                    mob->SetMoveDirection(avoid);
                 }
-            }
-        }
-
-        Vec3 direction;
-        // 現在の向きと位置の取得
-        Vec3 forward = enemy->GetForward();
-        Vec3 position = enemy->GetPosition();
-        // forward ベクトルから回転角（ラジアン）の算出
-        float rotate = atan2f(forward.x, forward.z);
-
-
-        // 【＜IntruderAlert が有効な場合＞】
-        if (m_IntruderAlert)
-        {
-            enemy->SetAnim(L"Set", 0.0f);
-            float frameElapsedTime = App::GetApp()->GetElapsedTime();
-            // 既に障害物回避中ならその方向を一定時間維持する
-            if (enemy->m_IsAvoiding)
-            {
-                enemy->m_AvoidTime -= frameElapsedTime;
-                if (enemy->m_AvoidTime > 0.0f)
-                {
-                    // 補間付きの移動によって滑らかに回避
-                    enemy->SetMoveDirection(enemy->m_AvoidDirection);
-                    return;
-                }
-                else
-                {
-                    enemy->m_IsAvoiding = false;
-                }
-            }
-            float elapsedTime = App::GetApp()->GetElapsedTime();
-
-            // RayCast クールダウンを減らす
-            enemy->m_RayCastCooldown -= elapsedTime;
-
-            // クールタイムが残っていればレイキャストをスキップして、前回の方向で移動継続
-            if (enemy->m_RayCastCooldown > 0.0f) {
-                if (enemy->m_IsAvoiding && enemy->m_AvoidTime > 0.0f) {
-                    enemy->m_AvoidTime -= elapsedTime;
-                    enemy->SetMoveDirection(enemy->m_AvoidDirection);
-                    return;
-                }
-            }
-            else {
-                // プレイヤー方向までの線分上の障害物検出（プレイヤーは除外しない）
-                RayCastHit hit;
-                auto line = Line(enemy->GetPosition(), m_Player->GetPosition());
-                line.SetMaxLength(10.0f);
-                vector<wstring> excludeTags = { L"Bullet", L"Line", L"Ground", L"Player"};
-                if (RayCast::HitTestVec(hit, line, m_Stage->GetGameObjectVec(), excludeTags, enemy)) {
-                    // ヒットした対象がプレイヤーでなければ回避処理へ
-                    auto hitTransform = hit.m_Object->GetComponent<Transform>();
-                    if (hitTransform) {
-                        Vec3 avoidDir = enemy->GetPosition() - hitTransform->GetPosition();
-                        if (avoidDir.length() > 0.001f) {
-                            avoidDir.normalize();
-                            enemy->m_AvoidDirection = avoidDir;
-                            enemy->m_IsAvoiding = true;
-                            enemy->m_AvoidTime = 0.8f;  // 回避状態を0.8秒維持
-                            enemy->SetMoveDirection(avoidDir);
-                            return;
-                        }
-                    }
-                }
-                else {
-                    // プレイヤー方向へ通常移動
-                    enemy->AlartMove(m_Player);
-                }
-            }
-            direction = enemy->GetDirectionToIntruderObject(m_Player);
-        }
-        else if (obj != nullptr) { // 【＜何か Citizen ターゲットがある場合＞】
-            enemy->AlartMove(obj);
-            direction = m_Enemy->GetDirectionToIntruderObject(obj);
-            // 対象オブジェクト方向へ回転
-            float objRotate = atan2f(objDirection.x, objDirection.z);
-            m_Transform->SetRotation(Vec3(0, objRotate, 0));
-            // 一定距離以上離れていれば探索状態に戻す
-            if (objRange > enemy->m_BalletRange / 2) {
-                m_Enemy->ChangeState<MobSearch>();
-                return;
-            }
-        }
-        else { // 【＜ターゲットが見つからなければ＞】
-            m_Enemy->ChangeState<MobSearch>();
-            return;
-        }
-
-        // 弾の残数がある場合の処理 
-        if (m_BulletRemain > 0)
-        {
-            // エフェクト発動条件チェック
-            if (enemy->m_BalletInterval < 0.4f && enemy->m_ShotRandomInterval < 0.4f && !m_BulletEffect)
-            {
-                m_Effect->PlayEffect(m_Eyehandle, L"EnemyEye",
-                    Vec3(position.x, position.y + 0.5f, position.z), 0.0f);
-                m_Effect->SetRotation(m_Eyehandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-                m_BulletEffect = true;
-            }
-            else if (enemy->m_BalletInterval < 0.2f && enemy->m_ShotRandomInterval < 0.2f && !m_BulletSound) {
-                SoundManager::Instance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
-                m_BulletSound = true;
-            }
-            else if (enemy->m_BalletInterval <= 0 && enemy->m_ShotRandomInterval <= 0) {
-                m_Effect->PlayEffect(m_Handle, L"Flash",
-                    Vec3(position.x + forward.x / 2, position.y + 0.25f, position.z + forward.z / 2), 8.0f);
-                m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-                m_Effect->SetScale(m_Handle, Vec3(0.1f, 0.1f, 0.1f));
-
-                auto ballet = m_Stage->AddGameObject<Bullet>(
-                    m_Transform->GetPosition() + direction * enemy->m_MuzzleOffset,
-                    enemy->m_BalletSpeed, direction, enemy->m_BalletRange);
-
-                m_BulletEffect = false;
-                m_BulletSound = false;
-                enemy->m_BalletInterval = enemy->MAX_BALLET_INTERVAL;
-                enemy->m_ShotRandomInterval = enemy->MAX_BALLET_INTERVAL;
-                m_BulletRemain--;
-                SoundManager::Instance().PlaySE(L"SE_SHOT");
             }
         }
         else {
-            enemy->SetAnim(L"Reload", 0.0f);
-            m_BulletRelord -= elapsedTime;
-            if (m_BulletRelord < 0.0f) {
-                enemy->m_BalletInterval = enemy->MAX_BALLET_INTERVAL;
-                enemy->m_ShotRandomInterval = 1.0f;
-                m_BulletRemain = enemy->m_BulletRemain;
-                m_BulletEffect = false;
-                m_BulletSound = false;
-                m_BulletRelord = 3.0f;
+            // 障害物なし → プレイヤーに向かって移動
+            //mob->AlartMove(mob->m_Intruder);
+        }
+    }
+
+    //―――――――――――――――――――――――――――
+    // 射撃エフェクト＆サウンド更新
+    //―――――――――――――――――――――――――――
+    static void UpdateShootingEffects(
+        std::shared_ptr<Mob> mob,
+        shared_ptr<EffectManeger> effect,
+        Effekseer::Handle& eyeHandle,
+        Effekseer::Handle& flashHandle,
+        const Vec3& pos,
+        const Vec3& forward,
+        int& bullets,
+        bool& eyeFxPlayed,
+        bool& shotSignPlayed){
+
+        float& interval = mob->m_BalletInterval;
+        float& randomIntvl = mob->m_ShotRandomInterval;
+        const float maxIntv = mob->MAX_BALLET_INTERVAL;
+
+        // 1) エフェクト予告サイン
+        if (interval < EFFECT_THRESHOLD1 &&
+            randomIntvl < EFFECT_THRESHOLD1 &&
+            !eyeFxPlayed){
+            effect->PlayEffect(
+                eyeHandle,
+                L"EnemyEye",
+                Vec3(pos.x, pos.y + 0.5f, pos.z),
+                0.0f
+            );
+            effect->SetRotation(
+                eyeHandle,
+                Vec3(0, 1, 0),
+                atan2f(forward.x, forward.z)
+            );
+            eyeFxPlayed = true;
+        }
+        // 2) 攻撃サイン音
+        else if (interval < EFFECT_THRESHOLD2 &&
+            randomIntvl < EFFECT_THRESHOLD2 &&
+            !shotSignPlayed){
+            SoundManager::Instance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
+            shotSignPlayed = true;
+        }
+        // 3) 実弾発射
+        else if (interval <= 0.0f &&
+            randomIntvl <= 0.0f){
+            // フラッシュエフェクト
+            effect->PlayEffect(
+                flashHandle,
+                L"Flash",
+                Vec3(
+                    pos.x + forward.x * 0.5f,
+                    pos.y + 0.25f,
+                    pos.z + forward.z * 0.5f
+                ),
+                8.0f
+            );
+            effect->SetRotation(
+                flashHandle,
+                Vec3(0, 1, 0),
+                atan2f(forward.x, forward.z)
+            );
+            effect->SetScale(
+                flashHandle,
+                Vec3(0.1f, 0.1f, 0.1f)
+            );
+
+            // 弾を生成
+            Vec3 dir = mob->GetDirectionToIntruderObject(mob->m_Intruder);
+            mob->GetStage()->AddGameObject<Bullet>(
+                mob->GetTransform()->GetPosition() + dir * mob->m_MuzzleOffset,
+                mob->m_BalletSpeed,
+                dir,
+                mob->m_BalletRange
+            );
+
+            // 発射後リセット
+            eyeFxPlayed = false;
+            shotSignPlayed = false;
+            interval = maxIntv;
+            randomIntvl = maxIntv;
+            --bullets;
+            SoundManager::Instance().PlaySE(L"SE_SHOT");
+        }
+    }
+
+    //--------------------------------------------------
+    // MobSearch
+    //--------------------------------------------------
+    void MobSearch::Enter(){
+        EnemyState::Enter();
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        mob->SetAnim(L"Walk", 0.0f, true);
+        m_Path.clear();
+    }
+
+    void MobSearch::Execute(){
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        float dt = DeltaTime();
+
+        // 最も近い市民探索
+        Vec3 dir;
+        float dist;
+        auto target = FindNearest(L"Citizen", dir, dist);
+
+        // プレイヤー検知
+        if (IsAlert()) {
+            mob->ChangeState<MobAlert>();
+            return;
+        }
+
+        // 追跡ロジック
+        if (target) {
+            RotateTo(dir);
+            if (mob->m_kariState == Mob::kariState::hakai &&
+                dist <= mob->m_BalletRange)
+            {
+                mob->ChangeState<MobAlert>();
+                return;
+            }
+            Vec3 step = dir.normalize()
+                * dt
+                * mob->m_ZoneElapsedTime
+                * (static_cast<int>(GameManager::Instance()->GetDifficulty()) * 2);
+            mob->SetPosition(mob->GetPosition() + step);
+        }
+        else {
+            Vec3 pdir = m_Player->GetPosition() - mob->GetPosition();
+            RotateTo(pdir);
+            if (pdir.length() > mob->m_BalletRange) {
+                Vec3 step = pdir.normalize()
+                    * dt
+                    * mob->m_ZoneElapsedTime
+                    * (static_cast<int>(GameManager::Instance()->GetDifficulty()) * 2);
+                mob->SetPosition(mob->GetPosition() + step);
+            }
+        }
+    }
+
+    void MobSearch::Exit(){
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        mob->SetAnim(L"SetUp", 0.0f);
+    }
+
+    //--------------------------------------------------
+    // MobAlert
+    //--------------------------------------------------
+    void MobAlert::Enter(){
+        EnemyState::Enter();
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+
+        // 弾数・インターバル初期化
+        m_BulletRemain = mob->m_BulletRemain;
+        mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f;
+
+        // エフェクト取得
+        auto stage = std::static_pointer_cast<GameStage>(m_Stage);
+        m_Effect = stage ? stage->GetCreateEffect() : nullptr;
+    }
+
+    void MobAlert::Execute(){
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        float dt = DeltaTime();
+
+        // 最も近い市民探索
+        Vec3 dir;
+        float dist;
+        auto target = FindNearest(L"Citizen", dir, dist);
+
+        // 警戒時
+        if (IsAlert()) {
+            // 回避中処理
+            if (mob->m_IsAvoiding) {
+                mob->m_AvoidTime -= App::GetApp()->GetElapsedTime();
+                if (mob->m_AvoidTime > 0.0f) {
+                    mob->SetMoveDirection(mob->m_AvoidDirection);
+                    return;
+                }
+                mob->m_IsAvoiding = false;
+            }
+
+            // 障害物回避 or プレイヤー追跡
+            HandleObstacleAvoidance(mob, m_Stage.get());
+            RotateTo(mob->GetDirectionToIntruderObject(m_Player));
+        }
+        // 市民追跡
+        else if (target) {
+            mob->AlartMove(target);
+            RotateTo(dir);
+            if (dist > mob->m_BalletRange * 0.5f) {
+                mob->ChangeState<MobSearch>();
+                return;
+            }
+        }
+        // 探索に戻す
+        else {
+            mob->ChangeState<MobSearch>();
+            return;
+        }
+
+        // 射撃 or リロード
+        if (m_BulletRemain > 0) {
+            mob->SetAnim(L"Set", 0.0f);
+            UpdateShootingEffects(
+                mob,
+                m_Effect,
+                m_EyeHandle,
+                m_FlashHandle,
+                mob->GetPosition(),
+                mob->GetForward(),
+                m_BulletRemain,
+                m_BulletEffect,
+                m_BulletSound
+            );
+        }
+        else {
+            // リロードアニメ
+            mob->SetAnim(L"Reload", 0.0f);
+            m_BulletReloadTime -= dt;
+            if (m_BulletReloadTime <= 0.0f) {
+                mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
+                mob->m_ShotRandomInterval = 1.0f;
+                m_BulletRemain = mob->m_BulletRemain;
+                m_BulletEffect = m_BulletSound = false;
+                m_BulletReloadTime = RELOAD_DURATION;
             }
         }
 
+        // エフェクト速度同期
         if (m_Effect) {
-            m_Effect->SetEffectSpeed(m_Eyehandle, GameManager::Instance()->GetTimeRate());
-            m_Effect->SetEffectSpeed(m_Handle, GameManager::Instance()->GetTimeRate());
+            m_Effect->SetEffectSpeed(
+                m_EyeHandle, GameManager::Instance()->GetTimeRate());
+            m_Effect->SetEffectSpeed(
+                m_FlashHandle, GameManager::Instance()->GetTimeRate());
         }
     }
+
     void MobAlert::Exit(){
-        auto enemy = dynamic_pointer_cast<Mob>(m_Enemy);
-        enemy->SetAnim(L"SetDown", 0.0f);
+        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        mob->SetAnim(L"SetDown", 0.0f);
     }
-}
+
+} // namespace basecross
