@@ -12,16 +12,18 @@ namespace basecross {
 	/// リソースの作成
 	/// </summary>
 	void TutorialStage::CreateResource() {
-		//auto& app = App::GetApp();
-		//auto mediaPath = app->GetDataDirWString();
-		//wstring uiPath = mediaPath + L"UI/";
-		//wstring texPath = mediaPath + L"Textures/";
-		//wstring modelPath = mediaPath + L"Models/";
+
+		auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();
+		wstring uiPath = mediaPath + L"UI/";
+		wstring texPath = mediaPath + L"Textures/";
+		wstring modelPath = mediaPath + L"Models/";
 
 		//app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
 		//app->RegisterTexture(L"RESULT_TITLE", uiPath + L"ResultToTitle.png");
 		////app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		GameStage::CreateResource();
+		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 
 	}
 

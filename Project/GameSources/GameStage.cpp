@@ -239,9 +239,9 @@ namespace basecross {
 			float dire = 3.0f;
 			Vec3 Playpos = player->GetPosition(); 
 			Vec3 AtPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
-			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 AtEndPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -0.5f, -dire/ 1.5f);
-			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
+			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 1.0f, -dire * 1.25f);
 			m_cameraState = CameraState::OPENINGCAMERA;
 			// 補間開始時のカメラ位置
 			// 補間終了時のカメラ位置（最終位置）
