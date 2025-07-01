@@ -47,7 +47,7 @@ namespace basecross {
 		bool  m_ParryComboActive = false;  // コンボ猶予中フラグ
 		int    m_ParryComboCount = 0;     // 連続パリィの回数
 		float  m_ParryComboTimer = 0.0f;  // 連続パリィ猶予時間
-
+		float m_time;
 		static constexpr float ParryComboWindow = 1.0f;  // 完璧パリィから次のパリィまでの猶予[s]
 
 	public:

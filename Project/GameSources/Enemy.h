@@ -33,6 +33,9 @@ namespace basecross {
 		void SetIntruder(const shared_ptr<Character>& character) {
 			m_Intruder = character;
 		}
+		shared_ptr<Character> GetIntruder() {
+			return m_Intruder;
+		}
 		Vec3 GetDirectionToIntruder();
 		float GetDistanceToIntruder();
 		Vec3 GetDirectionToIntruderObject(shared_ptr<Object> obj);
