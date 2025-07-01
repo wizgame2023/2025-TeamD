@@ -119,7 +119,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (m_EnergyCharge >= 1.0){
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPushKeyTbl['Q']) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPushKeyTbl[VK_SPACE]) {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
 					SetAnim(L"Zone");
 					m_zoneAnim = 1.0f;
@@ -153,35 +153,37 @@ namespace basecross {
 		}
 	}
 
-	Vec3 Player::SearchRange()
-	{
+	Vec3 Player::SearchRange() {
+		// 前方ベクトルと自位置取得
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
-		auto bulletGroup = GetStage()->GetSharedObjectGroup(L"BulletGroup");
+
+		// 敵グループから最も近いオブジェクトを探索
 		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
-		auto targetBulletVector = ObjectSearch(bulletGroup);
-		auto targetEnemyVector = ObjectSearch(enemyGroup);
-		m_TargetBoard->SetTarget(nullptr);
-		if (targetEnemyVector != nullptr){
-			Vec3 targetEnemy = targetEnemyVector->GetComponent<Transform>()->GetPosition();
-			if (IsWithinDetectionRange(forward, targetEnemy - position, 90.0)) {
-				m_TargetBoard->SetTarget(targetEnemyVector);
-				if ((position - targetEnemy).length() <= 10.0f){
-					//この方向に少し動く、動いている間はコントローラで移動できない
-					Vec3 rot = RotateTowardsTarget(position, targetEnemy);
-					return rot;
-				}
-				else {
-					return Vec3();
-				}
-			}
-			else {
-				return Vec3();
-			}
-		}
-		else {
+		auto targetEnemyObject = ObjectSearch(enemyGroup);
+		if (!targetEnemyObject)
 			return Vec3();
-		}
+
+		// 敵の位置と自分からのベクトル
+		Vec3 enemyPos = targetEnemyObject->GetComponent<Transform>()->GetPosition();
+		Vec3 toEnemy = enemyPos - position;
+
+		// 前方検出角度チェック（定数化）
+		constexpr float kDetectionAngleDeg = 90.0f;
+		if (!IsWithinDetectionRange(forward, toEnemy, kDetectionAngleDeg))
+			return Vec3();
+
+		// ターゲット登録
+		m_TargetBoard->SetTarget(targetEnemyObject);
+
+		// 近距離判定（平方距離で比較）
+		constexpr float kCloseDist = 10.0f;
+		float sqrDistToEnemy = toEnemy.x * toEnemy.x + toEnemy.y * toEnemy.y + toEnemy.z * toEnemy.z;
+		if (sqrDistToEnemy > kCloseDist * kCloseDist)
+			return Vec3();
+
+		// 近距離時の移動方向ベクトルを返す
+		return RotateTowardsTarget(position, enemyPos);
 	}
 
 	void Player::SetCharge(const float& charge){
@@ -209,27 +211,26 @@ namespace basecross {
 		}
 	}
 
-	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group){
-		auto target = group->GetGroupVectors();
-		shared_ptr<GameObject> nearObject = nullptr;
-		for (auto vec : target){
-			auto sharedObject = vec.lock();
-			if (nearObject == nullptr){
-				nearObject = sharedObject;
-			}
-			else if (nearObject != nullptr){
+	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group) {
+		const auto& list = group->GetGroupVectors();
+		Vec3 position = m_Transform->GetPosition();
 
-				if (sharedObject != nullptr){
-					Vec3 position = m_Transform->GetPosition();
-					Vec3 vec0 = nearObject->GetComponent<Transform>()->GetPosition();
-					Vec3 vec1 = sharedObject->GetComponent<Transform>()->GetPosition();
-					if ((vec1 - position).length() < (vec0 - position).length()){
-						nearObject = sharedObject;
-					}
+		shared_ptr<GameObject> nearest = nullptr;
+		float bestSqrDist = std::numeric_limits<float>::infinity();
+
+		for (auto& weakObj : list) {
+			if (auto obj = weakObj.lock()) {
+				Vec3 objPos = obj->GetComponent<Transform>()->GetPosition();
+				Vec3 diff = objPos - position;
+				float sqrDist = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+
+				if (sqrDist < bestSqrDist) {
+					bestSqrDist = sqrDist;
+					nearest = obj;
 				}
 			}
 		}
-		return nearObject;
+		return nearest;
 	}
 
 	void Player::UpdateAnim(){
@@ -238,48 +239,64 @@ namespace basecross {
 		draw->UpdateAnimation(elapsedTime);
 	}
 
-	float Player::Parry(float damage, const float& ParrySecond){
-		// 関数ローカル定数
-		static constexpr float PerfectThreshold = 20.0f;
-		static constexpr float GreatThreshold = 15.0f;
-		static constexpr float GoodThreshold = 5.0f;
-		static constexpr float EnergyPerfectBonus = 0.5f;
-		static constexpr float EnergyGreatBonus = 0.25f;
-		static constexpr float EnergyGoodBonus = 0.1f;
+	float Player::Parry(float damage, const float& ParrySecond) {
+		// 定義そのまま
+		float PerfectThreshold = 20.0f;
+		float GreatThreshold = 15.0f;
+		float GoodThreshold = 5.0f;
+		float EnergyPerfectBonus = 0.5f;
+		float EnergyGreatBonus = 0.25f;
+		float EnergyGoodBonus = 0.1f;
 
-		if (ParrySecond > PerfectThreshold) {
-			m_EnergyCharge += EnergyPerfectBonus;
-			m_ParryDamageInterval = true;
-
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
-			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-
-			ScoreManager::Instance()->AddParryCount();
-			SoundManager::Instance().PlaySE(L"SE_GUARD");
-
-			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
-			return 0.0f;
-		}
-		else if (ParrySecond > GreatThreshold) {
-			m_EnergyCharge += EnergyGreatBonus;
-			m_ParryDamageInterval = true;
-
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
-			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-
-			return damage / 4.0f;
-		}
-		else if (ParrySecond > GoodThreshold) {
-			m_EnergyCharge += EnergyGoodBonus;
-			return damage / 2.0f;
-		}
-		else {
-			m_DamageIntervalStart = true;
-			SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+		// Miss
+		if (ParrySecond <= GoodThreshold) {
 			return damage;
 		}
+
+		// 判定＆報酬用変数
+		float reducedDamage = damage;
+		float energyBonus = 0.0f;
+		bool  needEffect = false;
+		bool  isPerfect = false;
+
+		if (ParrySecond > PerfectThreshold) {
+			// Perfect
+			reducedDamage = 0.0f;
+			energyBonus = EnergyPerfectBonus;
+			needEffect = true;
+			isPerfect = true;
+		}
+		else if (ParrySecond > GreatThreshold) {
+			// Great
+			reducedDamage = damage * 0.25f;
+			energyBonus = EnergyGreatBonus;
+			needEffect = true;
+		}
+		else {
+			// Good
+			reducedDamage = damage * 0.5f;
+			energyBonus = EnergyGoodBonus;
+		}
+
+		// 共通：エナジー加算・無敵時間設定
+		m_EnergyCharge += energyBonus;
+		m_ParryDamageInterval = needEffect;
+
+		// 共通：パリィ演出（Perfect/Great）
+		if (needEffect) {
+			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
+			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
+			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
+		}
+
+		// 追加：Perfect 時のみ
+		if (isPerfect) {
+			ScoreManager::Instance()->AddParryCount();
+			SoundManager::Instance().PlaySE(L"SE_GUARD");
+			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
+		}
+
+		return reducedDamage;
 	}
 
 
@@ -371,7 +388,6 @@ namespace basecross {
 				}
 			}
 		}
-
 	}
 
 	void Player::Blinking(){
@@ -528,6 +544,7 @@ namespace basecross {
 	void Player::Dead() {
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
+
 	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> source)
 	{
 		if (m_DamageIntervalStart) return false;
@@ -553,6 +570,9 @@ namespace basecross {
 					auto attack = dynamic_pointer_cast<Attack>(source);
 					if (attack) {
 						attack->ReflectParry(GetPosition());
+						auto camera = GetStage()->GetView()->GetTargetCamera();;
+						auto get = dynamic_pointer_cast<FollowCamera>(camera);
+						get->SetShaking(true);
 					}
 				}
 				return true;
@@ -562,8 +582,18 @@ namespace basecross {
 			m_ParryJudge = false;
 
 			if (!m_ParryDamageInterval) {
-				Character::Damage(parryDamage, true);
-				ScoreManager::Instance()->AddDamage(parryDamage);
+				if (damage != parryDamage){
+					Character::Damage(parryDamage, false);
+					ScoreManager::Instance()->AddDamage(parryDamage);
+				}
+				else {
+					// 通常被弾
+					SetAnim(L"Nock");
+					m_DamageIntervalStart = true;
+					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+					Character::Damage(damage, true);
+					ScoreManager::Instance()->AddDamage(damage);
+				}
 			}
 			return false;
 		}
