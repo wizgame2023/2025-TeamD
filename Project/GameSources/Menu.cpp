@@ -308,7 +308,7 @@ namespace basecross {
 		auto text = GetStage()->AddGameObject<Sprite>(L"RESULT_TEXT", Vec3(-600, 180, 0.0f), Vec2(455, 345));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
-		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-350, 330, 0.0f), Vec2(130, 130));
+		text = GetStage()->AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-360, 330, 0.0f), Vec2(130, 130));
 		text->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(text);
 		//text = GetStage()->AddGameObject<Sprite>(L"RESULT_SCORE2", Vec3(-600, -100, 0.0f), Vec2(120, 120));
