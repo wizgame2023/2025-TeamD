@@ -42,7 +42,7 @@ namespace basecross {
 	void CrushAttack::ReflectParry(Vec3 position) {
 		if (m_Date.m_Owner != nullptr) {
 			auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
-			boss->AddStun(0.5f / (float)GameManager::Instance()->GetDifficulty());
+			boss->AddStun(0.5f);
 			Vec3 direction = GetPosition() - position;
 			direction = direction.normalize();
 			boss->GetComponent<Gravity>()->StartJump(direction + Vec3(0.0f, 2.0f, 0.0f));

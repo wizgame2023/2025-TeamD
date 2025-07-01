@@ -146,5 +146,78 @@ namespace basecross {
 
 		return sprite;
 	}
+
+
+	StunSprite::StunSprite(const shared_ptr<Stage>& stage, shared_ptr<BossEnemy>& owner, Vec3 position, Vec3 size) :
+		Object(stage, position, Vec3(), size), m_Owner(owner){
+
+	}
+	void StunSprite::OnCreate() {
+		Object::OnCreate();
+		Vec3 position = GetPosition();
+		Vec3 size = GetScale();
+
+		Vec3 leftEdgePosition = position - Vec3(0.0f, size.y / 2.0f, 0);
+		Vec3 rightEdgePosition = position + Vec3(size.x, -size.y / 2.0f, 0);
+
+		m_HpBar = m_Stage->AddGameObject<Sprite>(L"HP_BAR2D", GetPosition(), Vec2(size.x, size.y));
+		//m_HpBar->SetDiffuse(m_Color);
+		m_HpBar->SetDrawLayer(1);
+		m_HpBarBackGround = m_Stage->AddGameObject<Sprite>(L"HP_BAR2D", GetPosition(), Vec2(size.x, size.y));
+		m_HpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
+		m_HpBarBackGround->SetDrawLayer(0);
+
+		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		//edge->SetDiffuse(m_Color);
+		edge->SetDrawLayer(1);
+		m_Edge.push_back(edge);
+
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		//edge->SetDiffuse(m_Color);
+		edge->SetDrawLayer(1);
+		m_Edge.push_back(edge);
+
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		//edge->SetDiffuse(Col4(0, 0, 0, 1));
+		edge->SetDrawLayer(0);
+		m_Edge.push_back(edge);
+
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		//edge->SetDiffuse(Col4(0, 0, 0, 1));
+		edge->SetDrawLayer(0);
+		m_Edge.push_back(edge);
+	}
+	void StunSprite::OnUpdate() {
+		if (m_Owner == nullptr) return;
+		float currentStun = m_Owner->GetStun();
+		float maxStun = 1.0f;
+
+		float rate = maxStun - currentStun;
+		rate = max(0.0f, rate);
+		rate = min(1.0f, rate);
+
+		Vec3 size = GetScale();
+		Vec3 leftPosition = GetPosition();
+
+		size.x *= rate;
+
+		m_HpBar->UpdateSize(Vec2(size.x, size.y));
+
+		Vec3 rightEdgePosition = leftPosition + Vec3(size.x, 0, 0);
+		m_Edge[0]->SetPos(leftPosition - Vec3(0, size.y / 2.0f, 0));
+		m_Edge[1]->SetPos(rightEdgePosition - Vec3(0, size.y / 2.0f, 0));
+
+
+		bool isActive = GetDrawActive();
+		if (!m_Owner->GetDrawActive()) {
+			isActive = false;
+		}
+		m_HpBar->SetDrawActive(isActive);
+		m_HpBarBackGround->SetDrawActive(isActive);
+
+		for (auto& edge : m_Edge) {
+			edge->SetDrawActive(isActive);
+		}
+	}
 }
 //end basecross

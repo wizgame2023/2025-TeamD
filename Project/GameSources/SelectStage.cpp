@@ -29,6 +29,7 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_TITLE", uiPath + L"ResultToTitle.png");
 		app->RegisterTexture(L"SELECT_STAGE", uiPath + L"SelectStage.png");
 		app->RegisterTexture(L"SELECT_GOING", uiPath + L"SelectStageToGoing.png");
+		app->RegisterTexture(L"SELECT_GOING2", uiPath + L"StageToSelectGoing.png");
 		app->RegisterTexture(L"SELECT_NUMBER", uiPath + L"Number.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
 		//app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
@@ -46,6 +47,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"CHECKMARK", uiPath + L"Check_ClearStage.png");
 		app->RegisterTexture(L"SELECT_START", uiPath + L"BackSelect.png");
+		app->RegisterTexture(L"SELECT_START2", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
 	}
 
@@ -55,8 +57,8 @@ namespace basecross {
 		float leftX = -340.0f;
 
 		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
-		auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
-		auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
+		//auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
+		//auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
@@ -95,14 +97,14 @@ namespace basecross {
 			ButtonManager::instance->AddAcceptButton(L"Difficulty" + to_wstring(i), XINPUT_GAMEPAD_A);
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
 		}
-		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"POSE_CIRCLE", Col4(1,1,1,1),
-			Vec3(-320,-300,0), Vec2(100, 100), [](shared_ptr<ObjectInterface> object) {
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_GOING2", L"SELECT_GOING",
+			Vec3(-200, -300, 0), Vec2(200, 100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->StartStage();
 				ButtonManager::instance->OpenAndUse(L"Accept");
 			});
-		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"POSE_CIRCLE", Col4(1, 1, 1, 1),
-			Vec3(80, -300, 0), Vec2(100, 100), [](shared_ptr<ObjectInterface> object) {
+		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_START2", L"SELECT_START",
+			Vec3(200, -300, 0), Vec2(200, 100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->Select();
 				//stage->AcceptStage(ButtonManager::instance->GetSelectIndex(L"City"));

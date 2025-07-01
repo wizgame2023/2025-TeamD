@@ -234,7 +234,7 @@ namespace basecross {
 
 	void Player::UpdateAnim(){
 		float elapsedTime = GetElapsed();
-		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		auto draw = GetComponent<PNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 	}
 
@@ -284,7 +284,7 @@ namespace basecross {
 
 
 	void Player::AddAnimation(){
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
@@ -375,7 +375,7 @@ namespace basecross {
 	}
 
 	void Player::Blinking(){
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto state = ptrDraw->GetBlendState();
 		float elapsedTime = GetElapsed();
 		if (IntervalTimer(true, 0.1f, elapsedTime, m_BlinkingInterval, true)){
@@ -405,7 +405,7 @@ namespace basecross {
 	void Player::IntervalManagement()
 	{
 		float elapsedTime = GetElapsed();
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		if (IntervalTimer(m_ParryJudge,15.0f, 1.0f ,m_ParryTime, true)){
 			m_ParryJudge = false;
 		}
@@ -445,7 +445,7 @@ namespace basecross {
 		ptrDraw->SetTextureResource(L"01");*/
 
 
-		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.1f), //(.1f, .1f, .1f),
@@ -460,7 +460,7 @@ namespace basecross {
 		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
 		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		ptrDraw->SetOwnShadowActive(false);
-		ptrDraw->SetFogEnabled(true);
+		//ptrDraw->SetFogEnabled(true);
 		ptrDraw->SetModelDiffusePriority(true);
 		AddAnimation();
 
@@ -491,7 +491,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
 		float elapsedTime = GetElapsed();
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 
 		UpdateAnim();
 		if (m_IsGoal == false){
@@ -548,6 +548,13 @@ namespace basecross {
 				m_ParryComboActive = true;          // 猶予タイマー開始
 				m_ParryComboTimer = ParryComboWindow;
 				// m_ParryJudge はクリアせずそのまま → 連続判定可能
+
+				if (source && source->FindTag(L"Attack")) {
+					auto attack = dynamic_pointer_cast<Attack>(source);
+					if (attack) {
+						attack->ReflectParry(GetPosition());
+					}
+				}
 				return true;
 			}
 

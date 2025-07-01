@@ -88,6 +88,10 @@ namespace basecross {
 		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
 		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
 
+		app->RegisterTexture(L"POSE_START2", uiPath + L"BackGame2.png");
+		app->RegisterTexture(L"RESULT_TITLE3", uiPath + L"Result_GoTitle2.png");
+		app->RegisterTexture(L"POSE_SOUND2", uiPath + L"Sound_Menu2.png");
+
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
 		m_Effect = AddGameObject<EffectManeger>();
@@ -181,7 +185,9 @@ namespace basecross {
 		frame->SetDrawLayer(1);
 
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
+		m_BossStunBar = AddGameObject<StunSprite>(boss, bossHpPosition - Vec3(0.0f, 12.0f, 0.0f), Vec3(600.0f, 4.5f, 0.0f));
 		m_BossHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(boss), bossHpPosition, Vec3(800.0f, 12.0f, 0.0f), Col4(1, 0, 0, 1));
+
 		auto bossFrame = m_BossHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0) , Vec2(865.0f, 30.0f));
 		bossFrame->SetDrawActive(false);
 		m_BossHpBar->SetBackColor(Col4(0, 0, 0, 1));
@@ -271,6 +277,7 @@ namespace basecross {
 		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
+		m_BossStunBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 		if (player != nullptr && camera != nullptr && m_cameraState == CameraState::FOLLOWCAMERA) {
@@ -317,6 +324,7 @@ namespace basecross {
 		m_UltIcon->SetCharge(m_UltEnege);
 		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
+		m_BossStunBar->SetDrawActive(false);
 		SoundManager::Instance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
@@ -454,7 +462,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		RayCast::DebugRay(Line(Vec3(0,1,0), Vec3(0,1,10)), Col4(1,0,0,1), GetThis<Stage>());
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
