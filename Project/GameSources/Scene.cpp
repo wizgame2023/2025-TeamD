@@ -56,7 +56,7 @@ namespace basecross {
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
     
-			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTutorialGameStage");
 			m_MaxCount = 3;
 
 			//App::GetApp()->GetStepTimer().SetFixedTimeStep(true);
@@ -67,8 +67,8 @@ namespace basecross {
 		}
 	}
 	void Scene::OnUpdate() {
-		RayCast::InitRay(10);
 		SceneBase::OnUpdate();
+		RayCast::InitRay(10);
 	}
 
 	Scene::‾Scene() {
@@ -114,6 +114,7 @@ namespace basecross {
 				count->stageNum = 0;
 				count->level += 1;
 				ResetActiveStage<GameStage>(GetFileName(*count), *count);
+				return;
 			}
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(GetFileName(*count),*count);
