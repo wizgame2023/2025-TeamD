@@ -12,7 +12,7 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(2.0f,false)),
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(7.5f,false)),
 		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
 	{
@@ -104,6 +104,7 @@ namespace basecross {
 		AddAnimation();
 		SetAnimation(L"Idle");
 		RegisterAttack();
+
 	}
 
 	void BossEnemy::RegisterAttack() {
@@ -128,6 +129,11 @@ namespace basecross {
 		float hp = GetMaxHP();
 		hp *= (int)difficulty;
 		InitHP(hp);
+
+		float healStunTime = 7.5f;
+		healStunTime /= addRate;
+		m_HealStun.SetTime(healStunTime);
+
 	}
 
 	void BossEnemy::OnUpdate()
