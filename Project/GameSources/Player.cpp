@@ -66,7 +66,7 @@ namespace basecross {
 		float moveX = GetInputState().x;
 		float moveZ = GetInputState().y;
 
-		if (moveX + moveZ != 0) {
+		if (moveX + moveZ != 0 || moveX - moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 
 			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
@@ -91,8 +91,6 @@ namespace basecross {
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
-			//auto utilPtr = GetBehavior<UtilBehavior>();
-			//utilPtr->RotToHead(angle, 1.0f);
 			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
 			SetAnim(L"Dash");
@@ -119,8 +117,9 @@ namespace basecross {
 	void Player::ZoneActivation(){
 		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (m_EnergyCharge >= 1.0){
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B){
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPushKeyTbl['Q']) {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
 					SetAnim(L"Zone");
 					m_zoneAnim = 1.0f;
@@ -300,6 +299,7 @@ namespace basecross {
 
 	void Player::PlayAnimation()
 	{
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = GetElapsed();
 		Vec3 forward = GetForward();
@@ -332,7 +332,7 @@ namespace basecross {
 			bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
 			Vec3 rot = SearchRange();
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X && isBoost) {
+			if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
 				m_BoostAngle = GetForward();
 				float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
 				m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
@@ -343,7 +343,7 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A ) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
 				if (isAttack)
 				{
 					if (m_AttackAnim == L"Attack2") {
