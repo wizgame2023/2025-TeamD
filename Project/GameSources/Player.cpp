@@ -66,7 +66,7 @@ namespace basecross {
 		float moveX = GetInputState().x;
 		float moveZ = GetInputState().y;
 
-		if (moveX + moveZ != 0) {
+		if (moveX + moveZ != 0 || moveX - moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
 
 			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
@@ -91,8 +91,6 @@ namespace basecross {
 		}
 		//回転の計算
 		if (angle.length() > 0.0f) {
-			//auto utilPtr = GetBehavior<UtilBehavior>();
-			//utilPtr->RotToHead(angle, 1.0f);
 			SetRotation(Vec3(0, rot, 0));
 			m_BulletDire = GetForward();
 			SetAnim(L"Dash");
@@ -119,8 +117,9 @@ namespace basecross {
 	void Player::ZoneActivation(){
 		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (m_EnergyCharge >= 1.0){
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B){
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPushKeyTbl['Q']) {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
 					SetAnim(L"Zone");
 					m_zoneAnim = 1.0f;
@@ -235,7 +234,7 @@ namespace basecross {
 
 	void Player::UpdateAnim(){
 		float elapsedTime = GetElapsed();
-		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		auto draw = GetComponent<PNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsedTime);
 	}
 
@@ -285,7 +284,7 @@ namespace basecross {
 
 
 	void Player::AddAnimation(){
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
@@ -300,6 +299,7 @@ namespace basecross {
 
 	void Player::PlayAnimation()
 	{
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = GetElapsed();
 		Vec3 forward = GetForward();
@@ -332,7 +332,7 @@ namespace basecross {
 			bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
 			Vec3 rot = SearchRange();
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X && isBoost) {
+			if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
 				m_BoostAngle = GetForward();
 				float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
 				m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
@@ -343,7 +343,7 @@ namespace basecross {
 				SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 			}
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A ) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
 				if (isAttack)
 				{
 					if (m_AttackAnim == L"Attack2") {
@@ -375,7 +375,7 @@ namespace basecross {
 	}
 
 	void Player::Blinking(){
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto state = ptrDraw->GetBlendState();
 		float elapsedTime = GetElapsed();
 		if (IntervalTimer(true, 0.1f, elapsedTime, m_BlinkingInterval, true)){
@@ -405,7 +405,7 @@ namespace basecross {
 	void Player::IntervalManagement()
 	{
 		float elapsedTime = GetElapsed();
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		if (IntervalTimer(m_ParryJudge,15.0f, 1.0f ,m_ParryTime, true)){
 			m_ParryJudge = false;
 		}
@@ -445,7 +445,7 @@ namespace basecross {
 		ptrDraw->SetTextureResource(L"01");*/
 
 
-		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.1f), //(.1f, .1f, .1f),
@@ -460,7 +460,7 @@ namespace basecross {
 		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
 		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		ptrDraw->SetOwnShadowActive(false);
-		ptrDraw->SetFogEnabled(true);
+		//ptrDraw->SetFogEnabled(true);
 		ptrDraw->SetModelDiffusePriority(true);
 		AddAnimation();
 
@@ -491,7 +491,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		//cntlVec
 		float elapsedTime = GetElapsed();
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 
 		UpdateAnim();
 		if (m_IsGoal == false){

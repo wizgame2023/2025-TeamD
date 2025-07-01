@@ -242,9 +242,9 @@ namespace basecross {
 			float dire = 3.0f;
 			Vec3 Playpos = player->GetPosition(); 
 			Vec3 AtPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
-			Vec3 AtEndPos = Playpos + Vec3(0.0f, 1.0f, 0.0f);
+			Vec3 AtEndPos = Playpos + Vec3(0.0f, 0.0f, 0.0f);
 			Vec3 CameraPos = Playpos + Vec3(0.0f, -0.5f, -dire/ 1.5f);
-			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 2.0f, -dire * 1.5f);
+			Vec3 CameraEndPos = Playpos + Vec3(0.0f, 1.0f, -dire * 1.25f);
 			m_cameraState = CameraState::OPENINGCAMERA;
 			// 補間開始時のカメラ位置
 			// 補間終了時のカメラ位置（最終位置）
@@ -465,7 +465,6 @@ namespace basecross {
 
 	void GameStage::OnUpdate() {
 		auto& app = App::GetApp();
-		RayCast::DebugRay(Line(Vec3(0,1,0), Vec3(0,1,10)), Col4(1,0,0,1), GetThis<Stage>());
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
