@@ -29,6 +29,9 @@ namespace basecross {
 		bool m_ParryDamageInterval;
 		bool m_DamageIntervalStart;
 		bool m_IsGoal;
+		bool m_IsPerfectParry;
+		bool m_IsParry;
+		float m_PerfectParrySecond;
 		float m_ParryDamage;
 		float m_zoneAnim;
 		float m_SearchDistance;
@@ -48,7 +51,7 @@ namespace basecross {
 		int    m_ParryComboCount = 0;     // 連続パリィの回数
 		float  m_ParryComboTimer = 0.0f;  // 連続パリィ猶予時間
 		float m_time;
-		static constexpr float ParryComboWindow = 1.0f;  // 完璧パリィから次のパリィまでの猶予[s]
+		float ParryComboWindow = 1.0f;  // 完璧パリィから次のパリィまでの猶予[s]
 
 	public:
 		int m_PlayerStateNum;
@@ -88,7 +91,7 @@ namespace basecross {
 		void SetIsGaol(const bool& goal);
 		Vec3 SearchRange();
 		void SetCharge(const float& charge);
-
+		void HandlePerfectParryInput();
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
 		void AimRock(Vec3 rotate);
 		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
