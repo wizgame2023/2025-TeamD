@@ -37,10 +37,6 @@ namespace basecross {
                 }
             }
         }
-        else {
-            // 障害物なし → プレイヤーに向かって移動
-            //mob->AlartMove(mob->m_Intruder);
-        }
     }
 
     //―――――――――――――――――――――――――――
@@ -200,6 +196,7 @@ namespace basecross {
         // エフェクト取得
         auto stage = std::static_pointer_cast<GameStage>(m_Stage);
         m_Effect = stage ? stage->GetCreateEffect() : nullptr;
+        mob->SetAnim(L"Set", 0.0f, true);
     }
 
     void MobAlert::Execute(){
@@ -244,7 +241,6 @@ namespace basecross {
 
         // 射撃 or リロード
         if (m_BulletRemain > 0) {
-            mob->SetAnim(L"Set", 0.0f);
             UpdateShootingEffects(
                 mob,
                 m_Effect,
