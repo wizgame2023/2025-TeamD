@@ -35,7 +35,9 @@ namespace basecross {
 		m_AttackInterval(0.0f),
 		m_BlinkingInterval(0.1f),
 		m_ParryDamageInterval(false),
-		m_ParryDamageIntervalTime(0.5f)
+		m_ParryDamageIntervalTime(0.5f),
+		m_IsPerfectParry(false),
+		m_IsParry(false)
 	{}
 	Player::‾Player(){}
 
@@ -128,7 +130,6 @@ namespace basecross {
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
 					m_PlayerStateNum += PlayerState::ZONE;
-					m_PlayerStateNum -= PlayerState::NORMAL;
 
 					GameManager::Instance()->StartZone(5.0f);
 				}
@@ -146,7 +147,6 @@ namespace basecross {
 				m_SearchDistance = 2.0f;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
-				m_PlayerStateNum += PlayerState::NORMAL;
 
 				//GameManager::Instance()->SetTimeRate(1.0f);
 			}
@@ -294,6 +294,8 @@ namespace basecross {
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
+			m_IsPerfectParry = true;
+			m_IsParry = true;
 		}
 
 		return reducedDamage;
@@ -307,7 +309,7 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
@@ -444,6 +446,24 @@ namespace basecross {
 			m_ParryComboCount = 0;
 		}
 
+		if (IntervalTimer(m_IsPerfectParry, 0.5f, elapsedTime, m_PerfectParrySecond, false)){
+			m_IsPerfectParry = false;
+			m_PerfectParrySecond = 0.5f;
+		}
+		else {
+			HandlePerfectParryInput();
+		}
+	}
+
+	void Player::HandlePerfectParryInput()
+	{
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		if (!m_IsParry) return;
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
+			m_IsParry = false;
+			PostEvent(0.0f, nullptr, GetStage(), L"HitStopVibration");
+		}
 	}
 
 	void Player::OnCreate(){
@@ -598,8 +618,7 @@ namespace basecross {
 			return false;
 		}
 		else {
-			if (!m_ParryDamageInterval)
-			{
+			if (!m_ParryDamageInterval){
 				// 通常被弾
 				SetAnim(L"Nock");
 				m_DamageIntervalStart = true;

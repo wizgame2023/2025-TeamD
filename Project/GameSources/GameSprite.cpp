@@ -126,7 +126,7 @@ namespace basecross {
 
 
 		bool isActive = GetDrawActive();
-		if (currentHp <= 0 || !m_Owner->GetDrawActive()) {
+		if (!m_Owner->IsArive()) {
 			isActive = false;
 		}
 		m_HpBar->SetDrawActive(isActive);
@@ -209,7 +209,7 @@ namespace basecross {
 
 
 		bool isActive = GetDrawActive();
-		if (!m_Owner->GetDrawActive()) {
+		if (!m_Owner->IsArive()) {
 			isActive = false;
 		}
 		m_HpBar->SetDrawActive(isActive);
