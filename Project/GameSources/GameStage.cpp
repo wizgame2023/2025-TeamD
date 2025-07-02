@@ -488,7 +488,7 @@ namespace basecross {
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
 				ScoreManager::Instance()->UpdateTime(elapsed);
-				bool isBossDraw = boss->GetDrawActive();
+				bool isBossDraw = boss->IsArive();
 				m_BossHpBar->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
 			}
