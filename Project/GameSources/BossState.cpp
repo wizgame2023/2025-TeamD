@@ -88,8 +88,6 @@ namespace basecross {
 			else {
 				m_Enemy->Move(-direction / 2.0f);
 			}
-
-			
 		}
 	}
 	void BossHostility::Exit()
