@@ -26,8 +26,8 @@ namespace basecross {
 
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetLightHeight(150.0f);
-		shadowPtr->SetViewWidth(200.0f);
-		shadowPtr->SetViewHeight(200.0f);
+		//shadowPtr->SetViewWidth(200.0f);
+		//shadowPtr->SetViewHeight(200.0f);
 
 		AddTag(L"Ground");
 	}
