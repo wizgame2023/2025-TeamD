@@ -611,7 +611,7 @@ namespace basecross {
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
 
-			PostEvent(0.4f, nullptr, GetThis<Stage>(), L"HitStopVibration");
+			PostEvent(1.0f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
 	}
 }
