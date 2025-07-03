@@ -17,10 +17,10 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	///	@class	EffectManeger
+	///	@class	EffectManager
 	///	@brief	Effekseerライブラリを使用したエフェクトの再生、管理、描画を行うクラス
 	//--------------------------------------------------------------------------------------
-	class EffectManeger : public MultiParticle {
+	class EffectManager : public MultiParticle {
 
 	/// @brief 読み込んだエフェクトリソースを管理するマップ (キー: wstring, 値: EffectRef)
 	map<wstring, Effekseer::EffectRef> m_ResMap;
@@ -47,7 +47,7 @@ namespace basecross {
 		@param[in]	stage	ゲームのステージオブジェクトなど、初期化に必要な情報を持つオブジェクト
 		*/
 		//--------------------------------------------------------------------------------------
-		EffectManeger(const shared_ptr<Stage>& stage);
+		EffectManager(const shared_ptr<Stage>& stage);
 
 		//--------------------------------------------------------------------------------------
 		/*!
@@ -55,7 +55,7 @@ namespace basecross {
 		@details	Effekseer関連のリソースを解放します。
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ‾EffectManeger();
+		virtual ‾EffectManager();
 
 		//--------------------------------------------------------------------------------------
 		/*!

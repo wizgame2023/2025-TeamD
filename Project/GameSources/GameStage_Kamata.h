@@ -7,7 +7,7 @@
 #include "stdafx.h"
 
 namespace basecross {
-	class EffectManeger;
+	class EffectManager;
 	//--------------------------------------------------------------------------------------
 	//	ゲームステージクラス
 	//--------------------------------------------------------------------------------------
@@ -23,7 +23,7 @@ namespace basecross {
 		bool m_IsPose;
 
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 	public:
 		//構築と破棄
 

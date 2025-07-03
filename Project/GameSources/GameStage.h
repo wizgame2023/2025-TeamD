@@ -70,7 +70,7 @@ namespace basecross {
 		void BossAppaerCamera();
 		void GameClear();
 		void ToOpeningCamera();
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		shared_ptr<FollowCamera> m_Camera;
 
 		shared_ptr<SingleView> m_ProductionCameraView; 
@@ -86,7 +86,7 @@ namespace basecross {
 		virtual void OnDestroy()override;
 		void CreateResource();
 		virtual void OnEvent(const shared_ptr<Event>& event)override;
-		shared_ptr <EffectManeger> GetCreateEffect();
+		shared_ptr <EffectManager> GetCreateEffect();
 		shared_ptr<FollowCamera> SetCameraPause();
 		void SetAllGameObjectActive(bool flag);
 		void ToMainCamera();

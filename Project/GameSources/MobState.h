@@ -113,7 +113,7 @@ namespace basecross {
         bool  m_BulletEffect = false;
         bool  m_BulletSound = false;
 
-        std::shared_ptr<EffectManeger> m_Effect;
+        std::shared_ptr<EffectManager> m_Effect;
         Effekseer::Handle              m_EyeHandle = -1;
         Effekseer::Handle              m_FlashHandle = -1;
 

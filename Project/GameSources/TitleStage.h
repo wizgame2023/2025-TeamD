@@ -16,7 +16,7 @@ namespace basecross {
 	class TitleStage : public Stage {
 		//コントローラー取得
 		InputHandler<TitleStage> m_InputHandler;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		Effekseer::Handle m_Handle;
 		Vec3 m_EffectPos;
 		//ビューの作成
@@ -39,7 +39,7 @@ namespace basecross {
 		virtual void OnUpdate()override;
 
 		void OnPushA();
-		shared_ptr<EffectManeger> GetEffect(){
+		shared_ptr<EffectManager> GetEffect(){
 			return m_Effect;
 		}
 	};
@@ -47,7 +47,7 @@ namespace basecross {
     class TirleStageModel : public Object {
 		bool m_Flag = false; //フラグ
 		bool m_EndFlag = false; //フラグ
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		Effekseer::Handle m_Handle;
 
     public:
