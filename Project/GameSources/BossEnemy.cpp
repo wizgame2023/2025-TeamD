@@ -189,7 +189,7 @@ namespace basecross {
 			m_Stun += stun;
 			m_HealStun.Reset();
 			if (m_Stun > 1.0f) {
-				if (stun > 0.25f * rate) {
+				if (stun > 0.25f / rate) {
 					m_IsStun = true;
 					SetAnimation(L"Stan_First", true);
 				}

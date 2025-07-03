@@ -1340,7 +1340,7 @@ namespace basecross {
 						}
 					}
 					//すでにアニメが終了している
-					if (TgtAnimeData.m_IsAnimeEnd) {
+					if (TgtAnimeData.m_IsAnimeEnd && ElapsedTime > 0) {
 						//現在のローカル行列を使用
 						return true;
 					}

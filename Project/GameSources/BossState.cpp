@@ -39,6 +39,8 @@ namespace basecross {
 
 	}
 
+	int BossHostility::m_MissileCount = 0;
+
 	void BossHostility::Enter()
 	{
 		EnemyState::Enter();
@@ -56,8 +58,11 @@ namespace basecross {
 		if (distance < 5.0f) {
 			auto gravity = m_Enemy->GetComponent<Gravity>(false);
 			if (gravity) {
+				float offset = Util::RandZeroToOne() * 4.0f - 2.0f;
+				Vec3 crs = cross(direction, Vec3(0, 1, 0));
+				direction += crs * offset;
 				direction = direction.normalize();
-				gravity->StartJump((-direction + Vec3(0, 0.1f, 0)) * 4.0f);
+				gravity->StartJump((-direction + Vec3(0, 0.01f, 0)) * 4.0f);
 			}
 		}
 	}
@@ -72,7 +77,7 @@ namespace basecross {
 
 		if (m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
-			if (rnd < 40.0f) {
+			if (rnd < 40.0f / ( m_MissileCount + 1)) {
 				m_Enemy->ChangeState<BossGun>();
 			}
 			else {
@@ -99,6 +104,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		m_Attack = m_Enemy->m_Cruch;
+		BossHostility::m_MissileCount = 0;
 		//m_Enemy->SetAnimation()
 	}
 	void BossCrush::Execute()
@@ -158,6 +164,7 @@ namespace basecross {
 	{
 		EnemyState::Enter();
 		m_Attack = m_Enemy->m_Missile;
+		BossHostility::m_MissileCount++;
 	}
 	void BossGun::Execute()
 	{
@@ -171,8 +178,8 @@ namespace basecross {
 			if (m_Attack->IsInRange(distance) && !m_IsReady) {
 				m_Enemy->SetAnimation(L"Missile_First");
 				auto gravity = m_Enemy->GetComponent<Gravity>();
-				gravity->StartJump((-direction + Vec3(0, 0.3f / m_Enemy->GetMotionRate(), 0)) * 5.0f * m_Enemy->GetMotionRate());
-				Ready(0.5f * m_Enemy->GetMotionRate());
+				gravity->StartJump((-direction + Vec3(0, 0.1f / m_Enemy->GetMotionRate(), 0)) * 5.0f * m_Enemy->GetMotionRate());
+				Ready(0.25f * m_Enemy->GetMotionRate());
 			}
 			if (m_IsReady) {
 				if (m_Attack->IsFinish()) {
