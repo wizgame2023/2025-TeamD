@@ -39,6 +39,9 @@ namespace basecross {
 			}
 		}
 
+		bool IsArive() {
+			return m_HP > 0 && GetDrawActive();
+		}
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
