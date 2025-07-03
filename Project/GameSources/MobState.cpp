@@ -44,7 +44,7 @@ namespace basecross {
     //―――――――――――――――――――――――――――
     static void UpdateShootingEffects(
         std::shared_ptr<Mob> mob,
-        shared_ptr<EffectManeger> effect,
+        shared_ptr<EffectManager> effect,
         Effekseer::Handle& eyeHandle,
         Effekseer::Handle& flashHandle,
         const Vec3& pos,
@@ -130,7 +130,6 @@ namespace basecross {
     void MobSearch::Enter(){
         EnemyState::Enter();
         auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
-        mob->SetAnim(L"Walk", 0.0f, true);
         m_Path.clear();
     }
 
@@ -148,13 +147,13 @@ namespace basecross {
             mob->ChangeState<MobAlert>();
             return;
         }
+        mob->SetAnim(L"Walk", 0.0f);
 
         // 追跡ロジック
         if (target) {
             RotateTo(dir);
             if (mob->m_kariState == Mob::kariState::hakai &&
-                dist <= mob->m_BalletRange)
-            {
+                dist < mob->m_BalletRange){
                 mob->ChangeState<MobAlert>();
                 return;
             }
@@ -178,8 +177,8 @@ namespace basecross {
     }
 
     void MobSearch::Exit(){
-        auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
-        mob->SetAnim(L"SetUp", 0.0f);
+        //auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
+        //mob->SetAnim(L"SetUp", 0.0f);
     }
 
     //--------------------------------------------------
@@ -191,17 +190,16 @@ namespace basecross {
 
         // 弾数・インターバル初期化
         m_BulletRemain = mob->m_BulletRemain;
-        mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f;
+        mob->m_ShotRandomInterval = 0;
 
         // エフェクト取得
         auto stage = std::static_pointer_cast<GameStage>(m_Stage);
         m_Effect = stage ? stage->GetCreateEffect() : nullptr;
-        mob->SetAnim(L"Set", 0.0f, true);
     }
 
     void MobAlert::Execute(){
         auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
-        float dt = DeltaTime();
+        float deltaTime = DeltaTime();
 
         // 最も近い市民探索
         Vec3 dir;
@@ -228,7 +226,7 @@ namespace basecross {
         else if (target) {
             mob->AlartMove(target);
             RotateTo(dir);
-            if (dist > mob->m_BalletRange * 0.5f) {
+            if (dist > mob->m_BalletRange) {
                 mob->ChangeState<MobSearch>();
                 return;
             }
@@ -238,6 +236,8 @@ namespace basecross {
             mob->ChangeState<MobSearch>();
             return;
         }
+
+        mob->SetAnim(L"Set", 0.0f);
 
         // 射撃 or リロード
         if (m_BulletRemain > 0) {
@@ -256,7 +256,7 @@ namespace basecross {
         else {
             // リロードアニメ
             mob->SetAnim(L"Reload", 0.0f);
-            m_BulletReloadTime -= dt;
+            m_BulletReloadTime -= deltaTime;
             if (m_BulletReloadTime <= 0.0f) {
                 mob->m_BalletInterval = mob->MAX_BALLET_INTERVAL;
                 mob->m_ShotRandomInterval = 1.0f;
@@ -265,7 +265,6 @@ namespace basecross {
                 m_BulletReloadTime = RELOAD_DURATION;
             }
         }
-
         // エフェクト速度同期
         if (m_Effect) {
             m_Effect->SetEffectSpeed(

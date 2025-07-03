@@ -97,7 +97,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
 
-		m_Effect = AddGameObject<EffectManeger>();
+		m_Effect = AddGameObject<EffectManager>();
 		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
 		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
 		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
@@ -114,7 +114,7 @@ namespace basecross {
 		m_Effect->RegisterResource(L"Bomb", effectPath + L"bomb.efk");
 	}
 
-	shared_ptr <EffectManeger> GameStage::GetCreateEffect()
+	shared_ptr <EffectManager> GameStage::GetCreateEffect()
 	{
 		return m_Effect;
 	}

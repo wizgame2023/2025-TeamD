@@ -59,7 +59,11 @@ namespace basecross {
 		float m_Magnitude;        // 最大振幅（単位：画素やワールド単位）
 		float m_CurrntTime;
 		shared_ptr<Stage>m_Stage;
-		
+		float m_Pitch;   // 上下角度
+		float m_MouseSensitivityX;
+		POINT m_CenterPt;             // 画面中央（スクリーン座標）
+		bool  m_UseMouse = true;   // マウス制御を有効化
+
 		int m_Width;
 		int m_Height;
 		bool m_StopCamera;
