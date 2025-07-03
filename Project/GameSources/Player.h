@@ -41,7 +41,7 @@ namespace basecross {
 		Vec3 m_HitScale;
 		Vec3 m_BulletDire;
 		Vec3 m_EffectVec;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		Effekseer::Handle m_Handle;
 		Effekseer::Handle m_BrinkHandle;
 		Effekseer::Handle m_ParryHandle;
@@ -89,7 +89,7 @@ namespace basecross {
 		void SetParryPosition(const Vec3& position);
 		void SetDamage(const float& damage);
 		void SetIsGaol(const bool& goal);
-		Vec3 SearchRange();
+		Vec3 SearchRange(float angle);
 		void SetCharge(const float& charge);
 		void HandlePerfectParryInput();
 		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
@@ -134,7 +134,7 @@ namespace basecross {
 		float m_Speed;
 		float m_ZoneElapsedTime;
 		float m_Length;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		Effekseer::Handle m_Handle;
 		Effekseer::Handle m_HitHandle;
 

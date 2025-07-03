@@ -11,27 +11,27 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EffectManeger::EffectManeger(const shared_ptr<Stage>& stage) :
+	EffectManager::EffectManager(const shared_ptr<Stage>& stage) :
 		MultiParticle(stage),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
 	}
-	EffectManeger::~EffectManeger() {
+	EffectManager::~EffectManager() {
 		// 先にエフェクト管理用インスタンスを破棄
 		m_Manager.Reset();
 		// 次に描画用インスタンスを破棄
 		m_renderer.Reset();
 	}
 
-	void EffectManeger::OnCreate() {
+	void EffectManager::OnCreate() {
 		CreateEffectInterface();
 
 		auto& app = App::GetApp();
 		SetAlphaActive(true);
 	}
 
-	void EffectManeger::OnUpdate()
+	void EffectManager::OnUpdate()
 	{
 		auto elps = App::GetApp()->GetElapsedTime();
 		
@@ -42,7 +42,7 @@ namespace basecross {
 		m_renderer->SetTime(elps);
 	}
 
-	void EffectManeger::OnDraw()
+	void EffectManager::OnDraw()
 	{
 		auto& camera = GetStage()->GetView()->GetTargetCamera();
 		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
@@ -55,20 +55,20 @@ namespace basecross {
 		m_renderer->EndRendering();
 	}
 
-	void EffectManeger::OnDestroy()
+	void EffectManager::OnDestroy()
 	{}
 
-	void EffectManeger::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
+	void EffectManager::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
 	{
 		m_Manager->SetSpeed(handle, speed);
 	}
 
-	void EffectManeger::SetEffectPause( const bool& pause)
+	void EffectManager::SetEffectPause( const bool& pause)
 	{
 		m_Manager->SetPausedToAllEffects(pause);
 	}
 
-	void EffectManeger::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
+	void EffectManager::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
 	{
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -77,7 +77,7 @@ namespace basecross {
 		}
 	}
 
-	void EffectManeger::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
+	void EffectManager::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
 	{
 		Effekseer::Matrix44 v, p;
 		Mat4x4ToMatrix44(view, v);
@@ -86,14 +86,14 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	void EffectManeger::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
+	void EffectManager::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
 		int32_t Freme = freme;
 		m_Effect = GetEffectResource(Key);
 		handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
-	void EffectManeger::CreateEffectInterface()
+	void EffectManager::CreateEffectInterface()
 	{
 
 		auto Dev = App::GetApp()->GetDeviceResources();
@@ -119,13 +119,13 @@ namespace basecross {
 		m_Manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
 	}
 
-	void EffectManeger::RegisterResource(const wstring& Key, const  wstring& FileName)
+	void EffectManager::RegisterResource(const wstring& Key, const  wstring& FileName)
 	{
 		try {
 			// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 			if (Key == L"") {
 				throw BaseException(
-					L"", // エラーメッセージ
+					L"キーが空", // エラーメッセージ
 					L"if(Key == L¥"")", // エラー箇所
 					L"Effect::RegisterResource()" // 関数名
 				);
@@ -161,7 +161,7 @@ namespace basecross {
 			if (it != m_ResMap.end())
 			{
 				// 指定のキーが見つかった（キーが重複している）ため、例外をスロー
-				wstring keyerr = L"";
+				wstring keyerr = L"同じエフェクトリソースが別のキー(" + it->first + L")で既に登録されています。キー: " + Key;
 				throw BaseException(
 					L"キーの重複エラー",
 					keyerr,
@@ -179,14 +179,14 @@ namespace basecross {
 		}
 	}
 
-	Effekseer::EffectRef EffectManeger::GetEffectResource(const wstring& Key)
+	Effekseer::EffectRef EffectManager::GetEffectResource(const wstring& Key)
 	{
 		// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 		if (Key == L"") {
 			throw BaseException(
-				L"",
+				L"キーが空",
 				L"if(Key == "")",
-				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
+				L"EffectManager::GetEffectResource()" // NOTE: EffectManager::GetEffectResource() がより正確かもしれません
 			);
 		}
 
@@ -204,43 +204,43 @@ namespace basecross {
 			throw BaseException(
 				L"",
 				keyerr,
-				L"App::GetResource()" // NOTE: EffectManeger::GetEffectResource() がより正確かもしれません
+				L"EffectManager::GetEffectResource()" // NOTE: EffectManager::GetEffectResource() がより正確かもしれません
 			);
 		}
 	}
 
-	void EffectManeger::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+	void EffectManager::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		if (handle != -1) {
 			m_Manager->AddLocation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
 		}
 	}
 
-	void EffectManeger::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
+	void EffectManager::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
 	{
 		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EffectManeger::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+	void EffectManager::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		m_Manager->SetLocation(handle, Location.x, Location.y, Location.z);
 	}
-	void EffectManeger::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
+	void EffectManager::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
 	{
 		m_Manager->SetScale(handle, Scale.x, Scale.y, Scale.z);
 	}
 
-	void EffectManeger::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
+	void EffectManager::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
 	{
 		auto color = Col4(Color) * 255;
 		m_Manager->SetAllColor(handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
 	}
 
-	void EffectManeger::StopEffect(Effekseer::Handle& handle) {
+	void EffectManager::StopEffect(Effekseer::Handle& handle) {
 		if (handle != -1) {
 			m_Manager->StopEffect(handle);
 		}
 	}
 
-	void EffectManeger::SetLayer(Effekseer::Handle& handle, int32_t layer)
+	void EffectManager::SetLayer(Effekseer::Handle& handle, int32_t layer)
 	{
 		m_Manager->SetLayer(handle, layer);
 	}

@@ -116,53 +116,75 @@ namespace basecross {
 		return crox.x * croy.y - crox.y * croy.x;
 	}
 
-    FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
-        Camera(),
-        m_Direction(Vec3(0)),
-        m_Eye(Vec3(0)),
-        m_Position(Vec3(0)),
-        m_Angle(-XM_PIDIV2),
-        m_RotateSpeed(XMConvertToRadians(180)),
-        m_Stage(StagePtr),
-        m_StopCamera(false),
-        m_Width(0), // Initialize m_Width
-        m_Height(0), // Initialize m_Height
-        m_HitCollision(false), // Initialize m_HitCollision
-		m_IsShaking(false), 
+
+	FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
+		Camera(),
+		m_Direction(Vec3(0)),
+		m_Eye(Vec3(0)),
+		m_Position(Vec3(0)),
+		m_Angle(-XM_PIDIV2),
+		m_RotateSpeed(XMConvertToRadians(180)),
+		m_Stage(StagePtr),
+		m_StopCamera(false),
+		m_Width(0),
+		m_Height(0),
+		m_HitCollision(false),
+		m_IsShaking(false),
 		m_Duration(0.0f),
 		m_InitialDuration(0.0f),
 		m_Magnification(6.0f),
-		m_Up(2.5f)
+		m_Up(2.5f),
+		m_CenterPt({ 0, 0 }), 
+		m_CurrntTime(0.0f), 
+		m_Magnitude(0.0f), 
+		m_MouseSensitivityX(0.01f),
+		m_Pitch(0.0f)
 	{
 	}
-
 	void FollowCamera::OnCreate()
 	{
 		auto& app = App::GetApp();
-
 		m_Width = app->GetGameWidth();
 		m_Height = app->GetGameHeight();
-		// ゲーム開始時にマウスカーソルを画面の中央に移動させる
-		int m_centerX = app->GetGameWidth() / 2;
-		int m_centerY = app->GetGameHeight() / 2;
-		::SetCursorPos(m_centerX, m_centerY);
-		m_HitCollision = false;
 
-		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
+		// 画面中央を保持
+		m_CenterPt.x = m_Width / 2;
+		m_CenterPt.y = m_Height / 2;
+
+		// カーソルを中央に移動／非表示
+		::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+		ShowCursor(FALSE);
+
+		// ウィンドウ内にカーソルをクリップ
+		RECT rc{ 0, 0, m_Width, m_Height };
+		::ClientToScreen(app->GetHWnd(), (POINT*)&rc.left);
+		::ClientToScreen(app->GetHWnd(), (POINT*)&rc.right);
+		ClipCursor(&rc);
+
+		m_HitCollision = false;
 
 	}
 
 	void FollowCamera::OnUpdate() {
 		//コントローラの取得
-		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		float elapsed = App::GetApp()->GetElapsedTime();
+		auto& app = App::GetApp();
+		auto& cntlVec = app->GetInputDevice().GetControlerVec()[0];
+		float elapsed = app->GetElapsedTime();
+		// 1) コントローラ入力
+		if (m_StopCamera) return;
 		if (cntlVec.bConnected) {
-			if (m_StopCamera == false) {
-				float stickX = cntlVec.fThumbRX;
-				m_Angle -= m_RotateSpeed * elapsed * stickX;
-			}
+			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
 		}
+		else{
+			POINT now;
+			::GetCursorPos(&now);
 
+			float dx = float(now.x - m_CenterPt.x);
+			m_Angle -= dx * m_MouseSensitivityX;
+
+			// 中央に戻す
+			::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+		}
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
 		//位置
@@ -171,14 +193,17 @@ namespace basecross {
 		m_Eye = m_Position + m_Direction * dire.x;
 		m_Eye.y = m_Position.y + dire.y;
 
+
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player",L"LimitArea", L"Ground"};
 		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}
+
 		Vec3 m_addEye = ShakeCameraMove();
 		m_Eye += m_addEye; // カメラの振動を適用
+
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
 			//自分の位置
