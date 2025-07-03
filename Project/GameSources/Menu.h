@@ -14,7 +14,7 @@ namespace basecross {
 	protected:
 		vector<shared_ptr<GameObject>> m_MenuObjects;
 		shared_ptr<Stage> m_Stage;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 		shared_ptr<FollowCamera>m_Camera;
 		wstring m_GroupName;
 	public:

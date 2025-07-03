@@ -37,7 +37,7 @@ namespace basecross {
 		app->RegisterTexture(L"STRATA", uiPath + L"Start_A.png");
 		app->RegisterTexture(L"FADE", uiPath + L"TitelFade.png");
 		app->RegisterTexture(L"BACKGROUND", texPath + L"TitleBackGround.png");
-		m_Effect = AddGameObject<EffectManeger>();
+		m_Effect = AddGameObject<EffectManager>();
 		m_Effect->SetDrawLayer(4);
 		m_Effect->RegisterResource(L"Panchi", effectPath + L"panchi.efk");
 

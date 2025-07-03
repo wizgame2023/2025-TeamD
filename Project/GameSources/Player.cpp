@@ -37,7 +37,8 @@ namespace basecross {
 		m_ParryDamageInterval(false),
 		m_ParryDamageIntervalTime(0.5f),
 		m_IsPerfectParry(false),
-		m_IsParry(false)
+		m_IsParry(false),
+		m_PerfectParrySecond(0.5f)
 	{}
 	Player::‾Player(){}
 
@@ -153,7 +154,7 @@ namespace basecross {
 		}
 	}
 
-	Vec3 Player::SearchRange() {
+	Vec3 Player::SearchRange(float angle) {
 		// 前方ベクトルと自位置取得
 		Vec3 forward = m_Transform->GetForward();
 		Vec3 position = m_Transform->GetPosition();
@@ -169,7 +170,7 @@ namespace basecross {
 		Vec3 toEnemy = enemyPos - position;
 
 		// 前方検出角度チェック（定数化）
-		constexpr float kDetectionAngleDeg = 90.0f;
+		float kDetectionAngleDeg = angle;
 		if (!IsWithinDetectionRange(forward, toEnemy, kDetectionAngleDeg))
 			return Vec3();
 
@@ -177,7 +178,7 @@ namespace basecross {
 		m_TargetBoard->SetTarget(targetEnemyObject);
 
 		// 近距離判定（平方距離で比較）
-		constexpr float kCloseDist = 10.0f;
+		float kCloseDist = 10.0f;
 		float sqrDistToEnemy = toEnemy.x * toEnemy.x + toEnemy.y * toEnemy.y + toEnemy.z * toEnemy.z;
 		if (sqrDistToEnemy > kCloseDist * kCloseDist)
 			return Vec3();
@@ -247,49 +248,40 @@ namespace basecross {
 		float EnergyPerfectBonus = 0.5f;
 		float EnergyGreatBonus = 0.25f;
 		float EnergyGoodBonus = 0.1f;
-
-		// Miss
 		if (ParrySecond <= GoodThreshold) {
 			return damage;
 		}
 
-		// 判定＆報酬用変数
 		float reducedDamage = damage;
 		float energyBonus = 0.0f;
 		bool  needEffect = false;
 		bool  isPerfect = false;
 
 		if (ParrySecond > PerfectThreshold) {
-			// Perfect
 			reducedDamage = 0.0f;
 			energyBonus = EnergyPerfectBonus;
 			needEffect = true;
 			isPerfect = true;
 		}
 		else if (ParrySecond > GreatThreshold) {
-			// Great
 			reducedDamage = damage * 0.25f;
 			energyBonus = EnergyGreatBonus;
 			needEffect = true;
 		}
 		else {
-			// Good
 			reducedDamage = damage * 0.5f;
 			energyBonus = EnergyGoodBonus;
 		}
 
-		// 共通：エナジー加算・無敵時間設定
 		m_EnergyCharge += energyBonus;
 		m_ParryDamageInterval = needEffect;
 
-		// 共通：パリィ演出（Perfect/Great）
 		if (needEffect) {
 			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
 			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
 			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
 		}
 
-		// 追加：Perfect 時のみ
 		if (isPerfect) {
 			ScoreManager::Instance()->AddParryCount();
 			SoundManager::Instance().PlaySE(L"SE_GUARD");
@@ -309,15 +301,14 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Clear", 491, 109, false, anim_fps);
 	}
 
-	void Player::PlayAnimation()
-	{
+	void Player::PlayAnimation(){
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		float elapsedTime = GetElapsed();
@@ -327,7 +318,7 @@ namespace basecross {
 			if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, true)) {
 				m_PlayerStateNum += PlayerState::NORMAL;
 				m_PlayerStateNum -= PlayerState::DASH;
-				m_BoostInterval = 1.0f;
+				m_BoostInterval = 0.5f;
 			}
 			else {
 				SetAnim(L"Brink");
@@ -347,10 +338,10 @@ namespace basecross {
 		else {
 			MovePlayer(6.0f);
 
-			bool isBoost = IntervalTimer(true, 1.0f, elapsedTime, m_BoostInterval, false);
+			bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
 			bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
-			Vec3 rot = SearchRange();
+			Vec3 rot = SearchRange(90.0f);
 			if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
 				m_BoostAngle = GetForward();
 				float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
@@ -476,11 +467,6 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
 		//描画設定
-		/*auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-		ptrDraw->SetTextureResource(L"01");*/
-
-
 		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
@@ -499,8 +485,6 @@ namespace basecross {
 		//ptrDraw->SetFogEnabled(true);
 		ptrDraw->SetModelDiffusePriority(true);
 		AddAnimation();
-
-		ptrDraw->SetDiffuse(Col4(1, 0, 0, 1));
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
 
@@ -531,15 +515,12 @@ namespace basecross {
 
 		UpdateAnim();
 		if (m_IsGoal == false){
-			ZoneActivation();
-			//Debug();
 			Vec3 forward = GetForward();
-
-			IntervalManagement();
-			Vec3 rot = SearchRange();
-			if (m_EnergyCharge >= 1.0f){
+			if (m_EnergyCharge >= 1.0f) {
 				m_EnergyCharge = 1.0f;
 			}
+			ZoneActivation();
+			IntervalManagement();
 			PlayAnimation();
 		}
 		else{
@@ -565,8 +546,7 @@ namespace basecross {
 		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadPlayer");
 	}
 
-	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> source)
-	{
+	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> source){
 		if (m_DamageIntervalStart) return false;
 		bool wasHighHP = (m_HP >= m_MaxHP / 3.0f);
 
@@ -576,11 +556,11 @@ namespace basecross {
 		}
 
 		if (m_ParryJudge) {
-			Vec3 rot = SearchRange();
 			float parryDamage = Parry(damage, m_ParryTime);
-
+			Vec3 rot = SearchRange(180.0f);
 			// 完璧パリィ（0ダメージ＆有効範囲内）の場合
 			if (parryDamage == 0.0f && rot != Vec3()) {
+				AimRock(rot);
 				++m_ParryComboCount;                // コンボ回数増加
 				m_ParryComboActive = true;          // 猶予タイマー開始
 				m_ParryComboTimer = ParryComboWindow;
@@ -686,10 +666,13 @@ namespace basecross {
 		m_FlyingTime(0),
 		m_TotalTime(0.0f),
 		m_Speed(0.0f),
-		m_Length(length){}
+		m_Length(length),
+		m_Handle(-1),
+		m_HitHandle(-1), 
+		m_ZoneElapsedTime(0.0f)
+		{}
 
 	HitSphere::‾HitSphere(){
-		m_Effect->StopEffect(m_Handle);
 	}
 
 	void HitSphere::OnCreate(){
