@@ -20,9 +20,10 @@ namespace basecross {
 		Vec3 beginTargetPosition = GetPosition() + (m_Direction * m_Speed) * launchTime;
 		
 		m_TargetPosition = m_Target->GetPosition();
-		
+		m_TargetPosition.y = 0.51f;
 		float targetTime = (m_TargetPosition - beginTargetPosition).length() / m_Speed;
 		//float time = (1.0f / m_Speed) + ()
+
 		m_AreaEffect = m_Stage->AddGameObject<AreaOfEffect>(m_TargetPosition, m_ExplodeSize / 2.0f, 36, launchTime + targetTime);
 
 		auto draw = AddComponent<BcPNTStaticDraw>();
@@ -57,10 +58,11 @@ namespace basecross {
 			m_Direction = m_Direction.normalize();
 		}
 		if ((m_TargetPosition - position).length() < 0.1f) {
-			m_Direction = Vec3(0, -1, 0);
+			//m_Direction = Vec3(0, -1, 0);
 		}
 		if (GameManager::Instance()->GetDifficulty() == Difficulty::Hard && (m_TargetPosition - position).length() > 8.0f) {
 			m_TargetPosition = m_Target->GetPosition();
+			m_TargetPosition.y = 0.51f;
 			m_AreaEffect->SetPosition(m_TargetPosition);
 
 			m_Direction = m_TargetPosition - position;
