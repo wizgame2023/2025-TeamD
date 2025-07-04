@@ -26,7 +26,7 @@ namespace basecross {
 	{
 		bool m_IntruderAlert;
 		Timer m_CooldownTimer;
-
+		
 	public:
 		BossHostility(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
@@ -37,6 +37,8 @@ namespace basecross {
 		virtual void Enter() override;
 		virtual void Execute()override;
 		virtual void Exit()override;
+
+		static int m_MissileCount;
 	};
 	template<typename T>
 	class AttackState : public EnemyState<BossEnemy> {

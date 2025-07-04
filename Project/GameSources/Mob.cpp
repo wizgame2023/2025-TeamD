@@ -51,6 +51,7 @@ namespace basecross {
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
+		AddTag(L"Mob");
 	}
 	void Mob::OnAfterCreate() {
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(GetScale().x * 0.25f, GetScale().y * 1.5f, 0));
