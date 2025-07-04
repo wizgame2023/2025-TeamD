@@ -127,7 +127,7 @@ namespace basecross {
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 
 		float hp = GetMaxHP();
-		hp *= (int)difficulty;
+		hp *= (int)difficulty * 100000;
 		InitHP(hp);
 
 		float healStunTime = 7.5f;
@@ -189,7 +189,7 @@ namespace basecross {
 			m_Stun += stun;
 			m_HealStun.Reset();
 			if (m_Stun > 1.0f) {
-				if (stun > 0.25f * rate) {
+				if (stun > 0.25f / rate) {
 					m_IsStun = true;
 					SetAnimation(L"Stan_First", true);
 				}

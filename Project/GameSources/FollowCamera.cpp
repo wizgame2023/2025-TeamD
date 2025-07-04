@@ -132,13 +132,12 @@ namespace basecross {
 		m_IsShaking(false),
 		m_Duration(0.0f),
 		m_InitialDuration(0.0f),
-		m_Magnification(6.0f),
-		m_Up(2.5f),
+		m_Magnification(4.0f),
+		m_Up(1.5f),
 		m_CenterPt({ 0, 0 }), 
 		m_CurrntTime(0.0f), 
 		m_Magnitude(0.0f), 
-		m_MouseSensitivityX(0.01f),
-		m_Pitch(0.0f)
+		m_MouseSensitivityX(0.01f)
 	{
 	}
 	void FollowCamera::OnCreate()
@@ -170,7 +169,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto& cntlVec = app->GetInputDevice().GetControlerVec()[0];
 		float elapsed = app->GetElapsedTime();
-		// 1) コントローラ入力
+		//コントローラ入力(つながっていないならマウス操作)
 		if (m_StopCamera) return;
 		if (cntlVec.bConnected) {
 			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
@@ -234,22 +233,22 @@ namespace basecross {
 			if(m_CurrntTime <= totaltime / 3)
 			{
 				interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.65f, 0.0f, totaltime / 5, m_CurrntTime, Lerp::rate::EaseOut);
-				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::Easein);
 			}
 			else if(m_CurrntTime <= totaltime)
 			{
 				ShakeStart(0.1f, 0.1f);
 				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.65f, m_Magnification , totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
-				up = Lerp::CalculateLerp(0.5f,m_Up, totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(0.5f,m_Up, totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::Easein);
 			}
 			if (m_CurrntTime > totaltime) {
 				m_IsShaking = false;
 				m_CurrntTime = 0.0f;
-				return Vec2(m_Magnification = 4.0f, m_Up = 1.5f);
+				return Vec2(m_Magnification, m_Up);
 			}
 			return Vec2(interpHeight, up);
 		}
-		return Vec2(m_Magnification = 4.0f, m_Up = 1.5f);
+		return Vec2(m_Magnification, m_Up);
 	}
 
 	void FollowCamera::LogCamera() {

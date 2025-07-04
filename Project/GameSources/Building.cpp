@@ -26,8 +26,8 @@ namespace basecross {
 
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetLightHeight(150.0f);
-		shadowPtr->SetViewWidth(200.0f);
-		shadowPtr->SetViewHeight(200.0f);
+		//shadowPtr->SetViewWidth(200.0f);
+		//shadowPtr->SetViewHeight(200.0f);
 
 		AddTag(L"Ground");
 	}
@@ -63,7 +63,7 @@ namespace basecross {
 	void LimitArea::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->AddExcludeCollisionTag(L"Enemy");
+		ptrColl->AddExcludeCollisionTag(L"Mob");
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 		AddTag(L"LimitArea");

@@ -102,7 +102,7 @@ namespace basecross {
 		if (cntlVec.bConnected) {
 			//Aボタン
 			if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B) {
-				m_Titlemodel->SetDrawActive(!m_Titlemodel->GetDrawActive());
+				
 			}
 		}
 	}
