@@ -12,6 +12,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_IconBackGround;
 		shared_ptr<Sprite> m_Icon;
 		shared_ptr<Sprite> m_IconEffect;
+		shared_ptr<Sprite> m_IconEffectWaku;
 
 		float m_Charge;
 	public:

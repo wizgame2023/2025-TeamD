@@ -38,7 +38,8 @@ namespace basecross {
 		m_ParryDamageIntervalTime(0.5f),
 		m_IsPerfectParry(false),
 		m_IsParry(false),
-		m_PerfectParrySecond(0.5f)
+		m_PerfectParrySecond(0.5f),
+		m_AttackAnim(L"Attack")
 	{}
 	Player::‾Player(){}
 
@@ -183,7 +184,6 @@ namespace basecross {
 		if (sqrDistToEnemy > kCloseDist * kCloseDist)
 			return Vec3();
 
-		// 近距離時の移動方向ベクトルを返す
 		return RotateTowardsTarget(position, enemyPos);
 	}
 
@@ -439,6 +439,7 @@ namespace basecross {
 
 		if (IntervalTimer(m_IsPerfectParry, 0.5f, elapsedTime, m_PerfectParrySecond, false)){
 			m_IsPerfectParry = false;
+			m_IsParry = false;
 			m_PerfectParrySecond = 0.5f;
 		}
 		else {
@@ -673,6 +674,7 @@ namespace basecross {
 		{}
 
 	HitSphere::‾HitSphere(){
+		m_Effect->StopEffect(m_Handle);
 	}
 
 	void HitSphere::OnCreate(){

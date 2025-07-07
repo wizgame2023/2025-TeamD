@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	struct StageData {
 		int stageNum;
 		int level;
@@ -18,7 +18,7 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン
 	//--------------------------------------------------------------------------------------
-	class Scene : public SceneBase{
+	class Scene : public SceneBase {
 		vector<vector<StageFileData>> m_StageFile;
 	public:
 		//--------------------------------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace basecross{
 		@brief コンストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		Scene() :SceneBase(){
+		Scene() :SceneBase() {
 			m_StageFile = {
 				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},
