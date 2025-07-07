@@ -15,6 +15,7 @@ namespace basecross {
 
 	void flyobject::flyPositison(shared_ptr<GameObject>& other)
 	{
+		//飛ばす方向を求める
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto gravity = GetComponent<Gravity>();
 		Vec3 objPos = other->GetComponent<Transform>()->GetPosition();
