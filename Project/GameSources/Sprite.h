@@ -558,8 +558,11 @@ namespace basecross{
 		map<wstring, Vec3> m_GroupMovementAmount;
 		//入力
 		map<wstring, vector<InputData>> m_InputDates;
+		map<wstring, vector<InputData>> m_KeyboradInputDates;
+		
 		//決定ボタン
 		map<wstring, vector<WORD>> m_AcceptButtons;
+		map<wstring, vector<WORD>> m_KeyboradAcceptButtons;
 		//その瞬間に押された決定ボタン
 		map<wstring, WORD> m_PressedAccept;
 		wstring m_UsingGroup;
@@ -616,8 +619,13 @@ namespace basecross{
 		bool CheckUpdate();
 		bool CheckMoveInput(InputData& input);
 
+		template<typename T>
+		inline bool FindGroup(map<wstring,T> vec,const wstring& group) {
+			return vec.find(group) != end(vec);
+		}
+
 		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup,group)) {
 				auto vec = m_ButtonGroup[group];
 				if (vec.size() > index) {
 					auto obj = vec[index]->GetGameObject();
@@ -627,8 +635,57 @@ namespace basecross{
 			return nullptr;
 		}
 
+		bool PressSelect(const wstring& group,InputData& data) {
+			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
+
+			if (FindGroup(m_KeyboradInputDates, group)) {
+				for (auto& inputData : m_KeyboradInputDates[group]) {
+					if (keyborad.m_bPressedKeyTbl[inputData.m_Input]) {
+						if (abs(inputData.m_MoveAmount) > 1) {
+							if (!CheckOverIndex(inputData.m_MoveAmount)) continue;
+						}
+						data = inputData;
+						return true;
+					}
+				}
+			}
+			if (FindGroup(m_InputDates, group)) {
+				for (auto& inputData : m_InputDates[group]) {
+					if (CheckMoveInput(inputData)) {
+						if (abs(inputData.m_MoveAmount) > 1) {
+							if (!CheckOverIndex(inputData.m_MoveAmount)) continue;
+						}
+						data = inputData;
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+		bool PressAccept(const wstring& group,WORD& data) {
+			auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
+			if (FindGroup(m_KeyboradInputDates, group)) {
+				for (auto& inputData : m_KeyboradAcceptButtons[group]) {
+					if (keyborad.m_bPressedKeyTbl[inputData]) {
+						data = inputData;
+						return true;
+					}
+				}
+			}
+			if (FindGroup(m_InputDates, group)) {
+				for (auto& inputData : m_AcceptButtons[group]) {
+					if (inputState.wPressedButtons & inputData) {
+						data = inputData;
+						return true;
+					}
+				}
+			}
+			data = 0;
+			return false;
+		}
 		int GetSelectIndex(const wstring& group) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				return m_SelectIndexes[group];
 			}
 		}
@@ -640,7 +697,7 @@ namespace basecross{
 				return;
 			}
 
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				if (index < m_ButtonGroup[group].size()) {
 					m_SelectIndexes[group] = index;
 				}
@@ -655,7 +712,7 @@ namespace basecross{
 			return false;
 		}
 		int GetSize(const wstring& group) {
-			if (m_InputDates.find(group) != end(m_InputDates)) {
+			if (FindGroup(m_InputDates, group)) {
 				return m_ButtonGroup[group].size();
 			}
 			else {
@@ -665,7 +722,7 @@ namespace basecross{
 		void SetMoveAmount(const wstring& group, Vec3 target);
 
 		Vec3 GetMoveAmount(const wstring& group) {
-			if (m_GroupMovementAmount.find(group) != end(m_GroupMovementAmount)) {
+			if (FindGroup(m_GroupMovementAmount, group)) {
 				return m_GroupMovementAmount[group];
 			}
 		}
@@ -673,7 +730,7 @@ namespace basecross{
 		void SetSelectSound(const wstring& sound);
 
 		void AddAcceptButton(const wstring& group, WORD accept) {
-			if (m_AcceptButtons.find(group) != end(m_AcceptButtons)) {
+			if (FindGroup(m_AcceptButtons, group)) {
 				m_AcceptButtons[group].push_back(accept);
 			}
 			else {
@@ -683,8 +740,19 @@ namespace basecross{
 				m_PressedAccept.emplace(group, 0);
 			}
 		}
+		void AddKeyboradAccept(const wstring& group, WORD accept) {
+			if (FindGroup(m_KeyboradAcceptButtons, group)) {
+				m_KeyboradAcceptButtons[group].push_back(accept);
+			}
+			else {
+				vector<WORD> button = {};
+				button.push_back(accept);
+				m_KeyboradAcceptButtons.emplace(group, button);
+				//m_PressedAccept.emplace(group, 0);
+			}
+		}
 		WORD GetPressedAccept(const wstring& group) {
-			if (m_PressedAccept.find(group) != end(m_PressedAccept)) {
+			if (FindGroup(m_PressedAccept, group)) {
 				return m_PressedAccept[group];
 			}
 			return 0;
@@ -693,13 +761,27 @@ namespace basecross{
 			SetInput(group, InputData(input, amount));
 		}
 		void SetInput(const wstring& group, InputData data) {
-			if (m_InputDates.find(group) != end(m_InputDates)) {
+			if (FindGroup(m_InputDates, group)) {
 				m_InputDates[group].push_back(data);
 			}
 			else {
 				vector<InputData> dates = {};
 				dates.push_back(data);
 				m_InputDates.emplace(group, dates);
+			}
+		}
+		void SetKeyborad(const wstring& group, int input, int amount) {
+			SetKeyborad(group, InputData(input, amount));
+		}
+		
+		void SetKeyborad(const wstring& group, InputData data) {
+			if (FindGroup(m_KeyboradInputDates, group)) {
+				m_KeyboradInputDates[group].push_back(data);
+			}
+			else {
+				vector<InputData> dates = {};
+				dates.push_back(data);
+				m_KeyboradInputDates.emplace(group, dates);
 			}
 		}
 		void OpenAll() {
@@ -717,7 +799,7 @@ namespace basecross{
 			UseGroup(group);
 		}
 		void Open(const wstring& group) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
 					button->Open();
 				}
@@ -725,7 +807,7 @@ namespace basecross{
 			SetActive(true);
 		}
 		void Close(const wstring& group) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
 					button->Close();
 				}
@@ -757,7 +839,7 @@ namespace basecross{
 			return m_UsingGroup;
 		}
 		void UseGroup(const wstring& group) {
-			if (m_SelectIndexes.find(group) != end(m_SelectIndexes)) {
+			if (FindGroup(m_SelectIndexes, group)) {
 				InitGroup(m_UsingGroup);
 				//m_SelectIndexes[m_UsingGroup] = 0;
 				m_UsingGroup = group;
@@ -767,7 +849,7 @@ namespace basecross{
 			return m_UsingGroup == group;
 		}
 		void Register(const wstring& group, shared_ptr<SpriteButton>& button) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				m_ButtonGroup[group].push_back(button);
 			}
 			else {
@@ -783,28 +865,28 @@ namespace basecross{
 			button->SetOrder(m_ButtonGroup[group].size() - 1);
 		}
 		void DeleteGroup(const wstring& group) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				m_ButtonGroup.erase(group);
 				m_SelectIndexes.erase(group);
 			}
 		}
 
 		void AddFrontSprite(const wstring& group,int index,shared_ptr<Sprite>& sprite) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				if (m_ButtonGroup[group].size() > index) {
 					m_ButtonGroup[group][index]->AddFrontSprite(sprite);
 				}
 			}
 		}
 		void AddFunction(const wstring& group,function<void(shared_ptr<SpriteButton>&)> func) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& buttons : m_ButtonGroup[group]) {
 					buttons->AddFunction(func);
 				}
 			}
 		}
 		void AddFunction(const wstring& group,int index, function<void(shared_ptr<SpriteButton>&)> func) {
-			if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				if (index < 0 || index >= m_ButtonGroup[group].size()) return;
 				m_ButtonGroup[group][index]->AddFunction(func);
 			}
