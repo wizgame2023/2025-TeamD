@@ -127,7 +127,7 @@ namespace basecross {
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 
 		float hp = GetMaxHP();
-		hp *= (int)difficulty * 100000;
+		hp *= (int)difficulty;
 		InitHP(hp);
 
 		float healStunTime = 7.5f;
