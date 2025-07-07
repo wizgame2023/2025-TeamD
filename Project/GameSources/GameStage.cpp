@@ -60,6 +60,7 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
 		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
+		app->RegisterTexture(L"ACTION_ULT_WAKU_EFFECT", uiPath + L"UI_Ult_Waku_Effect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
@@ -69,6 +70,7 @@ namespace basecross {
 
 		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
 		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossText.png");
+		app->RegisterTexture(L"BOSS_TEXT_WAKU", uiPath + L"BossText_Waku.png");
 		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
 
 		app->RegisterTexture(L"RESULT_BACK", uiPath + L"Result_Back.png");
@@ -171,14 +173,14 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
-		
-
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 40.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
+		m_NormalIcon->SetInput(VK_LBUTTON);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
+		m_Icon->SetInput(VK_RBUTTON);
 		m_UltIcon = AddGameObject<UltIcon>();
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -195,8 +197,8 @@ namespace basecross {
 		bossFrame->SetDrawActive(false);
 		m_BossHpBar->SetBackColor(Col4(0, 0, 0, 1));
 
-
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
+		m_BossTextWaku = AddGameObject<Sprite>(L"BOSS_TEXT_WAKU", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(0, 0, 0, 1));
 
 		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
@@ -204,7 +206,6 @@ namespace basecross {
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
 		m_Fade->Stop();
-
 	}
 	/// <summary>
 	/// オブジェクトの更新をONOFF
@@ -383,6 +384,7 @@ namespace basecross {
 			Vec3 bossRot = boss->GetForward();
 			Vec3 CameraPos = camera->GetEye();
 			Vec3 CameraEndPos = bossPos + Vec3(0.0f, -bossPos.y + 2.0f, 0.0f);
+			m_cameraState = CameraState::OPENINGCAMERA;
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetReverse(true);
@@ -456,15 +458,14 @@ namespace basecross {
 		GameManager::Instance()->Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 
-		if (device.bConnected) {
-			if (device.wPressedButtons & XINPUT_GAMEPAD_START && m_cameraState == CameraState::FOLLOWCAMERA) {
-				m_SoundTestMenu->Close();
-				m_PauseMenu->Open();
-				m_Effect->SetEffectPause(true);
-				m_Camera->SetCameraPause(true);
-			}
+		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
+			m_SoundTestMenu->Close();
+			m_PauseMenu->Open();
+			m_Effect->SetEffectPause(true);
+			m_Camera->SetCameraPause(true);
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
@@ -473,6 +474,7 @@ namespace basecross {
 
 			m_BossHpBar->SetDrawActive(false);
 			m_BossText->SetDrawActive(false);
+			m_BossTextWaku->SetDrawActive(false);
 		}
 		else {
 			//SetAllGameObjectActive(true);
@@ -488,10 +490,12 @@ namespace basecross {
 				bool isBossDraw = boss->IsArive();
 				m_BossHpBar->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
+				m_BossTextWaku->SetDrawActive(isBossDraw);
 			}
 			else {
 				m_BossHpBar->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
+				m_BossTextWaku->SetDrawActive(false);
 			}
 		}
 

@@ -11,9 +11,20 @@ namespace basecross {
 	void UltIcon::OnCreate() {
 		Vec3 position = Vec3(499.0f, -158.0f, 0.0f);
 		m_IconBackGround = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME", position, Vec2(150.0f));
-		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position, Vec2(150.0f));
-		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position, Vec2(150.0f));
-		m_IconEffect->SetDiffuse(Col4(1,1,1,0.5f));
+		m_IconBackGround->SetDrawLayer(2);
+		m_IconBackGround->SetDiffuse(Col4(1, 1, 1, 1));
+
+		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position + Vec3(15,-10,0), Vec2(120.0f));
+		m_Icon->SetDrawLayer(3);
+
+		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position + Vec3(15, -10, 0), Vec2(120.0f));
+		m_IconEffect->SetDrawLayer(1);
+		m_IconEffect->SetDiffuse(Col4(1,1,1,1));
+
+		m_IconEffectWaku = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_WAKU_EFFECT", position, Vec2(150.0f));
+		m_IconEffectWaku->SetDrawLayer(1);
+		m_IconEffectWaku->SetDiffuse(Col4(1, 1, 1, 1));
+		m_IconEffectWaku->SetDrawActive(false);
 	}
 
 	void UltIcon::SetDraw(bool a) {
@@ -23,14 +34,14 @@ namespace basecross {
 	}
 
 	void UltIcon::OnUpdate() {
-		Vec2 maxSize = m_Icon->GetSize();
-		m_Icon->SetVertex({
+		Vec2 maxSize = m_IconEffect->GetSize();
+		m_IconEffect->SetVertex({
 			Vec3(0,-(maxSize.y * (1.0f - m_Charge)),0),
 			Vec3(maxSize.x,-(maxSize.y * (1.0f - m_Charge)),0),
 			Vec3(0,-maxSize.y,0),
 			Vec3(maxSize.x,-maxSize.y,0)
 			});
-		m_Icon->UpdateUV({
+		m_IconEffect->UpdateUV({
 			Vec2(0,(1.0f - m_Charge)),
 			Vec2(1,(1.0f - m_Charge)),
 			Vec2(0,1),
@@ -39,11 +50,19 @@ namespace basecross {
 
 		if (m_Charge >= 1)
 		{
-			m_IconEffect->SetDrawActive(true);
+			m_IconEffect->SetDiffuse(Col4(1, 1, 1, 1));
+			m_IconEffectWaku->SetDrawActive(true);
+			//m_Icon->SetDiffuse(Col4(1, 1, 1, 1));
+			m_Icon->SetDrawActive(true);
+			m_IconBackGround->SetDrawLayer(0);
 		}
 		else 
 		{
-			m_IconEffect->SetDrawActive(false);
+			m_IconEffect->SetDiffuse(Col4(1, 1, 1, 0.5f));
+			m_IconEffectWaku->SetDrawActive(false);
+			m_Icon->SetDrawActive(false);
+			m_IconBackGround->SetDrawLayer(2);
+			//m_Icon->SetDiffuse(Col4(1, 1, 1, 0.5f));
 		}
 	}
 	void NormalIcon::OnCreate() {

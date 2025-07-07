@@ -52,6 +52,7 @@ namespace basecross {
 		shared_ptr<StunSprite> m_BossStunBar;
 		//shared_ptr<Sprite> m_BossHpBarBackGround;
 		shared_ptr<Sprite> m_BossText;
+		shared_ptr<Sprite> m_BossTextWaku;
 		shared_ptr<SpriteFade> m_Fade;
 		shared_ptr<Sprite>fadeSprite;
 
