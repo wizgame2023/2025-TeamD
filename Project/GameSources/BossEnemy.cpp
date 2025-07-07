@@ -14,7 +14,8 @@ namespace basecross {
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
 		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(7.5f,false)),
 		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
-		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true)
+		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true),
+		m_EffectBombHandle(0),m_EffectHandle(0),m_SmokeHandle(0)
 	{
 	}
 	BossEnemy::‾BossEnemy()
@@ -115,7 +116,7 @@ namespace basecross {
 		float crushRange = max(2.0f, crushSize / 1.8f);
 		float crushBlow = 3.0f * addRate;
 
-		int missileCount = 6.0f * addRate;
+		int missileCount = static_cast<int>(6.0f * addRate);
 		float missileInterval = 0.25f;
 		float explodeSize = 2.0f * addRate;
 
