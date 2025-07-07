@@ -418,7 +418,17 @@ namespace basecross {
 			}
 		}
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
+
+		InputData data(0, 0);
+		if (PressSelect(m_UsingGroup,data)) {
+			int checkButton = m_SelectIndexes[m_UsingGroup] + data.m_MoveAmount;
+			checkButton = min(m_ButtonGroup[m_UsingGroup].size() - 1, checkButton);
+			checkButton = max(0, checkButton);
+			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
+				m_SelectIndexes[m_UsingGroup] += data.m_MoveAmount;
+			}
+		}
+		/*if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
 			for (auto& inputData : m_InputDates[m_UsingGroup]) {
 				if (CheckMoveInput(inputData)) {
 					if (abs(inputData.m_MoveAmount) > 1) {
@@ -432,7 +442,7 @@ namespace basecross {
 					}
 				}
 			}
-		}
+		}*/
 		LimitIndex();
 
 		for (int i = 0; i < m_ButtonGroup[m_UsingGroup].size(); i++) {
@@ -443,7 +453,21 @@ namespace basecross {
 				m_ButtonGroup[m_UsingGroup][i]->UnSelect();
 			}
 		}
-		if (m_AcceptButtons.find(m_UsingGroup) != end(m_AcceptButtons)) {
+		WORD accept = 0;
+
+		if (PressAccept(m_UsingGroup, m_PressedAccept[m_UsingGroup])) {
+			if (m_ClickSound != L"") {
+				SoundManager::Instance().PlaySE(m_ClickSound);
+			}
+			m_PressedAccept[m_UsingGroup] = accept;
+			m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
+		}
+		for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
+			if (inputState.wPressedButtons & acceptButton) {
+				
+			}
+		}
+		/*if (m_AcceptButtons.find(m_UsingGroup) != end(m_AcceptButtons)) {
 			m_PressedAccept[m_UsingGroup] = 0;
 			for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
 				if (inputState.wPressedButtons & acceptButton) {
@@ -454,7 +478,7 @@ namespace basecross {
 					m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
 				}
 			}
-		}
+		}*/
 		for (auto& groupMovementAmount : m_GroupMovementAmount) {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {

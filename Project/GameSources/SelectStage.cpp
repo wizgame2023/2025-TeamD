@@ -95,7 +95,12 @@ namespace basecross {
 				}
 			}
 			ButtonManager::instance->AddAcceptButton(L"Difficulty" + to_wstring(i), XINPUT_GAMEPAD_A);
+			ButtonManager::instance->AddKeyboradAccept(L"Difficulty" + to_wstring(i), VK_SPACE);
+
 			ButtonManager::instance->SetInput(L"Difficulty" + to_wstring(i), InputData(StickMode::LY, 1, 0.1f));
+			ButtonManager::instance->SetKeyborad(L"Difficulty" + to_wstring(i), InputData('W', -1));
+			ButtonManager::instance->SetKeyborad(L"Difficulty" + to_wstring(i), InputData('S', 1));
+
 		}
 		ButtonManager::Create(GetThis<Stage>(), L"Accept", L"SELECT_GOING2", L"SELECT_GOING",
 			Vec3(-200, -300, 0), Vec2(200, 100), [](shared_ptr<ObjectInterface> object) {
@@ -107,16 +112,26 @@ namespace basecross {
 			Vec3(200, -300, 0), Vec2(200, 100), [](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<SelectStage>(object);
 				stage->Select();
-				//stage->AcceptStage(ButtonManager::instance->GetSelectIndex(L"City"));
 			});
 
 
 
 		ButtonManager::instance->SetInput(L"City", InputData(StickMode::LX, 1, 0.1f));
+		ButtonManager::instance->SetKeyborad(L"City", InputData('A', -1));
+		ButtonManager::instance->SetKeyborad(L"City", InputData('D', 1));
+
+
 		ButtonManager::instance->SetInput(L"Accept", InputData(StickMode::LX, 1, 0.1f));
+		ButtonManager::instance->SetKeyborad(L"Accept", InputData('A', -1));
+		ButtonManager::instance->SetKeyborad(L"Accept", InputData('D', 1));
+
 
 		ButtonManager::instance->AddAcceptButton(L"City",XINPUT_GAMEPAD_A);
+		ButtonManager::instance->AddKeyboradAccept(L"City", VK_SPACE);
+
 		ButtonManager::instance->AddAcceptButton(L"Accept", XINPUT_GAMEPAD_A);
+		ButtonManager::instance->AddKeyboradAccept(L"Accept", VK_SPACE);
+
 
 		ButtonManager::instance->UseGroup(L"City");
 	}

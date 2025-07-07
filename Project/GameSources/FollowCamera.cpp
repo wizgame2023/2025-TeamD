@@ -192,7 +192,6 @@ namespace basecross {
 		m_Eye = m_Position + m_Direction * dire.x;
 		m_Eye.y = m_Position.y + dire.y;
 
-
 		RayCastHit hit;
 		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player",L"LimitArea", L"Ground"};
 		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
@@ -211,9 +210,7 @@ namespace basecross {
 			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
 		}
 		//LogCamera();
-
 		Camera::OnUpdate();
-
 	}
 
 	void FollowCamera::SetCameraPause(const bool& StopCamera)

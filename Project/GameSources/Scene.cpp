@@ -13,7 +13,7 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
-
+		wstring uiPath = mediaPath + L"UI/";
 		//モデル関係
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
 		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
