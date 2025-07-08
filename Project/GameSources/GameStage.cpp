@@ -462,10 +462,10 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
+			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();
 			m_PauseMenu->Open();
 			m_Effect->SetEffectPause(true);
-			m_Camera->SetCameraPause(true);
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
