@@ -41,7 +41,7 @@ namespace basecross {
 			m_Borders = {
 //						時間				  パリイ
 				{{ScoreBorder<float>({60.0f,90.0f,120.0f,150.0f}),ScoreBorder<int>({5,4,3,2}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({240.0f,270.0f,300.0f,330.0f}),ScoreBorder<int>({15,12,9,6}, JudgeMode::UpperOrder)}},
 				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
 
 				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
