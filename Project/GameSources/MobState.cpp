@@ -190,7 +190,7 @@ namespace basecross {
 
         // 弾数・インターバル初期化
         m_BulletRemain = mob->m_BulletRemain;
-        mob->m_ShotRandomInterval = 0;
+        mob->m_ShotRandomInterval = mob->MAX_BALLET_INTERVAL * 0.5f;
 
         // エフェクト取得
         auto stage = std::static_pointer_cast<GameStage>(m_Stage);

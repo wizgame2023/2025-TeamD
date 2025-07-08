@@ -25,7 +25,6 @@
     <Filter Include="Ballet">
       <UniqueIdentifier>{8ba9bc39-057d-4b3c-8d36-ff3d94759d2c}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="Root">
       <UniqueIdentifier>{7502858e-1949-4cf9-9ad3-37a1fb1588d8}</UniqueIdentifier>
     </Filter>
@@ -41,11 +40,9 @@
     <Filter Include="Line">
       <UniqueIdentifier>{1595b870-0b71-4a88-bb7b-f053f86bd02e}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="Attack">
       <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
     </Filter>
-
     <Filter Include="Sharp">
       <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
     </Filter>
@@ -316,12 +313,10 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp">
       <Filter>Sources</Filter>
-
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
       <Filter>Select</Filter>
     </ClCompile>
-
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp">
       <Filter>Sharp</Filter>
     </ClCompile>
@@ -349,9 +344,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
       <Filter>Sources</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
-      <Filter>Player</Filter>
-    </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp">
       <Filter>Sprite</Filter>
     </ClCompile>
@@ -370,6 +362,8 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)ResultCamera.cpp">
       <Filter>Camera</Filter>
     </ClCompile>
-
+    <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

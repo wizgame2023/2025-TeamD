@@ -1068,5 +1068,37 @@ namespace basecross{
 			return m_Vertices;
 		}
 	};
+
+	class SlideInSprite : public GameObject
+	{
+	public:
+
+		bool m_pushState = false;
+		shared_ptr<PCTSpriteDraw> m_DrawComp;
+		vector<VertexPositionColorTexture> m_Vertices;
+		shared_ptr<GameObject> m_selectCharge;
+		shared_ptr<GameObject> m_titleCharge;
+		float m_fade = 1.0f;
+		float m_time;
+		float m_maxtime;
+		const float m_fadeSpeed = 2.0f;
+		bool m_Trace;
+		Vec2 m_StartScale;
+		Vec3 m_StartPos;
+		wstring m_TextureKey;
+		float UVCharge;
+
+		const float windowWidth = App::GetApp()->GetGameWidth();
+		const float windowHeight = App::GetApp()->GetGameHeight();
+
+		SlideInSprite(const shared_ptr<Stage>& StagePtr, const wstring& TextureKey, bool Trace,
+			const Vec2& StartScale, const Vec3& StartPos, const float& Maxtime);
+		virtual ‾SlideInSprite() {}
+		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+		void ChargeUV(const float& time);
+		void UpdateProgress(float time);
+		void SetDiffuse(Col4 rgba);
+	};
 }
 //end basecross

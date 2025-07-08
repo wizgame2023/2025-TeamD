@@ -98,13 +98,6 @@ namespace basecross {
 		{
 			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 		}
-
-		if (cntlVec.bConnected) {
-			//Aボタン
-			if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B) {
-				
-			}
-		}
 	}
 
 	void TitleStage::OnPushA() {

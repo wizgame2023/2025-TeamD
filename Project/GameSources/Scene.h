@@ -6,7 +6,7 @@
 
 #include "stdafx.h"
 
-namespace basecross{
+namespace basecross {
 	struct StageData {
 		int stageNum;
 		int level;
@@ -18,7 +18,7 @@ namespace basecross{
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン
 	//--------------------------------------------------------------------------------------
-	class Scene : public SceneBase{
+	class Scene : public SceneBase {
 		vector<vector<StageFileData>> m_StageFile;
 	public:
 		//--------------------------------------------------------------------------------------

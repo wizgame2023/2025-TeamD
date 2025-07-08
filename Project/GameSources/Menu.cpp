@@ -28,8 +28,14 @@ namespace basecross {
 	void Menu::AddSelectButton(InputData date) {
 		ButtonManager::instance->SetInput(m_GroupName, date);
 	}
+	void Menu::AddKeyboradSelect(InputData date) {
+		ButtonManager::instance->SetKeyborad(m_GroupName, date);
+	}
 	void Menu::AddAcceptButton(WORD input) {
 		ButtonManager::instance->AddAcceptButton(m_GroupName, input);
+	}
+	void Menu::AddKeyboradAccept(WORD input) {
+		ButtonManager::instance->AddKeyboradAccept(m_GroupName, input);
 	}
 	void Menu::Open() {
 		for (auto& obj : m_MenuObjects) {
@@ -113,10 +119,14 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('W', -1));
+		AddKeyboradSelect(InputData('S', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void SoundTestMenu::TuningSE() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
@@ -125,6 +135,12 @@ namespace basecross {
 			else if (cntlVec.fThumbLX < -0.5f) {
 				SoundManager::Instance().SEVolumeDown(0.01f);
 			}
+		}
+		if (keyState.m_bPressedKeyTbl['D']) {
+			SoundManager::Instance().SEVolumeUp(0.1f);
+		}
+		else if (keyState.m_bPressedKeyTbl['A']) {
+			SoundManager::Instance().SEVolumeDown(0.1f);
 		}
 		float volume = SoundManager::Instance().GetSEVolume();
 		auto button = GetSprite<Sprite>(6);
@@ -135,6 +151,7 @@ namespace basecross {
 	}
 	void SoundTestMenu::TuningBGM() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
@@ -143,6 +160,12 @@ namespace basecross {
 			else if (cntlVec.fThumbLX < -0.5f) {
 				SoundManager::Instance().BGMVolumeDown(0.01f);
 			}
+		}
+		if (keyState.m_bPressedKeyTbl['D']) {
+			SoundManager::Instance().BGMVolumeUp(0.1f);
+		}
+		else if (keyState.m_bPressedKeyTbl['A']) {
+			SoundManager::Instance().BGMVolumeDown(0.1f);
 		}
 		float volume = SoundManager::Instance().GetBGMVolume();
 		auto button = GetSprite<Sprite>(9);
@@ -258,6 +281,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.2f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('W', -1));
+		AddKeyboradSelect(InputData('S', 1));
+		AddKeyboradAccept(VK_SPACE);
 
 		Close();
 	}
@@ -351,6 +377,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('A', -1));
+		AddKeyboradSelect(InputData('D', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void ResultMenu::Open() {
@@ -415,6 +444,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('A', -1));
+		AddKeyboradSelect(InputData('D', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void GameOverMenu::Open() {

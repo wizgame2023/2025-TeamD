@@ -11,35 +11,45 @@
 namespace basecross {
 	Player::Player(const shared_ptr<Stage>& stage) : Player(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
 
-	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :
-		Character(stage, position, rotation, scale),
-		m_ParryHandle(-1),
-		m_Handle(-1),
-		m_MoveSpeed(24.0f),
-		m_EnergyCharge(0.0f),
-		m_PlayerStateNum(PlayerState::NORMAL),
-		m_ZoneTime(0.0f),
-		m_ParryTime(30.0f),
-		m_ParryJudge(false),
-		m_BoostTime(0.2f),
-		m_BulletDire(Vec3(0)),
-		m_Attacktime(0.15f),
-		m_Damage(3.0f),
-		m_DamageInterval(0.5f),
-		m_BoostInterval(0.0f),
-		m_IsGoal(false),
-		m_zoneAnim(1.0f),
-		m_HitScale(Vec3(1)),
-		m_SearchDistance(2.0),
-		m_Length(4.0f),
-		m_AttackInterval(0.0f),
-		m_BlinkingInterval(0.1f),
-		m_ParryDamageInterval(false),
-		m_ParryDamageIntervalTime(0.5f),
-		m_IsPerfectParry(false),
-		m_IsParry(false),
-		m_PerfectParrySecond(0.5f)
-	{}
+	Player::Player(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& rotation, const Vec3& scale) :  
+		Character(stage, position, rotation, scale),  
+		m_ParryHandle(-1),  
+		m_Handle(-1),  
+		m_MoveSpeed(24.0f),  
+		m_EnergyCharge(0.0f),  
+		m_PlayerStateNum(PlayerState::NORMAL),  
+		m_ZoneTime(0.0f),  
+		m_ParryTime(30.0f),  
+		m_ParryJudge(false),  
+		m_BoostTime(0.2f),  
+		m_BulletDire(Vec3(0)),  
+		m_Attacktime(0.15f),  
+		m_Damage(3.0f),  
+		m_DamageInterval(0.5f),  
+		m_BoostInterval(0.0f),  
+		m_IsGoal(false),  
+		m_zoneAnim(1.0f),  
+		m_HitScale(Vec3(1)),  
+		m_SearchDistance(2.0),  
+		m_Length(4.0f),  
+		m_AttackInterval(0.0f),  
+		m_BlinkingInterval(0.1f),  
+		m_ParryDamageInterval(false),  
+		m_ParryDamageIntervalTime(0.5f),  
+		m_IsPerfectParry(false),  
+		m_IsParry(false),  
+		m_PerfectParrySecond(0.5f),  
+		m_AttackAnim(L"Attack"),  
+		m_BrinkHandle(-1),
+		m_DamageIntervalStart(false), 
+		m_ParryComboActive(false),
+		m_ParryComboCount(0),
+		m_ParryComboTimer(0.0f),
+		m_ParryComboWindow(0.0f),
+		m_ParryDamage(0.0f),
+		m_TotalTime(0.0f),
+		m_time(0.0f)
+	{}  
 	Player::‾Player(){}
 
 	Vec2 Player::GetInputState() const {
@@ -183,7 +193,6 @@ namespace basecross {
 		if (sqrDistToEnemy > kCloseDist * kCloseDist)
 			return Vec3();
 
-		// 近距離時の移動方向ベクトルを返す
 		return RotateTowardsTarget(position, enemyPos);
 	}
 
@@ -207,8 +216,20 @@ namespace basecross {
 
 	void Player::AimRock(Vec3 rot){
 		if (rot != Vec3()){
-			float rotate = atan2f(rot.x, rot.z);
-			SetRotation(Vec3(0.0f, rotate, 0.0f));
+			// 上下成分を切り捨て
+			Vec3 dir = rot;
+			dir.y = 0.0f;
+
+			float len = sqrtf(dir.x * dir.x + dir.z * dir.z);
+			if (len < 1e-5f)
+				return;     // XZベクトルが小さすぎたら回転せず抜ける
+
+			// XZ平面上で正規化
+			dir.x /= len;
+			dir.z /= len;
+
+			float yaw = atan2f(dir.x, dir.z);
+			SetRotation(Vec3(0.0f, yaw, 0.0f));
 		}
 	}
 
@@ -314,71 +335,93 @@ namespace basecross {
 		float elapsedTime = GetElapsed();
 		Vec3 forward = GetForward();
 
-		if ((m_PlayerStateNum & PlayerState::DASH) != 0) {
-			if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, true)) {
-				m_PlayerStateNum += PlayerState::NORMAL;
-				m_PlayerStateNum -= PlayerState::DASH;
-				m_BoostInterval = 0.5f;
-			}
-			else {
-				SetAnim(L"Brink");
-				BoostMove(6.0f * 3.0f, m_BoostAngle);
-			}
+		if (m_PlayerStateNum & PlayerState::DASH) {
+			HandleDash(elapsedTime);
 		}
-		else if ((m_PlayerStateNum & PlayerState::ATTACK) != 0) {
-			if (IntervalTimer(true, 0.15f, elapsedTime, m_Attacktime, true)) {
-				m_PlayerStateNum -= PlayerState::ATTACK;
-				m_PlayerStateNum += PlayerState::NORMAL;
-				m_AttackInterval = 0.15f;
-			}
-			else {
-				SetAnim(m_AttackAnim);
-			}
+		else if (m_PlayerStateNum & PlayerState::ATTACK) {
+			HandleAttack(elapsedTime);
 		}
 		else {
-			MovePlayer(6.0f);
+			HandleNormal(elapsedTime);
+		}
+	}
 
-			bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
-			bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
+	void Player::HandleDash(const float& elapsedTime)
+	{
+		// ダッシュ時間終了判定
+		if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, /*Return=*/true)) {
+			// ダッシュ解除
+			m_PlayerStateNum &= ‾PlayerState::DASH;
+			m_PlayerStateNum |= PlayerState::NORMAL;
+			m_BoostInterval = 0.5f;  // 次のダッシュ待機
+		}
+		else {
+			// 演出＆移動
+			SetAnim(L"Brink");
+			BoostMove(6.0f * 3.0f, m_BoostAngle);
+		}
+	}
 
-			Vec3 rot = SearchRange(90.0f);
-			if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
-				m_BoostAngle = GetForward();
-				float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
-				m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
-				m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
+	void Player::HandleAttack(const float& elapsedTime)
+	{
+		if (IntervalTimer(true, 0.15f, elapsedTime, m_Attacktime, true)) {
+			m_PlayerStateNum -= PlayerState::ATTACK;
+			m_PlayerStateNum += PlayerState::NORMAL;
+			m_AttackInterval = 0.15f;
+		}
+		else {
+			SetAnim(m_AttackAnim);
+		}
+	}
 
-				m_PlayerStateNum -= PlayerState::NORMAL;
-				m_PlayerStateNum += PlayerState::DASH;
-				SoundManager::Instance().PlaySE(L"SE_ACCEPT");
-			}
+	void Player::HandleNormal(const float& elapsedTime)
+	{
+		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		Vec3 forward = GetForward();
 
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
-				if (isAttack)
-				{
-					if (m_AttackAnim == L"Attack2") {
-						m_AttackAnim = L"Attack";
-					}
-					else {
-						m_AttackAnim = L"Attack2";
-					}
+		MovePlayer(6.0f);
 
-					m_ParryJudge = true;
-					m_ParryTime = 30.0f;
-					AimRock(rot);
-					m_Position = GetPosition();
-					m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
-					float rotate = atan2f(forward.x, forward.z);
+		bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
+		bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
-					m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
-					m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
-					m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
+		Vec3 rot = SearchRange(90.0f);
+		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
+			m_BoostAngle = GetForward();
+			float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
+			m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
+			m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotate);
 
-					m_PlayerStateNum += PlayerState::ATTACK;
-					m_PlayerStateNum -= PlayerState::NORMAL;
+			m_PlayerStateNum -= PlayerState::NORMAL;
+			m_PlayerStateNum += PlayerState::DASH;
+			SoundManager::Instance().PlaySE(L"SE_ACCEPT");
+		}
 
-					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
+			if (isAttack)
+			{
+				if (m_AttackAnim == L"Attack2") {
+					m_AttackAnim = L"Attack";
 				}
+				else {
+					m_AttackAnim = L"Attack2";
+				}
+
+				m_ParryJudge = true;
+				m_ParryTime = 30.0f;
+				AimRock(rot);
+				m_Position = GetPosition();
+				m_Stage->AddGameObject<HitSphere>(Vec3(m_Position), forward, GetThis<GameObject>(), m_HitScale, m_SearchDistance);
+				float rotate = atan2f(forward.x, forward.z);
+
+				m_Effect->PlayEffect(m_Handle, L"ShockWave", Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+				m_Effect->SetRotation(m_Handle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+				m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
+
+				m_PlayerStateNum += PlayerState::ATTACK;
+				m_PlayerStateNum -= PlayerState::NORMAL;
+
+				SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 			}
 		}
 	}
@@ -431,7 +474,7 @@ namespace basecross {
 			Blinking();
 		}
 
-		if (IntervalTimer(m_ParryComboActive, ParryComboWindow,elapsedTime,m_ParryComboTimer,false)){
+		if (IntervalTimer(m_ParryComboActive, m_ParryComboWindow,elapsedTime,m_ParryComboTimer,false)){
 			// 猶予切れ
 			m_ParryComboActive = false;
 			m_ParryComboCount = 0;
@@ -439,6 +482,7 @@ namespace basecross {
 
 		if (IntervalTimer(m_IsPerfectParry, 0.5f, elapsedTime, m_PerfectParrySecond, false)){
 			m_IsPerfectParry = false;
+			m_IsParry = false;
 			m_PerfectParrySecond = 0.5f;
 		}
 		else {
@@ -563,7 +607,7 @@ namespace basecross {
 				AimRock(rot);
 				++m_ParryComboCount;                // コンボ回数増加
 				m_ParryComboActive = true;          // 猶予タイマー開始
-				m_ParryComboTimer = ParryComboWindow;
+				m_ParryComboTimer = m_ParryComboWindow;
 				// m_ParryJudge はクリアせずそのまま → 連続判定可能
 
 				if (source && source->FindTag(L"Attack")) {
@@ -673,6 +717,7 @@ namespace basecross {
 		{}
 
 	HitSphere::‾HitSphere(){
+		m_Effect->StopEffect(m_Handle);
 	}
 
 	void HitSphere::OnCreate(){
