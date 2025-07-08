@@ -119,12 +119,6 @@ namespace basecross {
          */
         virtual bool Damage(bool parry,float damage,const shared_ptr<GameObject> source = nullptr);
 
-        /**
-         * @brief 衝突開始時コールバック
-         * @param other 相手オブジェクト
-         */
-        void OnCollisionEnter(shared_ptr<GameObject>& other);
-
         /// @brief タイマー更新管理
         void IntervalManagement();
 
