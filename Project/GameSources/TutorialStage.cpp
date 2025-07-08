@@ -72,21 +72,11 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		GameStage::OnUpdate();
-		//auto enemy = GetSharedGameObject<Mob>(L"mob", true);
-		//auto enemyClear = GetSharedGameObject<Mob>(L"enemy", false);
-		//auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", true);
-		//auto bossClear = GetSharedGameObject<BossEnemy>(L"BOSS", false);
-		//backGround->SetDrawActive(true);
-
-		//if (enemy != nullptr) {}
-		//if (enemyClear != nullptr) {}
-		//if (boss != nullptr) {}
-		//if (bossClear != nullptr) {}
 	}
 
 	void TutorialStage::OnEvent(const shared_ptr<Event>& event) {
 		auto& msg = event->m_MsgStr;
-
+		//テキスト（スプライトを）を消す処理
 		if (msg == L"DefeatBoss") {
 			m_backGround->SetDrawActive(false);
 		}
