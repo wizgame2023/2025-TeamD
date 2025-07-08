@@ -46,9 +46,11 @@ namespace basecross {
 		}
 
 		void AddSelectButton(InputData date);
+		void AddKeyboradSelect(InputData date);
 		void AddAcceptButton(WORD input);
 
 		virtual void Close();
+		void AddKeyboradAccept(WORD input);
 		virtual void Open();
 
 		bool IsOpen() {
