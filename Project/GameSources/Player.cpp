@@ -216,7 +216,6 @@ namespace basecross {
 
 	void Player::AimRock(Vec3 rot){
 		if (rot != Vec3()){
-			// 上下成分を切り捨て
 			Vec3 dir = rot;
 			dir.y = 0.0f;
 
@@ -262,13 +261,13 @@ namespace basecross {
 	}
 
 	float Player::Parry(float damage, const float& ParrySecond) {
-		// 定義そのまま
 		float PerfectThreshold = 20.0f;
 		float GreatThreshold = 15.0f;
 		float GoodThreshold = 5.0f;
 		float EnergyPerfectBonus = 0.5f;
 		float EnergyGreatBonus = 0.25f;
 		float EnergyGoodBonus = 0.1f;
+
 		if (ParrySecond <= GoodThreshold) {
 			return damage;
 		}
@@ -348,15 +347,12 @@ namespace basecross {
 
 	void Player::HandleDash(const float& elapsedTime)
 	{
-		// ダッシュ時間終了判定
 		if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, /*Return=*/true)) {
-			// ダッシュ解除
 			m_PlayerStateNum &= ‾PlayerState::DASH;
 			m_PlayerStateNum |= PlayerState::NORMAL;
 			m_BoostInterval = 0.5f;  // 次のダッシュ待機
 		}
 		else {
-			// 演出＆移動
 			SetAnim(L"Brink");
 			BoostMove(6.0f * 3.0f, m_BoostAngle);
 		}
@@ -376,8 +372,8 @@ namespace basecross {
 
 	void Player::HandleNormal(const float& elapsedTime)
 	{
-		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		Vec3 forward = GetForward();
 
 		MovePlayer(6.0f);
@@ -386,7 +382,7 @@ namespace basecross {
 		bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
 
 		Vec3 rot = SearchRange(90.0f);
-		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPushKeyTbl[VK_RBUTTON]) && isBoost) {
+		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPressedKeyTbl[VK_RBUTTON]) && isBoost) {
 			m_BoostAngle = GetForward();
 			float rotate = atan2f(m_BoostAngle.x, m_BoostAngle.z);
 			m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
@@ -397,7 +393,7 @@ namespace basecross {
 			SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 		}
 
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON]) {
 			if (isAttack)
 			{
 				if (m_AttackAnim == L"Attack2") {
@@ -492,10 +488,10 @@ namespace basecross {
 
 	void Player::HandlePerfectParryInput()
 	{
-		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
+		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		if (!m_IsParry) return;
-		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON]) {
+		if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON]) {
 			m_IsParry = false;
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStopVibration");
 		}
@@ -552,11 +548,6 @@ namespace basecross {
 	}
 
 	void Player::OnUpdate(){
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
-		//cntlVec
-		float elapsedTime = GetElapsed();
-		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
-
 		UpdateAnim();
 		if (m_IsGoal == false){
 			Vec3 forward = GetForward();
@@ -653,9 +644,6 @@ namespace basecross {
 			}
 		}
 		return false;
-	}
-
-	void Player::OnCollisionEnter(shared_ptr<GameObject>& other){
 	}
 
 	void Player::Debug() {
