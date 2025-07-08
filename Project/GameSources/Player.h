@@ -119,12 +119,6 @@ namespace basecross {
          */
         virtual bool Damage(bool parry,float damage,const shared_ptr<GameObject> source = nullptr);
 
-        /**
-         * @brief 衝突開始時コールバック
-         * @param other 相手オブジェクト
-         */
-        void OnCollisionEnter(shared_ptr<GameObject>& other);
-
         /// @brief タイマー更新管理
         void IntervalManagement();
 
@@ -243,6 +237,21 @@ namespace basecross {
 
         /// @brief アニメーション再生
         void PlayAnimation();
+
+        /** @brief ダッシュ再生
+		* @param elapsedTime 経過時間[s]
+        */
+        void HandleDash(const float& elapsedTime);
+
+        /** @brief アタック再生
+        * @param elapsedTime 経過時間[s]
+        */
+        void HandleAttack(const float& elapsedTime);
+
+        /** @brief 通常状態の再生
+        * @param elapsedTime 経過時間[s]
+        */
+        void HandleNormal(const float& elapsedTime);
 
         /// @brief 点滅演出
         void Blinking();

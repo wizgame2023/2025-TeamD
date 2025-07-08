@@ -16,7 +16,7 @@ namespace basecross {
 	class BossStarting : public EnemyState<BossEnemy> {
 		Effekseer::Handle m_SmokeHandle;
 	public:
-		BossStarting(shared_ptr<BossEnemy>& enemy) : EnemyState(enemy){}
+		BossStarting(shared_ptr<BossEnemy>& enemy) : EnemyState(enemy),m_SmokeHandle(0){}
 
 		virtual void Enter() override;
 		virtual void Execute()override;
@@ -24,7 +24,6 @@ namespace basecross {
 	};
 	class BossHostility : public EnemyState<BossEnemy>
 	{
-		bool m_IntruderAlert;
 		Timer m_CooldownTimer;
 		
 	public:
@@ -84,7 +83,7 @@ namespace basecross {
 	class BossCrush : public AttackState<CrushAttack> {
 	public:
 		BossCrush(shared_ptr<BossEnemy>& enemy) :
-			AttackState(enemy) {
+			AttackState(enemy) ,m_SmokeHandle(0){
 		}
 
 		virtual void Ready(float time)override;
@@ -110,7 +109,7 @@ namespace basecross {
 	class BossShakeOff : public AttackState<CrushAttack> {
 	public:
 		BossShakeOff(shared_ptr<BossEnemy>& enemy) :
-			AttackState(enemy) {
+			AttackState(enemy),m_SmokeHandle(0) {
 		}
 
 		virtual void Ready(float time)override;

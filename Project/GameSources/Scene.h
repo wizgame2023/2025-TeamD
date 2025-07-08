@@ -26,7 +26,7 @@ namespace basecross {
 		@brief コンストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		Scene() :SceneBase() {
+		Scene() :SceneBase(),m_MaxCount(0),m_Count(0){
 			m_StageFile = {
 				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},

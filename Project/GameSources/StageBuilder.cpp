@@ -66,7 +66,7 @@ namespace basecross {
 				wstring maxStr = objInfo[GetInfoIndex(L"max")];
 				wstring intervalStr = objInfo[GetInfoIndex(L"interval")];
 				auto legion = static_pointer_cast<Legion>(obj);
-				legion->SetMaxCount(WstrToFlt(maxStr));
+				legion->SetMaxCount(WstrToInt(maxStr));
 				legion->SetPopInterval(WstrToFlt(intervalStr));
 				spawner->AddLegion(legion);
 			}
@@ -76,7 +76,7 @@ namespace basecross {
 				auto enemy = static_pointer_cast<Enemy>(obj);
 				if (enemy) {
 					enemy->InitHP(WstrToFlt(hpStr));
-					spawner->AddEnemy(WstrToFlt(waveStr), enemy);
+					spawner->AddEnemy(WstrToInt(waveStr), enemy);
 				}
 				enemyCount++;
 			}
@@ -124,7 +124,7 @@ namespace basecross {
 
 		auto it = find(m_InfoNames.begin(), m_InfoNames.end(), infoName);
 		if (it != m_InfoNames.end()) {
-			int index = distance(m_InfoNames.begin(), it);
+			int index = static_cast<int>(distance(m_InfoNames.begin(), it));
 			return index;
 		}
 		else {

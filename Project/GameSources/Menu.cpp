@@ -28,8 +28,14 @@ namespace basecross {
 	void Menu::AddSelectButton(InputData date) {
 		ButtonManager::instance->SetInput(m_GroupName, date);
 	}
+	void Menu::AddKeyboradSelect(InputData date) {
+		ButtonManager::instance->SetKeyborad(m_GroupName, date);
+	}
 	void Menu::AddAcceptButton(WORD input) {
 		ButtonManager::instance->AddAcceptButton(m_GroupName, input);
+	}
+	void Menu::AddKeyboradAccept(WORD input) {
+		ButtonManager::instance->AddKeyboradAccept(m_GroupName, input);
 	}
 	void Menu::Open() {
 		for (auto& obj : m_MenuObjects) {
@@ -102,21 +108,27 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
-				menu->Close();
 				auto getStage = menu->GetTypeStage<GameStage>();
+				auto player = getStage->GetSharedGameObject<Player>(L"Player", false);
+				menu->Close();
 				auto setEffect = getStage->GetCreateEffect();
 				setEffect->SetEffectPause(false);
 				auto getCamera = menu->OnGetDrawCamera();
 				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
 				setCamera->SetCameraPause(false);
+				player->SetIsGaol(false);
 			});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('W', -1));
+		AddKeyboradSelect(InputData('S', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void SoundTestMenu::TuningSE() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
@@ -125,6 +137,12 @@ namespace basecross {
 			else if (cntlVec.fThumbLX < -0.5f) {
 				SoundManager::Instance().SEVolumeDown(0.01f);
 			}
+		}
+		if (keyState.m_bPushKeyTbl['D']) {
+			SoundManager::Instance().SEVolumeUp(0.01f);
+		}
+		else if (keyState.m_bPushKeyTbl['A']) {
+			SoundManager::Instance().SEVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetSEVolume();
 		auto button = GetSprite<Sprite>(6);
@@ -135,6 +153,7 @@ namespace basecross {
 	}
 	void SoundTestMenu::TuningBGM() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
@@ -143,6 +162,12 @@ namespace basecross {
 			else if (cntlVec.fThumbLX < -0.5f) {
 				SoundManager::Instance().BGMVolumeDown(0.01f);
 			}
+		}
+		if (keyState.m_bPushKeyTbl['D']) {
+			SoundManager::Instance().BGMVolumeUp(0.01f);
+		}
+		else if (keyState.m_bPushKeyTbl['A']) {
+			SoundManager::Instance().BGMVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetBGMVolume();
 		auto button = GetSprite<Sprite>(9);
@@ -258,6 +283,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.2f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('W', -1));
+		AddKeyboradSelect(InputData('S', 1));
+		AddKeyboradAccept(VK_SPACE);
 
 		Close();
 	}
@@ -351,6 +379,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('A', -1));
+		AddKeyboradSelect(InputData('D', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void ResultMenu::Open() {
@@ -360,7 +391,7 @@ namespace basecross {
 		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
 		auto parry = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
 
-		int minute = ScoreManager::Instance()->GetTime() / 60;
+		int minute = static_cast<int>(ScoreManager::Instance()->GetTime()) / 60;
 		int second = static_cast<int>(ScoreManager::Instance()->GetTime()) % 60;
 		time_min->UpdateNumber(minute);
 		time_sec->UpdateNumber(second);
@@ -415,6 +446,9 @@ namespace basecross {
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
+		AddKeyboradSelect(InputData('A', -1));
+		AddKeyboradSelect(InputData('D', 1));
+		AddKeyboradAccept(VK_SPACE);
 		Close();
 	}
 	void GameOverMenu::Open() {

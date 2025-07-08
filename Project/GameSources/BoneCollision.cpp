@@ -8,7 +8,7 @@
 
 namespace basecross {
 	void BonePosition::OnUpdate() {
-		for (int i = 0, size = m_Bones.size(); i < size; i++) {
+		for (size_t i = 0, size = m_Bones.size(); i < size; i++) {
 			Mat4x4 mat;
 			auto boneMat = m_ObjectDraw->GetVecLocalBones()[i];
 			mat.translation(m_Bones[i]->GetInitPosition());
@@ -33,7 +33,7 @@ namespace basecross {
 			return;
 		}
 
-		int size = m_ObjectDraw->GetVecLocalBones().size();
+		size_t size = m_ObjectDraw->GetVecLocalBones().size();
 		while (getline(file, line)) {
 			istringstream ss(line);
 			string date;
@@ -47,7 +47,7 @@ namespace basecross {
 
 			initPositions.push_back(position);
 		}
-		for (int i = 0; i < size; i++) {
+		for (size_t i = 0; i < size; i++) {
 			auto bone = ObjectFactory::Create<Bone>(GetStage(), GetGameObject(), initPositions[i], i);//AddGameObject<Bone>(GetGameObject(), initPositions[i], i);
 			m_Bones.push_back(bone);
 		}
