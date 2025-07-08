@@ -28,6 +28,7 @@ namespace basecross {
 		app->RegisterTexture(L"SELECTSPRITE", uiPath + L"SelectStageToTitle.png");
 		app->RegisterTexture(L"SELECT_TITLE", uiPath + L"ResultToTitle.png");
 		app->RegisterTexture(L"SELECT_STAGE", uiPath + L"SelectStage.png");
+		app->RegisterTexture(L"SELECT_STAGE_WHITE", uiPath + L"SelectStageWhite.png");
 		app->RegisterTexture(L"SELECT_GOING", uiPath + L"SelectStageToGoing.png");
 		app->RegisterTexture(L"SELECT_GOING2", uiPath + L"StageToSelectGoing.png");
 		app->RegisterTexture(L"SELECT_NUMBER", uiPath + L"Number.png");
@@ -41,6 +42,7 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_NORMAL", uiPath + L"SelectNormal.png");
 		app->RegisterTexture(L"SELECT_HARD", uiPath + L"SelectHard.png");
 
+		app->RegisterTexture(L"SELECT_BACK_STAGE", uiPath + L"StageBack.png");
 		app->RegisterTexture(L"SELECT_BACK_SELCT", uiPath + L"Result_Back_Sel.png");
 		app->RegisterTexture(L"SELECT_BACK", uiPath + L"Result_Back.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
@@ -71,12 +73,16 @@ namespace basecross {
 
 			ButtonManager::Create(GetThis<Stage>(), L"City", L"SELECT_BACK", L"SELECT_BACK_SELCT",
 				position , Vec2(212.5f,335.0f) * 1.5f, 
-				[](shared_ptr<ObjectInterface> object) {
+				[position](shared_ptr<ObjectInterface> object) {
 					auto stage = static_pointer_cast<SelectStage>(object);
 					stage->AcceptStage(ButtonManager::instance->GetSelectIndex(L"City"));
+					auto white = stage->AddGameObject<Sprite>(L"SELECT_STAGE_WHITE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), true);
+					auto slide = stage->AddGameObject<SlideInSprite>(L"SELECT_BACK_STAGE", true, Vec2(150.0f, 50.0f), position + Vec3(0.0f, 175.0f, 0.0f), 1.0f);
+					white->SetDrawLayer(1);
+					slide->SetDiffuse(Col4(0,0,0,1));
 				});
 
-			AddGameObject<Sprite>(L"SELECT_STAGE", position + Vec3(0.0f,175.0f,0.0f), Vec2(150.0f, 50.0f), true);
+			AddGameObject<Sprite>(L"SELECT_STAGE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), true);
 			Vec3 dangerLow = Vec3(leftX - leftX * i, 90.0f, 0.0f);
 			for (int j = 0; j < dangerKey.size(); j++) {
 				ButtonManager::Create(GetThis<Stage>(), L"Difficulty" + to_wstring(i), L"POSE_CIRCLE", Col4(1, 1, 1, 1),

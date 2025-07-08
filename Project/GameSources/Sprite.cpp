@@ -595,5 +595,78 @@ namespace basecross {
 	}
 
 
+	SlideInSprite::SlideInSprite(
+		const shared_ptr<Stage>& StagePtr, 
+		const wstring& TextureKey, 
+		bool Trace,
+		const Vec2& StartScale, 
+		const Vec3& StartPos,
+		const float& Maxtime
+	) :
+		GameObject(StagePtr),
+		m_TextureKey(TextureKey),
+		m_Trace(Trace),
+		m_StartScale(StartScale),
+		m_StartPos(StartPos),
+		m_time(0),
+		m_maxtime(Maxtime)
+	{}
+
+	void SlideInSprite::OnCreate() {
+		UVCharge = 1.0f;
+
+		Col4 color(1, 1, 1, 1);
+
+		float halfW = 1.0f;
+		float halfH = 1.0f;
+		//頂点配列(縦横5個ずつ表示)
+		m_Vertices = {
+			{Vec3(-halfW, halfH, 0.0f), color,Vec2(0.0f, 0.0f)},
+			{Vec3(halfW, halfH,   0.0f), color, Vec2(1.0f, 0.0f)},
+			{Vec3(-halfW, -halfH, 0.0f), color, Vec2(0.0f, 1.0f)},
+			{Vec3(halfW, -halfH, 0.0f), color,	Vec2(1.0f, 1.0f)},
+		};
+		//インデックス配列
+		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+		SetAlphaActive(m_Trace);
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_StartScale.x, m_StartScale.y, 0.2f);
+		ptrTrans->SetRotation(0, 0, 0);
+		ptrTrans->SetPosition(m_StartPos);
+		//頂点とインデックスを指定してスプライト作成
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
+	}
+	void SlideInSprite::OnUpdate()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_time += elapsedTime * 5.0f;
+		ChargeUV(m_time);
+	}
+	void SlideInSprite::ChargeUV(const float& time)
+	{
+		float alpha = m_maxtime;
+		if (time < alpha) {
+			UpdateProgress(time);
+		}
+	}
+
+	void SlideInSprite::UpdateProgress(float time) {
+		float progress = time;
+		m_Vertices[1].position.x = (progress * 2) - 1.0f;
+		m_Vertices[3].position.x = (progress * 2) - 1.0f;
+		m_Vertices[1].textureCoordinate.x = progress;
+		m_Vertices[3].textureCoordinate.x = progress;
+
+		GetComponent<PCTSpriteDraw>()->UpdateVertices(m_Vertices);
+	}
+
+	void SlideInSprite::SetDiffuse(Col4 rgba)
+	{
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->SetDiffuse(rgba);
+	}
+
 }
 //end basecross
