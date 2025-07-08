@@ -391,7 +391,7 @@ namespace basecross {
 		auto time_sec = static_pointer_cast<NumberSprite>(m_MenuObjects[2]);
 		auto parry = static_pointer_cast<NumberSprite>(m_MenuObjects[3]);
 
-		int minute = ScoreManager::Instance()->GetTime() / 60;
+		int minute = static_cast<int>(ScoreManager::Instance()->GetTime()) / 60;
 		int second = static_cast<int>(ScoreManager::Instance()->GetTime()) % 60;
 		time_min->UpdateNumber(minute);
 		time_sec->UpdateNumber(second);

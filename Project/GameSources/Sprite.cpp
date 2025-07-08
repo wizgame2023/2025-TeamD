@@ -66,23 +66,25 @@ namespace basecross {
 			if (m_CurrentAnimation.m_IsReverse) {
 				m_CurrentAnimation.m_CurrentOrder--;
 				if (m_CurrentAnimation.m_CurrentOrder < 0) {
-					if (m_CurrentAnimation.m_IsLoop) {
+					m_CurrentAnimation.EndAnimation();
+					/*if (m_CurrentAnimation.m_IsLoop) {
 						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
 					}
 					else {
 						m_CurrentAnimation.m_CurrentOrder = 0;
-					}
+					}*/
 				}
 			}
 			else {
 				m_CurrentAnimation.m_CurrentOrder++;
 				if (m_CurrentAnimation.m_CurrentOrder >= m_CurrentAnimation.m_Order.size() || m_CurrentAnimation.m_CurrentOrder >= m_AnimationUV.size()) {
-					if (m_CurrentAnimation.m_IsLoop) {
+					m_CurrentAnimation.EndAnimation();
+					/*if (m_CurrentAnimation.m_IsLoop) {
 						m_CurrentAnimation.m_CurrentOrder = 0;
 					}
 					else {
 						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
-					}
+					}*/
 				}
 			}
 
@@ -91,10 +93,10 @@ namespace basecross {
 			m_AnimationTimer = 0.0f;
 		}
 	}
-	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const int& maxIndex) {
+	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const size_t& maxIndex) {
 		vector<vector<Vec2>> uv;
-		for (int y = 0; y < cut.y; y++) {
-			for (int x = 0; x < cut.x; x++) {
+		for (size_t y = 0; y < cut.y; y++) {
+			for (size_t x = 0; x < cut.x; x++) {
 				//最大値に達したらもう作らない
 				if (cut.x * y + x > maxIndex) return uv;
 				uv.push_back({
@@ -421,8 +423,8 @@ namespace basecross {
 
 		InputData data(0, 0);
 		if (PressSelect(m_UsingGroup,data)) {
-			int checkButton = m_SelectIndexes[m_UsingGroup] + data.m_MoveAmount;
-			checkButton = min(m_ButtonGroup[m_UsingGroup].size() - 1, checkButton);
+			int checkButton = static_cast<int>(m_SelectIndexes[m_UsingGroup]) + data.m_MoveAmount;
+			checkButton = min(static_cast<int>(m_ButtonGroup[m_UsingGroup].size()) - 1, checkButton);
 			checkButton = max(0, checkButton);
 			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
 				m_SelectIndexes[m_UsingGroup] += data.m_MoveAmount;

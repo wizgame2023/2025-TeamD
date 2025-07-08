@@ -55,7 +55,7 @@ namespace basecross {
 
 		void CreateBone();
 		
-		int GetBoneSize() {
+		size_t GetBoneSize() {
 			return m_Bones.size();
 		}
 		shared_ptr<Bone>& GetBone(int index) {
