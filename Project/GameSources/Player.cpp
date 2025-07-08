@@ -216,8 +216,20 @@ namespace basecross {
 
 	void Player::AimRock(Vec3 rot){
 		if (rot != Vec3()){
-			float rotate = atan2f(rot.x, rot.z);
-			SetRotation(Vec3(0.0f, rotate, 0.0f));
+			// 上下成分を切り捨て
+			Vec3 dir = rot;
+			dir.y = 0.0f;
+
+			float len = sqrtf(dir.x * dir.x + dir.z * dir.z);
+			if (len < 1e-5f)
+				return;     // XZベクトルが小さすぎたら回転せず抜ける
+
+			// XZ平面上で正規化
+			dir.x /= len;
+			dir.z /= len;
+
+			float yaw = atan2f(dir.x, dir.z);
+			SetRotation(Vec3(0.0f, yaw, 0.0f));
 		}
 	}
 
