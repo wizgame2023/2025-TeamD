@@ -89,8 +89,8 @@ namespace basecross {
 					dangerLow - Vec3(90.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f),
 					[](shared_ptr<ObjectInterface> object) {
 						auto stage = static_pointer_cast<SelectStage>(object);
-						int selectCity = ButtonManager::instance->GetSelectIndex(L"City");
-						stage->AcceptDifficulty(ButtonManager::instance->GetSelectIndex(L"Difficulty" + to_wstring(selectCity)));
+						size_t selectCity = ButtonManager::instance->GetSelectIndex(L"City");
+						stage->AcceptDifficulty(static_cast<int>(ButtonManager::instance->GetSelectIndex(L"Difficulty" + to_wstring(selectCity))));
 					});
 
 				auto sprite = AddGameObject<Sprite>(dangerKey[j], dangerLow - Vec3(0,100.0f * j,0.0f), Vec2(60.0f, 60.0f), true);

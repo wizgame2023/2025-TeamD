@@ -120,7 +120,7 @@ namespace basecross{
 
 		float GetTotal()
 		{
-			return(GetTimeRank() + GetDamageRank() + GetParryRank()) / 3;
+			return static_cast<float>(GetTimeRank() + GetDamageRank() + GetParryRank()) / 3.0f;
 		}
 
 		float GetTotalRank()

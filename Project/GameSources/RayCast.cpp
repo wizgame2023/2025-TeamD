@@ -192,7 +192,7 @@ namespace basecross {
 					Nomal *= Len;
 					hit.m_HitPosition = line.m_Start + Nomal;
 					hit.m_Triangle = tri;
-					hit.m_TriangleIndex = triangleIndex;
+					hit.m_TriangleIndex = static_cast<size_t>(triangleIndex);
 
 					return true;
 				}
@@ -239,7 +239,7 @@ namespace basecross {
 				right.push_back(tri);
 			}
 		}*/
-		int diff = left.size() - right.size();
+		int diff = static_cast<int>(left.size()) - static_cast<int>(right.size());
 		if (left.empty() || right.empty() || abs(diff) > triangle.size() * 0.75f) {
 			node->triangles = triangle;
 			return node;
@@ -251,7 +251,7 @@ namespace basecross {
 	}
 
 	AABB BVH::TriangleBounds(vector<TRIANGLE> triangle) {
-		Vec3 minPos = Vec3(INT_MAX), maxPos = Vec3(-INT_MAX);
+		Vec3 minPos = Vec3(FLT_MAX), maxPos = Vec3(-FLT_MAX);
 		for (auto& tri : triangle) {
 			vector<Vec3> indeces = { tri.m_A,tri.m_B ,tri.m_C };
 			for (int i = 0; i < 3; i++) {
