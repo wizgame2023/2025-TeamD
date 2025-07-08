@@ -100,16 +100,18 @@ namespace basecross {
 	}
 
 
-	ProductionCameraman::ProductionCameraman(const shared_ptr<Stage>& StagePtr): 
+	ProductionCameraman::ProductionCameraman(const shared_ptr<Stage>& StagePtr) :
 		GameObject(StagePtr),
 		m_currntTime(0.0f),
 		m_moveType(MoveType::Linear),
 		m_tempTotalTime(0.0f),
 		m_totalTime(0.0f),
-		m_switchToMainCamera(true), // メインカメラに切り替えるかどうかのフラグ
-		m_isReverse(false)
-	{}
-
+		m_switchToMainCamera(true),
+		m_isReverse(false),
+		m_endcurrntTime(0.0f),
+		m_finished(false)
+	{
+	}
 	//初期化
 	void ProductionCameraman::OnCreate() {
 		//初期位置などの設定

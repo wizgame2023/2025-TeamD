@@ -248,6 +248,11 @@ namespace basecross {
 		return Vec2(m_Magnification, m_Up);
 	}
 
+	void FollowCamera::ResetCursorPosition()
+	{
+		::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+	}
+
 	void FollowCamera::LogCamera() {
 
 		auto scene = App::GetApp()->GetScene<Scene>();

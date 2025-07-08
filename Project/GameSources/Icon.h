@@ -32,6 +32,7 @@ namespace basecross {
 		wstring m_TexKey;
 		Vec3 m_Position;
 		DWORD m_Input;
+		DWORD m_KeyInput;
 		bool m_IsPressed;
 
 		Col4 m_PressedColor;
@@ -41,7 +42,7 @@ namespace basecross {
 	public:
 		NormalIcon(const shared_ptr<Stage>& stage,const wstring& key,Vec3 position,Col4 pressed,Col4 normal,float time) :
 			GameObject(stage),m_TexKey(key),m_Position(position),
-			m_Input(0),m_IsPressed(false),m_PressedColor(pressed),m_NormalColor(normal), m_PressTime(time), m_MaxPressTime(time)
+			m_Input(0), m_KeyInput(0),m_IsPressed(false),m_PressedColor(pressed),m_NormalColor(normal), m_PressTime(time), m_MaxPressTime(time)
 		{}
 		virtual ‾NormalIcon() {}
 
@@ -52,6 +53,9 @@ namespace basecross {
 
 		void SetInput(DWORD input) {
 			m_Input = input;
+		}
+		void SetKeyInput(DWORD input) {
+			m_KeyInput = input;
 		}
 	};
 }

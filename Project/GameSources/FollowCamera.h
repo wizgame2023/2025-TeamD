@@ -85,6 +85,7 @@ namespace basecross {
 		void SetShaking(const bool& sh) {
 			m_IsShaking = sh;
 		}
+		void ResetCursorPosition();
 
 		float GetAngle() const
 		{

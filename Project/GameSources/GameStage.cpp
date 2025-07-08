@@ -177,10 +177,10 @@ namespace basecross {
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
-		m_NormalIcon->SetInput(VK_LBUTTON);
+		m_NormalIcon->SetKeyInput(VK_LBUTTON);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
-		m_Icon->SetInput(VK_RBUTTON);
+		m_Icon->SetKeyInput(VK_RBUTTON);
 		m_UltIcon = AddGameObject<UltIcon>();
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -198,7 +198,6 @@ namespace basecross {
 		m_BossHpBar->SetBackColor(Col4(0, 0, 0, 1));
 
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
-		//m_BossTextWaku = AddGameObject<Sprite>(L"BOSS_TEXT_WAKU", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(1, 1, 1, 1));
 
 		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
@@ -227,6 +226,7 @@ namespace basecross {
 			if (camera != nullptr) {
 				SetView(m_MyCameraView);
 				camera->SetTarget(player->GetComponent<Transform>());
+				camera->ResetCursorPosition();
 				m_cameraState = CameraState::FOLLOWCAMERA;
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				if (player != nullptr) {
@@ -249,8 +249,13 @@ namespace basecross {
 			m_cameraState = CameraState::OPENINGCAMERA;
 			auto ptrOpeningCameraman = AddGameObject<ProductionCameraman>();
 			ptrOpeningCameraman->SetReverse(false);
-			ptrOpeningCameraman->StartOpeningAnimation(CameraPos, CameraEndPos, AtPos, AtEndPos, -CameraPos, AtEndPos, 4.0f, 0.0f,true);
 			ptrOpeningCameraman->SetMoveType(ProductionCameraman::MoveType::Orbit);
+			ptrOpeningCameraman->StartOpeningAnimation(
+				CameraPos, CameraEndPos, 
+				AtPos, AtEndPos, 
+				-CameraPos, AtEndPos, 
+				4.0f, 0.0f,true);
+
 			SetSharedGameObject(L"ProductionCamera", ptrOpeningCameraman);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
@@ -271,7 +276,6 @@ namespace basecross {
 		m_UltIcon->SetDraw(false);
 		m_UltEnege = 0.0f;
 		m_UltIcon->SetCharge(m_UltEnege);
-		//m_PlayerHpBarBackGround->SetDrawActive(false);
 		m_PlayerHpBar->SetDrawActive(false);
 		m_BossStunBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -292,22 +296,16 @@ namespace basecross {
 			productionCamera->SetReverse(false);
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
 			productionCamera->StartOpeningAnimation(
-				cameraStartPos,	
-				animEndPos1+ side, 
-				cameraStartAt,	
-				animAtPos - side,  
-				animEndPos2, 
-				animAtPos,
-				3.0f,
-				0.0f,
-				false
-			);
+				cameraStartPos,	animEndPos1+ side, 
+				cameraStartAt,	animAtPos - side,  
+				animEndPos2, animAtPos,
+				3.0f,0.0f,false);
+
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
-			}
-			
+			}		
 			m_cameraState = CameraState::RESULTCAMERA;
 		}
 	}
@@ -351,16 +349,10 @@ namespace basecross {
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
 			productionCamera->SetReverse(false);
 			productionCamera->StartOpeningAnimation(
-				CameraPos, 
-				CameraEndPos, 
-				Playpos, 
-				Playpos + (-Playrot / 2),
-				-CameraPos,
-				Playpos,
-				3.0f,
-				0.0f,
-				false
-			);
+				CameraPos,CameraEndPos,
+				Playpos, Playpos + (-Playrot / 2),
+				-CameraPos,Playpos,
+				3.0f,0.0f,false);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
@@ -379,33 +371,26 @@ namespace basecross {
 
 		if (player != nullptr) {
 			player->SetIsGaol(true);
-			Vec3 playerPos = player->GetPosition();
 			Vec3 bossPos = boss->GetPosition();
-			Vec3 bossRot = boss->GetForward();
-			Vec3 CameraPos = camera->GetEye();
+			Vec3 bossRot = boss->GetForward() * 7;
 			Vec3 CameraEndPos = bossPos + Vec3(0.0f, -bossPos.y + 2.0f, 0.0f);
-			m_cameraState = CameraState::OPENINGCAMERA;
 
 			auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 			productionCamera->SetReverse(true);
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
+
 			productionCamera->StartOpeningAnimation(
-				CameraPos,
-				CameraEndPos - bossRot * 7,
-				playerPos,
-				CameraEndPos,
-				-CameraPos,
-				bossPos,
-				4.5f,
-				0.0f,
-				true
-			);
+				camera->GetEye(),CameraEndPos - bossRot,
+				player->GetPosition(),CameraEndPos,
+				-camera->GetEye(),bossPos,
+				4.5f,0.0f,true);
 
 			auto ptrOpeningCamera = static_pointer_cast<ProductionCamera>(m_ProductionCameraView->GetCamera());
 			if (ptrOpeningCamera) {
 				SetView(m_ProductionCameraView);
 				ptrOpeningCamera->SetCameraObject(productionCamera);
 			}
+			m_cameraState = CameraState::OPENINGCAMERA;
 		}
 
 	}
@@ -460,12 +445,14 @@ namespace basecross {
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
+		auto player = GetSharedGameObject<Player>(L"Player", false);
 
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
 			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();
 			m_PauseMenu->Open();
 			m_Effect->SetEffectPause(true);
+			player->SetIsGaol(true);
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
@@ -474,12 +461,10 @@ namespace basecross {
 
 			m_BossHpBar->SetDrawActive(false);
 			m_BossText->SetDrawActive(false);
-			//m_BossTextWaku->SetDrawActive(false);
 		}
 		else {
 			//SetAllGameObjectActive(true);
 			if (m_cameraState == CameraState::FOLLOWCAMERA) {
-				auto player = GetSharedGameObject<Player>(L"Player", false);
 				if (player != nullptr) {
 					m_UltIcon ->SetCharge(player->GetEnergy());
 				}
@@ -490,12 +475,10 @@ namespace basecross {
 				bool isBossDraw = boss->IsArive();
 				m_BossHpBar->SetDrawActive(isBossDraw);
 				m_BossText->SetDrawActive(isBossDraw);
-				//m_BossTextWaku->SetDrawActive(isBossDraw);
 			}
 			else {
 				m_BossHpBar->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
-				//m_BossTextWaku->SetDrawActive(false);
 			}
 		}
 

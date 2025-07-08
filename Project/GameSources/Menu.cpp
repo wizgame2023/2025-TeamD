@@ -108,13 +108,15 @@ namespace basecross {
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<Menu>(object);
-				menu->Close();
 				auto getStage = menu->GetTypeStage<GameStage>();
+				auto player = getStage->GetSharedGameObject<Player>(L"Player", false);
+				menu->Close();
 				auto setEffect = getStage->GetCreateEffect();
 				setEffect->SetEffectPause(false);
 				auto getCamera = menu->OnGetDrawCamera();
 				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
 				setCamera->SetCameraPause(false);
+				player->SetIsGaol(false);
 			});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
@@ -136,11 +138,11 @@ namespace basecross {
 				SoundManager::Instance().SEVolumeDown(0.01f);
 			}
 		}
-		if (keyState.m_bPressedKeyTbl['D']) {
-			SoundManager::Instance().SEVolumeUp(0.1f);
+		if (keyState.m_bPushKeyTbl['D']) {
+			SoundManager::Instance().SEVolumeUp(0.01f);
 		}
-		else if (keyState.m_bPressedKeyTbl['A']) {
-			SoundManager::Instance().SEVolumeDown(0.1f);
+		else if (keyState.m_bPushKeyTbl['A']) {
+			SoundManager::Instance().SEVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetSEVolume();
 		auto button = GetSprite<Sprite>(6);
@@ -161,11 +163,11 @@ namespace basecross {
 				SoundManager::Instance().BGMVolumeDown(0.01f);
 			}
 		}
-		if (keyState.m_bPressedKeyTbl['D']) {
-			SoundManager::Instance().BGMVolumeUp(0.1f);
+		if (keyState.m_bPushKeyTbl['D']) {
+			SoundManager::Instance().BGMVolumeUp(0.01f);
 		}
-		else if (keyState.m_bPressedKeyTbl['A']) {
-			SoundManager::Instance().BGMVolumeDown(0.1f);
+		else if (keyState.m_bPushKeyTbl['A']) {
+			SoundManager::Instance().BGMVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetBGMVolume();
 		auto button = GetSprite<Sprite>(9);

@@ -70,12 +70,18 @@ namespace basecross {
 	}
 	void NormalIcon::OnUpdate() {
 		auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
+
 		float elapsed = App::GetApp()->GetElapsedTime();
 		if (device.bConnected) {
 			if (device.wPressedButtons & m_Input) {
 				m_IsPressed = true;
 				m_PressTime = m_MaxPressTime;
 			}
+		}
+		if (keyState.m_bPressedKeyTbl[m_KeyInput]) {
+			m_IsPressed = true;
+			m_PressTime = m_MaxPressTime;
 		}
 
 		if (m_IsPressed) {

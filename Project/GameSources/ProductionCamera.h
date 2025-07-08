@@ -1,189 +1,194 @@
 /*!
-@file Character.h
-@brief キャラクターなど
+ @file ProductionCamera.h
+ @brief 演出用のカメラを制御するクラス群
 */
 
 #pragma once
 #include "stdafx.h"
 
 namespace basecross {
-	/// @brief ProductionCameraman 
-	/// クラスは、カメラのアニメーションや挙動を制御するためのゲームオブジェクトです。
-	/// カメラの位置や注視点の管理、アニメーションの開始、状態遷移の管理などを行います。
-	class ProductionCameraman : public GameObject {
-		Vec3 m_startPos;                          // カメラの開始位置を保持するベクトル
-		Vec3 m_endPos;                            // カメラの終了位置を保持するベクトル
-		Vec3 m_atStartPos;                        // 注視点の開始位置を保持するベクトル
-		Vec3 m_atEndPos;                          // 注視点の終了位置を保持するベクトル
-		Vec3 m_atPos;                             // 現在の注視点位置を保持するベクトル
-		Vec3 m_eyePos;                            // 現在のカメラ位置を保持するベクトル
-		Vec3 m_secondEndPos;                      // 二次終了位置を保持するベクトル
-		Vec3 m_secondAtEndPos;                    // 二次注視点終了位置を保持するベクトル
 
-		float m_totalTime;                        // 合計時間を保持する変数
-		float m_endcurrntTime;                        // 合計時間を保持する変数
-		float m_tempTotalTime;                    // 一時的な合計時間を保持する変数
-		float m_currntTime;
+    /// @brief カメラのアニメーションや挙動を制御するゲームオブジェクト
+    class ProductionCameraman : public GameObject {
+        Vec3 m_startPos;           ///< カメラの開始位置を保持するベクトル
+        Vec3 m_endPos;             ///< カメラの終了位置を保持するベクトル
+        Vec3 m_atStartPos;         ///< 注視点の開始位置を保持するベクトル
+        Vec3 m_atEndPos;           ///< 注視点の終了位置を保持するベクトル
+        Vec3 m_atPos;              ///< 現在の注視点位置を保持するベクトル
+        Vec3 m_eyePos;             ///< 現在のカメラ位置を保持するベクトル
+        Vec3 m_secondEndPos;       ///< 二次終了位置を保持するベクトル
+        Vec3 m_secondAtEndPos;     ///< 二次注視点終了位置を保持するベクトル
 
-		bool m_switchToMainCamera; // メインカメラに切り替えるかどうかのフラグ
-		bool m_finished;        // アニメーションが終了したかどうかのフラグ
-		bool m_isReverse; // アニメーションが逆再生されるかどうかのフラグ
+        float m_totalTime;         ///< アニメーション全体の再生時間（秒）
+        float m_endcurrntTime;     ///< 二次アニメーションの再生時間（秒）
+        float m_tempTotalTime;     ///< 一時的な合計時間を保持する変数
+        float m_currntTime;        ///< 現在の経過時間を保持する変数
 
-		// ステートマシン
-		unique_ptr< StateMachine<ProductionCameraman> >  m_StateMachine;
+        bool m_switchToMainCamera; ///< 終了後にメインカメラへ切り替えるかどうかのフラグ
+        bool m_finished;           ///< アニメーションが終了したかどうかのフラグ
+        bool m_isReverse;          ///< アニメーションを逆再生するかどうかのフラグ
 
-	public:
-		// 移動タイプを定義（回転 or 直線）
-		enum MoveType {
-			Linear = 0, // 直線移動
-			Orbit = 1   // 円軌道（現在の動き）
-		};
+        unique_ptr<StateMachine<ProductionCameraman>> m_StateMachine;  ///< ステートマシン本体
 
-		// OpeningCameraman クラスのメンバ変数
-		int m_moveType;
+    public:
+        /// @brief 移動タイプを定義（回転 or 直線）
+        enum MoveType {
+            Linear = 0, ///< 直線移動
+            Orbit = 1  ///< 円軌道移動
+        };
 
-		// 構築と破棄
-		ProductionCameraman(const shared_ptr<Stage>& StagePtr);
-		~ProductionCameraman() {}
+        int m_moveType;            ///< 現在の移動タイプ（Linear または Orbit）
 
-		// 初期化
-		virtual void OnCreate() override;
+        /// @brief コンストラクタ
+        /// @param StagePtr ステージへの共有ポインタ
+        ProductionCameraman(const shared_ptr<Stage>& StagePtr);
 
-		// 操作
-		virtual void OnUpdate() override;
+        /// @brief デストラクタ
+        ~ProductionCameraman() {}
 
-		/// @brief カメラのアニメーションを開始する。
-		/// @param startPos アニメーション開始時のカメラ位置。
-		/// @param endPos アニメーション終了時のカメラ位置。
-		/// @param atStartPos アニメーション開始時の注視点位置。
-		/// @param atEndPos アニメーション終了時の注視点位置。
-		/// @param secondEndPos 2段階目のアニメーション終了時のカメラ位置。
-		/// @param secondAtEndPos 2段階目のアニメーション終了時の注視点位置。
-		/// @param totalTime アニメーション全体の再生時間（秒単位）。
-		/// @param switchToMainCamera アニメーション終了後にメインカメラへ切り替えるかどうか。
-		void StartOpeningAnimation(
-			const Vec3& startPos,         
-			const Vec3& endPos,           
-			const Vec3& atStartPos,       
-			const Vec3& atEndPos,         
-			const Vec3& secondEndPos,     
-			const Vec3& secondAtEndPos,   
-			float totalTime,       
-			float endtotalTime,
-			const bool& switchToMainCamera
-		);
+        /// @brief 初期化処理
+        virtual void OnCreate() override;
 
-		/// @brief ProductionCameraman用のStateMachineへの参照を取得します。
-		/// @return ProductionCameraman型のStateMachineへのconst unique_ptr参照。
-		const unique_ptr<StateMachine<ProductionCameraman>>& GetStateMachine() {
-			return m_StateMachine;
-		}
+        /// @brief 毎フレームの更新処理
+        virtual void OnUpdate() override;
 
-		Vec3 GetAtPos() const {
-			return m_atPos;
-		}
+        /// @brief カメラのオープニングアニメーションを開始する
+        /// @param startPos           アニメーション開始時のカメラ位置
+        /// @param endPos             アニメーション終了時のカメラ位置
+        /// @param atStartPos         アニメーション開始時の注視点位置
+        /// @param atEndPos           アニメーション終了時の注視点位置
+        /// @param secondEndPos       2段階目のアニメーション終了時のカメラ位置
+        /// @param secondAtEndPos     2段階目のアニメーション終了時の注視点位置
+        /// @param totalTime          アニメーション全体の再生時間（秒）
+        /// @param endtotalTime       二次アニメーションの再生時間（秒）
+        /// @param switchToMainCamera 終了後にメインカメラへ切り替えるかどうか
+        void StartOpeningAnimation(
+            const Vec3& startPos,
+            const Vec3& endPos,
+            const Vec3& atStartPos,
+            const Vec3& atEndPos,
+            const Vec3& secondEndPos,
+            const Vec3& secondAtEndPos,
+            float totalTime,
+            float endtotalTime,
+            const bool& switchToMainCamera
+        );
 
-		Vec3 GetEyePos() const {
-			return m_eyePos;
-		}
-		void SetReverse(bool reverse) {
-			m_isReverse = reverse;
-		}
+        /// @brief StateMachine への const 参照を取得する
+        const unique_ptr<StateMachine<ProductionCameraman>>& GetStateMachine() {
+            return m_StateMachine;
+        }
 
-		/// @brief ゴール進入時の挙動を実行します。
-		void ToGoalEnterBehavior();
+        /// @brief 現在の注視点位置を取得する
+        Vec3 GetAtPos() const { return m_atPos; }
 
-		/// @brief 指定された合計時間に基づいて動作を実行します。
-		/// @param totaltime 動作を実行するための合計時間（秒単位）。
-		/// @return 動作が正常に実行された場合は true、失敗した場合は false を返します。
-		bool ExcuteBehavior(float totaltime, bool isReverse);
-		bool ExcuteEndBehavior(float totaltime);
-		// 終了状態エンタービヘイビア
-		void EndStateEnterBehavior();
+        /// @brief 現在のカメラ位置を取得する
+        Vec3 GetEyePos() const { return m_eyePos; }
 
-		/// @brief 移動タイプを指定された値に設定します。
-		/// @param type 設定する移動タイプを表す整数値。0は直線移動、1は円軌道移動を指定します。
-		void SetMoveType(const MoveType type)
-		{
-			m_moveType = type;
-		}
+        /// @brief アニメーションをリバース再生するか設定する
+        void SetReverse(bool reverse) { m_isReverse = reverse; }
 
-		bool GetEndState() const {
-			return m_finished;
-		}
+        /// @brief ゴール進入時の挙動を実行する
+        void ToGoalEnterBehavior();
 
-		void ResetTime() {
-			m_currntTime = 0.0f; // 現在の時間をリセット
-		}
-	};
-    /// @brief ProductionCameraman オブジェクトの最初の状態を管理するステートクラスです。
-    class ProductionCameramanToFirstState : public ObjState<ProductionCameraman>  
-    {  
-		float m_time; // 時間を参照する変数  
-		float m_endTime; // 時間を参照する変数  
-		bool m_return;
-		// コンストラクタでメンバー変数を初期化する  
-		ProductionCameramanToFirstState(float& time, float& endtime, bool toReturn) : m_time(time), m_endTime(endtime), m_return(toReturn){}
+        /// @brief 通常動作を実行する
+        /// @param totaltime 動作再生時間（秒）
+        /// @param isReverse リバース再生フラグ
+        /// @return 実行に成功した場合は true
+        bool ExcuteBehavior(float totaltime, bool isReverse);
 
-	public:
-		static shared_ptr<ProductionCameramanToFirstState> Instance(float& time, float& endtime, bool toReturn);
-		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
-		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
-		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
-	};
+        /// @brief 2段階目の動作を実行する
+        /// @param totaltime 動作再生時間（秒）
+        /// @return 実行に成功した場合は true
+        bool ExcuteEndBehavior(float totaltime);
 
-	class ProductionCameramanToReturnState : public ObjState<ProductionCameraman>
-	{
-		float m_time; // 時間を参照する変数  
-		float m_endTime; // 時間を参照する変数  
+        /// @brief 終了ステート進入時の挙動
+        void EndStateEnterBehavior();
 
-		// コンストラクタでメンバー変数を初期化する  
-		ProductionCameramanToReturnState(float& time, float& endtime) : m_time(time), m_endTime(endtime) {}
+        /// @brief 移動タイプを指定された値に設定する
+        /// @param type 0 は Linear、1 は Orbit
+        void SetMoveType(const MoveType type) { m_moveType = type; }
 
-	public:
-		static shared_ptr<ProductionCameramanToReturnState> Instance(float& time, float& endtime);
-		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
-		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
-		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
-	};
+        /// @brief アニメーション終了フラグを取得する
+        bool GetEndState() const { return m_finished; }
 
-	/// @brief ProductionCameramanEndState クラスは、ProductionCameraman オブジェクトの終了状態を管理します。
-	class ProductionCameramanEndState : public ObjState<ProductionCameraman>
-	{
-		float& m_time; // 時間を参照する変数  
+        /// @brief 経過時間をリセットする
+        void ResetTime() { m_currntTime = 0.0f; }
+    };
 
-		ProductionCameramanEndState(float& time) : m_time(time) {}
-	public:
-		static shared_ptr<ProductionCameramanEndState> Instance(float& time);
-		virtual void Enter(const shared_ptr<ProductionCameraman>& Obj)override;
-		virtual void Execute(const shared_ptr<ProductionCameraman>& Obj)override;
-		virtual void Exit(const shared_ptr<ProductionCameraman>& Obj)override;
-	};
+    /// @brief ProductionCameraman のフェーズ1（開始→First）を管理するステート
+    class ProductionCameramanToFirstState : public ObjState<ProductionCameraman> {
+        float m_time;      ///< 経過時間参照
+        float m_endTime;   ///< 終了時間参照
+        bool  m_return;    ///< リターン動作フラグ
 
-	/// @brief ProductionCamera クラスは Camera クラスを継承し、カメラの生成や更新処理を提供します。
-	class ProductionCamera : public Camera {
-	public:
-		//--------------------------------------------------------------------------------------
-		/*!
-		@brief	コンストラクタ
-		*/
-		//--------------------------------------------------------------------------------------
-		ProductionCamera();
-		//--------------------------------------------------------------------------------------
-		/*!
-		@brief	デストラクタ
-		*/
-		//--------------------------------------------------------------------------------------
-		virtual ~ProductionCamera();
-		//--------------------------------------------------------------------------------------
-		/*!
-		@brief 更新処理
-		@return	なし
-		*/
-		//--------------------------------------------------------------------------------------
-		virtual void OnCreate()override;
-		virtual void OnUpdate()override;
-	};
+        ProductionCameramanToFirstState(float& time, float& endtime, bool toReturn)
+            : m_time(time), m_endTime(endtime), m_return(toReturn) {
+        }
 
-	
-}
+    public:
+        /// @brief インスタンス取得
+        static shared_ptr<ProductionCameramanToFirstState> Instance(
+            float& time, float& endtime, bool toReturn);
+
+        /// @brief ステート開始時に呼ばれる処理
+        void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
+
+        /// @brief 毎フレーム呼ばれるステート処理
+        void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
+
+        /// @brief ステート終了時に呼ばれる処理
+        void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
+    };
+
+    /// @brief ProductionCameraman のフェーズ2（Return）を管理するステート
+    class ProductionCameramanToReturnState : public ObjState<ProductionCameraman> {
+        float m_time;    ///< 経過時間参照
+        float m_endTime; ///< 終了時間参照
+
+        ProductionCameramanToReturnState(float& time, float& endtime)
+            : m_time(time), m_endTime(endtime) {
+        }
+
+    public:
+        /// @brief インスタンス取得
+        static shared_ptr<ProductionCameramanToReturnState> Instance(
+            float& time, float& endtime);
+
+        void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
+        void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
+        void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
+    };
+
+    /// @brief ProductionCameraman の終了ステートを管理するクラス
+    class ProductionCameramanEndState : public ObjState<ProductionCameraman> {
+        float& m_time; ///< 経過時間参照
+
+        ProductionCameramanEndState(float& time) : m_time(time) {}
+
+    public:
+        /// @brief インスタンス取得
+        static shared_ptr<ProductionCameramanEndState> Instance(float& time);
+
+        void Enter(const shared_ptr<ProductionCameraman>& Obj) override;
+        void Execute(const shared_ptr<ProductionCameraman>& Obj) override;
+        void Exit(const shared_ptr<ProductionCameraman>& Obj) override;
+    };
+
+    /// @brief シーン用カメラの生成と更新処理を行うクラス
+    class ProductionCamera : public Camera {
+    public:
+        /// @brief コンストラクタ
+        ProductionCamera();
+
+        /// @brief デストラクタ
+        virtual ~ProductionCamera();
+
+        /// @brief 初期化処理
+        void OnCreate() override;
+
+        /// @brief 毎フレームの更新処理
+        void OnUpdate() override;
+    };
+
+}  // namespace basecross
