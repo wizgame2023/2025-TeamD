@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -11,21 +11,29 @@ namespace basecross {
 	{
 	public:
 		Ground(const shared_ptr<Stage>& stage);
-		~Ground();
+		窶ｾGround();
 		virtual void OnCreate() override;
+	};
+	class Way : public Object
+	{
+	public:
+		Way(const shared_ptr<Stage>& stage);
+		窶ｾWay();
+		virtual void OnCreate() override;
+		virtual void OnUpdate()override;
 	};
 
 	class LimitArea : public Object {
 	public:
 		LimitArea(const shared_ptr<Stage>& stage);
-		~LimitArea();
+		窶ｾLimitArea();
 		virtual void OnCreate() override;
 	};
 
 	class Building : public Object {
 	public:
 		Building(const shared_ptr<Stage>& stage);
-		~Building();
+		窶ｾBuilding();
 		virtual void OnCreate() override;
 	};
 }

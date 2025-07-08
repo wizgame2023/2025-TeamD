@@ -16,7 +16,7 @@ Physics Effects under the filename: physics_effects_license.txt
 
 ///////////////////////////////////////////////////////////////////////////////
 //E Mass , Inertia tensor calculation
-//J ¿—ÊEŠµ«ƒeƒ“ƒ\ƒ‹‚ÌZo
+//J è³ªé‡ãƒ»æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã®ç®—å‡º
 
 #pragma once
 #include "stdafx.h"
@@ -42,16 +42,16 @@ PfxMatrix3 pfxCalcInertiaCylinderZ(PfxFloat halfLength,PfxFloat radius,PfxFloat 
 
 ///////////////////////////////////////////////////////////////////////////////
 //E Mass convertion
-//J ¿—Ê‚ÌˆÚ“®E‰ñ“]E‡¬
+//J è³ªé‡ã®ç§»å‹•ãƒ»å›è»¢ãƒ»åˆæˆ
 
 // translation
 //E returns translated inertia tensor
-//J ˆÚ“®Œã‚ÌŠµ«ƒeƒ“ƒ\ƒ‹‚ğ•Ô‚µ‚Ü‚·
+//J ç§»å‹•å¾Œã®æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã‚’è¿”ã—ã¾ã™
 PfxMatrix3 pfxMassTranslate(PfxFloat mass,const PfxMatrix3 &inertia,const PfxVector3 &translation);
 
 // rotation
 //E returns rotated inertia tensor
-//J ‰ñ“]Œã‚ÌŠµ«ƒeƒ“ƒ\ƒ‹‚ğ•Ô‚µ‚Ü‚·
+//J å›è»¢å¾Œã®æ…£æ€§ãƒ†ãƒ³ã‚½ãƒ«ã‚’è¿”ã—ã¾ã™
 PfxMatrix3 pfxMassRotate(const PfxMatrix3 &inertia,const PfxMatrix3 &rotate);
 
 } //namespace PhysicsEffects

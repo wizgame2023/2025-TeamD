@@ -1,6 +1,6 @@
 /*!
 @file Enemy.h
-@brief “G‚È‚Ç
+@brief æ•µãªã©
 */
 
 #pragma once
@@ -22,9 +22,10 @@ namespace basecross {
 	public:	
 		shared_ptr<Character> m_Intruder;
 		Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
-		virtual ~Enemy();
+		virtual â€¾Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
+		virtual void OnSpawn(){}
 		virtual void AsyncUpdate()override;
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);
@@ -32,11 +33,14 @@ namespace basecross {
 		void SetIntruder(const shared_ptr<Character>& character) {
 			m_Intruder = character;
 		}
+		shared_ptr<Character> GetIntruder() {
+			return m_Intruder;
+		}
 		Vec3 GetDirectionToIntruder();
 		float GetDistanceToIntruder();
 		Vec3 GetDirectionToIntruderObject(shared_ptr<Object> obj);
 		float GetDistanceToIntruderObject(shared_ptr<Object> obj);
-		void SearchRange();
+		bool SearchRange();
 		void IntervalEnemy(const Vec3& position);
 		Vec3 GetPosition();
 		bool GetIntruderAlert();
@@ -59,7 +63,7 @@ namespace basecross {
 	};
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; //ü‚ğ•`‰æ‚·‚éƒIƒuƒWƒFƒNƒg
+	//	class LineObject : public GameObject; //ç·šã‚’æç”»ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//--------------------------------------------------------------------------------------
 	class LineObject : public GameObject {
 	private:
@@ -83,7 +87,7 @@ namespace basecross {
 	public:
 		LineObject(const shared_ptr<Stage>& stage);
 		LineObject(const shared_ptr<Stage>& stage, const shared_ptr<Character>& player, const shared_ptr<Character>& enemy);
-		virtual ~LineObject() {}
+		virtual â€¾LineObject() {}
 		virtual void OnCreate() override;
 		virtual void OnUpdate() override;
 

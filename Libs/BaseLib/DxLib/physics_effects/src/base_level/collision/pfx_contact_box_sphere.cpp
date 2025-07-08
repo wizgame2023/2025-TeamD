@@ -178,27 +178,27 @@ PfxFloat pfxContactBoxSphere(
 
 	minDistSqr = VertexBFaceATest( closestPtsVec_perm, t0, t1, PfxVector3( halfA_perm ), offsetAB_perm );
 
-	//SCE_PFX_PRINTF("faceDimA %d dimA %d %d %d\n",faceDimA,dimA[0],dimA[1],dimA[2]);
-	//SCE_PFX_PRINTF("boxA.m_half %f %f %f\n",boxA.m_half[0],boxA.m_half[1],boxA.m_half[2]);
-	//SCE_PFX_PRINTF("ident %f %f %f | %f %f %f | %f %f %f\n",
+	//SCE_PFX_PRINTF("faceDimA %d dimA %d %d %d¥n",faceDimA,dimA[0],dimA[1],dimA[2]);
+	//SCE_PFX_PRINTF("boxA.m_half %f %f %f¥n",boxA.m_half[0],boxA.m_half[1],boxA.m_half[2]);
+	//SCE_PFX_PRINTF("ident %f %f %f | %f %f %f | %f %f %f¥n",
 	//	ident[0][0],ident[0][1],ident[0][2],
 	//	ident[1][0],ident[1][1],ident[1][2],
 	//	ident[2][0],ident[2][1],ident[2][2]);
-	//SCE_PFX_PRINTF("apermCol %f %f %f | %f %f %f | %f %f %f\n",
+	//SCE_PFX_PRINTF("apermCol %f %f %f | %f %f %f | %f %f %f¥n",
 	//	apermCol[0][0],apermCol[0][1],apermCol[0][2],
 	//	apermCol[1][0],apermCol[1][1],apermCol[1][2],
 	//	apermCol[2][0],apermCol[2][1],apermCol[2][2]);
-	//SCE_PFX_PRINTF("apermRow %f %f %f | %f %f %f | %f %f %f\n",
+	//SCE_PFX_PRINTF("apermRow %f %f %f | %f %f %f | %f %f %f¥n",
 	//	apermRow[0][0],apermRow[0][1],apermRow[0][2],
 	//	apermRow[1][0],apermRow[1][1],apermRow[1][2],
 	//	apermRow[2][0],apermRow[2][1],apermRow[2][2]);
 
-	//SCE_PFX_PRINTF("closestPtsVec_perm %f %f %f\n",closestPtsVec_perm[0],closestPtsVec_perm[1],closestPtsVec_perm[2]);
-	//SCE_PFX_PRINTF("halfA_perm %f %f %f\n",halfA_perm[0],halfA_perm[1],halfA_perm[2]);
-	//SCE_PFX_PRINTF("offsetAB_perm %f %f %f\n",offsetAB_perm[0],offsetAB_perm[1],offsetAB_perm[2]);
-	//SCE_PFX_PRINTF("t0 %f t1 %f scaleA2 %f\n",t0,t1,scaleA2);
+	//SCE_PFX_PRINTF("closestPtsVec_perm %f %f %f¥n",closestPtsVec_perm[0],closestPtsVec_perm[1],closestPtsVec_perm[2]);
+	//SCE_PFX_PRINTF("halfA_perm %f %f %f¥n",halfA_perm[0],halfA_perm[1],halfA_perm[2]);
+	//SCE_PFX_PRINTF("offsetAB_perm %f %f %f¥n",offsetAB_perm[0],offsetAB_perm[1],offsetAB_perm[2]);
+	//SCE_PFX_PRINTF("t0 %f t1 %f scaleA2 %f¥n",t0,t1,scaleA2);
 
-	//SCE_PFX_PRINTF("minDistSqr %f sphereB.m_radius %f\n",minDistSqr,sphereB.m_radius);
+	//SCE_PFX_PRINTF("minDistSqr %f sphereB.m_radius %f¥n",minDistSqr,sphereB.m_radius);
 
 	localPointA_perm = PfxPoint3( t0, t1, scaleA2 );
 
@@ -223,9 +223,9 @@ PfxFloat pfxContactBoxSphere(
 
 	// return distance
 
-	//SCE_PFX_PRINTF("normal %f %f %f\n",(float)normal[0],(float)normal[1],(float)normal[2]);
-	//SCE_PFX_PRINTF("pointA %f %f %f\n",(float)pointA[0],(float)pointA[1],(float)pointA[2]);
-	//SCE_PFX_PRINTF("pointB %f %f %f\n",(float)pointB[0],(float)pointB[1],(float)pointB[2]);
+	//SCE_PFX_PRINTF("normal %f %f %f¥n",(float)normal[0],(float)normal[1],(float)normal[2]);
+	//SCE_PFX_PRINTF("pointA %f %f %f¥n",(float)pointA[0],(float)pointA[1],(float)pointA[2]);
+	//SCE_PFX_PRINTF("pointB %f %f %f¥n",(float)pointB[0],(float)pointB[1],(float)pointB[2]);
 
 	if ( centerInside ) {
 		return -sqrtf( minDistSqr ) - sphereB.m_radius;

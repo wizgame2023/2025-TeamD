@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -43,18 +43,19 @@ namespace basecross {
 		vector<shared_ptr<Bone>> m_Bones;
 
 		shared_ptr<BcPNTBoneModelDraw> m_ObjectDraw;
+		shared_ptr<BcPNTBoneModelDraw> m_NoneObjectDraw;
 		shared_ptr<Transform> m_ObjectTransform;
 
 	public:
 		BonePosition(shared_ptr<GameObject>& object,const wstring& name) : Component(object),m_FileName(name){}
-		virtual ~BonePosition(){}
+		virtual 窶ｾBonePosition(){}
 
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override{}
 
 		void CreateBone();
 		
-		int GetBoneSize() {
+		size_t GetBoneSize() {
 			return m_Bones.size();
 		}
 		shared_ptr<Bone>& GetBone(int index) {

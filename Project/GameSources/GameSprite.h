@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -16,7 +16,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_Text;
 	public:
 		BossAppearText(const shared_ptr<Stage>& stage, Vec3 position, Vec3 size);
-		virtual ~BossAppearText() {}
+		virtual 窶ｾBossAppearText() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -34,7 +34,7 @@ namespace basecross {
 		int m_MaxWave;
 	public:
 		NextWaveText(const shared_ptr<Stage>& stage, Vec3 center,int currect,int max);
-		virtual ~NextWaveText(){}
+		virtual 窶ｾNextWaveText(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -44,6 +44,7 @@ namespace basecross {
 	class HpSprite : public Object {
 		shared_ptr<Character> m_Owner;
 
+		vector<shared_ptr<Sprite>> m_Items;
 		vector<shared_ptr<Sprite>> m_Edge;
 		shared_ptr<Sprite> m_HpBar;
 		shared_ptr<Sprite> m_HpBarBackGround;
@@ -51,10 +52,32 @@ namespace basecross {
 		Col4 m_Color;
 	public:
 		HpSprite(const shared_ptr<Stage>& stage, shared_ptr<Character>& owner,Vec3 position,Vec3 size,Col4 color);
-		virtual ~HpSprite(){}
+		virtual 窶ｾHpSprite(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+
+		void SetBackColor(Col4 color) {
+			m_HpBarBackGround->SetDiffuse(color);
+		}
+		shared_ptr<Sprite> AddSprite(const wstring& key, Vec3 offset, Vec2 size);
+	};
+
+	class StunSprite : public Object {
+		shared_ptr<BossEnemy> m_Owner;
+
+		vector<shared_ptr<Sprite>> m_Edge;
+		shared_ptr<Sprite> m_HpBar;
+		shared_ptr<Sprite> m_HpBarBackGround;
+
+	public:
+		StunSprite(const shared_ptr<Stage>& stage, shared_ptr<BossEnemy>& owner, Vec3 position, Vec3 size);
+		virtual 窶ｾStunSprite() {}
+		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+		void SetBackColor(Col4 color) {
+			m_HpBarBackGround->SetDiffuse(color);
+		}
 	};
 }
 

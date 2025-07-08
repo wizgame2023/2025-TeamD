@@ -25,7 +25,7 @@ Physics Effects under the filename: physics_effects_license.txt
 namespace sce {
 namespace PhysicsEffects {
 
-//J 並列処理するためのタスクマネージャクラス
+//J 荳ｦ蛻怜�ｦ逅�縺吶ｋ縺溘ａ縺ｮ繧ｿ繧ｹ繧ｯ繝槭ロ繝ｼ繧ｸ繝｣繧ｯ繝ｩ繧ｹ
 //E Task manager class for parallel computation
 
 struct PfxTaskArg
@@ -79,7 +79,7 @@ public:
 		m_taskArg = (PfxTaskArg*)m_pool.allocate(sizeof(PfxTaskArg)*m_maxTasks);
 	}
 
-	virtual ~PfxTaskManager()
+	virtual 窶ｾPfxTaskManager()
 	{
 		m_pool.clear();
 	}

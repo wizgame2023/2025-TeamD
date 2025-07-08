@@ -45,55 +45,55 @@ static const PfxFloat lenSqrTol = 1.0e-30f;
 // gap is stored.  cross product axes are normalized.
 //-------------------------------------------------------------------------------------------------
 
-#define AaxisTest( dim, letter, first )                                                         \
-{                                                                                               \
-   if ( first )                                                                                 \
-   {                                                                                            \
-      maxGap = gapsA.get##letter();                                                             \
-      if ( maxGap - capsuleB.m_radius > distanceThreshold ) return maxGap - capsuleB.m_radius;      \
-      axisType = BOX_AXIS;                                                                      \
-      faceDimA = dim;                                                                           \
-      axisA = ident[dim];                                                          \
-   }                                                                                            \
-   else                                                                                         \
-   {                                                                                            \
-      PfxFloat gap = gapsA.get##letter();                                                          \
-      if ( gap - capsuleB.m_radius > distanceThreshold ) return gap - capsuleB.m_radius;            \
-      else if ( gap > maxGap )                                                                  \
-      {                                                                                         \
-         maxGap = gap;                                                                          \
-         axisType = BOX_AXIS;                                                                   \
-         faceDimA = dim;                                                                        \
-         axisA = ident[dim];                                                       \
-      }                                                                                         \
-   }                                                                                            \
+#define AaxisTest( dim, letter, first )                                                         ¥
+{                                                                                               ¥
+   if ( first )                                                                                 ¥
+   {                                                                                            ¥
+      maxGap = gapsA.get##letter();                                                             ¥
+      if ( maxGap - capsuleB.m_radius > distanceThreshold ) return maxGap - capsuleB.m_radius;      ¥
+      axisType = BOX_AXIS;                                                                      ¥
+      faceDimA = dim;                                                                           ¥
+      axisA = ident[dim];                                                          ¥
+   }                                                                                            ¥
+   else                                                                                         ¥
+   {                                                                                            ¥
+      PfxFloat gap = gapsA.get##letter();                                                          ¥
+      if ( gap - capsuleB.m_radius > distanceThreshold ) return gap - capsuleB.m_radius;            ¥
+      else if ( gap > maxGap )                                                                  ¥
+      {                                                                                         ¥
+         maxGap = gap;                                                                          ¥
+         axisType = BOX_AXIS;                                                                   ¥
+         faceDimA = dim;                                                                        ¥
+         axisA = ident[dim];                                                       ¥
+      }                                                                                         ¥
+   }                                                                                            ¥
 }
 
-#define CrossAxisTest( dima, lettera )                                                          \
-{                                                                                               \
-   const PfxFloat lsqr_tolerance = 1.0e-30f;                                                       \
-   PfxFloat lsqr;                                                                                  \
-                                                                                                \
-   lsqr = lsqrs.get##lettera();                                                                 \
-                                                                                                \
-   if ( lsqr > lsqr_tolerance )                                                                 \
-   {                                                                                            \
-      PfxFloat l_recip = 1.0f / sqrtf( lsqr );                                                     \
-      PfxFloat gap = PfxFloat(gapsAxB.get##lettera()) * l_recip;                                      \
-                                                                                                \
-      if ( gap - capsuleB.m_radius > distanceThreshold )                                          \
-      {                                                                                         \
-         return gap - capsuleB.m_radius;                                                          \
-      }                                                                                         \
-                                                                                                \
-      if ( gap > maxGap )                                                                       \
-      {                                                                                         \
-         maxGap = gap;                                                                          \
-         axisType = CROSS_AXIS;                                                                 \
-         edgeDimA = dima;                                                                       \
-         axisA = crossProdMat.getCol##dima() * l_recip;                                         \
-      }                                                                                         \
-   }                                                                                            \
+#define CrossAxisTest( dima, lettera )                                                          ¥
+{                                                                                               ¥
+   const PfxFloat lsqr_tolerance = 1.0e-30f;                                                       ¥
+   PfxFloat lsqr;                                                                                  ¥
+                                                                                                ¥
+   lsqr = lsqrs.get##lettera();                                                                 ¥
+                                                                                                ¥
+   if ( lsqr > lsqr_tolerance )                                                                 ¥
+   {                                                                                            ¥
+      PfxFloat l_recip = 1.0f / sqrtf( lsqr );                                                     ¥
+      PfxFloat gap = PfxFloat(gapsAxB.get##lettera()) * l_recip;                                      ¥
+                                                                                                ¥
+      if ( gap - capsuleB.m_radius > distanceThreshold )                                          ¥
+      {                                                                                         ¥
+         return gap - capsuleB.m_radius;                                                          ¥
+      }                                                                                         ¥
+                                                                                                ¥
+      if ( gap > maxGap )                                                                       ¥
+      {                                                                                         ¥
+         maxGap = gap;                                                                          ¥
+         axisType = CROSS_AXIS;                                                                 ¥
+         edgeDimA = dima;                                                                       ¥
+         axisA = crossProdMat.getCol##dima() * l_recip;                                         ¥
+      }                                                                                         ¥
+   }                                                                                            ¥
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -145,13 +145,13 @@ VertexBFaceATest(
 	return (lengthSqr(ptsVec));
 }
 
-#define VertexBFaceA_SetNewMin()                \
-{                                               \
-   minDistSqr = distSqr;                        \
-   closestPtsVec = ptsVec;                      \
-   localPointA.setX(t0);                        \
-   localPointA.setY(t1);                        \
-   segmentParamB = scaleB;                      \
+#define VertexBFaceA_SetNewMin()                ¥
+{                                               ¥
+   minDistSqr = distSqr;                        ¥
+   closestPtsVec = ptsVec;                      ¥
+   localPointA.setX(t0);                        ¥
+   localPointA.setY(t1);                        ¥
+   segmentParamB = scaleB;                      ¥
 }
 
 void
@@ -210,63 +210,63 @@ VertexBFaceATests(
 // the dimension of the face normal is 2
 //-------------------------------------------------------------------------------------------------
 
-#define EdgeEdgeTest( ac, ac_letter, ad, ad_letter )                                            \
-{                                                                                               \
-   /* get vector between edge centers */                                                        \
-                                                                                                \
-   ptsVec = offsetAB;                                                                           \
-   ptsVec.set##ac_letter( ptsVec.get##ac_letter() - scalesA.get##ac_letter() );                 \
-                                                                                                \
-   /* find parameters of closest points on line segments. */                                    \
-                                                                                                \
-   PfxFloat capsDirection_ad = capsDirection.get##ad_letter();                                     \
-   PfxFloat ptsVec_ad = ptsVec.get##ad_letter();                                                   \
-   PfxFloat capsDirDotPtsVec = dot(capsDirection,ptsVec);                                          \
-   PfxFloat denom = 1.0f - capsDirection_ad * capsDirection_ad;                                    \
-                                                                                                \
-   if ( denom == 0.0f )                                                                         \
-   {                                                                                            \
-      tA = 0.0f;                                                                                \
-   }                                                                                            \
-   else                                                                                         \
-   {                                                                                            \
-      tA = ( ptsVec_ad - capsDirDotPtsVec * capsDirection_ad ) / denom;                         \
-      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         \
-      else if ( tA > hA[ad] ) tA = hA[ad];                                                      \
-   }                                                                                            \
-                                                                                                \
-   tB = tA * capsDirection_ad - capsDirDotPtsVec;                                               \
-                                                                                                \
-   if ( tB < -hB )                                                                              \
-   {                                                                                            \
-      tB = -hB;                                                                                 \
-      tA = tB * capsDirection_ad + ptsVec_ad;                                                   \
-                                                                                                \
-      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         \
-      else if ( tA > hA[ad] ) tA = hA[ad];                                                      \
-   }                                                                                            \
-   else if ( tB > hB )                                                                          \
-   {                                                                                            \
-      tB = hB;                                                                                  \
-      tA = tB * capsDirection_ad + ptsVec_ad;                                                   \
-                                                                                                \
-      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         \
-      else if ( tA > hA[ad] ) tA = hA[ad];                                                      \
-   }                                                                                            \
-                                                                                                \
-   /* make vector to point at tB on edge B from the center of edge A. */                        \
-   /* test that it lies inside edge A's voronoi region. */                                      \
-                                                                                                \
-   ptsVec += capsDirection * tB;                                                                \
-                                                                                                \
-   PfxVector3 cptsVec( mulPerElem( ptsVec, signsA ) );                                             \
-                                                                                                \
-   inVoronoi = ( cptsVec[ac] >= voronoiTol * cptsVec[2] ) &&                                    \
-               ( cptsVec[2] >= voronoiTol * cptsVec[ac] );                                      \
-                                                                                                \
-   ptsVec.set##ad_letter( ptsVec.get##ad_letter() - tA );                                       \
-                                                                                                \
-   return lengthSqr(ptsVec);                                                                    \
+#define EdgeEdgeTest( ac, ac_letter, ad, ad_letter )                                            ¥
+{                                                                                               ¥
+   /* get vector between edge centers */                                                        ¥
+                                                                                                ¥
+   ptsVec = offsetAB;                                                                           ¥
+   ptsVec.set##ac_letter( ptsVec.get##ac_letter() - scalesA.get##ac_letter() );                 ¥
+                                                                                                ¥
+   /* find parameters of closest points on line segments. */                                    ¥
+                                                                                                ¥
+   PfxFloat capsDirection_ad = capsDirection.get##ad_letter();                                     ¥
+   PfxFloat ptsVec_ad = ptsVec.get##ad_letter();                                                   ¥
+   PfxFloat capsDirDotPtsVec = dot(capsDirection,ptsVec);                                          ¥
+   PfxFloat denom = 1.0f - capsDirection_ad * capsDirection_ad;                                    ¥
+                                                                                                ¥
+   if ( denom == 0.0f )                                                                         ¥
+   {                                                                                            ¥
+      tA = 0.0f;                                                                                ¥
+   }                                                                                            ¥
+   else                                                                                         ¥
+   {                                                                                            ¥
+      tA = ( ptsVec_ad - capsDirDotPtsVec * capsDirection_ad ) / denom;                         ¥
+      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         ¥
+      else if ( tA > hA[ad] ) tA = hA[ad];                                                      ¥
+   }                                                                                            ¥
+                                                                                                ¥
+   tB = tA * capsDirection_ad - capsDirDotPtsVec;                                               ¥
+                                                                                                ¥
+   if ( tB < -hB )                                                                              ¥
+   {                                                                                            ¥
+      tB = -hB;                                                                                 ¥
+      tA = tB * capsDirection_ad + ptsVec_ad;                                                   ¥
+                                                                                                ¥
+      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         ¥
+      else if ( tA > hA[ad] ) tA = hA[ad];                                                      ¥
+   }                                                                                            ¥
+   else if ( tB > hB )                                                                          ¥
+   {                                                                                            ¥
+      tB = hB;                                                                                  ¥
+      tA = tB * capsDirection_ad + ptsVec_ad;                                                   ¥
+                                                                                                ¥
+      if ( tA < -hA[ad] ) tA = -hA[ad];                                                         ¥
+      else if ( tA > hA[ad] ) tA = hA[ad];                                                      ¥
+   }                                                                                            ¥
+                                                                                                ¥
+   /* make vector to point at tB on edge B from the center of edge A. */                        ¥
+   /* test that it lies inside edge A's voronoi region. */                                      ¥
+                                                                                                ¥
+   ptsVec += capsDirection * tB;                                                                ¥
+                                                                                                ¥
+   PfxVector3 cptsVec( mulPerElem( ptsVec, signsA ) );                                             ¥
+                                                                                                ¥
+   inVoronoi = ( cptsVec[ac] >= voronoiTol * cptsVec[2] ) &&                                    ¥
+               ( cptsVec[2] >= voronoiTol * cptsVec[ac] );                                      ¥
+                                                                                                ¥
+   ptsVec.set##ad_letter( ptsVec.get##ad_letter() - tA );                                       ¥
+                                                                                                ¥
+   return lengthSqr(ptsVec);                                                                    ¥
 }
 
 PfxFloat
@@ -301,14 +301,14 @@ EdgeEdgeTest_10(
 	EdgeEdgeTest( 1, Y, 0, X );
 }
 
-#define EdgeEdge_SetNewMin( ac_letter, ad_letter )                         \
-{                                                                          \
-   minDistSqr = distSqr;                                                   \
-   closestPtsVec = ptsVec;                                                 \
-   localPointA.set##ac_letter(scalesA.get##ac_letter());                   \
-   localPointA.set##ad_letter(tA);                                         \
-   segmentParamB = tB;                                                     \
-   otherFaceDimA = testOtherFaceDimA;                                      \
+#define EdgeEdge_SetNewMin( ac_letter, ad_letter )                         ¥
+{                                                                          ¥
+   minDistSqr = distSqr;                                                   ¥
+   closestPtsVec = ptsVec;                                                 ¥
+   localPointA.set##ac_letter(scalesA.get##ac_letter());                   ¥
+   localPointA.set##ad_letter(tA);                                         ¥
+   segmentParamB = tB;                                                     ¥
+   otherFaceDimA = testOtherFaceDimA;                                      ¥
 }
 
 void

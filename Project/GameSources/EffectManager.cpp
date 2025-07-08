@@ -1,6 +1,6 @@
 /*!
 @file EffectManager.cpp
-@brief �G�t�F�N�g�Ȃǎ���
+@brief エフェクトなど実体
 */
 
 #include "stdafx.h"
@@ -9,72 +9,66 @@
 
 namespace basecross {
 	//--------------------------------------------------------------------------------------
-	///	Effekseer�G�t�F�N�g�̃G�t�F�N�g
+	///	Effekseerエフェクトのエフェクト
 	//--------------------------------------------------------------------------------------
-	EffectManeger::EffectManeger(const shared_ptr<Stage>& stage) :
+	EffectManager::EffectManager(const shared_ptr<Stage>& stage) :
 		MultiParticle(stage),
 		m_renderer(nullptr),
 		m_Manager(nullptr)
 	{
 	}
-	EffectManeger::~EffectManeger() {
-		// ��ɃG�t�F�N�g�Ǘ��p�C���X�^���X��j��
+	EffectManager::~EffectManager() {
+		// 先にエフェクト管理用インスタンスを破棄
 		m_Manager.Reset();
-		// ���ɕ`��p�C���X�^���X��j��
+		// 次に描画用インスタンスを破棄
 		m_renderer.Reset();
 	}
 
-	void EffectManeger::OnCreate() {
+	void EffectManager::OnCreate() {
 		CreateEffectInterface();
 
 		auto& app = App::GetApp();
-		auto mediaPath = app->GetDataDirWString();
-		wstring effectPath = mediaPath + L"Effekt/";
-		RegisterResource(L"panchi", effectPath + L"panchi.efk");
-
-
+		SetAlphaActive(true);
 	}
 
-	void EffectManeger::OnUpdate()
+	void EffectManager::OnUpdate()
 	{
 		auto elps = App::GetApp()->GetElapsedTime();
+		
 		m_TotalTime += elps;
 
-		// �G�t�F�N�g�̍X�V�������s��
+		// エフェクトの更新処理を行う
 		m_Manager->Update();
 		m_renderer->SetTime(elps);
-
 	}
 
-	void EffectManeger::OnDraw()
+	void EffectManager::OnDraw()
 	{
 		auto& camera = GetStage()->GetView()->GetTargetCamera();
 		SetViewProj(camera->GetViewMatrix(), camera->GetProjMatrix());
-		// �G�t�F�N�g�̕`��J�n�������s���B
+		// エフェクトの描画開始処理を行う。
 		m_renderer->BeginRendering();
-		// �G�t�F�N�g�̕`����s���B
+		// エフェクトの描画を行う。
 		m_Manager->Draw();
 		
-		// �G�t�F�N�g�̕`��I���������s���B
+		// エフェクトの描画終了処理を行う。
 		m_renderer->EndRendering();
 	}
 
-	void EffectManeger::OnDestroy()
-	{
-		m_Manager->Release();
-	}
+	void EffectManager::OnDestroy()
+	{}
 
-	void EffectManeger::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
+	void EffectManager::SetEffectSpeed(Effekseer::Handle& handle, const float& speed)
 	{
 		m_Manager->SetSpeed(handle, speed);
 	}
 
-	void EffectManeger::SetEffectPause( const bool& pause)
+	void EffectManager::SetEffectPause( const bool& pause)
 	{
 		m_Manager->SetPausedToAllEffects(pause);
 	}
 
-	void EffectManeger::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
+	void EffectManager::Mat4x4ToMatrix44(const bsm::Mat4x4& src, Effekseer::Matrix44& dest)
 	{
 		for (int i = 0; i < 4; i++) {
 			for (int j = 0; j < 4; j++) {
@@ -83,7 +77,7 @@ namespace basecross {
 		}
 	}
 
-	void EffectManeger::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
+	void EffectManager::SetViewProj(const bsm::Mat4x4& view, const bsm::Mat4x4& proj)
 	{
 		Effekseer::Matrix44 v, p;
 		Mat4x4ToMatrix44(view, v);
@@ -92,148 +86,161 @@ namespace basecross {
 		m_renderer->SetProjectionMatrix(p);
 	}
 
-	void EffectManeger::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
+	void EffectManager::PlayEffect(Effekseer::Handle& handle, const wstring& Key, const bsm::Vec3& Emitter, const float freme)
 	{
 		int32_t Freme = freme;
 		m_Effect = GetEffectResource(Key);
 		handle = m_Manager->Play(m_Effect, ::Effekseer::Vector3D(Emitter.x, Emitter.y, Emitter.z), Freme);
 	}
 
-	void EffectManeger::CreateEffectInterface()
+	void EffectManager::CreateEffectInterface()
 	{
 
 		auto Dev = App::GetApp()->GetDeviceResources();
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();
-		// �`��p�C���X�^���X�̐���
+		// 描画用インスタンスの生成
 		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 8000);
-		// �G�t�F�N�g�Ǘ��p�C���X�^���X�̐���
+		// エフェクト管理用インスタンスの生成
 		m_Manager = Effekseer::Manager::Create(8000);
 
-		// �`��p�C���X�^���X����`��@�\��ݒ�
+		// 描画用インスタンスから描画機能を設定
 		m_Manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
 		m_Manager->SetRibbonRenderer(m_renderer->CreateRibbonRenderer());
 		m_Manager->SetRingRenderer(m_renderer->CreateRingRenderer());
 		m_Manager->SetTrackRenderer(m_renderer->CreateTrackRenderer());
 		m_Manager->SetModelRenderer(m_renderer->CreateModelRenderer());
 
-		// �`��p�C���X�^���X����e�N�X�`���̓Ǎ��@�\��ݒ�
-		// �Ǝ��g���\�A���݂̓t�@�C������ǂݍ���ł���B
+		// 描画用インスタンスからテクスチャの読込機能を設定
+		// 独自拡張可能、現在はファイルから読み込んでいる。
 		m_Manager->SetTextureLoader(m_renderer->CreateTextureLoader());
 		m_Manager->SetModelLoader(m_renderer->CreateModelLoader());
 		m_Manager->SetMaterialLoader(m_renderer->CreateMaterialLoader());
 		m_Manager->SetCurveLoader(Effekseer::MakeRefPtr<Effekseer::CurveLoader>());
 	}
 
-	void EffectManeger::RegisterResource(const wstring& Key, const  wstring& FileName)
+	void EffectManager::RegisterResource(const wstring& Key, const  wstring& FileName)
 	{
 		try {
+			// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 			if (Key == L"") {
 				throw BaseException(
-					L"",
-					L"if(Key == L\"\")",
-					L"Effect::RegisterResource()"
+					L"キーが空", // エラーメッセージ
+					L"if(Key == L¥"")", // エラー箇所
+					L"Effect::RegisterResource()" // 関数名
 				);
 			}
+
+			// Effekseerを使用してファイルからエフェクトデータを読み込む
 			auto Effect = Effekseer::Effect::Create(m_Manager, (const char16_t*)FileName.c_str());
+
+			//--- 重複チェック ---
 			map<wstring, Effekseer::EffectRef>::iterator it;
+			// 1. 既に読み込まれたエフェクトデータと同じものではないかチェック
 			for (it = m_ResMap.begin(); it != m_ResMap.end(); it++) {
+				// 同じエフェクトデータが見つかった場合
 				if (it->second == Effect)
 				{
+					// キーも同じなら、既に登録済みのため正常終了（二重登録防止）
 					if (it->first == Key)
 					{
 						return;
 					}
-					wstring keyerr = Key;
+					// 同じエフェクトデータが「異なるキー」で登録されようとしているため、例外をスロー
+					wstring keyerr = L"同じエフェクトリソースが別のキー(" + it->first + L")で既に登録されています。キー: " + Key;
 					throw BaseException(
-						L"",
+						L"リソースの重複登録エラー",
 						keyerr,
 						L"Effect::RegisterResource()"
 					);
-
 				}
 			}
+
+			// 2. 指定されたキーが既に使われていないかチェック
 			it = m_ResMap.find(Key);
 			if (it != m_ResMap.end())
 			{
-				//�w��̖��O����������
-				//��O����
-				wstring keyerr = Key;
+				// 指定のキーが見つかった（キーが重複している）ため、例外をスロー
+				wstring keyerr = L"同じエフェクトリソースが別のキー(" + it->first + L")で既に登録されています。キー: " + Key;
 				throw BaseException(
-					L"",
+					L"キーの重複エラー",
 					keyerr,
 					L"Effect::RegisterResource()"
 				);
 			}
 			else {
+				// チェックをすべてパスした場合、リソースマップに登録する
 				m_ResMap[Key] = Effect;
-
 			}
 		}
 		catch (...) {
+			// この関数内で発生した例外を、そのまま呼び出し元に投げる
 			throw;
 		}
 	}
 
-	Effekseer::EffectRef EffectManeger::GetEffectResource(const wstring& Key) const
+	Effekseer::EffectRef EffectManager::GetEffectResource(const wstring& Key)
 	{
+		// キーが空文字列の場合は不正な呼び出しとして例外をスロー
 		if (Key == L"") {
 			throw BaseException(
-				L"",
-				L"if(Key == L\"\")",
-				L"App::GetResource()"
+				L"キーが空",
+				L"if(Key == "")",
+				L"EffectManager::GetEffectResource()" // NOTE: EffectManager::GetEffectResource() がより正確かもしれません
 			);
 		}
+
+		// マップからキーを検索（const_iteratorを使用）
 		map<wstring, Effekseer::EffectRef >::const_iterator  it;
 		it = m_ResMap.find(Key);
+
 		if (it != m_ResMap.end()) {
-			//�w��̖��O����������
+			// 指定のキーが見つかった場合、対応するエフェクトリソースを返す
 			return  it->second;
 		}
 		else {
-			//������Ȃ�
-			wstring keyerr = Key;
+			// キーが見つからなかったため、例外をスロー
+			wstring keyerr = L"指定されたキー(" + Key + L")のリソースが見つかりません。\n";
 			throw BaseException(
 				L"",
 				keyerr,
-				L"App::GetResource()"
+				L"EffectManager::GetEffectResource()" // NOTE: EffectManager::GetEffectResource() がより正確かもしれません
 			);
 		}
-
 	}
 
-	void EffectManeger::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+	void EffectManager::AddLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		if (handle != -1) {
 			m_Manager->AddLocation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z));
 		}
 	}
 
-	void EffectManeger::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
+	void EffectManager::SetRotation(Effekseer::Handle& handle, const bsm::Vec3& Location, const float angle)
 	{
 		m_Manager->SetRotation(handle, ::Effekseer::Vector3D(Location.x, Location.y, Location.z), angle);
 	}
 
-	void EffectManeger::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
+	void EffectManager::SetLocation(Effekseer::Handle& handle, const bsm::Vec3& Location) {
 		m_Manager->SetLocation(handle, Location.x, Location.y, Location.z);
 	}
-	void EffectManeger::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
+	void EffectManager::SetScale(Effekseer::Handle& handle, const bsm::Vec3& Scale)
 	{
 		m_Manager->SetScale(handle, Scale.x, Scale.y, Scale.z);
 	}
 
-	void EffectManeger::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
+	void EffectManager::SetAllColor(Effekseer::Handle& handle, const bsm::Col4 Color)
 	{
 		auto color = Col4(Color) * 255;
 		m_Manager->SetAllColor(handle, ::Effekseer::Color(color.x, color.y, color.z, color.w));
 	}
 
-	void EffectManeger::StopEffect(Effekseer::Handle& handle) {
+	void EffectManager::StopEffect(Effekseer::Handle& handle) {
 		if (handle != -1) {
 			m_Manager->StopEffect(handle);
 		}
 	}
 
-	void EffectManeger::SetLayer(Effekseer::Handle& handle, int32_t layer)
+	void EffectManager::SetLayer(Effekseer::Handle& handle, int32_t layer)
 	{
 		m_Manager->SetLayer(handle, layer);
 	}

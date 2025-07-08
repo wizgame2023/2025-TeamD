@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -26,7 +26,7 @@ namespace basecross {
 			Character(stage, Vec3(), Vec3(), Vec3(1.0f))
 		{
 		};
-		virtual ~Character() {};
+		virtual 窶ｾCharacter() {};
 
 		virtual void OnCreate() override;
 
@@ -39,6 +39,9 @@ namespace basecross {
 			}
 		}
 
+		bool IsArive() {
+			return m_HP > 0 && GetDrawActive();
+		}
 		double AngleBetweenVectors(const Vec3& v1, const Vec3& v2);
 		bool IsWithinDetectionRange(const Vec3& direction, const Vec3& target, double angle);
 		double DotProduct(const Vec3& v1, const Vec3& v2);
@@ -79,7 +82,7 @@ namespace basecross {
 		bool Wicth_FixedBox;
 	public:
 		FixedBox(const shared_ptr<Stage>& stage);
-		~FixedBox();
+		窶ｾFixedBox();
 		virtual void OnCreate() override;
 	};
 
@@ -87,7 +90,7 @@ namespace basecross {
 	{
 	public:
 		BraekBox(const shared_ptr<Stage>& stage);
-		~BraekBox();
+		窶ｾBraekBox();
 		virtual void OnCreate() override;
 	};
 
@@ -96,7 +99,7 @@ namespace basecross {
 		bool Wicth_Wall;
 	public:
 		Wall(const shared_ptr<Stage>& stage);
-		~Wall();
+		窶ｾWall();
 		virtual void OnCreate() override;
 
 	};

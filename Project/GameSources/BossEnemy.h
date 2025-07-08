@@ -31,28 +31,34 @@ namespace basecross {
 		shared_ptr<MachineGun> m_Gun;
 		shared_ptr<Missile> m_Missile;
 
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 
 		float m_Stun;
 		bool m_IsStun;
+		Timer m_HealStun;
+		bool m_DeadEffect;
 		Timer m_ComboTimer;
 		int m_ComboCount;
+		bool m_IsGround;
 
 		Vec3 m_StartPosition;
 
-		Timer m_DamageEffectTime;
+		Timer m_InvincibleTimer;
 
 		wstring m_CurrentAnimationKey;
 
 		Effekseer::Handle m_EffectHandle;
+		Effekseer::Handle m_EffectBombHandle;
+		Effekseer::Handle m_SmokeHandle;
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
 		);
-		~BossEnemy();
+		‾BossEnemy();
 		virtual void OnCreate();
 		virtual void OnAfterCreate()override;
 		virtual void OnUpdate();
+		virtual void OnSpawn();
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other)override;
 		virtual void Dead();
 		virtual void Damage(float damage, const bool& isSound = true)override;
@@ -66,6 +72,7 @@ namespace basecross {
 		wstring GetCurrentAnimationKey();
 
 		void AddStun(float stun);
+		float GetStun() const { return m_Stun; }
 		
 		void SetCondition(float time, int defeatCount) {
 			m_IsAppearance = false;
@@ -93,10 +100,11 @@ namespace basecross {
 	public:
 		BossEnemyLeg(const shared_ptr<Stage>& stage);
 		BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position,  const shared_ptr<Enemy>& enemy ,const float& direction);
-		~BossEnemyLeg();
+		‾BossEnemyLeg();
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void Dead();
+
 	};
 
 

@@ -1,6 +1,6 @@
 /*!
 @file TitleScenee.h
-@brief ƒ^ƒCƒgƒ‹ƒV[ƒ“
+@brief ã‚¿ã‚¤ãƒˆãƒ«ã‚·ãƒ¼ãƒ³
 */
 
 #pragma once
@@ -8,30 +8,72 @@
 
 namespace basecross {
 	class SpriteFade;
+	class TirleStageModel;
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class TitleStage : public Stage {
-		//ƒRƒ“ƒgƒ[ƒ‰[æ“¾
+		//ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼å–å¾—
 		InputHandler<TitleStage> m_InputHandler;
-		//ƒrƒ…[‚Ìì¬
+		shared_ptr<EffectManager> m_Effect;
+		Effekseer::Handle m_Handle;
+		Vec3 m_EffectPos;
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void CreateTitle();
 		std::shared_ptr<basecross::XAudio2Manager> m_ptrXA = App::GetApp()->GetXAudio2Manager();
 		shared_ptr<SpriteFade> m_Fade;
+		shared_ptr<Sprite> m_BackGround;
+		shared_ptr<Sprite> m_Title;
+		shared_ptr<Sprite> m_Start;
+		shared_ptr<TirleStageModel> m_Titlemodel;
 		//bool m_fade;
 	public:
-		//\’z‚Æ”jŠü
+		//æ§‹ç¯‰ã¨ç ´æ£„
 		TitleStage() :Stage() {}
-		virtual ~TitleStage() {}
-		//‰Šú‰»
+		virtual â€¾TitleStage() {}
+		//åˆæœŸåŒ–
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 
 		void OnPushA();
-
+		shared_ptr<EffectManager> GetEffect(){
+			return m_Effect;
+		}
 	};
 
+    class TirleStageModel : public Object {
+		bool m_Flag = false; //ãƒ•ãƒ©ã‚°
+		bool m_EndFlag = false; //ãƒ•ãƒ©ã‚°
+		shared_ptr<EffectManager> m_Effect;
+		Effekseer::Handle m_Handle;
+
+    public:
+        TirleStageModel(const shared_ptr<Stage>& stage) : Object(stage) {}
+        virtual â€¾TirleStageModel() {}
+        //åˆæœŸåŒ–
+        virtual void OnCreate() override;
+		virtual void OnUpdate()override;
+
+		const void SetAnim(wstring animname, float time = 0.0f) {
+			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			if (draw->GetCurrentAnimation() != animname)
+				draw->ChangeCurrentAnimation(animname, time);
+				/*if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
+				else
+					if (draw->IsTargetAnimeEnd()) draw->ChangeCurrentAnimation(animname, time);*/
+		}
+
+		void SetFlag(bool flag) { 
+			m_Flag = flag; 
+		}
+		bool GetFlag() const {
+			return m_Flag;
+		}
+		bool GetEndFlag() const {
+			return m_EndFlag;
+		}
+	};
 }

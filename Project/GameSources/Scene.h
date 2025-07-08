@@ -1,41 +1,57 @@
 /*!
 @file Scene.h
-@brief ƒV[ƒ“
+@brief ã‚·ãƒ¼ãƒ³
 */
 #pragma once
 
 #include "stdafx.h"
 
-namespace basecross{
-
+namespace basecross {
+	struct StageData {
+		int stageNum;
+		int level;
+	};
+	struct StageFileData {
+		wstring m_FileName;
+		bool m_IsClear;
+	};
 	//--------------------------------------------------------------------------------------
-	///	ƒQ[ƒ€ƒV[ƒ“
+	///	ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³
 	//--------------------------------------------------------------------------------------
-	class Scene : public SceneBase{
+	class Scene : public SceneBase {
+		vector<vector<StageFileData>> m_StageFile;
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+		@brief ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		Scene() :SceneBase(){}
+		Scene() :SceneBase(),m_MaxCount(0),m_Count(0){
+			m_StageFile = {
+				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},
+				{{L"Map_S_Easy.csv",false},{L"Map_S_Normal.csv",false},{L"Map_S_Hard.csv",false}}
+			};
+		}
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒfƒXƒgƒ‰ƒNƒ^
+		@brief ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 		*/
 		//--------------------------------------------------------------------------------------
-		virtual ~Scene();
+		virtual â€¾Scene();
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ‰Šú‰»
-		@return	‚È‚µ
+		@brief åˆæœŸåŒ–
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnCreate() override;
+		virtual void OnUpdate() override;
+
 		//--------------------------------------------------------------------------------------
 		/*!
-		@brief ƒCƒxƒ“ƒgæ“¾
-		@return	‚È‚µ
+		@brief ã‚¤ãƒ™ãƒ³ãƒˆå–å¾—
+		@return	ãªã—
 		*/
 		//--------------------------------------------------------------------------------------
 		virtual void OnEvent(const shared_ptr<Event>& event) override;
@@ -47,6 +63,18 @@ namespace basecross{
 		void CreateModelResource();
 		int GetCount() { return m_Count; }
 		void SetCount(int count) { m_Count = count; }
+
+		wstring GetFileName(StageData data) {
+			return m_StageFile[data.stageNum][data.level].m_FileName;
+		}
+		bool IsClear(StageData data) {
+			return m_StageFile[data.stageNum][data.level].m_IsClear;
+		}
+
+		void Clear(StageData data) {
+			m_StageFile[data.stageNum][data.level].m_IsClear = true;
+		}
+
 	};
 
 }

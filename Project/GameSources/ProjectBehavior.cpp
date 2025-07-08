@@ -1,6 +1,6 @@
 /*!
 @file ProjectBehavior.cpp
-@brief ƒvƒƒWƒFƒN’è‹`‚Ìs“®ƒNƒ‰ƒXÀ‘Ì
+@brief ãƒ—ãƒ­ã‚¸ã‚§ã‚¯å®šç¾©ã®è¡Œå‹•ã‚¯ãƒ©ã‚¹å®Ÿä½“
 */
 
 #include "stdafx.h"

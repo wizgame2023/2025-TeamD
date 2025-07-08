@@ -1,6 +1,6 @@
 /*!
 @file BossEnemy.cpp
-@brief ƒ{ƒX“G‚ÌÀ‘•
+@brief ãƒœã‚¹æ•µã®å®Ÿè£…
 */
 
 #include "stdafx.h"
@@ -12,10 +12,13 @@ namespace basecross {
 	BossEnemy::BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
-		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false),m_DamageEffectTime(Timer(0.2f,0.2f,false)), m_MotionRate(1.0f)
+		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(7.5f,false)),
+		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
+		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true),
+		m_EffectBombHandle(0),m_EffectHandle(0),m_SmokeHandle(0)
 	{
 	}
-	BossEnemy::~BossEnemy()
+	BossEnemy::â€¾BossEnemy()
 	{
 	}
 	void BossEnemy::AddAnimation() {
@@ -23,21 +26,29 @@ namespace basecross {
 		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
 		m_MotionRate = max(1.0f, (int)difficulty * 0.6f);
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		draw->AddAnimation(L"Idle", 0, 1, true, fps);
+		draw->AddAnimation(L"Idle", 40, 1, true, fps);
 		draw->AddAnimation(L"Walk", 40, 120, true, fps * 1.75f);
 		draw->AddAnimation(L"Stan_First", 545, 56, false, fps * 0.6f);
 		draw->AddAnimation(L"Stan", 601, 19, true, fps);
 		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
 		draw->AddAnimation(L"Blow", 545, 10, false, fps * 0.5f);
 		
-		draw->AddAnimation(L"Missile_First", 971, 9, false, fps * m_MotionRate);
+		draw->AddAnimation(L"Missile_First", 971, 9, false, fps* m_MotionRate);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
-		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps * m_MotionRate);
-		draw->AddAnimation(L"Crush", 1280, 90, false, fps * m_MotionRate);
+		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps* m_MotionRate);
+		draw->AddAnimation(L"Crush", 1280, 90, false, fps* m_MotionRate);
+
+		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
+		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps * 0.5f);
+		draw->AddAnimation(L"Landing", 2437, 67, false, fps * 0.5f);//16
+
+		draw->AddAnimation(L"ShakeOff_First", 2205, 14, false, fps);
+		draw->AddAnimation(L"ShakeOff", 2220, 87, false, fps);
+		draw->AddAnimation(L"ShakeOff_Parry", 2561, 114, false, fps);
 	}
-	void BossEnemy::SetAnimation(const wstring& key,const bool& isChange) {
+	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
-		
+
 		if (draw->GetCurrentAnimation() != key)
 			if (draw->GetAnimeLoop()) {
 				draw->ChangeCurrentAnimation(key);
@@ -64,23 +75,23 @@ namespace basecross {
 			SetIntruder(player);
 		}
 		m_Stage->SetSharedGameObject(L"BOSS", GetThis<BossEnemy>());
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		ptrDraw->SetMeshResource(L"BOSS");
-		ptrDraw->SetTextureResource(L"GROUND");
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 0.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.9f, 0.0f)
+			Vec3(0.0f, -1.0f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"BOSS");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
+
 
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
@@ -94,30 +105,36 @@ namespace basecross {
 		AddAnimation();
 		SetAnimation(L"Idle");
 		RegisterAttack();
+
 	}
-	
+
 	void BossEnemy::RegisterAttack() {
 		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
 		float addRate = max(1.0f, (int)difficulty * 0.75f);
 		float crushDamage = 5.0f * addRate;
 		float crushSize = 1.5f * addRate;
-		float crushRange = max(2.0f,crushSize / 1.8f);
+		float crushRange = max(2.0f, crushSize / 1.8f);
 		float crushBlow = 3.0f * addRate;
 
-		int missileCount = 6.0f * addRate;
+		int missileCount = static_cast<int>(6.0f * addRate);
 		float missileInterval = 0.25f;
 		float explodeSize = 2.0f * addRate;
 
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 
 		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(crushSize), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(GetThis<BossEnemy>(),0.0f,20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
+		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(GetThis<BossEnemy>(), 0.0f, 20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
 		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
 		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
 
 		float hp = GetMaxHP();
 		hp *= (int)difficulty;
 		InitHP(hp);
+
+		float healStunTime = 7.5f;
+		healStunTime /= addRate;
+		m_HealStun.SetTime(healStunTime);
+
 	}
 
 	void BossEnemy::OnUpdate()
@@ -126,14 +143,11 @@ namespace basecross {
 		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->UpdateAnimation(elapsed);
+		m_InvincibleTimer.UpdateTimer();
 		if (!m_IsStun) {
 			m_currentState->Execute();
-			
-			if (m_DamageEffectTime.UpdateTimer()) {
-				draw->SetDiffuse(Col4(1, 1, 1, 1));
-			}
-			else {
-				draw->SetDiffuse(Col4(1, 0, 0, 1));
+			if (m_HealStun.UpdateTimer() && m_Stun >= 0.25f) {
+				m_Stun -= 0.05f * elapsed;
 			}
 		}
 		else {
@@ -159,33 +173,63 @@ namespace basecross {
 			}
 		}
 	}
+	void BossEnemy::OnSpawn() {
+		Vec3 position = GetPosition();
+		position.y += 10.0f;
+		SetPosition(position);
+		Vec3 direction = m_Intruder->GetPosition() - position;
+		float rotationY = atan2f(direction.x, direction.z);
+		SetRotation(Vec3(0, rotationY, 0));
+
+		ChangeState<BossStarting>();
+	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
-			stun /= (float)GameManager::Instance()->GetDifficulty();
+			float rate = (float)GameManager::Instance()->GetDifficulty();
+			stun /= rate;
 			m_Stun += stun;
+			m_HealStun.Reset();
 			if (m_Stun > 1.0f) {
-				m_IsStun = true;
-				SetAnimation(L"Stan_First",true);
+				if (stun > 0.25f / rate) {
+					m_IsStun = true;
+					SetAnimation(L"Stan_First", true);
+				}
+				else {
+					m_Stun -= stun;
+				}
+				
 			}
 		}
 	}
 	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
-			Damage(2.0f, false);
-			AddStun(0.06f);
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+		}
+
+		if (GetCurrentAnimationKey() == L"Jump" && other->FindTag(L"Ground")) {
+			SetAnimation(L"Landing_First", true);
 		}
 	}
 	void BossEnemy::Dead()
 	{
-		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
 		auto& effect = m_Stage->GetCreateEffect();
+		if (!m_DeadEffect)
+		{
+			effect->PlayEffect(m_EffectBombHandle, L"Bomb", GetPosition(), 0.0f);
+			effect->SetScale(m_EffectBombHandle, Vec3(0.5f));
+			m_DeadEffect = true;
+		}
+		PostEvent(1.0f,GetThis<ObjectInterface>(), m_Stage, L"DefeatBoss");
 		effect->StopEffect(m_EffectHandle);
 		Enemy::Dead();
 	}
 	void BossEnemy::Damage(float damage, const bool& isSound) {
-		Enemy::Damage(damage, isSound);
-		m_DamageEffectTime.SetTime(0.2f, true);
+		if (m_InvincibleTimer.CheckTime()) {
+			Enemy::Damage(damage, isSound);
+			m_InvincibleTimer.Reset();
+			AddStun(0.06f);
+		}
+		
 	}
 	void BossEnemy::Move(const Vec3& direction,const bool& isGameSpeed) {
 		Character::Move(direction, isGameSpeed);
@@ -200,7 +244,7 @@ namespace basecross {
 	{
 	}
 
-	BossEnemyLeg::~BossEnemyLeg()
+	BossEnemyLeg::â€¾BossEnemyLeg()
 	{
 	}
 
@@ -214,13 +258,13 @@ namespace basecross {
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(true);//debug
 		ptrColl->SetFixed(true);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 
-		//‰e‚ğ‚Â‚¯‚éiƒVƒƒƒhƒEƒ}ƒbƒv‚ğ•`‰æ‚·‚éj
+		//å½±ã‚’ã¤ã‘ã‚‹ï¼ˆã‚·ãƒ£ãƒ‰ã‚¦ãƒãƒƒãƒ—ã‚’æç”»ã™ã‚‹ï¼‰
 		auto shadowPtr = AddComponent<Shadowmap>();
-		//‰e‚ÌŒ`iƒƒbƒVƒ…j‚ğİ’è
+		//å½±ã®å½¢ï¼ˆãƒ¡ãƒƒã‚·ãƒ¥ï¼‰ã‚’è¨­å®š
 		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
 
 	}

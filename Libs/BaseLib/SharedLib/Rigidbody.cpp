@@ -1,6 +1,6 @@
 /*!
 @file PhysicsManager.cpp
-@brief •¨—ŒvZ—pƒ}ƒl[ƒWƒƒ‚È‚ÇÀ‘Ì
+@brief ç‰©ç†è¨ˆç®—ç”¨ãƒãƒãƒ¼ã‚¸ãƒ£ãªã©å®Ÿä½“
 @copyright Copyright (c) 2017 WiZ Tamura Hiroki,Yamanoi Yasushi.
 */
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	///	•¨—ŒvZƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìe
+	///	ç‰©ç†è¨ˆç®—ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®è¦ª
 	//--------------------------------------------------------------------------------------
 	Rigidbody::Rigidbody(const shared_ptr<GameObject>& GameObjectPtr):
 		Component(GameObjectPtr),
@@ -17,7 +17,7 @@ namespace basecross {
 	{
 		SetDrawActive(false);
 	}
-	Rigidbody::~Rigidbody() {}
+	Rigidbody::â€¾Rigidbody() {}
 
 	void Rigidbody::DrawShapeWireFrame(const shared_ptr<MeshResource>& res, const bsm::Mat4x4& meshtotrans) {
 		GenericDraw Draw;
@@ -76,12 +76,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚Ì•¨—ŒvZƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®ç‰©ç†è¨ˆç®—ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodySingle::RigidbodySingle(const shared_ptr<GameObject>& GameObjectPtr) :
 		Rigidbody(GameObjectPtr)
 	{}
-	RigidbodySingle::~RigidbodySingle() {
+	RigidbodySingle::â€¾RigidbodySingle() {
 	}
 
 	bsm::Vec3	RigidbodySingle::GetPosition() const {
@@ -214,10 +214,10 @@ namespace basecross {
 	}
 
 	void RigidbodySingle::OnDestroy() {
-		//ŒvZ‚âÕ“Ë‚ğ‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+		//è¨ˆç®—ã‚„è¡çªã‚’ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 		SetContactFilterTarget(0);
 		SetMotionType(PsMotionType::MotionTypeFixed);
-		//‹óID‚ÉƒZƒbƒg
+		//ç©ºIDã«ã‚»ãƒƒãƒˆ
 		GetGameObject()->GetStage()->SetVacantPhysicsIndex(GetIndex());
 	}
 
@@ -226,12 +226,12 @@ namespace basecross {
 
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚Ì‹…‘ÌƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®çƒä½“ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodySphere::RigidbodySphere(const shared_ptr<GameObject>& GameObjectPtr, const PsSphereParam& param):
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsSphere = GameObjectPtr->GetStage()->GetBasePhysics().AddSphere(param, index);
 	}
@@ -269,25 +269,25 @@ namespace basecross {
 	}
 
 	void RigidbodySphere::OnDraw() {
-		//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚ç‚Ì·•ª
+		//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰ã®å·®åˆ†
 		bsm::Mat4x4 meshtotrans;
 		meshtotrans.affineTransformation(
-			bsm::Vec3(0.5f),			//ƒXƒP[ƒŠƒ“ƒO‚Í0.5f
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			Quat(),				//‰ñ“]Šp“x
-			bsm::Vec3(0, 0, 0)				//ˆÊ’u
+			bsm::Vec3(0.5f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯0.5f
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			Quat(),				//å›è»¢è§’åº¦
+			bsm::Vec3(0, 0, 0)				//ä½ç½®
 		);
 		auto MeshRes = App::GetApp()->GetResource<MeshResource>(L"PSWIRE_PC_SPHERE");
 		DrawShapeWireFrame(MeshRes, meshtotrans);
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚Ìƒ{ƒbƒNƒXƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®ãƒœãƒƒã‚¯ã‚¹ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyBox::RigidbodyBox(const shared_ptr<GameObject>& GameObjectPtr, const PsBoxParam& param) :
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsBox = GameObjectPtr->GetStage()->GetBasePhysics().AddBox(param, index);
 	}
@@ -324,24 +324,24 @@ namespace basecross {
 
 	void RigidbodyBox::OnDraw() {
 		auto MeshRes = App::GetApp()->GetResource<MeshResource>(L"PSWIRE_PC_CUBE");
-		//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚ç‚Ì·•ª
+		//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰ã®å·®åˆ†
 		bsm::Mat4x4 meshtotrans;
 		meshtotrans.affineTransformation(
-			bsm::Vec3(0.5f),			//ƒXƒP[ƒŠƒ“ƒO‚Í0.5f
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			Quat(),				//‰ñ“]Šp“x
-			bsm::Vec3(0, 0, 0)				//ˆÊ’u
+			bsm::Vec3(0.5f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯0.5f
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			Quat(),				//å›è»¢è§’åº¦
+			bsm::Vec3(0, 0, 0)				//ä½ç½®
 		);
 		DrawShapeWireFrame(MeshRes, meshtotrans);
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚ÌƒJƒvƒZƒ‹ƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®ã‚«ãƒ—ã‚»ãƒ«ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyCapsule::RigidbodyCapsule(const shared_ptr<GameObject>& GameObjectPtr, const PsCapsuleParam& param):
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsCapsule = GetGameObject()->GetStage()->GetBasePhysics().AddCapsule(param, index);
 		m_CapsuleMesh = Rigidbody::CreateCapsuleMesh(param);
@@ -357,13 +357,13 @@ namespace basecross {
 	}
 
 	CAPSULE RigidbodyCapsule::GetCAPSULE() const {
-		//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+		//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 		Mat4x4 World;
 		World.affineTransformation(
-			bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			GetOrientation(),				//‰ñ“]Šp“x
-			GetPosition()			//ˆÊ’u
+			bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			GetOrientation(),				//å›è»¢è§’åº¦
+			GetPosition()			//ä½ç½®
 		);
 		CAPSULE cap(m_PsCapsule->GetParam().m_Radius,
 			Vec3(0, -m_PsCapsule->GetParam().m_HalfLen, 0),
@@ -391,13 +391,13 @@ namespace basecross {
 	}
 
 	void RigidbodyCapsule::OnDraw() {
-		//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚ç‚Ì·•ª
+		//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰ã®å·®åˆ†
 		bsm::Mat4x4 meshtotrans;
 		meshtotrans.affineTransformation(
-			bsm::Vec3(1.0f),			//ƒXƒP[ƒŠƒ“ƒO‚Í1.0f
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			Quat(),				//‰ñ“]Šp“x
-			bsm::Vec3(0, 0, 0)				//ˆÊ’u
+			bsm::Vec3(1.0f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯1.0f
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			Quat(),				//å›è»¢è§’åº¦
+			bsm::Vec3(0, 0, 0)				//ä½ç½®
 		);
 		auto MeshRes = m_CapsuleMesh;
 		DrawShapeWireFrame(MeshRes, meshtotrans);
@@ -405,12 +405,12 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚ÌƒVƒŠƒ“ƒ_[ƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®ã‚·ãƒªãƒ³ãƒ€ãƒ¼ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyCylinder::RigidbodyCylinder(const shared_ptr<GameObject>& GameObjectPtr, const PsCylinderParam& param):
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsCylinder = GetGameObject()->GetStage()->GetBasePhysics().AddCylinder(param, index);
 		m_CylinderMesh = Rigidbody::CreateCylinderMesh(param);
@@ -432,25 +432,25 @@ namespace basecross {
 	}
 
 	void RigidbodyCylinder::OnDraw() {
-		//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚ç‚Ì·•ª
+		//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰ã®å·®åˆ†
 		bsm::Mat4x4 meshtotrans;
 		meshtotrans.affineTransformation(
-			bsm::Vec3(0.5f),			//ƒXƒP[ƒŠƒ“ƒO‚Í0.5f
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			Quat(),				//‰ñ“]Šp“x
-			bsm::Vec3(0, 0, 0)				//ˆÊ’u
+			bsm::Vec3(0.5f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯0.5f
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			Quat(),				//å›è»¢è§’åº¦
+			bsm::Vec3(0, 0, 0)				//ä½ç½®
 		);
 		auto MeshRes = m_CylinderMesh;
 		DrawShapeWireFrame(MeshRes, meshtotrans);
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	’P‘Ì‚Ì“Ê–ÊƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	å˜ä½“ã®å‡¸é¢ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyConvex::RigidbodyConvex(const shared_ptr<GameObject>& GameObjectPtr, const PsConvexParam& param):
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsConvex = GetGameObject()->GetStage()->GetBasePhysics().AddConvex(param, index);
 		m_ConvexMesh = Rigidbody::CreateConvexMesh(param);
@@ -471,24 +471,24 @@ namespace basecross {
 	}
 
 	void RigidbodyConvex::OnDraw() {
-		//ƒgƒ‰ƒ“ƒXƒtƒH[ƒ€‚©‚ç‚Ì·•ª
+		//ãƒˆãƒ©ãƒ³ã‚¹ãƒ•ã‚©ãƒ¼ãƒ ã‹ã‚‰ã®å·®åˆ†
 		bsm::Mat4x4 meshtotrans;
 		meshtotrans.affineTransformation(
-			bsm::Vec3(1.0f),			//ƒXƒP[ƒŠƒ“ƒO‚Í1.0f
-			bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-			Quat(),				//‰ñ“]Šp“x
-			bsm::Vec3(0, 0, 0)				//ˆÊ’u
+			bsm::Vec3(1.0f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯1.0f
+			bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+			Quat(),				//å›è»¢è§’åº¦
+			bsm::Vec3(0, 0, 0)				//ä½ç½®
 		);
 		DrawShapeWireFrame(m_ConvexMesh, meshtotrans);
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	ƒvƒŠƒ~ƒeƒBƒu‡¬ƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–åˆæˆã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyCombined::RigidbodyCombined(const shared_ptr<GameObject>& GameObjectPtr, const PsCombinedParam& param):
 		RigidbodySingle(GameObjectPtr)
 	{
-		//‹óID‚Ìæ“¾
+		//ç©ºIDã®å–å¾—
 		auto index = GameObjectPtr->GetStage()->GetVacantPhysicsIndex();
 		m_PsCombined = GetGameObject()->GetStage()->GetBasePhysics().AddCombined(param, index);
 		CreateMesh(param);
@@ -572,7 +572,7 @@ namespace basecross {
 
 	void RigidbodyCombined::OnDraw() {
 		auto index = GetIndex();
-		//s—ñ‚Ì’è‹`
+		//è¡Œåˆ—ã®å®šç¾©
 		bsm::Mat4x4 Local;
 		PsBodyStatus Status;
 		auto& BasePs = GetGameObject()->GetStage()->GetBasePhysics();
@@ -587,31 +587,31 @@ namespace basecross {
 				case PsCombinedType::TypeSphere:
 				{
 					Local.affineTransformation(
-						Vec3(prim.m_Radius),	//ƒXƒP[ƒŠƒ“ƒO
-						bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-						LocalQt,				//‰ñ“]Šp“x
-						LocalPos				//ˆÊ’u
+						Vec3(prim.m_Radius),	//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+						bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+						LocalQt,				//å›è»¢è§’åº¦
+						LocalPos				//ä½ç½®
 					);
 				}
 				break;
 				case PsCombinedType::TypeBox:
 				{
 					Local.affineTransformation(
-						prim.m_HalfSize,			//ƒXƒP[ƒŠƒ“ƒO
-						bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-						LocalQt,				//‰ñ“]Šp“x
-						LocalPos				//ˆÊ’u
+						prim.m_HalfSize,			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+						bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+						LocalQt,				//å›è»¢è§’åº¦
+						LocalPos				//ä½ç½®
 					);
 				}
 				break;
 				default:
 				{
-					//‹…‚Æƒ{ƒbƒNƒXˆÈŠO‚ÍƒXƒP[ƒŠƒ“ƒO1.0
+					//çƒã¨ãƒœãƒƒã‚¯ã‚¹ä»¥å¤–ã¯ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°1.0
 					Local.affineTransformation(
-						bsm::Vec3(1.0f),			//ƒXƒP[ƒŠƒ“ƒO‚Í1.0f
-						bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-						LocalQt,				//‰ñ“]Šp“x
-						LocalPos				//ˆÊ’u
+						bsm::Vec3(1.0f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯1.0f
+						bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+						LocalQt,				//å›è»¢è§’åº¦
+						LocalPos				//ä½ç½®
 					);
 				}
 				break;
@@ -622,20 +622,20 @@ namespace basecross {
 	}
 
 	//--------------------------------------------------------------------------------------
-	///	ƒ}ƒ‹ƒ`•¨—ƒRƒ“ƒ|[ƒlƒ“ƒg
+	///	ãƒãƒ«ãƒç‰©ç†ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆ
 	//--------------------------------------------------------------------------------------
 	RigidbodyMulti::RigidbodyMulti(const shared_ptr<GameObject>& GameObjectPtr):
 		Rigidbody(GameObjectPtr)
 	{}
 
-	RigidbodyMulti::~RigidbodyMulti() {
+	RigidbodyMulti::â€¾RigidbodyMulti() {
 	}
 
 
 	void RigidbodyMulti::CheckObjIndex(size_t index) const{
 		if (index >= m_PsObjectVec.size()) {
 			throw BaseException(
-				L"RigidbodyMulti‚ÌƒIƒuƒWƒFƒNƒgƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"RigidbodyMultiã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 				L"if (index >= m_PsObjectVec.size())",
 				L"RigidbodyMulti::CheckObjIndex()"
 			);
@@ -645,7 +645,7 @@ namespace basecross {
 	void  RigidbodyMulti::CheckJointIndex(size_t index) const {
 		if (index >= m_PsJointVec.size()) {
 			throw BaseException(
-				L"PsMultiJoint‚ÌƒIƒuƒWƒFƒNƒgƒCƒ“ƒfƒbƒNƒX‚ª”ÍˆÍŠO‚Å‚·",
+				L"PsMultiJointã®ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹ãŒç¯„å›²å¤–ã§ã™",
 				L"if (index >= m_PsJointVec.size())",
 				L"RigidbodyMulti::CheckJointIndex()"
 			);
@@ -675,7 +675,7 @@ namespace basecross {
 		m_PsObjectVec.push_back(PsCapsuleObj);
 		auto index = PsCapsuleObj->GetIndex();
 		auto CapsuleMesh = Rigidbody::CreateCapsuleMesh(param);
-		//Map‚É“o˜^
+		//Mapã«ç™»éŒ²
 		m_MeshMap[index] =  CapsuleMesh;
 		return obj_index;
 	}
@@ -686,7 +686,7 @@ namespace basecross {
 		m_PsObjectVec.push_back(PsCylinderObj);
 		auto index = PsCylinderObj->GetIndex();
 		auto CylinderMesh = Rigidbody::CreateCylinderMesh(param);
-		//Map‚É“o˜^
+		//Mapã«ç™»éŒ²
 		m_MeshMap[index] = CylinderMesh;
 		return obj_index;
 	}
@@ -697,7 +697,7 @@ namespace basecross {
 		m_PsObjectVec.push_back(PsConvexObj);
 		auto index = PsConvexObj->GetIndex();
 		auto ConvexMesh = Rigidbody::CreateConvexMesh(param);
-		//Map‚É“o˜^
+		//Mapã«ç™»éŒ²
 		m_MeshMap[index] = ConvexMesh;
 		return obj_index;
 	}
@@ -888,27 +888,27 @@ namespace basecross {
 				{
 					auto PsSpherePtr = dynamic_pointer_cast<PsSphere>(v);
 					if (PsSpherePtr) {
-						//s—ñ‚Ì’è‹`
+						//è¡Œåˆ—ã®å®šç¾©
 						bsm::Mat4x4 World, Local;
 						PsBodyStatus Status;
 						auto& BasePs = GetGameObject()->GetStage()->GetBasePhysics();
 						auto MeshRes = App::GetApp()->GetResource<MeshResource>(L"PSWIRE_PC_SPHERE");
 						BasePs.GetBodyStatus(index, Status);
-						//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+						//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 						World.affineTransformation(
-							bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							Status.m_Orientation,				//‰ñ“]Šp“x
-							Status.m_Position			//ˆÊ’u
+							bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							Status.m_Orientation,				//å›è»¢è§’åº¦
+							Status.m_Position			//ä½ç½®
 						);
 						bsm::Vec3 LocalPos;
 						bsm::Quat LocalQt;
 						BasePs.GetShapeOffsetQuatPos(index, 0, LocalQt, LocalPos);
 						Local.affineTransformation(
-							bsm::Vec3(PsSpherePtr->GetParam().m_Radius),			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							LocalQt,				//‰ñ“]Šp“x
-							LocalPos				//ˆÊ’u
+							bsm::Vec3(PsSpherePtr->GetParam().m_Radius),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							LocalQt,				//å›è»¢è§’åº¦
+							LocalPos				//ä½ç½®
 						);
 						bsm::Mat4x4 DrawWorld = Local * World;
 						DrawShapeWireFrameWithWorldMatrix(MeshRes, DrawWorld);
@@ -919,27 +919,27 @@ namespace basecross {
 				{
 					auto PsBoxPtr = dynamic_pointer_cast<PsBox>(v);
 					if (PsBoxPtr) {
-						//s—ñ‚Ì’è‹`
+						//è¡Œåˆ—ã®å®šç¾©
 						bsm::Mat4x4 World, Local;
 						PsBodyStatus Status;
 						auto& BasePs = GetGameObject()->GetStage()->GetBasePhysics();
 						auto MeshRes = App::GetApp()->GetResource<MeshResource>(L"PSWIRE_PC_CUBE");
 						BasePs.GetBodyStatus(index, Status);
-						//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+						//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 						World.affineTransformation(
-							bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							Status.m_Orientation,				//‰ñ“]Šp“x
-							Status.m_Position			//ˆÊ’u
+							bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							Status.m_Orientation,				//å›è»¢è§’åº¦
+							Status.m_Position			//ä½ç½®
 						);
 						bsm::Vec3 LocalPos;
 						bsm::Quat LocalQt;
 						BasePs.GetShapeOffsetQuatPos(index, 0, LocalQt, LocalPos);
 						Local.affineTransformation(
-							PsBoxPtr->GetParam().m_HalfSize,			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							LocalQt,				//‰ñ“]Šp“x
-							LocalPos				//ˆÊ’u
+							PsBoxPtr->GetParam().m_HalfSize,			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							LocalQt,				//å›è»¢è§’åº¦
+							LocalPos				//ä½ç½®
 						);
 						bsm::Mat4x4 DrawWorld = Local * World;
 						DrawShapeWireFrameWithWorldMatrix(MeshRes, DrawWorld);
@@ -950,28 +950,28 @@ namespace basecross {
 				{
 					auto PsCapsulePtr = dynamic_pointer_cast<PsCapsule>(v);
 					if (PsCapsulePtr && m_MeshMap.find(index) != m_MeshMap.end()) {
-						//s—ñ‚Ì’è‹`
+						//è¡Œåˆ—ã®å®šç¾©
 						bsm::Mat4x4 World, Local;
 						PsBodyStatus Status;
 						auto& BasePs = GetGameObject()->GetStage()->GetBasePhysics();
 						auto MeshRes = m_MeshMap[index];
 						BasePs.GetBodyStatus(index, Status);
-						//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+						//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 						World.affineTransformation(
-							bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							Status.m_Orientation,				//‰ñ“]Šp“x
-							Status.m_Position			//ˆÊ’u
+							bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							Status.m_Orientation,				//å›è»¢è§’åº¦
+							Status.m_Position			//ä½ç½®
 						);
 						bsm::Vec3 LocalPos;
 						bsm::Quat LocalQt;
 						BasePs.GetShapeOffsetQuatPos(index, 0, LocalQt, LocalPos);
 
 						Local.affineTransformation(
-							bsm::Vec3(1.0f),			//ƒXƒP[ƒŠƒ“ƒO‚Í1.0f
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							LocalQt,				//‰ñ“]Šp“x
-							LocalPos				//ˆÊ’u
+							bsm::Vec3(1.0f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯1.0f
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							LocalQt,				//å›è»¢è§’åº¦
+							LocalPos				//ä½ç½®
 						);
 						bsm::Mat4x4 DrawWorld = Local * World;
 						DrawShapeWireFrameWithWorldMatrix(MeshRes, DrawWorld);
@@ -982,27 +982,27 @@ namespace basecross {
 				{
 					auto PsCylinderPtr = dynamic_pointer_cast<PsCylinder>(v);
 					if (PsCylinderPtr && m_MeshMap.find(index) != m_MeshMap.end()) {
-						//s—ñ‚Ì’è‹`
+						//è¡Œåˆ—ã®å®šç¾©
 						bsm::Mat4x4 World, Local;
 						PsBodyStatus Status;
 						auto& BasePs = GetGameObject()->GetStage()->GetBasePhysics();
 						auto MeshRes = m_MeshMap[index];
 						BasePs.GetBodyStatus(index, Status);
-						//ƒ[ƒ‹ƒhs—ñ‚ÌŒˆ’è
+						//ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã®æ±ºå®š
 						World.affineTransformation(
-							bsm::Vec3(1.0, 1.0, 1.0),			//ƒXƒP[ƒŠƒ“ƒO
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							Status.m_Orientation,				//‰ñ“]Šp“x
-							Status.m_Position			//ˆÊ’u
+							bsm::Vec3(1.0, 1.0, 1.0),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							Status.m_Orientation,				//å›è»¢è§’åº¦
+							Status.m_Position			//ä½ç½®
 						);
 						bsm::Vec3 LocalPos;
 						bsm::Quat LocalQt;
 						BasePs.GetShapeOffsetQuatPos(index, 0, LocalQt, LocalPos);
 						Local.affineTransformation(
-							bsm::Vec3(1.0f),			//ƒXƒP[ƒŠƒ“ƒO‚Í1.0f
-							bsm::Vec3(0, 0, 0),		//‰ñ“]‚Ì’†SidSj
-							LocalQt,				//‰ñ“]Šp“x
-							LocalPos				//ˆÊ’u
+							bsm::Vec3(1.0f),			//ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°ã¯1.0f
+							bsm::Vec3(0, 0, 0),		//å›è»¢ã®ä¸­å¿ƒï¼ˆé‡å¿ƒï¼‰
+							LocalQt,				//å›è»¢è§’åº¦
+							LocalPos				//ä½ç½®
 						);
 						bsm::Mat4x4 DrawWorld = Local * World;
 						DrawShapeWireFrameWithWorldMatrix(MeshRes, DrawWorld);
@@ -1016,7 +1016,7 @@ namespace basecross {
 	}
 
 	void RigidbodyMulti::OnDestroy() {
-		//ŒvZ‚âÕ“Ë‚ğ‚µ‚È‚¢‚æ‚¤‚É‚·‚é
+		//è¨ˆç®—ã‚„è¡çªã‚’ã—ãªã„ã‚ˆã†ã«ã™ã‚‹
 		for (auto& v : m_PsObjectVec) {
 			auto BodyIndex = v->GetIndex();
 			GetGameObject()->GetStage()->GetBasePhysics().SetBodyContactFilterTarget(BodyIndex, 0);

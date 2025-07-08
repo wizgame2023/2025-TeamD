@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ÉLÉÉÉâÉNÉ^Å[Ç»Ç«é¿ëÃ
+@brief „Ç≠„É£„É©„ÇØ„Çø„Éº„Å™„Å©ÂÆü‰Ωì
 */
 
 #include "stdafx.h"
@@ -21,7 +21,10 @@ namespace basecross {
 		RegisterSound(L"BGM_GAME_PINCH", L"BGM/BGM.wav");
 		RegisterSound(L"BGM_TITLE", L"BGM/Title.wav");
 		RegisterSound(L"BGM_SELECT", L"BGM/SelectBGM.wav");
+		RegisterSound(L"BGM_GAMEOVER", L"BGM/testGameOver1.wav");
+		RegisterSound(L"BGM_GAMECLEAR", L"BGM/testGameClear.wav");
 		//SE
+		RegisterSound(L"SE_CRACK", L"SE/CrackGlass.wav");
 		RegisterSound(L"SE_GUARD", L"SE/Guard.wav");
 		RegisterSound(L"SE_HIT_PLAYER", L"SE/PlayerHit.wav");
 		RegisterSound(L"SE_HIT_ENEMY", L"SE/EnemyHit.wav");
@@ -31,7 +34,7 @@ namespace basecross {
 		RegisterSound(L"SE_ATTACK_VOICE", L"SE/AttackVoice.wav");
 		RegisterSound(L"SE_ACCEPT", L"SE/Accept.wav");
 
-		RegisterSound(L"SE_EXPLODE", L"SE/Accept.wav");
+		RegisterSound(L"SE_EXPLODE", L"SE/Rocket_Fire.wav");
 		RegisterSound(L"SE_MISSILE", L"SE/Rocket_Fire.wav");
 		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");

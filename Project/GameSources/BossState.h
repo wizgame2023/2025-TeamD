@@ -12,12 +12,20 @@
 namespace basecross {
 	class Enemy;
 	class LineCube;
-	
+
+	class BossStarting : public EnemyState<BossEnemy> {
+		Effekseer::Handle m_SmokeHandle;
+	public:
+		BossStarting(shared_ptr<BossEnemy>& enemy) : EnemyState(enemy),m_SmokeHandle(0){}
+
+		virtual void Enter() override;
+		virtual void Execute()override;
+		virtual void Exit()override;
+	};
 	class BossHostility : public EnemyState<BossEnemy>
 	{
-		bool m_IntruderAlert;
 		Timer m_CooldownTimer;
-
+		
 	public:
 		BossHostility(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
@@ -28,6 +36,8 @@ namespace basecross {
 		virtual void Enter() override;
 		virtual void Execute()override;
 		virtual void Exit()override;
+
+		static int m_MissileCount;
 	};
 	template<typename T>
 	class AttackState : public EnemyState<BossEnemy> {
@@ -57,13 +67,14 @@ namespace basecross {
 			EnemyState(enemy),
 			m_CooldownTimer(Timer(false)), m_ReadyTimer(Timer(false)),
 			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f),
-			m_AttackPosition(Vec3()) {}
+			m_AttackPosition(Vec3()) {
+		}
 
 		virtual void Ready(float time) {
 			m_IsReady = true;
 			m_ReadyTimer.SetTime(time, true);
 		}
-		virtual void Attack(){}
+		virtual void Attack() {}
 
 		virtual void Enter() override {}
 		virtual void Execute()override {}
@@ -72,7 +83,7 @@ namespace basecross {
 	class BossCrush : public AttackState<CrushAttack> {
 	public:
 		BossCrush(shared_ptr<BossEnemy>& enemy) :
-			AttackState(enemy) {
+			AttackState(enemy) ,m_SmokeHandle(0){
 		}
 
 		virtual void Ready(float time)override;
@@ -94,6 +105,20 @@ namespace basecross {
 		virtual void Enter() override;
 		virtual void Execute()override;
 		virtual void Exit()override;
+	};
+	class BossShakeOff : public AttackState<CrushAttack> {
+	public:
+		BossShakeOff(shared_ptr<BossEnemy>& enemy) :
+			AttackState(enemy),m_SmokeHandle(0) {
+		}
+
+		virtual void Ready(float time)override;
+	private:
+		Effekseer::Handle m_SmokeHandle;
+
+		void Enter() override;
+		void Execute()override;
+		void Exit()override;
 	};
 }
 //end basecross

@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief �L�����N�^�[�Ȃ�
+@brief キャラクターなど
 */
 
 #pragma once
@@ -22,15 +22,15 @@ namespace basecross {
 
 	public:
 		CameraCollision(const shared_ptr<Stage>& StagePtr);
-		virtual ~CameraCollision() {}
+		virtual ‾CameraCollision() {}
 
 		Vec3 GetCompareVertex(Vec2 verx, Vec2 very);
 		virtual void OnUpdate()override;
 		virtual void OnCreate()override;
 
-		//����������
+		//当たリ判定
 		virtual void OnCollisionEnter(shared_ptr<GameObject>& other);
-		//�o���Ƃ�
+		//出たとき
 		virtual void OnCollisionExit(shared_ptr<GameObject>& other);
 
 		Vec3 GetAfterPosition(Vec3 beforePosi, Vec3 tergetPosi);
@@ -47,11 +47,21 @@ namespace basecross {
 		Vec3 m_Direction;
 		Vec3 m_Eye;
 		Vec3 m_Position;
+		float m_Magnification;
+		float m_Up;
+
 		float m_Angle;
 		float m_RotateSpeed;
 		bool m_HitCollision;
+		bool m_IsShaking;      // カメラがシェイク中かどうか
+		float m_Duration;         // シェイク継続時間（残り）
+		float m_InitialDuration;  // シェイク開始時の時間（for 減衰計算）
+		float m_Magnitude;        // 最大振幅（単位：画素やワールド単位）
+		float m_CurrntTime;
 		shared_ptr<Stage>m_Stage;
-		
+		float m_MouseSensitivityX; // マウス感度（X軸）
+		POINT m_CenterPt;             // 画面中央（スクリーン座標）
+
 		int m_Width;
 		int m_Height;
 		bool m_StopCamera;
@@ -61,15 +71,19 @@ namespace basecross {
 
 	public:
 		FollowCamera(const shared_ptr<Stage>& StagePtr);
-		virtual ~FollowCamera() {}
+		virtual ‾FollowCamera() {}
 		virtual void OnUpdate();
 		virtual void OnCreate();
 		virtual void LogCamera();
 		
 		void SetCameraPause(const bool& StopCamera);
+		Vec2 CameraUp(float totaltime);
 
 		void SetTarget(const shared_ptr<Transform> playerTransform) {
 			m_PlayerTransform = playerTransform;
+		}
+		void SetShaking(const bool& sh) {
+			m_IsShaking = sh;
 		}
 
 		float GetAngle() const

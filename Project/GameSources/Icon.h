@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -12,11 +12,12 @@ namespace basecross {
 		shared_ptr<Sprite> m_IconBackGround;
 		shared_ptr<Sprite> m_Icon;
 		shared_ptr<Sprite> m_IconEffect;
+		shared_ptr<Sprite> m_IconEffectWaku;
 
 		float m_Charge;
 	public:
 		UltIcon(const shared_ptr<Stage>& stage) : GameObject(stage),m_Charge(0.0f){}
-		virtual ~UltIcon(){}
+		virtual 窶ｾUltIcon(){}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -42,7 +43,7 @@ namespace basecross {
 			GameObject(stage),m_TexKey(key),m_Position(position),
 			m_Input(0),m_IsPressed(false),m_PressedColor(pressed),m_NormalColor(normal), m_PressTime(time), m_MaxPressTime(time)
 		{}
-		virtual ~NormalIcon() {}
+		virtual 窶ｾNormalIcon() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;

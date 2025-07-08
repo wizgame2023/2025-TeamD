@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -20,11 +20,11 @@ namespace basecross {
 	void Bullet::OnCreate()
 	{
 		Object::OnCreate();
-		//CollisionSphereÕ“Ë”»’è‚ğ•t‚¯‚é
+		//CollisionSphereè¡çªåˆ¤å®šã‚’ä»˜ã‘ã‚‹
 		auto ptrColl = AddComponent<CollisionSphere>();
 		ptrColl->SetDrawActive(false);//debug
 		ptrColl->SetAfterCollision(AfterCollision::None);
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
@@ -80,7 +80,7 @@ namespace basecross {
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
-			m_bulletPally = player->Damage(false, 2.0f);
+			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty / 2));
 			if (m_bulletPally)
 			{
 				player->SetParryPosition(GetPosition());
@@ -102,7 +102,8 @@ namespace basecross {
 		{
 			GetStage()->RemoveGameObject<LineCube>(m_Line);
 			auto enemy = dynamic_pointer_cast<Enemy>(other);
-			enemy->Damage(1.0f + ((float)difficulty * 1.5f),  false);
+			enemy->Damage(enemy->GetMaxHP() / 2,  false);
+			enemy->OnCollisionEnter(GetThis<GameObject>());
 			Delete();
 		}
 		else if (other->FindTag(L"Object"))

@@ -21,6 +21,11 @@ namespace basecross {
 		float GetLength() const{
 			return GetDirection().length();
 		}
+		void SetMaxLength(float length) {
+			if (GetLength() > length) {
+				m_End = m_Start + GetDirection().normalize() * length;
+			}
+		}
 	};
 	struct RayCastHit {
 		shared_ptr<GameObject> m_Object;
@@ -40,18 +45,58 @@ namespace basecross {
 			return *this;
 		}
 	};
+	struct RayCastElement {
+		Vec3 startLine;
+		float pad;
+		Vec3 endLine;
+	};
 	class RayCast {
 		static vector<RayCast> m_RayCasts;
+		static vector<shared_ptr<LineCube>> m_DebugRay;
 		void Init(){}
 		static bool HitTestMeshRayCast(const Line& line, RayCastHit& hit, const shared_ptr<GameObject>& object);
 	public:
+		static int count;
 		static bool HitTest(RayCastHit& hit, const Line& line, shared_ptr<GameObject>& object, const vector<wstring> excludeTags = {});
-		static bool HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags = {});
+		static bool HitTestVec(RayCastHit& hit, const Line& line, vector<shared_ptr<GameObject>>& vec, const vector<wstring>& excludeTags = {},const shared_ptr<GameObject>& excludeObject = nullptr);
 
 		static float CalcDistancePointToLine(const Vec3& point, const Line& line);
 		static float CalcDistancePoint(const Vec3& point, const Line& line);
 
+		static void InitRay(int size);
+		static void DebugRay(const Line& line,Col4& color,shared_ptr<Stage>& stage);
 		static void CreateRayCast(int size);
+	};
+
+
+
+	struct BVHNode {
+		AABB bounds;
+		shared_ptr<BVHNode> leftNode;
+		shared_ptr<BVHNode> rightNode;
+
+		vector<TRIANGLE> triangles;
+
+		bool isIntersect = true;
+
+		BVHNode() {
+			bounds = AABB();
+		}
+		bool IsLeaf() {
+			return triangles.size() > 0;
+		}
+		bool IsIntersect(const Line& line) {
+			if (!isIntersect) return false;
+
+			isIntersect = HitTest::SEGMENT_AABB(line.m_Start, line.m_End, bounds);
+			return isIntersect;
+		}
+	};
+	class BVH {
+	public:
+		static AABB TriangleBounds(vector<TRIANGLE> triangle);
+		static bool HitRayCast(shared_ptr<BVHNode>& node,RayCastHit& hit, const Line& line);
+		static shared_ptr<BVHNode> BuildBVH(vector<TRIANGLE> triangle, int depth, int max);
 	};
 }
 //end basecross

@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -43,16 +43,16 @@ namespace basecross{
 		}
 	};
 	class ScoreManager{
-		//ボーダー計算用
+		//繝懊�ｼ繝繝ｼ險育ｮ礼畑
 		ScoreBorder<float> m_TimeBorder;
 		ScoreBorder<float> m_DamageBorder;
 		ScoreBorder<int> m_ParryBorder;
-		//スコア計算用
+		//繧ｹ繧ｳ繧｢險育ｮ礼畑
 		float m_Time;
 		float m_Damage;
 		float m_EliminateEnemyRate;
 		int m_ParryCount;
-		//敵の討伐情報
+		//謨ｵ縺ｮ險惹ｼ先ュ蝣ｱ
 		float m_MaxEnemyCount;
 		float m_EliminateEnemyCount;
 		ScoreManager() :
@@ -60,8 +60,8 @@ namespace basecross{
 			m_Damage(0.0f),
 			m_EliminateEnemyRate(0.0f), m_MaxEnemyCount(0.0f), m_EliminateEnemyCount(0.0f),
 			m_ParryCount(0),
-			m_TimeBorder(ScoreBorder<float>({ 50.0f,90.0f,130.0f })), m_DamageBorder(ScoreBorder<float>({ 10.0f,20.0f,30.0f })),
-			m_ParryBorder(ScoreBorder<int>({ 5,3,1 }, JudgeMode::UpperOrder))
+			m_TimeBorder(ScoreBorder<float>({ 50.0f,90.0f,130.0f }, JudgeMode::UpperOrder)), m_DamageBorder(ScoreBorder<float>({ 10.0f,20.0f,30.0f })),
+			m_ParryBorder(ScoreBorder<int>({ 5,3,1 }, JudgeMode::LowerOrder))
 		{}
 	public:
 		static ScoreManager* Instance() {
@@ -120,7 +120,7 @@ namespace basecross{
 
 		float GetTotal()
 		{
-			return(GetTimeRank() + GetDamageRank() + GetParryRank()) / 3;
+			return static_cast<float>(GetTimeRank() + GetDamageRank() + GetParryRank()) / 3.0f;
 		}
 
 		float GetTotalRank()

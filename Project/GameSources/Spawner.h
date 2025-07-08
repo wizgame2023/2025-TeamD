@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -16,9 +16,11 @@ namespace basecross {
 		shared_ptr<BossEnemy> m_Boss;
 
 		Timer m_SpawnTimer;
+
+		bool m_IsSpawn;
 	public:
 		Spawner(const shared_ptr<Stage>& stage);
-		virtual  ~Spawner(){}
+		virtual  窶ｾSpawner(){}
 
 		virtual void OnCreate()override;
 		virtual void OnAfterCreate()override;
@@ -35,6 +37,13 @@ namespace basecross {
 		}
 		void SpawnEnemy();
 		void SpawnBoss();
+
+		void Stop() {
+			m_IsSpawn = false;
+		}
+		void Start(){
+			m_IsSpawn = true;
+		}
 	};
 }
 

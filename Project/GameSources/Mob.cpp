@@ -12,7 +12,7 @@ namespace basecross {
 	Mob::Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Enemy(stage, position, scale),
 		m_BalletInterval(0.5f), MAX_BALLET_INTERVAL(1.0f), m_ShotRandomInterval(1.0f),
-		m_BalletSpeed(50.0f), m_MuzzleOffset(0.5f),
+		m_BalletSpeed(50.0f), m_MuzzleOffset(1.5f),
 		m_BalletRange(10.0f), m_IntervalStart(false),
 		m_KnockBackInterval(2.0f),
 		m_NearPoint(nullptr),
@@ -21,7 +21,7 @@ namespace basecross {
 	{
 	}
 
-	Mob::~Mob() {}
+	Mob::‾Mob() {}
 	void Mob::OnCreate()
 	{
 		Enemy::OnCreate();
@@ -30,26 +30,17 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-
-		/*auto draw = GetComponent<BcPNTStaticDraw>();
-		draw->SetDiffuse(Col4(1, 0, 0, 1));*/
-		/*ptrColl->AddExcludeCollisionTag(L"Mob");*/
-
-		//auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		//ptrDraw->SetMeshResource(L"DEFAULT_SPHERE");
-
 		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.25f), //(.1f, .1f, .1f),
 			Vec3(0.0f, 90.0f, 0.0f),
 			Vec3(0.0f, XM_PI, 0.0f),
-			Vec3(0.0f, -0.7f, 0.0f)
+			Vec3(0.0f, -0.95f, 0.0f)
 		);
 		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
-		ptrDraw->SetOwnShadowActive(true);
 
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
@@ -60,6 +51,7 @@ namespace basecross {
 		m_currentState = make_unique<MobSearch>(GetThis<Mob>());
 		m_currentState->Enter();
 
+		AddTag(L"Mob");
 	}
 	void Mob::OnAfterCreate() {
 		m_HpBar = m_Stage->AddGameObject<HPBar>(GetThis<Mob>(), Vec3(GetScale().x * 0.25f, GetScale().y * 1.5f, 0));
@@ -133,7 +125,7 @@ namespace basecross {
 		m_KnockBackTime -= elapsedTime;
 		if (m_KnockBackTime > 0.0f)
 		{
-			SetAnim(L"Down", 0.0f, true);
+			SetAnim(L"Down", 0.0f);
 			KnockBackTime();
 		}
 		else if(draw->IsTargetAnimeEnd())
@@ -173,10 +165,10 @@ namespace basecross {
 	{
 		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
 		auto anim_fps = 60.0f;
-		ptrDraw->AddAnimation(L"Walk", 21, 206, true, anim_fps * 3);
+		ptrDraw->AddAnimation(L"Walk", 20, 170, true, anim_fps);
 		ptrDraw->AddAnimation(L"SetUp", 288, 72, false, anim_fps);
 		ptrDraw->AddAnimation(L"Set", 318, 30, true, anim_fps);
-		ptrDraw->AddAnimation(L"SetDown", 361, 103, false, anim_fps);
+		ptrDraw->AddAnimation(L"SetDown", 361, 50, false, anim_fps);
 		ptrDraw->AddAnimation(L"Down", 557, 93, false, anim_fps);
 		ptrDraw->AddAnimation(L"Damage", 557, 25, false, anim_fps);
 		ptrDraw->AddAnimation(L"Reload", 661, 103, false, anim_fps);
@@ -225,5 +217,20 @@ namespace basecross {
 		rot.normalize();
 		float rotate = atan2f(rot.x, rot.z);
 		SetRotation(Vec3(0, rotate, 0));
+	}
+
+	void Mob::SetMoveDirection(const Vec3& direction)
+	{
+		// 無効な方向なら何もしない
+		if (direction.length() < 0.001f)
+			return;
+		
+		// 目標方向（正規化済み）
+		Vec3 targetDir = direction;
+		// 経過時間×タイムレートによる移動量の算出
+		float deltaTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		Vec3 pos = m_Transform->GetPosition();
+		pos += targetDir * m_Speed * deltaTime;
+		m_Transform->SetPosition(pos);
 	}
 }

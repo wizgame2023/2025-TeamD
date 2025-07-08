@@ -1,6 +1,6 @@
 /*!
 @file GameStage.cpp
-@brief ƒQ[ƒ€ƒXƒe[ƒWÀ‘Ì
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,25 +9,25 @@
 namespace basecross {
 
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒXÀ‘Ì
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹å®Ÿä½“
 	//--------------------------------------------------------------------------------------
 	void GameStageK::CreateViewLight() {
 		const Vec3 eye(0.0f, 5.0f, -10.0f);
 		const Vec3 at(0.0f);
 		auto PtrView = CreateView<SingleView>();
-		//ƒrƒ…[‚ÌƒJƒƒ‰‚Ìİ’è
+		//ãƒ“ãƒ¥ãƒ¼ã®ã‚«ãƒ¡ãƒ©ã®è¨­å®š
 		auto PtrCamera = ObjectFactory::Create<FollowCamera>(GetThis<GameStageK>());
 		PtrView->SetCamera(PtrCamera);
 		PtrCamera->SetEye(eye);
 		PtrCamera->SetAt(at);
-		//ƒ}ƒ‹ƒ`ƒ‰ƒCƒg‚Ìì¬
+		//ãƒãƒ«ãƒãƒ©ã‚¤ãƒˆã®ä½œæˆ
 		auto PtrMultiLight = CreateLight<MultiLight>();
-		//ƒfƒtƒHƒ‹ƒg‚Ìƒ‰ƒCƒeƒBƒ“ƒO‚ğw’è
+		//ãƒ‡ãƒ•ã‚©ãƒ«ãƒˆã®ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ã‚’æŒ‡å®š
 		PtrMultiLight->SetDefaultLighting();
 	}
 
 	/// <summary>
-	/// ƒŠƒ\[ƒX‚Ìì¬
+	/// ãƒªã‚½ãƒ¼ã‚¹ã®ä½œæˆ
 	/// </summary>
 	void GameStageK::CreateResource() {
 		auto& app = App::GetApp();
@@ -53,26 +53,26 @@ namespace basecross {
 		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
 	}
 	/// <summary>
-	/// ƒ|[ƒYƒƒjƒ…[‚Ìì¬
+	/// ãƒãƒ¼ã‚ºãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// </summary>
 	void GameStageK::CreatePose() {
-		//ƒ^ƒCƒgƒ‹
+		//ã‚¿ã‚¤ãƒˆãƒ«
 		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_TITLE", L"POSE_TITLE_SELECTED", Vec3(0.0f, 150.0f, 0.0f), Vec2(200, 50),
 		//	[](shared_ptr<Stage> stage) {
 		//		stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 		//	});
-		////‚â‚ß‚é
+		////ã‚„ã‚ã‚‹
 		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(0.0f, 50.0f, 0.0f), Vec2(200, 50),
 		//	[](shared_ptr<Stage> stage) {
 		//		stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToGameStage");
 		//	});
-		////ÄŠJ
+		////å†é–‹
 		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_START", L"POSE_START_SELECTED", Vec3(0.0f, -50.0f, 0.0f), Vec2(200, 50),
 		//	[](shared_ptr<Stage> stage) {
 		//		auto currentStage = static_pointer_cast<GameStageM>(stage);
 		//		currentStage->ClosePose();
 		//	});
-		////ƒTƒEƒ“ƒh
+		////ã‚µã‚¦ãƒ³ãƒ‰
 		//ButtonManager::Create(GetThis<Stage>(), L"POSE", L"POSE_SOUND", L"POSE_SOUND_SELECTED", Vec3(0.0f, -150.0f, 0.0f), Vec2(200, 50),
 		//	[](shared_ptr<Stage> stage) {
 		//		auto currentStage = static_pointer_cast<GameStageM>(stage);
@@ -85,7 +85,7 @@ namespace basecross {
 		//ClosePose();
 	}
 	/// <summary>
-	/// ƒTƒEƒ“ƒhƒeƒXƒgƒƒjƒ…[‚Ìì¬
+	/// ã‚µã‚¦ãƒ³ãƒ‰ãƒ†ã‚¹ãƒˆãƒ¡ãƒ‹ãƒ¥ãƒ¼ã®ä½œæˆ
 	/// </summary>
 	void GameStageK::CreateSoundTest() {
 		//SE
@@ -118,14 +118,14 @@ namespace basecross {
 		//ButtonManager::instance->Close(L"SOUND_TEST");
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğ•Â‚¶‚é
+	/// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‰ã˜ã‚‹
 	/// </summary>
 	void GameStageK::ClosePose() {
 		m_IsPose = false;
 		ButtonManager::instance->Close(L"POSE");
 	}
 	/// <summary>
-	/// ƒ|[ƒY‰æ–Ê‚ğŠJ‚­
+	/// ãƒãƒ¼ã‚ºç”»é¢ã‚’é–‹ã
 	/// </summary>
 	void GameStageK::OpenPose() {
 		m_IsPose = true;
@@ -143,7 +143,7 @@ namespace basecross {
 			},
 		};
 		auto& player = GetSharedGameObject<Player>(L"Player", false);
-		//ƒIƒuƒWƒFƒNƒg‚Ìì¬
+		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½œæˆ
 		for (auto v : vec) {
 			auto bossEnemy = AddGameObject<BossEnemy>(v[0], v[2]);
 			SetSharedGameObject(L"BossBody", bossEnemy);
@@ -169,13 +169,7 @@ namespace basecross {
 	}
 	void GameStageK::OnCreate() {
 		try {
-			//auto obj = AddGameObject<BraekBox>();
-			//SetSharedGameObject(L"BreakObject", obj);
-			auto mediaPath = App::GetApp()->GetDataDirWString();
 			GameStage::OnCreate();
-			//AddGameObject<Citizen>(Vec3(0, 2, 15), Vec3(1));
-			//AddGameObject<Citizen>(Vec3(10, 2, 15), Vec3(1));
-			//AddGameObject<Citizen>(Vec3(-10, 2, 15), Vec3(1));
 
 		}
 		catch (...) {

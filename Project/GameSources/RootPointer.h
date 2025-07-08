@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -16,7 +16,7 @@ namespace basecross {
 	public:
 		vector<shared_ptr<RootPointer>> m_RootPointer;
 		RootPointer(const shared_ptr<Stage>& stage) : Object(stage),m_Number(0){}
-		virtual ~RootPointer(){}
+		virtual 窶ｾRootPointer(){}
 		void SetPointerNumber(const wstring& number) {
 			m_RootPointerNumber = number;
 		}

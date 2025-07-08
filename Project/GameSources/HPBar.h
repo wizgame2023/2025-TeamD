@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -23,7 +23,7 @@ namespace basecross {
 		HPBar(const shared_ptr<Stage>& stage, const shared_ptr<Character>& target, Vec3 offset) :
 			GameObject(stage), m_Target(target), m_MaxHp(0), m_CurrentHp(0), m_Offset(offset) {
 		}
-		virtual ~HPBar() {}
+		virtual 窶ｾHPBar() {}
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 

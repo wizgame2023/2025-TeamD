@@ -1,6 +1,6 @@
 /*!
 @file citizen.h
-@brief s–¯‚È‚Ç
+@brief å¸‚æ°‘ãªã©
 */
 
 #pragma once
@@ -13,7 +13,7 @@ namespace basecross {
 	public:
 		Citizen(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
 		);
-		~Citizen();
+		â€¾Citizen();
 		virtual void OnCreate();
 		virtual void OnUpdate();
 		virtual void Dead() override;

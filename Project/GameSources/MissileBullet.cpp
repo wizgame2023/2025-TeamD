@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -20,14 +20,22 @@ namespace basecross {
 		Vec3 beginTargetPosition = GetPosition() + (m_Direction * m_Speed) * launchTime;
 		
 		m_TargetPosition = m_Target->GetPosition();
-		
+		m_TargetPosition.y = 0.51f;
 		float targetTime = (m_TargetPosition - beginTargetPosition).length() / m_Speed;
 		//float time = (1.0f / m_Speed) + ()
+
 		m_AreaEffect = m_Stage->AddGameObject<AreaOfEffect>(m_TargetPosition, m_ExplodeSize / 2.0f, 36, launchTime + targetTime);
 
-		auto draw = AddComponent<PNTStaticDraw>();
-		draw->SetMeshResource(L"DEFAULT_CUBE");
-		draw->SetDiffuse(Col4(1.0f, 0.0f, 0.0f, 1.0f));
+		auto draw = AddComponent<BcPNTStaticDraw>();
+		draw->SetMeshResource(L"ROCKET");
+		Mat4x4 meshMat;
+		meshMat.affineTransformation(
+			Vec3(0.3f, 0.3f, 0.3f), //(.1f, .1f, .1f),
+			Vec3(0.0f, 0.0f, 0.0f),
+			Vec3(0.0f, XM_PI, 0.0f),
+			Vec3(0.0f, -0.0f, 0.0f)
+		);
+		draw->SetMeshToTransformMatrix(meshMat);
 		auto col = AddComponent<CollisionObb>();
 		col->AddExcludeCollisionTag(L"Attack");
 		auto& effect = m_Stage->GetCreateEffect();
@@ -50,10 +58,11 @@ namespace basecross {
 			m_Direction = m_Direction.normalize();
 		}
 		if ((m_TargetPosition - position).length() < 0.1f) {
-			m_Direction = Vec3(0, -1, 0);
+			//m_Direction = Vec3(0, -1, 0);
 		}
 		if (GameManager::Instance()->GetDifficulty() == Difficulty::Hard && (m_TargetPosition - position).length() > 8.0f) {
 			m_TargetPosition = m_Target->GetPosition();
+			m_TargetPosition.y = 0.51f;
 			m_AreaEffect->SetPosition(m_TargetPosition);
 
 			m_Direction = m_TargetPosition - position;
@@ -63,9 +72,15 @@ namespace basecross {
 
 		
 		auto& effect = m_Stage->GetCreateEffect();
-		Vec3 c = cross(Vec3(0, 0, 1),m_Direction);
+		Vec3 crossEffect = cross(Vec3(0, 0, 1), m_Direction);
+		Vec3 crossBullet = cross(m_Direction, Vec3(0, 0, 1));
 		float angle = acosf(dot(m_Direction,Vec3(0, 0, 1)) / (m_Direction.length() * Vec3(0, 0, 1).length()));
-		effect->SetRotation(m_EffectHandle,c, angle);
+		Quat q;
+		q.rotation(crossBullet, -angle);
+
+		GetTransform()->SetQuaternion(q);
+
+		effect->SetRotation(m_EffectHandle, crossEffect, angle);
 		effect->SetLocation(m_EffectHandle, position);
 		effect->SetEffectSpeed(m_EffectHandle,GameManager::Instance()->GetTimeRate());
 	}

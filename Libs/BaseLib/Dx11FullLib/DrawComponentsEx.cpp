@@ -263,7 +263,7 @@ namespace basecross {
 		SetSamplerState(SamplerState::LinearClamp);
 	}
 
-	BcBaseDraw::~BcBaseDraw() {}
+	BcBaseDraw::‾BcBaseDraw() {}
 
 
 	bool BcBaseDraw::IsOriginalMeshUse() const {
@@ -741,8 +741,9 @@ namespace basecross {
 		GetStaticMeshLocalPositions(vertices);
 		//ワールド行列の反映
 		auto WorldMat = GetGameObject()->GetComponent<Transform>()->GetWorldMatrix();
+		auto meshMat = GetMeshToTransformMatrix();
 		for (auto& v : vertices) {
-			v *= WorldMat;
+			v *= WorldMat + meshMat;
 		}
 	}
 
@@ -1089,7 +1090,7 @@ namespace basecross {
 	BcPCStaticDraw::BcPCStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPCStaticDraw::~BcPCStaticDraw() {}
+	BcPCStaticDraw::‾BcPCStaticDraw() {}
 	void BcPCStaticDraw::OnCreate() {
 		SetLightingEnabled(false);
 	}
@@ -1128,7 +1129,7 @@ namespace basecross {
 	BcPNStaticDraw::BcPNStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNStaticDraw::~BcPNStaticDraw() {}
+	BcPNStaticDraw::‾BcPNStaticDraw() {}
 	void BcPNStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
 		//マルチライトの設定
@@ -1175,7 +1176,7 @@ namespace basecross {
 	BcPTStaticDraw::BcPTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPTStaticDraw::~BcPTStaticDraw() {}
+	BcPTStaticDraw::‾BcPTStaticDraw() {}
 	void BcPTStaticDraw::OnCreate() {
 		SetLightingEnabled(false);
 	}
@@ -1213,7 +1214,7 @@ namespace basecross {
 	BcPCTStaticDraw::BcPCTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPCTStaticDraw::~BcPCTStaticDraw(){}
+	BcPCTStaticDraw::‾BcPCTStaticDraw(){}
 
 	void BcPCTStaticDraw::OnCreate() {
 		SetLightingEnabled(false);
@@ -1255,7 +1256,7 @@ namespace basecross {
 	BcPNTStaticDraw::BcPNTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNTStaticDraw::~BcPNTStaticDraw() {}
+	BcPNTStaticDraw::‾BcPNTStaticDraw() {}
 
 	void BcPNTStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
@@ -1399,7 +1400,7 @@ namespace basecross {
 	BcPNTStaticModelDraw::BcPNTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNTStaticModelDraw::~BcPNTStaticModelDraw() {}
+	BcPNTStaticModelDraw::‾BcPNTStaticModelDraw() {}
 
 	void BcPNTStaticModelDraw::OnCreate() {
 		SetLightingEnabled(true);
@@ -1541,7 +1542,7 @@ namespace basecross {
 	BcPNTBoneModelDraw::BcPNTBoneModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNTBoneModelDraw::~BcPNTBoneModelDraw() {}
+	BcPNTBoneModelDraw::‾BcPNTBoneModelDraw() {}
 
 	void BcPNTBoneModelDraw::SetMeshResource(const shared_ptr<MeshResource>& MeshRes) {
 		BcBaseDraw::SetMeshResource(MeshRes);
@@ -1703,7 +1704,7 @@ namespace basecross {
 	BcPNTnTStaticDraw::BcPNTnTStaticDraw(const shared_ptr<GameObject>& GameObjectPtr) :
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNTnTStaticDraw::~BcPNTnTStaticDraw() {}
+	BcPNTnTStaticDraw::‾BcPNTnTStaticDraw() {}
 	void BcPNTnTStaticDraw::OnCreate() {
 		SetLightingEnabled(true);
 		//マルチライトの設定
@@ -1765,7 +1766,7 @@ namespace basecross {
 	BcPNTnTStaticModelDraw::BcPNTnTStaticModelDraw(const shared_ptr<GameObject>& GameObjectPtr):
 		BcBaseDraw(GameObjectPtr)
 	{}
-	BcPNTnTStaticModelDraw::~BcPNTnTStaticModelDraw() {
+	BcPNTnTStaticModelDraw::‾BcPNTnTStaticModelDraw() {
 
 	}
 	void BcPNTnTStaticModelDraw::OnCreate() {
@@ -1832,7 +1833,7 @@ namespace basecross {
 		BcBaseDraw(GameObjectPtr)
 	{}
 
-	BcPNTnTBoneModelDraw::~BcPNTnTBoneModelDraw() {}
+	BcPNTnTBoneModelDraw::‾BcPNTnTBoneModelDraw() {}
 	void BcPNTnTBoneModelDraw::SetMeshResource(const shared_ptr<MeshResource>& MeshRes) {
 		BcBaseDraw::SetMeshResource(MeshRes);
 		BoneInit();

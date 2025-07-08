@@ -1,6 +1,6 @@
 /*!
 @file Character.h
-@brief キャラクターなど
+@brief 繧ｭ繝｣繝ｩ繧ｯ繧ｿ繝ｼ縺ｪ縺ｩ
 */
 
 #pragma once
@@ -19,7 +19,7 @@ namespace basecross {
 			Character(stage, Vec3(), Vec3(), Vec3(1.0f))
 		{
 		};
-		virtual ~Character() {};
+		virtual 窶ｾCharacter() {};
 
 		virtual void OnCreate() override;
 
@@ -36,7 +36,7 @@ namespace basecross {
 		bool Wicth_FixedBox;
 	public:
 		FixedBox(const shared_ptr<Stage>& stage);
-		~FixedBox();
+		窶ｾFixedBox();
 		virtual void OnCreate() override;
 	};
 
@@ -45,7 +45,7 @@ namespace basecross {
 		bool Wicth_Wall;
 	public:
 		Wall(const shared_ptr<Stage>& stage);
-		~Wall();
+		窶ｾWall();
 		virtual void OnCreate() override;
 
 	};

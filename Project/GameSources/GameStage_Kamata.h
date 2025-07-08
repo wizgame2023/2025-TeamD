@@ -1,18 +1,18 @@
 /*!
 @file GameStage.h
-@brief ƒQ[ƒ€ƒXƒe[ƒW
+@brief ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸
 */
 
 #pragma once
 #include "stdafx.h"
 
 namespace basecross {
-	class EffectManeger;
+	class EffectManager;
 	//--------------------------------------------------------------------------------------
-	//	ƒQ[ƒ€ƒXƒe[ƒWƒNƒ‰ƒX
+	//	ã‚²ãƒ¼ãƒ ã‚¹ãƒ†ãƒ¼ã‚¸ã‚¯ãƒ©ã‚¹
 	//--------------------------------------------------------------------------------------
 	class GameStageK : public GameStage {
-		//ƒrƒ…[‚Ìì¬
+		//ãƒ“ãƒ¥ãƒ¼ã®ä½œæˆ
 		void CreateViewLight();
 		void CreateResource();
 		void CreatePose();
@@ -23,12 +23,13 @@ namespace basecross {
 		bool m_IsPose;
 
 		shared_ptr<NumberSprite> m_ProtoHpNumber;
-		shared_ptr<EffectManeger> m_Effect;
+		shared_ptr<EffectManager> m_Effect;
 	public:
-		//\’z‚Æ”jŠü
-		GameStageK(const wstring& file) : GameStage(file), m_IsPose(false) {}
+		//æ§‹ç¯‰ã¨ç ´æ£„
+
+		GameStageK(const wstring& file) : GameStage(file, {}), m_IsPose(false) {}
 		virtual ~GameStageK() {}
-		//‰Šú‰»
+		//åˆæœŸåŒ–
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnDraw()override;

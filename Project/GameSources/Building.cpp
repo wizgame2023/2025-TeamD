@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -9,7 +9,7 @@
 namespace basecross {
 
 	Ground::Ground(const shared_ptr<Stage>& stage) : Object(stage){}
-	Ground::~Ground(){}
+	Ground::â€¾Ground(){}
 
 	void Ground::OnCreate() {
 		Object::OnCreate();
@@ -17,32 +17,60 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"GROUND");
 
 		ptrDraw->SetOwnShadowActive(true);
+
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetLightHeight(150.0f);
-		shadowPtr->SetViewWidth(64.0f);
-		shadowPtr->SetViewHeight(64.0f);
+		//shadowPtr->SetViewWidth(200.0f);
+		//shadowPtr->SetViewHeight(200.0f);
 
+		AddTag(L"Ground");
 	}
+	Way::Way(const shared_ptr<Stage>& stage) : Object(stage) {}
+	Way::â€¾Way() {}
 
-	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
-	LimitArea::~LimitArea() {}
-
-	void LimitArea::OnCreate() {
+	void Way::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
+		//æç”»è¨­å®š
+		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
+		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
+		ptrDraw->SetTextureResource(L"WAY");
+		//ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetOwnShadowActive(true);
+
+		auto shadowPtr = AddComponent<Shadowmap>();
+		shadowPtr->SetLightHeight(150.0f);
+
+		AddTag(L"Ground");
+	}
+	void Way::OnUpdate() {
+		auto ptrDraw = GetComponent<BcPNTStaticDraw>();
+		ptrDraw->SetDiffuse(Col4(1, 1, 1, 1));
+	}
+
+	LimitArea::LimitArea(const shared_ptr<Stage>& stage) : Object(stage) {}
+	LimitArea::â€¾LimitArea() {}
+
+	void LimitArea::OnCreate() {
+		Object::OnCreate();
+		auto ptrColl = AddComponent<CollisionObb>();
+		ptrColl->AddExcludeCollisionTag(L"Mob");
+		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetFixed(true);
+		AddTag(L"LimitArea");
 	}
 
 	Building::Building(const shared_ptr<Stage>& stage) : Object(stage) {}
-	Building::~Building() {}
+	Building::â€¾Building() {}
 
 	void Building::OnCreate() {
 		Object::OnCreate();
@@ -50,7 +78,7 @@ namespace basecross {
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(true);
 
-		//•`‰æİ’è
+		//æç”»è¨­å®š
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		/*ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		ptrDraw->SetTextureResource(L"BUILDING");*/
@@ -64,6 +92,13 @@ namespace basecross {
 			Vec3(0.0f, -0.5f, 0.0f)
 		);
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
+
+		ptrDraw->SetOwnShadowActive(true);
+
+		auto shadowPtr = AddComponent<Shadowmap>();
+		shadowPtr->SetMeshResource(L"OBJECT");
+		shadowPtr->SetMeshToTransformMatrix(meshMat);
+
 	}
 }
 //end basecross

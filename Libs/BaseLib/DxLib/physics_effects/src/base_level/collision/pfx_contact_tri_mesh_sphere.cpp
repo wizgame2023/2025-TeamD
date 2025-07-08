@@ -36,7 +36,7 @@ bool pfxContactTriangleSphere(PfxContactCache &contacts,PfxUInt32 facetId,
 		p0,p1,p2,
 	};
 	
-	// ‘Šú”»’è
+	// æ—©æœŸåˆ¤å®š
 	{
 		PfxPlane planeA(normal,p0);
 		PfxFloat len1 = planeA.onPlane(spherePos);
@@ -45,7 +45,7 @@ bool pfxContactTriangleSphere(PfxContactCache &contacts,PfxUInt32 facetId,
 		
 	}
 
-	// ‹…‚Æ–Ê‚ÌÅ‹ßÚ“_‚ğŒvZ
+	// çƒã¨é¢ã®æœ€è¿‘æ¥ç‚¹ã‚’è¨ˆç®—
 	{
 		PfxVector3 pntA;
 		bool insideTriangle = false;
@@ -109,14 +109,14 @@ bool pfxContactTriangleSphere(PfxContactCache &contacts,PfxUInt32 facetId,
 
 		if(!insideTriangle && l >= sphereRadius * sphereRadius) return false;
 		
-		// •ª—£²
+		// åˆ†é›¢è»¸
 		PfxVector3 sepAxis = (l < 0.00001f || insideTriangle) ? -normal : distVec / sqrtf(l);
 
-		// ‹…ã‚ÌÕ“Ë“_
+		// çƒä¸Šã®è¡çªç‚¹
 		PfxVector3 pointsOnSphere = spherePos + sphereRadius * sepAxis;
 		PfxVector3 pointsOnTriangle = pntA;
 
-		// –Êã‚ÌÅ‹ßÚ“_‚ª“ÊƒGƒbƒWã‚Å‚È‚¢ê‡‚Í–@ü‚ğ•Ï‚¦‚é
+		// é¢ä¸Šã®æœ€è¿‘æ¥ç‚¹ãŒå‡¸ã‚¨ãƒƒã‚¸ä¸Šã§ãªã„å ´åˆã¯æ³•ç·šã‚’å¤‰ãˆã‚‹
 		if( (((edgeChk&0x03)==0)&&pfxPointOnLine(pointsOnTriangle,p0,p1)) ||
 			(((edgeChk&0x0c)==0)&&pfxPointOnLine(pointsOnTriangle,p1,p2)) ||
 			(((edgeChk&0x30)==0)&&pfxPointOnLine(pointsOnTriangle,p2,p0)) ) {
@@ -141,7 +141,7 @@ PfxInt32 pfxContactTriMeshSphere(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 
@@ -156,18 +156,18 @@ PfxInt32 pfxContactTriMeshSphere(
 	}
 
 	//-----------------------------------------------
-	// ”»’è
+	// åˆ¤å®š
 
 	PfxDecodedTriMesh decodedMesh;
 	PfxContactCache localContacts;
 
-	// TriangleMesh‚Ì–Ê->sphere‚Ì”»’è
-	// ¦TriangleMeshÀ•WŒn
+	// TriangleMeshã®é¢->sphereã®åˆ¤å®š
+	// â€»TriangleMeshåº§æ¨™ç³»
 	{
 		for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 			const PfxQuantizedFacet &facet = meshA->m_facets[selFacets[f]];
 			
-			// ƒfƒR[ƒh
+			// ãƒ‡ã‚³ãƒ¼ãƒ‰
 			PfxDecodedFacet decodedFacet;
 			const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -250,7 +250,7 @@ PfxInt32 pfxContactTriMeshSphere(
 	(void) distanceThreshold;
 
 	//-------------------------------------------
-	// ”»’è‚·‚é–Ê‚ği‚è‚Ş
+	// åˆ¤å®šã™ã‚‹é¢ã‚’çµã‚Šè¾¼ã‚€
 
 	PfxUInt8 SCE_PFX_ALIGNED(16) selFacets[SCE_PFX_NUMMESHFACETS] = {0};
 	PfxUInt32 numSelFacets = pfxGatherFacets(meshA,
@@ -262,12 +262,12 @@ PfxInt32 pfxContactTriMeshSphere(
 	}
 
 	//-----------------------------------------------
-	// ”»’è
+	// åˆ¤å®š
 
 	PfxContactCache localContacts;
 
-	// TriangleMesh‚Ì–Ê->sphere‚Ì”»’è
-	// ¦TriangleMeshÀ•WŒn
+	// TriangleMeshã®é¢->sphereã®åˆ¤å®š
+	// â€»TriangleMeshåº§æ¨™ç³»
 	{
 		for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 			const PfxExpandedFacet &facet = meshA->m_facets[selFacets[f]];
@@ -366,13 +366,13 @@ PfxInt32 pfxContactTriMeshSphere(
 	PfxDecodedTriMesh decodedMesh;
 	PfxContactCache localContacts;
 
-	// TriangleMesh‚Ì–Ê->sphere‚Ì”»’è
-	// ¦TriangleMeshÀ•WŒn
+	// TriangleMeshã®é¢->sphereã®åˆ¤å®š
+	// â€»TriangleMeshåº§æ¨™ç³»
 	{
 		for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 			const PfxQuantizedFacetBvh &facet = meshA->m_facets[selFacets[f]];
 			
-			// ƒfƒR[ƒh
+			// ãƒ‡ã‚³ãƒ¼ãƒ‰
 			PfxDecodedFacet decodedFacet;
 			const PfxUInt32 vId[3] = {facet.m_vertIds[0],facet.m_vertIds[1],facet.m_vertIds[2]};
 
@@ -480,8 +480,8 @@ PfxInt32 pfxContactTriMeshSphere(
 
 	PfxContactCache localContacts;
 
-	// TriangleMesh‚Ì–Ê->sphere‚Ì”»’è
-	// ¦TriangleMeshÀ•WŒn
+	// TriangleMeshã®é¢->sphereã®åˆ¤å®š
+	// â€»TriangleMeshåº§æ¨™ç³»
 	{
 		for(PfxUInt32 f = 0; f < numSelFacets; f++ ) {
 			const PfxExpandedFacetBvh &facet = meshA->m_facets[selFacets[f]];

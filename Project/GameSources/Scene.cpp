@@ -1,7 +1,7 @@
 
 /*!
 @file Scene.cpp
-@brief ã‚·ãƒ¼ãƒ³å®Ÿä½
+@brief ç¹§ï½·ç¹ï½¼ç¹ï½³è³æ»‰ï½½
 */
 
 #include "stdafx.h"
@@ -13,21 +13,33 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
 		wstring modelPath = mediaPath + L"Models/";
-
-		//ƒ‚ƒfƒ‹ŠÖŒW
+		wstring uiPath = mediaPath + L"UI/";
+		//ãƒ¢ãƒ‡ãƒ«é–¢ä¿‚
 		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
 		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
+		app->RegisterResource(L"OBJECT", modelBuild);
+
+		modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"Break_Build.bmf");
+		app->RegisterTexture(L"BUILD_BREAK_TEX", modelPath + L"Build.png");
+		app->RegisterResource(L"OBJECT_BREAK", modelBuild);
+
 		auto modelEnemy = MeshResource::CreateStaticModelMesh(modelPath, L"testtetet.bmf");
 		auto modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Player.bmf");
 		app->RegisterResource(L"PLAYER", modelMesh);
 		auto mobMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Enemy.bmf");
 		app->RegisterResource(L"MOB", mobMesh);
-
 		modelMesh = MeshResource::CreateBoneModelMesh(modelPath, L"Boss.bmf");
 		app->RegisterResource(L"BOSS", modelMesh);
 		auto bulletModelMesh = MeshResource::CreateStaticModelMesh(modelPath, L"Tama.bmf");
 		app->RegisterResource(L"BULLET", bulletModelMesh);
-		app->RegisterResource(L"OBJECT", modelBuild);
+
+		auto rocketModel = MeshResource::CreateStaticModelMesh(modelPath, L"Rocket.bmf");
+		app->RegisterResource(L"ROCKET", rocketModel);
+
+		auto titlemodel = MeshResource::CreateBoneModelMesh(modelPath, L"Title_break 1.bmf");
+		app->RegisterResource(L"TITLEBREAK", titlemodel);
+		app->RegisterTexture(L"BACKTIRLEBRAKE", modelPath + L"Title_break.png");
+
 		//app->RegisterResource(L"MOB", modelEnemy);
 	}
 	//--------------------------------------------------------------------------------------
@@ -38,8 +50,8 @@ namespace basecross {
 			Col.set(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f, 255.0f / 255.0f);
 			SetClearColor(Col);
 
-			//©•ª©g‚ÉƒCƒxƒ“ƒg‚ğ‘—‚é
-			//‚±‚ê‚É‚æ‚èŠeƒXƒe[ƒW‚âƒIƒuƒWƒFƒNƒg‚ªCreate‚ÉƒV[ƒ“‚ÉƒAƒNƒZƒX‚Å‚«‚é
+			//è‡ªåˆ†è‡ªèº«ã«ã‚¤ãƒ™ãƒ³ãƒˆã‚’é€ã‚‹
+			//ã“ã‚Œã«ã‚ˆã‚Šå„ã‚¹ãƒ†ãƒ¼ã‚¸ã‚„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒCreateæ™‚ã«ã‚·ãƒ¼ãƒ³ã«ã‚¢ã‚¯ã‚»ã‚¹ã§ãã‚‹
 
 			CreateModelResource();
 			SoundManager::Instance().RegisterSounds();
@@ -54,8 +66,12 @@ namespace basecross {
 			throw;
 		}
 	}
+	void Scene::OnUpdate() {
+		SceneBase::OnUpdate();
+		RayCast::InitRay(10);
+	}
 
-	Scene::~Scene() {
+	Scene::â€¾Scene() {
 	}
 
 	void Scene::ChangeCountStage(int count) {
@@ -78,26 +94,32 @@ namespace basecross {
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
+				SoundManager::Instance().StopAll();
 		if (event->m_MsgStr == L"ToTitleStage") {
 			ResetActiveStage<TitleStage>();
 		}
 		else if (event->m_MsgStr == L"ToSelectStage") {
 			ResetActiveStage<SelectStage>();
 		}
+		else if (event->m_MsgStr == L"ToTutorialGameStage") {
+			ResetActiveStage<TutorialStage>(L"testStage_Y_Easy.csv");
+		}
 		else if (event->m_MsgStr == L"ToGameStage") {
-			//Ÿ‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
-			ResetActiveStage<GameStage>(L"level.csv");
+			auto count = static_pointer_cast<StageData>(event->m_Info).get();
+			if (count->stageNum >= m_StageFile.size() && count->level >= m_StageFile[count->stageNum].size()) {
+				ResetActiveStage<TitleStage>();
+				return;
+			}
+			else if (count->stageNum >= m_StageFile.size()) {
+				count->stageNum = 0;
+				count->level += 1;
+				ResetActiveStage<GameStage>(GetFileName(*count), *count);
+				return;
+			}
+			//æ¬¡ã®ã‚¢ã‚¯ãƒ†ã‚£ãƒ–ã‚¹ãƒ†ãƒ¼ã‚¸ã®è¨­å®š
+			ResetActiveStage<GameStage>(GetFileName(*count),*count);
 		}
-		else if (event->m_MsgStr == L"ToGameStageM") {
-			ResetActiveStage<GameStageM>(L"testStage_Y_Easy.csv");
-		}
-		else if (event->m_MsgStr == L"ToGameStageKamata") {
-			ResetActiveStage<GameStageK>(L"testStage_Y_normal.csv");
-		}
-		else if (event->m_MsgStr == L"ToGameStageSatou") {
-			//Å‰‚ÌƒAƒNƒeƒBƒuƒXƒe[ƒW‚Ìİ’è
-			ResetActiveStage<GameStageS>(L"testStage_Y_Hard.csv");
-		}
+
 	}
 
 }

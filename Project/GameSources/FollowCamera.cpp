@@ -1,6 +1,6 @@
 /*!
 @file Scene.cpp
-@brief „Ç∑„Éº„É≥ÂÆü‰Ω
+@brief ÁπßÔΩ∑ÁπùÔΩºÁπùÔΩ≥Ëû≥ÊªâÔΩΩ
 */
 
 #include "stdafx.h"
@@ -21,7 +21,7 @@ namespace basecross {
 
 	void CameraCollision::OnUpdate() {
 		auto positionTransform = GetComponent<Transform>();
-		//í«îˆÉVÉXÉeÉÄ
+		//ËøΩÂ∞æ„Ç∑„Çπ„ÉÜ„É†
 		GetComponent<Transform>()->SetPosition(m_GetPosition);
 	}
 
@@ -59,7 +59,7 @@ namespace basecross {
 			auto collision = m_HitObject->GetComponent<Collision>();
 			AABB aabb = collision->GetEnclosingAABB();
 			aabb = AABB(aabb.m_Min - Vec3(0.5f, 0.5f, 0.5f), aabb.m_Max + Vec3(0.5f, 0.5f, 0.5f));
-			//íÍñ 
+			//Â∫ïÈù¢
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Max.x, aabb.m_Min.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Min.z), Vec2(aabb.m_Min.x, aabb.m_Max.z));
 			m_GetPosition = GetCompareVertex(Vec2(aabb.m_Min.x, aabb.m_Max.z), Vec2(aabb.m_Max.x, aabb.m_Max.z));
@@ -116,6 +116,7 @@ namespace basecross {
 		return crox.x * croy.y - crox.y * croy.x;
 	}
 
+
 	FollowCamera::FollowCamera(const shared_ptr<Stage>& StagePtr) :
 		Camera(),
 		m_Direction(Vec3(0)),
@@ -124,70 +125,92 @@ namespace basecross {
 		m_Angle(-XM_PIDIV2),
 		m_RotateSpeed(XMConvertToRadians(180)),
 		m_Stage(StagePtr),
-		m_StopCamera(false)
+		m_StopCamera(false),
+		m_Width(0),
+		m_Height(0),
+		m_HitCollision(false),
+		m_IsShaking(false),
+		m_Duration(0.0f),
+		m_InitialDuration(0.0f),
+		m_Magnification(4.0f),
+		m_Up(1.5f),
+		m_CenterPt({ 0, 0 }), 
+		m_CurrntTime(0.0f), 
+		m_Magnitude(0.0f), 
+		m_MouseSensitivityX(0.01f)
 	{
 	}
-
 	void FollowCamera::OnCreate()
 	{
 		auto& app = App::GetApp();
-
 		m_Width = app->GetGameWidth();
 		m_Height = app->GetGameHeight();
-		// ÉQÅ[ÉÄäJénéûÇ…É}ÉEÉXÉJÅ[É\ÉãÇâÊñ ÇÃíÜâõÇ…à⁄ìÆÇ≥ÇπÇÈ
-		int m_centerX = app->GetGameWidth() / 2;
-		int m_centerY = app->GetGameHeight() / 2;
-		::SetCursorPos(m_centerX, m_centerY);
+
+		// ÁîªÈù¢‰∏≠Â§Æ„Çí‰øùÊåÅ
+		m_CenterPt.x = m_Width / 2;
+		m_CenterPt.y = m_Height / 2;
+
+		// „Ç´„Éº„ÇΩ„É´„Çí‰∏≠Â§Æ„Å´ÁßªÂãïÔºèÈùûË°®Á§∫
+		::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+		ShowCursor(FALSE);
+
+		// „Ç¶„Ç£„É≥„Éâ„Ç¶ÂÜÖ„Å´„Ç´„Éº„ÇΩ„É´„Çí„ÇØ„É™„ÉÉ„Éó
+		RECT rc{ 0, 0, m_Width, m_Height };
+		::ClientToScreen(app->GetHWnd(), (POINT*)&rc.left);
+		::ClientToScreen(app->GetHWnd(), (POINT*)&rc.right);
+		ClipCursor(&rc);
+
 		m_HitCollision = false;
 
-		//m_CameraCollision = m_Stage->AddGameObject<CameraCollision>();
 	}
 
 	void FollowCamera::OnUpdate() {
-		//ÉRÉìÉgÉçÅ[ÉâÇÃéÊìæ
-		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		float elapsed = App::GetApp()->GetElapsedTime();
+		//„Ç≥„É≥„Éà„É≠„Éº„É©„ÅÆÂèñÂæó
+		auto& app = App::GetApp();
+		auto& cntlVec = app->GetInputDevice().GetControlerVec()[0];
+		float elapsed = app->GetElapsedTime();
+		//„Ç≥„É≥„Éà„É≠„Éº„É©ÂÖ•Âäõ(„Å§„Å™„Åå„Å£„Å¶„ÅÑ„Å™„ÅÑ„Å™„Çâ„Éû„Ç¶„ÇπÊìç‰Ωú)
+		if (m_StopCamera) return;
 		if (cntlVec.bConnected) {
-			if (m_StopCamera == false) {
-				float stickX = cntlVec.fThumbRX;
-				m_Angle -= m_RotateSpeed * elapsed * stickX;
-			}
+			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
 		}
+		else{
+			POINT now;
+			::GetCursorPos(&now);
 
-		//ï˚å¸
+			float dx = float(now.x - m_CenterPt.x);
+			m_Angle -= dx * m_MouseSensitivityX;
+
+			// ‰∏≠Â§Æ„Å´Êàª„Åô
+			::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+		}
+		//ÊñπÂêë
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
-		//à íu
+		//‰ΩçÁΩÆ
 		m_Position = m_PlayerTransform->GetPosition();
+		Vec2 dire = CameraUp(0.75f);
+		m_Eye = m_Position + m_Direction * dire.x;
+		m_Eye.y = m_Position.y + dire.y;
 
-		m_Eye = m_Position + m_Direction * 6.0f;
-		m_Eye.y = m_Position.y + 2.5f;
 		RayCastHit hit;
-		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player" };
-		for (auto& obj : m_Stage->GetGameObjectVec()) {
-
-			auto transform = obj->GetComponent<Transform>();
-			Vec3 position = transform->GetPosition();
-			Vec3 scale = transform->GetScale();
-			float leng = RayCast::CalcDistancePoint(position, Line(m_PlayerTransform->GetPosition(), m_Eye));
-			Vec3 lengths = Vec3(scale.x, scale.y, scale.z) / 2.0f;
-			if (leng < lengths.length()) {
-				RayCast::HitTest(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), obj, excludeTags);
-			}
-		}
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player",L"LimitArea", L"Ground"};
+		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
 		}
+
+		Vec3 m_addEye = ShakeCameraMove();
+		m_Eye += m_addEye; // „Ç´„É°„É©„ÅÆÊåØÂãï„ÇíÈÅ©Áî®
+
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
-			//é©ï™ÇÃà íu
+			//Ëá™ÂàÜ„ÅÆ‰ΩçÁΩÆ
 			SetEye(m_Eye);
-			//å©ÇƒÇ¢ÇÈÇ∆Ç±ÇÎ
+			//Ë¶ã„Å¶„ÅÑ„Çã„Å®„Åì„Çç
 			SetAt(m_PlayerTransform->GetPosition() - m_Direction * 1.0f);
 		}
 		//LogCamera();
-
 		Camera::OnUpdate();
-
 	}
 
 	void FollowCamera::SetCameraPause(const bool& StopCamera)
@@ -195,14 +218,44 @@ namespace basecross {
 		m_StopCamera = StopCamera;
 	}
 
+	Vec2 FollowCamera::CameraUp(float totaltime)
+	{
+		float ElapsedTime = App::GetApp()->GetElapsedTime();
+		float up = m_Up;
+		float interpHeight = m_Magnification;
+		if (m_IsShaking)
+		{
+			m_CurrntTime += ElapsedTime;
+
+			if(m_CurrntTime <= totaltime / 3)
+			{
+				interpHeight = Lerp::CalculateLerp(m_Magnification, m_Magnification * 0.65f, 0.0f, totaltime / 5, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(m_Up, 0.5f, 0.0f, totaltime / 4, m_CurrntTime, Lerp::rate::Easein);
+			}
+			else if(m_CurrntTime <= totaltime)
+			{
+				ShakeStart(0.1f, 0.1f);
+				interpHeight = Lerp::CalculateLerp(m_Magnification * 0.65f, m_Magnification , totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::EaseOut);
+				up = Lerp::CalculateLerp(0.5f,m_Up, totaltime / 1.5, totaltime, m_CurrntTime, Lerp::rate::Easein);
+			}
+			if (m_CurrntTime > totaltime) {
+				m_IsShaking = false;
+				m_CurrntTime = 0.0f;
+				return Vec2(m_Magnification, m_Up);
+			}
+			return Vec2(interpHeight, up);
+		}
+		return Vec2(m_Magnification, m_Up);
+	}
+
 	void FollowCamera::LogCamera() {
 
 		auto scene = App::GetApp()->GetScene<Scene>();
 
-		wstringstream Debug(L"\n");
-		Debug << L"\nForward.x : " << m_Direction.x
-			<< L"\nForward.y : " << m_Direction.y
-			<< L"\nForward.z : " << m_Direction.z << endl;
+		wstringstream Debug(L"¬•n");
+		Debug << L"¬•nForward.x : " << m_Direction.x
+			<< L"¬•nForward.y : " << m_Direction.y
+			<< L"¬•nForward.z : " << m_Direction.z << endl;
 
 		scene->SetDebugString(Debug.str());
 

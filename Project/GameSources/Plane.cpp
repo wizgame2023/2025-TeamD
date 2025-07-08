@@ -4,7 +4,7 @@
 namespace basecross {
 	void Plane::OnCreate()
 	{
-		// ”Âƒ|ƒŠ‚ğŒ`¬‚·‚é‚½‚ß‚Ì’¸“_ƒf[ƒ^
+		// æ¿ãƒãƒªã‚’å½¢æˆã™ã‚‹ãŸã‚ã®é ‚ç‚¹ãƒ‡ãƒ¼ã‚¿
 		std::vector<VertexPositionTexture> vertices = {
 			{Vec3(-0.5f, +0.5f, 0.0f), Vec2(0.0f, 0.0f)},
 			{Vec3(+0.5f, +0.5f, 0.0f), Vec2(1.0f, 0.0f)},
@@ -12,13 +12,13 @@ namespace basecross {
 			{Vec3(+0.5f, -0.5f, 0.0f), Vec2(1.0f, 1.0f)}
 		};
 
-		// ’¸“_ƒCƒ“ƒfƒbƒNƒX
+		// é ‚ç‚¹ã‚¤ãƒ³ãƒ‡ãƒƒã‚¯ã‚¹
 		std::vector<uint16_t> indices = {
 			0, 1, 2, 2, 1, 3
 		};
 
-		// ã‹Lƒf[ƒ^‚ğ“K—p
-		auto drawComp = AddComponent<PTStaticDraw>(); // PNT‚¾‚Æƒ‰ƒCƒeƒBƒ“ƒO‚ª‚©‚©‚é‚Ì‚ÅŒü‚©‚È‚¢
+		// ä¸Šè¨˜ãƒ‡ãƒ¼ã‚¿ã‚’é©ç”¨
+		auto drawComp = AddComponent<PTStaticDraw>(); // PNTã ã¨ãƒ©ã‚¤ãƒ†ã‚£ãƒ³ã‚°ãŒã‹ã‹ã‚‹ã®ã§å‘ã‹ãªã„
 		drawComp->SetOriginalMeshUse(true);
 		drawComp->CreateOriginalMesh(vertices, indices);
 	}

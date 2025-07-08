@@ -6,7 +6,7 @@ namespace basecross {
 
 
 	flyobject::flyobject(const shared_ptr<Stage>& stage) : Object(stage), m_ZoneElapsedTime(1.0f), m_Speed(25.0f){}
-	flyobject::~flyobject() {}
+	flyobject::‾flyobject() {}
 
 	Vec3 flyobject::GetForward()
 	{
@@ -15,6 +15,7 @@ namespace basecross {
 
 	void flyobject::flyPositison(shared_ptr<GameObject>& other)
 	{
+		//飛ばす方向を求める
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		auto gravity = GetComponent<Gravity>();
 		Vec3 objPos = other->GetComponent<Transform>()->GetPosition();
@@ -33,7 +34,7 @@ namespace basecross {
 		ptrColl->SetFixed(false);
 		auto objectGravity = AddComponent<Gravity>();
 
-		//�`��ݒ�
+		//描画設定
 		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
 		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
 		//ptrDraw->SetTextureResource(L"GROUND");

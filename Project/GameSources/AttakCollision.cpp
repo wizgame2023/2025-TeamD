@@ -1,6 +1,6 @@
 /*!
 @file Character.cpp
-@brief ƒLƒƒƒ‰ƒNƒ^[‚È‚ÇŽÀ‘Ì
+@brief ã‚­ãƒ£ãƒ©ã‚¯ã‚¿ãƒ¼ãªã©å®Ÿä½“
 */
 
 #include "stdafx.h"
@@ -17,12 +17,12 @@ namespace basecross {
 	void Attack::OnUpdate() {
 		m_IsFinish = false;
 		if (GetDrawActive()) {
-			if (m_Date.m_ExitTimer.UpdateTimer()) {
+			if (m_Date.m_ExitTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 				Stop();
 			}
 		}
 		else {
-			m_Date.m_CooldownTimer.UpdateTimer();
+			m_Date.m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate());
 		}
 	}
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
@@ -69,7 +69,7 @@ namespace basecross {
 		Attack::OnUpdate();
 		if (!GetDrawActive()) return;
 
-		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer()) {
+		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 			SoundManager::Instance().PlaySE(L"SE_MISSILE");
 			Vec3 position = GetPosition();
 			position += m_MuzzlePositions[m_MuzzleIndex].x * cross(m_Date.m_Owner->GetForward(), Vec3(0, 1, 0));
@@ -90,6 +90,17 @@ namespace basecross {
 
 		m_MissileCount = m_MissileMaxCount;
 		//m_MissileTimer.Reset();
+	}
+
+
+	void ShakeOffAttack::ReflectParry(Vec3 position) {
+		if (m_Date.m_Owner != nullptr) {
+			auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
+			boss->AddStun(0.5f / (float)GameManager::Instance()->GetDifficulty());
+			boss->SetAnimation(L"ShakeOff_Parry",true);
+
+
+		}
 	}
 }
 //end basecross

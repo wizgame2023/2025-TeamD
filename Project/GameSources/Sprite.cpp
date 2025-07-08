@@ -1,6 +1,6 @@
 /*!
 @file Sprite.cpp
-@brief �X�v���C�g
+@brief スプライト
 */
 
 #include "stdafx.h"
@@ -49,13 +49,13 @@ namespace basecross {
 
 		m_ScreenSize = Vec2(1280, 800);
 
-		SetDrawLayer(3);
+		//SetDrawLayer(3);
 	}
 	void Sprite::OnUpdate() {
 		if (m_IsAnimation) {
 			Animation();
 		}
-		//���X�V
+		//情報更新
 		m_Pos = m_Transform->GetPosition();
 	}
 	void Sprite::Animation() {
@@ -66,23 +66,25 @@ namespace basecross {
 			if (m_CurrentAnimation.m_IsReverse) {
 				m_CurrentAnimation.m_CurrentOrder--;
 				if (m_CurrentAnimation.m_CurrentOrder < 0) {
-					if (m_CurrentAnimation.m_IsLoop) {
+					m_CurrentAnimation.EndAnimation();
+					/*if (m_CurrentAnimation.m_IsLoop) {
 						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
 					}
 					else {
 						m_CurrentAnimation.m_CurrentOrder = 0;
-					}
+					}*/
 				}
 			}
 			else {
 				m_CurrentAnimation.m_CurrentOrder++;
 				if (m_CurrentAnimation.m_CurrentOrder >= m_CurrentAnimation.m_Order.size() || m_CurrentAnimation.m_CurrentOrder >= m_AnimationUV.size()) {
-					if (m_CurrentAnimation.m_IsLoop) {
+					m_CurrentAnimation.EndAnimation();
+					/*if (m_CurrentAnimation.m_IsLoop) {
 						m_CurrentAnimation.m_CurrentOrder = 0;
 					}
 					else {
 						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
-					}
+					}*/
 				}
 			}
 
@@ -91,11 +93,11 @@ namespace basecross {
 			m_AnimationTimer = 0.0f;
 		}
 	}
-	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const int& maxIndex) {
+	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const size_t& maxIndex) {
 		vector<vector<Vec2>> uv;
-		for (int y = 0; y < cut.y; y++) {
-			for (int x = 0; x < cut.x; x++) {
-				//�ő�l�ɒB������������Ȃ�
+		for (size_t y = 0; y < cut.y; y++) {
+			for (size_t x = 0; x < cut.x; x++) {
+				//最大値に達したらもう作らない
 				if (cut.x * y + x > maxIndex) return uv;
 				uv.push_back({
 					{(1.0f / cut.x) * x,(1.0f / cut.y) * y},
@@ -374,7 +376,7 @@ namespace basecross {
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
 		return ButtonManager::instance->Create(stage, group, defaultTex, L"", selectedColor, pos, size, object, func);
 	}
-	
+
 
 
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
@@ -392,6 +394,16 @@ namespace basecross {
 		button->SetFunction(func, object);
 		return sprite;
 	}
+
+	void ButtonManager::InitGroup(const wstring& group) {
+		if (m_ButtonGroup.find(group) != end(m_ButtonGroup)) {
+			for (auto& button : m_ButtonGroup[group]) {
+				button->UnSelect();
+				//m_SelectIndexes[group] = 0;
+			}
+		}
+	}
+
 	void ButtonManager::OnCreate() {
 		AddTag(L"Manager");
 		instance = GetThis<ButtonManager>();
@@ -408,7 +420,17 @@ namespace basecross {
 			}
 		}
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
+
+		InputData data(0, 0);
+		if (PressSelect(m_UsingGroup,data)) {
+			int checkButton = static_cast<int>(m_SelectIndexes[m_UsingGroup]) + data.m_MoveAmount;
+			checkButton = min(static_cast<int>(m_ButtonGroup[m_UsingGroup].size()) - 1, checkButton);
+			checkButton = max(0, checkButton);
+			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
+				m_SelectIndexes[m_UsingGroup] += data.m_MoveAmount;
+			}
+		}
+		/*if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
 			for (auto& inputData : m_InputDates[m_UsingGroup]) {
 				if (CheckMoveInput(inputData)) {
 					if (abs(inputData.m_MoveAmount) > 1) {
@@ -422,7 +444,7 @@ namespace basecross {
 					}
 				}
 			}
-		}
+		}*/
 		LimitIndex();
 
 		for (int i = 0; i < m_ButtonGroup[m_UsingGroup].size(); i++) {
@@ -433,7 +455,21 @@ namespace basecross {
 				m_ButtonGroup[m_UsingGroup][i]->UnSelect();
 			}
 		}
-		if (m_AcceptButtons.find(m_UsingGroup) != end(m_AcceptButtons)) {
+		WORD accept = 0;
+
+		if (PressAccept(m_UsingGroup, m_PressedAccept[m_UsingGroup])) {
+			if (m_ClickSound != L"") {
+				SoundManager::Instance().PlaySE(m_ClickSound);
+			}
+			m_PressedAccept[m_UsingGroup] = accept;
+			m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
+		}
+		for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
+			if (inputState.wPressedButtons & acceptButton) {
+				
+			}
+		}
+		/*if (m_AcceptButtons.find(m_UsingGroup) != end(m_AcceptButtons)) {
 			m_PressedAccept[m_UsingGroup] = 0;
 			for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
 				if (inputState.wPressedButtons & acceptButton) {
@@ -444,12 +480,12 @@ namespace basecross {
 					m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
 				}
 			}
-		}
+		}*/
 		for (auto& groupMovementAmount : m_GroupMovementAmount) {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
 				movementAmount = movementAmount.normalize();
-				movementAmount *= 30.0f;//�ړ����x
+				movementAmount *= 30.0f;//移動速度
 				if (groupMovementAmount.second.length() < movementAmount.length()) {
 					movementAmount = groupMovementAmount.second;
 				}
@@ -505,6 +541,9 @@ namespace basecross {
 	void ButtonManager::SetSound(const wstring& sound) {
 		m_ClickSound = sound;
 	}
+	void ButtonManager::SetSelectSound(const wstring& sound) {
+		m_SelectSound = sound;
+	}
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
 		if (m_GroupMovementAmount.find(group) != end(m_GroupMovementAmount)) {
 			if (m_GroupMovementAmount[group].length() == 0) {
@@ -557,6 +596,79 @@ namespace basecross {
 
 	}
 
+
+	SlideInSprite::SlideInSprite(
+		const shared_ptr<Stage>& StagePtr, 
+		const wstring& TextureKey, 
+		bool Trace,
+		const Vec2& StartScale, 
+		const Vec3& StartPos,
+		const float& Maxtime
+	) :
+		GameObject(StagePtr),
+		m_TextureKey(TextureKey),
+		m_Trace(Trace),
+		m_StartScale(StartScale),
+		m_StartPos(StartPos),
+		m_time(0),
+		m_maxtime(Maxtime)
+	{}
+
+	void SlideInSprite::OnCreate() {
+		UVCharge = 1.0f;
+
+		Col4 color(1, 1, 1, 1);
+
+		float halfW = 1.0f;
+		float halfH = 1.0f;
+		//頂点配列(縦横5個ずつ表示)
+		m_Vertices = {
+			{Vec3(-halfW, halfH, 0.0f), color,Vec2(0.0f, 0.0f)},
+			{Vec3(halfW, halfH,   0.0f), color, Vec2(1.0f, 0.0f)},
+			{Vec3(-halfW, -halfH, 0.0f), color, Vec2(0.0f, 1.0f)},
+			{Vec3(halfW, -halfH, 0.0f), color,	Vec2(1.0f, 1.0f)},
+		};
+		//インデックス配列
+		vector<uint16_t> indices = { 0, 1, 2, 1, 3, 2 };
+		SetAlphaActive(m_Trace);
+		auto ptrTrans = GetComponent<Transform>();
+		ptrTrans->SetScale(m_StartScale.x, m_StartScale.y, 0.2f);
+		ptrTrans->SetRotation(0, 0, 0);
+		ptrTrans->SetPosition(m_StartPos);
+		//頂点とインデックスを指定してスプライト作成
+		auto ptrDraw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
+		ptrDraw->SetTextureResource(m_TextureKey);
+		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
+	}
+	void SlideInSprite::OnUpdate()
+	{
+		float elapsedTime = App::GetApp()->GetElapsedTime();
+		m_time += elapsedTime * 5.0f;
+		ChargeUV(m_time);
+	}
+	void SlideInSprite::ChargeUV(const float& time)
+	{
+		float alpha = m_maxtime;
+		if (time < alpha) {
+			UpdateProgress(time);
+		}
+	}
+
+	void SlideInSprite::UpdateProgress(float time) {
+		float progress = time;
+		m_Vertices[1].position.x = (progress * 2) - 1.0f;
+		m_Vertices[3].position.x = (progress * 2) - 1.0f;
+		m_Vertices[1].textureCoordinate.x = progress;
+		m_Vertices[3].textureCoordinate.x = progress;
+
+		GetComponent<PCTSpriteDraw>()->UpdateVertices(m_Vertices);
+	}
+
+	void SlideInSprite::SetDiffuse(Col4 rgba)
+	{
+		auto ptrDraw = GetComponent<PCTSpriteDraw>();
+		ptrDraw->SetDiffuse(rgba);
+	}
 
 }
 //end basecross

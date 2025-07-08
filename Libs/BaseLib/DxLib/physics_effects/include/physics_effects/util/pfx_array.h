@@ -54,7 +54,7 @@ public:
 		m_data = (T*)SCE_PFX_UTIL_ALLOC(16,sizeof(T)*m_maxData);
 	}
 	
-	~PfxArray()
+	‾PfxArray()
 	{
 		SCE_PFX_UTIL_FREE(m_data);
 	}
@@ -111,7 +111,7 @@ public:
 		m_data = (T*)SCE_PFX_UTIL_ALLOC(16,sizeof(T)*m_maxData);
 	}
 	
-	~PfxQueue()
+	‾PfxQueue()
 	{
 		SCE_PFX_UTIL_FREE(m_data);
 	}
@@ -139,7 +139,7 @@ public:
 /*
 	Priority Queue (static size)
 	* comparison function
-	�@PfxBool operator > (const T &data1,const T &data2);
+	　PfxBool operator > (const T &data1,const T &data2);
 */
 
 template <class T>
@@ -162,7 +162,7 @@ public:
 		m_data = (T*)SCE_PFX_UTIL_ALLOC(16,sizeof(T)*m_maxData);
 	}
 	
-	~PfxPriorityQueue()
+	‾PfxPriorityQueue()
 	{
 		SCE_PFX_UTIL_FREE(m_data);
 	}
@@ -206,7 +206,7 @@ public:
 		m_data = (T*)SCE_PFX_UTIL_ALLOC(16,sizeof(T)*m_maxData);
 	}
 	
-	~PfxStack()
+	‾PfxStack()
 	{
 		SCE_PFX_UTIL_FREE(m_data);
 	}
@@ -253,7 +253,7 @@ private:
 public:
 	PfxMap();
 	PfxMap(PfxUInt32 maxData);
-	~PfxMap();
+	‾PfxMap();
 	
 	PfxUInt32 size() const {return m_numData;}
 	

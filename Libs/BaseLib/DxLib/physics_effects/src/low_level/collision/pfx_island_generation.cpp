@@ -112,7 +112,7 @@ PfxInt32 pfxGenerateIsland(PfxGenerateIslandParam &param,PfxGenerateIslandResult
 	
 	result.island = island;
 	
-	// ‰Šú‰»
+	// åˆæœŸåŒ–
 	for(PfxUInt32 i=0;i<island->numNodes;i++) {
 		island->nodes[i].rootId = i;
 		island->nodes[i].rank = 0;
@@ -161,7 +161,7 @@ PfxInt32 pfxAppendPairs(PfxIsland *island,PfxConstraintPair *pairs,PfxUInt32 num
 	if(!island || !pairs) return SCE_PFX_ERR_INVALID_VALUE;
 	if(!SCE_PFX_PTR_IS_ALIGNED16(island) || !SCE_PFX_PTR_IS_ALIGNED16(pairs)) return SCE_PFX_ERR_INVALID_ALIGN;
 
-	// “‡
+	// çµ±åˆ
 	for(PfxUInt32 i=0;i<numPairs;i++) {
 		PfxConstraintPair &pair = pairs[i];
 		if(pfxGetActive(pair)) {
@@ -178,14 +178,14 @@ PfxInt32 pfxAppendPairs(PfxIsland *island,PfxConstraintPair *pairs,PfxUInt32 num
 		}
 	}
 
-	// ƒAƒCƒ‰ƒ“ƒh¶¬‚Ì‚½‚ß‚Ì‰Šú‰»
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ç”Ÿæˆã®ãŸã‚ã®åˆæœŸåŒ–
 	for(PfxUInt32 i=0;i<island->numNodes;i++) {
 		island->nodes[i].islandId = 0;
 		island->nodes[i].isRoot = 0;
 		island->islandsHeads[i] = NULL;
 	}
 
-	// e‚Ö’¼Œ‹
+	// è¦ªã¸ç›´çµ
 	PfxUInt32 id = 0;
 	for(PfxUInt32 i=0;i<island->numNodes;i++) {
 		PfxUInt32 rootId = pfxIslandNodeFind(i,island);
@@ -196,7 +196,7 @@ PfxInt32 pfxAppendPairs(PfxIsland *island,PfxConstraintPair *pairs,PfxUInt32 num
 		island->nodes[i].islandId = island->nodes[rootId].islandId;
 	}
 
-	// ƒAƒCƒ‰ƒ“ƒhì¬
+	// ã‚¢ã‚¤ãƒ©ãƒ³ãƒ‰ä½œæˆ
 	PfxUInt32 n = 0;
 	for(PfxUInt32 i=0;i<island->numNodes;i++) {
 		PfxUInt32 islandId = island->nodes[i].islandId;

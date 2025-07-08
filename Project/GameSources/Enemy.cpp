@@ -11,7 +11,7 @@ namespace basecross {
 	Enemy::Enemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale) :
 		Character(stage, position, Vec3(), scale){
 	}
-	Enemy::~Enemy()
+	Enemy::â€¾Enemy()
 	{
 	}
 	void Enemy::OnCreate()
@@ -21,7 +21,7 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		m_KnockBack = false;
 		m_KnockBackTime = 0.5f;
-		//CollisionSphere‚Ìİ’è
+		//CollisionSphereã®è¨­å®š
 		auto ptrColl = AddComponent<CollisionCapsule>();
 		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
 		ptrColl->SetFixed(false);
@@ -36,7 +36,6 @@ namespace basecross {
 	void Enemy::OnUpdate()
 	{
 		float elapsedTime = GetGameElapsed();
-
 		if (m_KnockBack)
 		{
 			m_KnockBackTime -= elapsedTime;
@@ -94,7 +93,7 @@ namespace basecross {
 	}
 
 
-	void Enemy::SearchRange()
+	bool Enemy::SearchRange()
 	{
 		float searchDistance = 10.0f;
 		Vec3 target = m_Intruder->GetComponent<Transform>()->GetPosition();
@@ -105,23 +104,17 @@ namespace basecross {
 		if ((position - target).length() < searchDistance)
 		{
 			if (IsWithinDetectionRange(forword, GetDirectionToIntruder(), 45.0)) {
-				//ƒvƒŒƒCƒ„[‚Ì•ûŒü‚ğ‚ä‚Á‚­‚èŒü‚­
 				m_IntruderAlert = true;
+				return m_IntruderAlert;
 			}
 			else {
 				m_IntruderAlert = false;
+				return m_IntruderAlert;
 			}
 		}
 		else {
 			m_IntruderAlert = false;
-		}
-
-		if (m_IntruderAlert && GetDistanceToIntruder() < searchDistance) {
-			RayCastHit hit;
-			RayCast::HitTestVec(hit, Line(GetPosition(), GetDirectionToIntruder(), 10.0f), m_Stage->GetGameObjectVec(), { L"Bullet",L"Line",L"Enemy" });
-			if (hit.m_Object && !hit.m_Object->FindTag(L"Player")) {
-				m_IntruderAlert = false;
-			}
+			return m_IntruderAlert;
 		}
 	}
 
@@ -198,7 +191,6 @@ namespace basecross {
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			//Damage(m_Intruder->GetAttackDamage(), false);
 			KnockBack();
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}

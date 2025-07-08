@@ -2,8 +2,9 @@
 #include "Project.h"
 
 namespace basecross {
-	AreaOfEffect::AreaOfEffect(const shared_ptr<Stage>& stage, Vec3 position, float size, int vertexCount, float time) : 
-		Object(stage,position,Vec3(),Vec3(1)),m_AreaSize(size),m_AreaVertexCount(vertexCount),m_ExitTime(Timer(time)) {}
+	AreaOfEffect::AreaOfEffect(const shared_ptr<Stage>& stage, Vec3 position, float size, int vertexCount, float time) :
+		Object(stage, position, Vec3(), Vec3(1)), m_AreaSize(size), m_AreaVertexCount(vertexCount), m_ExitTime(Timer(time)) {
+	}
 
 	void AreaOfEffect::OnCreate() {
 		Object::OnCreate();
@@ -19,7 +20,7 @@ namespace basecross {
 		radius += m_AreaSize * elapsed / m_ExitTime.GetMaxTime();
 		m_AreaEffect->SetRadius(m_AreaSize * (m_ExitTime.GetTime() / m_ExitTime.GetMaxTime()));
 
-		if (m_ExitTime.UpdateTimer()) {
+		if (m_ExitTime.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
 			m_Stage->RemoveGameObject<SharpFan>(m_AreaEffect);
 			m_Stage->RemoveGameObject<SharpFan>(m_AreaSizeEffect);
 			m_Stage->RemoveGameObject<AreaOfEffect>(GetThis<AreaOfEffect>());
