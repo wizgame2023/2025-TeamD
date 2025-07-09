@@ -28,6 +28,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_BackGround;
 		shared_ptr<Sprite> m_Title;
 		shared_ptr<Sprite> m_Start;
+		shared_ptr<Sprite> m_StartKey;
 		shared_ptr<TirleStageModel> m_Titlemodel;
 		//bool m_fade;
 	public:
@@ -37,7 +38,7 @@ namespace basecross {
 		//初期化
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
-
+		void DrawIcon();
 		void OnPushA();
 		shared_ptr<EffectManager> GetEffect(){
 			return m_Effect;
