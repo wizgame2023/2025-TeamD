@@ -684,6 +684,10 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class ButtonManager : public GameObject{
+
+		template<typename T>
+		using group = map<wstring, T>;
+
 		//ボタン格納用配列
 		map<wstring, vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
 		//選択中の番号

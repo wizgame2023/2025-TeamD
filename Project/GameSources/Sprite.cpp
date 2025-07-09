@@ -411,76 +411,38 @@ namespace basecross {
 	void ButtonManager::OnUpdate() {
 		if (!CheckUpdate()) return;
 
-		if (!m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->GetActive()) {
-			if (m_SelectIndexes[m_UsingGroup] > 0) {
-				m_SelectIndexes[m_UsingGroup]--;
-			}
-			else {
-				m_SelectIndexes[m_UsingGroup]++;
-			}
+		size_t& selectIndex = m_SelectIndexes[m_UsingGroup];
+
+		if (!m_ButtonGroup[m_UsingGroup][selectIndex]->GetActive()) {
+			selectIndex = selectIndex > 0 ? --selectIndex : ++selectIndex;
 		}
-		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 
 		InputData data(0, 0);
 		if (PressSelect(m_UsingGroup,data)) {
-			int checkButton = static_cast<int>(m_SelectIndexes[m_UsingGroup]) + data.m_MoveAmount;
+			int checkButton = static_cast<int>(selectIndex) + data.m_MoveAmount;
 			checkButton = min(static_cast<int>(m_ButtonGroup[m_UsingGroup].size()) - 1, checkButton);
 			checkButton = max(0, checkButton);
 			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
-				m_SelectIndexes[m_UsingGroup] += data.m_MoveAmount;
+				selectIndex = checkButton;
 			}
 		}
-		/*if (m_InputDates.find(m_UsingGroup) != end(m_InputDates)) {
-			for (auto& inputData : m_InputDates[m_UsingGroup]) {
-				if (CheckMoveInput(inputData)) {
-					if (abs(inputData.m_MoveAmount) > 1) {
-						if (!CheckOverIndex(inputData.m_MoveAmount)) continue;
-					}
-					int checkButton = m_SelectIndexes[m_UsingGroup] + inputData.m_MoveAmount;
-					checkButton = min(m_ButtonGroup[m_UsingGroup].size() - 1, checkButton);
-					checkButton = max(0, checkButton);
-					if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
-						m_SelectIndexes[m_UsingGroup] += inputData.m_MoveAmount;
-					}
-				}
-			}
-		}*/
 		LimitIndex();
-
 		for (int i = 0; i < m_ButtonGroup[m_UsingGroup].size(); i++) {
-			if (i == m_SelectIndexes[m_UsingGroup]) {
+			if (i == selectIndex) {
 				m_ButtonGroup[m_UsingGroup][i]->Select();
 			}
 			else {
 				m_ButtonGroup[m_UsingGroup][i]->UnSelect();
 			}
 		}
-		WORD accept = 0;
-
 		if (PressAccept(m_UsingGroup, m_PressedAccept[m_UsingGroup])) {
 			if (m_ClickSound != L"") {
 				SoundManager::Instance().PlaySE(m_ClickSound);
 			}
-			m_PressedAccept[m_UsingGroup] = accept;
-			m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
+			//m_PressedAccept[m_UsingGroup] = accept;
+			m_ButtonGroup[m_UsingGroup][selectIndex]->Func();
 		}
-		for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
-			if (inputState.wPressedButtons & acceptButton) {
-				
-			}
-		}
-		/*if (m_AcceptButtons.find(m_UsingGroup) != end(m_AcceptButtons)) {
-			m_PressedAccept[m_UsingGroup] = 0;
-			for (auto& acceptButton : m_AcceptButtons[m_UsingGroup]) {
-				if (inputState.wPressedButtons & acceptButton) {
-					if (m_ClickSound != L"") {
-						SoundManager::Instance().PlaySE(m_ClickSound);
-					}
-					m_PressedAccept[m_UsingGroup] = acceptButton;
-					m_ButtonGroup[m_UsingGroup][m_SelectIndexes[m_UsingGroup]]->Func();
-				}
-			}
-		}*/
+
 		for (auto& groupMovementAmount : m_GroupMovementAmount) {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {
@@ -499,6 +461,7 @@ namespace basecross {
 			}
 		}
 
+		
 	}
 
 	void ButtonManager::OnDestroy() {
@@ -515,7 +478,6 @@ namespace basecross {
 		return true;
 	}
 	bool ButtonManager::CheckMoveInput(InputData& input) {
-
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (input.m_Mode == InputMode::Button) {
 			return input.CheckInput(inputState.wPressedButtons);
@@ -545,7 +507,7 @@ namespace basecross {
 		m_SelectSound = sound;
 	}
 	void ButtonManager::SetMoveAmount(const wstring& group, Vec3 target) {
-		if (m_GroupMovementAmount.find(group) != end(m_GroupMovementAmount)) {
+		if (FindGroup(m_GroupMovementAmount,group)) {
 			if (m_GroupMovementAmount[group].length() == 0) {
 				m_GroupMovementAmount[group] = target;
 			}
