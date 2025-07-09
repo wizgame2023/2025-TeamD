@@ -76,6 +76,17 @@ namespace basecross{
 			m_EliminateEnemyRate = 0.0f;
 			m_ParryCount = 0;
 		}
+
+		void SetTimeBorder(ScoreBorder<float> border) {
+			m_TimeBorder = border;
+		}
+		void SetDamageBorder(ScoreBorder<float> border) {
+			m_DamageBorder = border;
+		}
+		void SetParryBorder(ScoreBorder<int> border) {
+			m_ParryBorder = border;
+		}
+
 		void UpdateTime(float elapsed) {
 			m_Time += elapsed;
 		}

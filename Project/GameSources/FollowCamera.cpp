@@ -137,7 +137,7 @@ namespace basecross {
 		m_CenterPt({ 0, 0 }), 
 		m_CurrntTime(0.0f), 
 		m_Magnitude(0.0f), 
-		m_MouseSensitivityX(0.01f),
+		m_MouseSensitivityX(0.001f),
 		m_MouseUpdateInterval(5),
 		m_FrameCounter(0)
 	{
@@ -171,8 +171,8 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto& cntlVec = app->GetInputDevice().GetControlerVec()[0];
 		float elapsed = app->GetElapsedTime();
-		//コントローラ入力(つながっていないならマウス操作)
 		if (m_StopCamera) return;
+		//コントローラ入力(つながっていないならマウス操作)
 		if (cntlVec.bConnected) {
 			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
 		}

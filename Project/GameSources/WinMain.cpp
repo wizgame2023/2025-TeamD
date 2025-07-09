@@ -13,7 +13,7 @@ const wchar_t* pWndTitle = L"拳は銃より強し";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
-BOOL IsMouseCursor = TRUE;
+BOOL IsMouseCursor = FALSE; // カーソルを表示するかどうかのフラグ
 //--------------------------------------------------------------------------------------
 //
 //  関数: MyRegisterClass()
@@ -276,7 +276,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	{
 		return FALSE;
 	}
-
 	return  MainLoop(hInstance, hWnd, isFullScreen, g_ClientWidth, g_ClientHeight);
 
 }
