@@ -137,7 +137,9 @@ namespace basecross {
 		m_CenterPt({ 0, 0 }), 
 		m_CurrntTime(0.0f), 
 		m_Magnitude(0.0f), 
-		m_MouseSensitivityX(0.01f)
+		m_MouseSensitivityX(0.01f),
+		m_MouseUpdateInterval(5),
+		m_FrameCounter(0)
 	{
 	}
 	void FollowCamera::OnCreate()
@@ -175,14 +177,18 @@ namespace basecross {
 			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
 		}
 		else{
+			++m_FrameCounter;
+			if (m_FrameCounter >= m_MouseUpdateInterval)
+			{
+				m_FrameCounter = 0;
+				// 中央に戻す
+				::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+			}
 			POINT now;
 			::GetCursorPos(&now);
 
 			float dx = float(now.x - m_CenterPt.x);
 			m_Angle -= dx * m_MouseSensitivityX;
-
-			// 中央に戻す
-			::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
 		}
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));

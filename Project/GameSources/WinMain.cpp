@@ -1,6 +1,7 @@
 
 #include "stdafx.h"
 #include "Project.h"
+#include <chrono>
 
 using namespace basecross;
 
@@ -12,7 +13,7 @@ const wchar_t* pWndTitle = L"拳は銃より強し";
 int g_ClientWidth = 1280;
 int g_ClientHeight = 800;
 
-BOOL IsMouseCursor = FALSE;
+BOOL IsMouseCursor = TRUE;
 //--------------------------------------------------------------------------------------
 //
 //  関数: MyRegisterClass()
@@ -107,75 +108,142 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 	return hWnd;
 }
 
+// フレームレート制御用ヘルパ関数
+// lastTime: 前フレームの終端時刻（呼び出しのたびに更新される）
+// targetMs: 目標フレーム時間 (ms)
+void RegulateFrameRate(std::chrono::high_resolution_clock::time_point& lastTime,double targetMs)
+{
+	using clock = std::chrono::high_resolution_clock;
+	// 現在時刻
+	auto now = clock::now();
+	// 経過時間を ms 単位で取得
+	double elapsed = std::chrono::duration<double, std::milli>(now - lastTime).count();
+	double delay = targetMs - elapsed;
+
+	// 残余時間が1ms以上あれば Sleep
+	if (delay > 1.0) {
+		Sleep(static_cast<DWORD>(delay));
+	}
+	// 次フレーム用に lastTime を更新
+	lastTime = clock::now();
+}
+
 //--------------------------------------------------------------------------------------
 //	int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth, int iClientHeight);
 //	用途: メインループ
 //--------------------------------------------------------------------------------------
 int MainLoop(HINSTANCE hInstance, HWND hWnd, bool isFullScreen, int iClientWidth, int iClientHeight) {
 	int RetCode = 0;
-	WINDOWINFO WinInfo;
+	WINDOWINFO WinInfo{};
 	ZeroMemory(&WinInfo, sizeof(WinInfo));
+
+	bool comInitialized = false;
+	bool appCreated = false;
+
 	try {
-		if (FAILED(::CoInitialize(nullptr))) {
-			throw exception("");
-		}
-		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
-		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
-		MSG msg = { 0 };
-		vector<DWORD> UseKeyVec = {
-			VK_PRIOR,VK_NEXT,VK_UP, VK_DOWN, VK_LEFT, VK_RIGHT,VK_SPACE,
-			VK_LBUTTON, VK_RBUTTON, VK_MBUTTON, VK_LCONTROL,VK_TAB,
-			'W','A','S','D','X','B','Z','Q'
-		};
-		while (WM_QUIT != msg.message) {
-			if (!App::GetApp()->ResetInputState(hWnd, UseKeyVec)) {
-				if (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
-					TranslateMessage(&msg);
-					DispatchMessage(&msg);
-				}
-			}
-			App::GetApp()->UpdateDraw(1);
-		}
-		RetCode = (int)msg.wParam;
-	}
-	catch (BaseException& e) {
-		if (GetWindowInfo(hWnd, &WinInfo)) {
-			MessageBox(hWnd, e.what_w().c_str(), L"", MB_OK);
+		// COM 初期化
+		if (SUCCEEDED(::CoInitialize(nullptr))) {
+			comInitialized = true;
 		}
 		else {
-			MessageBox(nullptr, e.what_w().c_str(), L"", MB_OK);
+			throw std::exception("CoInitialize failed");
+		}
+
+		// アプリ初期化
+		App::CreateApp(hInstance, hWnd, isFullScreen, iClientWidth, iClientHeight);
+		appCreated = true;
+
+		// シーン生成
+		auto ScenePtr = App::GetApp()->CreateScene<Scene>();
+
+		// 入力監視キーリスト
+		std::vector<DWORD> UseKeyVec = {
+			VK_PRIOR, VK_SPACE, VK_LBUTTON, VK_RBUTTON, VK_TAB,
+			'W','A','S','D',
+		};
+
+		// フレームレート制御準備
+		using clock = std::chrono::high_resolution_clock;
+		const double targetMs = 1000.0 / 60.0; // 60fps
+		timeBeginPeriod(1);                     // Sleep 精度を向上
+		auto lastTime = clock::now();
+
+		// メインループ
+		MSG msg{};
+		bool running = true;
+		while (running) {
+			// 1) Windows メッセージを常に処理
+			while (PeekMessage(&msg, nullptr, 0, 0, PM_REMOVE)) {
+				if (msg.message == WM_QUIT) {
+					running = false;
+					break;
+				}
+				TranslateMessage(&msg);
+				DispatchMessage(&msg);
+			}
+			if (!running) break;
+
+			// 2) 入力状態をリセット＆更新
+			App::GetApp()->ResetInputState(hWnd, UseKeyVec);
+
+			// 3) ゲームの更新＆描画
+			App::GetApp()->UpdateDraw(1);
+
+			// 4) フレームレート制御
+			RegulateFrameRate(lastTime, targetMs);
+		}
+
+		RetCode = static_cast<int>(msg.wParam);
+	}
+	catch (BaseException& e) {
+		LPCWSTR text = e.what_w().c_str();
+		LPCWSTR title = L"Error";
+		if (GetWindowInfo(hWnd, &WinInfo)) {
+			MessageBox(hWnd, text, title, MB_OK);
+		}
+		else {
+			MessageBox(nullptr, text, title, MB_OK);
 		}
 		RetCode = 1;
 	}
 	catch (BaseMBException& e) {
+		const char* text = e.what_m().c_str();
+		const char* title = "Error";
 		if (GetWindowInfo(hWnd, &WinInfo)) {
-			MessageBoxA(hWnd, e.what_m().c_str(), "", MB_OK);
+			MessageBoxA(hWnd, text, title, MB_OK);
 		}
 		else {
-			MessageBoxA(nullptr, e.what_m().c_str(), "", MB_OK);
+			MessageBoxA(nullptr, text, title, MB_OK);
 		}
 		RetCode = 1;
 	}
-	catch (exception& e) {
+	catch (std::exception& e) {
+		const char* text = e.what();
+		const char* title = "Error";
 		if (GetWindowInfo(hWnd, &WinInfo)) {
-			MessageBoxA(hWnd, e.what(), "", MB_OK);
+			MessageBoxA(hWnd, text, title, MB_OK);
 		}
 		else {
-			MessageBoxA(nullptr, e.what(), "", MB_OK);
+			MessageBoxA(nullptr, text, title, MB_OK);
 		}
 		RetCode = 1;
 	}
 	catch (...) {
+		LPCWSTR title = L"Unknown Error";
 		if (GetWindowInfo(hWnd, &WinInfo)) {
-			MessageBox(hWnd, L"", L"", MB_OK);
+			MessageBox(hWnd, L"", title, MB_OK);
 		}
 		else {
-			MessageBox(nullptr, L"", L"", MB_OK);
+			MessageBox(nullptr, L"", title, MB_OK);
 		}
 		RetCode = 1;
 	}
-	App::DeleteApp();
-	::CoUninitialize();
+
+	// 後始末
+	if (appCreated)     App::DeleteApp();
+	if (comInitialized) ::CoUninitialize();
+	timeEndPeriod(1);
+
 	return RetCode;
 }
 
