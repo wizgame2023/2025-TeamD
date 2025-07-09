@@ -100,10 +100,10 @@ HWND InitInstance(HINSTANCE hInstance, int nCmdShow, bool isFullScreen, int iCli
 		}
 	}
 	ShowCursor(IsMouseCursor);
-	ShowWindow(
-		hWnd,      
-		nCmdShow    
-	);
+	//ShowWindow(
+	//	hWnd,      
+	//	nCmdShow    
+	//);
 	UpdateWindow(hWnd);
 	return hWnd;
 }
@@ -263,7 +263,7 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	setlocale(LC_ALL, "JPN");
 
-	bool isFullScreen = true;
+	bool isFullScreen = false;
 	wstring wstrcmd = lpCmdLine;
 	if (wstrcmd == L"/f" || wstrcmd == L"/F") {
 		isFullScreen = true;

@@ -14,6 +14,10 @@ namespace basecross {
 		m_IconBackGround->SetDrawLayer(2);
 		m_IconBackGround->SetDiffuse(Col4(1, 1, 1, 1));
 
+		m_IconBackGroundKey = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_FRAME_KEY", position, Vec2(150.0f));
+		m_IconBackGroundKey->SetDrawLayer(2);
+		m_IconBackGroundKey->SetDiffuse(Col4(1, 1, 1, 1));
+
 		m_Icon = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT", position + Vec3(15,-10,0), Vec2(120.0f));
 		m_Icon->SetDrawLayer(3);
 
@@ -29,8 +33,24 @@ namespace basecross {
 
 	void UltIcon::SetDraw(bool a) {
 		m_IconBackGround->SetDrawActive(a);
+		m_IconBackGroundKey->SetDrawActive(a);
 		m_Icon->SetDrawActive(a);
 		m_IconEffect->SetDrawActive(a);
+	}
+
+	void UltIcon::SetIconDraw()
+	{
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected)
+		{
+			m_IconBackGround->SetDrawActive(true);
+			m_IconBackGroundKey->SetDrawActive(false);
+		}
+		else
+		{
+			m_IconBackGround->SetDrawActive(false);
+			m_IconBackGroundKey->SetDrawActive(true);
+		}
 	}
 
 	void UltIcon::OnUpdate() {
@@ -54,16 +74,24 @@ namespace basecross {
 			m_IconEffectWaku->SetDrawActive(true);
 			//m_Icon->SetDiffuse(Col4(1, 1, 1, 1));
 			m_Icon->SetDrawActive(true);
-			m_IconBackGround->SetDrawLayer(0);
+			m_IconBackGround->SetDrawActive(false);
+			m_IconBackGround->SetDrawLayer(2);
+			m_IconBackGroundKey->SetDrawActive(false);
+			m_IconBackGroundKey->SetDrawLayer(2);
 		}
 		else 
 		{
 			m_IconEffect->SetDiffuse(Col4(1, 1, 1, 0.5f));
 			m_IconEffectWaku->SetDrawActive(false);
 			m_Icon->SetDrawActive(false);
+			m_IconBackGround->SetDrawActive(false);
 			m_IconBackGround->SetDrawLayer(2);
+			m_IconBackGroundKey->SetDrawActive(false);
+			m_IconBackGroundKey->SetDrawLayer(2);
 			//m_Icon->SetDiffuse(Col4(1, 1, 1, 0.5f));
 		}
+		SetIconDraw();
+
 	}
 	void NormalIcon::OnCreate() {
 		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(150.0f));
