@@ -352,14 +352,13 @@ namespace basecross {
 				m_NormalIconKey->SetDraw(false);
 				m_IconKey->SetDraw(false);
 				m_NormalIcon->SetDraw(true);
-				m_Icon->SetDraw(true);
 			}
 			else {
 				m_NormalIconKey->SetDraw(true);
 				m_IconKey->SetDraw(true);
 				m_NormalIcon->SetDraw(false);
-				m_Icon->SetDraw(false);
 			}
+			m_Icon->SetDraw(true);
 			m_PlayerHpBar->SetDrawActive(true);
 		}
 		else {
