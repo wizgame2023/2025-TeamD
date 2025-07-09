@@ -64,7 +64,13 @@ namespace basecross {
 
 		int m_Width;
 		int m_Height;
+		int m_FrameCounter;
+		int m_MouseUpdateInterval;
 		bool m_StopCamera;
+		// FollowCamera.h の適切な箇所に追加
+		float m_Pitch = 0.0f;               // 現在の上下角度
+		float m_MinPitch = -XM_PIDIV4;         // 下向き最大（-45°）
+		float m_MaxPitch = 0;         // 上向き最大（+45°）
 
 		shared_ptr<Transform> m_PlayerTransform;
 		shared_ptr<CameraCollision> m_CameraCollision;

@@ -137,7 +137,9 @@ namespace basecross {
 		m_CenterPt({ 0, 0 }), 
 		m_CurrntTime(0.0f), 
 		m_Magnitude(0.0f), 
-		m_MouseSensitivityX(0.01f)
+		m_MouseSensitivityX(0.001f),
+		m_MouseUpdateInterval(5),
+		m_FrameCounter(0)
 	{
 	}
 	void FollowCamera::OnCreate()
@@ -169,23 +171,38 @@ namespace basecross {
 		auto& app = App::GetApp();
 		auto& cntlVec = app->GetInputDevice().GetControlerVec()[0];
 		float elapsed = app->GetElapsedTime();
-		//コントローラ入力(つながっていないならマウス操作)
 		if (m_StopCamera) return;
+		//コントローラ入力(つながっていないならマウス操作)
 		if (cntlVec.bConnected) {
 			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
+
+			// Pitch
+			m_Pitch += m_RotateSpeed * elapsed * cntlVec.fThumbRY;
 		}
 		else{
-			POINT now;
-			::GetCursorPos(&now);
-
+			++m_FrameCounter;
+			if (m_FrameCounter >= m_MouseUpdateInterval)
+			{
+				m_FrameCounter = 0;
+				// 中央に戻す
+				::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
+			}
+			// マウスフレーム制御は省略
+			POINT now; ::GetCursorPos(&now);	
 			float dx = float(now.x - m_CenterPt.x);
+			float dy = float(now.y - m_CenterPt.y);
+				
+			// Yaw
 			m_Angle -= dx * m_MouseSensitivityX;
+			// Pitch（符号は好みで反転可）
+			m_Pitch -= dy * m_MouseSensitivityX * 0.1f;
 
-			// 中央に戻す
-			::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
 		}
+
+		m_Pitch = max(m_MinPitch, min(m_MaxPitch, m_Pitch));
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
+		m_Direction.y = sinf(m_Pitch);
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
 		Vec2 dire = CameraUp(0.75f);

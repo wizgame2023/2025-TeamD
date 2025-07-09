@@ -56,25 +56,24 @@ namespace basecross {
 		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
 		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
 		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
-		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch_A.png");
-		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
-		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
 		app->RegisterTexture(L"ACTION_ULT_WAKU_EFFECT", uiPath + L"UI_Ult_Waku_Effect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
+
+		//コントローラー用
+		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch_A.png");
+		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
+		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
 
 		//igc用UI
 		app->RegisterTexture(L"ACTION_PANCH_KEY", uiPath + L"UI_Panch_A_Key.png"); 
 		app->RegisterTexture(L"ACTION_DASH_KEY", uiPath + L"UI_Dash_X_Key.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME_KEY", uiPath + L"UI_Ult_Waku_B_Key.png");
-		
 				
 		//app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
 		//app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
 		// 
 		//app->RegisterTexture(L"MENU_KEY", uiPath + L"UI_Menu.png");
-
-
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
@@ -188,12 +187,21 @@ namespace basecross {
 	void GameStage::CreateUI() {
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 40.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
+
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_NormalIcon->SetKeyInput(VK_LBUTTON);
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_Icon->SetKeyInput(VK_RBUTTON);
+
+		m_NormalIconKey = AddGameObject<NormalIcon>(L"ACTION_PANCH_KEY", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_NormalIconKey->SetInput(XINPUT_GAMEPAD_A);
+		m_NormalIconKey->SetKeyInput(VK_LBUTTON);
+		m_IconKey = AddGameObject<NormalIcon>(L"ACTION_DASH_KEY", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_IconKey->SetInput(XINPUT_GAMEPAD_X);
+		m_IconKey->SetKeyInput(VK_RBUTTON);
+
 		m_UltIcon = AddGameObject<UltIcon>();
 
 		auto player = GetSharedGameObject<Player>(L"Player", false);
@@ -218,6 +226,19 @@ namespace basecross {
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
 		m_Fade->Stop();
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) {
+			m_NormalIconKey->SetDraw(false);
+			m_IconKey->SetDraw(false);
+			m_NormalIcon->SetDraw(true);
+			m_Icon->SetDraw(true);
+		}
+		else {
+			m_NormalIconKey->SetDraw(true);
+			m_IconKey->SetDraw(true);
+			m_NormalIcon->SetDraw(false);
+			m_Icon->SetDraw(false);
+		}
 	}
 	/// <summary>
 	/// オブジェクトの更新をONOFF
@@ -284,13 +305,13 @@ namespace basecross {
 	void GameStage::GameClear() {
 
 		App::GetApp()->GetScene<Scene>()->Clear(m_StageData);
-		m_NormalIcon->SetDraw(false);
-		m_Icon->SetDraw(false);
-		m_UltIcon->SetDraw(false);
+		//m_NormalIcon->SetDraw(false);
+		//m_Icon->SetDraw(false);
+		//m_UltIcon->SetDraw(false);
 		m_UltEnege = 0.0f;
 		m_UltIcon->SetCharge(m_UltEnege);
-		m_PlayerHpBar->SetDrawActive(false);
-		m_BossStunBar->SetDrawActive(false);
+		//m_PlayerHpBar->SetDrawActive(false);
+		//m_BossStunBar->SetDrawActive(false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 		if (player != nullptr && camera != nullptr && m_cameraState == CameraState::FOLLOWCAMERA) {
@@ -323,15 +344,41 @@ namespace basecross {
 		}
 	}
 
+	void GameStage::UIDraw(){
+		if (m_cameraState == CameraState::FOLLOWCAMERA){
+			auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+			if (device.bConnected){
+				m_NormalIconKey->SetDraw(false);
+				m_IconKey->SetDraw(false);
+				m_NormalIcon->SetDraw(true);
+				m_Icon->SetDraw(true);
+			}
+			else {
+				m_NormalIconKey->SetDraw(true);
+				m_IconKey->SetDraw(true);
+				m_NormalIcon->SetDraw(false);
+				m_Icon->SetDraw(false);
+
+			}
+			m_UltIcon->SetDraw(true);
+			m_PlayerHpBar->SetDrawActive(true);
+		}
+		else {
+			m_NormalIcon->SetDraw(false);
+			m_Icon->SetDraw(false);
+			m_NormalIconKey->SetDraw(false);
+			m_IconKey->SetDraw(false);
+			m_UltIcon->SetDraw(false);
+			m_PlayerHpBar->SetDrawActive(false);
+			m_BossStunBar->SetDrawActive(false);
+			m_BossHpBar->SetDrawActive(false);
+			m_BossText->SetDrawActive(false);
+		}
+	}
+
 	void GameStage::GameOver() {
-		m_NormalIcon->SetDraw(false);
-		m_Icon->SetDraw(false);
-		m_UltIcon->SetDraw(false);
 		m_UltEnege = 0.0f;
 		m_UltIcon->SetCharge(m_UltEnege);
-		//m_PlayerHpBarBackGround->SetDrawActive(false);
-		m_PlayerHpBar->SetDrawActive(false);
-		m_BossStunBar->SetDrawActive(false);
 		SoundManager::Instance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
@@ -459,7 +506,7 @@ namespace basecross {
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
-
+		UIDraw();
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
 			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();

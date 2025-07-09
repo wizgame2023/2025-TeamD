@@ -5,7 +5,7 @@
 #pragma once
 
 #include "stdafx.h"
-
+#include "ScoreManager.h"
 namespace basecross {
 	struct StageData {
 		int stageNum;
@@ -15,22 +15,42 @@ namespace basecross {
 		wstring m_FileName;
 		bool m_IsClear;
 	};
+	struct ScoreData {
+		ScoreBorder<float> m_TimeBorder;
+		ScoreBorder<int> m_ParryBorder;
+	};
 	//--------------------------------------------------------------------------------------
 	///	ゲームシーン
 	//--------------------------------------------------------------------------------------
 	class Scene : public SceneBase {
 		vector<vector<StageFileData>> m_StageFile;
+		vector<vector<ScoreData>> m_Borders;
 	public:
 		//--------------------------------------------------------------------------------------
 		/*!
 		@brief コンストラクタ
 		*/
 		//--------------------------------------------------------------------------------------
-		Scene() :SceneBase(),m_MaxCount(0),m_Count(0){
+		Scene() :SceneBase(), m_MaxCount(0), m_Count(0) {
 			m_StageFile = {
-				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"testStage_Y_easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},
 				{{L"Map_S_Easy.csv",false},{L"Map_S_Normal.csv",false},{L"Map_S_Hard.csv",false}}
+			};
+
+			m_Borders = {
+//						時間				  パリイ
+				{{ScoreBorder<float>({60.0f,90.0f,120.0f,150.0f}),ScoreBorder<int>({5,4,3,2}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({240.0f,270.0f,300.0f,330.0f}),ScoreBorder<int>({15,12,9,6}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
 			};
 		}
 		//--------------------------------------------------------------------------------------

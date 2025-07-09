@@ -132,7 +132,7 @@ namespace basecross {
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (m_EnergyCharge >= 1.0){
-			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPushKeyTbl[VK_SPACE]) {
+			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPressedKeyTbl[VK_SPACE]) {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
 					SetAnim(L"Zone");
 					m_zoneAnim = 1.0f;
@@ -348,8 +348,8 @@ namespace basecross {
 	void Player::HandleDash(const float& elapsedTime)
 	{
 		if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, /*Return=*/true)) {
-			m_PlayerStateNum &= ‾PlayerState::DASH;
-			m_PlayerStateNum |= PlayerState::NORMAL;
+			m_PlayerStateNum -= PlayerState::DASH;
+			m_PlayerStateNum += PlayerState::NORMAL;
 			m_BoostInterval = 0.5f;  // 次のダッシュ待機
 		}
 		else {
