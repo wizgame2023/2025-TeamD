@@ -34,7 +34,7 @@ namespace basecross {
 		Vec3 direction = eye - targetPosition;
 		
 		m_Board->GetComponent<Transform>()->SetPosition(targetPosition + direction * 0.1f);
-		m_Board->GetComponent<Transform>()->SetScale(targetSize);
+		m_Board->GetComponent<Transform>()->SetScale(targetSize / 2.0f);
 	}
 }
 //end basecross

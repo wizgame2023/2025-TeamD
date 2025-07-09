@@ -51,6 +51,9 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_START", uiPath + L"BackSelect.png");
 		app->RegisterTexture(L"SELECT_START2", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
+
+		app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
+		app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
 	}
 
 	void SelectStage::CreateSelect() {
@@ -64,13 +67,17 @@ namespace basecross {
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
+		m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), true);
+		m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), true);
+		m_UDselect->SetDrawActive(false);
+		m_LRselect->SetDrawActive(true);
+
 		vector<wstring> dangerKey = { L"DANGER_LOW",L"DANGER_MIDDLE",L"DANGER_HIGH" };
 		vector<Col4> dangerColor = { Col4(0,1,0,1),Col4(1,1,0,1),Col4(1,0,0,1) };
 		auto& scene = App::GetApp()->GetScene<Scene>();
 
 		for (int i = 0; i < cityCount; i++) {
 			Vec3 position = Vec3(leftX - leftX * i, 0, 0);
-
 			ButtonManager::Create(GetThis<Stage>(), L"City", L"SELECT_BACK", L"SELECT_BACK_SELCT",
 				position , Vec2(212.5f,335.0f) * 1.5f, 
 				[position](shared_ptr<ObjectInterface> object) {
@@ -176,11 +183,15 @@ namespace basecross {
 	void SelectStage::AcceptStage(int index) {
 		m_StageNumber = index;
 		ButtonManager::instance->UseGroup(L"Difficulty" + to_wstring(index));
+		m_UDselect->SetDrawActive(true);
+		m_LRselect->SetDrawActive(false);
 	}
 	void SelectStage::AcceptDifficulty(int index) {
 		m_DifficultyLevel = index;
 		ButtonManager::instance->SetSelectIndex(L"", 0);
 		ButtonManager::instance->UseGroup(L"Accept");
+		m_UDselect->SetDrawActive(false);
+		m_LRselect->SetDrawActive(true);
 	}
 	void SelectStage::StartStage() {
 
