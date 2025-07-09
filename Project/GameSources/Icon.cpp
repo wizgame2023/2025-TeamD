@@ -22,7 +22,7 @@ namespace basecross {
 		m_Icon->SetDrawLayer(3);
 
 		m_IconEffect = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_EFFECT", position + Vec3(15, -10, 0), Vec2(120.0f));
-		m_IconEffect->SetDrawLayer(1);
+		m_IconEffect->SetDrawLayer(2);
 		m_IconEffect->SetDiffuse(Col4(1,1,1,1));
 
 		m_IconEffectWaku = GetStage()->AddGameObject<Sprite>(L"ACTION_ULT_WAKU_EFFECT", position, Vec2(150.0f));
@@ -75,9 +75,9 @@ namespace basecross {
 			//m_Icon->SetDiffuse(Col4(1, 1, 1, 1));
 			m_Icon->SetDrawActive(true);
 			m_IconBackGround->SetDrawActive(false);
-			m_IconBackGround->SetDrawLayer(2);
+			m_IconBackGround->SetDrawLayer(0);
 			m_IconBackGroundKey->SetDrawActive(false);
-			m_IconBackGroundKey->SetDrawLayer(2);
+			m_IconBackGroundKey->SetDrawLayer(0);
 		}
 		else 
 		{

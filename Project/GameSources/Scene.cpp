@@ -58,6 +58,20 @@ namespace basecross {
     
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 			m_MaxCount = 3;
+			auto hWnd = App::GetApp()->GetHWnd();
+
+			// 背景色を動的に変更
+
+			HBRUSH hNewBrush = CreateSolidBrush(RGB(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f));
+
+			SetClassLongPtr(hWnd, GCLP_HBRBACKGROUND, (LONG_PTR)hNewBrush);
+
+			// 再描画
+
+			InvalidateRect(hWnd, nullptr, TRUE);
+
+			UpdateWindow(hWnd);
+
 			App::GetApp()->SetFullScreenMode();
 			//App::GetApp()->GetStepTimer().SetFixedTimeStep(true);
 			//App::GetApp()->GetStepTimer().SetTargetElapsedSeconds(1.0 / 60.0);

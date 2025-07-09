@@ -175,6 +175,9 @@ namespace basecross {
 		//コントローラ入力(つながっていないならマウス操作)
 		if (cntlVec.bConnected) {
 			m_Angle -= m_RotateSpeed * elapsed * cntlVec.fThumbRX;
+
+			// Pitch
+			m_Pitch += m_RotateSpeed * elapsed * cntlVec.fThumbRY;
 		}
 		else{
 			++m_FrameCounter;
@@ -184,14 +187,22 @@ namespace basecross {
 				// 中央に戻す
 				::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
 			}
-			POINT now;
-			::GetCursorPos(&now);
-
+			// マウスフレーム制御は省略
+			POINT now; ::GetCursorPos(&now);	
 			float dx = float(now.x - m_CenterPt.x);
+			float dy = float(now.y - m_CenterPt.y);
+				
+			// Yaw
 			m_Angle -= dx * m_MouseSensitivityX;
+			// Pitch（符号は好みで反転可）
+			m_Pitch -= dy * m_MouseSensitivityX * 0.1f;
+
 		}
+
+		m_Pitch = max(m_MinPitch, min(m_MaxPitch, m_Pitch));
 		//方向
 		m_Direction = Vec3(cos(m_Angle), 0.0f, sin(m_Angle));
+		m_Direction.y = sinf(m_Pitch);
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
 		Vec2 dire = CameraUp(0.75f);
