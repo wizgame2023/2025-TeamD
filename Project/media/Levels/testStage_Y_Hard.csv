@@ -140,4 +140,4 @@ enemy,4.86_2.209_30.8,0.7_0.7_0.7,0_0_0,Untagged,7,2,Enemy,name_position_scale_r
 enemy,-7.13_2.209_23.94,0.7_0.7_0.7,0_0_0,Untagged,7,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,4.62_2.209_22.63,0.7_0.7_0.7,0_0_0,Untagged,7,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,0.03_2.209_20.28,0.7_0.7_0.7,0_0_0,Untagged,7,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-boss,0_2_32.49,1.7_1.7_1.7,0_0_0,Untagged,300,Boss,name_position_scale_rotation_tag_hp_type_
+boss,0_2_32.49,1.7_1.7_1.7,0_0_0,Untagged,100,Boss,name_position_scale_rotation_tag_hp_type_
