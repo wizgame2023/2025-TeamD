@@ -51,6 +51,9 @@ namespace basecross {
 		app->RegisterTexture(L"SELECT_START", uiPath + L"BackSelect.png");
 		app->RegisterTexture(L"SELECT_START2", uiPath + L"BackGame.png");
 		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
+
+		//app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
+		//app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
 	}
 
 	void SelectStage::CreateSelect() {
@@ -59,6 +62,9 @@ namespace basecross {
 		float leftX = -340.0f;
 
 		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
+		//m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(450.0f, -170.0f, 0.0f), Vec2(60.0f, 60.0f), true);
+		//m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(500.0f, -170.0f, 0.0f), Vec2(60.0f, 60.0f), true);
+		//m_UDselect->SetDrawActive(false);
 		//auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
 		//auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
 		AddGameObject<ButtonManager>();
@@ -70,7 +76,6 @@ namespace basecross {
 
 		for (int i = 0; i < cityCount; i++) {
 			Vec3 position = Vec3(leftX - leftX * i, 0, 0);
-
 			ButtonManager::Create(GetThis<Stage>(), L"City", L"SELECT_BACK", L"SELECT_BACK_SELCT",
 				position , Vec2(212.5f,335.0f) * 1.5f, 
 				[position](shared_ptr<ObjectInterface> object) {

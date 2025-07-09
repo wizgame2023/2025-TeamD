@@ -31,6 +31,8 @@ namespace basecross {
 		shared_ptr<Sprite>m_StageSprite;
 		shared_ptr<NumberSprite> m_Number;
 		shared_ptr<SpriteFade> m_Fade;
+		shared_ptr<Sprite> m_LRselect;
+		shared_ptr<Sprite> m_UDselect;
 
 		vector<shared_ptr<Sprite>> m_Difficultys;
 		//bool m_fade;
