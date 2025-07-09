@@ -1,4 +1,4 @@
-stage,easy,mob_boss,Stage,name_difficulty_enemys_type_
+stage,hard,mob_boss,Stage,name_difficulty_enemys_type_
 Ground,0_0_0,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_-55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_64.9,26_1_75.02478,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -31,7 +31,7 @@ area,-13_2_-4.44,47.57091_5_1,0_90_0,Untagged,Object,name_position_scale_rotatio
 area,0_2_18.43,1_5_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
 area,0_2_-28,1_5_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
 area,12.19_2_-4.44,47.57091_5_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-player,-0.75_1.3_-10,0.75_0.75_0.75,0_0_0,Untagged,50,Player,name_position_scale_rotation_tag_hp_type_
+player,-0.75_1.3_-25,0.75_0.75_0.75,0_0_0,Untagged,50,Player,name_position_scale_rotation_tag_hp_type_
 wave,1,8,1,Wave,name_wave_max_interval_type_
 enemy,-9.12_2.099_-22,0.7_0.7_0.7,0_0_0,Untagged,1,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,-7_2_-20,0.7_0.7_0.7,0_0_0,Untagged,1,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
