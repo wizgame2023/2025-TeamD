@@ -413,12 +413,14 @@ namespace basecross {
 
 		size_t& selectIndex = m_SelectIndexes[m_UsingGroup];
 
+		//選択中のボタンが非アクティブ状態なら移動する
 		if (!m_ButtonGroup[m_UsingGroup][selectIndex]->GetActive()) {
 			//基本的には前に移動する。移動できない時は次に移動
-			selectIndex = selectIndex > 0 ? --selectIndex : ++selectIndex;
+			selectIndex = selectIndex > 0 ? selectIndex - 1 : selectIndex + 1;
 		}
 
 		InputData data(0, 0);
+		//選択
 		if (PressSelect(m_UsingGroup,data)) {
 			int checkButton = static_cast<int>(selectIndex) + data.m_MoveAmount;
 			checkButton = min(static_cast<int>(m_ButtonGroup[m_UsingGroup].size()) - 1, checkButton);
@@ -431,7 +433,7 @@ namespace basecross {
 			}
 		}
 		LimitIndex();
-
+		//選択状態の適用
 		for (int i = 0; i < m_ButtonGroup[m_UsingGroup].size(); i++) {
 			if (i == selectIndex) {
 				m_ButtonGroup[m_UsingGroup][i]->Select();
@@ -440,6 +442,7 @@ namespace basecross {
 				m_ButtonGroup[m_UsingGroup][i]->UnSelect();
 			}
 		}
+		//決定
 		if (PressAccept(m_UsingGroup, m_PressedAccept[m_UsingGroup])) {
 			if (m_ClickSound != L"") {
 				SoundManager::Instance().PlaySE(m_ClickSound);
@@ -448,6 +451,7 @@ namespace basecross {
 			m_ButtonGroup[m_UsingGroup][selectIndex]->Func();
 		}
 
+		//移動
 		for (auto& groupMovementAmount : m_GroupMovementAmount) {
 			Vec3 movementAmount = groupMovementAmount.second;
 			if (movementAmount.length() != 0) {

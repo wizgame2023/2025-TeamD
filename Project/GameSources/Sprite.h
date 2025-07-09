@@ -716,7 +716,10 @@ namespace basecross{
 
 			return sprite;
 		}
-
+		/// <summary>
+		/// 指定したグループの初期化
+		/// </summary>
+		/// <param name="group">グループ名</param>
 		void InitGroup(const wstring& group);
 	public:
 		static shared_ptr<ButtonManager> instance;
@@ -747,14 +750,37 @@ namespace basecross{
 		virtual void OnUpdate()override;
 		virtual void OnDestroy()override;
 
+		/// <summary>
+		/// Updataを実行できる状態か確認
+		/// </summary>
+		/// <returns>状態</returns>
 		bool CheckUpdate();
+
+		/// <summary>
+		/// コントローラーの入力確認
+		/// </summary>
+		/// <param name="input">入力データ</param>
+		/// <returns>入力の有無</returns>
 		bool CheckMoveInput(InputData& input);
 
+		/// <summary>
+		/// 指定したグループが登録されているか
+		/// </summary>
+		/// <typeparam name="T">配列データの型</typeparam>
+		/// <param name="vec">検索する配列</param>
+		/// <param name="group">グループ名</param>
+		/// <returns>登録されているか</returns>
 		template<typename T>
 		inline bool FindGroup(group<T> vec,const wstring& group) {
 			return vec.find(group) != end(vec);
 		}
 
+		/// <summary>
+		/// ボタンのスプライトを取得
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="index">登録番号</param>
+		/// <returns>ボタンのスプライト</returns>
 		shared_ptr<Sprite> GetButtonSprite(const wstring& group, int index) {
 			if (FindGroup(m_ButtonGroup,group)) {
 				auto vec = m_ButtonGroup[group];
@@ -766,6 +792,12 @@ namespace basecross{
 			return nullptr;
 		}
 
+		/// <summary>
+		/// 選択入力の確認
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="data">データ格納用</param>
+		/// <returns>入力の有無</returns>
 		bool PressSelect(const wstring& group,InputData& data) {
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
 
@@ -793,6 +825,13 @@ namespace basecross{
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// 決定入力の確認
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="data">データ格納用</param>
+		/// <returns>入力の有無</returns>
 		bool PressAccept(const wstring& group,WORD& data) {
 			auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 			auto keyborad = App::GetApp()->GetInputDevice().GetKeyState();
@@ -815,12 +854,24 @@ namespace basecross{
 			data = 0;
 			return false;
 		}
+
+		/// <summary>
+		/// 選択中の番号を取得
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <returns>番号</returns>
 		size_t GetSelectIndex(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				return m_SelectIndexes[group];
 			}
 			return -1;
 		}
+
+		/// <summary>
+		/// 選択する番号の指定
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="index">番号</param>
 		void SetSelectIndex(const wstring& group,int index) {
 			if (group == L"") {
 				if (index < m_ButtonGroup[m_UsingGroup].size()) {
@@ -835,6 +886,11 @@ namespace basecross{
 				}
 			}
 		}
+
+		/// <summary>
+		/// 使用中のグループがあるか
+		/// </summary>
+		/// <returns>使用中のグループの有無</returns>
 		bool ExistOpenGroup() {
 			for (auto& buttons : m_ButtonGroup) {
 				if (buttons.second[0]->GetDrawActive()) {
@@ -843,6 +899,12 @@ namespace basecross{
 			}
 			return false;
 		}
+
+		/// <summary>
+		/// 登録されたボタンの数を取得
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <returns>ボタンの数</returns>
 		size_t GetSize(const wstring& group) {
 			if (FindGroup(m_InputDates, group)) {
 				return m_ButtonGroup[group].size();
