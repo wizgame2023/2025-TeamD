@@ -41,6 +41,8 @@ namespace basecross {
 		Col4 m_NormalColor;
 		float m_PressTime;
 		float m_MaxPressTime;
+
+		function<bool()> m_CheckFunc;
 	public:
 		NormalIcon(const shared_ptr<Stage>& stage,const wstring& key,Vec3 position,Col4 pressed,Col4 normal,float time) :
 			GameObject(stage),m_TexKey(key),m_Position(position),
@@ -58,6 +60,10 @@ namespace basecross {
 		}
 		void SetKeyInput(DWORD input) {
 			m_KeyInput = input;
+		}
+
+		void SetCheck(function<bool()> func) {
+			m_CheckFunc = func;
 		}
 	};
 }

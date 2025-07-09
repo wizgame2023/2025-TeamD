@@ -101,28 +101,21 @@ namespace basecross {
 		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 
 		float elapsed = App::GetApp()->GetElapsedTime();
-		if (device.bConnected) {
-			if (device.wPressedButtons & m_Input) {
-				m_IsPressed = true;
-				m_PressTime = m_MaxPressTime;
-			}
-		}
-		if (keyState.m_bPressedKeyTbl[m_KeyInput]) {
-			m_IsPressed = true;
-			m_PressTime = m_MaxPressTime;
-		}
-
-		if (m_IsPressed) {
-			m_Icon->SetDiffuse(m_PressedColor);
-			m_PressTime -= elapsed;
-			if (m_PressTime <= 0) {
-				m_PressTime = m_MaxPressTime;
+		if (m_CheckFunc != nullptr) {
+			if (!m_CheckFunc()) {
+				m_Icon->SetDiffuse(m_PressedColor);
 				m_IsPressed = false;
+				m_PressTime -= elapsed;
+				if (m_PressTime <= 0) {
+					m_PressTime = m_MaxPressTime;
+					m_IsPressed = false;
+				}
+			}
+			else {
+				m_Icon->SetDiffuse(m_NormalColor);
 			}
 		}
-		else {
-			m_Icon->SetDiffuse(m_NormalColor);
-		}
+		
 	}
 	void NormalIcon::SetDraw(bool a)
 	{
