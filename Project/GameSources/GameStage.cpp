@@ -184,17 +184,21 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+
+
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 40.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_NormalIcon->SetKeyInput(VK_LBUTTON);
+		m_NormalIcon->SetCheck(bind(&Player::IsAttack, player));
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_Icon->SetKeyInput(VK_RBUTTON);
+		m_Icon->SetCheck(bind(&Player::IsDash,player));
 		m_UltIcon = AddGameObject<UltIcon>();
 
-		auto player = GetSharedGameObject<Player>(L"Player", false);
 		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(540.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
 		auto frame = m_PlayerHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0), Vec2(600.0f, 40.0f));
 		m_PlayerHpBar->SetBackColor(Col4(0, 0, 0, 1));

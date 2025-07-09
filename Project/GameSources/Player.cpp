@@ -678,6 +678,12 @@ namespace basecross {
 	bool Player::GetParry() {
 		return m_ParryJudge;
 	}
+	bool Player::IsAttack() {
+		return IntervalTimer(true, 0.2f, 0.0f, m_AttackInterval, false) && !(m_PlayerStateNum & PlayerState::ATTACK);
+	}
+	bool Player::IsDash() {
+		return IntervalTimer(true, 0.5f, 0.0f, m_BoostInterval, false) && !(m_PlayerStateNum & PlayerState::DASH);
+	}
 	void Player::SetParryPosition(const Vec3& position) {
 		m_EffectVec = position;
 	}
