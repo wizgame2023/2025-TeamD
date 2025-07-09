@@ -276,7 +276,6 @@ int APIENTRY _tWinMain(_In_ HINSTANCE hInstance,
 	{
 		return FALSE;
 	}
-
 	return  MainLoop(hInstance, hWnd, isFullScreen, g_ClientWidth, g_ClientHeight);
 
 }
