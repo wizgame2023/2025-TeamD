@@ -68,10 +68,12 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_DASH_KEY", uiPath + L"UI_Dash_X_Key.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME_KEY", uiPath + L"UI_Ult_Waku_B_Key.png");
 		
-		// selectUiがまだないためコメント化してます
 				
 		//app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
 		//app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
+		// 
+		//app->RegisterTexture(L"MENU_KEY", uiPath + L"UI_Menu.png");
+
 
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
