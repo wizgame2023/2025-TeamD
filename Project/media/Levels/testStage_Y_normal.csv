@@ -95,4 +95,4 @@ enemy,4.62_4.369_19.39,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_
 enemy,0.07_4.369_20.84,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,0.03_4.369_18.99,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,-7.13_4.369_22.5,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
-boss,0_2_18.46,1.7_1.7_1.7,0_0_0,Untagged,150,Boss,name_position_scale_rotation_tag_hp_type_
+boss,0_2_18.46,1.7_1.7_1.7,0_0_0,Untagged,100,Boss,name_position_scale_rotation_tag_hp_type_
