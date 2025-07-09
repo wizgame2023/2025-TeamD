@@ -684,21 +684,26 @@ namespace basecross{
 	//----------------------------------------------------------
 
 	class ButtonManager : public GameObject{
+
+		template<typename T>
+		using group = map<wstring, T>;
+
 		//ボタン格納用配列
-		map<wstring, vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
+		group<vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
 		//選択中の番号
-		map<wstring, size_t> m_SelectIndexes;
+		group<size_t> m_SelectIndexes;
 		//反映させる移動量
-		map<wstring, Vec3> m_GroupMovementAmount;
+		group<Vec3> m_GroupMovementAmount;
 		//入力
-		map<wstring, vector<InputData>> m_InputDates;
-		map<wstring, vector<InputData>> m_KeyboradInputDates;
+		group<vector<InputData>> m_InputDates;
+		group<vector<InputData>> m_KeyboradInputDates;
 		
 		//決定ボタン
-		map<wstring, vector<WORD>> m_AcceptButtons;
-		map<wstring, vector<WORD>> m_KeyboradAcceptButtons;
+		group<vector<WORD>> m_AcceptButtons;
+		group<vector<WORD>> m_KeyboradAcceptButtons;
 		//その瞬間に押された決定ボタン
-		map<wstring, WORD> m_PressedAccept;
+		group<WORD> m_PressedAccept;
+
 		wstring m_UsingGroup;
 		//クリック音のキー
 		wstring m_ClickSound;
