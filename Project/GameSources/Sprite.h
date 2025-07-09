@@ -686,31 +686,23 @@ namespace basecross{
 	class ButtonManager : public GameObject{
 
 		template<typename T>
-		using group = map<wstring, T>;
+		using group = map<wstring, T>;	//usingテンプレート
 
-		//ボタン格納用配列
-		group<vector<shared_ptr<SpriteButton>>> m_ButtonGroup;
-		//選択中の番号
-		group<size_t> m_SelectIndexes;
-		//反映させる移動量
-		group<Vec3> m_GroupMovementAmount;
-		//入力
-		group<vector<InputData>> m_InputDates;
-		group<vector<InputData>> m_KeyboradInputDates;
-		
-		//決定ボタン
-		group<vector<WORD>> m_AcceptButtons;
-		group<vector<WORD>> m_KeyboradAcceptButtons;
-		//その瞬間に押された決定ボタン
-		group<WORD> m_PressedAccept;
+		group<vector<shared_ptr<SpriteButton>>> m_ButtonGroup;			//ボタン格納用配列
+		group<size_t>							m_SelectIndexes;		//選択中の番号
+		group<	Vec3>							m_GroupMovementAmount;	//反映させる移動量
+		group<vector<InputData>>				m_InputDates;			//コントローラー入力
+		group<vector<InputData>>				m_KeyboradInputDates;	//キーボード入力
+		group<vector<WORD>>						m_AcceptButtons;		//コントローラー決定ボタン
+		group<vector<WORD>>						m_KeyboradAcceptButtons;//キーボード決定ボタン
+		group<	WORD>							m_PressedAccept;		//その瞬間に押された決定ボタン
 
-		wstring m_UsingGroup;
-		//クリック音のキー
-		wstring m_ClickSound;
-		//選択音のキー
-		wstring m_SelectSound;
-		//Updateさせるか
-		bool m_IsActive;
+		wstring m_UsingGroup;	//使用中のグループ名
+		wstring m_ClickSound;	//クリック音のキー
+		wstring m_SelectSound;	//選択音のキー
+
+		bool	m_IsActive;		//Updateさせるか
+
 
 		shared_ptr<Sprite> Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func);
 
@@ -759,7 +751,7 @@ namespace basecross{
 		bool CheckMoveInput(InputData& input);
 
 		template<typename T>
-		inline bool FindGroup(map<wstring,T> vec,const wstring& group) {
+		inline bool FindGroup(group<T> vec,const wstring& group) {
 			return vec.find(group) != end(vec);
 		}
 

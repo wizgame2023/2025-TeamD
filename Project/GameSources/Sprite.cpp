@@ -414,6 +414,7 @@ namespace basecross {
 		size_t& selectIndex = m_SelectIndexes[m_UsingGroup];
 
 		if (!m_ButtonGroup[m_UsingGroup][selectIndex]->GetActive()) {
+			//基本的には前に移動する。移動できない時は次に移動
 			selectIndex = selectIndex > 0 ? --selectIndex : ++selectIndex;
 		}
 
@@ -423,6 +424,9 @@ namespace basecross {
 			checkButton = min(static_cast<int>(m_ButtonGroup[m_UsingGroup].size()) - 1, checkButton);
 			checkButton = max(0, checkButton);
 			if (m_ButtonGroup[m_UsingGroup][checkButton]->GetActive()) {
+				if (m_SelectSound != L"") {
+					SoundManager::Instance().PlaySE(m_SelectSound);
+				}
 				selectIndex = checkButton;
 			}
 		}
