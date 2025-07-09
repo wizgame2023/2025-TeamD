@@ -1,4 +1,4 @@
-stage,easy,mob_boss,Stage,name_difficulty_enemys_type_
+stage,hard,mob_boss,Stage,name_difficulty_enemys_type_
 Ground,0_0_0,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_-55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 Ground,0_0_64.9,26_1_75.02478,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
