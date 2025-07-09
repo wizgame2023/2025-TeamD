@@ -63,6 +63,15 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_ULT_WAKU_EFFECT", uiPath + L"UI_Ult_Waku_Effect.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
 
+		//igc用UI
+		app->RegisterTexture(L"ACTION_PANCH_KEY", uiPath + L"UI_Panch_A_Key.png"); 
+		app->RegisterTexture(L"ACTION_DASH_KEY", uiPath + L"UI_Dash_X_Key.png");
+		app->RegisterTexture(L"ACTION_ULT_FRAME_KEY", uiPath + L"UI_Ult_Waku_B_Key.png");
+
+		app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
+		app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
+
+
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
 		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
