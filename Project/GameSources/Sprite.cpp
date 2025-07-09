@@ -427,6 +427,7 @@ namespace basecross {
 			}
 		}
 		LimitIndex();
+
 		for (int i = 0; i < m_ButtonGroup[m_UsingGroup].size(); i++) {
 			if (i == selectIndex) {
 				m_ButtonGroup[m_UsingGroup][i]->Select();
@@ -461,7 +462,6 @@ namespace basecross {
 			}
 		}
 
-		
 	}
 
 	void ButtonManager::OnDestroy() {
@@ -478,6 +478,7 @@ namespace basecross {
 		return true;
 	}
 	bool ButtonManager::CheckMoveInput(InputData& input) {
+
 		auto& inputState = App::GetApp()->GetInputDevice().GetControlerVec()[0];
 		if (input.m_Mode == InputMode::Button) {
 			return input.CheckInput(inputState.wPressedButtons);
