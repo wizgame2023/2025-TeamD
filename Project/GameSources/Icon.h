@@ -10,6 +10,7 @@ namespace basecross {
 	class Sprite;
 	class UltIcon : public GameObject {
 		shared_ptr<Sprite> m_IconBackGround;
+		shared_ptr<Sprite> m_IconBackGroundKey;
 		shared_ptr<Sprite> m_Icon;
 		shared_ptr<Sprite> m_IconEffect;
 		shared_ptr<Sprite> m_IconEffectWaku;
@@ -22,6 +23,7 @@ namespace basecross {
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		void SetDraw(bool a);
+		void SetIconDraw();
 		void SetCharge(float charge) {
 			m_Charge = charge;
 		}

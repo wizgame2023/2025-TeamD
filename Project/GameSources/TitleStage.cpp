@@ -54,14 +54,17 @@ namespace basecross {
 		//borad->SetColor(Col4(0, 0, 0, 1));
 		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
 		m_Title->SetDrawLayer(6);
-		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(375.0f, 180.0f),true);
+		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(250.0f, 120.0f), true);
 		m_Start->SetDrawLayer(6);
+		m_StartKey = AddGameObject<Sprite>(L"STARTA_KEY", Vec3(0.0f, -270.0f, 0.0f), Vec2(375.0f, 180.0f), true);
+		m_StartKey->SetDrawLayer(6);
 		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
 		fadeSprite->SetDrawLayer(6);
 		m_Titlemodel = AddGameObject<TirleStageModel>();
 		m_Titlemodel->SetDrawActive(false);
 		//点滅設定
 		m_Start->AddComponent<SpriteFlash>(0.8f);
+		m_StartKey->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
 		m_Fade->Stop();
@@ -93,6 +96,9 @@ namespace basecross {
 			m_Titlemodel->SetDrawActive(true);
 			m_BackGround->SetDrawActive(true);
 		}
+		else {
+			DrawIcon();
+		}
 		if (m_Titlemodel->GetEndFlag())
 		{
 			m_Fade->Play();
@@ -101,6 +107,21 @@ namespace basecross {
 		if (m_Fade->IsFinish())
 		{
 			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+		}
+	}
+
+	void TitleStage::DrawIcon()
+	{
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected)
+		{
+			m_Start->SetDrawActive(true);
+			m_StartKey->SetDrawActive(false);
+		}
+		else
+		{
+			m_Start->SetDrawActive(false);
+			m_StartKey->SetDrawActive(true);
 		}
 	}
 
@@ -114,6 +135,7 @@ namespace basecross {
 		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), rotate);
 		m_Effect->SetEffectSpeed(m_Handle, 0.1f);
 		m_Start->SetDrawActive(false);
+		m_StartKey->SetDrawActive(false);
 		m_Title->SetDrawActive(false);
 		SoundManager::Instance().PlaySE(L"SE_CRACK", 1.0f);
 	}

@@ -348,8 +348,8 @@ namespace basecross {
 	void Player::HandleDash(const float& elapsedTime)
 	{
 		if (IntervalTimer(true, 0.2f, elapsedTime, m_BoostTime, /*Return=*/true)) {
-			m_PlayerStateNum &= ‾PlayerState::DASH;
-			m_PlayerStateNum |= PlayerState::NORMAL;
+			m_PlayerStateNum -= PlayerState::DASH;
+			m_PlayerStateNum += PlayerState::NORMAL;
 			m_BoostInterval = 0.5f;  // 次のダッシュ待機
 		}
 		else {
