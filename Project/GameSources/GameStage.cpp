@@ -189,26 +189,15 @@ namespace basecross {
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
-		m_NormalIcon->SetKeyInput(VK_LBUTTON);
 		m_NormalIcon->SetCheck(bind(&Player::IsAttack, player));
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		m_Icon->SetInput(XINPUT_GAMEPAD_X);
-		m_Icon->SetKeyInput(VK_RBUTTON);
-		m_Icon->SetCheck(bind(&Player::IsDash, player));
+		m_Icon->SetCheck(bind(&Player::IsDash,player));
 
-
-		m_NormalIconKey = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		m_NormalIconKey->SetInput(XINPUT_GAMEPAD_A);
-		m_NormalIconKey->SetKeyInput(VK_LBUTTON);
+		m_NormalIconKey = AddGameObject<NormalIcon>(L"ACTION_PANCH_KEY", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIconKey->SetCheck(bind(&Player::IsAttack, player));
-		m_IconKey = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		m_IconKey->SetInput(XINPUT_GAMEPAD_X);
-		m_IconKey->SetKeyInput(VK_RBUTTON);
-		m_IconKey->SetCheck(bind(&Player::IsDash, player));
 
-		m_MenuIconKey = AddGameObject<NormalIcon>(L"MENU_KEY", Vec3(-630.0f, -280.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
-		m_MenuIconKey->SetKeyInput(VK_TAB);
+		m_IconKey = AddGameObject<NormalIcon>(L"ACTION_DASH_KEY", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_IconKey->SetCheck(bind(&Player::IsDash, player));
 
 		m_UltIcon = AddGameObject<UltIcon>();
 

@@ -97,25 +97,14 @@ namespace basecross {
 		m_Icon = GetStage()->AddGameObject<Sprite>(m_TexKey, m_Position, Vec2(150.0f));
 	}
 	void NormalIcon::OnUpdate() {
-		auto device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
-		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
-
-		float elapsed = App::GetApp()->GetElapsedTime();
 		if (m_CheckFunc != nullptr) {
 			if (!m_CheckFunc()) {
 				m_Icon->SetDiffuse(m_PressedColor);
-				m_IsPressed = false;
-				m_PressTime -= elapsed;
-				if (m_PressTime <= 0) {
-					m_PressTime = m_MaxPressTime;
-					m_IsPressed = false;
-				}
 			}
 			else {
 				m_Icon->SetDiffuse(m_NormalColor);
 			}
 		}
-		
 	}
 	void NormalIcon::SetDraw(bool a)
 	{
