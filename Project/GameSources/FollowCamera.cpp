@@ -196,7 +196,7 @@ namespace basecross {
 			m_Angle -= dx * m_MouseSensitivityX;
 			// Pitch（符号は好みで反転可）
 			m_Pitch -= dy * m_MouseSensitivityX * 0.1f;
-
+			//m_CenterPt = now;
 		}
 
 		m_Pitch = max(m_MinPitch, min(m_MaxPitch, m_Pitch));

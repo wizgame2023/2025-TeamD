@@ -360,6 +360,7 @@ namespace basecross {
 			}
 			m_UltIcon->SetDraw(true);
 			m_PlayerHpBar->SetDrawActive(true);
+			m_BossStunBar->SetDrawActive(true);
 		}
 		else {
 			m_NormalIcon->SetDraw(false);
@@ -463,7 +464,7 @@ namespace basecross {
 			CreateSharedObjectGroup(L"PointerGroup");
 			CreateSharedObjectGroup(L"Legion");
 			CreateSharedObjectGroup(L"Citizen");
-
+			
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();

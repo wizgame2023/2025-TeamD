@@ -191,7 +191,7 @@ namespace basecross {
 		ButtonManager::instance->SetSelectIndex(L"", 0);
 		ButtonManager::instance->UseGroup(L"Accept");
 		m_UDselect->SetDrawActive(false);
-		m_LRselect->SetDrawActive(true);
+		m_LRselect->SetDrawActive(false);
 	}
 	void SelectStage::StartStage() {
 
