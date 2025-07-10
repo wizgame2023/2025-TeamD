@@ -69,11 +69,8 @@ namespace basecross {
 		app->RegisterTexture(L"ACTION_PANCH_KEY", uiPath + L"UI_Panch_A_Key.png"); 
 		app->RegisterTexture(L"ACTION_DASH_KEY", uiPath + L"UI_Dash_X_Key.png");
 		app->RegisterTexture(L"ACTION_ULT_FRAME_KEY", uiPath + L"UI_Ult_Waku_B_Key.png");
-				
-		//app->RegisterTexture(L"SELECT_LFFT_RIGHT", uiPath + L"Select_UI_Left_Right.png");
-		//app->RegisterTexture(L"SELECT_UP_DOWN", uiPath + L"Select_UI_Up_Down.png");
-		// 
-		//app->RegisterTexture(L"MENU_KEY", uiPath + L"UI_Menu.png");
+
+		app->RegisterTexture(L"MENU_KEY", uiPath + L"UI_Menu_Key.png");
 
 		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
 		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
@@ -185,26 +182,36 @@ namespace basecross {
 	}
 
 	void GameStage::CreateUI() {
+		auto player = GetSharedGameObject<Player>(L"Player", false);
+
+
 		Vec3 bossHpPosition = Vec3(-400.0f, 400.0f - 40.0f, 0.0f);
 		Vec3 playerHpPosition = Vec3(-270.0f, -353.0f, 0.0f);
 
 		m_NormalIcon = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIcon->SetInput(XINPUT_GAMEPAD_A);
 		m_NormalIcon->SetKeyInput(VK_LBUTTON);
+		m_NormalIcon->SetCheck(bind(&Player::IsAttack, player));
 		m_Icon = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_Icon->SetInput(XINPUT_GAMEPAD_X);
 		m_Icon->SetKeyInput(VK_RBUTTON);
+		m_Icon->SetCheck(bind(&Player::IsDash, player));
 
-		m_NormalIconKey = AddGameObject<NormalIcon>(L"ACTION_PANCH_KEY", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+
+		m_NormalIconKey = AddGameObject<NormalIcon>(L"ACTION_PANCH", Vec3(410.0f, -257.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_NormalIconKey->SetInput(XINPUT_GAMEPAD_A);
 		m_NormalIconKey->SetKeyInput(VK_LBUTTON);
-		m_IconKey = AddGameObject<NormalIcon>(L"ACTION_DASH_KEY", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_NormalIconKey->SetCheck(bind(&Player::IsAttack, player));
+		m_IconKey = AddGameObject<NormalIcon>(L"ACTION_DASH", Vec3(287.0f, -158.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
 		m_IconKey->SetInput(XINPUT_GAMEPAD_X);
 		m_IconKey->SetKeyInput(VK_RBUTTON);
+		m_IconKey->SetCheck(bind(&Player::IsDash, player));
+
+		m_MenuIconKey = AddGameObject<NormalIcon>(L"MENU_KEY", Vec3(-630.0f, -280.0f, 0.0f), Col4(1, 1, 1, 0.5f), Col4(1, 1, 1, 1.0f), 0.5f);
+		m_MenuIconKey->SetKeyInput(VK_TAB);
 
 		m_UltIcon = AddGameObject<UltIcon>();
 
-		auto player = GetSharedGameObject<Player>(L"Player", false);
 		m_PlayerHpBar = AddGameObject<HpSprite>(static_pointer_cast<Character>(player), playerHpPosition, Vec3(540.0f, 20.5f, 0.0f), Col4(0.1, 0.8, 0.1, 1));
 		auto frame = m_PlayerHpBar->AddSprite(L"HP_BAR_FRAME", Vec3(-50, 10, 0), Vec2(600.0f, 40.0f));
 		m_PlayerHpBar->SetBackColor(Col4(0, 0, 0, 1));
@@ -232,12 +239,14 @@ namespace basecross {
 			m_IconKey->SetDraw(false);
 			m_NormalIcon->SetDraw(true);
 			m_Icon->SetDraw(true);
+			//m_MenuIconKey->SetDraw(false);
 		}
 		else {
 			m_NormalIconKey->SetDraw(true);
 			m_IconKey->SetDraw(true);
 			m_NormalIcon->SetDraw(false);
 			m_Icon->SetDraw(false);
+			//m_MenuIconKey->SetDraw(true);
 		}
 	}
 	/// <summary>

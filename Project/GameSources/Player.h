@@ -166,6 +166,12 @@ namespace basecross {
         /// @brief パリィ可能か
         bool GetParry();
 
+        /// @brief 攻撃可能か判定
+        bool IsAttack();
+
+        /// @brief ダッシュ可能か判定
+        bool IsDash();
+
         /**
          * @brief パリィ判定位置設定
          * @param position 位置

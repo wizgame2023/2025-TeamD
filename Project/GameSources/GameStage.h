@@ -45,6 +45,7 @@ namespace basecross {
 		shared_ptr<NormalIcon> m_NormalIcon;
 		shared_ptr<NormalIcon> m_Icon;
 		shared_ptr<NormalIcon> m_NormalIconKey;
+		shared_ptr<NormalIcon> m_MenuIconKey;
 		shared_ptr<NormalIcon> m_IconKey;
 		shared_ptr<UltIcon> m_UltIcon;
 		shared_ptr<HpSprite> m_PlayerHpBar;

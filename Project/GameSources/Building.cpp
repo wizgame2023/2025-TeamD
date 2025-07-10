@@ -23,7 +23,6 @@ namespace basecross {
 		ptrDraw->SetTextureResource(L"GROUND");
 
 		ptrDraw->SetOwnShadowActive(true);
-
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetLightHeight(150.0f);
 		//shadowPtr->SetViewWidth(200.0f);
