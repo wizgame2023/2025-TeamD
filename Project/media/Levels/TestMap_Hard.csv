@@ -84,4 +84,17 @@ enemy,4_1_0,0.7_0.7_0.7,0_0_0,Untagged,4,2,Enemy,name_position_scale_rotation_ta
 enemy,-6.8_1_1,0.7_0.7_0.7,0_0_0,Untagged,4,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,6_1_1,0.7_0.7_0.7,0_0_0,Untagged,4,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 enemy,0_1_1,0.7_0.7_0.7,0_0_0,Untagged,4,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+wave,5,5,1,Wave,name_wave_max_interval_type_
+enemy,-9.12_1_2,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,-7_1_4,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,0_1_4,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,6.19_1_4,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,9_1_2,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,-8_1_5,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,8_1_5,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,-4_1_6,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,4_1_6,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,-6.8_1_7,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,6_1_7,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
+enemy,0_1_7,0.7_0.7_0.7,0_0_0,Untagged,5,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
 boss,0_1.099_11.65,1.7_1.7_1.7,0_0_0,Untagged,150,Boss,name_position_scale_rotation_tag_hp_type_
