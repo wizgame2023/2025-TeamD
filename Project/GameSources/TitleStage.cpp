@@ -34,7 +34,7 @@ namespace basecross {
 		wstring effectPath = mediaPath + L"Effekt/";
 
 		app->RegisterTexture(L"TITLESPRITE", uiPath + L"Title_Rogo.png");
-		app->RegisterTexture(L"STRATA", uiPath + L"Start_A.png");
+		app->RegisterTexture(L"STRATA", uiPath + L"Start_AS.png");
 
 		//igc用UI
 		app->RegisterTexture(L"STARTA_KEY", uiPath + L"Start_A_Key.png");
