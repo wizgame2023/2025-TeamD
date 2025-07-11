@@ -40,17 +40,22 @@ namespace basecross {
 
 			m_Borders = {
 //						時間				  パリイ
-				{{ScoreBorder<float>({60.0f,90.0f,120.0f,150.0f}),ScoreBorder<int>({5,4,3,2}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({240.0f,270.0f,300.0f,330.0f}),ScoreBorder<int>({15,12,9,6}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{
+					{ScoreBorder<float>({60.0f,90.0f,120.0f,150.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({5,4,3,2})},
+					{ScoreBorder<float>({150.0f,180.0f,210.0f,240.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({15,12,9,6})},
+					{ScoreBorder<float>({200.0f,230.0f,260.0f,290.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({17,14,10,7})}
+				},
 
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
-
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
-				{{ScoreBorder<float>({}),ScoreBorder<int>({}, JudgeMode::UpperOrder)}},
+				{
+					{ScoreBorder<float>({90.0f,120.0f,150.0f,180.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({5,4,3,2})},
+					{ScoreBorder<float>({150.0f,180.0f,210.0f,240.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({15,12,9,6})},
+					{ScoreBorder<float>({230.0f,260.0f,290.0f,320.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({17,14,10,7})},
+				},
+				{
+					{ScoreBorder<float>({100.0f,130.0f,160.0f,190.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({5,4,3,2})},
+					{ScoreBorder<float>({170.0f,200.0f,230.0f,260.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({15,12,9,6})},
+					{ScoreBorder<float>({240.0f,270.0f,300.0f,330.0f}, JudgeMode::UpperOrder),ScoreBorder<int>({17,14,10,7})},
+				}
 			};
 		}
 		//--------------------------------------------------------------------------------------

@@ -36,6 +36,7 @@ namespace basecross {
 		//m_IconBackGroundKey->SetDrawActive(a);
 		m_Icon->SetDrawActive(a);
 		m_IconEffect->SetDrawActive(a);
+		m_IconEffectWaku->SetDrawActive(a);
 	}
 
 	void UltIcon::SetIconDraw()

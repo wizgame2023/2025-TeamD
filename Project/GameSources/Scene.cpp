@@ -127,9 +127,10 @@ namespace basecross {
 			else if (count->stageNum >= m_StageFile.size()) {
 				count->stageNum = 0;
 				count->level += 1;
-				ResetActiveStage<GameStage>(GetFileName(*count), *count);
-				return;
 			}
+
+			ScoreManager::Instance()->SetTimeBorder(m_Borders[count->stageNum][count->level].m_TimeBorder);
+			ScoreManager::Instance()->SetParryBorder(m_Borders[count->stageNum][count->level].m_ParryBorder);
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(GetFileName(*count),*count);
 		}
