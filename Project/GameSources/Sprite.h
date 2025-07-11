@@ -913,16 +913,42 @@ namespace basecross{
 				return 0;
 			}
 		}
+
+		/// <summary>
+		/// 位置移動量の設定
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="target">移動量</param>
 		void SetMoveAmount(const wstring& group, Vec3 target);
 
+		/// <summary>
+		/// 位置移動量の取得
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <returns>移動量</returns>
 		Vec3 GetMoveAmount(const wstring& group) {
 			if (FindGroup(m_GroupMovementAmount, group)) {
 				return m_GroupMovementAmount[group];
 			}
 		}
+
+		/// <summary>
+		/// 決定音の取得
+		/// </summary>
+		/// <param name="sound">サウンドキー</param>
 		void SetSound(const wstring& sound);
+
+		/// <summary>
+		/// 選択音の設定
+		/// </summary>
+		/// <param name="sound">サウンドキー</param>
 		void SetSelectSound(const wstring& sound);
 
+		/// <summary>
+		/// コントローラー決定ボタンの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="accept">ボタンの値</param>
 		void AddAcceptButton(const wstring& group, WORD accept) {
 			if (FindGroup(m_AcceptButtons, group)) {
 				m_AcceptButtons[group].push_back(accept);
@@ -934,6 +960,12 @@ namespace basecross{
 				m_PressedAccept.emplace(group, 0);
 			}
 		}
+
+		/// <summary>
+		/// キーボード決定キーの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="accept">キー</param>
 		void AddKeyboradAccept(const wstring& group, WORD accept) {
 			if (FindGroup(m_KeyboradAcceptButtons, group)) {
 				m_KeyboradAcceptButtons[group].push_back(accept);
@@ -945,15 +977,33 @@ namespace basecross{
 				//m_PressedAccept.emplace(group, 0);
 			}
 		}
+
+		/// <summary>
+		/// 押された決定ボタンの取得
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <returns>ボタンの値</returns>
 		WORD GetPressedAccept(const wstring& group) {
 			if (FindGroup(m_PressedAccept, group)) {
 				return m_PressedAccept[group];
 			}
 			return 0;
 		}
+		/// <summary>
+		/// コントローラー選択ボタンの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="input">ボタンの値</param>
+		/// <param name="amount">移動量</param>
 		void SetInput(const wstring& group,int input,int amount) {
 			SetInput(group, InputData(input, amount));
 		}
+
+		/// <summary>
+		/// コントローラー選択ボタンの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="data">入力データ</param>
 		void SetInput(const wstring& group, InputData data) {
 			if (FindGroup(m_InputDates, group)) {
 				m_InputDates[group].push_back(data);
@@ -964,10 +1014,22 @@ namespace basecross{
 				m_InputDates.emplace(group, dates);
 			}
 		}
+
+		/// <summary>
+		/// キーボード選択キーの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="input">キー</param>
+		/// <param name="amount">移動量</param>
 		void SetKeyborad(const wstring& group, int input, int amount) {
 			SetKeyborad(group, InputData(input, amount));
 		}
 		
+		/// <summary>
+		/// キーボード選択キーの追加
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <param name="data">入力データ</param>
 		void SetKeyborad(const wstring& group, InputData data) {
 			if (FindGroup(m_KeyboradInputDates, group)) {
 				m_KeyboradInputDates[group].push_back(data);
@@ -978,20 +1040,38 @@ namespace basecross{
 				m_KeyboradInputDates.emplace(group, dates);
 			}
 		}
+
+		/// <summary>
+		/// 登録されているグループを開く
+		/// </summary>
 		void OpenAll() {
 			for (auto& buttons : m_ButtonGroup) {
 				Open(buttons.first);
 			}
 		}
+
+		/// <summary>
+		/// 登録されているグループを閉じる
+		/// </summary>
 		void CloseAll() {
 			for (auto& buttons : m_ButtonGroup) {
 				Close(buttons.first);
 			}
 		}
+
+		/// <summary>
+		/// 指定したグループを開き、使用する
+		/// </summary>
+		/// <param name="group">グループ名</param>
 		void OpenAndUse(const wstring& group) {
 			Open(group);
 			UseGroup(group);
 		}
+
+		/// <summary>
+		/// 指定したグループを開く
+		/// </summary>
+		/// <param name="group">グループ名</param>
 		void Open(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
@@ -1000,6 +1080,11 @@ namespace basecross{
 			}
 			SetActive(true);
 		}
+
+		/// <summary>
+		/// 指定したグループを閉じる
+		/// </summary>
+		/// <param name="group">グループ名</param>
 		void Close(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				for (auto& button : m_ButtonGroup[group]) {
@@ -1009,18 +1094,37 @@ namespace basecross{
 				SetActive(false);
 			}
 		}
+
+		/// <summary>
+		/// Updateの設定
+		/// </summary>
+		/// <param name="flag">Updateするか</param>
 		void SetActive(bool flag) {
 			m_IsActive = flag;
 		}
+
+		/// <summary>
+		/// Updata状態の取得
+		/// </summary>
+		/// <returns>Update状態</returns>
 		bool GetActive() {
 			return m_IsActive;
 		}
+
+		/// <summary>
+		/// 選択中の番号が範囲外に行かないように制限する
+		/// </summary>
 		void LimitIndex() {
 			size_t maxIndex = m_ButtonGroup[m_UsingGroup].size() - 1;
 			size_t minIndex = 0;
 			m_SelectIndexes[m_UsingGroup] = max(minIndex, m_SelectIndexes[m_UsingGroup]);
 			m_SelectIndexes[m_UsingGroup] = min(maxIndex, m_SelectIndexes[m_UsingGroup]);
 		}
+		/// <summary>
+		/// 移動後の番号が範囲外に行っていないか判定する
+		/// </summary>
+		/// <param name="amount">移動量</param>
+		/// <returns>範囲内かどうか</returns>
 		bool CheckOverIndex(int amount) {
 			size_t index = m_SelectIndexes[m_UsingGroup];
 			index += amount;
@@ -1029,9 +1133,19 @@ namespace basecross{
 			}
 			return true;
 		}
+
+		/// <summary>
+		/// 現在使用中のグループ名
+		/// </summary>
+		/// <returns>グループ名</returns>
 		wstring GetUseGroup() {
 			return m_UsingGroup;
 		}
+
+		/// <summary>
+		/// 使用するグル−プの設定
+		/// </summary>
+		/// <param name="group">グループ名</param>
 		void UseGroup(const wstring& group) {
 			if (FindGroup(m_SelectIndexes, group)) {
 				InitGroup(m_UsingGroup);
@@ -1039,6 +1153,12 @@ namespace basecross{
 				m_UsingGroup = group;
 			}
 		}
+
+		/// <summary>
+		/// 指定したグループ名と現在使用しているグループ名が一致しているか判定する
+		/// </summary>
+		/// <param name="group">グループ名</param>
+		/// <returns>一致しているか</returns>
 		bool CompareUseGroup(const wstring& group) {
 			return m_UsingGroup == group;
 		}
@@ -1058,6 +1178,11 @@ namespace basecross{
 			}
 			button->SetOrder(static_cast<int>(m_ButtonGroup[group].size()) - 1);
 		}
+
+		/// <summary>
+		/// グループを削除
+		/// </summary>
+		/// <param name="group"></param>
 		void DeleteGroup(const wstring& group) {
 			if (FindGroup(m_ButtonGroup, group)) {
 				m_ButtonGroup.erase(group);
