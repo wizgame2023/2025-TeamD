@@ -21,10 +21,11 @@ namespace basecross {
 		float m_ZoneElapsedTime;
 
 		shared_ptr<BulletLine> m_Line;
+		shared_ptr<GameObject> m_Mob;
 		float m_LineLength;
 		bool m_bulletPally;
 	public:
-		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range);
+		Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range, shared_ptr<GameObject> enemy);
 		‾Bullet();
 		virtual void OnCreate() override;
 		virtual void OnUpdate()override;

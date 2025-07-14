@@ -26,6 +26,7 @@ namespace basecross {
         float m_ParryDamageIntervalTime;   ///< パリィ後ダメージインターバル
         float m_TotalTime;                 ///< 全体タイマー
         float m_BoostTime;                 ///< ブースト継続時間
+        float m_BoostConterTime;                 ///< ブースト継続時間
         float m_BoostInterval;             ///< ブースト再使用インターバル
         float m_Attacktime;                ///< 攻撃アニメーション再生時間
         float m_AttackInterval;            ///< 攻撃発生インターバル
@@ -38,6 +39,7 @@ namespace basecross {
         bool  m_IsGoal;                    ///< ゴール到達フラグ
         bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
         bool  m_IsParry;                   ///< パリィモード中フラグ
+        bool  m_IsParryCounter;                   ///< パリィモード中フラグ
         float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
         float m_ParryDamage;               ///< パリィ時反撃ダメージ
         float m_zoneAnim;                  ///< ゾーン演出進行度
@@ -53,6 +55,7 @@ namespace basecross {
         Effekseer::Handle m_BrinkHandle;   ///< 点滅エフェクトハンドル
         Effekseer::Handle m_ParryHandle;   ///< パリィエフェクトハンドル
         shared_ptr<TargetBoard> m_TargetBoard;///< 照準ボード
+		Vec3 m_TargetObject;///< ロックオン対象オブジェクト
 
         wstring m_AttackAnim;              ///< 攻撃アニメーション名
         bool    m_ParryComboActive;        ///< コンボ猶予中フラグ
@@ -60,9 +63,13 @@ namespace basecross {
         float   m_ParryComboTimer;         ///< 連続パリィ猶予時間
         float   m_time;                    ///< 汎用タイマー
         float   m_ParryComboWindow;        ///< 完璧パリィから次パリィ受付猶予[s]
+		float   m_ChargeTime;             ///< チャージ時間
 
     public:
         int m_PlayerStateNum;              ///< 現在の状態フラグ
+        float m_CurrentYaw;          // 現在の回転角（ラジアン）
+        float m_RotationSpeed;       // 補間の速さ（大きいほど瞬時、低いほどゆっくり）
+
 
         /**
          * @enum PlayerState
@@ -339,6 +346,55 @@ namespace basecross {
             const float& length);
 
         ‾HitSphere();
+
+        /// @brief 初期化処理
+        virtual void OnCreate() override;
+
+        /// @brief 毎フレーム更新
+        virtual void OnUpdate() override;
+
+        /**
+         * @brief 衝突判定開始時
+         * @param other 相手オブジェクト
+         */
+        void OnCollisionEnter(shared_ptr<GameObject>& other);
+    };
+
+    /**
+     * @class  HitSphere
+     * @brief  プレイヤー攻撃用ヒット判定オブジェクト
+     */
+    class ChargeHitSphere : public Object
+    {
+    private:
+        Vec3 m_HitPosition;            ///< 初期位置
+        Vec3 m_HitRotation;            ///< 初期回転
+        Vec3 m_HitScale;               ///< 初期スケール
+        float m_TotalTime;             ///< 総経過時間
+        float m_ChargeTime;             ///< 総経過時間
+        float m_ZoneElapsedTime;       ///< ゾーン中経過時間
+        float m_Length;                ///< 判定距離
+        shared_ptr<EffectManager> m_Effect; ///< エフェクト管理
+        Effekseer::Handle m_Handle;    ///< メインエフェクトハンドル
+        Effekseer::Handle m_HitHandle; ///< ヒットエフェクトハンドル
+
+        shared_ptr<GameObject> m_Player; ///< 発射元プレイヤー
+
+        float f = 0;                    ///< 汎用カウンタ
+
+    public:
+        /**
+         * @brief コンストラクタ
+         * @param stage    所属ステージ
+         * @param position 発射位置
+         * @param forward  飛行方向
+         * @param player   発射元
+         * @param scale    モデルスケール
+         * @param length   判定距離
+         */
+        ChargeHitSphere(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3 scale, const shared_ptr<GameObject> player, const float time);
+
+        ‾ChargeHitSphere();
 
         /// @brief 初期化処理
         virtual void OnCreate() override;

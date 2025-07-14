@@ -100,9 +100,9 @@ namespace basecross {
 		auto pDx11Device = Dev->GetD3DDevice();
 		auto pID3D11DeviceContext = Dev->GetD3DDeviceContext();
 		// 描画用インスタンスの生成
-		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 8000);
+		m_renderer = EffekseerRendererDX11::Renderer::Create(pDx11Device, pID3D11DeviceContext, 4000);
 		// エフェクト管理用インスタンスの生成
-		m_Manager = Effekseer::Manager::Create(8000);
+		m_Manager = Effekseer::Manager::Create(4000);
 
 		// 描画用インスタンスから描画機能を設定
 		m_Manager->SetSpriteRenderer(m_renderer->CreateSpriteRenderer());
