@@ -337,7 +337,9 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Counter", 600, 100, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f); 
 		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
@@ -358,7 +360,7 @@ namespace basecross {
 			HandleAttack(elapsedTime);
 		}
 		else if (m_PlayerStateNum & PlayerState::ATTACKCHARGE) {
-			HandleAttack(elapsedTime);
+			HandleAttackCharge(elapsedTime);
 		}
 		else {
 			HandleNormal(elapsedTime);
@@ -398,7 +400,7 @@ namespace basecross {
 			m_AttackInterval = 0.5f;
 		}
 		else {
-			SetAnim(m_AttackAnim);
+			SetAnim(L"QuakeAttack", true);
 		}
 	}
 
@@ -435,6 +437,8 @@ namespace basecross {
 				m_TargetObject = Vec3();
 				m_Stage->AddGameObject<ChargeHitSphere>(GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_ChargeTime);
 				m_ChargeTime = 0;
+				auto camera = GetStage()->GetView()->GetTargetCamera();;
+				camera->ShakeStart(0.3f, 0.3f);
 				m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 				m_PlayerStateNum -= PlayerState::NORMAL;
 
@@ -538,9 +542,10 @@ namespace basecross {
 			if (IntervalTimer(m_IsParryCounter, 0.5f, elapsedTime, m_BoostConterTime, false)) {
 				m_IsParryCounter = false;
 			}
-			else {
+			else { 
 				Vec3 dir = m_TargetObject * 1.2f;
 				dir.normalize();
+				SetAnim(L"Counter", true);
 				BoostMove(18.0f * 1.2f, dir);
 			}
 		}
@@ -822,7 +827,7 @@ namespace basecross {
 		const Vec3& forward,
 		const shared_ptr<GameObject>& player,
 		const Vec3& scale,
-		float                    length
+		float length
 	): 
 		BaseHitObject(stage, position, scale, player),
 		m_Direction(forward)
@@ -845,7 +850,7 @@ namespace basecross {
 		col->SetFixed(false);
 		col->SetAfterCollision(AfterCollision::None);
 
-		AddTag(L"HitSphere");
+		AddTag(L"HitJudge");
 
 		bool inZone = (static_pointer_cast<Player>(m_Player)->GetStates()
 			& Player::PlayerState::ZONE) != 0;
@@ -883,7 +888,7 @@ namespace basecross {
 		const Vec3& position,
 		const Vec3& scale,
 		const shared_ptr<GameObject>& player,
-		float                    chargeTime
+		float chargeTime
 	):
 		BaseHitObject(stage, position, scale, player),
 		m_TotalTime(1.0f), 
@@ -894,7 +899,7 @@ namespace basecross {
 	void ChargeHitSphere::ApplyHit(shared_ptr<Character> enemy) {
 		auto player = static_pointer_cast<Player>(m_Player);
 		player->SetCharge(0.1f);
-		enemy->Damage(player->GetAttackDamage() / 2, false);
+		enemy->Damage(player->GetAttackDamage() / 4, false);
 
 		// 衝突後は除外
 		GetComponent<CollisionCapsule>()
@@ -907,7 +912,7 @@ namespace basecross {
 		col->SetDrawActive(GameManager::Instance()->IsDebug());
 		col->SetFixed(false);
 		col->SetAfterCollision(AfterCollision::None);
-		AddTag(L"ChargeHitSphere");
+		AddTag(L"CaargeHitJudge");
 	}
 
 
@@ -947,9 +952,8 @@ namespace basecross {
 		auto player = static_pointer_cast<Player>(m_Player);
 		player->SetCharge(0.1f);
 		enemy->Damage(player->GetAttackDamage() / 2, false);
-
-		player->GetComponent<CollisionCapsule>()->AddExcludeCollisionTag(L"Enemy");
 	}
+
 	void CounterHitSphere::OnCreate() {
 		BaseHitObject::OnCreate();
 
@@ -958,8 +962,10 @@ namespace basecross {
 		col->SetFixed(true);               // プレイヤーと一体化しているので固定
 		col->SetAfterCollision(AfterCollision::None);
 		col->AddExcludeCollisionTag(L"Enemy");
+		auto player = static_pointer_cast<Player>(m_Player);
+		player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
 
-		AddTag(L"CounterHitSphere");
+		AddTag(L"CounterHitJudge");
 		// 初期位置をプレイヤー＋オフセットに
 		auto t = GetComponent<Transform>();
 		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
