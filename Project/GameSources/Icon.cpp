@@ -32,11 +32,12 @@ namespace basecross {
 	}
 
 	void UltIcon::SetDraw(bool a) {
-		m_IconBackGround->SetDrawActive(a);
-		//m_IconBackGroundKey->SetDrawActive(a);
 		m_Icon->SetDrawActive(a);
 		m_IconEffect->SetDrawActive(a);
 		m_IconEffectWaku->SetDrawActive(a);
+		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+		if (device.bConnected) m_IconBackGround->SetDrawActive(a);
+		else m_IconBackGroundKey->SetDrawActive(a);
 	}
 
 	void UltIcon::SetIconDraw()
@@ -72,7 +73,7 @@ namespace basecross {
 		if (m_Charge >= 1)
 		{
 			m_IconEffect->SetDiffuse(Col4(1, 1, 1, 1));
-			m_IconEffectWaku->SetDrawActive(true);
+			m_IconEffectWaku->SetDiffuse(Col4(1, 1, 1, 1));
 			//m_Icon->SetDiffuse(Col4(1, 1, 1, 1));
 			m_Icon->SetDrawActive(true);
 			m_IconBackGround->SetDrawActive(false);
@@ -83,7 +84,7 @@ namespace basecross {
 		else 
 		{
 			m_IconEffect->SetDiffuse(Col4(1, 1, 1, 0.5f));
-			m_IconEffectWaku->SetDrawActive(false);
+			m_IconEffectWaku->SetDiffuse(Col4(0, 0, 0, 1));
 			m_Icon->SetDrawActive(false);
 			m_IconBackGround->SetDrawActive(false);
 			m_IconBackGround->SetDrawLayer(2);

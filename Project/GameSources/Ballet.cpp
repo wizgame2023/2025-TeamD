@@ -9,10 +9,10 @@
 
 namespace basecross {
 
-	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range) :
+	Bullet::Bullet(const shared_ptr<Stage>& stage, Vec3 position, float speed, Vec3 direction, float range, shared_ptr<GameObject> enemy) :
 		Object(stage,position,Vec3(0),Vec3(0.1f)), m_Position(position), m_Speed(speed), m_Direction(direction), m_EffectiveRange(range),
 		m_ZoneElapsedTime(1.0f), m_EndPosition(Vec3(0)), m_LineEndPosition(Vec3()), m_LineLength(5.0f), 
-		m_bulletPally(false)
+		m_bulletPally(false), m_Mob(enemy)
 	{
 	}
 	Bullet::~Bullet() {}
@@ -80,7 +80,7 @@ namespace basecross {
 		if (other->FindTag(L"Player"))
 		{
 			auto player = dynamic_pointer_cast<Player>(other);
-			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty / 2));
+			m_bulletPally = player->Damage(false, 1.0f + ((float)difficulty / 2),m_Mob);
 			if (m_bulletPally)
 			{
 				player->SetParryPosition(GetPosition());
