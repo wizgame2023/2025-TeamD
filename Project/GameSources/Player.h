@@ -26,6 +26,7 @@ namespace basecross {
         float m_ParryDamageIntervalTime;   ///< パリィ後ダメージインターバル
         float m_TotalTime;                 ///< 全体タイマー
         float m_BoostTime;                 ///< ブースト継続時間
+        float m_BoostConterTime;                 ///< ブースト継続時間
         float m_BoostInterval;             ///< ブースト再使用インターバル
         float m_Attacktime;                ///< 攻撃アニメーション再生時間
         float m_AttackInterval;            ///< 攻撃発生インターバル
@@ -38,6 +39,7 @@ namespace basecross {
         bool  m_IsGoal;                    ///< ゴール到達フラグ
         bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
         bool  m_IsParry;                   ///< パリィモード中フラグ
+        bool  m_IsParryCounter;                   ///< パリィモード中フラグ
         float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
         float m_ParryDamage;               ///< パリィ時反撃ダメージ
         float m_zoneAnim;                  ///< ゾーン演出進行度
@@ -53,16 +55,22 @@ namespace basecross {
         Effekseer::Handle m_BrinkHandle;   ///< 点滅エフェクトハンドル
         Effekseer::Handle m_ParryHandle;   ///< パリィエフェクトハンドル
         shared_ptr<TargetBoard> m_TargetBoard;///< 照準ボード
+		Vec3 m_TargetObject;///< ロックオン対象オブジェクト
 
         wstring m_AttackAnim;              ///< 攻撃アニメーション名
         bool    m_ParryComboActive;        ///< コンボ猶予中フラグ
+        bool    m_Charge;        ///< コンボ猶予中フラグ
         int     m_ParryComboCount;         ///< 連続パリィ回数
         float   m_ParryComboTimer;         ///< 連続パリィ猶予時間
         float   m_time;                    ///< 汎用タイマー
         float   m_ParryComboWindow;        ///< 完璧パリィから次パリィ受付猶予[s]
+		float   m_ChargeTime;             ///< チャージ時間
 
     public:
         int m_PlayerStateNum;              ///< 現在の状態フラグ
+        float m_CurrentYaw;          // 現在の回転角（ラジアン）
+        float m_RotationSpeed;       // 補間の速さ（大きいほど瞬時、低いほどゆっくり）
+
 
         /**
          * @enum PlayerState
@@ -71,11 +79,12 @@ namespace basecross {
         enum PlayerState
         {
             NORMAL = 0b00000001,  ///< 待機中
-            WALK = 0b00000010,  ///< 歩行中
-            RUN = 0b00000100,  ///< 走行中
+            WALK =   0b00000010,  ///< 歩行中
+            RUN =    0b00000100,  ///< 走行中
             ATTACK = 0b00001000,  ///< 攻撃中
-            ZONE = 0b00010000,  ///< ゾーン中
-            DASH = 0b00100000   ///< ダッシュ中
+            ZONE =   0b00010000,  ///< ゾーン中
+            DASH =   0b00100000,   ///< ダッシュ中
+            ATTACKCHARGE = 0b01000000   ///< ため攻撃中
         };
 
         /**
@@ -254,6 +263,8 @@ namespace basecross {
         */
         void HandleAttack(const float& elapsedTime);
 
+        void HandleAttackCharge(const float& elapsedTime);
+
         /** @brief 通常状態の再生
         * @param elapsedTime 経過時間[s]
         */
@@ -267,14 +278,12 @@ namespace basecross {
          * @param animname アニメ名
          * @param time     ブレンド時間[s]
          */
-        const void SetAnim(wstring animname, float time = 0.0f)
+        const void SetAnim(wstring animname, const bool force = false)
         {
             auto draw = GetComponent<PNTBoneModelDraw>();
             if (draw->GetCurrentAnimation() != animname)
-                if (draw->GetAnimeLoop())
-                    draw->ChangeCurrentAnimation(animname, time);
-                else if (draw->IsTargetAnimeEnd())
-                    draw->ChangeCurrentAnimation(animname, time);
+            if (draw->GetAnimeLoop() || force)   draw->ChangeCurrentAnimation(animname, 0.0f);
+            else if (draw->IsTargetAnimeEnd())  draw->ChangeCurrentAnimation(animname, 0.0f);
         }
 
         /**
@@ -299,58 +308,195 @@ namespace basecross {
     };
 
     /**
-     * @class  HitSphere
-     * @brief  プレイヤー攻撃用ヒット判定オブジェクト
+     * @class  BaseHitObject
+     * @brief  全てのヒット判定オブジェクトの基底クラス
+     *
+     * このクラスは共通のメンバ変数や初期化・更新・衝突処理を
+     * 提供し、派生クラスで処理をカスタマイズできるようにしている。
      */
-    class HitSphere : public Object
-    {
-    private:
-        Vec3 m_HitPosition;            ///< 初期位置
-        Vec3 m_HitRotation;            ///< 初期回転
-        Vec3 m_HitScale;               ///< 初期スケール
-        float m_FlyingTime;            ///< 飛行経過時間
-        float m_TotalTime;             ///< 総経過時間
-        float m_Speed;                 ///< 飛行速度
-        float m_ZoneElapsedTime;       ///< ゾーン中経過時間
-        float m_Length;                ///< 判定距離
-        shared_ptr<EffectManager> m_Effect; ///< エフェクト管理
-        Effekseer::Handle m_Handle;    ///< メインエフェクトハンドル
-        Effekseer::Handle m_HitHandle; ///< ヒットエフェクトハンドル
+    class BaseHitObject : public Object {
+    protected:
+        Vec3                        m_Position;    /**< ワールド空間での座標 */
+        Vec3                        m_Scale;       /**< 当たり判定オブジェクトのスケール */
+        shared_ptr<GameObject>     m_Player;      /**< 発射元のプレイヤーオブジェクト */
+        shared_ptr<EffectManager>  m_Effect;      /**< エフェクト管理クラスへの参照 */
+        Effekseer::Handle          m_MainHandle = -1; /**< メインエフェクトのハンドル */
+        Effekseer::Handle          m_HitHandle = -1; /**< ヒット時エフェクトのハンドル */
 
-        shared_ptr<GameObject> m_Player; ///< 発射元プレイヤー
-
-        float f = 0;                    ///< 汎用カウンタ
+        /**
+         * @brief 敵にヒットしたときに呼び出される純粋仮想メソッド
+         * @param enemy  触れた敵キャラクターへの参照
+         *
+         * ダメージ判定やチャージ付与など個別の挙動は
+         * 派生クラスで実装すること。
+         */
+        virtual void ApplyHit(shared_ptr<Character> enemy) = 0;
 
     public:
         /**
          * @brief コンストラクタ
-         * @param stage    所属ステージ
-         * @param position 発射位置
-         * @param forward  飛行方向
-         * @param player   発射元
-         * @param scale    モデルスケール
-         * @param length   判定距離
+         * @param stage   所属ステージ
+         * @param position 初期位置
+         * @param scale    当たり判定のスケール
+         * @param player   発射元プレイヤー
          */
-        HitSphere(const shared_ptr<Stage>& stage,
+        BaseHitObject(
+            const shared_ptr<Stage>& stage,
             const Vec3& position,
-            const Vec3& forward,
-            const shared_ptr<GameObject> player,
-            const Vec3 scale,
-            const float& length);
+            const Vec3& scale,
+            const shared_ptr<GameObject>& player
+        );
 
-        ‾HitSphere();
+        /** @brief デストラクタ */
+        virtual ‾BaseHitObject();
 
-        /// @brief 初期化処理
+        /** @brief 生成時に一度だけ呼ばれる初期化処理 */
         virtual void OnCreate() override;
 
-        /// @brief 毎フレーム更新
+        /** @brief 毎フレーム呼び出される更新処理 */
         virtual void OnUpdate() override;
 
         /**
-         * @brief 衝突判定開始時
-         * @param other 相手オブジェクト
+         * @brief 衝突開始時に呼ばれる処理
+         * @param other  衝突相手のゲームオブジェクト
          */
-        void OnCollisionEnter(shared_ptr<GameObject>& other);
+        virtual void OnCollisionEnter(shared_ptr<GameObject>& other) override;
+    };
+
+    /**
+     * @class  HitSphere
+     * @brief  飛翔型のヒット判定オブジェクト
+     *
+     * プレイヤーの前方へ飛ばし、一定時間または敵衝突まで移動し続ける。
+     */
+    class HitSphere : public BaseHitObject {
+        Vec3  m_Direction;   /**< 飛翔方向（単位ベクトル） */
+        float m_Speed;       /**< 飛翔速度 */
+        float m_FlyingTime;  /**< 最大飛行時間 */
+        float m_Elapsed = 0.0f; /**< 経過時間 */
+
+    protected:
+        /**
+         * @brief ヒット時のダメージ処理を実装
+         * @param enemy  被ヒットキャラクター
+         */
+        void ApplyHit(shared_ptr<Character> enemy) override;
+
+    public:
+        /**
+         * @brief コンストラクタ
+         * @param stage     所属ステージ
+         * @param position  初期位置
+         * @param forward   発射方向（ワールド空間）
+         * @param player    発射元プレイヤー
+         * @param scale     判定サイズ
+         * @param length    飛行可能距離
+         */
+        HitSphere(
+            const shared_ptr<Stage>& stage,
+            const Vec3& position,
+            const Vec3& forward,
+            const shared_ptr<GameObject>& player,
+            const Vec3& scale,
+            float                    length
+        );
+
+        ‾HitSphere() override = default;
+
+        /** @brief エフェクトやパーティクルの生成処理 */
+        virtual void OnCreate() override;
+
+        /** @brief 速度に基づく移動＆寿命管理 */
+        virtual void OnUpdate() override;
+    };
+
+    /**
+     * @class  ChargeHitSphere
+     * @brief  チャージ攻撃用ヒット判定オブジェクト
+     *
+     * チャージ時間経過でエフェクトやダメージ倍率が変動する。
+     */
+    class ChargeHitSphere : public BaseHitObject {
+        float m_TotalTime;  /**< チャージ完了までの必要時間 */
+        float m_ChargeRate; /**< 現在のチャージ進行度（0〜1） */
+
+    protected:
+        /**
+         * @brief チャージ率に応じたダメージ／効果を適用
+         * @param enemy  被ヒットキャラクター
+         */
+        void ApplyHit(shared_ptr<Character> enemy) override;
+
+    public:
+        /**
+         * @brief コンストラクタ
+         * @param stage      所属ステージ
+         * @param position   初期位置
+         * @param scale      判定サイズ
+         * @param player     発射元プレイヤー
+         * @param chargeTime チャージに要する時間
+         */
+        ChargeHitSphere(
+            const shared_ptr<Stage>& stage,
+            const Vec3& position,
+            const Vec3& scale,
+            const shared_ptr<GameObject>& player,
+            float                    chargeTime
+        );
+
+        ‾ChargeHitSphere() override = default;
+
+        /** @brief チャージエフェクトの生成 */
+        virtual void OnCreate() override;
+
+        /** @brief 経過時間でチャージ率を更新 */
+        virtual void OnUpdate() override;
+    };
+
+    /**
+     * @class  CounterHitSphere
+     * @brief  カウンター攻撃用のヒット判定オブジェクト
+     *
+     * プレイヤーに追従しつつ一定時間後に拡大し、
+     * 衝突時に相対位置に応じた攻撃を行う。
+     */
+    class CounterHitSphere : public BaseHitObject {
+        float m_AttachDuration; /**< プレイヤーに追従する総時間 */
+        float m_Elapsed = 0.0f; /**< 追従経過時間 */
+        Vec3  m_LocalOffset;   /**< プレイヤー基準の相対位置 */
+        float m_ChargeRate;    /**< 時間経過時の拡大速度 */
+
+    protected:
+        /**
+         * @brief カウンター成立時のダメージ処理
+         * @param enemy  被ヒットキャラクター
+         */
+        void ApplyHit(shared_ptr<Character> enemy) override;
+
+    public:
+        /**
+         * @brief コンストラクタ
+         * @param stage        所属ステージ
+         * @param player       発射元プレイヤー（追従対象）
+         * @param offset       プレイヤーからの相対オフセット
+         * @param attachTime   追従持続時間
+         * @param chargeRate   拡大率の係数
+         */
+        CounterHitSphere(
+            const shared_ptr<Stage>& stage,
+            const shared_ptr<GameObject>& player,
+            const Vec3& offset,
+            float attachTime,
+            float chargeRate = 1.0f
+        );
+
+        ‾CounterHitSphere() override = default;
+
+        /** @brief 追従エフェクトの生成と初期設定 */
+        virtual void OnCreate() override;
+
+        /** @brief 追従ロジックと拡大処理 */
+        virtual void OnUpdate() override;
     };
 
 } // namespace basecross
