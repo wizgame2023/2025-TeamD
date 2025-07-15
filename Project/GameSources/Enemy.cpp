@@ -140,9 +140,10 @@ namespace basecross {
 		m_IntruderAlert = flag;
 	}
 
-	void Enemy::KnockBack()
+	void Enemy::KnockBack(Vec3 hitpos)
 	{
 		m_KnockBack = true;
+		m_Hitpos = hitpos;
 	}
 
 	void Enemy::KnockBackTime()
@@ -150,7 +151,7 @@ namespace basecross {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
 		Vec3 hitPos = m_Intruder->GetComponent<Transform>()->GetPosition();
 		Vec3 pos = GetPosition();
-		Vec3 vec = hitPos - pos;
+		Vec3 vec = m_Hitpos - pos;
 		vec.normalize();
 		pos += -vec * 5.0f * elapsedTime * m_ZoneElapsedTime;
 		float rotate = atan2f(vec.x, vec.z);
@@ -191,12 +192,17 @@ namespace basecross {
 	{
 		if (other->FindTag(L"HitJudge"))
 		{
-			KnockBack();
+			KnockBack(other->GetComponent<Transform>()->GetPosition());
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
 		if (other->FindTag(L"Bullet"))
 		{
-			KnockBack();
+			KnockBack(other->GetComponent<Transform>()->GetPosition());
+		}
+		if (other->FindTag(L"CaargeHitJudge"))
+		{
+			Vec3 pos = GetComponent<Transform>()->GetPosition();
+			KnockBack(pos + Vec3(0,-4,0));
 		}
 	}
 
