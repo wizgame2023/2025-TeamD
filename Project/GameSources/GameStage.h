@@ -79,7 +79,8 @@ namespace basecross {
 		shared_ptr<FollowCamera> m_Camera;
 
 		shared_ptr<SingleView> m_ProductionCameraView; 
-		shared_ptr<SingleView> m_MyCameraView;      
+		shared_ptr<SingleView> m_MyCameraView;
+
 	public:
 
 		GameStage(const wstring& file, StageData data) : Stage(), m_MapFileName(file),m_StageData(data), m_IsPose(false), m_IsGameStater(false){}
@@ -100,6 +101,8 @@ namespace basecross {
 		{
 			return m_StageData;
 		}
+		void ResetClearStage();
+
 	};
 
 }

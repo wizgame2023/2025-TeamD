@@ -390,7 +390,6 @@ namespace basecross {
 					shEnemy->SetUpdateActive(false);
 				}
 			}
-
 		}
 	}
 
@@ -454,6 +453,12 @@ namespace basecross {
 
 	}
 
+	void GameStage::ResetClearStage() {
+		App::GetApp()->GetScene<Scene>()->ResetStage();
+		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+
+	}
+
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
@@ -506,6 +511,9 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		UIDraw();
+		if ((device.wPressedButtons & XINPUT_GAMEPAD_START && device.wPressedButtons & XINPUT_GAMEPAD_BACK)) {
+			ResetClearStage();
+		}
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
 			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();
