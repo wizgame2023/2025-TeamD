@@ -137,9 +137,22 @@ namespace basecross {
 		auto shakeSkill = make_shared<BossShakeOff>(GetThis<BossEnemy>());
 		shakeSkill->SetSkill(shakeoff);
 
-		AddSkill(missileSkill, 0.0f);
-		AddSkill(crushSkill, 0.0f);
-		AddSkill(shakeSkill, 100.0f);
+		StageData data = m_Stage->GetStageData();
+		if (data.stageNum == 0) {
+			AddSkill(missileSkill, 40.0f);
+			AddSkill(crushSkill, 60.0f);
+		}
+		else if (data.stageNum == 1) {
+			AddSkill(missileSkill, 30.0f);
+			AddSkill(crushSkill, 40.0f);
+			AddSkill(shakeSkill, 30.0f);
+		}
+		else {
+			AddSkill(missileSkill, 30.0f);
+			AddSkill(crushSkill, 40.0f);
+			AddSkill(shakeSkill, 30.0f);
+		}
+		
 
 		float hp = GetMaxHP();
 		hp *= (int)difficulty;
