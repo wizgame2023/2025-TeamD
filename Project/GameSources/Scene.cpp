@@ -136,6 +136,15 @@ namespace basecross {
 		}
 
 	}
+	void Scene::ResetStage() {
+		int i = 0, j = 0;
+		for (i; i < 3; i++) {
+			for (j; j < 3; j++) {
+				m_StageFile[i][j].m_IsClear = false;
+			}
+		}
+
+	}
 
 }
 //end basecross
