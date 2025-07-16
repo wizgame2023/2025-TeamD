@@ -111,7 +111,8 @@ namespace basecross {
                 mob->GetTransform()->GetPosition() + dir * mob->m_MuzzleOffset,
                 mob->m_BalletSpeed,
                 dir,
-                mob->m_BalletRange
+                mob->m_BalletRange,
+                mob->GetThis<Enemy>()
             );
 
             // 発射後リセット

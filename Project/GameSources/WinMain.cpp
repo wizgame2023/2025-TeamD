@@ -326,6 +326,7 @@ LRESULT CALLBACK WndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam)
 	case WM_KEYDOWN:
 		switch (wParam) {
 		case VK_ESCAPE:
+			//ここを消せばEscapeを押しても終了しない
 			DestroyWindow(hWnd);
 			break;
 		case VK_RETURN:

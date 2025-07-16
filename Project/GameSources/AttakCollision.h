@@ -96,6 +96,10 @@ namespace basecross {
 		bool IsFinish() {
 			return m_IsFinish;
 		}
+		shared_ptr<Character> GetDete()
+		{
+			return m_Date.m_Owner;
+		}
 	};
 	template<class CollisionType>
 	class AttackCollision : public Attack {

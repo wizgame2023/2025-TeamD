@@ -78,7 +78,7 @@ namespace basecross {
 			m_ShotInterval = m_Date.m_ExitTimer.GetMaxTime() / m_LaunchNum;
 			Vec3 position = m_Transform->GetPosition();
 			Vec3 direction = m_Target->GetComponent<Transform>()->GetPosition() - position;
-			m_Stage->AddGameObject<Bullet>(position + direction * 0.1f, 2.0f, direction, m_Date.m_Range);
+			//m_Stage->AddGameObject<Bullet>(position + direction * 0.1f, 2.0f, direction, m_Date.m_Range);
 		}
 		else {
 			m_ShotInterval -= elapsed;

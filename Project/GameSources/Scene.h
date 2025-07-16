@@ -100,6 +100,7 @@ namespace basecross {
 			m_StageFile[data.stageNum][data.level].m_IsClear = true;
 		}
 
+		void ResetStage();
 	};
 
 }
