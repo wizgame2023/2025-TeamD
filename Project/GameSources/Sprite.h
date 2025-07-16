@@ -10,22 +10,55 @@ namespace basecross{
 
 	struct SpriteAnimation {
 		size_t		m_CurrentOrder;		//現在のアニメーション番号
-		float		m_AnimationTime;	//ごめん。分からない
+		float		m_AnimationTime;	//アニメーションタイマー
 		float		m_UpdateInterval;	//更新頻度
 		bool		m_IsLoop;			//ループするか
 		bool		m_IsReverse;		//逆再生か
 		vector<int> m_Order;			//描画順
 
+
+		/// <summary>
+		/// 空のアニメーションかどうか取得
+		/// </summary>
+		/// <returns>設定されていないアニメーションならtrue</returns>
+		bool Empty() const {
+			return m_Order.empty();
+		}
+
 		/// <summary>
 		/// アニメーション終了処理
 		/// </summary>
 		void EndAnimation() {
-			if (m_IsReverse) {
-				m_CurrentOrder = m_IsLoop ?  m_Order.size() - 1 : 0;
+			if (Empty()) return;
+
+			m_CurrentOrder = m_IsReverse ? 0 : m_Order.size() - 1;
+
+			if (m_IsLoop) {
+				m_CurrentOrder = m_IsReverse ? m_Order.size() - 1 : 0;
 			}
-			else {
-				m_CurrentOrder = m_IsLoop ? 0 : m_Order.size() - 1;
+		}
+
+		/// <summary>
+		/// アニメーション更新処理
+		/// </summary>
+		/// <param name="elapsed"> : 経過時間</param>
+		/// <returns>アニメーションが更新されたら(画像が切り替わったら)true</returns>
+		bool Update(float elapsed) {
+			if (Empty()) return false;
+
+			m_AnimationTime += elapsed;
+
+			if (m_AnimationTime > m_UpdateInterval) {
+				m_AnimationTime = 0.0f;
+				m_CurrentOrder = m_IsReverse ? m_CurrentOrder - 1 : m_CurrentOrder + 1;
+
+				if (m_CurrentOrder < 0 || m_CurrentOrder >= m_Order.size()) {
+					EndAnimation();
+					return true;
+				}
 			}
+
+			return false;
 		}
 
 		/// <summary>
@@ -34,7 +67,7 @@ namespace basecross{
 		SpriteAnimation() {
 			m_Order = {};
 			m_CurrentOrder = 0;
-			m_AnimationTime = 0;
+			m_AnimationTime = 0.0f;
 			m_UpdateInterval = 0;
 			m_IsLoop = false;
 			m_IsReverse = false;
@@ -43,15 +76,15 @@ namespace basecross{
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		/// <param name="order">描画順</param>
-		/// <param name="time">不明</param>
-		/// <param name="interval">更新頻度</param>
-		/// <param name="isLoop">ループするか</param>
-		/// <param name="isReverse">逆再生か</param>
-		SpriteAnimation(vector<int> order, float time, float interval, const bool isLoop = false, const bool isReverse = false){
+		/// <param name="order"> : 描画順</param>
+		/// <param name="time"> : 不明</param>
+		/// <param name="interval"> : 更新頻度</param>
+		/// <param name="isLoop"> : ループするか</param>
+		/// <param name="isReverse"> : 逆再生か</param>
+		SpriteAnimation(vector<int> order, float interval, const bool isLoop = false, const bool isReverse = false){
 			m_Order = order;
-			m_CurrentOrder = 0;
-			m_AnimationTime = time;
+			m_CurrentOrder = isReverse ? m_Order.size() - 1 : 0;
+			m_AnimationTime = 0.0f;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
 			m_IsReverse = isReverse;
@@ -60,25 +93,38 @@ namespace basecross{
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		/// <param name="startOrder">描画開始</param>
-		/// <param name="endOrder">描画終了</param>
-		/// <param name="time">不明</param>
-		/// <param name="interval">更新頻度</param>
-		/// <param name="isLoop">ループするか</param>
-		/// <param name="isReverse">逆再生か</param>
-		SpriteAnimation(int startOrder,int endOrder,float time,float interval,const bool isLoop = false,const bool isReverse = false){
+		/// <param name="startOrder"> : 描画開始</param>
+		/// <param name="endOrder"> : 描画終了</param>
+		/// <param name="time"> : 不明</param>
+		/// <param name="interval"> : 更新頻度</param>
+		/// <param name="isLoop"> : ループするか</param>
+		/// <param name="isReverse"> : 逆再生か</param>
+		SpriteAnimation(int startOrder,int endOrder,float interval,const bool isLoop = false,const bool isReverse = false){
 			vector<int> order;
 			for (int i = startOrder;i <= endOrder;i++) {
 				order.push_back(i);
 			}
 			m_Order = order;
-			m_CurrentOrder = 0;
-			m_AnimationTime = time;
+			m_CurrentOrder = isReverse ? m_Order.size() - 1 : 0;
+			m_AnimationTime = 0.0f;
 			m_UpdateInterval = interval;
 			m_IsLoop = isLoop;
 			m_IsReverse = isReverse;
 		}
 	};
+
+	enum class Anchor {
+		Center,
+		Top,
+		Bottom,
+		Left,
+		Right,
+		TopLeft,
+		TopRight,
+		BottomLeft,
+		BottomRight
+	};
+
 	//----------------------------------------------------------
 	//
 	//	画像表示クラス						
@@ -88,10 +134,10 @@ namespace basecross{
 		wstring m_TexKey;				//テクスチャキー
 		Vec2	m_Size;					//サイズ
 		Vec3	m_Pos;					//位置
-		bool	m_IsUseCenterSprite;	//表示基を中心にするか
-		size_t	m_UseIndex;				//使用するアニメーションのコマ数
+		Vec2	m_Pivot;				//重心
+		size_t	m_MaxAnimationFrame;	//使用できるアニメーションフレームの最大数
 		Vec2	m_cutUV;				//画像の切り取り数
-		Vec2	m_ScreenSize;			//スクリーンサイズ
+		Vec2	m_ScreenHalfSize;			//スクリーンサイズ
 
 		vector<vector<Vec2>>				m_AnimationUV;	//アニメーションのUV
 		vector<VertexPositionColorTexture>	m_Vertices;		//頂点
@@ -100,55 +146,43 @@ namespace basecross{
 		shared_ptr<Transform>		m_Transform;	//位置コンポーネント
 
 		bool							m_IsAnimation;		//アニメーションがあるか
-		float							m_AnimationTimer;	//アニメーション切り替え時間計測
 		map<wstring, SpriteAnimation>	m_Animations;		//アニメーションマップ
 		SpriteAnimation					m_CurrentAnimation;	//現在のアニメーション
 		SpriteAnimation					m_BeforeAnimation;	//前のアニメーション
 
-
-		////アニメーション切り替え時間
-		//float m_AnimationChangeTime;
-		////現在のコマ
-		//size_t m_Index;
 
 		/// <summary>
 		/// アニメーション処理
 		/// </summary>
 		void Animation();
 
+	public:
+
 		/// <summary>
 		/// コンストラクタ
 		/// </summary>
-		/// <param name="ptr">ステージ</param>
-		/// <param name="texKey">テクスチャキー</param>
-		/// <param name="pos">表示位置</param>
-		/// <param name="size">表示サイズ</param>
-		/// <param name="cutUV">切り取り数</param>
-		/// <param name="useCenter">表示基が中心か</param>
-		/// <param name="useIndex">初期表示番号</param>
-		/// <param name="isAnimation">アニメーションするか</param>
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUV, const bool useCenter = false, const int useIndex = -1, const bool isAnimation = true) :
+		/// <param name="ptr"> : ステージ</param>
+		/// <param name="texKey"> : テクスチャキー</param>
+		/// <param name="pos"> : 表示位置</param>
+		/// <param name="size"> : 表示サイズ</param>
+		/// <param name="cutUV"> : 切り取り数</param>
+		/// <param name="useCenter"> : 表示基が中心か</param>
+		/// <param name="useIndex"> : 初期表示番号</param>
+		/// <param name="isAnimation"> : アニメーションするか</param>
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 pivot) :
 			GameObject(ptr),
 			m_TexKey(texKey),
-			m_Pos(pos), m_Size(size),
-			m_cutUV(cutUV),
-			m_IsUseCenterSprite(useCenter),
-			/*m_Index(0),*/ m_UseIndex(useIndex),
-			m_IsAnimation(isAnimation),
-			/*m_AnimationChangeTime(changeTime), */m_AnimationTimer(0.0f),
-			m_ScreenSize(0, 0) {
+			m_Pos(pos), m_Size(size), m_Pivot(pivot),
+			m_cutUV(Vec2(1, 1)),
+			m_MaxAnimationFrame(1), m_IsAnimation(false),
+			m_CurrentAnimation{}, m_BeforeAnimation{},
+			m_ScreenHalfSize(0, 0) {
 		}
 
-	public:
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size) : Sprite(ptr, texKey, pos, size, { 1,1 }, false, -1, false) {}
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv) : Sprite(ptr, texKey, pos, size, cutUv, false, -1, false) {}
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, int useIndex) : Sprite(ptr, texKey, pos, size, cutUv, false, useIndex, true) {}
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, bool useCenter) : Sprite(ptr, texKey, pos, size, { 1,1 }, useCenter, -1, false) {}
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, -1, false) {}
-		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Vec2 cutUv, int useIndex, bool useCenter) : Sprite(ptr, texKey, pos, size, cutUv, useCenter, useIndex, true) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size) : Sprite(ptr, texKey, pos, size, { 0,0 }) {}
+		Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Anchor anchor);
 
-
-		virtual ‾Sprite(){}
+		virtual ‾Sprite() {}
 
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
@@ -156,61 +190,103 @@ namespace basecross{
 		/// <summary>
 		/// 表示サイズ変更
 		/// </summary>
-		/// <param name="size">サイズ(Transform)</param>
-		void UpdateSize(Vec3 size);
-
-		/// <summary>
-		/// 表示サイズ変更
-		/// </summary>
-		/// <param name="size">サイズ(uv)</param>
-		void UpdateSize(Vec2 size);
+		/// <param name="size"> : サイズ(uv)</param>
+		void SetSize(Vec2 size);
 
 		/// <summary>
 		/// 表示サイズ取得
 		/// </summary>
 		/// <returns>サイズ</returns>
-		Vec2 GetSize() {
+		Vec2 GetSize() const {
 			return m_Size;
 		}
 
 		/// <summary>
 		/// 表示位置変更
 		/// </summary>
-		/// <param name="pos">表示位置</param>
-		void SetPos(Vec3 pos);
+		/// <param name="pos"> : 表示位置</param>
+		void SetPosition(Vec3 pos);
 
 		/// <summary>
 		/// 表示位置取得
 		/// </summary>
 		/// <returns>表示位置</returns>
-		Vec3 GetPos() {
+		Vec3 GetPosition() const{
 			return m_Pos;
 		}
-		
+
+		/// <summary>
+		/// 重心を設定
+		/// </summary>
+		/// <param name="pivot"> : 重心</param>
+		void SetPivot(Vec2 pivot) {
+			m_Pivot = pivot;
+		}
+
+		/// <summary>
+		/// 重心を取得
+		/// </summary>
+		/// <returns>重心</returns>
+		Vec2 GetPivot() const{
+			return m_Pivot;
+		}
+
 		/// <summary>
 		/// 色の変更
 		/// </summary>
-		/// <param name="color">色</param>
+		/// <param name="color"> : 色</param>
 		void SetDiffuse(Col4 color);
 
 		/// <summary>
 		/// 色の取得
 		/// </summary>
 		/// <returns>色</returns>
-		Col4 GetDiffuse();
+		Col4 GetDiffuse()const;
 
 		/// <summary>
 		/// 頂点情報の作成・更新
 		/// </summary>
-		/// <param name="size">表示サイズ</param>
-		/// <param name="uv">uv</param>
+		/// <param name="size"> : 表示サイズ</param>
+		/// <param name="uv"> : uv</param>
 		void CreateVertex(Vec2 size, vector<Vec2> uv);
 
 		/// <summary>
-		/// 頂点の更新
+		/// 頂点位置の更新
 		/// </summary>
-		/// <param name="positions">位置情報</param>
+		/// <param name="positions"> : 位置情報</param>
 		void SetVertex(vector<Vec3> positions);
+
+		/// <summary>
+		/// 最大アニメーションフレームを取得
+		/// </summary>
+		/// <returns>最大アニメーションフレーム</returns>
+		size_t GetMaxAnimationFrame() const {
+			return m_MaxAnimationFrame;
+		}
+
+		/// <summary>
+		/// アニメーションの更新状態を設定
+		/// </summary>
+		/// <param name="flag"> : 更新状態</param>
+		void SetAnimationActive(bool flag) {
+			m_IsAnimation = flag;
+		}
+
+		/// <summary>
+		/// アニメーションの更新状態を取得
+		/// </summary>
+		/// <returns>更新状態</returns>
+		bool GetAnimationActive() const{
+			return m_IsAnimation;
+		}
+
+		/// <summary>
+		/// 描画優先度を設定
+		/// </summary>
+		/// <param name="index">優先度</param>
+		void SetLayer(int index) {
+			SetDrawLayer(index);
+		}
 
 		//----------------------------------------------------------
 		//
@@ -221,11 +297,11 @@ namespace basecross{
 		/// <summary>
 		/// アニメーション用UVの作成
 		/// </summary>
-		/// <param name="cut">切り取り数</param>
-		/// <param name="maxIndex">使用するuvの最大数</param>
+		/// <param name="cut"> : 切り取り数</param>
+		/// <param name="maxIndex"> : 使用するuvの最大数</param>
 		/// <returns>アニメーション用UV</returns>
-		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut,const size_t& maxIndex = 1024);
-		
+		vector<vector<Vec2>> CreateAnimationUV(Vec2 cut, const size_t& maxIndex = 1024);
+
 		/// <summary>
 		/// UVの更新
 		/// </summary>
@@ -243,7 +319,7 @@ namespace basecross{
 		/// <summary>
 		/// アニメーション用UVの取得(単体)
 		/// </summary>
-		/// <param name="index">番号</param>
+		/// <param name="index"> : 番号</param>
 		/// <returns>アニメーション用UV</returns>
 		vector<Vec2> GetUv(int index) {
 			if (m_AnimationUV.size() <= index) {
@@ -257,8 +333,8 @@ namespace basecross{
 		//	アニメーション操作		
 		//																																
 		//----------------------------------------------------------
-		
-		
+
+
 		/// <summary>
 		/// 前のアニメーションを取得
 		/// </summary>
@@ -278,7 +354,7 @@ namespace basecross{
 		/// <summary>
 		/// 指定のアニメーションを取得
 		/// </summary>
-		/// <param name="key">アニメーションキー</param>
+		/// <param name="key"> : アニメーションキー</param>
 		/// <returns>アニメーション</returns>
 		SpriteAnimation GetAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
@@ -290,7 +366,7 @@ namespace basecross{
 		/// <summary>
 		/// 再生するアニメーションを設定
 		/// </summary>
-		/// <param name="key">アニメーションキー</param>
+		/// <param name="key"> : アニメーションキー</param>
 		void SetCurrentAnimation(const wstring& key) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_CurrentAnimation.EndAnimation();
@@ -302,37 +378,35 @@ namespace basecross{
 		/// <summary>
 		/// アニメーションを追加
 		/// </summary>
-		/// <param name="key">設定するキー</param>
-		/// <param name="startOrder">描画開始</param>
-		/// <param name="endOrder">描画終了</param>
-		/// <param name="time">不明</param>
-		/// <param name="interval">更新頻度</param>
-		/// <param name="isLoop">ループするか</param>
-		/// <param name="isReverse">逆再生か</param>
-		void AddAnimation(const wstring& key, int startOrder, int endOrder, float time, float interval, const bool isLoop = false, const bool isReverse = false) {
-			SpriteAnimation animation = SpriteAnimation(startOrder, endOrder, time, interval, isLoop, isReverse);
+		/// <param name="key"> : 設定するキー</param>
+		/// <param name="startOrder"> : 描画開始</param>
+		/// <param name="endOrder"> : 描画終了</param>
+		/// <param name="interval"> : 更新頻度</param>
+		/// <param name="isLoop"> : ループするか</param>
+		/// <param name="isReverse"> : 逆再生か</param>
+		void AddAnimation(const wstring& key, int startOrder, int endOrder, float interval, const bool isLoop = false, const bool isReverse = false) {
+			SpriteAnimation animation = SpriteAnimation(startOrder, endOrder, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
 		}
 
 		/// <summary>
 		/// アニメーションを追加
 		/// </summary>
-		/// <param name="key">設定するキー</param>
-		/// <param name="order">描画順</param>
-		/// <param name="time">不明</param>
-		/// <param name="interval">更新頻度</param>
-		/// <param name="isLoop">ループするか</param>
-		/// <param name="isReverse">逆再生か</param>
-		void AddAnimation(const wstring& key, vector<int> order, float time, float interval, const bool isLoop = false, const bool isReverse = false) {
-			SpriteAnimation animation = SpriteAnimation(order, time, interval, isLoop, isReverse);
+		/// <param name="key"> : 設定するキー</param>
+		/// <param name="order"> : 描画順</param>
+		/// <param name="interval"> : 更新頻度</param>
+		/// <param name="isLoop"> : ループするか</param>
+		/// <param name="isReverse"> : 逆再生か</param>
+		void AddAnimation(const wstring& key, vector<int> order, float interval, const bool isLoop = false, const bool isReverse = false) {
+			SpriteAnimation animation = SpriteAnimation(order, interval, isLoop, isReverse);
 			m_Animations.insert(pair<wstring, SpriteAnimation>(key, animation));
 		}
 
 		/// <summary>
 		/// アニメーション情報を更新
 		/// </summary>
-		/// <param name="key">更新するキー</param>
-		/// <param name="newAnimation">新しいアニメーション</param>
+		/// <param name="key"> : 更新するキー</param>
+		/// <param name="newAnimation"> : 新しいアニメーション</param>
 		void UpdateAnimationData(const wstring& key, SpriteAnimation newAnimation) {
 			if (m_Animations.find(key) != m_Animations.end()) {
 				m_Animations[key] = newAnimation;
@@ -344,15 +418,14 @@ namespace basecross{
 		//	位置設定テンプレート		
 		//																																
 		//----------------------------------------------------------
-		void ScreenCenter(const Vec2 diff = Vec2(0,0));
-		void ScreenTop(const Vec2 diff = Vec2(0, 0));
-		void ScreenTopLeft(const Vec2 diff = Vec2(0, 0));
-		void ScreenTopRight(const Vec2 diff = Vec2(0, 0));
-		void ScreenBottom(const Vec2 diff = Vec2(0, 0));
-		void ScreenBottomLeft(const Vec2 diff = Vec2(0, 0));
-		void ScreenBottomRight(const Vec2 diff = Vec2(0, 0));
-		void ScreenLeft(const Vec2 diff = Vec2(0, 0));
-		void ScreenRight(const Vec2 diff = Vec2(0, 0));
+
+		/// <summary>
+		/// アンカー位置設定
+		/// </summary>
+		/// <param name="achor"> : アンカー</param>
+		/// <param name="offset"> : ずれ</param>
+		void ScreenAnchor(Anchor achor, const Vec3& offset = Vec3());
+
 	};
 
 

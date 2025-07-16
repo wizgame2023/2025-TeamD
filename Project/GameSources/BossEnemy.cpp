@@ -42,9 +42,10 @@ namespace basecross {
 		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps * 0.5f);
 		draw->AddAnimation(L"Landing", 2437, 67, false, fps * 0.5f);//16
 
-		draw->AddAnimation(L"ShakeOff_First", 2205, 14, false, fps);
-		draw->AddAnimation(L"ShakeOff", 2220, 87, false, fps);
-		draw->AddAnimation(L"ShakeOff_Parry", 2561, 114, false, fps);
+		draw->AddAnimation(L"ShakeOff_First", 2300, 21, false, fps);
+		draw->AddAnimation(L"ShakeOff_Bef", 2321, 17, false, fps * 1.5f);
+		draw->AddAnimation(L"ShakeOff_Aft", 2339, 61, false, fps * 1.5f);
+		draw->AddAnimation(L"ShakeOff_Parry", 2561, 118, false, fps);
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -122,10 +123,23 @@ namespace basecross {
 
 		auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 
-		m_Cruch = m_Stage->AddGameObject<CrushAttack>(Vec3(crushSize), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), 3.0f);
-		m_Missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(GetThis<BossEnemy>(), 0.0f, 20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
-		m_Missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
-		m_Missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
+		auto crush = m_Stage->AddGameObject<CrushAttack>(Vec3(crushSize), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), crushBlow);
+		auto missile = m_Stage->AddGameObject<Missile>(player->GetTransform(), AttackDate(GetThis<BossEnemy>(), 0.0f, 20.0f, missileInterval * (float)missileCount, 5.0f, 2.0f), explodeSize, missileCount, missileInterval);
+		missile->AddMuzzle(Vec3(0.5f, 0, 0.25f));
+		missile->AddMuzzle(Vec3(-0.5f, 0, 0.25f));
+		auto shakeoff = m_Stage->AddGameObject<ShakeOffAttack>(Vec3(4.0f,1.0f,3.5f), AttackDate(GetThis<BossEnemy>(), crushDamage, crushRange, 0.25f, 3.0f, 1.0f), 10.0f);
+
+
+		auto crushSkill = make_shared<BossCrush>(GetThis<BossEnemy>());
+		crushSkill->SetSkill(crush);
+		auto missileSkill = make_shared<BossGun>(GetThis<BossEnemy>());
+		missileSkill->SetSkill(missile);
+		auto shakeSkill = make_shared<BossShakeOff>(GetThis<BossEnemy>());
+		shakeSkill->SetSkill(shakeoff);
+
+		AddSkill(missileSkill, 0.0f);
+		AddSkill(crushSkill, 0.0f);
+		AddSkill(shakeSkill, 100.0f);
 
 		float hp = GetMaxHP();
 		hp *= (int)difficulty;

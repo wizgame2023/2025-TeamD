@@ -33,7 +33,7 @@ namespace basecross {
 		//--------------------------------------------------------------------------------------
 		Scene() :SceneBase(), m_MaxCount(0), m_Count(0) {
 			m_StageFile = {
-				{{L"testStage_Y_easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
+				{{L"Debugstage.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},
 				{{L"Map_S_Easy.csv",false},{L"Map_S_Normal.csv",false},{L"Map_S_Hard.csv",false}}
 			};

@@ -8,7 +8,7 @@ namespace basecross {
 	{
 	}
 
-	void SharpFan::InitializeVertex() {
+	void SharpFan::InitializeVertex() {		
 		float forwardRadian = atan2f(m_Forward.z, m_Forward.x);
 		float startRadius = forwardRadian - XMConvertToRadians(m_DrawAngle / 2.0f);
 		bool isFirst = true;
@@ -72,7 +72,7 @@ namespace basecross {
 			m_Draw->SetTextureResource(m_TexKey);
 		}
 		m_Transform = GetComponent<Transform>();
-		m_Transform->SetPosition(Vec3(-10.0f, 0.1f, 2.0f));
+		m_Transform->SetPosition(Vec3(0.0f,0.0f,0.0f));
 	}
 
 	void SharpFan::OnUpdate() {

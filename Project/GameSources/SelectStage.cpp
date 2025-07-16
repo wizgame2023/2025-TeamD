@@ -61,14 +61,14 @@ namespace basecross {
 		int levelCount = 3;
 		float leftX = -340.0f;
 
-		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), true);
+		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), Vec2(0.5f));
 		//auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
 		//auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
-		m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), true);
-		m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), true);
+		m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), Vec2(0.5f));
+		m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), Vec2(0.5f));
 		m_UDselect->SetDrawActive(false);
 		m_LRselect->SetDrawActive(true);
 
@@ -83,13 +83,13 @@ namespace basecross {
 				[position](shared_ptr<ObjectInterface> object) {
 					auto stage = static_pointer_cast<SelectStage>(object);
 					stage->AcceptStage(ButtonManager::instance->GetSelectIndex(L"City"));
-					auto white = stage->AddGameObject<Sprite>(L"SELECT_STAGE_WHITE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), true);
+					auto white = stage->AddGameObject<Sprite>(L"SELECT_STAGE_WHITE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), Vec2(0.5f));
 					auto slide = stage->AddGameObject<SlideInSprite>(L"SELECT_BACK_STAGE", true, Vec2(150.0f, 50.0f), position + Vec3(0.0f, 175.0f, 0.0f), 1.0f);
 					white->SetDrawLayer(1);
 					slide->SetDiffuse(Col4(0,0,0,1));
 				});
 
-			AddGameObject<Sprite>(L"SELECT_STAGE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), true);
+			AddGameObject<Sprite>(L"SELECT_STAGE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), Vec2(0.5f));
 			Vec3 dangerLow = Vec3(leftX - leftX * i, 90.0f, 0.0f);
 			for (int j = 0; j < dangerKey.size(); j++) {
 				ButtonManager::Create(GetThis<Stage>(), L"Difficulty" + to_wstring(i), L"POSE_CIRCLE", Col4(1, 1, 1, 1),
@@ -100,11 +100,11 @@ namespace basecross {
 						stage->AcceptDifficulty(static_cast<int>(ButtonManager::instance->GetSelectIndex(L"Difficulty" + to_wstring(selectCity))));
 					});
 
-				auto sprite = AddGameObject<Sprite>(dangerKey[j], dangerLow - Vec3(0,100.0f * j,0.0f), Vec2(60.0f, 60.0f), true);
+				auto sprite = AddGameObject<Sprite>(dangerKey[j], dangerLow - Vec3(0,100.0f * j,0.0f), Vec2(60.0f, 60.0f), Vec2(0.5f));
 				sprite->SetDiffuse(dangerColor[j]);
 
 				if (scene->IsClear({ i,j })) {
-					sprite = AddGameObject<Sprite>(L"CHECKMARK", dangerLow - Vec3(-100.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f),true);
+					sprite = AddGameObject<Sprite>(L"CHECKMARK", dangerLow - Vec3(-100.0f, 100.0f * j, 0.0f), Vec2(60.0f, 60.0f), Vec2(0.5f));
 				}
 			}
 			ButtonManager::instance->AddAcceptButton(L"Difficulty" + to_wstring(i), XINPUT_GAMEPAD_A);

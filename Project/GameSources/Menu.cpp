@@ -72,20 +72,20 @@ namespace basecross {
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND2", Vec3(35.0f, 125.0f, 0), Vec2(280, 110), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND2", Vec3(35.0f, 125.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE3", Vec3(35.0f, - 75.0f, 0), Vec2(280, 110), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE3", Vec3(35.0f, - 75.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, 25.0f, 0), Vec2(280, 110), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, 25.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
@@ -146,9 +146,9 @@ namespace basecross {
 		}
 		float volume = SoundManager::Instance().GetSEVolume();
 		auto button = GetSprite<Sprite>(6);
-		Vec3 pos = button->GetPos();
+		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
-		button->SetPos(pos);
+		button->SetPosition(pos);
 
 	}
 	void SoundTestMenu::TuningBGM() {
@@ -171,9 +171,9 @@ namespace basecross {
 		}
 		float volume = SoundManager::Instance().GetBGMVolume();
 		auto button = GetSprite<Sprite>(9);
-		Vec3 pos = button->GetPos();
+		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
-		button->SetPos(pos);
+		button->SetPosition(pos);
 
 	}
 
@@ -189,16 +189,16 @@ namespace basecross {
 	}
 	void SoundTestMenu::OnCreate() {
 		Menu::OnCreate();
-		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), true);
+		auto sprite = GetStage()->AddGameObject<Sprite>(L"POSE_BACK", Vec3(0, 10, 0), Vec2(600, 600), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SETTING", Vec3(0, 220, 0), Vec2(200, 100), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);		
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, 100, 0), Vec2(120, 80), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, 100, 0), Vec2(120, 80), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, -50, 0), Vec2(120, 80), true);
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, -50, 0), Vec2(120, 80), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
@@ -212,19 +212,19 @@ namespace basecross {
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
 		float x = GetPositionX(volumeSE);
 
-		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
 
-		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), true);
+		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 30.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(barSprite);
 
-		auto choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR",Vec3(x,30.0f,0.0f),Vec2(40,60),true);
+		auto choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR",Vec3(x,30.0f,0.0f),Vec2(40,60), Vec2(0.5f));
 		AddSprite(choice);
 
 
 
 		//auto slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 30.0f, 0.0f), Vec2(40, 60), true);
-		//slideBarSprite->SetPos(Vec3(-x,0.0f,0.0f));
+		//slideBarSprite->SetPosition(Vec3(-x,0.0f,0.0f));
 		//AddSprite(slideBarSprite);
 
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, 90.0f, 0.0f), Vec2(60, 80), menu,
@@ -234,20 +234,20 @@ namespace basecross {
 				float volume = SoundManager::Instance().GetSEVolume();
 				auto button = menu->GetSprite<Sprite>(6);
 
-				Vec3 pos = button->GetPos();
+				Vec3 pos = button->GetPosition();
 				pos.x = menu->GetPositionX(volume);
-				button->SetPos(pos);
+				button->SetPosition(pos);
 
 			});
 		x = GetPositionX(volumeBGM);
 
-		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
 
-		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), true);
+		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -130.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(barSprite);
 
-		choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
+		choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), Vec2(0.5f));
 		AddSprite(choice);
 
 		//slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
@@ -261,11 +261,11 @@ namespace basecross {
 				float volume = SoundManager::Instance().GetBGMVolume();
 
 				auto button = menu->GetSprite<Sprite>(9);
-				Vec3 pos = button->GetPos();
+				Vec3 pos = button->GetPosition();
 				pos.x = menu->GetPositionX(volume);
-				button->SetPos(pos);
+				button->SetPosition(pos);
 			});
-		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-60.0f, -200.0f, 0), Vec2(140, 80), true);
+		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START", Vec3(-60.0f, -200.0f, 0), Vec2(140, 80), Vec2(0.5f));
 		AddSprite(sprited);
 
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-135.0f, -200.0f, 0.0f), Vec2(60, 80), menu,

@@ -48,17 +48,17 @@ namespace basecross {
 	}
 
 	void TitleStage::CreateTitle() {
-		m_BackGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 5.0f), Vec2(1280.0f, 800.0f), true);
+		m_BackGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 5.0f), Vec2(1280.0f, 800.0f), Vec2(0.5f));
 		m_BackGround->SetDrawLayer(4);
 		//auto borad = AddGameObject<Board>(L"BACKGROUND", Vec3(0.0f, 2.5f, 0.0f), Vec3(6.75f, 4.25f,1));
 		//borad->SetColor(Col4(0, 0, 0, 1));
-		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f),true);
+		m_Title = AddGameObject<Sprite>(L"TITLESPRITE", Vec3(0.0f, 150.0f, 0.0f), Vec2(1500.0f, 1300.0f), Vec2(0.5f));
 		m_Title->SetDrawLayer(6);
-		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(250.0f, 120.0f), true);
+		m_Start = AddGameObject<Sprite>(L"STRATA", Vec3(0.0f, -270.0f, 0.0f), Vec2(250.0f, 120.0f), Vec2(0.5f));
 		m_Start->SetDrawLayer(6);
-		m_StartKey = AddGameObject<Sprite>(L"STARTA_KEY", Vec3(0.0f, -270.0f, 0.0f), Vec2(375.0f, 180.0f), true);
+		m_StartKey = AddGameObject<Sprite>(L"STARTA_KEY", Vec3(0.0f, -270.0f, 0.0f), Vec2(375.0f, 180.0f), Vec2(0.5f));
 		m_StartKey->SetDrawLayer(6);
-		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		auto fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(0.5f));
 		fadeSprite->SetDrawLayer(6);
 		m_Titlemodel = AddGameObject<TirleStageModel>();
 		m_Titlemodel->SetDrawActive(false);

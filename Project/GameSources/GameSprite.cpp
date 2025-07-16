@@ -85,22 +85,22 @@ namespace basecross {
 		m_HpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 		m_HpBarBackGround->SetDrawLayer(0);
 
-		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y),true);
+		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y),Vec2(0.5f));
 		edge->SetDiffuse(m_Color);
 		edge->SetDrawLayer(1);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y),true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		edge->SetDiffuse(m_Color);
 		edge->SetDrawLayer(1);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
@@ -119,11 +119,11 @@ namespace basecross {
 
 		size.x *= rate;
 
-		m_HpBar->UpdateSize(Vec2(size.x, size.y));
+		m_HpBar->SetSize(Vec2(size.x, size.y));
 
 		Vec3 rightEdgePosition = leftPosition + Vec3(size.x, 0, 0);
-		m_Edge[0]->SetPos(leftPosition - Vec3(0,size.y / 2.0f,0));
-		m_Edge[1]->SetPos(rightEdgePosition - Vec3(0, size.y / 2.0f, 0));
+		m_Edge[0]->SetPosition(leftPosition - Vec3(0,size.y / 2.0f,0));
+		m_Edge[1]->SetPosition(rightEdgePosition - Vec3(0, size.y / 2.0f, 0));
 
 
 		bool isActive = GetDrawActive();
@@ -168,22 +168,22 @@ namespace basecross {
 		m_HpBarBackGround->SetDiffuse(Col4(0, 0, 0, 1));
 		m_HpBarBackGround->SetDrawLayer(0);
 
-		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		auto edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		//edge->SetDiffuse(m_Color);
 		edge->SetDrawLayer(1);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		//edge->SetDiffuse(m_Color);
 		edge->SetDrawLayer(1);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", leftEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		//edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
 
-		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), true);
+		edge = m_Stage->AddGameObject<Sprite>(L"HP_BAR_EDGE", rightEdgePosition, Vec2(size.y / 2.0f, size.y), Vec2(0.5f));
 		//edge->SetDiffuse(Col4(0, 0, 0, 1));
 		edge->SetDrawLayer(0);
 		m_Edge.push_back(edge);
@@ -202,11 +202,11 @@ namespace basecross {
 
 		size.x *= rate;
 
-		m_HpBar->UpdateSize(Vec2(size.x, size.y));
+		m_HpBar->SetSize(Vec2(size.x, size.y));
 
 		Vec3 rightEdgePosition = leftPosition + Vec3(size.x, 0, 0);
-		m_Edge[0]->SetPos(leftPosition - Vec3(0, size.y / 2.0f, 0));
-		m_Edge[1]->SetPos(rightEdgePosition - Vec3(0, size.y / 2.0f, 0));
+		m_Edge[0]->SetPosition(leftPosition - Vec3(0, size.y / 2.0f, 0));
+		m_Edge[1]->SetPosition(rightEdgePosition - Vec3(0, size.y / 2.0f, 0));
 
 
 		bool isActive = GetDrawActive();

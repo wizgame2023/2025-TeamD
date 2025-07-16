@@ -217,7 +217,7 @@ namespace basecross {
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(1, 1, 1, 1));
 
-		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(0.5f));
 		fadeSprite->SetDrawLayer(1);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
@@ -491,6 +491,9 @@ namespace basecross {
 			ToOpeningCamera();
 			GameManager::Instance()->SetZoneRate(0.5f);
 
+			RECTANGLE r = { 0,0,5,4 };
+			CIRCLE c = { 5.0f,36,360.0f };
+			AddGameObject<GroundEffect>(L"SEARCH_RANGE",r);
 		}
 		catch (...) {
 			throw;
