@@ -1,0 +1,11 @@
+build.bmf,OBJECT,static
+T_Building.png,BUILD_TEX,
+Break_Build.bmf,OBJECT_BREAK,static
+Build.png,BUILD_BREAK_TEX,
+Player.bmf,PLAYER,bone
+Enemy.bmf,MOB,bone
+Boss.bmf,BOSS,bone
+Tama.bmf,BULLET,static
+Rocket.bmf,ROCKET,static
+Title_break 1.bmf,TITLEBREAK,bone
+Title_break.png,BACKTIRLEBRAKE,
