@@ -8,34 +8,34 @@
 
 namespace basecross {
 
+	Sprite::Sprite(const shared_ptr<Stage>& ptr, const wstring& texKey, Vec3 pos, Vec2 size, Anchor anchor) : Sprite(ptr, texKey, pos, size, {0,0}) {
+		Vec2 pivot;
+
+		switch (anchor)
+		{
+		case Anchor::Center:	 pivot = Vec2(0.5f, 0.5f); break;
+		case Anchor::Top:		 pivot = Vec2(0.5f, 0.0f); break;
+		case Anchor::Bottom:	 pivot = Vec2(0.5f, 1.0f); break;
+		case Anchor::Left:		 pivot = Vec2(0.0f, 0.5f); break;
+		case Anchor::Right:		 pivot = Vec2(1.0f, 0.5f); break;
+		case Anchor::TopLeft:	 pivot = Vec2(0.0f, 0.0f); break;
+		case Anchor::TopRight:	 pivot = Vec2(1.0f, 0.0f); break;
+		case Anchor::BottomLeft: pivot = Vec2(0.0f, 1.0f); break;
+		case Anchor::BottomRight:pivot = Vec2(1.0f, 1.0f); break;
+		default: pivot = Vec2(); break;
+		}
+		
+		SetPivot(pivot);
+	}
+
+
 	void Sprite::OnCreate() {
-		/*for (int y = 0; y < m_cutUV.y; y++) {
-			for (int x = 0; x < m_cutUV.x; x++) {
-				m_AnimationUV.push_back({
-					{(1.0f / m_cutUV.x) * x,(1.0f / m_cutUV.y) * y},
-					{(1.0f / m_cutUV.x) * (x + 1),(1.0f / m_cutUV.y) * y},
-					{(1.0f / m_cutUV.x) * x,(1.0f / m_cutUV.y) * (y + 1)},
-					{(1.0f / m_cutUV.x) * (x + 1),(1.0f / m_cutUV.y) * (y + 1)}
-					}
-				);
-			}
-		}*/
-		if (m_UseIndex != -1) {
-			m_AnimationUV = CreateAnimationUV(m_cutUV, m_UseIndex);
-		}
-		else {
-			m_AnimationUV = CreateAnimationUV(m_cutUV);
-			m_UseIndex = m_AnimationUV.size() - 1;
-		}
-		//if (m_UseIndex == -1 || m_UseIndex >= m_AnimationUV.size()) {
-		//	m_UseIndex = static_cast<int>(m_AnimationUV.size()) - 1;
-		//}
+		CreateAnimationUV(Vec2(1, 1), 1);
 		CreateVertex(m_Size, m_AnimationUV[0]);
 		vector<uint16_t> indices = {
 			0, 1, 2,
 			2, 1, 3
 		};
-
 
 		m_Draw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
 		if (m_TexKey != L"") {
@@ -47,9 +47,8 @@ namespace basecross {
 		m_Transform = GetComponent<Transform>();
 		m_Transform->SetPosition(m_Pos);
 
-		m_ScreenSize = Vec2(1280, 800);
-
-		//SetDrawLayer(3);
+		m_ScreenHalfSize.x = App::GetApp()->GetGameWidth() * 0.5f;
+		m_ScreenHalfSize.y = App::GetApp()->GetGameHeight() * 0.5f;
 	}
 	void Sprite::OnUpdate() {
 		if (m_IsAnimation) {
@@ -60,73 +59,49 @@ namespace basecross {
 	}
 	void Sprite::Animation() {
 		float elapsedTime = App::GetApp()->GetElapsedTime();
-		m_AnimationTimer += elapsedTime;
 
-		if (m_AnimationTimer > m_CurrentAnimation.m_UpdateInterval) {
-			if (m_CurrentAnimation.m_IsReverse) {
-				m_CurrentAnimation.m_CurrentOrder--;
-				if (m_CurrentAnimation.m_CurrentOrder < 0) {
-					m_CurrentAnimation.EndAnimation();
-					/*if (m_CurrentAnimation.m_IsLoop) {
-						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
-					}
-					else {
-						m_CurrentAnimation.m_CurrentOrder = 0;
-					}*/
-				}
-			}
-			else {
-				m_CurrentAnimation.m_CurrentOrder++;
-				if (m_CurrentAnimation.m_CurrentOrder >= m_CurrentAnimation.m_Order.size() || m_CurrentAnimation.m_CurrentOrder >= m_AnimationUV.size()) {
-					m_CurrentAnimation.EndAnimation();
-					/*if (m_CurrentAnimation.m_IsLoop) {
-						m_CurrentAnimation.m_CurrentOrder = 0;
-					}
-					else {
-						m_CurrentAnimation.m_CurrentOrder = m_CurrentAnimation.m_Order.size() - 1;
-					}*/
-				}
-			}
-
+		if (m_CurrentAnimation.Update(elapsedTime)) {
 			UpdateUV(m_AnimationUV[m_CurrentAnimation.m_CurrentOrder]);
-
-			m_AnimationTimer = 0.0f;
 		}
 	}
 	vector<vector<Vec2>> Sprite::CreateAnimationUV(Vec2 cut, const size_t& maxIndex) {
+
+		if (cut.x == 0.0f || cut.y == 0.0f) return {};
+
 		vector<vector<Vec2>> uv;
-		for (size_t y = 0; y < cut.y; y++) {
-			for (size_t x = 0; x < cut.x; x++) {
-				//最大値に達したらもう作らない
-				if (cut.x * y + x > maxIndex) return uv;
-				uv.push_back({
-					{(1.0f / cut.x) * x,(1.0f / cut.y) * y},
-					{(1.0f / cut.x) * (x + 1),(1.0f / cut.y) * y},
-					{(1.0f / cut.x) * x,(1.0f / cut.y) * (y + 1)},
-					{(1.0f / cut.x) * (x + 1),(1.0f / cut.y) * (y + 1)}
-					}
-				);
-			}
+		uv.reserve(maxIndex);
+		m_AnimationUV.reserve(maxIndex);
+
+		size_t cutX = cut.x, cutY = cut.y;
+		size_t maxImageCount = cutX * cutY;
+
+		float stepX = 1.0f / cut.x, stepY = 1.0f / cut.y;
+
+		for (size_t i = 0; i < maxIndex && i < maxImageCount; i++) {
+			size_t x = i % cutX;
+			size_t y = i / cutX;
+
+			uv.push_back({
+				{stepX *  x,		stepY *  y		},
+				{stepX * (x + 1),	stepY *  y		},
+				{stepX *  x,		stepY * (y + 1)	},
+				{stepX * (x + 1),	stepY * (y + 1)	}
+			});
 		}
+		m_AnimationUV = uv;
+		m_IsAnimation = uv.size() > 1 ? true : false;
+		m_MaxAnimationFrame = uv.size();
+
 		return uv;
 	}
 	void Sprite::CreateVertex(Vec2 size, vector<Vec2> uv) {
-		if (m_IsUseCenterSprite) {
-			m_Vertices = {
-				{Vec3(-size.x / 2.0f, size.y / 2.0f, 0),Col4(1,1,1,1), uv[0]},
-				{Vec3(size.x / 2.0f, size.y / 2.0f, 0),Col4(1,1,1,1), uv[1]},
-				{Vec3(-size.x / 2.0f, -size.y / 2.0f, 0),Col4(1,1,1,1), uv[2]},
-				{Vec3(size.x / 2.0f, -size.y / 2.0f, 0),Col4(1,1,1,1), uv[3]}
-			};
-		}
-		else {
-			m_Vertices = {
-				{Vec3(0, 0, 0),Col4(1,1,1,1), uv[0]},
-				{Vec3(size.x, 0, 0),Col4(1,1,1,1), uv[1]},
-				{Vec3(0, -size.y, 0),Col4(1,1,1,1), uv[2]},
-				{Vec3(size.x, -size.y, 0),Col4(1,1,1,1), uv[3]}
-			};
-		}
+
+		m_Vertices = {
+			{Vec3(-size.x *			m_Pivot.x,	 size.y *			m_Pivot.y ,0),Col4(1,1,1,1),uv[0]},
+			{Vec3( size.x *	(1.0f - m_Pivot.x),	 size.y *			m_Pivot.y ,0),Col4(1,1,1,1),uv[1]},
+			{Vec3(-size.x *			m_Pivot.x,	-size.y *	(1.0f - m_Pivot.y),0),Col4(1,1,1,1),uv[2]},
+			{Vec3( size.x * (1.0f - m_Pivot.x),	-size.y *	(1.0f - m_Pivot.y),0),Col4(1,1,1,1),uv[3]}
+		};
 	}
 	void Sprite::SetVertex(vector<Vec3> positions) {
 		for (int i = 0; i < m_Vertices.size(); i++) {
@@ -146,10 +121,7 @@ namespace basecross {
 			m_Draw->UpdateVertices(m_Vertices);
 		}
 	}
-	void Sprite::UpdateSize(Vec3 size) {
-		m_Transform->SetScale(size);
-	}
-	void Sprite::UpdateSize(Vec2 size) {
+	void Sprite::SetSize(Vec2 size) {
 		if (m_Draw) {
 			m_Size = size;
 			if (m_IsAnimation) {
@@ -162,48 +134,35 @@ namespace basecross {
 		}
 	}
 
-	void Sprite::SetPos(Vec3 pos) {
+	void Sprite::SetPosition(Vec3 pos) {
 		m_Transform->SetPosition(pos);
 	}
 	void Sprite::SetDiffuse(Col4 color) {
 		m_Draw->SetDiffuse(color);
 	}
-	Col4 Sprite::GetDiffuse() {
+	Col4 Sprite::GetDiffuse() const{
 		return m_Draw->GetDiffuse();
 	}
-	void Sprite::ScreenCenter(const Vec2 diff) {
-		Vec3 newPos = Vec3();
-		if (m_IsUseCenterSprite) {
 
+	void Sprite::ScreenAnchor(Anchor anchor, const Vec3& offset) {
+
+		Vec3 pos;
+
+		switch (anchor)
+		{
+		case Anchor::Center:		pos = Vec3(); break;
+		case Anchor::Top:			pos = Vec3(0.0f, m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::Bottom:		pos = Vec3(0.0f, -m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::TopLeft:		pos = Vec3(-m_ScreenHalfSize.x, m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::TopRight:		pos = Vec3(m_ScreenHalfSize.x, m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::BottomLeft:	pos = Vec3(-m_ScreenHalfSize.x, -m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::BottomRight:	pos = Vec3(m_ScreenHalfSize.x, -m_ScreenHalfSize.y, 0.0f); break;
+		case Anchor::Left:			pos = Vec3(-m_ScreenHalfSize.x, 0.0f, 0.0f); break;
+		case Anchor::Right:			pos = Vec3(m_ScreenHalfSize.x, 0.0f, 0.0f); break;
+		default:					pos = Vec3(); break;
 		}
-		else {
 
-		}
-		m_Transform->SetPosition(newPos);
-	}
-	void Sprite::ScreenTop(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenTopRight(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenTopLeft(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenBottom(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenBottomRight(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenBottomLeft(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenLeft(const Vec2 diff) {
-
-	}
-	void Sprite::ScreenRight(const Vec2 diff) {
-
+		m_Transform->SetPosition(pos + offset);
 	}
 
 	void NumberSprite::OnCreate() {
@@ -380,7 +339,7 @@ namespace basecross {
 
 
 	shared_ptr<Sprite> ButtonManager::Create(shared_ptr<Stage>& stage, const wstring& group, const wstring& defaultTex, const wstring& selectedTex, Col4 selectedColor, Vec3 pos, Vec2 size, const shared_ptr<ObjectInterface>& object, function<void(shared_ptr<ObjectInterface>&)> func) {
-		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, true);
+		auto sprite = stage->AddGameObject<Sprite>(defaultTex, pos, size, Vec2(0.5f));
 		sprite->AddTag(L"Button");
 		shared_ptr<SpriteButton> button = nullptr;
 

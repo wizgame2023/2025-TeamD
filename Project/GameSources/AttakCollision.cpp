@@ -25,6 +25,26 @@ namespace basecross {
 			m_Date.m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate());
 		}
 	}
+
+	void ImpactAttack::ContactPlayer(shared_ptr<GameObject>& player) {
+		Vec3 position = m_Date.m_Owner->GetPosition();
+		Vec3 playerPosition = player->GetComponent<Transform>()->GetPosition();
+
+		Vec3 direction = playerPosition - position;
+		direction = direction.normalize();
+		direction.y = 0.5f;
+
+		auto gravity = player->GetComponent<Gravity>(false);
+		if (gravity != nullptr) {
+			gravity->StartJump(direction * m_BlowForce);
+		}
+		Stop();
+	}
+
+	void ImpactAttack::ReflectParry(Vec3 position) {
+	}
+
+
 	void CrushAttack::ContactPlayer(shared_ptr<GameObject>& player) {
 		Vec3 position = m_Transform->GetPosition();
 		Vec3 playerPosition = player->GetComponent<Transform>()->GetPosition();
@@ -79,14 +99,15 @@ namespace basecross {
 			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target, 10.0f, m_ExplodePower);
 			m_MissileCount--;
 			m_MuzzleIndex++;
+			
 			if (m_MuzzlePositions.size() <= m_MuzzleIndex) {
 				m_MuzzleIndex = 0;
 			}
 			m_MissileTimer.Reset();
 		}
 	}
-	void Missile::Play(Vec3 position) {
-		Attack::Play(position);
+	void Missile::Play(Vec3 position, Vec3& direction) {
+		Attack::Play(position,direction);
 
 		m_MissileCount = m_MissileMaxCount;
 		//m_MissileTimer.Reset();
@@ -98,8 +119,6 @@ namespace basecross {
 			auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
 			boss->AddStun(0.5f / (float)GameManager::Instance()->GetDifficulty());
 			boss->SetAnimation(L"ShakeOff_Parry",true);
-
-
 		}
 	}
 }

@@ -8,9 +8,16 @@
 #include "AttakCollision.h"
 #include "Timer.h"
 namespace basecross {
-
 	template <typename> class EnemyState;
 	class Enemy;
+	class BossEnemy;
+
+	struct Skill{
+		shared_ptr<EnemyState<BossEnemy>> m_Skill;
+		float m_Prob;
+	};
+
+	
 	class BossEnemy : public Enemy
 	{
 		friend class BossHostility;
@@ -23,8 +30,8 @@ namespace basecross {
 		int m_ConditionDefeat;
 		float m_MotionRate;
 
-		unique_ptr<EnemyState<BossEnemy>> m_currentState;  
-		unique_ptr<EnemyState<BossEnemy>> m_nextState;   
+		shared_ptr<EnemyState<BossEnemy>> m_currentState;  
+		shared_ptr<EnemyState<BossEnemy>> m_nextState;
 
 
 		shared_ptr<CrushAttack> m_Cruch;
@@ -50,6 +57,12 @@ namespace basecross {
 		Effekseer::Handle m_EffectHandle;
 		Effekseer::Handle m_EffectBombHandle;
 		Effekseer::Handle m_SmokeHandle;
+
+		vector<Skill> m_Skills;
+
+		void AddSkill(const shared_ptr<EnemyState<BossEnemy>>& skill, float prob) {
+			m_Skills.push_back({ skill,prob });
+		}
 	public:
 		BossEnemy(const shared_ptr<Stage>& stage);
 		BossEnemy(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale
@@ -84,10 +97,16 @@ namespace basecross {
 		void ChangeState() {
 			m_currentState->Exit();
 			m_currentState.reset();
-			m_currentState = make_unique<NextState>(GetThis<BossEnemy>());
+			m_currentState = make_shared<NextState>(GetThis<BossEnemy>());
 			m_currentState->Enter();
 		}
 
+		void ChangeState(int i) {
+			m_currentState->Exit();
+			m_currentState.reset();
+			m_currentState = m_Skills[i].m_Skill;
+			m_currentState->Enter();
+		}
 		float GetMotionRate() {
 			return m_MotionRate;
 		}
