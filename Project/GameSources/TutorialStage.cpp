@@ -43,9 +43,9 @@ namespace basecross {
 	}
 
 	void TutorialStage::CreateSelect() {
-		m_backGround = AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
-		m_backStage = AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
-		m_backSprite = AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), true);
+		m_backGround = AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), Vec2(0.5f));
+		m_backStage = AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), Vec2(0.5f));
+		m_backSprite = AddGameObject<Sprite>(L"RESULT_MENU", Vec3(-300.0f, -150.0f, 0.0f), Vec2(100.0f, 80.0f), Vec2(0.5f));
 		m_backGround->SetDrawActive(false);
 		m_backStage->SetDrawActive(false);
 		m_backSprite->SetDrawActive(false);

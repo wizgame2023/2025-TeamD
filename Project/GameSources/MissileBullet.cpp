@@ -23,8 +23,9 @@ namespace basecross {
 		m_TargetPosition.y = 0.51f;
 		float targetTime = (m_TargetPosition - beginTargetPosition).length() / m_Speed;
 		//float time = (1.0f / m_Speed) + ()
+		CIRCLE circle = { m_ExplodeSize / 2.0f,36,360.0f };
 
-		m_AreaEffect = m_Stage->AddGameObject<AreaOfEffect>(m_TargetPosition, m_ExplodeSize / 2.0f, 36, launchTime + targetTime);
+		m_AreaEffect = m_Stage->AddGameObject<AreaOfEffect>(m_TargetPosition,Vec3(0,0,1), circle, launchTime + targetTime);
 
 		auto draw = AddComponent<BcPNTStaticDraw>();
 		draw->SetMeshResource(L"ROCKET");

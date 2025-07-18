@@ -70,7 +70,7 @@ namespace basecross {
 		/// ステージ生成用
 		/// </summary>
 		/// <param name="stage">現在のステージ</param>
-		Object(const shared_ptr<Stage>& stage) : Object(stage, Vec3(), Vec3(1.0f), Vec3()) {}
+		Object(const shared_ptr<Stage>& stage) : Object(stage, Vec3(), Vec3(), Vec3(1.0f)) {}
 
 		virtual ‾Object() {}
 		virtual void OnCreate()override;
