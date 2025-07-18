@@ -213,6 +213,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerAttack.h">
+      <Filter>Player</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp">
@@ -363,6 +366,9 @@
       <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
+      <Filter>Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp">
       <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>

@@ -155,7 +155,7 @@ namespace basecross {
 
 	void Mob::OnCollisionEnter(shared_ptr<GameObject>& other)
 	{
-		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge") || other->FindTag(L"CaargeHitJudge")) && m_IntervalStart)
+		if ((other->FindTag(L"Bullet") || other->FindTag(L"HitJudge") || other->FindTag(L"CaargeHitJudge") || other->FindTag(L"CounterHitJudge")) && m_IntervalStart)
 		{
 			SetAnim(L"Damage", 0.0f, true);
 			Enemy::OnCollisionEnter(other);
