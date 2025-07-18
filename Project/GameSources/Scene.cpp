@@ -10,12 +10,15 @@
 namespace basecross {
 
 	void Scene::CreateModelResource() {
-		auto& app = App::GetApp();
-		auto mediaPath = app->GetDataDirWString();
-		wstring modelPath = mediaPath + L"Models/";
-		wstring uiPath = mediaPath + L"UI/";
+		/*auto& app = App::GetApp();
+		auto mediaPath = app->GetDataDirWString();*/
+
+		File::Load(L"Load", L"Models/");
+
+		//wstring modelPath = mediaPath + L"Models/";
+		//wstring uiPath = mediaPath + L"UI/";
 		//モデル関係
-		auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
+		/*auto modelBuild = MeshResource::CreateStaticModelMesh(modelPath, L"build.bmf");
 		app->RegisterTexture(L"BUILD_TEX", modelPath + L"T_Building.png");
 		app->RegisterResource(L"OBJECT", modelBuild);
 
@@ -38,7 +41,7 @@ namespace basecross {
 
 		auto titlemodel = MeshResource::CreateBoneModelMesh(modelPath, L"Title_break 1.bmf");
 		app->RegisterResource(L"TITLEBREAK", titlemodel);
-		app->RegisterTexture(L"BACKTIRLEBRAKE", modelPath + L"Title_break.png");
+		app->RegisterTexture(L"BACKTIRLEBRAKE", modelPath + L"Title_break.png");*/
 
 		//app->RegisterResource(L"MOB", modelEnemy);
 	}
@@ -83,6 +86,8 @@ namespace basecross {
 	void Scene::OnUpdate() {
 		SceneBase::OnUpdate();
 		RayCast::InitRay(10);
+
+		
 	}
 
 	Scene::‾Scene() {
@@ -133,6 +138,15 @@ namespace basecross {
 			ScoreManager::Instance()->SetParryBorder(m_Borders[count->stageNum][count->level].m_ParryBorder);
 			//次のアクティブステージの設定
 			ResetActiveStage<GameStage>(GetFileName(*count),*count);
+		}
+
+	}
+	void Scene::ResetStage() {
+		int i = 0, j = 0;
+		for (i; i < 3; i++) {
+			for (j; j < 3; j++) {
+				m_StageFile[i][j].m_IsClear = false;
+			}
 		}
 
 	}

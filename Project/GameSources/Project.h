@@ -56,4 +56,4 @@
 #include"SkyBackGround.h"
 #include "Plane.h"
 #include "TutorialStage.h"
-
+#include "LoadFile.h"

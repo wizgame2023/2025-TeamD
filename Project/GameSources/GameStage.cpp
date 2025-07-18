@@ -25,104 +25,11 @@ namespace basecross {
 		PtrMultiLight->SetDefaultLighting2();
 	}
 	void GameStage::CreateResource() {
-		auto& app = App::GetApp();
-		auto mediaPath = app->GetDataDirWString();
-		wstring uiPath = mediaPath + L"UI/";
-		wstring texPath = mediaPath + L"Textures/";
-		wstring modelPath = mediaPath + L"Models/";
-		wstring effectPath = mediaPath + L"Effekt/";
-		wstring skypath = mediaPath + L"BackGround/";
-		app->RegisterTexture(L"GROUND", texPath + L"Ground.png");
-		app->RegisterTexture(L"WAY", texPath + L"Asphalt2.png");
 
-		app->RegisterTexture(L"SELECT_SRAGE", uiPath + L"NextStageBack.png");
-		//app->RegisterTexture(L"RESULT_TITLE2", uiPath + L"Result_GoTitle3.png");
-		//app->RegisterTexture(L"RESULT_TITLE2", uiPath + L"ResultToTitle.png");
-		app->RegisterTexture(L"RESULT_TITLE", uiPath + L"Result_GoTitle.png");
-		//app->RegisterTexture(L"POSE_TITLE_SELECTED", uiPath + L"BackToTitle_Selected.png");
-		app->RegisterTexture(L"RESULT_NEXT_STAGE", uiPath + L"ResultNextStage.png");
-		//app->RegisterTexture(L"RESULT_NEXT_STAGE2", uiPath + L"ResultNextStage2.png");
-		app->RegisterTexture(L"RESULT_SELECT_BACK", uiPath + L"ResultSelectBackUI.png");
-		app->RegisterTexture(L"RESULT_START__BACK", uiPath + L"ResultBackGameBack.png");
-		app->RegisterTexture(L"RESULT_TITLE_BACK", uiPath + L"ResultToTitleBack.png");
-		app->RegisterTexture(L"RESULT_NEXT_STAGE_BACK", uiPath + L"ResultNextStageBack.png");
-		//app->RegisterTexture(L"POSE_ENDGAME_SELECTED", uiPath + L"NextStage_Selected.png");
-		app->RegisterTexture(L"BGM_BAR", uiPath + L"BGM_MenuBar.png");
-		app->RegisterTexture(L"BGM_BACKBAR", uiPath + L"BGM_MenuBackBar.png");
-		app->RegisterTexture(L"BGM_SLIDEBAR", uiPath + L"BGM_MenuSlideBar.png");
-		app->RegisterTexture(L"POSE_START", uiPath + L"BackGame.png");
-		app->RegisterTexture(L"POSE_SOUND", uiPath + L"Sound_Menu.png");
-		app->RegisterTexture(L"SE_VOLUME", uiPath + L"SE_Menu.png");
-		app->RegisterTexture(L"BGM_VOLUME", uiPath + L"BGM_Menu.png");
-		app->RegisterTexture(L"01", texPath + L"Black0.1.png");
-		app->RegisterTexture(L"NUMBER", uiPath + L"Number.png");
-		app->RegisterTexture(L"ACTION_ULT_EFFECT", uiPath + L"UI_UltEffect.png");
-		app->RegisterTexture(L"ACTION_ULT_WAKU_EFFECT", uiPath + L"UI_Ult_Waku_Effect.png");
-		app->RegisterTexture(L"ACTION_ULT_FRAME", uiPath + L"UI_Ult_Waku_B.png");
-
-		//コントローラー用
-		app->RegisterTexture(L"ACTION_PANCH", uiPath + L"UI_Panch_A.png");
-		app->RegisterTexture(L"ACTION_DASH", uiPath + L"UI_Dash_X.png");
-		app->RegisterTexture(L"ACTION_ULT", uiPath + L"UI_Ult.png");
-
-		//igc用UI
-		app->RegisterTexture(L"ACTION_PANCH_KEY", uiPath + L"UI_Panch_A_Key.png"); 
-		app->RegisterTexture(L"ACTION_DASH_KEY", uiPath + L"UI_Dash_X_Key.png");
-		app->RegisterTexture(L"ACTION_ULT_FRAME_KEY", uiPath + L"UI_Ult_Waku_B_Key.png");
-
-		app->RegisterTexture(L"MENU_KEY", uiPath + L"UI_Menu_Key.png");
-
-		app->RegisterTexture(L"HP_BAR_EDGE", uiPath + L"HpEdge.png");
-		app->RegisterTexture(L"HP_BAR", uiPath + L"HpBar.png");
-		app->RegisterTexture(L"HP_BAR2D", uiPath + L"HpBar2D.png");
-		app->RegisterTexture(L"HP_BAR_FRAME", uiPath + L"HP_kazari.png");
-
-		app->RegisterTexture(L"TARGET", uiPath + L"Target.png");
-		app->RegisterTexture(L"BOSS_TEXT", uiPath + L"BossTextBlack.png");
-		app->RegisterTexture(L"BOSS_TEXT_WAKU", uiPath + L"BossText_Waku.png");
-		app->RegisterTexture(L"BOSS_APPEAR", uiPath + L"BossAppear.png");
-
-		app->RegisterTexture(L"RESULT_BACK", uiPath + L"Result_Back.png");
-		app->RegisterTexture(L"SEARCH_RANGE", texPath + L"SearchRange.png");
-		app->RegisterTexture(L"AOF", texPath + L"AoF.png");
-		app->RegisterTexture(L"BUILDING", texPath + L"Building.png");
-
-
-		app->RegisterTexture(L"RESULT_MENU", uiPath + L"Result_Menu_Score.png");
-		app->RegisterTexture(L"RESULT_TEXT", uiPath + L"Result_Texts.png");
-		app->RegisterTexture(L"RESULT_TEXT2", uiPath + L"Result_Menu_Texts.png");
-		app->RegisterTexture(L"RESULT_SCORE2", uiPath + L"Result_Score.png");
-		app->RegisterTexture(L"RESULT_SCORE", uiPath + L"ResultScoreText.png");
-		app->RegisterTexture(L"GAMEOVER_TEXT", uiPath + L"Game_Over.png");
-		
-		app->RegisterTexture(L"POSE_SETTING", uiPath + L"Setting_Menu.png");
-		app->RegisterTexture(L"POSE_BACK", uiPath + L"Menu_Back.png");
-		app->RegisterTexture(L"POSE_CIRCLE", uiPath + L"SelectCircle_Menu.png");
-		app->RegisterTexture(L"GO_RESTART", uiPath + L"GoReStart.png");
-		app->RegisterTexture(L"SELECT_RESULT", uiPath + L"Result_To_Select.png");
-		//app->RegisterTexture(L"SELECT_RESULT2", uiPath + L"Result_To_Select2.png");
-
-		app->RegisterTexture(L"POSE_START2", uiPath + L"BackGame2.png");
-		app->RegisterTexture(L"RESULT_TITLE3", uiPath + L"Result_GoTitle2.png");
-		app->RegisterTexture(L"POSE_SOUND2", uiPath + L"Sound_Menu2.png");
-
-		app->RegisterTexture(L"NEXT_WAVE", uiPath + L"NextWave.png");
-
+		File::Load(L"Load", L"Textures/");
+		File::Load(L"Load", L"UI/");
 		m_Effect = AddGameObject<EffectManager>();
-		m_Effect->RegisterResource(L"Test", effectPath + L"Laser01.efk");
-		m_Effect->RegisterResource(L"Flash", effectPath + L"flash.efk");
-		m_Effect->RegisterResource(L"Parry", effectPath + L"parry.efk");
-		m_Effect->RegisterResource(L"Laser", effectPath + L"Laser.efk");
-		m_Effect->RegisterResource(L"EnemyEye", effectPath + L"EnemyEye.efk");
-		m_Effect->RegisterResource(L"MissileFlash", effectPath + L"MissileFlash.efk");
-		m_Effect->RegisterResource(L"Trampling", effectPath + L"Trampling.efk");
-		m_Effect->RegisterResource(L"Smoke", effectPath + L"Smoke.efk");
-		m_Effect->RegisterResource(L"boost", effectPath + L"boost.efk");
-		m_Effect->RegisterResource(L"ShockWave", effectPath + L"ShockWave.efk");
-		m_Effect->RegisterResource(L"Panchi", effectPath + L"panchi.efk");
-		m_Effect->RegisterResource(L"Brick", effectPath + L"Brick.efk");
-		m_Effect->RegisterResource(L"HitEffect", effectPath + L"HitEffect.efk");
-		m_Effect->RegisterResource(L"Bomb", effectPath + L"bomb.efk");
+		File::LoadEfk(L"Load", L"Effekt/", m_Effect);
 	}
 
 	shared_ptr <EffectManager> GameStage::GetCreateEffect()
@@ -217,7 +124,7 @@ namespace basecross {
 		m_BossText = AddGameObject<Sprite>(L"BOSS_TEXT", Vec3(-400.0f, bossHpPosition.y + 30.0f, bossHpPosition.z), Vec2(100.0f, 24.0f));
 		m_BossText->SetDiffuse(Col4(1, 1, 1, 1));
 
-		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), true);
+		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(0.5f));
 		fadeSprite->SetDrawLayer(1);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
@@ -390,7 +297,6 @@ namespace basecross {
 					shEnemy->SetUpdateActive(false);
 				}
 			}
-
 		}
 	}
 
@@ -454,6 +360,12 @@ namespace basecross {
 
 	}
 
+	void GameStage::ResetClearStage() {
+		App::GetApp()->GetScene<Scene>()->ResetStage();
+		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+
+	}
+
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
@@ -491,6 +403,9 @@ namespace basecross {
 			ToOpeningCamera();
 			GameManager::Instance()->SetZoneRate(0.5f);
 
+			RECTANGLE r = { 0,0,5,4 };
+			CIRCLE c = { 5.0f,36,360.0f };
+			AddGameObject<GroundEffect>(L"SEARCH_RANGE",r);
 		}
 		catch (...) {
 			throw;
@@ -506,6 +421,9 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		UIDraw();
+		if ((device.wPressedButtons & XINPUT_GAMEPAD_START && device.wPressedButtons & XINPUT_GAMEPAD_BACK)) {
+			ResetClearStage();
+		}
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
 			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();

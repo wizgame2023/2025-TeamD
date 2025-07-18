@@ -39,16 +39,25 @@ namespace basecross {
 
 		static int m_MissileCount;
 	};
+
+	enum class AState {
+		Ready,
+		Playing,
+		Finished
+	};
+
 	template<typename T>
 	class AttackState : public EnemyState<BossEnemy> {
+	private:
+		Timer m_StateTimer;
 
 	protected:
+
+		AState m_State;
+		AState m_NextState;
+
 		shared_ptr<T> m_Attack;
-		Timer m_CooldownTimer;
-		Timer m_ReadyTimer;
 		float m_RotateTime;
-		bool m_IsReady;
-		bool m_IsFinish;
 
 		Vec3 m_FinishedForward;
 		Vec3 m_AttackPosition;
@@ -62,23 +71,49 @@ namespace basecross {
 
 			return (result - direction).length() < 0.05f;
 		}
+		void SetState(AState state, float time) {
+			m_NextState = state;
+			m_StateTimer.SetTime(time, true);
+		}
+		bool IsStandBy() {
+			return !m_StateTimer.CheckTime();
+		}
+
+		void Init() {
+			m_State = AState::Ready;
+			m_NextState = AState::Ready;
+
+			m_AttackPosition = Vec3();
+			m_FinishedForward = Vec3();
+			m_RotateTime = 0.0f;
+
+		}
+
 	public:
 		AttackState(shared_ptr<BossEnemy>& enemy) :
 			EnemyState(enemy),
-			m_CooldownTimer(Timer(false)), m_ReadyTimer(Timer(false)),
-			m_IsReady(false), m_IsFinish(false), m_FinishedForward(Vec3()), m_RotateTime(0.0f),
-			m_AttackPosition(Vec3()) {
+			m_FinishedForward(Vec3()), m_RotateTime(0.0f),
+			m_AttackPosition(Vec3()),
+			m_State(AState::Ready), m_NextState(AState::Ready), m_StateTimer(Timer(false)){
 		}
 
-		virtual void Ready(float time) {
-			m_IsReady = true;
-			m_ReadyTimer.SetTime(time, true);
-		}
 		virtual void Attack() {}
 
-		virtual void Enter() override {}
-		virtual void Execute()override {}
+		virtual void Enter() override {
+			Init();
+			EnemyState::Enter();
+		}
+		virtual void Execute()override {
+			if (m_State != m_NextState && m_StateTimer.UpdateTimer()) {
+				m_State = m_NextState;
+			}
+		}
 		virtual void Exit()override {}
+
+
+		void SetSkill(shared_ptr<T> skill) {
+			m_Attack = skill;
+		}
 	};
 	class BossCrush : public AttackState<CrushAttack> {
 	public:
@@ -86,7 +121,6 @@ namespace basecross {
 			AttackState(enemy) ,m_SmokeHandle(0){
 		}
 
-		virtual void Ready(float time)override;
 	private:
 		Effekseer::Handle m_SmokeHandle;
 
@@ -106,13 +140,12 @@ namespace basecross {
 		virtual void Execute()override;
 		virtual void Exit()override;
 	};
-	class BossShakeOff : public AttackState<CrushAttack> {
+	class BossShakeOff : public AttackState<ShakeOffAttack> {
 	public:
 		BossShakeOff(shared_ptr<BossEnemy>& enemy) :
 			AttackState(enemy),m_SmokeHandle(0) {
 		}
 
-		virtual void Ready(float time)override;
 	private:
 		Effekseer::Handle m_SmokeHandle;
 

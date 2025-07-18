@@ -55,9 +55,16 @@ namespace basecross {
 				Other->OnCollisionEnter(GetThis<GameObject>());
 			}
 		}
-		virtual void Play(Vec3 position) {
+		virtual void Play(Vec3 position,Vec3& direction = Vec3(0,0,1)) {
 			SetDrawActive(true);
 			m_Transform->SetPosition(position);
+
+			auto rotateMatrix = (Mat4x4)XMMatrixLookAtLH(Vec3(), direction, Vec3(0, 1, 0));
+			rotateMatrix = inverse(rotateMatrix);
+			Quat qt = rotateMatrix.quatInMatrix();
+			qt = Quat(0, sin(XMConvertToRadians(45)), 0, cos(XMConvertToRadians(45))) * qt;
+			m_Transform->SetQuaternion(qt);
+
 			m_Date.Reset();
 		}
 		virtual void Stop() {
@@ -108,7 +115,7 @@ namespace basecross {
 		virtual void OnCreate()override {
 			Attack::OnCreate();
 			m_Collision = AddComponent<CollisionType>();
-			//m_Collision->SetDrawActive(true);
+			m_Collision->SetDrawActive(GameManager::Instance()->IsDebug());
 			m_Collision->SetAfterCollision(AfterCollision::None);
 
 			m_Transform->SetScale(m_Size);
@@ -119,7 +126,19 @@ namespace basecross {
 			return m_Size;
 		}
 	};
+	class ImpactAttack : public AttackCollision<CollisionObb> {
+		float m_BlowForce;
 
+	public:
+		ImpactAttack(const shared_ptr<Stage>& stage, Vec3 size, AttackDate date, float force) :
+			AttackCollision(stage, size, date), m_BlowForce(force) {
+		}
+		virtual‾ImpactAttack() {}
+
+		virtual void ContactPlayer(shared_ptr<GameObject>& player)override;
+
+		virtual void ReflectParry(Vec3 position)override;
+	};
 	class CrushAttack : public AttackCollision<CollisionSphere> {
 		float m_BlowForce;
 	public:
@@ -159,7 +178,7 @@ namespace basecross {
 		virtual ‾Missile(){}
 		virtual void OnUpdate()override;
 
-		virtual void Play(Vec3 position)override;
+		virtual void Play(Vec3 position, Vec3& direction = Vec3(0, 0, 1))override;
 
 		void AddMuzzle(Vec3 position) {
 			m_MuzzlePositions.push_back(position);
@@ -167,10 +186,10 @@ namespace basecross {
 
 	};
 
-	class ShakeOffAttack : public CrushAttack {
+	class ShakeOffAttack : public ImpactAttack {
 	public:
 		ShakeOffAttack(const shared_ptr<Stage>& stage, Vec3 size, AttackDate date, float force) :
-			CrushAttack(stage, size, date,force){
+			ImpactAttack(stage, size, date,force){
 		}
 		virtual void ReflectParry(Vec3 position)override;
 	};
