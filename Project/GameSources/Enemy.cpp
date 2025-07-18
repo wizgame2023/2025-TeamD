@@ -195,14 +195,15 @@ namespace basecross {
 			KnockBack(other->GetComponent<Transform>()->GetPosition());
 			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
 		}
-		if (other->FindTag(L"Bullet"))
-		{
-			KnockBack(other->GetComponent<Transform>()->GetPosition());
-		}
 		if (other->FindTag(L"CaargeHitJudge"))
 		{
 			Vec3 pos = GetComponent<Transform>()->GetPosition();
-			KnockBack(pos + Vec3(0,-4,0));
+			KnockBack(pos + Vec3(0, -4, 0));
+		}
+		if (other->FindTag(L"CounterHitJudge"))
+		{
+			Vec3 pos = other->GetComponent<Transform>()->GetPosition();
+			KnockBack(Vec3(pos + Vec3(0, +4, 0)));
 		}
 	}
 

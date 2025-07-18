@@ -216,6 +216,8 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Building.h">
       <Filter>Headers</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)PlayerAttack.h">
+      <Filter>Player</Filter>
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadFile.h">
       <Filter>File</Filter>
     </ClInclude>
@@ -371,6 +373,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp">
     <ClCompile Include="$(MSBuildThisFileDirectory)LoadFile.cpp">
       <Filter>File</Filter>
     </ClCompile>
