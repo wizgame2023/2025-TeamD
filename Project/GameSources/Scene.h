@@ -99,7 +99,7 @@ namespace basecross {
 		void Clear(StageData data) {
 			m_StageFile[data.stageNum][data.level].m_IsClear = true;
 		}
-
+		void ResetClear();
 		void ResetStage();
 	};
 

@@ -53,7 +53,8 @@ namespace basecross {
 		m_CurrentYaw(0.0f),
 		m_BoostConterTime(0.5f),
 		m_IsParryCounter(false),
-		m_ChargeTime(0.0f)
+		m_ChargeTime(0.0f),
+		m_Speed(6.0f)
 	{}  
 	Player::‾Player(){}
 
@@ -111,7 +112,7 @@ namespace basecross {
 		float elapsedTime = GetElapsed();
 		float targetYaw;
 		auto angle = GetMoveVector(targetYaw);
-
+		SetSpeed(Speed);
 		if (angle.length() > 0.0f) {
 			m_CurrentYaw = XMScalarLerpAngle(
 				m_CurrentYaw,        // 開始角度
@@ -138,7 +139,7 @@ namespace basecross {
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
 			pos += Angle * Speed;
-			auto boost = Lerp::CalculateLerp(GetPosition(), pos, 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
+			auto boost = Lerp::CalculateLerp(GetPosition(), Vec3(pos.x, GetPosition().y + 0.5f, pos.z), 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
 			SetPosition(boost);
 		}
 		m_TotalTime = 0;
@@ -376,13 +377,13 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
 		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * 1.5f);
-		ptrDraw->AddAnimation(L"Counter", 600, 100, false, anim_fps * 2.5f);
+		ptrDraw->AddAnimation(L"Counter", 620, 80, false, anim_fps * 1.5f);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * 2.5f); 
 		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
-		ptrDraw->AddAnimation(L"Clear", 491, 109, false, anim_fps);
+		ptrDraw->AddAnimation(L"Clear", 491, 100, false, anim_fps);
 	}
 
 	void Player::PlayAnimation(){
@@ -414,7 +415,7 @@ namespace basecross {
 		}
 		else {
 			SetAnim(L"Brink");
-			BoostMove(6.0f * 3.0f, m_BoostAngle);
+			BoostMove(m_Speed * 3.0f, m_BoostAngle);
 		}
 	}
 
@@ -432,10 +433,10 @@ namespace basecross {
 
 	void Player::HandleAttackCharge(const float& elapsedTime)
 	{
-		if (IntervalTimer(true, 0.5f, elapsedTime, m_Attacktime, true)) {
+		if (IntervalTimer(true, 1.0f, elapsedTime, m_Attacktime, true)) {
 			m_PlayerStateNum -= PlayerState::ATTACKCHARGE;
 			m_PlayerStateNum += PlayerState::NORMAL;
-			m_AttackInterval = 0.5f;
+			m_AttackInterval = 1.0f;
 		}
 		else {
 			SetAnim(L"QuakeAttack", true);
@@ -448,7 +449,6 @@ namespace basecross {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		Vec3 forward = GetForward();
 
-		MovePlayer(6.0f);
 
 		bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
 		bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
@@ -464,26 +464,25 @@ namespace basecross {
 			m_PlayerStateNum += PlayerState::DASH;
 			SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 		}
-
-		if(cntlVec[0].wButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON])
+		if (cntlVec[0].wButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON])
 		{
 			m_ChargeTime += elapsedTime;
+			m_Speed = 6.0f / 2.0f; // チャージ中は移動速度を下げる
 		}
 
 		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_A || keyState.m_bUpKeyTbl[VK_LBUTTON]) {
-			if (m_ChargeTime > 3.0f) {
-				m_TargetObject = Vec3();
-				m_Stage->AddGameObject<ChargeHitSphere>(GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_ChargeTime);
-				m_ChargeTime = 0;
-				auto camera = GetStage()->GetView()->GetTargetCamera();;
-				camera->ShakeStart(0.3f, 0.3f);
-				m_PlayerStateNum += PlayerState::ATTACKCHARGE;
-				m_PlayerStateNum -= PlayerState::NORMAL;
+			if (isAttack)
+			{
+				if (m_ChargeTime >= 1.5f) {
+					m_TargetObject = Vec3();
+					m_Stage->AddGameObject<ChargeHitSphere>(GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_ChargeTime);
+					auto camera = GetStage()->GetView()->GetTargetCamera();;
+					camera->ShakeStart(0.3f, 0.3f);
+					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
+					m_PlayerStateNum -= PlayerState::NORMAL;
 
-			}
-			else {
-				if (isAttack)
-				{
+				}
+				else {
 					if (m_AttackAnim == L"Attack2") {
 						m_AttackAnim = L"Attack";
 					}
@@ -508,9 +507,12 @@ namespace basecross {
 
 					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
-
 			}
+			m_ChargeTime = 0;
+			m_Speed = 6.0f;
 		}
+
+		MovePlayer(m_Speed);
 	}
 
 	void Player::Blinking(){
@@ -567,7 +569,7 @@ namespace basecross {
 			m_ParryComboCount = 0;
 		}
 
-		if (IntervalTimer(m_IsPerfectParry, 0.5f, elapsedTime, m_PerfectParrySecond, false)){
+		if (IntervalTimer(m_IsPerfectParry, 0.25f, elapsedTime, m_PerfectParrySecond, false)){
 			m_IsPerfectParry = false;
 			m_IsParry = false;
 			m_PerfectParrySecond = 1.0f;
@@ -579,12 +581,15 @@ namespace basecross {
 		{
 			if (IntervalTimer(m_IsParryCounter, 0.5f, elapsedTime, m_BoostConterTime, false)) {
 				m_IsParryCounter = false;
+				m_DamageIntervalStart = false;
+				m_DamageInterval = 0.5f;
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"ContorStop");
 			}
 			else { 
 				Vec3 dir = m_TargetObject * 1.2f;
 				dir.normalize();
 				SetAnim(L"Counter", true);
-				BoostMove(18.0f * 1.2f, dir);
+				BoostMove(18.0f, dir);
 			}
 		}
 	}
@@ -597,6 +602,7 @@ namespace basecross {
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON] ) && m_TargetObject != Vec3()) {
 			m_IsParryCounter = true;
 			m_BoostConterTime = 0.5f;
+			m_DamageIntervalStart = true;
 			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(0),m_BoostConterTime,1.0f);
 		}
 	}
@@ -700,7 +706,7 @@ namespace basecross {
 			Vec3 rot = source->GetComponent<Transform>()->GetPosition() - GetPosition();
 			// 完璧パリィ（0ダメージ＆有効範囲内）の場合
 			if (parryDamage == 0.0f && rot != Vec3()) {
-				if (source && source->FindTag(L"Attack")) {
+				if (source && (source->FindTag(L"Attack"))) {
 					auto attack = dynamic_pointer_cast<Attack>(source);
 					if (attack) {
 						auto boss = attack->GetDete();
@@ -808,242 +814,4 @@ namespace basecross {
 	void Player::SetIsGaol(const bool& goal) {
 		m_IsGoal = goal;
 	}
-
-	BaseHitObject::BaseHitObject(
-		const shared_ptr<Stage>& stage,
-		const Vec3& position,
-		const Vec3& scale,
-		const shared_ptr<GameObject>& player
-	): 
-		Object(stage), 
-		m_Position(position), 
-		m_Scale(scale),
-		m_Player(player)
-	{
-	}
-
-	BaseHitObject::‾BaseHitObject()
-	{
-		m_Effect->StopEffect(m_MainHandle);
-	}
-
-	void BaseHitObject::OnCreate() {
-		// Transform 初期化
-		auto t = AddComponent<Transform>();
-		t->SetPosition(m_Position);
-		t->SetScale(m_Scale);
-
-		// エフェクトマネージャ取得
-		m_Effect = static_pointer_cast<GameStage>(GetStage())->GetCreateEffect();
-	}
-
-	void BaseHitObject::OnUpdate() {
-		// 共通：エフェクト速度をゲーム速度に合わせる
-		float speed = GameManager::Instance()->GetGameSpeed();
-		m_Effect->SetEffectSpeed(m_MainHandle, speed);
-		m_Effect->SetEffectSpeed(m_HitHandle, speed);
-
-		// 派生クラスはここで移動や寿命管理を行う
-	}
-
-	void BaseHitObject::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (!other->FindTag(L"Enemy")) return;
-
-		auto enemy = dynamic_pointer_cast<Character>(other);
-
-		// ダメージ処理など
-		ApplyHit(enemy);
-
-		// 共通ヒットエフェクト
-		m_Effect->PlayEffect(m_HitHandle,L"HitEffect",enemy->GetPosition(),0.0f);
-		float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
-		m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
-
-		// 共通バイブレーション
-		XINPUT_VIBRATION vib{ 65535, 65535 };
-		XInputSetState(0, &vib);
-		PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
-	}
-
-	HitSphere::HitSphere(
-		const shared_ptr<Stage>& stage,
-		const Vec3& position,
-		const Vec3& forward,
-		const shared_ptr<GameObject>& player,
-		const Vec3& scale,
-		float length
-	): 
-		BaseHitObject(stage, position, scale, player),
-		m_Direction(forward)
-	{
-		bool inZone = (static_pointer_cast<Player>(m_Player)->GetStates()
-			& Player::PlayerState::ZONE) != 0;
-		m_FlyingTime = inZone ? 1.0f : 0.1f;
-		m_Speed = length / m_FlyingTime;
-	}
-
-	void HitSphere::ApplyHit(shared_ptr<Character> enemy) {
-		auto player = static_pointer_cast<Player>(m_Player);
-		player->SetCharge(0.1f);
-		enemy->Damage(player->GetAttackDamage(), false);
-	}
-	void HitSphere::OnCreate() {
-		BaseHitObject::OnCreate();
-		auto col = AddComponent<CollisionSphere>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
-		col->SetFixed(false);
-		col->SetAfterCollision(AfterCollision::None);
-
-		AddTag(L"HitJudge");
-
-		bool inZone = (static_pointer_cast<Player>(m_Player)->GetStates()
-			& Player::PlayerState::ZONE) != 0;
-		if (!inZone) return;
-
-		m_Effect->PlayEffect(m_MainHandle, L"Panchi", m_Position, 20.0f);
-		float rot = atan2f(m_Direction.x, m_Direction.z);
-		m_Effect->SetRotation(m_MainHandle, Vec3(0, 1, 0), rot);
-		m_Effect->SetScale(m_MainHandle, m_Scale + 0.5f);
-
-	}
-
-	void HitSphere::OnUpdate() {
-		// 共通更新
-		BaseHitObject::OnUpdate();
-
-		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
-		m_Elapsed += dt;
-
-		if (m_Elapsed < m_FlyingTime) {
-			auto t = GetComponent<Transform>();
-			Vec3 pos = t->GetPosition() + m_Speed * m_Direction * dt;
-			t->SetPosition(pos);
-			m_Effect->SetLocation(m_MainHandle, pos);
-		}
-		else {
-			GetStage()->RemoveGameObject<HitSphere>(GetThis<HitSphere>());
-		}
-	}
-
-
-	ChargeHitSphere::ChargeHitSphere(
-		const shared_ptr<Stage>& stage,
-		const Vec3& position,
-		const Vec3& scale,
-		const shared_ptr<GameObject>& player,
-		float chargeTime
-	):
-		BaseHitObject(stage, position, scale, player),
-		m_TotalTime(1.0f), 
-		m_ChargeRate(chargeTime * 10.0f)
-	{
-	}
-
-	void ChargeHitSphere::ApplyHit(shared_ptr<Character> enemy) {
-		auto player = static_pointer_cast<Player>(m_Player);
-		player->SetCharge(0.1f);
-		enemy->Damage(player->GetAttackDamage() / 4, false);
-
-		// 衝突後は除外
-		GetComponent<CollisionCapsule>()
-			->AddExcludeCollisionGameObject(enemy);
-	}
-
-	void ChargeHitSphere::OnCreate() {
-		BaseHitObject::OnCreate();
-		auto col = AddComponent<CollisionCapsule>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
-		col->SetFixed(false);
-		col->SetAfterCollision(AfterCollision::None);
-		AddTag(L"CaargeHitJudge");
-	}
-
-
-	void ChargeHitSphere::OnUpdate() {
-		BaseHitObject::OnUpdate();
-
-		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
-		m_TotalTime -= dt;
-
-		if (m_TotalTime <= 0.0f) {
-			GetStage()->RemoveGameObject<ChargeHitSphere>(GetThis<ChargeHitSphere>());
-			return;
-		}
-
-		m_Scale += Vec3(m_ChargeRate * dt, 0.01f, m_ChargeRate * dt);
-		GetComponent<Transform>()->SetScale(m_Scale);
-	}
-
-	CounterHitSphere::CounterHitSphere(
-		const shared_ptr<Stage>& stage,
-		const shared_ptr<GameObject>& player,
-		const Vec3& offset,
-		float attachTime,
-		float chargeRate
-	): 
-		BaseHitObject(stage,Vec3(),Vec3(1.0f),player), 
-		m_LocalOffset(offset), 
-		m_AttachDuration(attachTime), 
-		m_ChargeRate(chargeRate)
-	{
-		// m_Position, m_Scale は BaseHitObject に渡しておく
-	}
-
-	void CounterHitSphere::ApplyHit(shared_ptr<Character> enemy) {
-		// チャージ半減ダメージ
-		auto player = static_pointer_cast<Player>(m_Player);
-		player->SetCharge(0.1f);
-		enemy->Damage(player->GetAttackDamage() / 2, false);
-	}
-
-	void CounterHitSphere::OnCreate() {
-		BaseHitObject::OnCreate();
-
-		auto col = AddComponent<CollisionSphere>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
-		col->SetFixed(true);               // プレイヤーと一体化しているので固定
-		col->SetAfterCollision(AfterCollision::None);
-		col->AddExcludeCollisionTag(L"Enemy");
-		auto player = static_pointer_cast<Player>(m_Player);
-		player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
-
-		AddTag(L"CounterHitJudge");
-		// 初期位置をプレイヤー＋オフセットに
-		auto t = GetComponent<Transform>();
-		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
-		t->SetPosition(playerPos + m_LocalOffset);
-		// エフェクト位置も同期
-		m_Effect->SetLocation(m_MainHandle, playerPos + m_LocalOffset);
-
-	}
-	void CounterHitSphere::OnUpdate() {
-		// 共通エフェクト速度同期のみ実行
-		BaseHitObject::OnUpdate();
-
-		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
-		m_Elapsed += dt;
-
-		if (m_Elapsed >= m_AttachDuration) {
-			// くっつく時間終了 → 自身をステージから除去
-			m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Enemy");
-			GetStage()->RemoveGameObject<CounterHitSphere>(GetThis<CounterHitSphere>());
-			return;
-		}
-
-		// 追随：プレイヤー位置＋ローカルオフセット
-		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
-		Vec3 newPos = playerPos + m_LocalOffset;
-		GetComponent<Transform>()->SetPosition(newPos);
-		m_Effect->SetLocation(m_MainHandle, newPos);
-
-		// 時間経過で半径（スケール）を徐々に拡大
-		float deltaR = m_ChargeRate * dt;
-		m_Scale += Vec3(deltaR);
-		GetComponent<Transform>()->SetScale(m_Scale);
-
-	}
-
 }

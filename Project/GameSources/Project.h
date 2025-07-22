@@ -13,6 +13,7 @@
 #include "Character.h"
 #include "EnemyRouteSearch.h"
 #include "Player.h"
+#include "PlayerAttack.h"
 #include "Enemy.h"
 #include "SoundManager.h"
 #include "ScoreManager.h"

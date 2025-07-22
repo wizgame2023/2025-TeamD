@@ -360,12 +360,6 @@ namespace basecross {
 
 	}
 
-	void GameStage::ResetClearStage() {
-		App::GetApp()->GetScene<Scene>()->ResetStage();
-		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
-
-	}
-
 	void GameStage::OnCreate() {
 		try {
 			m_TotalTime = 0;
@@ -421,9 +415,6 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		UIDraw();
-		if ((device.wPressedButtons & XINPUT_GAMEPAD_START && device.wPressedButtons & XINPUT_GAMEPAD_BACK)) {
-			ResetClearStage();
-		}
 		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
 			m_Camera->SetCameraPause(true);
 			m_SoundTestMenu->Close();
@@ -573,6 +564,20 @@ namespace basecross {
 			XInputSetState(0, &vibration);
 
 			PostEvent(0.4f, nullptr, GetThis<Stage>(), L"HitStopVibration");
+		}
+		else if (msg == L"ContorStop") {
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+			if (m_cameraState == CameraState::FOLLOWCAMERA)
+			{
+				auto camera = GetView()->GetTargetCamera();;
+				static_pointer_cast<FollowCamera>(camera)->LookAtNearestEnemy();
+			}
+			PostEvent(0.0f, nullptr, GetThis<Stage>(), L"HitStopVibration");
+
 		}
 	}
 }

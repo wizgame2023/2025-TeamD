@@ -1,6 +1,6 @@
 stage,normal,mob_boss,Stage,name_difficulty_enemys_type_
-Ground,0_0_0,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-Ground,0_0_-55,26_1_55,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+Ground,0_0_0,25.9_1_56,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+Ground,0_0_-56,25.9_1_56,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-66.83,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-35.9,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-4.81,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -11,7 +11,7 @@ way,28.49999_0_-35.9,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotat
 way,28.49999_0_-4.81,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,28.49999_0_26.24,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,28.49999_0_56.82,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-way,0.05_0_49.9,26_1_45.16718,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+way,0.05_0_51,26_1_46,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_21.68,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_34.29,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_48.79,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -27,10 +27,10 @@ building,23_8_-13.49,10_15_8,0_0_0,Untagged,Object,name_position_scale_rotation_
 building,23_8_-28.42,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,-10.3_8_36.3,10_15_12,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,6.4_6.75_38.5,15_12.5_20,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,-13_2_-4.44,47.57091_5_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,0_2_18.43,1_5_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,0_2_-28,1_5_25,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
-area,12.19_2_-4.44,47.57091_5_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,0_2_26.86,1_5_25.00002,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,0_2_-28,1_5_25.00002,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,12.4_2_0,57.00004_5_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
+area,-12.4_2_0,57.00004_5_1,0_90_0,Untagged,Object,name_position_scale_rotation_tag_type_
 player,-0.75_1.3_-24,0.75_0.75_0.75,0_0_0,Untagged,50,Player,name_position_scale_rotation_tag_hp_type_
 wave,1,5,1,Wave,name_wave_max_interval_type_
 enemy,-9.12_1.2_-21,0.7_0.7_0.7,0_0_0,Untagged,1,2,Enemy,name_position_scale_rotation_tag_wave_hp_type_
