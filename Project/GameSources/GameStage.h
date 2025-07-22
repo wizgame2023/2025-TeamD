@@ -101,7 +101,6 @@ namespace basecross {
 		{
 			return m_StageData;
 		}
-		void ResetClearStage();
 
 	};
 

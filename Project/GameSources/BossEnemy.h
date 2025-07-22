@@ -47,6 +47,7 @@ namespace basecross {
 		Timer m_ComboTimer;
 		int m_ComboCount;
 		bool m_IsGround;
+		float m_AroundPlayerTime;
 
 		Vec3 m_StartPosition;
 

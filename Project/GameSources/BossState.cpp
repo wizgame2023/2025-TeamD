@@ -287,11 +287,14 @@ namespace basecross {
 			if (IsStandBy()) break;
 
 			m_Enemy->SetAnimation(L"ShakeOff_First");
-			SetState(AState::Playing, 0.25f * m_Enemy->GetMotionRate());
+			//SetState(AState::Playing, 0.25f * m_Enemy->GetMotionRate());
+			SetState(AState::Playing, [&]() { return m_Enemy->GetAnimationFinish(); });
 			m_AttackPosition = position + direction * 2.0f + Vec3(0.0f, -0.5f, 0.0f);
 
 			RECTANGLE rect = { 0,0,m_Attack->GetScale().x,m_Attack->GetScale().z };
-			m_Stage->AddGameObject<AreaOfEffect>(Vec3(m_AttackPosition.x, 0.51f, m_AttackPosition.z), Vec3(direction.x, 0, direction.z), rect, 0.35f * m_Enemy->GetMotionRate());
+			float time = m_Enemy->GetComponent<BcBaseDraw>()->GetAnimationTime(L"ShakeOff_First");
+			time += m_Enemy->GetComponent<BcBaseDraw>()->GetAnimationTime(L"ShakeOff_Bef");
+			m_Stage->AddGameObject<AreaOfEffect>(Vec3(m_AttackPosition.x, 0.51f, m_AttackPosition.z), Vec3(direction.x, 0, direction.z), rect, time);
 
 			break;
 		}
@@ -323,41 +326,6 @@ namespace basecross {
 		default:
 			break;
 		}
-
-		/*
-		Vec3 position = m_Enemy->GetPosition();
-		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
-
-		Vec3 direction = intruderPosition - position;
-		float distance = direction.length();
-		direction = direction.normalize();
-
-		if (!m_IsFinish) {
-			if (m_Attack->IsInRange(distance) && !m_IsReady) {
-				m_Enemy->SetAnimation(L"ShakeOff_First");
-				Ready(0.5f * m_Enemy->GetMotionRate());
-			}
-			if (m_IsReady) {
-				if (m_ReadyTimer.UpdateTimer(GameManager::Instance()->GetTimeRate()) && !m_Attack->GetDrawActive() && m_Enemy->GetAnimationFinish()) {
-					m_Attack->Play(position + Vec3(0, m_Enemy->GetScale().y / 2.0f, 0.0f));
-					m_Enemy->SetAnimation(L"ShakeOff");
-				}
-			}
-			else {
-				m_Enemy->Move(direction);
-			}
-			float rotationY = atan2f(direction.x, direction.z);
-			m_Enemy->SetRotation(Vec3(0, rotationY, 0));
-		}
-		else {
-
-			if (m_Enemy->GetAnimationFinish()) {
-				m_Enemy->SetAnimation(L"Idle");
-			}
-			if (m_Enemy->GetCurrentAnimationKey() == L"Idle" && LerpRotatePlayer(direction)) {
-				m_Enemy->ChangeState<BossHostility>();
-			}
-		}*/
 	}
 	void BossShakeOff::Exit()
 	{

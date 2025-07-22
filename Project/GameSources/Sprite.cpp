@@ -164,7 +164,16 @@ namespace basecross {
 
 		m_Transform->SetPosition(pos + offset);
 	}
+	void Sprite::ChangeWindowSize(float width, float height) {
+		float rateW = width - m_ScreenHalfSize.x * 2.0f;
+		float rateH = height - m_ScreenHalfSize.y * 2.0f;
 
+		Vec3 position = GetPosition();
+		SetPosition(Vec3(position.x * rateW, position.y * rateH, position.z));
+		SetSize(Vec2(m_Size.x * rateW, m_Size.y * rateH));
+
+		m_ScreenHalfSize = Vec2(width * 0.5f, height * 0.5f);
+	}
 	void NumberSprite::OnCreate() {
 		int digits = static_cast<int>(pow(10, m_DisplayDigit - 1));
 		float sizeX = m_Size.x / m_DisplayDigit;

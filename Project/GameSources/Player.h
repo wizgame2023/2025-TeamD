@@ -11,6 +11,7 @@ namespace basecross {
 
     class Character;
     class TargetBoard;
+    class Board;
 
     /**
      * @class  Player
@@ -58,6 +59,7 @@ namespace basecross {
         Effekseer::Handle m_BrinkHandle;   ///< 点滅エフェクトハンドル
         Effekseer::Handle m_ParryHandle;   ///< パリィエフェクトハンドル
         shared_ptr<TargetBoard> m_TargetBoard;///< 照準ボード
+        shared_ptr<Board> m_EnemyArrow;       ///最も近い敵の方向を示す
 		Vec3 m_TargetObject;///< ロックオン対象オブジェクト
 
         wstring m_AttackAnim;              ///< 攻撃アニメーション名
@@ -233,6 +235,7 @@ namespace basecross {
          */
         void AimRock(Vec3 rotate);
 
+        void DrawArrow();
         /**
          * @brief オブジェクト探索
          * @param group 対象グループ

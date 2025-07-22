@@ -40,8 +40,7 @@ namespace basecross {
 		case TYPE::CIRCLE: {
 			CIRCLE circle = m_AreaEffect->GetCircle();
 
-			float& radius = circle.m_Radius;
-			radius += m_Circle.m_Radius * elapsed;
+			circle.m_Radius += m_Circle.m_Radius * elapsed;
 			m_AreaEffect->SetCircle(circle);
 			break;
 		}

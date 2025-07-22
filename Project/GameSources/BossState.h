@@ -56,6 +56,8 @@ namespace basecross {
 		AState m_State;
 		AState m_NextState;
 
+		function<bool()> m_StateCheck;
+
 		shared_ptr<T> m_Attack;
 		float m_RotateTime;
 
@@ -75,8 +77,20 @@ namespace basecross {
 			m_NextState = state;
 			m_StateTimer.SetTime(time, true);
 		}
+		void SetState(AState state, function<bool()> func) {
+			m_NextState = state;
+			m_StateCheck = func;
+		}
 		bool IsStandBy() {
-			return !m_StateTimer.CheckTime();
+			if (m_StateTimer.CheckTime()) {
+				if (m_StateCheck != nullptr && m_StateCheck()) {
+					return false;
+				}
+				else {
+					return false;
+				}
+			}
+			return true;
 		}
 
 		void Init() {
