@@ -144,10 +144,9 @@ namespace basecross {
 		enemy->Damage(player->GetAttackDamage() / 4, false);
 
 		// 衝突後は除外
-		if (!enemy->FindTag(L"Attack"))
+		if (!enemy->FindTag(L"Boss"))
 		{
-			GetComponent<CollisionCapsule>()
-				->AddExcludeCollisionGameObject(enemy);
+			GetComponent<CollisionCapsule>()->AddExcludeCollisionGameObject(enemy);
 		}
 	}
 
@@ -208,8 +207,6 @@ namespace basecross {
 		col->SetAfterCollision(AfterCollision::None);
 		col->AddExcludeCollisionGameObject(m_Player);
 		auto player = static_pointer_cast<Player>(m_Player);
-		//player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
-		m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Attack");
 
 		AddTag(L"CounterHitJudge");
 		// 初期位置をプレイヤー＋オフセットに
@@ -230,7 +227,6 @@ namespace basecross {
 
 		if (m_Elapsed >= m_AttachDuration) {
 			// くっつく時間終了 → 自身をステージから除去
-			m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Enemy");
 			GetStage()->RemoveGameObject<CounterHitSphere>(GetThis<CounterHitSphere>());
 			return;
 		}
@@ -238,7 +234,7 @@ namespace basecross {
 		// 追随：プレイヤー位置＋ローカルオフセット
 		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
 		Vec3 newPos = playerPos + m_LocalOffset;
-		GetComponent<Transform>()->SetPosition(newPos);
+		GetComponent<Transform>()->SetPosition(newPos.x, newPos.y, newPos.z);
 		m_Effect->SetLocation(m_MainHandle, newPos);
 
 		// 時間経過で半径（スケール）を徐々に拡大
