@@ -46,19 +46,18 @@ namespace basecross {
 	}
 
 	void BaseHitObject::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		if (!other->FindTag(L"Enemy")) return;
+		if (!other || !other->FindTag(L"Enemy")) return;
 
 		auto enemy = dynamic_pointer_cast<Character>(other);
+		if (!enemy) return;
 
-		// ダメージ処理など
 		ApplyHit(enemy);
+		if (m_Effect && m_HitHandle != -1) {
+			m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
+			float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
+			m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
+		}
 
-		// 共通ヒットエフェクト
-		m_Effect->PlayEffect(m_HitHandle, L"HitEffect", enemy->GetPosition(), 0.0f);
-		float rot = atan2f(enemy->GetRotation().x, enemy->GetRotation().z);
-		m_Effect->SetRotation(m_HitHandle, Vec3(0, 1, 0), rot);
-
-		// 共通バイブレーション
 		XINPUT_VIBRATION vib{ 65535, 65535 };
 		XInputSetState(0, &vib);
 		PostEvent(0.25f, nullptr, GetStage(), L"StopVibration");
@@ -207,9 +206,10 @@ namespace basecross {
 		col->SetDrawActive(GameManager::Instance()->IsDebug());
 		col->SetFixed(true);               // プレイヤーと一体化しているので固定
 		col->SetAfterCollision(AfterCollision::None);
-		//col->AddExcludeCollisionTag(L"Enemy");
+		col->AddExcludeCollisionGameObject(m_Player);
 		auto player = static_pointer_cast<Player>(m_Player);
-		player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
+		//player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
+		m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Attack");
 
 		AddTag(L"CounterHitJudge");
 		// 初期位置をプレイヤー＋オフセットに

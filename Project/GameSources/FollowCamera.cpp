@@ -179,7 +179,7 @@ namespace basecross {
 			// Pitch
 			m_Pitch += m_RotateSpeed * elapsed * cntlVec.fThumbRY;
 		}
-		else{
+		else {
 			++m_FrameCounter;
 			if (m_FrameCounter >= m_MouseUpdateInterval)
 			{
@@ -188,10 +188,10 @@ namespace basecross {
 				::SetCursorPos(m_CenterPt.x, m_CenterPt.y);
 			}
 			// マウスフレーム制御は省略
-			POINT now; ::GetCursorPos(&now);	
+			POINT now; ::GetCursorPos(&now);
 			float dx = float(now.x - m_CenterPt.x);
 			float dy = float(now.y - m_CenterPt.y);
-				
+
 			// Yaw
 			m_Angle -= dx * m_MouseSensitivityX;
 			// Pitch（符号は好みで反転可）
@@ -210,7 +210,7 @@ namespace basecross {
 		m_Eye.y = m_Position.y + dire.y;
 
 		RayCastHit hit;
-		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player",L"LimitArea", L"Ground"};
+		vector<wstring> excludeTags = { L"Bullet",L"Line",L"Enemy",L"Player",L"LimitArea", L"Ground" };
 		RayCast::HitTestVec(hit, Line(m_PlayerTransform->GetPosition(), m_Eye), m_Stage->GetGameObjectVec(), excludeTags);
 		if (hit.m_Object != nullptr) {
 			m_Eye = hit.m_HitPosition - m_Direction * 0.5f;
@@ -219,6 +219,33 @@ namespace basecross {
 		Vec3 m_addEye = ShakeCameraMove();
 		m_Eye += m_addEye; // カメラの振動を適用
 
+		// ▲▼ 補完処理セクション ▼▲
+		if (m_IsSmoothLook) {
+			m_LerpElapsed += elapsed;
+
+			m_Angle = Lerp::CalculateLerp(
+				m_StartAngle, m_TargetAngle,
+				0.0f, m_LerpDuration,
+				m_LerpElapsed, Lerp::rate::Linear
+			);
+			m_Pitch = Lerp::CalculateLerp(
+				m_StartPitch, m_TargetPitch,
+				0.0f, m_LerpDuration,
+				m_LerpElapsed, Lerp::rate::Linear
+			);
+
+			// 補完完了 or デッドゾーン内到達を判定
+			float yawDiff = fabsf(CalcAngleDiff(m_Angle, m_TargetAngle));
+			float pitchDiff = fabsf(m_Pitch - m_TargetPitch);
+			bool reachedYaw = (yawDiff < kYawDeadZone);
+
+			if (m_LerpElapsed >= m_LerpDuration || (reachedYaw)) {
+				m_IsSmoothLook = false;
+				m_Angle = m_TargetAngle;
+				m_Pitch = m_TargetPitch;
+			}
+
+		}
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
 			//自分の位置
@@ -235,6 +262,70 @@ namespace basecross {
 		m_StopCamera = StopCamera;
 	}
 
+	shared_ptr<GameObject> FollowCamera::ObjectSearch(const shared_ptr<GameObjectGroup>& group) {
+		const auto& list = group->GetGroupVectors();
+		Vec3 position = m_PlayerTransform->GetPosition();
+
+		shared_ptr<GameObject> nearest = nullptr;
+		float bestSqrDist = std::numeric_limits<float>::infinity();
+
+		for (auto& weakObj : list) {
+			if (auto obj = weakObj.lock()) {
+				Vec3 objPos = obj->GetComponent<Transform>()->GetPosition();
+				Vec3 diff = objPos - position;
+				float sqrDist = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
+
+				if (sqrDist < bestSqrDist) {
+					bestSqrDist = sqrDist;
+					nearest = obj;
+				}
+			}
+		}
+		return nearest;
+	}
+
+	float FollowCamera::CalcAngleDiff(float from, float to) {
+		// 差分を [-π, +π] に丸める
+		float diff = fmodf(to - from + XM_PI, XM_2PI) - XM_PI;
+		return diff;
+	}
+
+	void FollowCamera::LookAtNearestEnemy() {
+		auto enemyGroup = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
+		auto nearestEnemy = ObjectSearch(enemyGroup);
+		if (!nearestEnemy) return;
+
+		Vec3 playerPos = m_PlayerTransform->GetPosition();
+		Vec3 enemyPos = nearestEnemy->GetComponent<Transform>()->GetPosition();
+
+		// 方向ベクトルを正規化
+		Vec3 dir = enemyPos - playerPos;
+		dir.normalize();
+
+		// 開始角度を保存
+		m_StartAngle = m_Angle;
+		m_StartPitch = m_Pitch;
+
+		// 目標角度を計算
+		m_TargetAngle = std::atan2(dir.z, dir.x);
+		m_TargetPitch = std::asin(dir.y);
+
+		// デッドゾーン内ならそのままセットして終了
+		float yawDiff = fabsf(CalcAngleDiff(m_Angle, m_TargetAngle));
+		float pitchDiff = fabsf(m_Pitch - m_TargetPitch);
+
+		if (yawDiff < kYawDeadZone) {
+			// 角度差が小さいので即時適用し、補完も開始しない
+			m_Angle = m_TargetAngle;
+			m_Pitch = m_TargetPitch;
+			m_IsSmoothLook = false;
+			return;
+		}
+
+		// 補完開始
+		m_LerpElapsed = 0.0f;
+		m_IsSmoothLook = true;
+	}
 	Vec2 FollowCamera::CameraUp(float totaltime)
 	{
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
