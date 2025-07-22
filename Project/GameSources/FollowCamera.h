@@ -71,9 +71,20 @@ namespace basecross {
 		float m_Pitch = 0.0f;               // 現在の上下角度
 		float m_MinPitch = -XM_PIDIV4;         // 下向き最大（-45°）
 		float m_MaxPitch = 0;         // 上向き最大（+45°）
+		float m_TargetAngle = 0.0f;   // 目標のヨー角
+		float m_TargetPitch = 0.0f;   // 目標のピッチ角
+		bool  m_IsSmoothLook = false;  // 滑らかに回転中かどうか
+		float m_SmoothSpeed = 5.0f;   // 補完スピード係数（大きいほど速い）
+		float m_StartAngle = 0.0f;    // 補完開始時の現在ヨー角
+		float m_StartPitch = 0.0f;    // 補完開始時の現在ピッチ角
+		float m_LerpDuration = 1.0f;    // 補完にかける時間（秒）
+		float m_LerpElapsed = 0.0f;    // 経過時間
 
 		shared_ptr<Transform> m_PlayerTransform;
 		shared_ptr<CameraCollision> m_CameraCollision;
+		// デッドゾーン（しきい値）
+		static constexpr float kYawDeadZone = XMConvertToRadians(180.0f); // 2度
+
 
 	public:
 		FollowCamera(const shared_ptr<Stage>& StagePtr);
@@ -84,6 +95,7 @@ namespace basecross {
 		
 		void SetCameraPause(const bool& StopCamera);
 		Vec2 CameraUp(float totaltime);
+		void LookAtNearestEnemy();
 
 		void SetTarget(const shared_ptr<Transform> playerTransform) {
 			m_PlayerTransform = playerTransform;
@@ -97,6 +109,11 @@ namespace basecross {
 		{
 			return m_Angle;
 		}
+		Vec3 SearchRange();
+		shared_ptr<GameObject> ObjectSearch(const shared_ptr<GameObjectGroup>& group);
+		float CalcAngleDiff(float from, float to);
+		Vec3 RotateTowardsTarget(const Vec3& object, const Vec3& target);
+
 
 	};
 

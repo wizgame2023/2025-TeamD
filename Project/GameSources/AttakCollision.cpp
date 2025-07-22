@@ -96,7 +96,7 @@ namespace basecross {
 			position += m_MuzzlePositions[m_MuzzleIndex].z * m_Date.m_Owner->GetForward();
 			position += m_MuzzlePositions[m_MuzzleIndex].y;
 
-			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target, 10.0f, m_ExplodePower);
+			m_Stage->AddGameObject<MissileBullet>(position, Vec3(0.0f, 1.0f, 0.0f), m_Target, 10.0f, m_ExplodePower, m_Date.m_Owner);
 			m_MissileCount--;
 			m_MuzzleIndex++;
 			

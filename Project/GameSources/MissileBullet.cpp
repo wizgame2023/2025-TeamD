@@ -8,10 +8,10 @@
 #include "Ballet.h"
 
 namespace basecross {
-	MissileBullet::MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, shared_ptr<Transform>& target,float speed, float explodeSize) :
+	MissileBullet::MissileBullet(const shared_ptr<Stage>& stage,Vec3 position,Vec3 direction, shared_ptr<Transform>& target,float speed, float explodeSize, shared_ptr<Character>& boss) :
 		Object(stage,position,Vec3(),Vec3(0.2f)),
 		m_TargetPosition(Vec3(0)), m_Target(target), m_ExplodeSize(explodeSize), m_IsTarget(false), m_Speed(speed),
-		m_LaunchPosition(position),m_Direction(direction){}
+		m_LaunchPosition(position),m_Direction(direction), m_Boss(boss){}
 
 	void MissileBullet::OnCreate() {
 		Object::OnCreate();
@@ -87,7 +87,7 @@ namespace basecross {
 	}
 	void MissileBullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		SoundManager::Instance().PlaySE(L"SE_EXPLODE");
-		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(nullptr, 2.5f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
+		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(m_Boss, 2.5f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
 		explode->Play(GetPosition());
 		auto& effect = m_Stage->GetCreateEffect();
 		effect->StopEffect(m_EffectHandle);

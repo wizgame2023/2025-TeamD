@@ -139,7 +139,7 @@ namespace basecross {
 		if (Angle.length() > 0.0f) {
 			auto pos = GetPosition();
 			pos += Angle * Speed;
-			auto boost = Lerp::CalculateLerp(GetPosition(), pos, 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
+			auto boost = Lerp::CalculateLerp(GetPosition(), Vec3(pos.x, GetPosition().y + 0.5f, pos.z), 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
 			SetPosition(boost);
 		}
 		m_TotalTime = 0;
@@ -545,12 +545,13 @@ namespace basecross {
 				m_IsParryCounter = false;
 				m_DamageIntervalStart = false;
 				m_DamageInterval = 0.5f;
+				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"ContorStop");
 			}
 			else { 
 				Vec3 dir = m_TargetObject * 1.2f;
 				dir.normalize();
 				SetAnim(L"Counter", true);
-				BoostMove(18.0f * 1.5f, dir);
+				BoostMove(18.0f, dir);
 			}
 		}
 	}
@@ -665,7 +666,7 @@ namespace basecross {
 			Vec3 rot = source->GetComponent<Transform>()->GetPosition() - GetPosition();
 			// 完璧パリィ（0ダメージ＆有効範囲内）の場合
 			if (parryDamage == 0.0f && rot != Vec3()) {
-				if (source && source->FindTag(L"Attack")) {
+				if (source && (source->FindTag(L"Attack"))) {
 					auto attack = dynamic_pointer_cast<Attack>(source);
 					if (attack) {
 						auto boss = attack->GetDete();
