@@ -67,10 +67,10 @@ namespace basecross {
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
 
-		m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), Vec2(0.5f));
-		m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), Vec2(0.5f));
-		m_UDselect->SetDrawActive(false);
-		m_LRselect->SetDrawActive(true);
+		//m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), Vec2(0.5f));
+		//m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), Vec2(0.5f));
+		//m_UDselect->SetDrawActive(false);
+		//m_LRselect->SetDrawActive(true);
 
 		vector<wstring> dangerKey = { L"DANGER_LOW",L"DANGER_MIDDLE",L"DANGER_HIGH" };
 		vector<Col4> dangerColor = { Col4(0,1,0,1),Col4(1,1,0,1),Col4(1,0,0,1) };
@@ -183,15 +183,15 @@ namespace basecross {
 	void SelectStage::AcceptStage(int index) {
 		m_StageNumber = index;
 		ButtonManager::instance->UseGroup(L"Difficulty" + to_wstring(index));
-		m_UDselect->SetDrawActive(true);
-		m_LRselect->SetDrawActive(false);
+		//m_UDselect->SetDrawActive(true);
+		//m_LRselect->SetDrawActive(false);
 	}
 	void SelectStage::AcceptDifficulty(int index) {
 		m_DifficultyLevel = index;
 		ButtonManager::instance->SetSelectIndex(L"", 0);
 		ButtonManager::instance->UseGroup(L"Accept");
-		m_UDselect->SetDrawActive(false);
-		m_LRselect->SetDrawActive(false);
+		//m_UDselect->SetDrawActive(false);
+		//m_LRselect->SetDrawActive(false);
 	}
 	void SelectStage::StartStage() {
 
