@@ -145,7 +145,7 @@ namespace basecross {
 			SoundManager::Instance().SEVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetSEVolume();
-		auto button = GetSprite<Sprite>(6);
+		auto button = GetSprite<Sprite>(9);
 		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
 		button->SetPosition(pos);
@@ -170,7 +170,7 @@ namespace basecross {
 			SoundManager::Instance().BGMVolumeDown(0.01f);
 		}
 		float volume = SoundManager::Instance().GetBGMVolume();
-		auto button = GetSprite<Sprite>(9);
+		auto button = GetSprite<Sprite>(6);
 		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
 		button->SetPosition(pos);
@@ -180,10 +180,10 @@ namespace basecross {
 	void SoundTestMenu::OnUpdate() {
 		if (!IsOpen()) return;
 		if (ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 0) {
-			TuningSE();
+			TuningBGM();
 		}
 		else if(ButtonManager::instance->GetSelectIndex(L"SOUND_TEST") == 1) {
-			TuningBGM();
+			TuningSE();
 		}
 
 	}
@@ -210,7 +210,7 @@ namespace basecross {
 		auto menu = GetThis<SoundTestMenu>();
 		float volumeSE = SoundManager::Instance().GetSEVolume();
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
-		float x = GetPositionX(volumeSE);
+		float x = GetPositionX(volumeBGM);
 
 		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 60.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
@@ -238,7 +238,7 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPosition(pos);
 			});
-		x = GetPositionX(volumeBGM);
+		x = GetPositionX(volumeSE);
 
 		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -90.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
