@@ -115,8 +115,11 @@ namespace basecross {
 				setEffect->SetEffectPause(false);
 				auto getCamera = menu->OnGetDrawCamera();
 				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
-				setCamera->SetCameraPause(false);
-				player->SetIsGaol(false);
+				if (getStage->m_cameraState == getStage->FOLLOWCAMERA)
+				{
+					setCamera->SetCameraPause(false);
+					player->SetIsGaol(false);
+				}
 			});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));

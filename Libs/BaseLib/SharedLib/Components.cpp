@@ -782,10 +782,10 @@ namespace basecross {
 		auto PtrTransform = GetGameObject()->GetComponent<Transform>();
 		//前回のターンからの時間
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
-		pImpl->m_GravityVelocity += pImpl->m_Gravity * ElapsedTime * m_ZoneElapsedTime;
+		pImpl->m_GravityVelocity += pImpl->m_Gravity * ElapsedTime;
 		auto Pos = PtrTransform->GetPosition();
-//		auto Pos = PtrTransform->GetWorldPosition();
-		Pos += pImpl->m_GravityVelocity * ElapsedTime * m_ZoneElapsedTime;
+		//auto Pos = PtrTransform->GetWorldPosition();
+		Pos += pImpl->m_GravityVelocity * ElapsedTime;
 		PtrTransform->SetPosition(Pos);
 	}
 
