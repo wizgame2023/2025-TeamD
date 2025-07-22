@@ -316,6 +316,7 @@ namespace basecross {
 		/// @return カメラの揺れによる移動を表す bsm::Vec3 型のベクトル。
 		bsm::Vec3 ShakeCameraMove();
 
+		bool CalcViewInPosition(bsm::Vec3 position);
 	private:
 		// pImplイディオム
 		struct Impl;

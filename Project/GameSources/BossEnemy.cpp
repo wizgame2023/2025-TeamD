@@ -13,7 +13,7 @@ namespace basecross {
 		Enemy(stage, position, scale),
 		m_IsAppearance(false), m_ConditionTime(0.0f), m_ConditionDefeat(100),m_ComboCount(0),m_Stun(0),m_StartPosition(position),
 		m_ComboTimer(Timer(1.0f,false)),m_IsStun(false), m_HealStun(Timer(7.5f,false)),
-		m_InvincibleTimer(Timer(0.1f,0.1f,false)),
+		m_InvincibleTimer(Timer(0.1f,0.1f,false)), m_AroundPlayerTime(0),
 		m_MotionRate(1.0f), m_DeadEffect(false), m_IsGround(true),
 		m_EffectBombHandle(0),m_EffectHandle(0),m_SmokeHandle(0)
 	{
@@ -33,19 +33,19 @@ namespace basecross {
 		draw->AddAnimation(L"Stan_Finish", 621, 20, false, fps * 0.5f);
 		draw->AddAnimation(L"Blow", 545, 10, false, fps * 0.5f);
 		
-		draw->AddAnimation(L"Missile_First", 971, 9, false, fps* m_MotionRate);
+		draw->AddAnimation(L"Missile_First", 971, 9, false, fps * m_MotionRate);
 		draw->AddAnimation(L"Missile", 981, 10, true, fps);
-		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps* m_MotionRate);
-		draw->AddAnimation(L"Crush", 1280, 90, false, fps* m_MotionRate);
+		draw->AddAnimation(L"Missile_Finish", 992, 8, false, fps * m_MotionRate);
+		draw->AddAnimation(L"Crush", 1280, 90, false, fps * m_MotionRate);
 
 		draw->AddAnimation(L"Jump", 2414, 5, true, fps);
 		draw->AddAnimation(L"Landing_First", 2420, 16, false, fps * 0.5f);
 		draw->AddAnimation(L"Landing", 2437, 67, false, fps * 0.5f);//16
 
-		draw->AddAnimation(L"ShakeOff_First", 2300, 21, false, fps);
+		draw->AddAnimation(L"ShakeOff_First", 2300, 21, false, fps * 0.5f * m_MotionRate);
 		draw->AddAnimation(L"ShakeOff_Bef", 2321, 17, false, fps * 1.5f);
 		draw->AddAnimation(L"ShakeOff_Aft", 2339, 61, false, fps * 1.5f);
-		draw->AddAnimation(L"ShakeOff_Parry", 2561, 118, false, fps);
+		draw->AddAnimation(L"ShakeOff_Parry", 2561, 118, false, fps * 1.5f);
 	}
 	void BossEnemy::SetAnimation(const wstring& key, const bool& isChange) {
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -139,18 +139,18 @@ namespace basecross {
 
 		StageData data = m_Stage->GetStageData();
 		if (data.stageNum == 0) {
-			AddSkill(missileSkill, 40.0f);
 			AddSkill(crushSkill, 60.0f);
+			AddSkill(missileSkill, 40.0f);
 		}
 		else if (data.stageNum == 1) {
-			AddSkill(missileSkill, 30.0f);
+			AddSkill(shakeSkill, 20.0f);
 			AddSkill(crushSkill, 40.0f);
-			AddSkill(shakeSkill, 30.0f);
+			AddSkill(missileSkill, 30.0f);
 		}
 		else {
-			AddSkill(missileSkill, 30.0f);
+			AddSkill(shakeSkill, 20.0f);
 			AddSkill(crushSkill, 40.0f);
-			AddSkill(shakeSkill, 30.0f);
+			AddSkill(missileSkill, 30.0f);
 		}
 		
 
@@ -176,6 +176,24 @@ namespace basecross {
 			if (m_HealStun.UpdateTimer() && m_Stun >= 0.25f) {
 				m_Stun -= 0.05f * elapsed;
 			}
+			if (m_Skills.size() >= 3) {
+				if ((m_Intruder->GetPosition() - GetPosition()).length() > 3.0f) {
+					m_AroundPlayerTime += elapsed;
+					if (m_AroundPlayerTime > 1.0f) {
+						m_Skills[0].m_Prob *= 1.1f;
+						m_AroundPlayerTime = 0.0f;
+					}
+				}
+				else {
+					m_AroundPlayerTime -= elapsed;
+					if (m_AroundPlayerTime < -1.0f) {
+						m_Skills[0].m_Prob = max(20.0f, m_Skills[0].m_Prob *= 0.9f);
+						m_AroundPlayerTime = 0.0f;
+					}
+				}
+			}
+
+
 		}
 		else {
 			auto& effect = m_Stage->GetCreateEffect();

@@ -11,13 +11,15 @@ namespace basecross {
 	void File::DrawError(const wstring& str, const wstring& title) {
 		MessageBox(App::GetApp()->GetHWnd(), str.c_str(), title.c_str(), MB_OK);
 	}
+	wstring File::GetFileExtension(const wstring& file) {
+		auto pos = file.rfind(L".");
+		return pos != wstring::npos ? file.substr(pos) : L"";
+	}
 
 	vector<wstring> File::GetFileData(const wstring& csv, const wstring& folder) {
 		auto& app = App::GetApp();
 		auto mediaPath = app->GetDataDirWString();
-
 		auto path = mediaPath + folder;
-
 		CsvFile csvFile;
 		csvFile.SetFileName(path + csv + L".csv");
 		csvFile.ReadCsv();
@@ -25,7 +27,6 @@ namespace basecross {
 		auto fullData = csvFile.GetCsvVec();
 		if (fullData.size() == 0) {
 			DrawError(L"CSVファイルをうまく読み取れませんでした", folder.c_str());
-			MessageBox(App::GetApp()->GetHWnd(), L"CSVファイルをうまく読み取れませんでした", folder.c_str(), MB_OK);
 			return {};
 		}
 
@@ -42,7 +43,10 @@ namespace basecross {
 		for (auto& data : fullData) {
 			file.clear();
 			Util::WStrToTokenVector(file, data, L',');
-
+			if (file.size() < 2) {
+				DrawError(L"必要な設定が足りません", L"Error");
+				continue;
+			}
 			wstring fileName = file[0];
 			wstring registerName = file[1];
 
@@ -52,7 +56,8 @@ namespace basecross {
 
 			else if (fileName.find(L".bmf") != wstring::npos) {
 				if (file.size() < 3) {
-
+					DrawError(L"モデルタイプが設定されていません", fileName);
+					continue;
 				}
 				wstring modelType = file[2];
 				shared_ptr<MeshResource> mesh;
@@ -64,6 +69,7 @@ namespace basecross {
 				}
 				else {
 					DrawError(L"設定可能なモデルタイプが設定されていません", fileName);
+					continue;
 				}
 				app->RegisterResource(registerName, mesh);
 			}
