@@ -209,7 +209,7 @@ namespace basecross {
 		col->AddExcludeCollisionGameObject(m_Player);
 		auto player = static_pointer_cast<Player>(m_Player);
 		//player->GetComponent<CollisionSphere>()->AddExcludeCollisionTag(L"Enemy");
-		m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Attack");
+		//m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Attack");
 
 		AddTag(L"CounterHitJudge");
 		// 初期位置をプレイヤー＋オフセットに
@@ -230,7 +230,7 @@ namespace basecross {
 
 		if (m_Elapsed >= m_AttachDuration) {
 			// くっつく時間終了 → 自身をステージから除去
-			m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Enemy");
+			//m_Player->AddComponent<CollisionCapsule>()->RemoveExcludeCollisionTag(L"Enemy");
 			GetStage()->RemoveGameObject<CounterHitSphere>(GetThis<CounterHitSphere>());
 			return;
 		}
