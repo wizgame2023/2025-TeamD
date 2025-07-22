@@ -87,10 +87,21 @@ namespace basecross {
 		SceneBase::OnUpdate();
 		RayCast::InitRay(10);
 
-		
+		auto& app = App::GetApp();
+		auto& device = app->GetInputDevice().GetControlerVec()[0];
+		if ((device.wPressedButtons & XINPUT_GAMEPAD_START && device.wPressedButtons & XINPUT_GAMEPAD_BACK)) {
+			ResetClear();
+		}
+
 	}
 
 	Scene::‾Scene() {
+	}
+
+	void Scene::ResetClear() {
+		ResetStage();
+		PostEvent(0.0f, nullptr, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
+
 	}
 
 	void Scene::ChangeCountStage(int count) {
@@ -142,9 +153,8 @@ namespace basecross {
 
 	}
 	void Scene::ResetStage() {
-		int i = 0, j = 0;
-		for (i; i < 3; i++) {
-			for (j; j < 3; j++) {
+		for (int i = 0; i < 3; i++) {
+			for (int j = 0; j < 3; j++) {
 				m_StageFile[i][j].m_IsClear = false;
 			}
 		}
