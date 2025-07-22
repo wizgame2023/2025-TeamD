@@ -574,6 +574,20 @@ namespace basecross {
 
 			PostEvent(0.4f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
+		else if (msg == L"ContorStop") {
+			GameManager::Instance()->SetGameSpeed(0.1f);
+			XINPUT_VIBRATION vibration;
+			vibration.wLeftMotorSpeed = 65535;
+			vibration.wRightMotorSpeed = 65535;
+			XInputSetState(0, &vibration);
+			if (m_cameraState == CameraState::FOLLOWCAMERA)
+			{
+				auto camera = GetView()->GetTargetCamera();;
+				static_pointer_cast<FollowCamera>(camera)->LookAtNearestEnemy();
+			}
+			PostEvent(0.0f, nullptr, GetThis<Stage>(), L"HitStopVibration");
+
+		}
 	}
 }
 //end basecross
