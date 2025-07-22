@@ -39,6 +39,8 @@ namespace basecross {
 		draw->SetMeshToTransformMatrix(meshMat);
 		auto col = AddComponent<CollisionObb>();
 		col->AddExcludeCollisionTag(L"Attack");
+		col->AddExcludeCollisionGameObject(m_Boss);
+
 		auto& effect = m_Stage->GetCreateEffect();
 		effect->PlayEffect(m_EffectHandle,L"boost", GetPosition(), 0.0f);
 		effect->SetScale(m_EffectHandle,Vec3(0.2f));
