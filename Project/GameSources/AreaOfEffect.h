@@ -70,7 +70,6 @@ namespace basecross {
 			return m_Circle;
 		}
 		void SetCircle(CIRCLE circle) {
-			if (circle.m_VertexCount * 2 != m_Indices.size()) return;
 			m_Circle = circle;
 		}
 

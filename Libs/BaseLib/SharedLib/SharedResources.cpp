@@ -248,6 +248,29 @@ namespace basecross {
 		}
 		return Vec3(0); // 振動がない場合はゼロベクトルを返す
 	}
+	
+	bool Camera::CalcViewInPosition(Vec3 position) {
+
+		XMVECTOR position4 = XMVectorSet(position.x, position.y, position.z, 1.0f);
+		auto viewProj = XMMatrixMultiply(GetViewMatrix(), GetProjMatrix());
+		// 1. ViewProj変換
+		XMVECTOR clipSpace = XMVector4Transform(position4, viewProj);
+
+		float w = XMVectorGetW(clipSpace);
+		if (fabs(w) < 1e-6f) return false;
+
+		// 2. NDCへ変換（透視除算）
+		clipSpace = XMVectorScale(clipSpace, 1.0f / w);
+
+
+		// 3. NDC範囲チェック（-1?1に入っていれば画面内）
+		bool isVisible =
+			XMVectorGetX(clipSpace) >= -1.0f && XMVectorGetX(clipSpace) <= 1.0f &&
+			XMVectorGetY(clipSpace) >= -1.0f && XMVectorGetY(clipSpace) <= 1.0f &&
+			XMVectorGetZ(clipSpace) >= 0.0f && XMVectorGetZ(clipSpace) <= 1.0f;
+
+		return isVisible;
+	}
 
 
 	//--------------------------------------------------------------------------------------

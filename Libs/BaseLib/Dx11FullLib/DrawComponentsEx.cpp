@@ -683,7 +683,14 @@ namespace basecross {
 	float BcBaseDraw::GetCurrentAnimationTime() const {
 		return pImpl->m_BcDrawObject.m_CurrentAnimeTime;
 	}
+	float BcBaseDraw::GetAnimationTime(const wstring& AnimName) {
+		auto& AnimData = pImpl->m_BcDrawObject.m_AnimationMap[AnimName];
+		float length = AnimData.m_SampleLength;
+		float perSecond = AnimData.m_SamplesParSecond;
 
+		return length / perSecond;
+		
+	}
 	bool BcBaseDraw::IsTargetAnimeEnd() const {
 		auto& AnimData = pImpl->m_BcDrawObject.GetAnimationData();
 		return AnimData.m_IsAnimeEnd;

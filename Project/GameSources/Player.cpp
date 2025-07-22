@@ -248,6 +248,38 @@ namespace basecross {
 			SetRotation(Vec3(0.0f, yaw, 0.0f));
 		}
 	}
+	void Player::DrawArrow() {
+		auto& trans = m_EnemyArrow->GetComponent<Transform>();
+
+		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
+		auto targetEnemyObject = ObjectSearch(enemyGroup);
+		if (!targetEnemyObject) {
+			m_EnemyArrow->SetDrawActive(false);
+			return;
+		}
+		Vec3 pos = GetPosition();
+		Vec3 enemyPos = targetEnemyObject->GetComponent<Transform>()->GetPosition();
+
+		auto camera = OnGetDrawCamera();
+		m_EnemyArrow->SetDrawActive(true);
+		if (camera->CalcViewInPosition(enemyPos)) {
+			m_EnemyArrow->SetDrawActive(false);
+			return;
+		}
+		Vec3 toEnemy = enemyPos - pos;
+		toEnemy = toEnemy.normalize();
+
+		pos += toEnemy * 2.0f;
+		pos.y = 0.51f;
+		trans->SetPosition(pos);
+
+		float angle = atan2f(toEnemy.x, toEnemy.z);
+
+		Quat qx = Quat(sin(XMConvertToRadians(90) / 2.0f), 0.0f, 0.0f, cos(XMConvertToRadians(90) / 2.0f));
+		Quat qy = Quat(0.0f, sin(angle / 2.0f), 0.0f, cos(angle / 2.0f));
+
+		trans->SetQuaternion(qx * qy);
+	}
 
 	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group) {
 		const auto& list = group->GetGroupVectors();
@@ -258,6 +290,12 @@ namespace basecross {
 
 		for (auto& weakObj : list) {
 			if (auto obj = weakObj.lock()) {
+				if (!obj->GetDrawActive()) continue;
+				auto  chara = dynamic_pointer_cast<Character>(obj);
+				if (chara) {
+					if (!chara->IsArive()) continue;
+				}
+
 				Vec3 objPos = obj->GetComponent<Transform>()->GetPosition();
 				Vec3 diff = objPos - position;
 				float sqrDist = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
@@ -608,6 +646,7 @@ namespace basecross {
 		AddTag(L"Player");
 
 		m_TargetBoard = m_Stage->AddGameObject<TargetBoard>(GetThis<Player>());
+		m_EnemyArrow = m_Stage->AddGameObject<Board>(L"ARROW", Vec3(0, 0.51f, 0), Vec3(1, 1, 1), false);
 		auto stage = static_pointer_cast<GameStage>(m_Stage);
 		if (stage != nullptr) {
 			m_Effect = stage->GetCreateEffect();
@@ -621,6 +660,7 @@ namespace basecross {
 
 	void Player::OnUpdate(){
 		UpdateAnim();
+		DrawArrow();
 		if (m_IsGoal == false){
 			Vec3 forward = GetForward();
 			if (m_EnergyCharge >= 1.0f) {
@@ -678,6 +718,10 @@ namespace basecross {
 						auto camera = GetStage()->GetView()->GetTargetCamera();;
 						auto get = dynamic_pointer_cast<FollowCamera>(camera);
 						get->SetShaking(true);
+					}
+					auto gravity = GetComponent<Gravity>(false);
+					if (gravity) {
+						gravity->SetGravityVerocityZero();
 					}
 				}
 				m_TargetObject = Vec3(rot.x,0, rot.z);
