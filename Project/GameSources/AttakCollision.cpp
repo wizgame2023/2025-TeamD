@@ -110,15 +110,14 @@ namespace basecross {
 		Attack::Play(position,direction);
 
 		m_MissileCount = m_MissileMaxCount;
-		//m_MissileTimer.Reset();
 	}
 
 
 	void ShakeOffAttack::ReflectParry(Vec3 position) {
 		if (m_Date.m_Owner != nullptr) {
 			auto boss = static_pointer_cast<BossEnemy>(m_Date.m_Owner);
-			boss->AddStun(0.5f / (float)GameManager::Instance()->GetDifficulty());
-			boss->SetAnimation(L"ShakeOff_Parry",true);
+			boss->SetAnimation(L"ShakeOff_Parry", true);
+			boss->AddStun(0.5f);
 		}
 	}
 }
