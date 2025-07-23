@@ -12,6 +12,7 @@ namespace basecross {
 	class File {
 		static vector<wstring> GetFileData(const wstring& csv, const wstring& folder);
 		static void DrawError(const wstring& str, const wstring& title);
+		static wstring GetFileExtension(const wstring& file);
 	public:
 		static void Load(const wstring& csv, const wstring& folder);
 		static void LoadEfk(const wstring& csv, const wstring& folder, shared_ptr<EffectManager> manager);

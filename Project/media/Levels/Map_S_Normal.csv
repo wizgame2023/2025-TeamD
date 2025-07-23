@@ -1,6 +1,7 @@
 stage,normal,mob_boss,Stage,name_difficulty_enemys_type_
-Ground,0_0_0,25.9_1_54.83001,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-Ground,0_0_-55.25,25.9_1_55.5,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+Ground,0_0_0,25.9_1_56,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+Ground,0_0_-56,25.9_1_56,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
+way,0.05_0_51,26_1_46,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-66.83,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-35.9,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,-28.5_0_-4.81,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
@@ -10,7 +11,6 @@ way,28.49999_0_-66.83,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rota
 way,28.49999_0_-35.9,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,28.49999_0_-4.81,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,28.49999_0_26.24,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
-way,0.05_0_49.9,26_1_45.16717,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 way,28.49999_0_56.82,31.1_1_31.1,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_21.68,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_
 building,23_8_34.29,10_15_10,0_0_0,Untagged,Object,name_position_scale_rotation_tag_type_

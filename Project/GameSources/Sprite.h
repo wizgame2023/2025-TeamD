@@ -426,6 +426,7 @@ namespace basecross{
 		/// <param name="offset"> : ずれ</param>
 		void ScreenAnchor(Anchor achor, const Vec3& offset = Vec3());
 
+		void ChangeWindowSize(float width, float height);
 	};
 
 
