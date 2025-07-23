@@ -677,10 +677,7 @@ namespace basecross {
 
 	void Player::OnUpdate(){
 		UpdateAnim();
-<<<<<<< HEAD
-=======
 		DrawArrow();
->>>>>>> 8acefb52dc053aa95e5e9ad410c5e6817e8fd75a
 		if (m_IsGoal == false){
 			m_TargetBoard->SetDrawActive(true);
 			ZoneActivation();
