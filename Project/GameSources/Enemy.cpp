@@ -203,12 +203,12 @@ namespace basecross {
 		if (other->FindTag(L"CounterHitJudge"))
 		{
 			Vec3 pos = other->GetComponent<Transform>()->GetPosition();
-			KnockBack(Vec3(pos + Vec3(0, +4, 0)));
+			KnockBack(Vec3(pos + Vec3(0, -2, 0)));
 		}
 	}
 
 	//--------------------------------------------------------------------------------------
-	//	class LineObject : public GameObject; 
+	//	class LineObject : public GameObject;  
 	//--------------------------------------------------------------------------------------
 	LineObject::LineObject(const shared_ptr<Stage>& stage
 	) :

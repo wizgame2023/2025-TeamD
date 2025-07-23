@@ -195,7 +195,7 @@ namespace basecross {
 			// Yaw
 			m_Angle -= dx * m_MouseSensitivityX;
 			// Pitch（符号は好みで反転可）
-			m_Pitch -= dy * m_MouseSensitivityX * 0.1f;
+			m_Pitch += dy * m_MouseSensitivityX * 0.1f;
 			//m_CenterPt = now;
 		}
 
@@ -294,7 +294,7 @@ namespace basecross {
 		m_StartPitch = m_Pitch;
 
 		// 目標角度を計算
-		m_TargetAngle = std::atan2(dir.x, dir.z);
+		m_TargetAngle = std::atan2(dir.z, dir.x);
 		m_TargetPitch = std::asin(dir.y);
 
 		// デッドゾーン内ならそのままセットして終了
