@@ -192,10 +192,10 @@ namespace basecross {
 	}
 
 	void CounterHitSphere::ApplyHit(shared_ptr<Character> enemy) {
-		// チャージ半減ダメージ
 		auto player = static_pointer_cast<Player>(m_Player);
 		player->SetCharge(0.1f);
-		enemy->Damage(player->GetAttackDamage() / 2, false);
+		enemy->Damage(player->GetAttackDamage(), false);
+		PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"ContorStop");
 	}
 
 	void CounterHitSphere::OnCreate() {
@@ -203,9 +203,9 @@ namespace basecross {
 
 		auto col = AddComponent<CollisionSphere>();
 		col->SetDrawActive(GameManager::Instance()->IsDebug());
-		col->SetFixed(true);               // プレイヤーと一体化しているので固定
 		col->SetAfterCollision(AfterCollision::None);
 		col->AddExcludeCollisionGameObject(m_Player);
+		col->AddExcludeCollisionTag(L"Attack");
 		auto player = static_pointer_cast<Player>(m_Player);
 
 		AddTag(L"CounterHitJudge");
@@ -227,6 +227,7 @@ namespace basecross {
 
 		if (m_Elapsed >= m_AttachDuration) {
 			// くっつく時間終了 → 自身をステージから除去
+
 			GetStage()->RemoveGameObject<CounterHitSphere>(GetThis<CounterHitSphere>());
 			return;
 		}

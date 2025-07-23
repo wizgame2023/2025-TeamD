@@ -599,14 +599,13 @@ namespace basecross {
 				m_IsParryCounter = false;
 				m_DamageIntervalStart = false;
 				m_DamageInterval = 0.5f;
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"ContorStop");
 			}
 			else { 
 				Vec3 playerPos = GetPosition();
 				Vec3 dir = Vec3(m_TargetObject.x, 0.0f,m_TargetObject.z);
 				dir.normalize();
 				SetAnim(L"Counter", true);
-				BoostMove(m_Speed * 3.5f, dir, 0.5f);
+				BoostMove(m_Speed * 3.5f, dir * 1.2f, 0.5f);
 			}
 		}
 	}
@@ -615,12 +614,13 @@ namespace basecross {
 	{
 		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		Vec3 forward = GetForward();
 		if (m_IsParryCounter) return;
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON] ) && m_TargetObject != Vec3()) {
 			m_IsParryCounter = true;
 			m_BoostConterTime = 0.5f;
 			m_DamageIntervalStart = true;
-			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(0,0.5f,0),m_BoostConterTime,1.0f);
+			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(forward.x,0.0f, forward.z),m_BoostConterTime,1.0f);
 		}
 	}
 
@@ -679,11 +679,13 @@ namespace basecross {
 		UpdateAnim();
 		DrawArrow();
 		if (m_IsGoal == false){
+			m_TargetBoard->SetDrawActive(true);
 			ZoneActivation();
 			IntervalManagement();
 			PlayAnimation();
 		}
 		else{
+			m_TargetBoard->SetDrawActive(false);
 			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			if (m_HP <= 0){
 				SetAnim(L"Died");
@@ -692,7 +694,6 @@ namespace basecross {
 				SetAnim(L"Idle");
 			}
 		}
-		m_TargetBoard->SetDrawActive(!m_IsGoal);
 		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
 		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
 		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
