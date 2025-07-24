@@ -511,7 +511,6 @@ namespace basecross {
 			m_ChargeTime = 0;
 			m_Speed = 6.0f;
 		}
-
 		MovePlayer(m_Speed);
 	}
 

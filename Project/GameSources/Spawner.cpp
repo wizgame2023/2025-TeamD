@@ -97,6 +97,7 @@ namespace basecross {
 			if (player != nullptr)
 			{
 				player->HealHP(player->GetMaxHP() / 4.0f);
+				SoundManager::Instance().PlaySE(L"SE_HP_RECOVERY");
 			}
 			if (m_Legions.size() <= m_Wave) {
 

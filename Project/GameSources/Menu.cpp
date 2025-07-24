@@ -125,6 +125,8 @@ namespace basecross {
 		AddKeyboradSelect(InputData('S', 1));
 		AddKeyboradAccept(VK_SPACE);
 		Close();
+
+		
 	}
 	void SoundTestMenu::TuningSE() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
