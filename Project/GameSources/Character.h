@@ -55,7 +55,6 @@ namespace basecross {
 		}
 		void HealHP(float hp) {
 			m_HP = min(m_MaxHP, m_HP + hp);
-			SoundManager::Instance().PlaySE(L"SE_HP_RECOVERY");
 		}
 		float GetMaxHP() {
 			return m_MaxHP;
