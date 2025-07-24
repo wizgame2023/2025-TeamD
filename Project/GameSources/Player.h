@@ -43,6 +43,7 @@ namespace basecross {
         bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
         bool  m_IsParry;                   ///< パリィモード中フラグ
         bool  m_IsParryCounter;                   ///< パリィモード中フラグ
+        bool  m_IsCharged;                 ///< チャージフラグ
         float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
         float m_ParryDamage;               ///< パリィ時反撃ダメージ
         float m_zoneAnim;                  ///< ゾーン演出進行度

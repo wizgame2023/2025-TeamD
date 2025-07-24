@@ -30,7 +30,7 @@ namespace basecross{
 		void StopLoopSE(const wstring& key);
 
 		static SoundManager& Instance();
-		shared_ptr<SoundItem> PlaySE(const wstring& key,const float volume = 1.0f);
+		shared_ptr<SoundItem> PlaySE(const wstring& key,const float volume = 5.0f);
 		shared_ptr<SoundItem> PlayBGM(const wstring& key, const float volume = 1.0f);
 		void StopAll();
 		void StopBGM();
