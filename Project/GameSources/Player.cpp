@@ -133,22 +133,36 @@ namespace basecross {
 		}
 	}
 
-	void Player::BoostMove(const float Speed, const Vec3 Angle) {
-		float elapsedTime = GetElapsed();
-		m_TotalTime += elapsedTime;
-		if (Angle.length() > 0.0f) {
-			auto pos = GetPosition();
-			pos += Angle * Speed;
-			auto boost = Lerp::CalculateLerp(GetPosition(), Vec3(pos.x, GetPosition().y + 0.5f, pos.z), 0, 1.0f, m_TotalTime, Lerp::rate::Linear);
-			SetPosition(boost);
+	void Player::BoostMove(const float Speed, const Vec3 Angle, const float time)
+	{
+		float dt = GetElapsed();
+		m_TotalTime += dt;
+
+		// ダッシュ時間が終わったらリセットして終了
+		if (m_TotalTime >= time) {
+			m_TotalTime = 0.0f;
+			// ステート解除などの後処理
+			return;
 		}
-		m_TotalTime = 0;
+
+		// 現在位置＋水平移動量＋垂直移動量を足し込む
+		Vec3 pos = GetPosition();
+		Vec3 horizontal = Vec3(Angle.x, 0.0f, Angle.z) * Speed * dt;
+
+		// Gravity コンポーネント側で毎フレーム更新された重力速度を取得
+		float vy = GetComponent<Gravity>()->GetGravityVelocity().y;
+		Vec3 vertical = Vec3(0.0f, vy, 0.0f) * dt;
+
+		SetPosition(pos + horizontal + vertical);
 	}
 
 	void Player::ZoneActivation(){
 		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
+		if (m_EnergyCharge >= 1.0f) {
+			m_EnergyCharge = 1.0f;
+		}
 		if (m_EnergyCharge >= 1.0){
 			if (cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_B || keyState.m_bPressedKeyTbl[VK_SPACE]) {
 				if ((m_PlayerStateNum & PlayerState::ZONE) == 0){
@@ -415,7 +429,7 @@ namespace basecross {
 		}
 		else {
 			SetAnim(L"Brink");
-			BoostMove(m_Speed * 3.0f, m_BoostAngle);
+			BoostMove(m_Speed * 3.0f, m_BoostAngle, 0.2f);
 		}
 	}
 
@@ -433,10 +447,10 @@ namespace basecross {
 
 	void Player::HandleAttackCharge(const float& elapsedTime)
 	{
-		if (IntervalTimer(true, 1.0f, elapsedTime, m_Attacktime, true)) {
+		if (IntervalTimer(true, 0.5f, elapsedTime, m_AttackChargeInterval, true)) {
 			m_PlayerStateNum -= PlayerState::ATTACKCHARGE;
 			m_PlayerStateNum += PlayerState::NORMAL;
-			m_AttackInterval = 1.0f;
+			m_AttackChaegetime = 0.5f;
 		}
 		else {
 			SetAnim(L"QuakeAttack", true);
@@ -452,6 +466,7 @@ namespace basecross {
 
 		bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
 		bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
+		bool isAttackChaege = IntervalTimer(true, 0.5f, elapsedTime, m_AttackChaegetime, false);
 
 		Vec3 rot = SearchRange(90.0f);
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_X || keyState.m_bPressedKeyTbl[VK_RBUTTON]) && isBoost) {
@@ -464,11 +479,15 @@ namespace basecross {
 			m_PlayerStateNum += PlayerState::DASH;
 			SoundManager::Instance().PlaySE(L"SE_ACCEPT");
 		}
+
+		if (!isAttackChaege) return;
 		if (cntlVec[0].wButtons & XINPUT_GAMEPAD_A || keyState.m_bPushKeyTbl[VK_LBUTTON])
 		{
 			m_ChargeTime += elapsedTime;
 			m_Speed = 6.0f / 2.0f; // チャージ中は移動速度を下げる
 		}
+
+		MovePlayer(m_Speed);
 
 		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_A || keyState.m_bUpKeyTbl[VK_LBUTTON]) {
 			if (isAttack)
@@ -480,7 +499,6 @@ namespace basecross {
 					camera->ShakeStart(0.3f, 0.3f);
 					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
-
 				}
 				else {
 					if (m_AttackAnim == L"Attack2") {
@@ -511,7 +529,6 @@ namespace basecross {
 			m_ChargeTime = 0;
 			m_Speed = 6.0f;
 		}
-		MovePlayer(m_Speed);
 	}
 
 	void Player::Blinking(){
@@ -582,13 +599,13 @@ namespace basecross {
 				m_IsParryCounter = false;
 				m_DamageIntervalStart = false;
 				m_DamageInterval = 0.5f;
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"ContorStop");
 			}
 			else { 
-				Vec3 dir = m_TargetObject * 1.2f;
+				Vec3 playerPos = GetPosition();
+				Vec3 dir = Vec3(m_TargetObject.x, 0.0f,m_TargetObject.z);
 				dir.normalize();
 				SetAnim(L"Counter", true);
-				BoostMove(18.0f, dir);
+				BoostMove(m_Speed * 3.5f, dir * 1.2f, 0.5f);
 			}
 		}
 	}
@@ -597,12 +614,13 @@ namespace basecross {
 	{
 		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+		Vec3 forward = GetForward();
 		if (m_IsParryCounter) return;
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON] ) && m_TargetObject != Vec3()) {
 			m_IsParryCounter = true;
 			m_BoostConterTime = 0.5f;
 			m_DamageIntervalStart = true;
-			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(0),m_BoostConterTime,1.0f);
+			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(forward.x,0.0f, forward.z),m_BoostConterTime,1.0f);
 		}
 	}
 
@@ -653,7 +671,7 @@ namespace basecross {
 		else {
 			m_Effect = nullptr;
 		}
-
+		m_PositionY = GetPosition().y;
 		m_Stage->SetSharedGameObject(L"Player", GetThis<Player>());
 	}
 
@@ -661,15 +679,13 @@ namespace basecross {
 		UpdateAnim();
 		DrawArrow();
 		if (m_IsGoal == false){
-			Vec3 forward = GetForward();
-			if (m_EnergyCharge >= 1.0f) {
-				m_EnergyCharge = 1.0f;
-			}
+			m_TargetBoard->SetDrawActive(true);
 			ZoneActivation();
 			IntervalManagement();
 			PlayAnimation();
 		}
 		else{
+			m_TargetBoard->SetDrawActive(false);
 			m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 			if (m_HP <= 0){
 				SetAnim(L"Died");
@@ -678,7 +694,6 @@ namespace basecross {
 				SetAnim(L"Idle");
 			}
 		}
-
 		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
 		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
 		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
@@ -712,11 +727,11 @@ namespace basecross {
 						if (boss != nullptr)
 						{
 							rot = boss->GetPosition() - GetPosition();
+							attack->ReflectParry(GetPosition());
+							auto camera = GetStage()->GetView()->GetTargetCamera();;
+							auto get = dynamic_pointer_cast<FollowCamera>(camera);
+							get->SetShaking(true);
 						}
-						attack->ReflectParry(GetPosition());
-						auto camera = GetStage()->GetView()->GetTargetCamera();;
-						auto get = dynamic_pointer_cast<FollowCamera>(camera);
-						get->SetShaking(true);
 					}
 					auto gravity = GetComponent<Gravity>(false);
 					if (gravity) {
@@ -769,16 +784,18 @@ namespace basecross {
 	void Player::Debug() {
 		auto scene = App::GetApp()->GetScene<Scene>();
 		wstringstream wss(L"");
-		wss << L"?nZoneCharge : "
+		wss << L"¥nZoneCharge : "
 			<< m_EnergyCharge
-			<< L"?nHP"
+			<< L"¥nHP"
 			<< m_HP
-			<< L"?nx"
-			<< m_Rotation.x
-			<< L"?ny"
-			<< m_Rotation.y
-			<< L"?nz"
-			<< m_Rotation.z
+			<< L"¥nx"
+			<< GetPosition().x
+			<< L"¥ny"
+			<< GetPosition().y
+			<< L"¥nz"
+			<< GetPosition().z
+			<< L"¥nY"
+			<< m_PositionY
 			<< endl;
 		scene->SetDebugString(wss.str());
 	}

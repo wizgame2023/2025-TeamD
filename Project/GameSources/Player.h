@@ -30,6 +30,8 @@ namespace basecross {
         float m_BoostConterTime;                 ///< ブースト継続時間
         float m_BoostInterval;             ///< ブースト再使用インターバル
         float m_Attacktime;                ///< 攻撃アニメーション再生時間
+        float m_AttackChargeInterval;                ///< 攻撃アニメーション再生時間
+        float m_AttackChaegetime;                ///< 攻撃アニメーション再生時間
         float m_AttackInterval;            ///< 攻撃発生インターバル
         float m_DamageInterval;            ///< 被ダメージ無敵時間
         float m_BlinkingInterval;          ///< 被ダメージ点滅間隔
@@ -46,6 +48,7 @@ namespace basecross {
         float m_zoneAnim;                  ///< ゾーン演出進行度
         float m_SearchDistance;            ///< 敵探索距離
         float m_Length;                    ///< モデル長さ
+		float m_PositionY;                    ///< ポジションのY座標
 
         Vec3 m_BoostAngle;                 ///< ブースト移動方向ベクトル
         Vec3 m_HitScale;                   ///< 被ヒット時スケール補正
@@ -155,7 +158,7 @@ namespace basecross {
          * @param Speed 移動速度
          * @param Angle 移動方向
          */
-        void BoostMove(const float Speed, const Vec3 Angle);
+        void BoostMove(const float Speed, const Vec3 Angle, const float time = 0.0f);
 
         /// @brief ゾーンモード発動
         void ZoneActivation();

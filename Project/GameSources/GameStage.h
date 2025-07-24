@@ -21,13 +21,6 @@ namespace basecross {
 	//--------------------------------------------------------------------------------------
 	class GameStage : public Stage {
 		
-		enum CameraState
-		{
-			OPENINGCAMERA,
-			FOLLOWCAMERA,
-			RESULTCAMERA
-		};
-		int m_cameraState;
 		wstring m_MapFileName;
 		StageData m_StageData;
 		bool m_IsPose;
@@ -82,6 +75,13 @@ namespace basecross {
 		shared_ptr<SingleView> m_MyCameraView;
 
 	public:
+		enum CameraState
+		{
+			OPENINGCAMERA,
+			FOLLOWCAMERA,
+			RESULTCAMERA
+		};
+		int m_cameraState;
 
 		GameStage(const wstring& file, StageData data) : Stage(), m_MapFileName(file),m_StageData(data), m_IsPose(false), m_IsGameStater(false){}
 		virtual ‾GameStage() {
