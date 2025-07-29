@@ -69,6 +69,15 @@ namespace basecross {
 		auto Effect = GetStage->GetCreateEffect();
 		Effect->SetEffectPause(false);
 	}*/
+	void PauseMenu::OnUpdate() {
+		//auto& app = App::GetApp();
+		//auto& device = app->GetInputDevice().GetControlerVec()[0];
+		//if (device.wPressedButtons & XINPUT_GAMEPAD_START) {
+		//	if (PauseMenu::IsOpen()) {
+		//		Close();
+		//	}
+		//}
+	}
 
 	void PauseMenu::OnCreate() {
 		Menu::OnCreate();
@@ -78,49 +87,47 @@ namespace basecross {
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND2", Vec3(35.0f, 125.0f, 0), Vec2(280, 110), Vec2(0.5f));
+		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_SOUND2", Vec3(35.0f, 105.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE3", Vec3(35.0f, - 75.0f, 0), Vec2(280, 110), Vec2(0.5f));
+		sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE3", Vec3(35.0f, - 135.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, 25.0f, 0), Vec2(280, 110), Vec2(0.5f));
+		sprite = GetStage()->AddGameObject<Sprite>(L"SELECT_SRAGE", Vec3(35.0f, -15.0f, 0), Vec2(280, 110), Vec2(0.5f));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), Vec2(0.5f));
-		AddSprite(sprite);
+		//sprite = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), Vec2(0.5f));
+		//AddSprite(sprite);
 
 		float flashSpeed = 2.0f;
 		auto menu = GetThis<PauseMenu>();
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 125.0f, 0.0f), Vec2(100, 100), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 105.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<PauseMenu>(object);
 				menu->OpenSoundTest();
 			});
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 25.0f, 0.0f), Vec2(100, 100),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -15.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
 			});
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -75.0f, 0.0f), Vec2(100, 100),
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -135.0f, 0.0f), Vec2(100, 100),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
-			[](shared_ptr<ObjectInterface> object) {
-				auto menu = static_pointer_cast<Menu>(object);
-				auto getStage = menu->GetTypeStage<GameStage>();
-				auto player = getStage->GetSharedGameObject<Player>(L"Player", false);
-				menu->Close();
-				auto setEffect = getStage->GetCreateEffect();
-				setEffect->SetEffectPause(false);
-				auto getCamera = menu->OnGetDrawCamera();
-				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
-				if (getStage->m_cameraState == getStage->FOLLOWCAMERA)
-				{
-					setCamera->SetCameraPause(false);
-					player->SetIsGaol(false);
-				}
-			});
+
+		//AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
+		//	[](shared_ptr<ObjectInterface> object) {
+		//		auto menu = static_pointer_cast<Menu>(object);
+		//		auto getStage = menu->GetTypeStage<GameStage>();
+		//		auto player = getStage->GetSharedGameObject<Player>(L"Player", false);
+		//		menu->Close();
+		//		auto setEffect = getStage->GetCreateEffect();
+		//		setEffect->SetEffectPause(false);
+		//		auto getCamera = menu->OnGetDrawCamera();
+		//		auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
+		//		setCamera->SetCameraPause(false);
+		//		player->SetIsGaol(false);
+		//	});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
@@ -200,10 +207,10 @@ namespace basecross {
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);		
 
-		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, -20, 0), Vec2(120, 80), Vec2(0.5f));
+		sprite = GetStage()->AddGameObject<Sprite>(L"SE_VOLUME", Vec3(-70, -70, 0), Vec2(120, 80), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
-		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, 130, 0), Vec2(120, 80), Vec2(0.5f));
+		sprite = GetStage()->AddGameObject<Sprite>(L"BGM_VOLUME", Vec3(-60, 105, 0), Vec2(120, 80), Vec2(0.5f));
 		sprite->SetDiffuse(Col4(0, 0, 0, 1));
 		AddSprite(sprite);
 
@@ -217,13 +224,13 @@ namespace basecross {
 		float volumeBGM = SoundManager::Instance().GetBGMVolume();
 		float x = GetPositionX(volumeBGM);
 
-		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 60.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
+		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 35.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
 
-		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 60.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
+		auto barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, 35.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(barSprite);
 
-		auto choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 60.0f, 0.0f), Vec2(40, 60), Vec2(0.5f));
+		auto choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, 35.0f, 0.0f), Vec2(40, 60), Vec2(0.5f));
 		AddSprite(choice);
 
 
@@ -231,7 +238,7 @@ namespace basecross {
 		//slideBarSprite->SetPosition(Vec3(-x,0.0f,0.0f));
 		//AddSprite(slideBarSprite);
 
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 125.0f, 0.0f), Vec2(100, 100), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, 105.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
@@ -245,19 +252,19 @@ namespace basecross {
 			});
 		x = GetPositionX(volumeSE);
 
-		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -90.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
+		backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, -140.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(backBarSprite);
 
-		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -90.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
+		barSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BAR", Vec3(0, -140.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
 		AddSprite(barSprite);
 
-		choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -90.0f, 0.0f), Vec2(40, 60), Vec2(0.5f));
+		choice = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -140.0f, 0.0f), Vec2(40, 60), Vec2(0.5f));
 		AddSprite(choice);
 
 		//slideBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_SLIDEBAR", Vec3(x, -130.0f, 0.0f), Vec2(40, 60), true);
 		//AddSprite(slideBarSprite);
 
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -20.0f, 0.0f), Vec2(100, 100), menu,
+		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -70.0f, 0.0f), Vec2(100, 100), menu,
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
@@ -268,21 +275,21 @@ namespace basecross {
 				pos.x = menu->GetPositionX(volume);
 				button->SetPosition(pos);
 			});
-		auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), Vec2(0.5f));
-		AddSprite(sprited);
+		//auto sprited = GetStage()->AddGameObject<Sprite>(L"POSE_START2", Vec3(35.0f, -175.0f, 0), Vec2(280, 110), Vec2(0.5f));
+		//AddSprite(sprited);
 
-		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
-			[](shared_ptr<ObjectInterface> object) {
-				auto menu = static_pointer_cast<SoundTestMenu>(object);
-				menu->OpenPauseMenu();
-				auto getStage = menu->GetTypeStage<GameStage>();
-				auto setEffect = getStage->GetCreateEffect();
-				setEffect->SetEffectPause(false);
-				auto getCamera = menu->OnGetDrawCamera();
-				auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
-				setCamera->SetCameraPause(false);
+		//AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
+		//	[](shared_ptr<ObjectInterface> object) {
+		//		auto menu = static_pointer_cast<SoundTestMenu>(object);
+		//		menu->OpenPauseMenu();
+		//		auto getStage = menu->GetTypeStage<GameStage>();
+		//		auto setEffect = getStage->GetCreateEffect();
+		//		setEffect->SetEffectPause(false);
+		//		auto getCamera = menu->OnGetDrawCamera();
+		//		auto setCamera = static_pointer_cast<FollowCamera>(getCamera);
+		//		setCamera->SetCameraPause(false);
 
-			});
+		//	});
 
 		AddSelectButton(InputData(StickMode::LY, 1, 0.2f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
