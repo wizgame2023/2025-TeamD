@@ -30,7 +30,8 @@ namespace basecross {
 		if (player != nullptr) {
 			SetIntruder(player);
 		}
-		auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		//auto ptrDraw = AddComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = AddComponent<DissolveDraw>();
 		Mat4x4 meshMat;
 		meshMat.affineTransformation(
 			Vec3(0.25f), //(.1f, .1f, .1f),
@@ -41,6 +42,11 @@ namespace basecross {
 		ptrDraw->SetMeshResource(L"MOB");
 		ptrDraw->SetMeshToTransformMatrix(meshMat);
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
+		ptrDraw->SetBoneState(BoneState::Bone);
+		ptrDraw->SetDissolveColor(Col4(0.0f, 0.5f, 1.0f, 1.0f));
+		ptrDraw->StartDissolve(1.0f);
+		ptrDraw->SetNoiseTextureResource(L"NOISE");
+		ptrDraw->SetDissolveActive(false);
 
 		auto ptrGra = AddComponent<Gravity>();
 		auto shadowPtr = AddComponent<Shadowmap>();
@@ -67,7 +73,7 @@ namespace basecross {
 		{
 			float elapsed = GetGameElapsed();
 			AsyncUpdate();
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			auto draw = GetComponent<DissolveDraw>();
 			draw->UpdateAnimation(elapsed);
 			/*if (m_IsEndAsyncUpdate) {
 				auto updateThread = thread(&Mob::AsyncUpdate, GetThis<Mob>());
@@ -75,13 +81,13 @@ namespace basecross {
 			}*/
 			if (m_IntervalStart == true)
 			{
-				draw->SetDiffuse(Col4(1, 0, 0, 1));
+				//draw->SetDiffuse(Col4(1, 0, 0, 1));
 
 				m_BalletInterval -= elapsed * m_ZoneElapsedTime;
 			}
 			else {
 				m_KnockBackInterval -= elapsed * m_ZoneElapsedTime;
-				draw->SetDiffuse(Col4(1, 1, 1, 1));
+				//draw->SetDiffuse(Col4(1, 1, 1, 1));
 
 				if (m_KnockBackInterval < 0)
 				{
@@ -102,7 +108,7 @@ namespace basecross {
 		}
 		else {
 			float elapsed = GetGameElapsed();;
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			auto draw = GetComponent<DissolveDraw>();
 			draw->UpdateAnimation(elapsed);
 		}
 	}
@@ -119,7 +125,7 @@ namespace basecross {
 	}
 	void Mob::Dead() {
 		m_Update = false;
-		auto draw = GetComponent<BcPNTBoneModelDraw>();
+		auto draw = GetComponent<DissolveDraw>();
 		float elapsedTime = GetGameElapsed();
 		m_Stage->RemoveGameObject<SharpFan>(m_SearchFan);
 		m_HpBar->Destroy();
@@ -130,7 +136,12 @@ namespace basecross {
 			SetAnim(L"Down", 0.0f);
 			KnockBackTime();
 		}
-		else if(draw->IsTargetAnimeEnd())
+		else if (draw->IsTargetAnimeEnd()) {
+			draw->SetDissolveActive(true);
+			RemoveComponent<CollisionCapsule>();
+			RemoveComponent<Gravity>();
+		}
+		if(draw->GetDissolveAmount() >= 1.0f)
 		{
 			ScoreManager::Instance()->AddEliminateEnemyCount();
 			auto group = m_Stage->GetSharedObjectGroup(L"EnemyGroup");
@@ -165,7 +176,7 @@ namespace basecross {
 
 	void Mob::AddAnimation()
 	{
-		auto ptrDraw = GetComponent<BcPNTBoneModelDraw>();
+		auto ptrDraw = GetComponent<DissolveDraw>();
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Walk", 20, 170, true, anim_fps);
 		ptrDraw->AddAnimation(L"SetUp", 288, 72, false, anim_fps);
