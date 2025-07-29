@@ -486,7 +486,7 @@ namespace basecross {
 			m_ChargeTime += elapsedTime;
 			m_Speed = 6.0f / 2.0f; // チャージ中は移動速度を下げる
 		}
-
+		
 		MovePlayer(m_Speed);
 
 		if (cntlVec[0].wReleasedButtons & XINPUT_GAMEPAD_A || keyState.m_bUpKeyTbl[VK_LBUTTON]) {
@@ -524,7 +524,7 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					SoundManager::Instance().PlaySE(/*L"SE_ATTACK_VOICE"*/L"SE_CHARGE_ATTACK", 1.0f);
+					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
 			}
 			m_ChargeTime = 0;
