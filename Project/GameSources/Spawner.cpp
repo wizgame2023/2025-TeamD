@@ -17,17 +17,7 @@ namespace basecross {
 			return;
 		}
 		if (m_Wave == -1 || !m_IsSpawn) return;
-		for (auto& wEnemy : m_Legions[m_Wave]->GetEnemyLegionGruop()) {
-			auto enemy = wEnemy.lock();
-			if (enemy && enemy->GetDrawActive()) {
-				auto draw = enemy->GetComponent<BcPNTBoneModelDraw>();
-				float color = draw->GetAlpha();
-				if (color < 1.0f) {
-					color += 1.0f * GetGameElapsed();
-				}
-				draw->SetAlpha(color);
-			}
-		}
+
 		m_Boss->SetUpdateActive(false);
 		if (m_EnemyCount < m_Legions[m_Wave]->GetMaxCount()) {
 			if (m_SpawnTimer.UpdateTimer()) {
@@ -56,7 +46,6 @@ namespace basecross {
 	void Spawner::AddEnemy(int wave,const shared_ptr<Enemy>& enemy) {
 		enemy->SetDrawActive(false);
 		enemy->SetUpdateActive(false);
-		enemy->GetComponent<BcPNTBoneModelDraw>()->SetAlpha(0.0f);
 		m_Legions[wave - 1]->IntoEnemyGruop(enemy);
 	}
 	void Spawner::SpawnEnemy() {

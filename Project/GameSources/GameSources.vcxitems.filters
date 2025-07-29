@@ -64,6 +64,9 @@
     <Filter Include="File">
       <UniqueIdentifier>{38fb791a-c11d-45d5-bda3-20fe09058ecd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Shader">
+      <UniqueIdentifier>{f61c4a18-492e-4309-8303-62f9e9867596}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h">
@@ -221,6 +224,9 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadFile.h">
       <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MyDrawComponents.h">
+      <Filter>Shader</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -380,5 +386,13 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp">
       <Filter>Player</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MyDrawComponents.cpp">
+      <Filter>Shader</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="$(MSBuildThisFileDirectory)PSDissolve.hlsl">
+      <Filter>Shader</Filter>
+    </FxCompile>
   </ItemGroup>
 </Project>
