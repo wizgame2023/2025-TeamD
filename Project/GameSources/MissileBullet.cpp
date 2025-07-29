@@ -39,15 +39,13 @@ namespace basecross {
 		draw->SetMeshToTransformMatrix(meshMat);
 		auto col = AddComponent<CollisionObb>();
 		col->AddExcludeCollisionTag(L"Attack");
+		col->AddExcludeCollisionGameObject(m_Boss);
 		auto& effect = m_Stage->GetCreateEffect();
 		effect->PlayEffect(m_EffectHandle,L"boost", GetPosition(), 0.0f);
 		effect->SetScale(m_EffectHandle,Vec3(0.2f));
 	}
 
 	void MissileBullet::OnUpdate() {
-
-		
-
 		Vec3 position = GetPosition();
 		Vec3 move = Vec3();
 		move = m_Direction * m_Speed * GetGameElapsed();
@@ -57,9 +55,6 @@ namespace basecross {
 			m_IsTarget = true;
 			m_Direction = m_TargetPosition - position;
 			m_Direction = m_Direction.normalize();
-		}
-		if ((m_TargetPosition - position).length() < 0.1f) {
-			//m_Direction = Vec3(0, -1, 0);
 		}
 		if (GameManager::Instance()->GetDifficulty() == Difficulty::Hard && (m_TargetPosition - position).length() > 8.0f) {
 			m_TargetPosition = m_Target->GetPosition();

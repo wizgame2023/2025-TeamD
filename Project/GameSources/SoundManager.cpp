@@ -39,6 +39,11 @@ namespace basecross {
 		RegisterSound(L"SE_CRUSH", L"SE/Boss_Attack_Spanking.wav");
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");
 		RegisterSound(L"SE_ATTACK_SIGN", L"SE/Enemy_Attack_Sign.wav");
+
+		RegisterSound(L"SE_HP_RECOVERY",L"SE/SE_HP_Recovery.wav");
+		RegisterSound(L"SE_CHARGE", L"SE/PowerCharge.wav");
+		RegisterSound(L"SE_ULT_CHARGED", L"SE/Charged_Ult.wav");
+		RegisterSound(L"SE_CHARGE_ATTACK", L"SE/Charge_Attack.wav");
 	}
 	void SoundManager::RegisterSound(const wstring& key, const wstring& fileName) {
 		wstring path = App::GetApp()->GetDataDirWString() + L"Sounds/";
