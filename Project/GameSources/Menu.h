@@ -69,6 +69,8 @@ namespace basecross {
 		shared_ptr<GameStage> m_Stage;
 
 		virtual void OnCreate()override;
+		virtual void OnUpdate()override;
+
 		void OpenSoundTest() {
 			Close();
 			m_SoundTestMenu->Open();
