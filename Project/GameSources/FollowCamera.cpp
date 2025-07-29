@@ -195,7 +195,7 @@ namespace basecross {
 			// Yaw
 			m_Angle -= dx * m_MouseSensitivityX;
 			// Pitch（符号は好みで反転可）
-			m_Pitch -= dy * m_MouseSensitivityX * 0.1f;
+			m_Pitch += dy * m_MouseSensitivityX * 0.1f;
 			//m_CenterPt = now;
 		}
 
@@ -219,32 +219,19 @@ namespace basecross {
 		Vec3 m_addEye = ShakeCameraMove();
 		m_Eye += m_addEye; // カメラの振動を適用
 
-		// ▲▼ 補完処理セクション ▼▲
 		if (m_IsSmoothLook) {
 			m_LerpElapsed += elapsed;
 
-			m_Angle = Lerp::CalculateLerp(
-				m_StartAngle, m_TargetAngle,
-				0.0f, m_LerpDuration,
-				m_LerpElapsed, Lerp::rate::Linear
-			);
-			m_Pitch = Lerp::CalculateLerp(
-				m_StartPitch, m_TargetPitch,
-				0.0f, m_LerpDuration,
-				m_LerpElapsed, Lerp::rate::Linear
-			);
+			m_Angle = Lerp::CalculateLerp(m_StartAngle, m_TargetAngle,0.0f, m_LerpDuration,m_LerpElapsed, Lerp::rate::Linear);
 
 			// 補完完了 or デッドゾーン内到達を判定
 			float yawDiff = fabsf(CalcAngleDiff(m_Angle, m_TargetAngle));
-			float pitchDiff = fabsf(m_Pitch - m_TargetPitch);
-			bool reachedYaw = (yawDiff < kYawDeadZone);
+			bool reachedYaw = (yawDiff < m_YawDeadZone);
 
 			if (m_LerpElapsed >= m_LerpDuration || (reachedYaw)) {
 				m_IsSmoothLook = false;
 				m_Angle = m_TargetAngle;
-				m_Pitch = m_TargetPitch;
 			}
-
 		}
 		//m_Eye = m_CameraCollision->GetAfterPosition(m_Eye, m_Position);
 		if (m_StopCamera == false) {
@@ -314,7 +301,7 @@ namespace basecross {
 		float yawDiff = fabsf(CalcAngleDiff(m_Angle, m_TargetAngle));
 		float pitchDiff = fabsf(m_Pitch - m_TargetPitch);
 
-		if (yawDiff < kYawDeadZone) {
+		if (yawDiff < m_YawDeadZone) {
 			// 角度差が小さいので即時適用し、補完も開始しない
 			m_Angle = m_TargetAngle;
 			m_Pitch = m_TargetPitch;

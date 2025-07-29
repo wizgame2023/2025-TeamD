@@ -83,7 +83,7 @@ namespace basecross {
 		shared_ptr<Transform> m_PlayerTransform;
 		shared_ptr<CameraCollision> m_CameraCollision;
 		// デッドゾーン（しきい値）
-		static constexpr float kYawDeadZone = XMConvertToRadians(180.0f); // 2度
+		float m_YawDeadZone = XMConvertToRadians(XM_PI);
 
 
 	public:

@@ -333,7 +333,7 @@ namespace basecross {
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
-
+		
 		if (player != nullptr) {
 			player->SetIsGaol(true);
 			Vec3 bossPos = boss->GetPosition();

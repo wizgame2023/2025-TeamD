@@ -257,6 +257,8 @@ namespace basecross {
 	{
 		AttackState::Enter();
 		BossHostility::m_MissileCount = 0;
+		m_Enemy->m_AroundPlayerTime = 0.0f;
+		m_Enemy->m_Skills[0].m_Prob = 30.0f;
 
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();

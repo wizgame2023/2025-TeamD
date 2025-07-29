@@ -99,7 +99,10 @@ namespace basecross {
 
 		AddComponent<Gravity>();
 
+		AddTag(L"Boss");
 		m_Effect = m_Stage->GetCreateEffect();
+
+		AddTag(L"Boss");
 	}
 
 	void BossEnemy::OnAfterCreate() {

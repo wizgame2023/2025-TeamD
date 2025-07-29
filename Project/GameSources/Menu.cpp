@@ -114,6 +114,7 @@ namespace basecross {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
+
 		//AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-150.0f, -175.0f, 0.0f), Vec2(100, 100), menu,
 		//	[](shared_ptr<ObjectInterface> object) {
 		//		auto menu = static_pointer_cast<Menu>(object);
@@ -134,6 +135,8 @@ namespace basecross {
 		AddKeyboradSelect(InputData('S', 1));
 		AddKeyboradAccept(VK_SPACE);
 		Close();
+
+		
 	}
 	void SoundTestMenu::TuningSE() {
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
