@@ -423,20 +423,27 @@ namespace basecross {
 		Menu::OnCreate();
 		auto sprite = GetStage()->AddGameObject<Sprite>(L"RESULT_BACK", Vec3(-610.0f, 350, 0), Vec2(1200, 700));
 		sprite->SetDiffuse(Col4(1, 1, 1, 1));
+		sprite->SetDrawLayer(2);
 		AddSprite(sprite);
 		auto text = GetStage()->AddGameObject<Sprite>(L"GAMEOVER_TEXT", Vec3(-300, 300, 0.0f), Vec2(600, 300));
 		text->SetDiffuse(Col4(1, 1, 1, 1));
+		text->SetDrawLayer(2);
 		AddSprite(text);
-		auto gameOverSprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE",Vec3(-270.0f,-200.0f,0.0f),Vec2(180,90));
+		auto gameOverSprite = GetStage()->AddGameObject<Sprite>(L"RESULT_TITLE", Vec3(-270.0f, -200.0f, 0.0f), Vec2(180, 90));
+		gameOverSprite->SetDrawLayer(2);
 		AddSprite(gameOverSprite);
 		gameOverSprite = GetStage()->AddGameObject<Sprite>(L"GO_RESTART", Vec3(130.0f, -200.0f, 0.0f), Vec2(180, 90));
+		gameOverSprite->SetDrawLayer(2);
 		AddSprite(gameOverSprite);
+
 		//タイトル
 		AddButton(L"POSE_CIRCLE", Col4(1, 1, 1, 1), Vec3(-290.0f, -250.0f, 0.0f), Vec2(70, 90),
 			[](shared_ptr<ObjectInterface> object) {
 				auto stage = static_pointer_cast<Stage>(object);
 				stage->PostEvent(0.0f, stage, App::GetApp()->GetScene<Scene>(), L"ToTitleStage");
 			});
+	
+
 		//セレクト
 		//AddButton(L"POSE_ENDGAME", L"POSE_ENDGAME_SELECTED", Vec3(-50.0f, -250.0f, 0.0f), Vec2(250, 120),
 		//	[](shared_ptr<ObjectInterface> object) {
@@ -453,6 +460,12 @@ namespace basecross {
 				auto shareddata = make_shared<StageData>(data);
 				stage->PostEvent(0.0f, stage, scene, L"ToGameStage", shareddata);
 			});
+
+		auto size = ButtonManager::instance->GetSize(L"GAMEOVER");
+		for (int i = 0; i < size; i++) {
+			auto sprite = ButtonManager::instance->GetButtonSprite(L"GAMEOVER", i);
+			sprite->SetDrawLayer(3);
+		}
 
 		AddSelectButton(InputData(StickMode::LX, 1, 0.1f));
 		AddAcceptButton(XINPUT_GAMEPAD_A);
