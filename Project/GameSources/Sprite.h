@@ -980,7 +980,7 @@ namespace basecross{
 		/// <param name="group">グループ名</param>
 		/// <returns>ボタンの数</returns>
 		size_t GetSize(const wstring& group) {
-			if (FindGroup(m_InputDates, group)) {
+			if (FindGroup(m_ButtonGroup, group)) {
 				return m_ButtonGroup[group].size();
 			}
 			else {
