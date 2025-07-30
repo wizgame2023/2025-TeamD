@@ -43,6 +43,7 @@ namespace basecross {
         bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
         bool  m_IsParry;                   ///< パリィモード中フラグ
         bool  m_IsParryCounter;                   ///< パリィモード中フラグ
+		bool  m_ParryCountered;           ///< パリィカウンター成功フラグ
         bool  m_IsCharged;                 ///< チャージフラグ
         float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
         float m_ParryDamage;               ///< パリィ時反撃ダメージ
@@ -59,6 +60,7 @@ namespace basecross {
         Effekseer::Handle m_Handle;        ///< メインエフェクトハンドル
         Effekseer::Handle m_BrinkHandle;   ///< 点滅エフェクトハンドル
         Effekseer::Handle m_ParryHandle;   ///< パリィエフェクトハンドル
+        Effekseer::Handle m_EarthQuakeHandle;   //// 地震エフェクトハンドル
         shared_ptr<TargetBoard> m_TargetBoard;///< 照準ボード
         shared_ptr<Board> m_EnemyArrow;       ///最も近い敵の方向を示す
 		Vec3 m_TargetObject;///< ロックオン対象オブジェクト
