@@ -23,7 +23,7 @@ namespace basecross {
 		m_ParryJudge(false),  
 		m_BoostTime(0.2f),  
 		m_BulletDire(Vec3(0)),  
-		m_Attacktime(0.15f),  
+		m_Attacktime(0.0f),  
 		m_Damage(3.0f),  
 		m_DamageInterval(0.5f),  
 		m_BoostInterval(0.0f),  
@@ -55,7 +55,8 @@ namespace basecross {
 		m_IsParryCounter(false),
 		m_ParryCountered(false),
 		m_ChargeTime(0.0f),
-		m_Speed(6.0f)
+		m_Speed(6.0f),
+		m_AttackChargeInterval(0.5f)
 	{}  
 	Player::‾Player(){}
 
@@ -403,11 +404,9 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Clear", 491, 100, false, anim_fps);
 	}
 
-	void Player::PlayAnimation(){
-		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+	void Player::PlayAnimation()
+	{
 		float elapsedTime = GetElapsed();
-		Vec3 forward = GetForward();
 
 		if (m_PlayerStateNum & PlayerState::DASH) {
 			HandleDash(elapsedTime);
@@ -608,8 +607,6 @@ namespace basecross {
 
 		if (IntervalTimer(m_IsParryCounter, 0.5f, elapsedTime, m_BoostConterTime, false)) {
 			m_IsParryCounter = false;
-			m_DamageIntervalStart = false;
-			m_DamageInterval = 0.5f;
 		}
 
 		if (m_IsParryCounter)
@@ -632,7 +629,6 @@ namespace basecross {
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON] ) && m_TargetObject != Vec3()) {
 			m_IsParryCounter = true;
 			m_BoostConterTime = 0.5f;
-			m_DamageIntervalStart = true;
 			m_ParryCountered = true;
 			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(forward.x,0.0f, forward.z),m_BoostConterTime,1.0f);
 		}
