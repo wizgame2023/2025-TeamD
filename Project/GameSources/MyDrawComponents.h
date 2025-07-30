@@ -12,10 +12,15 @@ namespace basecross {
 		float pad[3];
 		Col4 dissolveColor;
 	};
+	struct DissolveGsCbData {
+
+	};
 
 	DECLARE_DX11_CONSTANT_BUFFER(DissolvePsCB, DissolvePsCbData)
+	DECLARE_DX11_CONSTANT_BUFFER(DissolveGsCB, DissolveGsCbData)
 
 	DECLARE_DX11_PIXEL_SHADER(PSDissolve)
+	DECLARE_DX11_GEOMETRY_SHADER(GSDissolve)
 
 	enum class BoneState {
 		Static,
@@ -24,7 +29,8 @@ namespace basecross {
 
 	class DissolveDraw : public SmBaseDraw
 	{
-		DissolvePsCbData	m_PsCBData;		//コンスタントバッファ用
+		DissolvePsCbData	m_PsCBData;		//ピクセルシェーダーコンスタントバッファ用
+		DissolveGsCbData	m_GsCBData;		//ジオメトリシェーダーコンスタントバッファ用
 		float				m_DissolveSpeed;//溶解進行速度
 		bool				m_IsDissolve;	//溶解するか
 		BoneState			m_BoneState;	//ボーン状態(static・bone)
@@ -181,11 +187,14 @@ namespace basecross {
 			//コンスタントバッファの設定
 			ID3D11Buffer* pVsConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 			ID3D11Buffer* pPsConstantBuffer[] = { CBSimple::GetPtr()->GetBuffer() ,DissolvePsCB::GetPtr()->GetBuffer() };
+			//ID3D11Buffer* pGsConstantBuffer[] = { CBSimple::GetPtr()->GetBuffer() ,DissolveGsCB::GetPtr()->GetBuffer() };
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
 			//頂点シェーダに渡す
 			devContext->VSSetConstantBuffers(0, 1, &pVsConstantBuffer);
 			//ピクセルシェーダに渡す
 			devContext->PSSetConstantBuffers(0, 2, pPsConstantBuffer);
+			//ジオメトリシェーダーに渡す
+			//devContext->GSSetConstantBuffers(0, 2, pGsConstantBuffer);
 		}
 
 
@@ -238,7 +247,11 @@ namespace basecross {
 			InitVertexShader<VS>(pD3D11DeviceContext);
 			//ピクセルシェーダ
 			pD3D11DeviceContext->PSSetShader(PS::GetPtr()->GetShader(), nullptr, 0);
+			//ジオメトリシェーダー
+			//pD3D11DeviceContext->GSSetShader(GSDissolve::GetPtr()->GetShader(), nullptr, 0);
+			
 			InitData(pD3D11DeviceContext, RenderState, data);
+			
 
 			//影とサンプラー
 			if (GetOwnShadowActive()) {

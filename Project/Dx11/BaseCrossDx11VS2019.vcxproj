@@ -132,6 +132,11 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <FxCompile Update="C:\Users\roram\OneDrive - 学校法人新潟総合学院 学校法人国際総合学園 学校法人大彦学園\ドキュメント\wiz 授業ファイル\3年前期製作\Project\GameSources\GSDissolve.hlsl">
+      <FileType>Document</FileType>
+    </FxCompile>
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
