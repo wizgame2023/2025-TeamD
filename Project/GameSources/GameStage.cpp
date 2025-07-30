@@ -415,12 +415,21 @@ namespace basecross {
 		auto productionCamera = GetSharedGameObject<ProductionCameraman>(L"ProductionCamera", false);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		UIDraw();
-		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPushKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
-			m_Camera->SetCameraPause(true);
-			m_SoundTestMenu->Close();
-			m_PauseMenu->Open();
-			m_Effect->SetEffectPause(true);
-			player->SetIsGaol(true);
+		if ((device.wPressedButtons & XINPUT_GAMEPAD_START || keyState.m_bPressedKeyTbl[VK_TAB]) && m_cameraState == CameraState::FOLLOWCAMERA) {
+			if (!m_PauseMenu->IsOpen()) {
+				m_Camera->SetCameraPause(true);
+				m_SoundTestMenu->Close();
+				m_PauseMenu->Open();
+				m_Effect->SetEffectPause(true);
+				player->SetIsGaol(true);
+			}
+			else{
+				m_Camera->SetCameraPause(false);
+				m_SoundTestMenu->Close();
+				m_PauseMenu->Close();
+				m_Effect->SetEffectPause(false);
+				player->SetIsGaol(false);
+			}
 		}
 		if (m_PauseMenu->IsOpen() || m_SoundTestMenu->IsOpen()||m_GameOverMenu->IsOpen() || m_ResultMenu->IsOpen()) {
 			m_NormalIcon->SetDrawActive(false);
@@ -448,6 +457,7 @@ namespace basecross {
 				m_BossHpBar->SetDrawActive(false);
 				m_BossText->SetDrawActive(false);
 			}
+			m_PauseMenu->Close();
 		}
 
 		auto spawner = GetSharedGameObject<Spawner>(L"Spawner", false);

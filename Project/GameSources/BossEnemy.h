@@ -23,6 +23,7 @@ namespace basecross {
 		friend class BossHostility;
 		friend class BossCrush;
 		friend class BossGun;
+		friend class BossShakeOff;
 
 
 		bool m_IsAppearance;

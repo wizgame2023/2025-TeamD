@@ -96,6 +96,7 @@ namespace basecross {
 			auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr)
 			{
+				SoundManager::Instance().PlaySE(L"SE_HP_RECOVERY");
 				player->HealHP(player->GetMaxHP() / 4.0f);
 			}
 			if (m_Legions.size() <= m_Wave) {

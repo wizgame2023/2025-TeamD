@@ -510,6 +510,7 @@ namespace basecross {
 
 					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
+					SoundManager::Instance().PlaySE(L"SE_CHARGE_ATTACK");
 				}
 				else {
 					if (m_AttackAnim == L"Attack2") {
@@ -534,14 +535,14 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
+					SoundManager::Instance().PlaySE(/*L"SE_ATTACK_VOICE"*/L"SE_CHARGE_ATTACK", 1.0f);
 				}
 			}
 			m_ChargeTime = 0;
 			m_Speed = 6.0f;
 		}
 	}
-
+	
 	void Player::Blinking(){
 		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
 		auto state = ptrDraw->GetBlendState();
@@ -706,6 +707,14 @@ namespace basecross {
 			else {
 				SetAnim(L"Idle");
 			}
+		}
+
+		if (m_EnergyCharge >= 1.0f && !m_IsCharged) {
+			m_IsCharged = true;
+			SoundManager::Instance().PlaySE(L"SE_ULT_CHARGED");
+		}
+		else if (m_EnergyCharge < 1.0f) {
+			m_IsCharged = false;
 		}
 		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
 		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
