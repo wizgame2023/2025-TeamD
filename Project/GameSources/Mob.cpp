@@ -44,7 +44,7 @@ namespace basecross {
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		ptrDraw->SetBoneState(BoneState::Bone);
 		ptrDraw->SetDissolveColor(Col4(0.0f, 0.5f, 1.0f, 1.0f));
-		ptrDraw->StartDissolve(1.0f);
+		ptrDraw->SetDissolveSpeed(3.0f);
 		ptrDraw->SetNoiseTextureResource(L"NOISE");
 		ptrDraw->SetDissolveActive(false);
 

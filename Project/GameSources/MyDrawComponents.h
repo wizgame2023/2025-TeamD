@@ -12,10 +12,15 @@ namespace basecross {
 		float pad[3];
 		Col4 dissolveColor;
 	};
+	struct DissolveGsCbData {
+
+	};
 
 	DECLARE_DX11_CONSTANT_BUFFER(DissolvePsCB, DissolvePsCbData)
+	DECLARE_DX11_CONSTANT_BUFFER(DissolveGsCB, DissolveGsCbData)
 
 	DECLARE_DX11_PIXEL_SHADER(PSDissolve)
+	DECLARE_DX11_GEOMETRY_SHADER(GSDissolve)
 
 	enum class BoneState {
 		Static,
@@ -24,12 +29,13 @@ namespace basecross {
 
 	class DissolveDraw : public SmBaseDraw
 	{
-		DissolvePsCbData m_PsCBData;
-		float m_DissolveSpeed;
-		bool m_IsDissolve;
-		BoneState m_BoneState;
+		DissolvePsCbData	m_PsCBData;		//ピクセルシェーダーコンスタントバッファ用
+		DissolveGsCbData	m_GsCBData;		//ジオメトリシェーダーコンスタントバッファ用
+		float				m_DissolveSpeed;//溶解進行速度
+		bool				m_IsDissolve;	//溶解するか
+		BoneState			m_BoneState;	//ボーン状態(static・bone)
 
-		shared_ptr<TextureResource> m_NoiseTexture;
+		shared_ptr<TextureResource> m_NoiseTexture;	//ノイズテクスチャ
 	public:
 		DissolveDraw(const shared_ptr<GameObject>& ptr) : SmBaseDraw(ptr),m_DissolveSpeed(0.0f),m_IsDissolve(false),m_BoneState(BoneState::Static){}
 
@@ -58,11 +64,12 @@ namespace basecross {
 			m_NoiseTexture = textureResource;
 		}
 		
-		void StartDissolve(float speed) {
+		void SetDissolveSpeed(float speed) {
 			m_DissolveSpeed = speed;
 		}
 		void StopDissolve() {
-			m_DissolveSpeed = 0;
+			SetDissolveSpeed(0.0f);
+			SetDissolveActive(false);
 		}
 		void ResetDissolve() {
 			m_PsCBData.dissolveAmount = 0.0f;
@@ -90,6 +97,11 @@ namespace basecross {
 			return m_IsDissolve;
 		}
 
+		/// <summary>
+		/// 頂点シェーダーの初期化
+		/// </summary>
+		/// <typeparam name="VS">頂点シェーダー</typeparam>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
 		template<typename VS>
 		void InitVertexShader(ID3D11DeviceContext2* devContext) {
 			//頂点シェーダ
@@ -97,6 +109,13 @@ namespace basecross {
 			//インプットレイアウトの設定
 			devContext->IASetInputLayout(VS::GetPtr()->GetInputLayout());
 		}
+
+		/// <summary>
+		/// バッファなどの初期設定
+		/// </summary>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
+		/// <param name="renderState">レンダーステート</param>
+		/// <param name="data">メッシュデータ</param>
 		void InitData(ID3D11DeviceContext2* devContext,shared_ptr<RenderState>& renderState,const MeshPrimData& data) {
 			//ストライドとオフセット
 			UINT stride = data.m_NumStride;
@@ -113,6 +132,13 @@ namespace basecross {
 			//デプスステンシルステート
 			renderState->SetDepthStencilState(devContext, GetDepthStencilState());
 		}
+
+		/// <summary>
+		/// ラスタライザーの初期化
+		/// </summary>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
+		/// <param name="renderState">レンダーステート</param>
+		/// <param name="material">マテリアル</param>
 		void InitRasterizerState(ID3D11DeviceContext2* devContext, shared_ptr<RenderState>& renderState,const MaterialEx& material) {
 			const auto& rasterizerState = GetRasterizerState();
 			//ラスタライザステートと描画
@@ -133,6 +159,13 @@ namespace basecross {
 				devContext->DrawIndexed(material.m_IndexCount, material.m_StartIndex, 0);
 			}
 		}
+
+		/// <summary>
+		/// シャドウマップの初期化
+		/// </summary>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
+		/// <param name="mapPtr">シャドウマップターゲット</param>
+		/// <param name="renderState">レンダーステート</param>
 		void InitShadowMap(ID3D11DeviceContext2* devContext,shared_ptr<ShadowMapRenderTarget>& mapPtr,shared_ptr<RenderState>& renderState) {
 			//シャドウマップのレンダラーターゲット
 			ID3D11ShaderResourceView* pShadowSRV = mapPtr->GetShaderResourceView();
@@ -141,6 +174,12 @@ namespace basecross {
 			ID3D11SamplerState* pShadowSampler = renderState->GetComparisonLinear();
 			devContext->PSSetSamplers(1, 1, &pShadowSampler);
 		}
+
+		/// <summary>
+		/// コンスタントバッファーの初期化
+		/// </summary>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
+		/// <param name="cb">コンスタントバッファ</param>
 		void InitConstantBaffur(ID3D11DeviceContext2* devContext,const SimpleConstants& cb) {
 			//コンスタントバッファの更新
 			devContext->UpdateSubresource(CBSimple::GetPtr()->GetBuffer(), 0, nullptr, &cb, 0, 0);
@@ -148,12 +187,23 @@ namespace basecross {
 			//コンスタントバッファの設定
 			ID3D11Buffer* pVsConstantBuffer = CBSimple::GetPtr()->GetBuffer();
 			ID3D11Buffer* pPsConstantBuffer[] = { CBSimple::GetPtr()->GetBuffer() ,DissolvePsCB::GetPtr()->GetBuffer() };
+			//ID3D11Buffer* pGsConstantBuffer[] = { CBSimple::GetPtr()->GetBuffer() ,DissolveGsCB::GetPtr()->GetBuffer() };
 			ID3D11Buffer* pNullConstantBuffer = nullptr;
 			//頂点シェーダに渡す
 			devContext->VSSetConstantBuffers(0, 1, &pVsConstantBuffer);
 			//ピクセルシェーダに渡す
 			devContext->PSSetConstantBuffers(0, 2, pPsConstantBuffer);
+			//ジオメトリシェーダーに渡す
+			//devContext->GSSetConstantBuffers(0, 2, pGsConstantBuffer);
 		}
+
+
+		/// <summary>
+		/// テクスチャをシェーダーに登録
+		/// </summary>
+		/// <param name="devContext">デバイスコンテキストのポインター</param>
+		/// <param name="cb">コンスタントバッファ</param>
+		/// <param name="material">マテリアル</param>
 		void SetShaderTexture(ID3D11DeviceContext2* devContext,SimpleConstants& cb, const MaterialEx& material) {
 			//テクスチャの選択
 			if (IsModelTextureEnabled()) {
@@ -174,6 +224,13 @@ namespace basecross {
 				}
 			}
 		}
+
+		/// <summary>
+		/// ディゾルブありの描画
+		/// </summary>
+		/// <typeparam name="VS">頂点シェーダー</typeparam>
+		/// <typeparam name="PS">ピクセルシェーダー</typeparam>
+		/// <param name="data">メッシュデータ</param>
 		template<typename VS, typename PS>
 		void DrawDissolve(const MeshPrimData& data) {
 			auto Dev = App::GetApp()->GetDeviceResources();
@@ -190,7 +247,11 @@ namespace basecross {
 			InitVertexShader<VS>(pD3D11DeviceContext);
 			//ピクセルシェーダ
 			pD3D11DeviceContext->PSSetShader(PS::GetPtr()->GetShader(), nullptr, 0);
+			//ジオメトリシェーダー
+			//pD3D11DeviceContext->GSSetShader(GSDissolve::GetPtr()->GetShader(), nullptr, 0);
+			
 			InitData(pD3D11DeviceContext, RenderState, data);
+			
 
 			//影とサンプラー
 			if (GetOwnShadowActive()) {

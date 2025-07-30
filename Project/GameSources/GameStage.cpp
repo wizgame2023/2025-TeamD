@@ -345,7 +345,7 @@ namespace basecross {
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
 
 			productionCamera->StartOpeningAnimation(
-				camera->GetEye(),CameraEndPos - bossRot,
+				camera->GetEye(),CameraEndPos + bossRot,
 				player->GetPosition(),CameraEndPos,
 				-camera->GetEye(),bossPos,
 				4.5f,0.0f,true);
@@ -440,12 +440,12 @@ namespace basecross {
 			m_BossText->SetDrawActive(false);
 		}
 		else {
-			//SetAllGameObjectActive(true);
 			if (m_cameraState == CameraState::FOLLOWCAMERA) {
 				if (player != nullptr) {
 					m_UltIcon ->SetCharge(player->GetEnergy());
 				}
 			}
+			
 			auto boss = GetSharedGameObject<BossEnemy>(L"BOSS", false);
 			if (boss != nullptr) {
 				ScoreManager::Instance()->UpdateTime(elapsed);
@@ -514,10 +514,17 @@ namespace basecross {
 			GameClear();
 		}
 		else if (msg == L"AppaerBoss") {
+			auto player = GetSharedGameObject<Player>(L"Player", false);
+			m_Camera->SetCameraPause(false);
+			m_SoundTestMenu->Close();
+			m_PauseMenu->Close();
+			m_Effect->SetEffectPause(false);
+			player->SetIsGaol(false);
+
 			BossAppaerCamera();
 		}
 		else if (msg == L"ShakeBoss") {
-			auto camera = GetView()->GetTargetCamera();;
+			auto camera = GetView()->GetTargetCamera();
 			camera->ShakeStart(0.5f, 0.5f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;

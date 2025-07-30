@@ -97,7 +97,7 @@ namespace basecross {
 		m_currentState = make_unique<BossHostility>(GetThis<BossEnemy>());
 		m_currentState->Enter();
 
-		AddComponent<Gravity>();
+		AddComponent<Gravity>(Vec3());
 
 		AddTag(L"Boss");
 		m_Effect = m_Stage->GetCreateEffect();
@@ -169,6 +169,10 @@ namespace basecross {
 
 	void BossEnemy::OnUpdate()
 	{
+		if (!GetDrawActive()) {
+			SetUpdateActive(false);
+			return;
+		}
 		Enemy::OnUpdate();
 		float elapsed = GetGameElapsed();
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
@@ -222,8 +226,12 @@ namespace basecross {
 		}
 	}
 	void BossEnemy::OnSpawn() {
+
+		auto gravity = GetComponent<Gravity>();
+		gravity->SetGravity(Vec3(0.0f, -9.8f, 0.0f));
+
 		Vec3 position = GetPosition();
-		position.y += 10.0f;
+		position.y += 70.0f;
 		SetPosition(position);
 		Vec3 direction = m_Intruder->GetPosition() - position;
 		float rotationY = atan2f(direction.x, direction.z);

@@ -228,6 +228,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MyDrawComponents.h">
       <Filter>Shader</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MovieStage.h">
+      <Filter>TitleScene</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp">
@@ -389,10 +392,14 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MyDrawComponents.cpp">
       <Filter>Shader</Filter>
     </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MovieStage.cpp">
+      <Filter>TitleScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)PSDissolve.hlsl">
       <Filter>Shader</Filter>
     </FxCompile>
+    <FxCompile Include="$(MSBuildThisFileDirectory)GSDissolve.hlsl" />
   </ItemGroup>
 </Project>

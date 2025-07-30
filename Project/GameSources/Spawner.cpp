@@ -69,10 +69,8 @@ namespace basecross {
 	void Spawner::OnEvent(const shared_ptr<Event>& event) {
 		if (event->m_MsgStr == L"EnemyDead") {
 			m_EnemyCount--;
-			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"DeadWave");
 			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
 				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"EnemyDead");
 				SoundManager::Instance().PlaySE(L"SE_WAVE");
 				m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 2, m_Legions.size() + 1);
 			}
@@ -89,20 +87,21 @@ namespace basecross {
 				player->HealHP(player->GetMaxHP() / 4.0f);
 			}
 			if (m_Legions.size() <= m_Wave) {
-
-				//カメラ移動
-				PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
-				PostEvent(4.25f, GetThis<ObjectInterface>(), m_Stage, L"ShakeBoss");
-				PostEvent(2.5, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
+				PostEvent(2.5f, GetThis<ObjectInterface>(), GetThis<Spawner>(), L"SpawnBoss");
 				m_Wave = -1;
 				return;
-			}
-			else {
-
 			}
 		}
 		else if (event->m_MsgStr == L"SpawnBoss")
 		{
+			if (Menu::IsOpenMenu()) {
+				PostEvent(1.0f, nullptr, GetThis<Spawner>(), L"SpawnBoss");
+				return;
+			}
+			//カメラ移動
+			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"AppaerBoss");
+			PostEvent(4.25f, GetThis<ObjectInterface>(), m_Stage, L"ShakeBoss");
+
 			SpawnBoss();
 		}
 	}
