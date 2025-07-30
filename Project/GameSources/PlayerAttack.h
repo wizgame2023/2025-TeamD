@@ -166,6 +166,7 @@ namespace basecross {
         float m_Elapsed = 0.0f; /**< 追従経過時間 */
         Vec3  m_LocalOffset;   /**< プレイヤー基準の相対位置 */
         float m_ChargeRate;    /**< 時間経過時の拡大速度 */
+        Effekseer::Handle m_CounterHandle;   /// パリィカウンターエフェクトハンドル
 
     protected:
         /**
@@ -191,7 +192,7 @@ namespace basecross {
             float chargeRate = 1.0f
         );
 
-        ‾CounterHitSphere() override = default;
+        ‾CounterHitSphere();
 
         /** @brief 追従エフェクトの生成と初期設定 */
         virtual void OnCreate() override;

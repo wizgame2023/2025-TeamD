@@ -345,7 +345,7 @@ namespace basecross {
 			productionCamera->SetMoveType(ProductionCameraman::MoveType::Linear);
 
 			productionCamera->StartOpeningAnimation(
-				camera->GetEye(),CameraEndPos - bossRot,
+				camera->GetEye(),CameraEndPos + bossRot,
 				player->GetPosition(),CameraEndPos,
 				-camera->GetEye(),bossPos,
 				4.5f,0.0f,true);
