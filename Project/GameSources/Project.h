@@ -57,3 +57,4 @@
 #include "Plane.h"
 #include "TutorialStage.h"
 #include "LoadFile.h"
+#include "MyDrawComponents.h"
