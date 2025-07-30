@@ -17,7 +17,19 @@ namespace basecross {
 		shared_ptr<EffectManager> m_Effect;
 		shared_ptr<FollowCamera>m_Camera;
 		wstring m_GroupName;
+
+		static vector<weak_ptr<Menu>> m_ActiveMenus;
 	public:
+
+		static bool IsOpenMenu() {
+			for (const auto& menu : m_ActiveMenus) {
+				auto m = menu.lock();
+				if (!m || !m->IsOpen()) continue;
+				return true;
+			}
+			return false;
+		}
+
 		Menu(const shared_ptr<Stage>& stage, const wstring& group) : GameObject(stage),m_Stage(stage), m_GroupName(group), m_IsOpen(false),m_IsPouse(false) {}
 		virtual ‾Menu() {}
 		virtual void OnCreate()override;

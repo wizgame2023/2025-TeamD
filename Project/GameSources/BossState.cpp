@@ -91,12 +91,6 @@ namespace basecross {
 				}
 			}
 			m_Enemy->ChangeState(m_Enemy->m_Skills.size() - 1);
-			/*if (rnd < 40.0f / ( m_MissileCount + 1)) {
-				m_Enemy->ChangeState<BossGun>();
-			}
-			else {
-				m_Enemy->ChangeState<BossCrush>();
-			}*/
 		}
 		else {
 			float rotationY = atan2f(direction.x, direction.z);

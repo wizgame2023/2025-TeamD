@@ -1,11 +1,11 @@
-﻿/*!
+/*!
 @file Enemy.h
 @brief
 */
 
 #pragma once
 #include "stdafx.h"
-
+#include"MyDrawComponents.h"
 namespace basecross {
 	template <typename> class EnemyState;
 
@@ -61,7 +61,7 @@ namespace basecross {
 
 		Mob(const shared_ptr<Stage>& stage);
 		Mob(const shared_ptr<Stage>& stage, const Vec3& position, const Vec3& scale);
-		~Mob();
+		‾Mob();
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
 		virtual void OnAfterCreate()override;
@@ -98,7 +98,7 @@ namespace basecross {
 		}
 
 		const void SetAnim(wstring animname,float time = 0.0f, bool enforce = false) {
-			auto draw = GetComponent<BcPNTBoneModelDraw>();
+			auto draw = GetComponent<DissolveDraw>();
 			if (draw->GetCurrentAnimation() != animname)
 				if (draw->GetAnimeLoop()) draw->ChangeCurrentAnimation(animname, time);
 				else
@@ -107,7 +107,7 @@ namespace basecross {
 				}
 		}
 
-		// ベクトルa, b間をt（0〜1）で補間する関数
+		// ベクトルa, b間をt（0?1）で補間する関数
 		Vec3 Lerp(const Vec3& a, const Vec3& b, float t) {
 			return a * (1.0f - t) + b * t;
 		}
