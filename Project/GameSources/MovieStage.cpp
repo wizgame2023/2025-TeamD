@@ -41,6 +41,8 @@ namespace basecross {
 			//ビューとライトの作成
 			CreateViewLight();
 			CreateResource();
+
+			Play(L"");
 		}
 		catch (...) {
 			throw;
@@ -54,6 +56,16 @@ namespace basecross {
 		if (cntlVec.bConnected && cntlVec.wPressedButtons) {
 			PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToTitleStage");
 		}
+	}
+
+	void Movie::Play(const wstring& filename) {
+		if (filename == L"") return;
+
+		App::GetApp()->ClearMovie();
+
+		SetMovieFileName(App::GetApp()->GetDataDirWString() + filename);
+
+		MovieStage::Play();
 	}
 
 }

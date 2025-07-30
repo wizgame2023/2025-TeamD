@@ -524,7 +524,7 @@ namespace basecross {
 			BossAppaerCamera();
 		}
 		else if (msg == L"ShakeBoss") {
-			auto camera = GetView()->GetTargetCamera();;
+			auto camera = GetView()->GetTargetCamera();
 			camera->ShakeStart(0.5f, 0.5f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
