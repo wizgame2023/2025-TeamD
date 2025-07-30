@@ -9,7 +9,10 @@
 namespace basecross {
 
 	IMPLEMENT_DX11_CONSTANT_BUFFER(DissolvePsCB)
+	IMPLEMENT_DX11_CONSTANT_BUFFER(DissolveGsCB)
+
 	IMPLEMENT_DX11_PIXEL_SHADER(PSDissolve, App::GetApp()->GetShadersPath() + L"PSDissolve.cso")
+	IMPLEMENT_DX11_GEOMETRY_SHADER(GSDissolve,App::GetApp()->GetShadersPath() + L"GSDissolve.cso")
 
 	//初期化
 	void DissolveDraw::OnCreate()

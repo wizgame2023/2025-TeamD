@@ -7,9 +7,13 @@
 #include "Project.h"
 
 namespace basecross {
-	class ScoreManager;
+
+	vector<weak_ptr<Menu>> Menu::m_ActiveMenus = {};
+
 	void Menu::OnCreate() {
 		AddTag(L"Menu");
+
+		m_ActiveMenus.push_back(GetThis<Menu>());
 	}
 	void Menu::AddButton(const wstring& defaultTex, const wstring& selectedTex, Vec3 pos, Vec2 size, function<void(shared_ptr<ObjectInterface>&)> func) {
 		ButtonManager::Create(GetStage(), m_GroupName, defaultTex, selectedTex, pos, size, func);
