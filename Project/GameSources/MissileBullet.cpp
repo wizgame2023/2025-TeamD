@@ -78,7 +78,7 @@ namespace basecross {
 
 		effect->SetRotation(m_EffectHandle, crossEffect, angle);
 		effect->SetLocation(m_EffectHandle, position);
-		effect->SetEffectSpeed(m_EffectHandle,GameManager::Instance()->GetTimeRate());
+		effect->SetEffectSpeed(m_EffectHandle,GameManager::GetInstance().GetTimeRate());
 	}
 	void MissileBullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
 		SoundManager::GetInstance().PlaySE(L"SE_EXPLODE");
