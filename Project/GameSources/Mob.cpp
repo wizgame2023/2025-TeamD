@@ -44,7 +44,7 @@ namespace basecross {
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		ptrDraw->SetBoneState(BoneState::Bone);
 		ptrDraw->SetDissolveColor(Col4(0.0f, 0.5f, 1.0f, 1.0f));
-		ptrDraw->SetDissolveSpeed(2.0f);
+		ptrDraw->SetDissolve(1.0f);
 		ptrDraw->SetNoiseTextureResource(L"NOISE");
 		ptrDraw->SetDissolveActive(false);
 
@@ -112,7 +112,14 @@ namespace basecross {
 			draw->UpdateAnimation(elapsed);
 		}
 	}
+	void Mob::OnSpawn() {
+		Enemy::OnSpawn();
 
+		auto draw = GetComponent<DissolveDraw>();
+		draw->SetDissolveSpeed(-1.0f);
+		draw->SetDissolveActive(true);
+
+	}
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
@@ -139,6 +146,7 @@ namespace basecross {
 			KnockBackTime();
 		}
 		else if (draw->IsTargetAnimeEnd()) {
+			draw->SetDissolveSpeed(2.0f);
 			draw->SetDissolveActive(true);
 			RemoveComponent<CollisionCapsule>();
 			RemoveComponent<Gravity>();

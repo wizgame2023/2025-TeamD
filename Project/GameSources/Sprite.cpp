@@ -578,6 +578,8 @@ namespace basecross {
 		auto ptrDraw = AddComponent<PCTSpriteDraw>(m_Vertices, indices);
 		ptrDraw->SetTextureResource(m_TextureKey);
 		ptrDraw->SetDepthStencilState(DepthStencilState::Read);
+
+		AddTag(L"SlideSprite");
 	}
 	void SlideInSprite::OnUpdate()
 	{

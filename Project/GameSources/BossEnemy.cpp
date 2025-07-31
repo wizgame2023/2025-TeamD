@@ -226,7 +226,7 @@ namespace basecross {
 		}
 	}
 	void BossEnemy::OnSpawn() {
-
+    Enemy::OnSpawn();
 		Vec3 position = GetPosition();
 		position.y += 70.0f;
 		SetPosition(position);

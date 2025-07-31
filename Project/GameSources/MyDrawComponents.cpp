@@ -29,6 +29,7 @@ namespace basecross {
 		float elpased = app->GetElapsedTime();
 
 		m_PsCBData.dissolveAmount += m_DissolveSpeed * elpased; // 溶解量の更新
+		m_PsCBData.dissolveAmount = min(1.0f, max(0.0f, m_PsCBData.dissolveAmount));
 	}
 	void DissolveDraw::OnDraw()
 	{
