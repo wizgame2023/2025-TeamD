@@ -127,6 +127,7 @@ namespace basecross {
 		fadeSprite = AddGameObject<Sprite>(L"FADE", Vec3(0.0f, 0.0f, 0.0f), Vec2(1480.0f, 880.0f), Vec2(0.5f));
 		fadeSprite->SetDrawLayer(1);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
+		fadeSprite->SetDiffuse(Col4(0, 0, 0, 1));
 		m_Fade->FadeOut();
 		m_Fade->Stop();
 		auto& device = App::GetApp()->GetInputDevice().GetControlerVec()[0];
@@ -480,6 +481,7 @@ namespace basecross {
 			{
 				if (!m_GameOverMenu->IsOpen()) {
 					m_Fade->Play();
+
 					if (m_Fade->IsFinish()) {
 						m_GameOverMenu->Open();
 					}
