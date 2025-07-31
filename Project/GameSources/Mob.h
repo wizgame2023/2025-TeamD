@@ -64,6 +64,7 @@ namespace basecross {
 		‾Mob();
 		virtual void OnCreate()override;
 		virtual void OnUpdate()override;
+		virtual void OnSpawn()override;
 		virtual void OnAfterCreate()override;
 		virtual void AsyncUpdate()override;
 

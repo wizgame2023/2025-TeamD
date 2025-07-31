@@ -6,7 +6,9 @@
 #pragma once
 #include "stdafx.h"
 #include "Managers.h"
+#include "Timer.h"
 namespace basecross{
+
 	enum class Difficulty {
 		Easy = 1,
 		Normal = 2,
