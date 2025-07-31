@@ -94,7 +94,7 @@ namespace basecross {
 		virtual void LogCamera();
 		
 		void SetCameraPause(const bool& StopCamera);
-		Vec2 CameraUp(float totaltime);
+		Vec2 CameraApproach(float totaltime);
 		void LookAtNearestEnemy();
 
 		void SetTarget(const shared_ptr<Transform> playerTransform) {

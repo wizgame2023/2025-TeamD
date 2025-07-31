@@ -79,6 +79,7 @@ namespace basecross {
 			CreateResource();
 			CreateTitle();
 			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
+			m_TotalTime = 0.0f;
 		}
 		catch (...) {
 			throw;
@@ -99,6 +100,7 @@ namespace basecross {
 		}
 		else {
 			DrawIcon();
+
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{

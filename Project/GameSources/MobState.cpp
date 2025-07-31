@@ -178,8 +178,6 @@ namespace basecross {
     }
 
     void MobSearch::Exit(){
-        //auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
-        //mob->SetAnim(L"SetUp", 0.0f);
     }
 
     //--------------------------------------------------

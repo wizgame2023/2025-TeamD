@@ -22,15 +22,11 @@ namespace basecross {
 		m_KnockBack = false;
 		m_KnockBackTime = 0.5f;
 		//CollisionSphereの設定
-		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
-		ptrColl->SetFixed(false);
-
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
-
+		auto ptrGra = AddComponent<Gravity>(Vec3());
 	}
 
 	void Enemy::OnUpdate()
