@@ -71,7 +71,7 @@ namespace basecross {
 			m_EnemyCount--;
 			if (m_EnemyCount == 0 && m_Legions[m_Wave]->GetEnemyLegionGruop().size() == 0) {
 				PostEvent(5.0f, nullptr, GetThis<Spawner>(), L"WaveClear");
-				SoundManager::Instance().PlaySE(L"SE_WAVE");
+				SoundManager::GetInstance().PlaySE(L"SE_WAVE");
 				m_Stage->AddGameObject<NextWaveText>(Vec3(-250, 0, 0), m_Wave + 2, m_Legions.size() + 1);
 			}
 		}
@@ -83,7 +83,7 @@ namespace basecross {
 			auto player = m_Stage->GetSharedGameObject<Player>(L"Player", false);
 			if (player != nullptr)
 			{
-				SoundManager::Instance().PlaySE(L"SE_HP_RECOVERY");
+				SoundManager::GetInstance().PlaySE(L"SE_HP_RECOVERY");
 				player->HealHP(player->GetMaxHP() / 4.0f);
 			}
 			if (m_Legions.size() <= m_Wave) {

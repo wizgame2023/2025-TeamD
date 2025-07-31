@@ -98,7 +98,7 @@ namespace basecross {
 		/// </summary>
 		/// <returns>経過時間</returns>
 		float GetGameElapsed() {
-			return GetElapsed() * GameManager::Instance()->GetTimeRate();
+			return GetElapsed() * GameManager::GetInstance().GetTimeRate();
 		}
 
 		/// <summary>
@@ -106,7 +106,7 @@ namespace basecross {
 		/// </summary>
 		/// <returns>経過時間</returns>
 		float GetElapsed() {
-			return App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetGameSpeed();
+			return App::GetApp()->GetElapsedTime() * GameManager::GetInstance().GetGameSpeed();
 		}
 		/// <summary>
 		/// 非同期処理開始

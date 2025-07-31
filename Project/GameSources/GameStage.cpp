@@ -221,7 +221,7 @@ namespace basecross {
 		auto camera = static_pointer_cast<FollowCamera>(m_MyCameraView->GetCamera());
 		if (player != nullptr && camera != nullptr && m_cameraState == CameraState::FOLLOWCAMERA) {
 			player->SetIsGaol(true);
-			SoundManager::Instance().PlayBGM(L"BGM_GAMECLEAR", 1.0f);
+			SoundManager::GetInstance().PlayBGM(L"BGM_GAMECLEAR", 1.0f);
 			Vec3 playerPos = player->GetPosition();
 			Vec3 playerForwardOffset = player->GetForward() * 2.0f;
 			Vec3 cameraStartPos = camera->GetEye();
@@ -285,7 +285,7 @@ namespace basecross {
 	void GameStage::GameOver() {
 		m_UltEnege = 0.0f;
 		m_UltIcon->SetCharge(m_UltEnege);
-		SoundManager::Instance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
+		SoundManager::GetInstance().PlayBGM(L"BGM_GAMEOVER", 1.0f);
 		auto player = GetSharedGameObject<Player>(L"Player", false);
 		if (player != nullptr ) {
 
@@ -364,6 +364,7 @@ namespace basecross {
 		try {
 			m_TotalTime = 0;
 			m_IsGameStater = 0;
+			Menu::m_ActiveMenus.clear();
 			ScoreManager::Instance()->Init();
 			CreateSharedObjectGroup(L"BulletGroup");
 			CreateSharedObjectGroup(L"EnemyGroup");
@@ -391,11 +392,11 @@ namespace basecross {
 			CreateGameOverMenu();
 			ButtonManager::instance->CloseAll();
 			CreateUI();
-			SoundManager::Instance().PlayBGM(L"BGM_GAME");
+			SoundManager::GetInstance().PlayBGM(L"BGM_GAME");
 
 			//ToMainCamera();
 			ToOpeningCamera();
-			GameManager::Instance()->SetZoneRate(0.5f);
+			GameManager::GetInstance().SetZoneRate(0.5f);
 
 			RECTANGLE r = { 0,0,5,4 };
 			CIRCLE c = { 5.0f,36,360.0f };
@@ -407,8 +408,9 @@ namespace basecross {
 	}
 
 	void GameStage::OnUpdate() {
+
 		auto& app = App::GetApp();
-		GameManager::Instance()->Update();
+		GameManager::GetInstance().Update();
 		float elapsed = app->GetElapsedTime();
 		auto& device = app->GetInputDevice().GetControlerVec()[0];
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
@@ -477,8 +479,11 @@ namespace basecross {
 			else if (m_IsGameStater == 2)
 			{
 				if (!m_GameOverMenu->IsOpen()) {
-					m_GameOverMenu->Open();
-					//m_Fade->Play();
+					m_Fade->Play();
+					if (m_Fade->IsFinish()) {
+						m_GameOverMenu->Open();
+					}
+
 				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");
@@ -503,7 +508,7 @@ namespace basecross {
 	}
 
 	void GameStage::OnDestroy() {
-		SoundManager::Instance().StopAll();
+		SoundManager::GetInstance().StopAll();
 	}
 
 	void GameStage::OnEvent(const shared_ptr<Event>& event) {
@@ -530,7 +535,7 @@ namespace basecross {
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
 			XInputSetState(0, &vibration);
-			SoundManager::Instance().PlaySE(L"SE_CRUSH");
+			SoundManager::GetInstance().PlaySE(L"SE_CRUSH");
 			PostEvent(0.5f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 		else if (msg == L"SpawnBoss") {
@@ -542,14 +547,14 @@ namespace basecross {
 			m_IsGameStater = 2;
 		}
 		else if (msg == L"PinchPlayer") {
-			SoundManager::Instance().PlayBGM(L"BGM_GAME_PINCH");
+			SoundManager::GetInstance().PlayBGM(L"BGM_GAME_PINCH");
 		}
 		else if(msg == L"StartBoss") {
 
 		}
 		else if (msg == L"EndBoss") {
 
-			SoundManager::Instance().PlayBGM(L"BGM_GAME_BOSS");
+			SoundManager::GetInstance().PlayBGM(L"BGM_GAME_BOSS");
 		}
 		else if (msg == L"StopVibration") {
 			XINPUT_VIBRATION vibration;
@@ -557,7 +562,7 @@ namespace basecross {
 			vibration.wRightMotorSpeed = 0;
 			XInputSetState(0, &vibration);
 
-			GameManager::Instance()->SetGameSpeed(1.0f);
+			GameManager::GetInstance().SetGameSpeed(1.0f);
 		}
 		else if (msg == L"HitStopVibration") {
 			XINPUT_VIBRATION vibration;
@@ -565,7 +570,7 @@ namespace basecross {
 			vibration.wRightMotorSpeed = 0;
 			XInputSetState(0, &vibration);
 
-			GameManager::Instance()->SetGameSpeed(0.5f);
+			GameManager::GetInstance().SetGameSpeed(0.5f);
 			if (m_cameraState == CameraState::FOLLOWCAMERA)
 			{
 				auto camera = GetView()->GetTargetCamera();;
@@ -574,7 +579,7 @@ namespace basecross {
 			PostEvent(0.1f, nullptr, GetThis<Stage>(), L"StopVibration");
 		}
 		else if (msg == L"HitStop") {
-			GameManager::Instance()->SetGameSpeed(0.1f);
+			GameManager::GetInstance().SetGameSpeed(0.1f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;
@@ -583,7 +588,7 @@ namespace basecross {
 			PostEvent(0.4f, nullptr, GetThis<Stage>(), L"HitStopVibration");
 		}
 		else if (msg == L"ContorStop") {
-			GameManager::Instance()->SetGameSpeed(0.1f);
+			GameManager::GetInstance().SetGameSpeed(0.1f);
 			XINPUT_VIBRATION vibration;
 			vibration.wLeftMotorSpeed = 65535;
 			vibration.wRightMotorSpeed = 65535;

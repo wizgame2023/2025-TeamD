@@ -159,7 +159,7 @@ namespace basecross {
 	}
 
 	void Player::ZoneActivation(){
-		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::Instance()->GetGameSpeed();
+		float elapsedTime = App::GetApp()->GetElapsedTime()* GameManager::GetInstance().GetGameSpeed();
 		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		if (m_EnergyCharge >= 1.0f) {
@@ -174,8 +174,8 @@ namespace basecross {
 					m_SearchDistance = 24.0f;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					m_PlayerStateNum += PlayerState::ZONE;
-					SoundManager::Instance().PlaySE(L"SE_USE_ULT");
-					GameManager::Instance()->StartZone(5.0f);
+					SoundManager::GetInstance().PlaySE(L"SE_USE_ULT");
+					GameManager::GetInstance().StartZone(5.0f);
 				}
 			}
 		}
@@ -375,7 +375,7 @@ namespace basecross {
 
 		if (isPerfect) {
 			ScoreManager::Instance()->AddParryCount();
-			SoundManager::Instance().PlaySE(L"SE_GUARD");
+			SoundManager::GetInstance().PlaySE(L"SE_GUARD");
 			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");
 			m_IsPerfectParry = true;
 			m_IsParry = true;
@@ -479,7 +479,7 @@ namespace basecross {
 
 			m_PlayerStateNum -= PlayerState::NORMAL;
 			m_PlayerStateNum += PlayerState::DASH;
-			SoundManager::Instance().PlaySE(L"SE_ACCEPT");
+			SoundManager::GetInstance().PlaySE(L"SE_ACCEPT");
 		}
 
 		if (!isAttackChaege) return;
@@ -509,7 +509,7 @@ namespace basecross {
 
 					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
-					SoundManager::Instance().PlaySE(L"SE_CHARGE_ATTACK");
+					SoundManager::GetInstance().PlaySE(L"SE_CHARGE_ATTACK");
 				}
 				else {
 					if (m_AttackAnim == L"Attack2") {
@@ -534,7 +534,7 @@ namespace basecross {
 					m_PlayerStateNum += PlayerState::ATTACK;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 
-					SoundManager::Instance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
+					SoundManager::GetInstance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 				}
 			}
 			m_ChargeTime = 0;
@@ -641,7 +641,7 @@ namespace basecross {
 		SetSpeed(4.0f);
 		//CollisionSphere衝突判定を付ける
 		auto ptrColl = AddComponent<CollisionSphere>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 		ptrColl->SetFixed(false);
 		//描画設定
 		auto ptrDraw = AddComponent<PNTBoneModelDraw>();
@@ -707,14 +707,14 @@ namespace basecross {
 
 		if (m_EnergyCharge >= 1.0f && !m_IsCharged) {
 			m_IsCharged = true;
-			SoundManager::Instance().PlaySE(L"SE_ULT_CHARGED");
+			SoundManager::GetInstance().PlaySE(L"SE_ULT_CHARGED");
 		}
 		else if (m_EnergyCharge < 1.0f) {
 			m_IsCharged = false;
 		}
-		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::Instance()->GetGameSpeed());
-		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::Instance()->GetGameSpeed()); 
-		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::Instance()->GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * GameManager::GetInstance().GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * GameManager::GetInstance().GetGameSpeed());
+		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * GameManager::GetInstance().GetGameSpeed());
 	}
 
 	void Player::OnDraw(){
@@ -775,7 +775,7 @@ namespace basecross {
 					// 通常被弾
 					SetAnim(L"Nock");
 					m_DamageIntervalStart = true;
-					SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+					SoundManager::GetInstance().PlaySE(L"SE_HIT_PLAYER");
 					Character::Damage(damage, true);
 					ScoreManager::Instance()->AddDamage(damage);
 				}
@@ -787,7 +787,7 @@ namespace basecross {
 				// 通常被弾
 				SetAnim(L"Nock");
 				m_DamageIntervalStart = true;
-				SoundManager::Instance().PlaySE(L"SE_HIT_PLAYER");
+				SoundManager::GetInstance().PlaySE(L"SE_HIT_PLAYER");
 				Character::Damage(damage, true);
 				ScoreManager::Instance()->AddDamage(damage);
 				return false;

@@ -23,7 +23,7 @@ namespace basecross {
 	}
 	void BossEnemy::AddAnimation() {
 		float fps = 60.0f;
-		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		Difficulty difficulty = GameManager::GetInstance().GetDifficulty();
 		m_MotionRate = max(1.0f, (int)difficulty * 0.6f);
 		auto draw = GetComponent<BcPNTBoneModelDraw>();
 		draw->AddAnimation(L"Idle", 40, 1, true, fps);
@@ -113,7 +113,7 @@ namespace basecross {
 	}
 
 	void BossEnemy::RegisterAttack() {
-		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		Difficulty difficulty = GameManager::GetInstance().GetDifficulty();
 		float addRate = max(1.0f, (int)difficulty * 0.75f);
 		float crushDamage = 5.0f * addRate;
 		float crushSize = 1.5f * addRate;
@@ -238,7 +238,7 @@ namespace basecross {
 	}
 	void BossEnemy::AddStun(float stun) {
 		if (!m_IsStun) {
-			float rate = (float)GameManager::Instance()->GetDifficulty();
+			float rate = (float)GameManager::GetInstance().GetDifficulty();
 			stun /= rate;
 			m_Stun += stun;
 			m_HealStun.Reset();
@@ -256,7 +256,7 @@ namespace basecross {
 	}
 	void BossEnemy::OnCollisionEnter(shared_ptr<GameObject>& other) {
 		if (other->FindTag(L"HitJudge")) {
-			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+			SoundManager::GetInstance().PlaySE(L"SE_HIT_ENEMY");
 		}
 
 		if (GetCurrentAnimationKey() == L"Jump" && other->FindTag(L"Ground")) {

@@ -38,7 +38,7 @@ namespace basecross {
 
 	void BaseHitObject::OnUpdate() {
 		// 共通：エフェクト速度をゲーム速度に合わせる
-		float speed = GameManager::Instance()->GetGameSpeed();
+		float speed = GameManager::GetInstance().GetGameSpeed();
 		m_Effect->SetEffectSpeed(m_MainHandle, speed);
 		m_Effect->SetEffectSpeed(m_HitHandle, speed);
 
@@ -88,7 +88,7 @@ namespace basecross {
 	void HitSphere::OnCreate() {
 		BaseHitObject::OnCreate();
 		auto col = AddComponent<CollisionSphere>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
+		col->SetDrawActive(GameManager::GetInstance().IsDebug());
 		col->SetFixed(false);
 		col->SetAfterCollision(AfterCollision::None);
 
@@ -110,7 +110,7 @@ namespace basecross {
 		BaseHitObject::OnUpdate();
 
 		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
+			* GameManager::GetInstance().GetGameSpeed();
 		m_Elapsed += dt;
 
 		if (m_Elapsed < m_FlyingTime) {
@@ -153,7 +153,7 @@ namespace basecross {
 	void ChargeHitSphere::OnCreate() {
 		BaseHitObject::OnCreate();
 		auto col = AddComponent<CollisionCapsule>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
+		col->SetDrawActive(GameManager::GetInstance().IsDebug());
 		col->SetFixed(false);
 		col->SetAfterCollision(AfterCollision::None);
 		AddTag(L"CaargeHitJudge");
@@ -164,7 +164,7 @@ namespace basecross {
 		BaseHitObject::OnUpdate();
 
 		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
+			* GameManager::GetInstance().GetGameSpeed();
 		m_TotalTime -= dt;
 
 		if (m_TotalTime <= 0.0f) {
@@ -207,7 +207,7 @@ namespace basecross {
 		BaseHitObject::OnCreate();
 
 		auto col = AddComponent<CollisionSphere>();
-		col->SetDrawActive(GameManager::Instance()->IsDebug());
+		col->SetDrawActive(GameManager::GetInstance().IsDebug());
 		col->SetAfterCollision(AfterCollision::None);
 		col->AddExcludeCollisionGameObject(m_Player);
 		col->AddExcludeCollisionTag(L"Attack");
@@ -232,7 +232,7 @@ namespace basecross {
 		BaseHitObject::OnUpdate();
 		auto pos = m_Player->GetComponent<Transform>()->GetScale();
 		float dt = App::GetApp()->GetElapsedTime()
-			* GameManager::Instance()->GetGameSpeed();
+			* GameManager::GetInstance().GetGameSpeed();
 		m_Elapsed += dt;
 
 		if (m_Elapsed >= m_AttachDuration) {
