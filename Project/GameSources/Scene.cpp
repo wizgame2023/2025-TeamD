@@ -128,6 +128,9 @@ namespace basecross {
 		if (event->m_MsgStr == L"ToTitleStage") {
 			ResetActiveStage<TitleStage>();
 		}
+		else if (event->m_MsgStr == L"ToMoveStage") {
+			ResetActiveStage<Movie>();
+		}
 		else if (event->m_MsgStr == L"ToSelectStage") {
 			ResetActiveStage<SelectStage>();
 		}
