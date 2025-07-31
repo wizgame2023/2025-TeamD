@@ -42,13 +42,13 @@ namespace basecross {
 			if (dateType == L"Stage") {
 				wstring difficulty = objInfo[GetInfoIndex(L"difficulty")];
 				if (difficulty == L"easy") {
-					GameManager::Instance()->SetDifficulty(Difficulty::Easy);
+					GameManager::GetInstance().SetDifficulty(Difficulty::Easy);
 				}
 				else if (difficulty == L"normal") {
-					GameManager::Instance()->SetDifficulty(Difficulty::Normal);
+					GameManager::GetInstance().SetDifficulty(Difficulty::Normal);
 				}
 				else if (difficulty == L"hard") {
-					GameManager::Instance()->SetDifficulty(Difficulty::Hard);
+					GameManager::GetInstance().SetDifficulty(Difficulty::Hard);
 				}
 			}
 			if (m_Builders.find(objInfo[GetInfoIndex(L"name")]) == end(m_Builders)) continue;

@@ -14,7 +14,7 @@ namespace basecross {
 	void Ground::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 		ptrColl->SetFixed(true);
 
 		//描画設定
@@ -36,7 +36,7 @@ namespace basecross {
 	void Way::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 		ptrColl->SetFixed(true);
 
 		//描画設定
@@ -63,7 +63,7 @@ namespace basecross {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
 		ptrColl->AddExcludeCollisionTag(L"Mob");
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 		ptrColl->SetFixed(true);
 		AddTag(L"LimitArea");
 	}
@@ -74,7 +74,7 @@ namespace basecross {
 	void Building::OnCreate() {
 		Object::OnCreate();
 		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+		ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 		ptrColl->SetFixed(true);
 
 		//描画設定

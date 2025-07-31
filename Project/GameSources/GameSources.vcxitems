@@ -39,6 +39,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Satou.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)HPBar.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadFile.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)Managers.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h" />

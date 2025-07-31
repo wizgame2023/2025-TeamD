@@ -18,9 +18,8 @@ namespace basecross {
 		shared_ptr<FollowCamera>m_Camera;
 		wstring m_GroupName;
 
-		static vector<weak_ptr<Menu>> m_ActiveMenus;
 	public:
-
+		static vector<weak_ptr<Menu>> m_ActiveMenus;
 		static bool IsOpenMenu() {
 			for (const auto& menu : m_ActiveMenus) {
 				auto m = menu.lock();
