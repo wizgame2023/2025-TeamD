@@ -226,10 +226,7 @@ namespace basecross {
 		}
 	}
 	void BossEnemy::OnSpawn() {
-		Enemy::OnSpawn();
-		auto gravity = GetComponent<Gravity>();
-		gravity->SetGravity(Vec3(0.0f, -9.8f, 0.0f));
-
+    Enemy::OnSpawn();
 		Vec3 position = GetPosition();
 		position.y += 70.0f;
 		SetPosition(position);

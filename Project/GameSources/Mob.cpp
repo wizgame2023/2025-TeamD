@@ -48,7 +48,7 @@ namespace basecross {
 		ptrDraw->SetNoiseTextureResource(L"NOISE");
 		ptrDraw->SetDissolveActive(false);
 
-		auto ptrGra = AddComponent<Gravity>();
+		auto ptrGra = AddComponent<Gravity>(Vec3());
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"MOB");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
@@ -124,13 +124,14 @@ namespace basecross {
 	{
 		StartAsync();
 		Vec3 none = Vec3(0);
-		float elapsedTime = GetGameElapsed();
 		Vec3 currntPosition = m_Transform->GetPosition();
-		m_currentState->Execute();
 		Enemy::AsyncUpdate();
+
+		m_currentState->Execute();
 
 		EndAsync();
 	}
+
 	void Mob::Dead() {
 		m_Update = false;
 		auto draw = GetComponent<DissolveDraw>();

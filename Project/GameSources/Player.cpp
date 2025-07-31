@@ -500,12 +500,12 @@ namespace basecross {
 				if (m_ChargeTime >= 1.5f) {
 					m_TargetObject = Vec3();
 					m_Stage->AddGameObject<ChargeHitSphere>(GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_ChargeTime);
-					auto camera = GetStage()->GetView()->GetTargetCamera();;
-					camera->ShakeStart(0.3f, 0.3f);
 
 					m_Effect->PlayEffect(m_EarthQuakeHandle, L"EarthQuake", GetPosition(), 0.0f);
 					m_Effect->SetLocation(m_EarthQuakeHandle, Vec3(GetPosition().x, GetPosition().y - 0.25f, GetPosition().z));
 					m_Effect->SetScale(m_EarthQuakeHandle, Vec3(m_ChargeTime));
+					auto camera = GetStage()->GetView()->GetTargetCamera();;
+					camera->ShakeStart(0.5f, 0.3f);
 
 					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 					m_PlayerStateNum -= PlayerState::NORMAL;

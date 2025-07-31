@@ -579,12 +579,16 @@ namespace basecross{
 		void FadeOut() {
 			m_IsFadeOut = true;
 			m_IsFinished = false;
-			m_Draw->SetDiffuse(Col4(1, 1, 1, 0));
+			Col4 coler = m_Draw->GetDiffuse();
+			coler.w = 0.0f;
+			m_Draw->SetDiffuse(coler);
 		}
 		void FadeIn() {
 			m_IsFadeOut = false;
 			m_IsFinished = false;
-			m_Draw->SetDiffuse(Col4(1, 1, 1, 1));
+			Col4 coler = m_Draw->GetDiffuse();
+			coler.w = 1.0f;
+			m_Draw->SetDiffuse(coler);
 		}
 		bool IsFinish() {
 			return m_IsFinished;
