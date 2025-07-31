@@ -29,7 +29,7 @@ namespace basecross {
         // 経過秒（タイムレート込み）
         float DeltaTime() const {
             return App::GetApp()->GetElapsedTime()
-                * GameManager::Instance()->GetTimeRate();
+                * GameManager::GetInstance().GetTimeRate();
         }
 
         // 指定グループの最接近オブジェクト探索

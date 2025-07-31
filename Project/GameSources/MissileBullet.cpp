@@ -56,7 +56,7 @@ namespace basecross {
 			m_Direction = m_TargetPosition - position;
 			m_Direction = m_Direction.normalize();
 		}
-		if (GameManager::Instance()->GetDifficulty() == Difficulty::Hard && (m_TargetPosition - position).length() > 8.0f) {
+		if (GameManager::GetInstance().GetDifficulty() == Difficulty::Hard && (m_TargetPosition - position).length() > 8.0f) {
 			m_TargetPosition = m_Target->GetPosition();
 			m_TargetPosition.y = 0.51f;
 			m_AreaEffect->SetPosition(m_TargetPosition);
@@ -81,7 +81,7 @@ namespace basecross {
 		effect->SetEffectSpeed(m_EffectHandle,GameManager::Instance()->GetTimeRate());
 	}
 	void MissileBullet::OnCollisionEnter(shared_ptr<GameObject>& Other) {
-		SoundManager::Instance().PlaySE(L"SE_EXPLODE");
+		SoundManager::GetInstance().PlaySE(L"SE_EXPLODE");
 		auto explode = m_Stage->AddGameObject<CrushAttack>(Vec3(m_ExplodeSize), AttackDate(m_Boss, 2.5f, 0.0f, 0.1f, 0.0f, 0.0f), 3.0f);
 		explode->Play(GetPosition());
 		auto& effect = m_Stage->GetCreateEffect();

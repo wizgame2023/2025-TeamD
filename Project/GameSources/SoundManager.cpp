@@ -1,18 +1,12 @@
 /*!
-@file Character.cpp
-@brief キャラクターなど実体
+@file SoundManager.cpp
+@brief サウンド関係
 */
 
 #include "stdafx.h"
 #include "Project.h"
 
 namespace basecross {
-
-	SoundManager& SoundManager::Instance() {
-		static SoundManager instance;
-
-		return instance;
-	}
 	void SoundManager::RegisterSounds() {
 		m_Audio = App::GetApp()->GetXAudio2Manager();
 		//BGM
@@ -40,7 +34,7 @@ namespace basecross {
 		RegisterSound(L"SE_WAVE", L"SE/Wave_Change.wav");
 		RegisterSound(L"SE_ATTACK_SIGN", L"SE/Enemy_Attack_Sign.wav");
 
-		RegisterSound(L"SE_HP_RECOVERY",L"SE/SE_HP_Recovery.wav");
+		RegisterSound(L"SE_HP_RECOVERY", L"SE/SE_HP_Recovery.wav");
 		RegisterSound(L"SE_CHARGE", L"SE/PowerCharge.wav");
 		RegisterSound(L"SE_ULT_CHARGED", L"SE/Charged_Ult.wav");
 		RegisterSound(L"SE_CHARGE_ATTACK", L"SE/Charge_Attack.wav");
@@ -101,8 +95,8 @@ namespace basecross {
 	void SoundManager::PauseBGM(bool flag) {
 		if (m_Bgm != nullptr) {
 			m_Bgm->m_SourceVoice->Stop(XAUDIO2_PLAY_TAILS);
-		
-			if(!flag){
+
+			if (!flag) {
 				m_Bgm->m_SourceVoice->Start();
 			}
 		}
@@ -123,5 +117,4 @@ namespace basecross {
 		}
 		m_PlayingSE.clear();
 	}
-
 }

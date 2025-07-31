@@ -46,7 +46,7 @@ namespace basecross {
 		EnemyState::Enter();
 		m_Stage->PostEvent(0.0f, nullptr, m_Stage, L"StartBoss");
 
-		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		Difficulty difficulty = GameManager::GetInstance().GetDifficulty();
 		float addRate = max(1.0f, (int)difficulty * 0.75f);
 		m_CooldownTimer.SetTime(2.5f / addRate, true);
 
@@ -68,14 +68,14 @@ namespace basecross {
 	}
 	void BossHostility::Execute()
 	{
-		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float elapsedTime = App::GetApp()->GetElapsedTime() * GameManager::GetInstance().GetTimeRate();
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 		Vec3 direction = intruderPosition - position;
 		float distance = direction.length();
 		direction = direction.normalize();
 
-		if (m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
+		if (m_CooldownTimer.UpdateTimer(GameManager::GetInstance().GetTimeRate())) {
 			float rnd = Util::RandZeroToOne() * 100.0f;
 			float prob = 0;
 			for (int i = 0; i < m_Enemy->m_Skills.size(); i++) {
@@ -120,7 +120,7 @@ namespace basecross {
 
 		AttackState::Execute();
 
-		float elapsed = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float elapsed = App::GetApp()->GetElapsedTime() * GameManager::GetInstance().GetTimeRate();
 		Vec3 position = m_Enemy->GetPosition();
 		Vec3 intruderPosition = m_Enemy->m_Intruder->GetPosition();
 
@@ -128,7 +128,7 @@ namespace basecross {
 		float distance = direction.length();
 		direction = direction.normalize();
 
-		m_Enemy->m_Effect->SetEffectSpeed(m_SmokeHandle, 1.0f * GameManager::Instance()->GetTimeRate());
+		m_Enemy->m_Effect->SetEffectSpeed(m_SmokeHandle, 1.0f * GameManager::GetInstance().GetTimeRate());
 
 		switch (m_State)
 		{
@@ -155,7 +155,7 @@ namespace basecross {
 		case AState::Playing: {
 			if (!IsStandBy()) {
 				SetState(AState::Finished, m_Attack->GetCharaCooldown());
-				SoundManager::Instance().PlaySE(L"SE_CRUSH");
+				SoundManager::GetInstance().PlaySE(L"SE_CRUSH");
 				m_Attack->Play(m_AttackPosition);
 
 				m_FinishedForward = m_Enemy->GetForward();

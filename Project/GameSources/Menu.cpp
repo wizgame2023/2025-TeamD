@@ -50,7 +50,7 @@ namespace basecross {
 			static_pointer_cast<GameStage>(m_Stage)->SetAllGameObjectActive(false);
 		}
 		ButtonManager::instance->OpenAndUse(m_GroupName);
-		SoundManager::Instance().PauseBGM(true);
+		SoundManager::GetInstance().PauseBGM(true);
 		m_IsOpen = true;
 	}
 	void Menu::Close() {
@@ -63,7 +63,7 @@ namespace basecross {
 			static_pointer_cast<GameStage>(m_Stage)->SetAllGameObjectActive(true);
 		}
 		ButtonManager::instance->Close(m_GroupName);
-		SoundManager::Instance().PauseBGM(false);
+		SoundManager::GetInstance().PauseBGM(false);
 		m_IsOpen = false;
 	}
 
@@ -148,19 +148,19 @@ namespace basecross {
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
-				SoundManager::Instance().SEVolumeUp(0.01f);
+				SoundManager::GetInstance().SEVolumeUp(0.01f);
 			}
 			else if (cntlVec.fThumbLX < -0.5f) {
-				SoundManager::Instance().SEVolumeDown(0.01f);
+				SoundManager::GetInstance().SEVolumeDown(0.01f);
 			}
 		}
 		if (keyState.m_bPushKeyTbl['D']) {
-			SoundManager::Instance().SEVolumeUp(0.01f);
+			SoundManager::GetInstance().SEVolumeUp(0.01f);
 		}
 		else if (keyState.m_bPushKeyTbl['A']) {
-			SoundManager::Instance().SEVolumeDown(0.01f);
+			SoundManager::GetInstance().SEVolumeDown(0.01f);
 		}
-		float volume = SoundManager::Instance().GetSEVolume();
+		float volume = SoundManager::GetInstance().GetSEVolume();
 		auto button = GetSprite<Sprite>(9);
 		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
@@ -173,19 +173,19 @@ namespace basecross {
 		WORD press = ButtonManager::instance->GetPressedAccept(L"SOUND_TEST");
 		if (cntlVec.bConnected) {
 			if (cntlVec.fThumbLX > 0.5f) {
-				SoundManager::Instance().BGMVolumeUp(0.01f);
+				SoundManager::GetInstance().BGMVolumeUp(0.01f);
 			}
 			else if (cntlVec.fThumbLX < -0.5f) {
-				SoundManager::Instance().BGMVolumeDown(0.01f);
+				SoundManager::GetInstance().BGMVolumeDown(0.01f);
 			}
 		}
 		if (keyState.m_bPushKeyTbl['D']) {
-			SoundManager::Instance().BGMVolumeUp(0.01f);
+			SoundManager::GetInstance().BGMVolumeUp(0.01f);
 		}
 		else if (keyState.m_bPushKeyTbl['A']) {
-			SoundManager::Instance().BGMVolumeDown(0.01f);
+			SoundManager::GetInstance().BGMVolumeDown(0.01f);
 		}
-		float volume = SoundManager::Instance().GetBGMVolume();
+		float volume = SoundManager::GetInstance().GetBGMVolume();
 		auto button = GetSprite<Sprite>(6);
 		Vec3 pos = button->GetPosition();
 		pos.x = GetPositionX(volume);
@@ -224,8 +224,8 @@ namespace basecross {
 		//AddSprite(choiceCitcle);
 
 		auto menu = GetThis<SoundTestMenu>();
-		float volumeSE = SoundManager::Instance().GetSEVolume();
-		float volumeBGM = SoundManager::Instance().GetBGMVolume();
+		float volumeSE = SoundManager::GetInstance().GetSEVolume();
+		float volumeBGM = SoundManager::GetInstance().GetBGMVolume();
 		float x = GetPositionX(volumeBGM);
 
 		auto backBarSprite = GetStage()->AddGameObject<Sprite>(L"BGM_BACKBAR", Vec3(0, 35.0f, 0.0f), Vec2(300, 80), Vec2(0.5f));
@@ -247,7 +247,7 @@ namespace basecross {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningBGM();
 
-				float volume = SoundManager::Instance().GetBGMVolume();
+				float volume = SoundManager::GetInstance().GetBGMVolume();
 
 				auto button = menu->GetSprite<Sprite>(9);
 				Vec3 pos = button->GetPosition();
@@ -272,7 +272,7 @@ namespace basecross {
 			[](shared_ptr<ObjectInterface> object) {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
-				float volume = SoundManager::Instance().GetSEVolume();
+				float volume = SoundManager::GetInstance().GetSEVolume();
 				auto button = menu->GetSprite<Sprite>(6);
 
 				Vec3 pos = button->GetPosition();

@@ -15,7 +15,7 @@ namespace basecross {
 		m_bulletPally(false), m_Mob(enemy)
 	{
 	}
-	Bullet::~Bullet() {}
+	Bullet::‾Bullet() {}
 
 	void Bullet::OnCreate()
 	{
@@ -75,7 +75,7 @@ namespace basecross {
 	}
 
 	void Bullet::OnCollisionEnter(shared_ptr<GameObject>& other) {
-		Difficulty difficulty = GameManager::Instance()->GetDifficulty();
+		Difficulty difficulty = GameManager::GetInstance().GetDifficulty();
 
 		if (other->FindTag(L"Player"))
 		{

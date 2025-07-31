@@ -57,7 +57,7 @@ namespace basecross {
 			//これにより各ステージやオブジェクトがCreate時にシーンにアクセスできる
 
 			CreateModelResource();
-			SoundManager::Instance().RegisterSounds();
+			SoundManager::GetInstance().RegisterSounds();
     
 			PostEvent(0.0f, GetThis<ObjectInterface>(), GetThis<Scene>(), L"ToTitleStage");
 			m_MaxCount = 3;
@@ -124,7 +124,7 @@ namespace basecross {
 	}
 
 	void Scene::OnEvent(const shared_ptr<Event>& event) {
-				SoundManager::Instance().StopAll();
+		SoundManager::GetInstance().StopAll();
 		if (event->m_MsgStr == L"ToTitleStage") {
 			ResetActiveStage<TitleStage>();
 		}

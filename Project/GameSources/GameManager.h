@@ -5,30 +5,20 @@
 
 #pragma once
 #include "stdafx.h"
-#include "Timer.h"
+#include "Managers.h"
 namespace basecross{
 	enum class Difficulty {
 		Easy = 1,
 		Normal = 2,
 		Hard = 3
 	};
-	class GameManager {
-		float m_GameSpeed;
-		float m_TimeRate;
-		float m_ZoneRate;
-		Timer m_ZoneTimer;
 
-		Difficulty m_GameDiffculty;
-
-		bool m_IsDebug;
-		bool m_IsUpdate;
+	class GameManager : public Manager<GameManager> {
+	protected:
+		friend class Manager<GameManager>;
 		GameManager();
-	public:
-		static GameManager* Instance() {
-			static GameManager instance;
-			return &instance;
-		}
 
+	public:
 		void Update();
 
 		void StartZone(float time = 5.0f) {
@@ -48,7 +38,7 @@ namespace basecross{
 		void SetGameSpeed(float speed) {
 			m_GameSpeed = speed;
 		}
-		
+
 		float GetGameSpeed() {
 			return m_GameSpeed;
 		}
@@ -66,6 +56,16 @@ namespace basecross{
 		bool IsDebug() {
 			return m_IsDebug;
 		}
+	private:
+		float m_GameSpeed;
+		float m_TimeRate;
+		float m_ZoneRate;
+		Timer m_ZoneTimer;
+
+		Difficulty m_GameDiffculty;
+
+		bool m_IsDebug;
+		bool m_IsUpdate;
 	};
 }
 //end basecross

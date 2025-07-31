@@ -59,3 +59,4 @@
 #include "LoadFile.h"
 #include "MyDrawComponents.h"
 #include "MovieStage.h"
+#include "Managers.h"
