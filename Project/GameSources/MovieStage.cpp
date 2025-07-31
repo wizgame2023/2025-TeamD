@@ -42,7 +42,7 @@ namespace basecross {
 			CreateViewLight();
 			CreateResource();
 
-			Play(L"");
+			Play(L"/movies/PV.mp4");
 		}
 		catch (...) {
 			throw;

@@ -31,7 +31,7 @@ namespace basecross {
 			gravity->SetGravity(Vec3(0.0f, -9.8f, 0.0f));
 
 			auto ptrColl = AddComponent<CollisionCapsule>();
-			ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+			ptrColl->SetDrawActive(GameManager::GetInstance().IsDebug());//debug
 			ptrColl->SetFixed(false);
 		}
 		virtual void AsyncUpdate()override;

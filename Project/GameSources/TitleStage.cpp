@@ -100,7 +100,11 @@ namespace basecross {
 		}
 		else {
 			DrawIcon();
-
+			m_TotalTime += app->GetElapsedTime();
+			if (m_TotalTime > 30.0f)
+			{
+				PostEvent(0.0f, GetThis<ObjectInterface>(), app->GetScene<Scene>(), L"ToMoveStage");
+			}
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{
@@ -109,7 +113,7 @@ namespace basecross {
 		}
 		if (m_Fade->IsFinish())
 		{
-			PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToSelectStage");
+			PostEvent(0.0f, GetThis<ObjectInterface>(),app->GetScene<Scene>(), L"ToSelectStage");
 		}
 	}
 
