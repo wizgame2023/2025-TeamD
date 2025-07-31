@@ -10,9 +10,6 @@
     <Filter Include="WorkStage">
       <UniqueIdentifier>{01191d12-9b0a-4587-9c82-a690f72538cf}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Sound">
-      <UniqueIdentifier>{17070322-e32c-47ea-a580-768fa1d55ae8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="TitleScene">
       <UniqueIdentifier>{dd7a3a79-da0e-4500-ad8d-3e4eaf0051aa}</UniqueIdentifier>
     </Filter>
@@ -67,6 +64,9 @@
     <Filter Include="Shader">
       <UniqueIdentifier>{f61c4a18-492e-4309-8303-62f9e9867596}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Manager">
+      <UniqueIdentifier>{17070322-e32c-47ea-a580-768fa1d55ae8}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h">
@@ -104,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ForecastLine.h">
       <Filter>Line</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
-      <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h">
       <Filter>Sprite</Filter>
@@ -172,7 +169,7 @@
       <Filter>Sharp</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
-      <Filter>Sound</Filter>
+      <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h">
       <Filter>Headers</Filter>
@@ -231,6 +228,12 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)MovieStage.h">
       <Filter>TitleScene</Filter>
     </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Managers.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp">
@@ -274,9 +277,6 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ForecastLine.cpp">
       <Filter>Line</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
-      <Filter>Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
       <Filter>Sprite</Filter>
@@ -339,7 +339,7 @@
       <Filter>Sharp</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
-      <Filter>Sound</Filter>
+      <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp">
       <Filter>Sources</Filter>
@@ -394,6 +394,9 @@
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MovieStage.cpp">
       <Filter>TitleScene</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
+      <Filter>Manager</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

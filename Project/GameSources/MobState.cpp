@@ -78,7 +78,7 @@ namespace basecross {
         else if (interval < EFFECT_THRESHOLD2 &&
             randomIntvl < EFFECT_THRESHOLD2 &&
             !shotSignPlayed){
-            SoundManager::Instance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
+            SoundManager::GetInstance().PlaySE(L"SE_ATTACK_SIGN", 1.0f);
             shotSignPlayed = true;
         }
         // 3) 実弾発射
@@ -121,7 +121,7 @@ namespace basecross {
             interval = maxIntv;
             randomIntvl = maxIntv;
             --bullets;
-            SoundManager::Instance().PlaySE(L"SE_SHOT");
+            SoundManager::GetInstance().PlaySE(L"SE_SHOT");
         }
     }
 
@@ -161,7 +161,7 @@ namespace basecross {
             Vec3 step = dir.normalize()
                 * dt
                 * mob->m_ZoneElapsedTime
-                * (static_cast<int>(GameManager::Instance()->GetDifficulty()) * 2);
+                * (static_cast<int>(GameManager::GetInstance().GetDifficulty()) * 2);
             mob->SetPosition(mob->GetPosition() + step);
         }
         else {
@@ -171,15 +171,13 @@ namespace basecross {
                 Vec3 step = pdir.normalize()
                     * dt
                     * mob->m_ZoneElapsedTime
-                    * (static_cast<int>(GameManager::Instance()->GetDifficulty()) * 2);
+                    * (static_cast<int>(GameManager::GetInstance().GetDifficulty()) * 2);
                 mob->SetPosition(mob->GetPosition() + step);
             }
         }
     }
 
     void MobSearch::Exit(){
-        //auto mob = std::dynamic_pointer_cast<Mob>(m_Enemy);
-        //mob->SetAnim(L"SetUp", 0.0f);
     }
 
     //--------------------------------------------------
@@ -269,9 +267,9 @@ namespace basecross {
         // エフェクト速度同期
         if (m_Effect) {
             m_Effect->SetEffectSpeed(
-                m_EyeHandle, GameManager::Instance()->GetTimeRate());
+                m_EyeHandle, GameManager::GetInstance().GetTimeRate());
             m_Effect->SetEffectSpeed(
-                m_FlashHandle, GameManager::Instance()->GetTimeRate());
+                m_FlashHandle, GameManager::GetInstance().GetTimeRate());
         }
     }
 

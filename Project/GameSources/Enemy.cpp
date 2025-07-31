@@ -21,16 +21,11 @@ namespace basecross {
 		m_AlertTime = 5.0f;
 		m_KnockBack = false;
 		m_KnockBackTime = 0.5f;
-		//CollisionSphereの設定
-		auto ptrColl = AddComponent<CollisionCapsule>();
-		ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
-		ptrColl->SetFixed(false);
-
 
 		auto& group = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
 		group->IntoGroup(GetThis<Enemy>());
 		AddTag(L"Enemy");
-
+		auto ptrGra = AddComponent<Gravity>(Vec3());
 	}
 
 	void Enemy::OnUpdate()
@@ -193,7 +188,7 @@ namespace basecross {
 		if (other->FindTag(L"HitJudge"))
 		{
 			KnockBack(other->GetComponent<Transform>()->GetPosition());
-			SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");
+			SoundManager::GetInstance().PlaySE(L"SE_HIT_ENEMY");
 		}
 		if (other->FindTag(L"CaargeHitJudge"))
 		{

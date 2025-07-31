@@ -17,12 +17,12 @@ namespace basecross {
 	void Attack::OnUpdate() {
 		m_IsFinish = false;
 		if (GetDrawActive()) {
-			if (m_Date.m_ExitTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
+			if (m_Date.m_ExitTimer.UpdateTimer(GameManager::GetInstance().GetTimeRate())) {
 				Stop();
 			}
 		}
 		else {
-			m_Date.m_CooldownTimer.UpdateTimer(GameManager::Instance()->GetTimeRate());
+			m_Date.m_CooldownTimer.UpdateTimer(GameManager::GetInstance().GetTimeRate());
 		}
 	}
 
@@ -89,8 +89,8 @@ namespace basecross {
 		Attack::OnUpdate();
 		if (!GetDrawActive()) return;
 
-		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer(GameManager::Instance()->GetTimeRate())) {
-			SoundManager::Instance().PlaySE(L"SE_MISSILE");
+		if (m_MissileCount > 0 && m_MissileTimer.UpdateTimer(GameManager::GetInstance().GetTimeRate())) {
+			SoundManager::GetInstance().PlaySE(L"SE_MISSILE");
 			Vec3 position = GetPosition();
 			position += m_MuzzlePositions[m_MuzzleIndex].x * cross(m_Date.m_Owner->GetForward(), Vec3(0, 1, 0));
 			position += m_MuzzlePositions[m_MuzzleIndex].z * m_Date.m_Owner->GetForward();

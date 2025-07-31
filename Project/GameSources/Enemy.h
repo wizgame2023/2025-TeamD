@@ -26,7 +26,14 @@ namespace basecross {
 		virtual ‾Enemy();
 		virtual void OnCreate();
 		virtual void OnUpdate();
-		virtual void OnSpawn(){}
+		virtual void OnSpawn(){
+			auto gravity = GetComponent<Gravity>();
+			gravity->SetGravity(Vec3(0.0f, -9.8f, 0.0f));
+
+			auto ptrColl = AddComponent<CollisionCapsule>();
+			ptrColl->SetDrawActive(GameManager::Instance()->IsDebug());//debug
+			ptrColl->SetFixed(false);
+		}
 		virtual void AsyncUpdate()override;
 		virtual void Dead();
 		void OnCollisionEnter(shared_ptr<GameObject>& other);

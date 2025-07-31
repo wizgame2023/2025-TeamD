@@ -44,11 +44,11 @@ namespace basecross {
 		ptrDraw->SetBlendState(BlendState::AlphaBlend);
 		ptrDraw->SetBoneState(BoneState::Bone);
 		ptrDraw->SetDissolveColor(Col4(0.0f, 0.5f, 1.0f, 1.0f));
-		ptrDraw->SetDissolveSpeed(3.0f);
+		ptrDraw->SetDissolveSpeed(2.0f);
 		ptrDraw->SetNoiseTextureResource(L"NOISE");
 		ptrDraw->SetDissolveActive(false);
 
-		auto ptrGra = AddComponent<Gravity>();
+		auto ptrGra = AddComponent<Gravity>(Vec3());
 		auto shadowPtr = AddComponent<Shadowmap>();
 		shadowPtr->SetMeshResource(L"MOB");
 		shadowPtr->SetMeshToTransformMatrix(meshMat);
@@ -112,17 +112,19 @@ namespace basecross {
 			draw->UpdateAnimation(elapsed);
 		}
 	}
+
 	void Mob::AsyncUpdate()
 	{
 		StartAsync();
 		Vec3 none = Vec3(0);
-		float elapsedTime = GetGameElapsed();
 		Vec3 currntPosition = m_Transform->GetPosition();
-		m_currentState->Execute();
 		Enemy::AsyncUpdate();
+
+		m_currentState->Execute();
 
 		EndAsync();
 	}
+
 	void Mob::Dead() {
 		m_Update = false;
 		auto draw = GetComponent<DissolveDraw>();
@@ -241,7 +243,7 @@ namespace basecross {
 		// 目標方向（正規化済み）
 		Vec3 targetDir = direction;
 		// 経過時間×タイムレートによる移動量の算出
-		float deltaTime = App::GetApp()->GetElapsedTime() * GameManager::Instance()->GetTimeRate();
+		float deltaTime = App::GetApp()->GetElapsedTime() * GameManager::GetInstance().GetTimeRate();
 		Vec3 pos = m_Transform->GetPosition();
 		pos += targetDir * m_Speed * deltaTime;
 		m_Transform->SetPosition(pos);

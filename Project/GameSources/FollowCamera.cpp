@@ -205,7 +205,7 @@ namespace basecross {
 		m_Direction.y = sinf(m_Pitch);
 		//位置
 		m_Position = m_PlayerTransform->GetPosition();
-		Vec2 dire = CameraUp(0.75f);
+		Vec2 dire = CameraApproach(0.75f);
 		m_Eye = m_Position + m_Direction * dire.x;
 		m_Eye.y = m_Position.y + dire.y;
 
@@ -313,7 +313,7 @@ namespace basecross {
 		m_LerpElapsed = 0.0f;
 		m_IsSmoothLook = true;
 	}
-	Vec2 FollowCamera::CameraUp(float totaltime)
+	Vec2 FollowCamera::CameraApproach(float totaltime)
 	{
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
 		float up = m_Up;

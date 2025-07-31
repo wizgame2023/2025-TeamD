@@ -64,7 +64,7 @@ namespace basecross {
 		m_Titlemodel = AddGameObject<TirleStageModel>();
 		m_Titlemodel->SetDrawActive(false);
 		//点滅設定
-		m_Start->AddComponent<SpriteFlash>(0.8f);
+		m_Start->AddComponent<SpriteFlash>(0.0f);
 		m_StartKey->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
@@ -78,7 +78,8 @@ namespace basecross {
 			//OnUpdate();
 			CreateResource();
 			CreateTitle();
-			SoundManager::Instance().PlayBGM(L"BGM_TITLE");
+			m_TotalTime = 0.0f;
+			SoundManager::GetInstance().PlayBGM(L"BGM_TITLE");
 		}
 		catch (...) {
 			throw;
@@ -99,6 +100,7 @@ namespace basecross {
 		}
 		else {
 			DrawIcon();
+
 		}
 		if (m_Titlemodel->GetEndFlag())
 		{
@@ -138,7 +140,7 @@ namespace basecross {
 		m_Start->SetDrawActive(false);
 		m_StartKey->SetDrawActive(false);
 		m_Title->SetDrawActive(false);
-		SoundManager::Instance().PlaySE(L"SE_CRACK", 1.0f);
+		SoundManager::GetInstance().PlaySE(L"SE_CRACK", 1.0f);
 	}
 
 	void TirleStageModel::OnCreate() {

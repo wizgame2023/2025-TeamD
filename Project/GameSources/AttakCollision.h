@@ -115,7 +115,7 @@ namespace basecross {
 		virtual void OnCreate()override {
 			Attack::OnCreate();
 			m_Collision = AddComponent<CollisionType>();
-			m_Collision->SetDrawActive(GameManager::Instance()->IsDebug());
+			m_Collision->SetDrawActive(GameManager::GetInstance().IsDebug());
 			m_Collision->SetAfterCollision(AfterCollision::None);
 
 			m_Transform->SetScale(m_Size);
