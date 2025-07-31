@@ -664,8 +664,6 @@ namespace basecross {
 				0, //メニューハンドル、子供のID
 				hInst,            //インスタンスハンドル
 				NULL);
-			ShowWindow(data::ChildHWnd, SW_SHOW);
-			UpdateWindow(data::ChildHWnd);
 			return data::ChildHWnd;
 		}
 
@@ -822,6 +820,16 @@ namespace basecross {
 				}
 			}
 			hr = data::Player->CreateMediaItemFromURL(MovieFileName.c_str(), FALSE, 0, NULL);
+
+			HBRUSH hNewBrush = CreateSolidBrush(RGB(31.0f / 255.0f, 30.0f / 255.0f, 71.0f / 255.0f));
+
+			SetClassLongPtr(hwnd, GCLP_HBRBACKGROUND, (LONG_PTR)hNewBrush);
+
+			// 再描画
+
+			InvalidateRect(hwnd, nullptr, TRUE);
+			UpdateWindow(hwnd);
+			ShowWindow(hwnd, SW_SHOW);
 		}
 
 		void OnSize()

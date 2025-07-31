@@ -30,6 +30,7 @@ namespace basecross {
 		shared_ptr<Sprite> m_Start;
 		shared_ptr<Sprite> m_StartKey;
 		shared_ptr<TirleStageModel> m_Titlemodel;
+		float m_TotalTime;
 		//bool m_fade;
 	public:
 		//構築と破棄
