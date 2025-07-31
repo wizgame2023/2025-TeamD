@@ -479,8 +479,11 @@ namespace basecross {
 			else if (m_IsGameStater == 2)
 			{
 				if (!m_GameOverMenu->IsOpen()) {
-					m_GameOverMenu->Open();
-					//m_Fade->Play();
+					m_Fade->Play();
+					if (m_Fade->IsFinish()) {
+						m_GameOverMenu->Open();
+					}
+
 				}
 				auto player = GetSharedGameObject<Player>(L"Player", false);
 				player->SetAnim(L"Died");

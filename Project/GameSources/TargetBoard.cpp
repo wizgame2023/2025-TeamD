@@ -14,7 +14,7 @@ namespace basecross {
 	}
 	void TargetBoard::OnUpdate() {
 
-		if (m_Target == nullptr || !m_Target->GetDrawActive()) {
+		if (m_Target == nullptr || !m_Target->GetDrawActive() || !GetDrawActive()) {
 			m_Board->SetDrawActive(false);
 			return;
 		}

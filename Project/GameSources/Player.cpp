@@ -23,7 +23,7 @@ namespace basecross {
 		m_ParryJudge(false),  
 		m_BoostTime(0.2f),  
 		m_BulletDire(Vec3(0)),  
-		m_Attacktime(0.15f),  
+		m_Attacktime(0.0f),  
 		m_Damage(3.0f),  
 		m_DamageInterval(0.5f),  
 		m_BoostInterval(0.0f),  
@@ -53,8 +53,10 @@ namespace basecross {
 		m_CurrentYaw(0.0f),
 		m_BoostConterTime(0.5f),
 		m_IsParryCounter(false),
+		m_ParryCountered(false),
 		m_ChargeTime(0.0f),
-		m_Speed(6.0f)
+		m_Speed(6.0f),
+		m_AttackChargeInterval(0.5f)
 	{}  
 	Player::‾Player(){}
 
@@ -378,6 +380,8 @@ namespace basecross {
 			m_IsPerfectParry = true;
 			m_IsParry = true;
 			m_IsParryCounter = false;
+			m_ParryCountered = false;
+
 		}
 
 		return reducedDamage;
@@ -400,11 +404,9 @@ namespace basecross {
 		ptrDraw->AddAnimation(L"Clear", 491, 100, false, anim_fps);
 	}
 
-	void Player::PlayAnimation(){
-		auto keyState = App::GetApp()->GetInputDevice().GetKeyState();
-		auto cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
+	void Player::PlayAnimation()
+	{
 		float elapsedTime = GetElapsed();
-		Vec3 forward = GetForward();
 
 		if (m_PlayerStateNum & PlayerState::DASH) {
 			HandleDash(elapsedTime);
@@ -485,6 +487,9 @@ namespace basecross {
 		{
 			m_ChargeTime += elapsedTime;
 			m_Speed = 6.0f / 2.0f; // チャージ中は移動速度を下げる
+			if(m_ChargeTime >= 5.0f) {
+				m_ChargeTime = 5.0f; // 最大チャージ時間を制限
+			}
 		}
 		
 		MovePlayer(m_Speed);
@@ -497,6 +502,11 @@ namespace basecross {
 					m_Stage->AddGameObject<ChargeHitSphere>(GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_ChargeTime);
 					auto camera = GetStage()->GetView()->GetTargetCamera();;
 					camera->ShakeStart(0.3f, 0.3f);
+
+					m_Effect->PlayEffect(m_EarthQuakeHandle, L"EarthQuake", GetPosition(), 0.0f);
+					m_Effect->SetLocation(m_EarthQuakeHandle, Vec3(GetPosition().x, GetPosition().y - 0.25f, GetPosition().z));
+					m_Effect->SetScale(m_EarthQuakeHandle, Vec3(m_ChargeTime));
+
 					m_PlayerStateNum += PlayerState::ATTACKCHARGE;
 					m_PlayerStateNum -= PlayerState::NORMAL;
 					SoundManager::GetInstance().PlaySE(L"SE_CHARGE_ATTACK");
@@ -591,36 +601,35 @@ namespace basecross {
 			m_IsParry = false;
 			m_PerfectParrySecond = 1.0f;
 		}
-		else {
+		else{
 			HandlePerfectParryInput();
 		}
+
+		if (IntervalTimer(m_IsParryCounter, 0.5f, elapsedTime, m_BoostConterTime, false)) {
+			m_IsParryCounter = false;
+		}
+
 		if (m_IsParryCounter)
 		{
-			if (IntervalTimer(m_IsParryCounter, 0.5f, elapsedTime, m_BoostConterTime, false)) {
-				m_IsParryCounter = false;
-				m_DamageIntervalStart = false;
-				m_DamageInterval = 0.5f;
-			}
-			else { 
-				Vec3 playerPos = GetPosition();
-				Vec3 dir = Vec3(m_TargetObject.x, 0.0f,m_TargetObject.z);
-				dir.normalize();
-				SetAnim(L"Counter", true);
-				BoostMove(m_Speed * 3.5f, dir * 1.2f, 0.5f);
-			}
+			Vec3 playerPos = GetPosition();
+			Vec3 dir = Vec3(m_TargetObject.x, 0.0f,m_TargetObject.z);
+			dir.normalize();
+			SetAnim(L"Counter", true);
+
+			BoostMove(m_Speed * 3.5f, dir * 1.2f, 0.5f);
 		}
 	}
 
 	void Player::HandlePerfectParryInput()
 	{
+		if (m_ParryCountered) return;
 		auto& keyState = App::GetApp()->GetInputDevice().GetKeyState();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec();
 		Vec3 forward = GetForward();
-		if (m_IsParryCounter) return;
 		if ((cntlVec[0].wPressedButtons & XINPUT_GAMEPAD_A || keyState.m_bPressedKeyTbl[VK_LBUTTON] ) && m_TargetObject != Vec3()) {
 			m_IsParryCounter = true;
 			m_BoostConterTime = 0.5f;
-			m_DamageIntervalStart = true;
+			m_ParryCountered = true;
 			GetStage()->AddGameObject<CounterHitSphere>(GetThis<GameObject>(), Vec3(forward.x,0.0f, forward.z),m_BoostConterTime,1.0f);
 		}
 	}
@@ -733,14 +742,11 @@ namespace basecross {
 					auto attack = dynamic_pointer_cast<Attack>(source);
 					if (attack) {
 						auto boss = attack->GetDete();
-						if (boss != nullptr)
-						{
-							rot = boss->GetPosition() - GetPosition();
-							attack->ReflectParry(GetPosition());
-							auto camera = GetStage()->GetView()->GetTargetCamera();;
-							auto get = dynamic_pointer_cast<FollowCamera>(camera);
-							get->SetShaking(true);
-						}
+						rot = boss->GetPosition() - GetPosition();
+						attack->ReflectParry(GetPosition());
+						auto camera = GetStage()->GetView()->GetTargetCamera();;
+						auto get = dynamic_pointer_cast<FollowCamera>(camera);
+						get->SetShaking(true);
 					}
 					auto gravity = GetComponent<Gravity>(false);
 					if (gravity) {

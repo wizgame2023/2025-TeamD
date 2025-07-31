@@ -191,6 +191,11 @@ namespace basecross {
 		// m_Position, m_Scale は BaseHitObject に渡しておく
 	}
 
+	CounterHitSphere::‾CounterHitSphere()
+	{
+		m_Effect->StopEffect(m_CounterHandle);
+	}
+
 	void CounterHitSphere::ApplyHit(shared_ptr<Character> enemy) {
 		auto player = static_pointer_cast<Player>(m_Player);
 		player->SetCharge(0.1f);
@@ -215,13 +220,17 @@ namespace basecross {
 		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
 		t->SetPosition(playerPos + m_LocalOffset);
 		// エフェクト位置も同期
-		m_Effect->SetLocation(m_MainHandle, playerPos + m_LocalOffset);
+		auto forward = m_Player->GetComponent<Transform>()->GetForward();
+		float rotate = atan2f(-forward.x, -forward.z);
+		m_Effect->PlayEffect(m_CounterHandle, L"Counter", Vec3(m_Position.x + (forward.x * 5), m_Position.y + 0.25f, m_Position.z + (forward.z * 5)), 0.0f);
+		m_Effect->SetRotation(m_CounterHandle, Vec3(0.0f, 1.0f, 0.0f), rotate);
+		m_Effect->SetScale(m_CounterHandle, m_Player->GetComponent<Transform>()->GetScale() / 5);
 
 	}
 	void CounterHitSphere::OnUpdate() {
 		// 共通エフェクト速度同期のみ実行
 		BaseHitObject::OnUpdate();
-
+		auto pos = m_Player->GetComponent<Transform>()->GetScale();
 		float dt = App::GetApp()->GetElapsedTime()
 			* GameManager::GetInstance().GetGameSpeed();
 		m_Elapsed += dt;
@@ -235,8 +244,9 @@ namespace basecross {
 		// 追随：プレイヤー位置＋ローカルオフセット
 		Vec3 playerPos = m_Player->GetComponent<Transform>()->GetPosition();
 		Vec3 newPos = playerPos + m_LocalOffset;
+		Vec3 forward = m_Player->GetComponent<Transform>()->GetForward();
 		GetComponent<Transform>()->SetPosition(newPos.x, newPos.y, newPos.z);
-		m_Effect->SetLocation(m_MainHandle, newPos);
+		m_Effect->SetLocation(m_CounterHandle, newPos + forward);
 
 		// 時間経過で半径（スケール）を徐々に拡大
 		float deltaR = m_ChargeRate * dt;
