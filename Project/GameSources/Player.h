@@ -27,11 +27,11 @@ namespace basecross {
         float m_ParryDamageIntervalTime;   ///< パリィ後ダメージインターバル
         float m_TotalTime;                 ///< 全体タイマー
         float m_BoostTime;                 ///< ブースト継続時間
-        float m_BoostConterTime;                 ///< ブースト継続時間
+        float m_BoostConterTime;           ///< ブースト継続時間
         float m_BoostInterval;             ///< ブースト再使用インターバル
         float m_Attacktime;                ///< 攻撃アニメーション再生時間
-        float m_AttackChargeInterval;                ///< 攻撃アニメーション再生時間
-        float m_AttackChaegetime;                ///< 攻撃アニメーション再生時間
+        float m_AttackChargeInterval;      ///< 攻撃アニメーション再生時間
+        float m_AttackChaegetime;          ///< 攻撃アニメーション再生時間
         float m_AttackInterval;            ///< 攻撃発生インターバル
         float m_DamageInterval;            ///< 被ダメージ無敵時間
         float m_BlinkingInterval;          ///< 被ダメージ点滅間隔
@@ -42,15 +42,15 @@ namespace basecross {
         bool  m_IsGoal;                    ///< ゴール到達フラグ
         bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
         bool  m_IsParry;                   ///< パリィモード中フラグ
-        bool  m_IsParryCounter;                   ///< パリィモード中フラグ
-		bool  m_ParryCountered;           ///< パリィカウンター成功フラグ
+        bool  m_IsParryCounter;            ///< パリィモード中フラグ
+		bool  m_ParryCountered;            ///< パリィカウンター成功フラグ
         bool  m_IsCharged;                 ///< チャージフラグ
         float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
         float m_ParryDamage;               ///< パリィ時反撃ダメージ
         float m_zoneAnim;                  ///< ゾーン演出進行度
         float m_SearchDistance;            ///< 敵探索距離
         float m_Length;                    ///< モデル長さ
-		float m_PositionY;                    ///< ポジションのY座標
+		float m_PositionY;                 ///< ポジションのY座標
 
         Vec3 m_BoostAngle;                 ///< ブースト移動方向ベクトル
         Vec3 m_HitScale;                   ///< 被ヒット時スケール補正
@@ -60,26 +60,26 @@ namespace basecross {
         Effekseer::Handle m_Handle;        ///< メインエフェクトハンドル
         Effekseer::Handle m_BrinkHandle;   ///< 点滅エフェクトハンドル
         Effekseer::Handle m_ParryHandle;   ///< パリィエフェクトハンドル
-        Effekseer::Handle m_EarthQuakeHandle;   //// 地震エフェクトハンドル
+        Effekseer::Handle m_EarthQuakeHandle; //// 地震エフェクトハンドル
         shared_ptr<TargetBoard> m_TargetBoard;///< 照準ボード
         shared_ptr<Board> m_EnemyArrow;       ///最も近い敵の方向を示す
-		Vec3 m_TargetObject;///< ロックオン対象オブジェクト
+		Vec3 m_TargetObject;                  ///< ロックオン対象オブジェクト
 
         wstring m_AttackAnim;              ///< 攻撃アニメーション名
         bool    m_ParryComboActive;        ///< コンボ猶予中フラグ
-        bool    m_Charge;        ///< コンボ猶予中フラグ
+        bool    m_Charge;                  ///< コンボ猶予中フラグ
         int     m_ParryComboCount;         ///< 連続パリィ回数
         float   m_ParryComboTimer;         ///< 連続パリィ猶予時間
         float   m_time;                    ///< 汎用タイマー
         float   m_ParryComboWindow;        ///< 完璧パリィから次パリィ受付猶予[s]
-		float   m_ChargeTime;             ///< チャージ時間
+		float   m_ChargeTime;              ///< チャージ時間
 
     public:
         int m_PlayerStateNum;              ///< 現在の状態フラグ
-        float m_CurrentYaw;          // 現在の回転角（ラジアン）
-        float m_RotationSpeed;       // 補間の速さ（大きいほど瞬時、低いほどゆっくり）
+        float m_CurrentYaw;                ///< 現在の回転角（ラジアン）
+        float m_RotationSpeed;             ///< 補間の速さ（大きいほど瞬時、低いほどゆっくり）
         float m_Speed;
-
+        float m_AttackMaxInterval;
 
         /**
          * @enum PlayerState

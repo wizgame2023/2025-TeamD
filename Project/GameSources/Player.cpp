@@ -56,7 +56,8 @@ namespace basecross {
 		m_ParryCountered(false),
 		m_ChargeTime(0.0f),
 		m_Speed(6.0f),
-		m_AttackChargeInterval(0.5f)
+		m_AttackChargeInterval(0.5f),
+		m_AttackMaxInterval(0.2f)
 	{}  
 	Player::‾Player(){}
 
@@ -172,6 +173,7 @@ namespace basecross {
 					m_zoneAnim = 1.0f;
 					m_HitScale = Vec3(3.0f);
 					m_SearchDistance = 24.0f;
+					m_AttackMaxInterval = m_AttackMaxInterval / 2;
 					m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 1, 1));
 					m_PlayerStateNum += PlayerState::ZONE;
 					SoundManager::GetInstance().PlaySE(L"SE_USE_ULT");
@@ -191,6 +193,7 @@ namespace basecross {
 				m_HitScale = Vec3(1.0f);
 				m_EnergyCharge = 0;
 				m_SearchDistance = 2.0f;
+				m_AttackMaxInterval = 0.2f;
 				m_Stage->GetLight()->SetAmbientLightColor(Col4(0, 0, 0, 0));
 				m_PlayerStateNum -= PlayerState::ZONE;
 			}
@@ -467,7 +470,7 @@ namespace basecross {
 
 
 		bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_BoostInterval, false);
-		bool isAttack = IntervalTimer(true, 0.2f, elapsedTime, m_AttackInterval, false);
+		bool isAttack = IntervalTimer(true, m_AttackMaxInterval, elapsedTime, m_AttackInterval, false);
 		bool isAttackChaege = IntervalTimer(true, 0.5f, elapsedTime, m_AttackChaegetime, false);
 
 		Vec3 rot = SearchRange(90.0f);
