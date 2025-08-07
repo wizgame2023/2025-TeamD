@@ -13,6 +13,71 @@ namespace basecross {
     class TargetBoard;
     class Board;
 
+    struct InputState {
+        // ボタン
+        bool attackPressed = false;  // 攻撃ボタン（A／左クリック）を押した瞬間
+        bool attackHeld = false;  // 攻撃ボタンをホールド中
+        bool attackReleased = false;  // 攻撃ボタンを離した瞬間
+
+        bool dashPressed = false;  // ダッシュボタン（X／右クリック）を押した瞬間
+        bool dashHeld = false;  // ダッシュボタンをホールド中
+
+        bool zonePressed = false;  // ゾーン発動ボタン（B／スペース）を押した瞬間
+        bool parryPressed = false;  // パリィカウンター用ボタン（同じくA／左クリック）
+
+        // 移動軸
+        float moveX = 0.0f;
+        float moveY = 0.0f;
+    };
+
+
+    class InputReader {
+    public:
+        static InputReader& Get() {
+            static InputReader inst;
+            return inst;
+        }
+
+        InputState Read() {
+            InputState in;
+            auto& dev = App::GetApp()->GetInputDevice();
+            auto& ks = dev.GetKeyState();
+            auto& cv = dev.GetControlerVec()[0];
+
+            // ─── 移動軸 ─────────────────────────────────
+            if (cv.bConnected) {
+                in.moveX = cv.fThumbLX;
+                in.moveY = cv.fThumbLY;
+            }
+            if (ks.m_bPushKeyTbl['A']) in.moveX = -1.0f;
+            if (ks.m_bPushKeyTbl['D']) in.moveX = 1.0f;
+            if (ks.m_bPushKeyTbl['W']) in.moveY = 1.0f;
+            if (ks.m_bPushKeyTbl['S']) in.moveY = -1.0f;
+            // ─── 攻撃ボタン ───────────────────────────────
+            in.attackPressed = (cv.wPressedButtons & XINPUT_GAMEPAD_A)
+                || ks.m_bPressedKeyTbl[VK_LBUTTON];
+            in.attackHeld = (cv.wButtons & XINPUT_GAMEPAD_A)
+                || ks.m_bPushKeyTbl[VK_LBUTTON];
+            in.attackReleased = (cv.wReleasedButtons & XINPUT_GAMEPAD_A)
+                || ks.m_bUpKeyTbl[VK_LBUTTON];
+
+            // ─── ダッシュボタン ───────────────────────────
+            in.dashPressed = (cv.wPressedButtons & XINPUT_GAMEPAD_X)
+                || ks.m_bPressedKeyTbl[VK_RBUTTON];
+            in.dashHeld = (cv.wButtons & XINPUT_GAMEPAD_X)
+                || ks.m_bPushKeyTbl[VK_RBUTTON];
+
+            // ─── ゾーン発動ボタン ─────────────────────────
+            in.zonePressed = (cv.wPressedButtons & XINPUT_GAMEPAD_B)
+                || ks.m_bPressedKeyTbl[VK_SPACE];
+
+            // ─── カウンターパリィ用（同Aボタン） ───────────
+            in.parryPressed = in.attackPressed;
+
+            return in;
+        }
+    };
+
     /**
      * @class  Player
      * @brief  Character を継承したプレイヤーキャラクラス
@@ -273,6 +338,9 @@ namespace basecross {
         */
         void HandleAttack(const float& elapsedTime);
 
+        /** @brief 溜めアタック再生
+        * @param elapsedTime 経過時間[s]
+        */
         void HandleAttackCharge(const float& elapsedTime);
 
         /** @brief 通常状態の再生
