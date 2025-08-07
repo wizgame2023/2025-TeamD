@@ -62,15 +62,8 @@ namespace basecross {
 		float leftX = -340.0f;
 
 		auto backGround = AddGameObject<Sprite>(L"BACKGROUND", Vec3(0.0f, 0.0f, 0.0f), Vec2(1280.0f, 800.0f), Vec2(0.5f));
-		//auto stageGo = AddGameObject<Sprite>(L"SELECT_GOING", Vec3(-200, -300, 0), Vec2(200, 100), true);
-		//auto atageReturn = AddGameObject<Sprite>(L"SELECT_START", Vec3(200, -300, 0), Vec2(200, 100), true);
 		AddGameObject<ButtonManager>();
 		ButtonManager::instance->SetSound(L"SE_ACCEPT");
-
-		//m_UDselect = AddGameObject<Sprite>(L"SELECT_UP_DOWN", Vec3(550.0f, -300.0f, 0.0f), Vec2(500.0f, 500.0f), Vec2(0.5f));
-		//m_LRselect = AddGameObject<Sprite>(L"SELECT_LFFT_RIGHT", Vec3(550.0f, -310.0f, 0.0f), Vec2(550.0f, 550.0f), Vec2(0.5f));
-		//m_UDselect->SetDrawActive(false);
-		//m_LRselect->SetDrawActive(true);
 
 		vector<wstring> dangerKey = { L"DANGER_LOW",L"DANGER_MIDDLE",L"DANGER_HIGH" };
 		vector<Col4> dangerColor = { Col4(0,1,0,1),Col4(1,1,0,1),Col4(1,0,0,1) };
@@ -86,6 +79,7 @@ namespace basecross {
 					auto white = stage->AddGameObject<Sprite>(L"SELECT_STAGE_WHITE", position + Vec3(0.0f, 175.0f, 0.0f), Vec2(150.0f, 50.0f), Vec2(0.5f));
 					auto slide = stage->AddGameObject<SlideInSprite>(L"SELECT_BACK_STAGE", true, Vec2(150.0f, 50.0f), position + Vec3(0.0f, 175.0f, 0.0f), 1.0f);
 					white->SetDrawLayer(1);
+					white->AddTag(L"SlideSprite");
 					slide->SetDiffuse(Col4(0,0,0,1));
 				});
 
@@ -127,8 +121,6 @@ namespace basecross {
 				stage->Select();
 			});
 
-
-
 		ButtonManager::instance->SetInput(L"City", InputData(StickMode::LX, 1, 0.1f));
 		ButtonManager::instance->SetKeyborad(L"City", InputData('A', -1));
 		ButtonManager::instance->SetKeyborad(L"City", InputData('D', 1));
@@ -145,17 +137,14 @@ namespace basecross {
 		ButtonManager::instance->AddAcceptButton(L"Accept", XINPUT_GAMEPAD_A);
 		ButtonManager::instance->AddKeyboradAccept(L"Accept", VK_SPACE);
 
-
 		ButtonManager::instance->UseGroup(L"City");
 	}
 
 	void SelectStage::OnCreate() {
 		try {
 			CreateViewLight();
-			//OnUpdate();
 			CreateResource();
 			CreateSelect();
-			//SoundManager::Instance().PlayBGM(L"BGM_SELECT");
 
 		}
 		catch (...) {
@@ -168,15 +157,29 @@ namespace basecross {
 		m_InputHandler.PushHandle(GetThis<SelectStage>());
 		auto& app = App::GetApp();
 		auto& cntlVec = App::GetApp()->GetInputDevice().GetControlerVec()[0];
+
+		if (!cntlVec.bConnected) return;
+
+		if (cntlVec.wPressedButtons & XINPUT_GAMEPAD_B) {
+			wstring group = ButtonManager::instance->GetUseGroup();
+
+			if (group == L"Difficulty" + to_wstring(m_StageNumber)) {
+				m_StageNumber = 0;
+				vector<shared_ptr<GameObject>> objs;
+				GetUsedTagObjectVec(L"SlideSprite", objs);
+				for (auto& obj : objs) {
+					RemoveGameObject<GameObject>(obj);
+				}
+				ButtonManager::instance->UseGroup(L"City");
+			}
+			else if (group == L"Accept") {
+				m_DifficultyLevel = 0;
+				ButtonManager::instance->UseGroup(L"Difficulty" + to_wstring(m_StageNumber));
+			}
+		}
 	}
 
 	void SelectStage::OnPushA() {
-		//PostEvent(0.0f, GetThis<ObjectInterface>(), App::GetApp()->GetScene<Scene>(), L"ToGameStageKamata");
-		//m_Fade->Play();
-		/*OnDestroy();
-		auto scene = App::GetApp()->GetScene<Scene>();
-		scene->ChangeCountStage(m_Count);
-		SoundManager::Instance().PlaySE(L"SE_HIT_ENEMY");*/
 
 	}
 

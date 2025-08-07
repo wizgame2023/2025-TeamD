@@ -64,7 +64,7 @@ namespace basecross {
 		m_Titlemodel = AddGameObject<TirleStageModel>();
 		m_Titlemodel->SetDrawActive(false);
 		//点滅設定
-		m_Start->AddComponent<SpriteFlash>(0.0f);
+		m_Start->AddComponent<SpriteFlash>(1.0f);
 		m_StartKey->AddComponent<SpriteFlash>(0.8f);
 		m_Fade = fadeSprite->AddComponent<SpriteFade>(1.0f);
 		m_Fade->FadeOut();
