@@ -78,6 +78,73 @@ namespace basecross {
         }
     };
 
+    // Movement（移動・回転関連）
+    struct MovementSettings {
+        float MoveSpeed;           ///< 移動速度
+        float CurrentYaw;          ///< 現在の回転角（ラジアン）
+        float RotationSpeed;       ///< 補間の速さ（大きいほど瞬時、低いほどゆっくり）
+        float SearchDistance;      ///< 敵探索距離
+        Vec3  BoostAngle;          ///< ブースト移動方向ベクトル
+    };
+
+    // Zone／Energy（ゾーンチャージ関連）の設定をまとめた構造体
+    struct ZoneSettings {
+        float EnergyCharge;       ///< 現在のエネルギーチャージ量（0.0〜1.0）
+        float ZoneTime;           ///< ゾーン状態の累積時間
+        float ZoneAnimProgress;   ///< ゾーン発動アニメーションの進行度（秒数）
+        float ZoneAnim;         ///< ゾーン演出進行度
+    };
+
+    // Parry（パリィ関連）
+    struct ParrySettings
+    {
+        float JudgeTime;          ///< パリィ受付時間
+        float DamageInterval;     ///< パリィ後無敵インターバル
+        float PerfectWindow;      ///< 完璧パリィ判定ウィンドウ
+        bool  IsJudgeActive;      ///< パリィ受付中フラグ
+        bool  IsInDamageInterval; ///< 無敵インターバル中フラグ
+        bool  IsPerfectParry;     ///< 完璧パリィ成功フラグ
+        bool  HasCountered;       ///< カウンターヒット済フラグ
+    };
+
+    // Boost（ブースト関連）
+    struct BoostSettings
+    {
+        float Duration;      ///< ブースト継続時間
+        float CounterTime;   ///< カウンターブースト継続時間
+        float Cooldown;      ///< ブースト再使用インターバル
+    };
+
+    // Attack（攻撃関連）
+    struct AttackSettings
+    {
+        float AnimTime;        ///< 攻撃アニメーション再生時間
+        float ChargeInterval;  ///< チャージ攻撃待機時間
+		float ChargeTime;      ///< チャージ攻撃時間
+        float Interval;        ///< 通常攻撃インターバル
+        float MaxInterval;     ///< 攻撃最大インターバル
+        std::wstring AnimName; ///< アニメーション名
+    };
+
+    // Damage／Invincible（被ダメージ関連）
+    struct DamageSettings
+    {
+        float InvincibleDuration;///< 無敵時間
+        float BlinkingInterval;  ///< 点滅サイクル
+        float Damage;            ///< ダメージ量
+        bool  IsInvincible;      ///< 無敵中フラグ
+    };
+
+    // Combo（連続パリィコンボ関連）
+    struct ComboSettings
+    {
+        bool  IsActive;           ///< コンボ猶予中フラグ
+        float Timer;              ///< 猶予タイマー残り時間
+        float WindowAfterPerfect; ///< 完璧後次猶予時間
+        float ChargeTime;         ///< チャージ蓄積時間
+    };
+
+
     /**
      * @class  Player
      * @brief  Character を継承したプレイヤーキャラクラス
@@ -85,41 +152,20 @@ namespace basecross {
     class Player : public Character
     {
     private:
-        float m_MoveSpeed;                 ///< 移動速度
-        float m_EnergyCharge;              ///< ゾーンエネルギーチャージ量
-        float m_ZoneTime;                  ///< ゾーン継続時間
-        float m_ParryTime;                 ///< パリィ受付時間
-        float m_ParryDamageIntervalTime;   ///< パリィ後ダメージインターバル
-        float m_TotalTime;                 ///< 全体タイマー
-        float m_BoostTime;                 ///< ブースト継続時間
-        float m_BoostConterTime;           ///< ブースト継続時間
-        float m_BoostInterval;             ///< ブースト再使用インターバル
-        float m_Attacktime;                ///< 攻撃アニメーション再生時間
-        float m_AttackChargeInterval;      ///< 攻撃アニメーション再生時間
-        float m_AttackChaegetime;          ///< 攻撃アニメーション再生時間
-        float m_AttackInterval;            ///< 攻撃発生インターバル
-        float m_DamageInterval;            ///< 被ダメージ無敵時間
-        float m_BlinkingInterval;          ///< 被ダメージ点滅間隔
-        float m_Damage;                    ///< 蓄積ダメージ量
-        bool  m_ParryJudge;                ///< パリィ受付中フラグ
-        bool  m_ParryDamageInterval;       ///< パリィ後ダメージ無効インターバル中フラグ
-        bool  m_DamageIntervalStart;       ///< ダメージ無敵開始フラグ
-        bool  m_IsGoal;                    ///< ゴール到達フラグ
-        bool  m_IsPerfectParry;            ///< 完璧パリィ成功フラグ
-        bool  m_IsParry;                   ///< パリィモード中フラグ
-        bool  m_IsParryCounter;            ///< パリィモード中フラグ
-		bool  m_ParryCountered;            ///< パリィカウンター成功フラグ
-        bool  m_IsCharged;                 ///< チャージフラグ
-        float m_PerfectParrySecond;        ///< 完璧パリィ受付許容時間[s]
-        float m_ParryDamage;               ///< パリィ時反撃ダメージ
-        float m_zoneAnim;                  ///< ゾーン演出進行度
-        float m_SearchDistance;            ///< 敵探索距離
-        float m_Length;                    ///< モデル長さ
-		float m_PositionY;                 ///< ポジションのY座標
+        MovementSettings m_MoveMent;
+        ZoneSettings m_Zone;
+        ParrySettings m_Parry;
+        BoostSettings m_Boost;
+        AttackSettings m_Attack;
+        DamageSettings m_Damage;
+		ComboSettings m_Combo;
 
-        Vec3 m_BoostAngle;                 ///< ブースト移動方向ベクトル
+        float m_TotalTime;                 ///< 全体タイマー
+        bool  m_IsGoal;                    ///< ゴール到達フラグ
+        bool  m_IsParryCounter;            ///< パリィモード中フラグ
+        bool  m_IsCharged;                 ///< チャージフラグ
+
         Vec3 m_HitScale;                   ///< 被ヒット時スケール補正
-        Vec3 m_BulletDire;                 ///< 弾丸飛行方向
         Vec3 m_EffectVec;                  ///< エフェクト位置補正
         shared_ptr<EffectManager> m_Effect;///< エフェクト管理
         Effekseer::Handle m_Handle;        ///< メインエフェクトハンドル
@@ -130,21 +176,8 @@ namespace basecross {
         shared_ptr<Board> m_EnemyArrow;       ///最も近い敵の方向を示す
 		Vec3 m_TargetObject;                  ///< ロックオン対象オブジェクト
 
-        wstring m_AttackAnim;              ///< 攻撃アニメーション名
-        bool    m_ParryComboActive;        ///< コンボ猶予中フラグ
-        bool    m_Charge;                  ///< コンボ猶予中フラグ
-        int     m_ParryComboCount;         ///< 連続パリィ回数
-        float   m_ParryComboTimer;         ///< 連続パリィ猶予時間
-        float   m_time;                    ///< 汎用タイマー
-        float   m_ParryComboWindow;        ///< 完璧パリィから次パリィ受付猶予[s]
-		float   m_ChargeTime;              ///< チャージ時間
-
     public:
         int m_PlayerStateNum;              ///< 現在の状態フラグ
-        float m_CurrentYaw;                ///< 現在の回転角（ラジアン）
-        float m_RotationSpeed;             ///< 補間の速さ（大きいほど瞬時、低いほどゆっくり）
-        float m_Speed;
-        float m_AttackMaxInterval;
 
         /**
          * @enum PlayerState
@@ -205,9 +238,6 @@ namespace basecross {
         /// @brief タイマー更新管理
         void IntervalManagement();
 
-        /// @brief 入力状態取得
-        Vec2 GetInputState() const;
-
         /**
          * @brief 移動ベクトル計算
          * @param rot [out] 回転角
@@ -234,44 +264,6 @@ namespace basecross {
         /// @brief デバッグ表示
         void Debug();
 
-        /// @brief 正面ベクトル取得
-        Vec3 GetForward();
-
-        /// @brief 状態フラグ取得
-        int GetStates();
-
-        /// @brief エネルギー量取得
-        float GetEnergy();
-
-        /// @brief ダメージ量取得
-        float GetDamage();
-
-        /// @brief パリィ可能か
-        bool GetParry();
-
-        /// @brief 攻撃可能か判定
-        bool IsAttack();
-
-        /// @brief ダッシュ可能か判定
-        bool IsDash();
-
-        /**
-         * @brief パリィ判定位置設定
-         * @param position 位置
-         */
-        void SetParryPosition(const Vec3& position);
-
-        /**
-         * @brief ダメージ量設定
-         * @param damage 新ダメージ量
-         */
-        void SetDamage(const float& damage);
-
-        /**
-         * @brief ゴール状態設定
-         * @param goal 到達済みならtrue
-         */
-        void SetIsGaol(const bool& goal);
 
         /**
          * @brief 敵探索方向取得
@@ -381,7 +373,66 @@ namespace basecross {
          */
         float GetLength()
         {
-            return m_SearchDistance;
+            return m_MoveMent.SearchDistance;
         }
+
+        /// @brief 正面ベクトル取得
+        Vec3 GetForward() {
+            return m_Transform->GetForward();
+        }
+        /**
+         * @brief パリィ判定位置設定
+         * @param position 位置
+         */
+        void SetParryPosition(const Vec3& position) {
+            m_EffectVec = position;
+        }
+
+        /**
+         * @brief ダメージ量設定
+         * @param damage 新ダメージ量
+         */
+        void SetDamage(const float& damage) {
+            m_Damage.Damage = damage;
+        }
+
+        /**
+         * @brief ゴール状態設定
+         * @param goal 到達済みならtrue
+         */
+        void SetIsGaol(const bool& goal) {
+            m_IsGoal = goal;
+        }
+
+        /// @brief 状態フラグ取得
+        int GetStates() {
+            return m_PlayerStateNum;
+        }
+
+        /// @brief エネルギー量取得
+        float GetEnergy() {
+            return m_Zone.EnergyCharge;
+        }
+
+        /// @brief ダメージ量取得
+        float GetDamage() {
+            return m_Damage.Damage;
+        }
+
+        /// @brief パリィ可能か
+        bool GetParry() {
+            return m_Parry.IsJudgeActive;
+        }
+
+        /// @brief 攻撃可能か判定
+        bool IsAttack() {
+            return IntervalTimer(true, 0.2f, 0.0f, m_Damage.InvincibleDuration, false) && !(m_PlayerStateNum & PlayerState::ATTACK);
+        }
+
+        /// @brief ダッシュ可能か判定
+        bool IsDash() {
+            return IntervalTimer(true, 0.5f, 0.0f, m_Boost.Cooldown, false) && !(m_PlayerStateNum & PlayerState::DASH);
+        }
+
     };
 } // namespace basecross
