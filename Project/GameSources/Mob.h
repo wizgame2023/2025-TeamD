@@ -113,7 +113,6 @@ namespace basecross {
 			return a * (1.0f - t) + b * t;
 		}
 
-	private:
 
 		float WstrToFlt(const wstring& data) {
 			if (data == L"") return NULL;

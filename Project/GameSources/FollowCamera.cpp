@@ -313,6 +313,7 @@ namespace basecross {
 		m_LerpElapsed = 0.0f;
 		m_IsSmoothLook = true;
 	}
+
 	Vec2 FollowCamera::CameraApproach(float totaltime)
 	{
 		float ElapsedTime = App::GetApp()->GetElapsedTime();
