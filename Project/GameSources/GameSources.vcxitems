@@ -27,6 +27,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)InputAndSettings.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)FollowCamera.h" />
@@ -102,6 +103,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MovieStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MyDrawComponents.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PayerTool.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp" />
