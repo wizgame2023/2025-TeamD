@@ -43,14 +43,14 @@ namespace basecross {
 
 		if (moveX + moveZ != 0 || moveX - moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
-
+			//カメラの取得
 			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
 			float movemove = atan2f(-moveZ, moveX);
 			float fRotate = movemove - angleY - XM_PIDIV2;
-
+			//カメラの角度と入力の角度から回転角を算出
 			angle = Vec3(cos(fRotate), 0.0f, -sin(fRotate));
-
 			float rotate = fRotate + XM_PIDIV2;
+			//入力ベクトルを正規化
 			angle.normalize();
 			rot = rotate;
 		}
@@ -69,7 +69,6 @@ namespace basecross {
 		auto in = InputReader::Get().Read();
 
 		// 2) 移動ベクトル／回転角の算出
-		Vec3 moveDir(0, 0, 0);
 		float targetYaw = 0.0f;
 		auto angle = GetMoveVector(targetYaw);
 
@@ -88,7 +87,7 @@ namespace basecross {
 			Move(angle, false);
 			SetAnim(L"Dash");
 		}
-		else if ((m_PlayerStateNum & PlayerState::NORMAL) == PlayerState::NORMAL) {
+		else if (m_PlayerStateNum & PlayerState::NORMAL) {
 			SetAnim(L"Idle");
 		}
 	}
@@ -160,7 +159,7 @@ namespace basecross {
 		}
 	}
 
-	void Player::PlayAnimation()
+	void Player::DispatchStateTransition()
 	{
 		// フレーム経過時間を取得
 		float elapsedTime = GetElapsed();
@@ -469,8 +468,9 @@ namespace basecross {
 		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
 		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		ptrDraw->SetOwnShadowActive(false);
-		//ptrDraw->SetFogEnabled(true);
+
 		ptrDraw->SetModelDiffusePriority(true);
+
 		AddAnimation();
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -514,7 +514,7 @@ namespace basecross {
 			IntervalManagement();
 
 			// 入力や状態に応じたアニメーション再生
-			PlayAnimation();
+			DispatchStateTransition();
 		}
 		else {
 			// ターゲットボードを非表示
@@ -541,18 +541,17 @@ namespace basecross {
 			// チャージが減少したらフラグをリセット
 			m_IsCharged = false;
 		}
-
-		// エフェクトの再生スピードをゲーム速度に合わせて調整
-		float gameSpeed = GameManager::GetInstance().GetGameSpeed();
-		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * gameSpeed);
-		m_Effect->SetEffectSpeed(m_Handle, 1.0f * gameSpeed);
-		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * gameSpeed);
 	}
 
 	void Player::OnDraw()
 	{
 		// 基底クラスの描画処理を呼び出す
 		Character::OnDraw();
+		// エフェクトの再生スピードをゲーム速度に合わせて調整
+		float gameSpeed = GameManager::GetInstance().GetGameSpeed();
+		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * gameSpeed);
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * gameSpeed);
+		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * gameSpeed);
 	}
 
 	void Player::Dead()
@@ -577,6 +576,5 @@ namespace basecross {
 		// 4) 通常被ダメージ処理
 		HandleNormalHit(damage);
 		return false;
-
 	}
 }

@@ -27,9 +27,6 @@ namespace basecross {
         /// ダッシュボタンを押した瞬間（Xボタン／右クリック）
         bool dashPressed = false;
 
-        /// ダッシュボタンをホールド中（Xボタン／右クリック押下中）
-        bool dashHeld = false;
-
         /// ゾーン発動ボタンを押した瞬間（Bボタン／スペース）
         bool zonePressed = false;
 
@@ -71,7 +68,7 @@ namespace basecross {
             auto& ks = dev.GetKeyState();
             auto& cv = dev.GetControlerVec()[0];
 
-            // ─── 移動軸 ─────────────────────────────
+            // ─── 移動軸 ─────────────────────
             if (cv.bConnected)
             {
                 in.moveX = cv.fThumbLX;
@@ -90,11 +87,9 @@ namespace basecross {
             in.attackReleased = (cv.wReleasedButtons & XINPUT_GAMEPAD_A)
                 || ks.m_bUpKeyTbl[VK_LBUTTON];
 
-            // ─── ダッシュボタン (X / 右クリック) ───────
+            // ─── ダッシュボタン (X / 右クリック) ───────---
             in.dashPressed = (cv.wPressedButtons & XINPUT_GAMEPAD_X)
                 || ks.m_bPressedKeyTbl[VK_RBUTTON];
-            in.dashHeld = (cv.wButtons & XINPUT_GAMEPAD_X)
-                || ks.m_bPushKeyTbl[VK_RBUTTON];
 
             // ─── ゾーン発動ボタン (B / スペース) ────────
             in.zonePressed = (cv.wPressedButtons & XINPUT_GAMEPAD_B)
@@ -105,6 +100,7 @@ namespace basecross {
 
             return in;
         }
+
 
     private:
         InputReader() = default;

@@ -401,7 +401,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)PayerTool.cpp">
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerTool.cpp">
       <Filter>Player</Filter>
     </ClCompile>
   </ItemGroup>

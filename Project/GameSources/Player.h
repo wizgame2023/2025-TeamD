@@ -247,9 +247,9 @@ namespace basecross {
         void AddAnimation();
 
         /**
-         * @brief アニメーション再生制御
+		 * @brief Payerの状態遷移のディスパッチ
          */
-        void PlayAnimation();
+        void DispatchStateTransition();
 
         /**
          * @brief ダッシュ再生処理

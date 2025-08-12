@@ -103,7 +103,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MovieStage.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)MyDrawComponents.cpp" />
-    <ClCompile Include="$(MSBuildThisFileDirectory)PayerTool.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerTool.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp" />
