@@ -9,10 +9,10 @@
 #include "stdafx.h"
 
 namespace basecross {
-    /**
- * @struct InputState
- * @brief 各フレームの入力ボタン状態と移動軸値を保持する構造体
- */
+     /**
+     * @struct InputState
+     * @brief 各フレームの入力ボタン状態と移動軸値を保持する構造体
+     */
     struct InputState
     {
         /// 攻撃ボタンを押した瞬間（Aボタン／左クリック）

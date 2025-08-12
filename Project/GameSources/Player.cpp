@@ -65,17 +65,17 @@ namespace basecross {
 	}
 
 	void Player::MovePlayer(const float Speed) {
-		// 1) 入力取得
+		//入力取得
 		auto in = InputReader::Get().Read();
 
-		// 2) 移動ベクトル／回転角の算出
+		//移動ベクトル／回転角の算出
 		float targetYaw = 0.0f;
 		auto angle = GetMoveVector(targetYaw);
 
 		if (angle.length() > 0.0f) {
 			SetSpeed(m_MoveMent.MoveSpeed);
 
-			// 3) 回転補間＆移動
+			//回転補間＆移動
 			float dt = GetElapsed();
 			m_MoveMent.CurrentYaw = XMScalarLerpAngle(
 				m_MoveMent.CurrentYaw,
@@ -83,11 +83,12 @@ namespace basecross {
 				m_MoveMent.RotationSpeed * dt
 			);
 			SetRotation(Vec3(0, m_MoveMent.CurrentYaw, 0));
-
+			// 移動ベクトルを正規化して移動
 			Move(angle, false);
 			SetAnim(L"Dash");
 		}
 		else if (m_PlayerStateNum & PlayerState::NORMAL) {
+			// 移動していない場合はアニメーションをIdleに設定	
 			SetAnim(L"Idle");
 		}
 	}
@@ -224,40 +225,37 @@ namespace basecross {
 
 	void Player::HandleNormal(const float& elapsedTime)
 	{
-		// 1) 入力取得
+		 // 1) 入力取得：キーボードやコントローラからの操作状態を読み込む
 		InputState in = InputReader::Get().Read();
 
-		// 2) タイマー判定
+		// 2) タイマー判定：ダッシュや攻撃チャージ用タイマーを更新
 		UpdateTimers(elapsedTime);
-		Vec3 forward = GetForward();
+		Vec3 forward = GetForward();  // プレイヤーの前方向ベクトルを取得
 
-		// 3) ダッシュ入力
+		// 3) ダッシュ入力：ダッシュキーが押され、ブーストが使用可能ならダッシュ
 		if (in.dashPressed && m_Boost.IsReady) {
 			TryDash(forward);
 		}
 
-		// 4) チャージ攻撃入力（ホールド中は移動速度ダウン）
+		// 4) チャージ攻撃入力：攻撃ボタンをホールド中はチャージを蓄積しつつ速度ダウン
 		if (!m_Attack.IsCharging) return;
 		if (in.attackHeld) {
 			HandleChargeHold(elapsedTime);
 		}
 
-		// 5) 通常移動
+		// 5) 通常移動：ホールドしていない間は移動速度に従って移動
 		MovePlayer(m_MoveMent.MoveSpeed);
 
-		// 6) 攻撃ボタン離した瞬間
+		// 6) 攻撃ボタン離した瞬間：フルチャージの判定後、攻撃を実行して状態をリセット
 		if (in.attackReleased && m_Attack.IsAttack) {
-			m_TargetObject = Vec3();
-			// フルチャージ攻撃
+			m_TargetObject = Vec3();  // 攻撃対象リセット
 			if (m_Combo.ChargeTime >= 1.5f) {
-				// フルチャージ攻撃の発動
-				ExecuteFullChargeAttack();
+				ExecuteFullChargeAttack();  // フルチャージ攻撃発動
 			}
 			else {
-				// 通常攻撃
-				ExecuteNormalAttack();
+				ExecuteNormalAttack();      // 通常攻撃発動
 			}
-			// リセット
+			// 攻撃後リセット
 			m_Combo.ChargeTime = 0.0f;
 			m_MoveMent.MoveSpeed = 6.0f;
 		}
@@ -265,67 +263,103 @@ namespace basecross {
 
 	void Player::UpdateTimers(const float& dt)
 	{
+		 // ブースト使用可能判定
 		m_Boost.IsReady = IntervalTimer(true, 0.5f, dt, m_Boost.Cooldown, false);
+		// 攻撃インターバル判定
 		m_Attack.IsAttack = IntervalTimer(true, m_Attack.MaxInterval, dt, m_Attack.Interval, false);
+		// チャージ攻撃可能判定
 		m_Attack.IsCharging = IntervalTimer(true, 0.5f, dt, m_Attack.ChargeTime, false);
 	}
 
 	void Player::TryDash(const Vec3& forward)
 	{
+		 // ダッシュ方向設定
 		m_MoveMent.BoostAngle = forward;
 		float rotY = atan2f(forward.x, forward.z);
+
+		// エフェクト：ダッシュブリンク
 		m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
 		m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotY);
 
+		// ステート変更：NORMAL→DASH
 		m_PlayerStateNum &= ‾PlayerState::NORMAL;
 		m_PlayerStateNum |= PlayerState::DASH;
+
+		// サウンド：ダッシュ開始SE
 		SoundManager::GetInstance().PlaySE(L"SE_ACCEPT");
 	}
 
 	void Player::HandleChargeHold(float dt)
 	{
+		 // チャージ時間を蓄積
 		m_Combo.ChargeTime += dt;
+		// 移動速度を半減
 		m_MoveMent.MoveSpeed = 6.0f / 2.0f;
-		m_Combo.ChargeTime = (m_Combo.ChargeTime < 5.0f) ? m_Combo.ChargeTime : 5.0f;
+		// 最大チャージ時間(5秒)を制限
+		m_Combo.ChargeTime = min(m_Combo.ChargeTime, 5.0f);
 	}
 
 	void Player::ExecuteFullChargeAttack()
 	{
+		 // 攻撃判定用オブジェクト生成
 		m_Stage->AddGameObject<ChargeHitSphere>(
 			GetPosition(), Vec3(1), GetThis<GameObject>(), m_Combo.ChargeTime);
 
+		// 地震エフェクト再生
 		m_Effect->PlayEffect(m_EarthQuakeHandle, L"EarthQuake", GetPosition(), 0.0f);
-		m_Effect->SetLocation(m_EarthQuakeHandle,
+		m_Effect->SetLocation(
+			m_EarthQuakeHandle,
 			Vec3(GetPosition().x, GetPosition().y - 0.25f, GetPosition().z));
 		m_Effect->SetScale(m_EarthQuakeHandle, Vec3(m_Combo.ChargeTime));
+
+		// カメラシェイク
 		GetStage()->GetView()->GetTargetCamera()->ShakeStart(0.5f, 0.3f);
+
+		// ステート変更：NORMAL→ATTACKCHARGE
 		m_PlayerStateNum |= PlayerState::ATTACKCHARGE;
 		m_PlayerStateNum &= ‾PlayerState::NORMAL;
+
+		// サウンド：フルチャージ攻撃SE
 		SoundManager::GetInstance().PlaySE(L"SE_CHARGE_ATTACK");
 	}
 
 	void Player::ExecuteNormalAttack()
 	{
+		 // アニメーション名をトグル
 		m_Attack.AnimName = (m_Attack.AnimName == L"Attack2") ? L"Attack" : L"Attack2";
+
+		// パリィ判定を有効化
 		m_Parry.IsJudgeActive = true;
 		m_Parry.JudgeTime = 30.0f;
 
+		// 攻撃方向取得
 		Vec3 forward = GetForward();
 		Vec3 targetDir = SearchRange(90.0f);
 		AimRock(targetDir);
 
+		// 攻撃判定用オブジェクト生成
 		m_Stage->AddGameObject<HitSphere>(
-			GetPosition(), forward, GetThis<GameObject>(), m_HitScale, m_MoveMent.SearchDistance);
-		// ショックウェーブエフェクト
+			GetPosition(), forward, GetThis<GameObject>(),
+			m_HitScale, m_MoveMent.SearchDistance);
+
+		// ショックウェーブエフェクト再生
 		float fwdRot = atan2f(forward.x, forward.z);
-		m_Effect->PlayEffect(m_Handle, L"ShockWave",
-			Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
+		m_Effect->PlayEffect(
+			m_Handle, L"ShockWave",
+			Vec3(
+				m_Position.x + forward.x * 0.5f,
+				m_Position.y + 0.25f,
+				m_Position.z + forward.z * 0.5f
+			),
+			0.0f);
 		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), fwdRot);
 		m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
 
-		// ... （HitSphere 登録／エフェクトなど）
+		// ステート変更：NORMAL→ATTACK
 		m_PlayerStateNum |= PlayerState::ATTACK;
 		m_PlayerStateNum &= ‾PlayerState::NORMAL;
+
+		// サウンド：攻撃ボイスSE
 		SoundManager::GetInstance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 	}
 
@@ -342,14 +376,16 @@ namespace basecross {
 
 	void Player::AddAnimation(){
 		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
+		float animSpeed = 1.5f;
+		float animFastSpeed = 2.5f;
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
-		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * 1.5f);
-		ptrDraw->AddAnimation(L"Counter", 620, 80, false, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * animFastSpeed);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * animFastSpeed);
+		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * animSpeed);
+		ptrDraw->AddAnimation(L"Counter", 620, 80, false, anim_fps * animSpeed);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * m_Zone.ZoneAnimProgress);
-		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * animSpeed);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
