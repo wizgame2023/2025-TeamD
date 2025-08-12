@@ -17,8 +17,8 @@ namespace basecross {
 		m_MoveMent{6.0f, 0.0f, 10.0f, 2.0f, Vec3()},
 		m_Zone{0.0f, 0.0f, 2.5f, 1.0f},
 		m_Parry{30.0f ,0.5f, 0.5f, false, false, false, false},
-		m_Boost{0.2f, 0.5f, 0.0f},
-		m_Attack{0.0f, 0.5f, 0.0f, 0.0f, 0.2f, L"Attack"},
+		m_Boost{0.2f, 0.5f, 0.0f, true},
+		m_Attack{0.0f, 0.5f, 0.0f, 0.0f, 0.2f,true,true, L"Attack"},
 		m_Damage{0.5f, 0.1f, 3.0f, false},
 		m_Combo{false, 0.0f, 0.0f, 0.0f},
 		m_PlayerStateNum(PlayerState::NORMAL),
@@ -43,14 +43,14 @@ namespace basecross {
 
 		if (moveX + moveZ != 0 || moveX - moveZ != 0) {
 			auto ptrCamera = OnGetDrawCamera();
-
+			//カメラの取得
 			float angleY = dynamic_pointer_cast<FollowCamera>(ptrCamera)->GetAngle();
 			float movemove = atan2f(-moveZ, moveX);
 			float fRotate = movemove - angleY - XM_PIDIV2;
-
+			//カメラの角度と入力の角度から回転角を算出
 			angle = Vec3(cos(fRotate), 0.0f, -sin(fRotate));
-
 			float rotate = fRotate + XM_PIDIV2;
+			//入力ベクトルを正規化
 			angle.normalize();
 			rot = rotate;
 		}
@@ -65,18 +65,17 @@ namespace basecross {
 	}
 
 	void Player::MovePlayer(const float Speed) {
-		// 1) 入力取得
+		//入力取得
 		auto in = InputReader::Get().Read();
 
-		// 2) 移動ベクトル／回転角の算出
-		Vec3 moveDir(0, 0, 0);
+		//移動ベクトル／回転角の算出
 		float targetYaw = 0.0f;
 		auto angle = GetMoveVector(targetYaw);
 
 		if (angle.length() > 0.0f) {
 			SetSpeed(m_MoveMent.MoveSpeed);
 
-			// 3) 回転補間＆移動
+			//回転補間＆移動
 			float dt = GetElapsed();
 			m_MoveMent.CurrentYaw = XMScalarLerpAngle(
 				m_MoveMent.CurrentYaw,
@@ -84,11 +83,12 @@ namespace basecross {
 				m_MoveMent.RotationSpeed * dt
 			);
 			SetRotation(Vec3(0, m_MoveMent.CurrentYaw, 0));
-
+			// 移動ベクトルを正規化して移動
 			Move(angle, false);
 			SetAnim(L"Dash");
 		}
-		else if ((m_PlayerStateNum & PlayerState::NORMAL) == PlayerState::NORMAL) {
+		else if (m_PlayerStateNum & PlayerState::NORMAL) {
+			// 移動していない場合はアニメーションをIdleに設定	
 			SetAnim(L"Idle");
 		}
 	}
@@ -160,7 +160,7 @@ namespace basecross {
 		}
 	}
 
-	void Player::PlayAnimation()
+	void Player::DispatchStateTransition()
 	{
 		// フレーム経過時間を取得
 		float elapsedTime = GetElapsed();
@@ -225,224 +225,146 @@ namespace basecross {
 
 	void Player::HandleNormal(const float& elapsedTime)
 	{
-		// 1) 入力取得
+		 // 1) 入力取得：キーボードやコントローラからの操作状態を読み込む
 		InputState in = InputReader::Get().Read();
 
-		// 2) タイマー判定
-		bool isBoost = IntervalTimer(true, 0.5f, elapsedTime, m_Boost.Cooldown, false);
-		bool isAttackAvail = IntervalTimer(true, m_Attack.MaxInterval, elapsedTime, m_Attack.Interval, false);
-		bool isChargeAvail = IntervalTimer(true, 0.5f, elapsedTime, m_Attack.ChargeTime, false);
+		// 2) タイマー判定：ダッシュや攻撃チャージ用タイマーを更新
+		UpdateTimers(elapsedTime);
+		Vec3 forward = GetForward();  // プレイヤーの前方向ベクトルを取得
 
-		Vec3 forward = GetForward();
-
-		// 3) ダッシュ入力
-		if (in.dashPressed && isBoost) {
-			m_MoveMent.BoostAngle = forward;
-			float rotY = atan2f(forward.x, forward.z);
-			m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
-			m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotY);
-
-			m_PlayerStateNum &= ‾PlayerState::NORMAL;
-			m_PlayerStateNum |= PlayerState::DASH;
-			SoundManager::GetInstance().PlaySE(L"SE_ACCEPT");
+		// 3) ダッシュ入力：ダッシュキーが押され、ブーストが使用可能ならダッシュ
+		if (in.dashPressed && m_Boost.IsReady) {
+			TryDash(forward);
 		}
 
-		// 4) チャージ攻撃入力（ホールド中は移動速度ダウン）
-		if (!isChargeAvail) return;
+		// 4) チャージ攻撃入力：攻撃ボタンをホールド中はチャージを蓄積しつつ速度ダウン
+		if (!m_Attack.IsCharging) return;
 		if (in.attackHeld) {
-			m_Combo.ChargeTime += elapsedTime;
-			m_MoveMent.MoveSpeed = 6.0f / 2.0f;
-			m_Combo.ChargeTime = (m_Combo.ChargeTime < 5.0f) ? m_Combo.ChargeTime : 5.0f;
+			HandleChargeHold(elapsedTime);
 		}
 
-		// 5) 通常移動
+		// 5) 通常移動：ホールドしていない間は移動速度に従って移動
 		MovePlayer(m_MoveMent.MoveSpeed);
 
-		// 6) 攻撃ボタン離した瞬間
-		if (in.attackReleased && isAttackAvail) {
-			// フルチャージ攻撃
+		// 6) 攻撃ボタン離した瞬間：フルチャージの判定後、攻撃を実行して状態をリセット
+		if (in.attackReleased && m_Attack.IsAttack) {
+			m_TargetObject = Vec3();  // 攻撃対象リセット
 			if (m_Combo.ChargeTime >= 1.5f) {
-				// フルチャージ攻撃の発動
-				m_TargetObject = Vec3();
-				m_Stage->AddGameObject<ChargeHitSphere>(
-					GetPosition(), Vec3(1.0f), GetThis<GameObject>(), m_Combo.ChargeTime);
-
-				// エフェクト／カメラ揺れ
-				m_Effect->PlayEffect(m_EarthQuakeHandle, L"EarthQuake", GetPosition(), 0.0f);
-				m_Effect->SetLocation(m_EarthQuakeHandle,
-					Vec3(GetPosition().x, GetPosition().y - 0.25f, GetPosition().z));
-				m_Effect->SetScale(m_EarthQuakeHandle, Vec3(m_Combo.ChargeTime));
-				GetStage()->GetView()->GetTargetCamera()->ShakeStart(0.5f, 0.3f);
-				m_PlayerStateNum |= PlayerState::ATTACKCHARGE;
-				m_PlayerStateNum &= ‾PlayerState::NORMAL;
-				SoundManager::GetInstance().PlaySE(L"SE_CHARGE_ATTACK");
+				ExecuteFullChargeAttack();  // フルチャージ攻撃発動
 			}
 			else {
-				//アニメーションを切り替え
-				m_Attack.AnimName = (m_Attack.AnimName == L"Attack2") ? L"Attack" : L"Attack2";
-				m_TargetObject = Vec3();
-
-				// パリィ可能時間の開始
-				m_Parry.IsJudgeActive = true;
-				m_Parry.JudgeTime = 30.0f;
-
-				// 敵狙いと当たり判定
-				Vec3 rot = SearchRange(90.0f);
-				AimRock(rot);
-				m_Position = GetPosition();
-				m_Stage->AddGameObject<HitSphere>(m_Position, forward, GetThis<GameObject>(), m_HitScale, m_MoveMent.SearchDistance);
-
-				// ショックウェーブエフェクト
-				float fwdRot = atan2f(forward.x, forward.z);
-				m_Effect->PlayEffect(m_Handle, L"ShockWave",
-					Vec3(m_Position.x + forward.x / 2, m_Position.y + 0.25f, m_Position.z + forward.z / 2), 0.0f);
-				m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), fwdRot);
-				m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
-
-				// ... （HitSphere 登録／エフェクトなど）
-				m_PlayerStateNum |= PlayerState::ATTACK;
-				m_PlayerStateNum &= ‾PlayerState::NORMAL;
-				SoundManager::GetInstance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
+				ExecuteNormalAttack();      // 通常攻撃発動
 			}
-			// リセット
+			// 攻撃後リセット
 			m_Combo.ChargeTime = 0.0f;
 			m_MoveMent.MoveSpeed = 6.0f;
 		}
 	}
 
+	void Player::UpdateTimers(const float& dt)
+	{
+		 // ブースト使用可能判定
+		m_Boost.IsReady = IntervalTimer(true, 0.5f, dt, m_Boost.Cooldown, false);
+		// 攻撃インターバル判定
+		m_Attack.IsAttack = IntervalTimer(true, m_Attack.MaxInterval, dt, m_Attack.Interval, false);
+		// チャージ攻撃可能判定
+		m_Attack.IsCharging = IntervalTimer(true, 0.5f, dt, m_Attack.ChargeTime, false);
+	}
 
-	Vec3 Player::SearchRange(float angle) {
-		// 前方ベクトルと自位置取得
-		Vec3 forward = m_Transform->GetForward();
-		Vec3 position = m_Transform->GetPosition();
+	void Player::TryDash(const Vec3& forward)
+	{
+		 // ダッシュ方向設定
+		m_MoveMent.BoostAngle = forward;
+		float rotY = atan2f(forward.x, forward.z);
 
-		// 敵グループから最も近いオブジェクトを探索
-		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
-		auto targetEnemyObject = ObjectSearch(enemyGroup);
-		if (!targetEnemyObject)
-			return Vec3();
+		// エフェクト：ダッシュブリンク
+		m_Effect->PlayEffect(m_BrinkHandle, L"Brick", GetPosition(), 0.0f);
+		m_Effect->SetRotation(m_BrinkHandle, Vec3(0, 1, 0), rotY);
 
-		// 敵の位置と自分からのベクトル
-		Vec3 enemyPos = targetEnemyObject->GetComponent<Transform>()->GetPosition();
-		Vec3 toEnemy = enemyPos - position;
+		// ステート変更：NORMAL→DASH
+		m_PlayerStateNum &= ‾PlayerState::NORMAL;
+		m_PlayerStateNum |= PlayerState::DASH;
 
-		// 前方検出角度チェック（定数化）
-		float kDetectionAngleDeg = angle;
-		if (!IsWithinDetectionRange(forward, toEnemy, kDetectionAngleDeg))
-			return Vec3();
+		// サウンド：ダッシュ開始SE
+		SoundManager::GetInstance().PlaySE(L"SE_ACCEPT");
+	}
 
-		// ターゲット登録
-		m_TargetBoard->SetTarget(targetEnemyObject);
+	void Player::HandleChargeHold(float dt)
+	{
+		 // チャージ時間を蓄積
+		m_Combo.ChargeTime += dt;
+		// 移動速度を半減
+		m_MoveMent.MoveSpeed = 6.0f / 2.0f;
+		// 最大チャージ時間(5秒)を制限
+		m_Combo.ChargeTime = min(m_Combo.ChargeTime, 5.0f);
+	}
 
-		// 近距離判定（平方距離で比較）
-		float kCloseDist = 10.0f;
-		float sqrDistToEnemy = toEnemy.x * toEnemy.x + toEnemy.y * toEnemy.y + toEnemy.z * toEnemy.z;
-		if (sqrDistToEnemy > kCloseDist * kCloseDist)
-			return Vec3();
+	void Player::ExecuteFullChargeAttack()
+	{
+		 // 攻撃判定用オブジェクト生成
+		m_Stage->AddGameObject<ChargeHitSphere>(
+			GetPosition(), Vec3(1), GetThis<GameObject>(), m_Combo.ChargeTime);
 
-		return RotateTowardsTarget(position, enemyPos);
+		// 地震エフェクト再生
+		m_Effect->PlayEffect(m_EarthQuakeHandle, L"EarthQuake", GetPosition(), 0.0f);
+		m_Effect->SetLocation(
+			m_EarthQuakeHandle,
+			Vec3(GetPosition().x, GetPosition().y - 0.25f, GetPosition().z));
+		m_Effect->SetScale(m_EarthQuakeHandle, Vec3(m_Combo.ChargeTime));
+
+		// カメラシェイク
+		GetStage()->GetView()->GetTargetCamera()->ShakeStart(0.5f, 0.3f);
+
+		// ステート変更：NORMAL→ATTACKCHARGE
+		m_PlayerStateNum |= PlayerState::ATTACKCHARGE;
+		m_PlayerStateNum &= ‾PlayerState::NORMAL;
+
+		// サウンド：フルチャージ攻撃SE
+		SoundManager::GetInstance().PlaySE(L"SE_CHARGE_ATTACK");
+	}
+
+	void Player::ExecuteNormalAttack()
+	{
+		 // アニメーション名をトグル
+		m_Attack.AnimName = (m_Attack.AnimName == L"Attack2") ? L"Attack" : L"Attack2";
+
+		// パリィ判定を有効化
+		m_Parry.IsJudgeActive = true;
+		m_Parry.JudgeTime = 30.0f;
+
+		// 攻撃方向取得
+		Vec3 forward = GetForward();
+		Vec3 targetDir = SearchRange(90.0f);
+		AimRock(targetDir);
+
+		// 攻撃判定用オブジェクト生成
+		m_Stage->AddGameObject<HitSphere>(
+			GetPosition(), forward, GetThis<GameObject>(),
+			m_HitScale, m_MoveMent.SearchDistance);
+
+		// ショックウェーブエフェクト再生
+		float fwdRot = atan2f(forward.x, forward.z);
+		m_Effect->PlayEffect(
+			m_Handle, L"ShockWave",
+			Vec3(
+				m_Position.x + forward.x * 0.5f,
+				m_Position.y + 0.25f,
+				m_Position.z + forward.z * 0.5f
+			),
+			0.0f);
+		m_Effect->SetRotation(m_Handle, Vec3(0, 1, 0), fwdRot);
+		m_Effect->SetScale(m_Handle, Vec3(m_HitScale * 0.5f));
+
+		// ステート変更：NORMAL→ATTACK
+		m_PlayerStateNum |= PlayerState::ATTACK;
+		m_PlayerStateNum &= ‾PlayerState::NORMAL;
+
+		// サウンド：攻撃ボイスSE
+		SoundManager::GetInstance().PlaySE(L"SE_ATTACK_VOICE", 1.0f);
 	}
 
 	void Player::SetCharge(const float& charge){
 		m_Zone.EnergyCharge += charge;
-	}
-
-	Vec3 Player::RotateTowardsTarget(const Vec3& object, const Vec3& target) {
-		// 目標方向ベクトルを計算
-		Vec3 direction = {
-			target.x - object.x,
-			target.y - object.y,
-			target.z - object.z
-		};
-
-		// ベクトルを正規化
-		Vec3 normalizedDirection = direction.normalize();
-
-		return normalizedDirection; // 向きベクトルを返却
-	}
-
-	void Player::AimRock(Vec3 rot){
-		if (rot != Vec3()){
-			Vec3 dir = rot;
-			dir.y = 0.0f;
-
-			float len = sqrtf(dir.x * dir.x + dir.z * dir.z);
-			if (len < 1e-5f)
-				return;     // XZベクトルが小さすぎたら回転せず抜ける
-
-			// XZ平面上で正規化
-			dir.x /= len;
-			dir.z /= len;
-
-			float yaw = atan2f(dir.x, dir.z);
-			SetRotation(Vec3(0.0f, yaw, 0.0f));
-		}
-	}
-
-	void Player::DrawArrow() {
-		auto& trans = m_EnemyArrow->GetComponent<Transform>();
-
-		auto enemyGroup = GetStage()->GetSharedObjectGroup(L"EnemyGroup");
-		auto targetEnemyObject = ObjectSearch(enemyGroup);
-		if (!targetEnemyObject) {
-			m_EnemyArrow->SetDrawActive(false);
-			return;
-		}
-		Vec3 pos = GetPosition();
-		Vec3 enemyPos = targetEnemyObject->GetComponent<Transform>()->GetPosition();
-
-		auto camera = OnGetDrawCamera();
-		m_EnemyArrow->SetDrawActive(true);
-		if (camera->CalcViewInPosition(enemyPos)) {
-			m_EnemyArrow->SetDrawActive(false);
-			return;
-		}
-		Vec3 toEnemy = enemyPos - pos;
-		toEnemy = toEnemy.normalize();
-
-		pos += toEnemy * 2.0f;
-		pos.y = 0.51f;
-		trans->SetPosition(pos);
-
-		float angle = atan2f(toEnemy.x, toEnemy.z);
-
-		Quat qx = Quat(sin(XMConvertToRadians(90) / 2.0f), 0.0f, 0.0f, cos(XMConvertToRadians(90) / 2.0f));
-		Quat qy = Quat(0.0f, sin(angle / 2.0f), 0.0f, cos(angle / 2.0f));
-
-		trans->SetQuaternion(qx * qy);
-	}
-
-	shared_ptr<GameObject> Player::ObjectSearch(const shared_ptr<GameObjectGroup>& group) {
-		// グループ内の全オブジェクトを取得
-		const auto& list = group->GetGroupVectors();
-		Vec3 position = m_Transform->GetPosition();
-
-		shared_ptr<GameObject> nearest = nullptr;
-		float bestSqrDist = std::numeric_limits<float>::infinity();
-
-		// 各オブジェクトについて有効性と距離をチェック
-		for (auto& weakObj : list) {
-			if (auto obj = weakObj.lock()) {
-				if (!obj->GetDrawActive()) continue;    // 描画非アクティブは無視
-
-				// Character 型の場合、生存判定も行う
-				auto chara = dynamic_pointer_cast<Character>(obj);
-				if (chara && !chara->IsArive()) continue;
-
-				// プレイヤーとの距離の二乗を計算
-				Vec3 objPos = obj->GetComponent<Transform>()->GetPosition();
-				Vec3 diff = objPos - position;
-				float sqrDist = diff.x * diff.x + diff.y * diff.y + diff.z * diff.z;
-
-				// 最も近いオブジェクトを更新
-				if (sqrDist < bestSqrDist) {
-					bestSqrDist = sqrDist;
-					nearest = obj;
-				}
-			}
-		}
-
-		return nearest; // 発見した最も近いオブジェクトを返却
 	}
 
 	void Player::UpdateAnim() {
@@ -454,14 +376,16 @@ namespace basecross {
 
 	void Player::AddAnimation(){
 		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
+		float animSpeed = 1.5f;
+		float animFastSpeed = 2.5f;
 		auto anim_fps = 60.0f;
 		ptrDraw->AddAnimation(L"Idle", 11, 60, true, anim_fps);
-		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * 2.5f);
-		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * 1.5f);
-		ptrDraw->AddAnimation(L"Counter", 620, 80, false, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Attack", 81, 60, false, anim_fps * animFastSpeed);
+		ptrDraw->AddAnimation(L"Attack2", 421, 60, false, anim_fps * animFastSpeed);
+		ptrDraw->AddAnimation(L"QuakeAttack", 720, 80, false, anim_fps * animSpeed);
+		ptrDraw->AddAnimation(L"Counter", 620, 80, false, anim_fps * animSpeed);
 		ptrDraw->AddAnimation(L"Zone", 151, 60, false, anim_fps * m_Zone.ZoneAnimProgress);
-		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * 1.5f);
+		ptrDraw->AddAnimation(L"Dash", 212, 60, true, anim_fps * animSpeed);
 		ptrDraw->AddAnimation(L"Brink", 270, 1, true, anim_fps);
 		ptrDraw->AddAnimation(L"Nock", 281, 60, false, anim_fps);
 		ptrDraw->AddAnimation(L"Died", 351, 60, false, anim_fps);
@@ -469,38 +393,6 @@ namespace basecross {
 	}
 
 
-	void Player::Blinking(){
-		auto ptrDraw = GetComponent<PNTBoneModelDraw>();
-		auto state = ptrDraw->GetBlendState();
-		float elapsedTime = GetElapsed();
-		if (IntervalTimer(true, 0.1f, elapsedTime, m_Damage.BlinkingInterval, true)){
-			if (state == BlendState::AlphaToCoverage){
-				ptrDraw->SetBlendState(BlendState::Additive);
-			}
-			else{
-				ptrDraw->SetBlendState(BlendState::AlphaToCoverage);
-			}
-		}
-	}
-
-	bool Player::IntervalTimer(const bool& TimerStart,const float& MaxTimer,const float& frame,float& Timer,const bool& Return) {
-		if (TimerStart) {
-			// タイマー未起動 or カウントダウン完了
-			if (Timer <= 0.0f) {
-				// 完了時にタイマーをリセットする場合
-				if (Return) {
-					Timer = MaxTimer;
-				}
-				return true;
-			}
-			else {
-				// まだ時間が残っている場合は減算
-				Timer -= frame;
-			}
-		}
-		// TimerStart が false の場合やカウント中は false
-		return false;
-	}
 
 	// 各種状態やエフェクトの時間管理を一括で行う
 	void Player::IntervalManagement()
@@ -612,8 +504,9 @@ namespace basecross {
 		ptrDraw->SetDepthStencilState(DepthStencilState::Default);
 		ptrDraw->SetRasterizerState(RasterizerState::DoubleDraw);
 		ptrDraw->SetOwnShadowActive(false);
-		//ptrDraw->SetFogEnabled(true);
+
 		ptrDraw->SetModelDiffusePriority(true);
+
 		AddAnimation();
 		//重力をつける
 		auto ptrGra = AddComponent<Gravity>();
@@ -657,7 +550,7 @@ namespace basecross {
 			IntervalManagement();
 
 			// 入力や状態に応じたアニメーション再生
-			PlayAnimation();
+			DispatchStateTransition();
 		}
 		else {
 			// ターゲットボードを非表示
@@ -684,18 +577,17 @@ namespace basecross {
 			// チャージが減少したらフラグをリセット
 			m_IsCharged = false;
 		}
-
-		// エフェクトの再生スピードをゲーム速度に合わせて調整
-		float gameSpeed = GameManager::GetInstance().GetGameSpeed();
-		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * gameSpeed);
-		m_Effect->SetEffectSpeed(m_Handle, 1.0f * gameSpeed);
-		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * gameSpeed);
 	}
 
 	void Player::OnDraw()
 	{
 		// 基底クラスの描画処理を呼び出す
 		Character::OnDraw();
+		// エフェクトの再生スピードをゲーム速度に合わせて調整
+		float gameSpeed = GameManager::GetInstance().GetGameSpeed();
+		m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f * gameSpeed);
+		m_Effect->SetEffectSpeed(m_Handle, 1.0f * gameSpeed);
+		m_Effect->SetEffectSpeed(m_BrinkHandle, 1.0f * gameSpeed);
 	}
 
 	void Player::Dead()
@@ -706,175 +598,19 @@ namespace basecross {
 
 	bool Player::Damage(bool parry, float damage, const shared_ptr<GameObject> source)
 	{
-		// 無敵時間中はダメージ無効
+		// 1) 無敵時間中は即終了
 		if (m_Damage.IsInvincible)
 			return false;
 
-		// HP が最大値の 1/3 以上だったかどうか (ピンチ演出の判定用)
-		bool wasHighHP = (m_HP >= m_MaxHP / 3.0f);
+		// 2) HPピンチ演出
+		HandlePinchEvent();
 
-		// ピンチラインを割ったら一度だけ演出を発火
-		if (wasHighHP && m_HP < m_MaxHP / 3.0f) {
-			PostEvent(0.0f, GetThis<ObjectInterface>(), m_Stage, L"PinchPlayer");
-		}
+		// 3) パリィ可能ならパリィ用ロジックへ
+		if (m_Parry.IsJudgeActive)
+			return TryParry(damage, source);
 
-		// パリィ判定中の挙動
-		if (m_Parry.IsJudgeActive) {
-			// Parry 関数でダメージ軽減を計算
-			float parryDamage = Parry(damage, m_Parry.JudgeTime);
-
-			// 攻撃元オブジェクトとの相対位置を計算
-			Vec3 rot = source->GetComponent<Transform>()->GetPosition() - GetPosition();
-
-			// 完璧パリィ判定 (ダメージ 0 ＆ 有効範囲内)
-			if (parryDamage == 0.0f && rot != Vec3()) {
-				if (source->FindTag(L"Attack")) {
-					auto attack = dynamic_pointer_cast<Attack>(source);
-					if (attack) {
-						// ボス本体を取得し方向を再計算
-						auto boss = attack->GetDete();
-						rot = boss->GetPosition() - GetPosition();
-
-						// 攻撃を跳ね返す
-						attack->ReflectParry(GetPosition());
-
-						// カメラをシェイク
-						auto cam = GetStage()->GetView()->GetTargetCamera();
-						if (auto followCam = dynamic_pointer_cast<FollowCamera>(cam)) {
-							followCam->SetShaking(true);
-						}
-
-						// 重力ベロシティをゼロリセット
-						if (auto gravity = GetComponent<Gravity>(false)) {
-							gravity->SetGravityVerocityZero();
-						}
-					}
-				}
-
-				// カウンター方向を保存して岩を狙う
-				m_TargetObject = Vec3(rot.x, 0, rot.z);
-				AimRock(rot);
-
-				// コンボ回数を増加・猶予タイマーを再起動
-				m_Combo.IsActive = true;
-				m_Combo.Timer = m_Combo.WindowAfterPerfect;
-
-				// パリィ判定を継続可能
-				return true;
-			}
-
-			// 完璧パリィ以外はパリィ判定終了
-			m_Parry.IsJudgeActive = false;
-
-			// ダメージエフェクト未再生なら実ダメージ処理
-			if (!m_Parry.IsInDamageInterval) {
-				if (damage != parryDamage) {
-					// 軽減後のダメージを適用
-					Character::Damage(parryDamage, false);
-					ScoreManager::Instance()->AddDamage(parryDamage);
-				}
-				else {
-					// 通常被ダメ演出
-					SetAnim(L"Nock");
-					m_Combo.IsActive = true;
-					SoundManager::GetInstance().PlaySE(L"SE_HIT_PLAYER");
-					Character::Damage(damage, true);
-					ScoreManager::Instance()->AddDamage(damage);
-				}
-			}
-			return false;
-		}
-		// パリィ判定外の通常被ダメ
-		else {
-			if (!m_Parry.IsInDamageInterval) {
-				SetAnim(L"Nock");
-				m_Combo.IsActive = true;
-				SoundManager::GetInstance().PlaySE(L"SE_HIT_PLAYER");
-				Character::Damage(damage, true);
-				ScoreManager::Instance()->AddDamage(damage);
-				return false;
-			}
-		}
-
+		// 4) 通常被ダメージ処理
+		HandleNormalHit(damage);
 		return false;
-	}
-
-
-	float Player::Parry(float damage, const float& ParrySecond) {
-		// 各判定の閾値とエネルギーボーナス値
-		float PerfectThreshold = 20.0f;
-		float GreatThreshold = 15.0f;
-		float GoodThreshold = 5.0f;
-		float EnergyPerfectBonus = 0.5f;
-		float EnergyGreatBonus = 0.25f;
-		float EnergyGoodBonus = 0.1f;
-
-		// Good 判定以下なら通常ダメージを適用
-		if (ParrySecond <= GoodThreshold) {
-			return damage;
-		}
-
-		float reducedDamage = damage;
-		float energyBonus = 0.0f;
-		bool needEffect = false;
-		bool isPerfect = false;
-
-		// パリィのタイミングによって軽減率とボーナスを設定
-		if (ParrySecond > PerfectThreshold) {
-			reducedDamage = 0.0f;
-			energyBonus = EnergyPerfectBonus;
-			needEffect = true;
-			isPerfect = true;
-		}
-		else if (ParrySecond > GreatThreshold) {
-			reducedDamage = damage * 0.25f;
-			energyBonus = EnergyGreatBonus;
-			needEffect = true;
-		}
-		else {
-			reducedDamage = damage * 0.5f;
-			energyBonus = EnergyGoodBonus;
-		}
-
-		// エネルギーチャージにボーナスを加算
-		m_Zone.EnergyCharge += energyBonus;
-		m_Parry.IsInDamageInterval = needEffect;
-
-		// 見た目用エフェクトを再生
-		if (needEffect) {
-			m_Effect->PlayEffect(m_ParryHandle, L"Parry", GetPosition() + GetForward(), 0.0f);
-			m_Effect->SetScale(m_ParryHandle, Vec3(0.5f));
-			m_Effect->SetEffectSpeed(m_ParryHandle, 2.0f);
-		}
-
-		// パーフェクトパリィ時の追加処理
-		if (isPerfect) {
-			ScoreManager::Instance()->AddParryCount();              // カウンタ数を加算
-			SoundManager::GetInstance().PlaySE(L"SE_GUARD");        // ガード音を再生
-			PostEvent(0.0f, nullptr, GetStage(), L"HitStop");      // ヒットストップを発生
-			m_Parry.IsInDamageInterval = true;
-			m_IsParryCounter = false;
-			m_Parry.HasCountered = false;
-		}
-
-		return reducedDamage; // 軽減後のダメージ値を返却
-	}
-
-
-	void Player::Debug() {
-		auto scene = App::GetApp()->GetScene<Scene>();
-		wstringstream wss(L"");
-		wss << L"¥nZoneCharge : "
-			<< m_Zone.EnergyCharge
-			<< L"¥nHP"
-			<< m_HP
-			<< L"¥nx"
-			<< GetPosition().x
-			<< L"¥ny"
-			<< GetPosition().y
-			<< L"¥nz"
-			<< GetPosition().z
-			<< endl;
-		scene->SetDebugString(wss.str());
 	}
 }
