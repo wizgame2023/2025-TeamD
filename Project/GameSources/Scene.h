@@ -35,7 +35,7 @@ namespace basecross {
 			m_StageFile = {
 				{{L"testStage_Y_Easy.csv",false},{L"testStage_Y_normal.csv",false},{L"testStage_Y_Hard.csv",false}},
 				{{L"TestMap_Easy.csv",false},{L"TestMap_Normal.csv",false},{L"TestMap_Hard.csv",false}},
-				{{L"Debugstage.csv"/*L"Map_S_Easy.csv"*/,false},{L"Map_S_Normal.csv",false},{L"Map_S_Hard.csv",false}}
+				{{L"Map_S_Easy.csv",false},{L"Map_S_Normal.csv",false},{L"Map_S_Hard.csv",false}}
 			};
 
 			m_Borders = {
