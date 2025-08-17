@@ -15,9 +15,9 @@ namespace basecross{
 		Hard = 3
 	};
 
-	class GameManager : public Manager<GameManager> {
+	class GameManager : public SingletonBase<GameManager> {
 	protected:
-		friend class Manager<GameManager>;
+		friend class SingletonBase<GameManager>;
 		GameManager();
 
 	public:

@@ -8,11 +8,11 @@
 
 namespace basecross{
 	template<class T>
-	class Manager {
+	class SingletonBase {
 	protected:
-		Manager() = default;
+		SingletonBase() = default;
 	public:
-		‾Manager(){}
+		‾SingletonBase(){}
 
 		static T& GetInstance() {
 			static T instance;
@@ -20,8 +20,8 @@ namespace basecross{
 		}
 
 	private:
-		Manager(const Manager&) = delete;
-		Manager& operator=(const Manager&) = delete;
+		SingletonBase(const SingletonBase&) = delete;
+		SingletonBase& operator=(const SingletonBase&) = delete;
 
 	};
 

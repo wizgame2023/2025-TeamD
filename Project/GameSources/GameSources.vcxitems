@@ -26,6 +26,7 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h" />
+    <ClInclude Include="$(MSBuildThisFileDirectory)HP.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h" />
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h" />
@@ -83,6 +84,7 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp" />
+    <ClCompile Include="$(MSBuildThisFileDirectory)HP.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp" />
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp" />

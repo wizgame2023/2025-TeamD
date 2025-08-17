@@ -8,9 +8,9 @@
 #include "Managers.h"
 
 namespace basecross{
-	class SoundManager : public Manager<SoundManager> {
+	class SoundManager : public SingletonBase<SoundManager> {
 	protected:
-		friend class Manager<SoundManager>;
+		friend class SingletonBase<SoundManager>;
 		SoundManager() : m_SEVolume(1.0f), m_BGMVolume(1.0f) {}
 	public:
 		void RegisterSounds();

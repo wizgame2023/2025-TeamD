@@ -113,21 +113,5 @@ namespace basecross {
 			return m_MotionRate;
 		}
 	};
-
-	class BossEnemyLeg : public Enemy
-	{
-		shared_ptr<Enemy> m_Enemy;
-		float m_Direction;
-	public:
-		BossEnemyLeg(const shared_ptr<Stage>& stage);
-		BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position,  const shared_ptr<Enemy>& enemy ,const float& direction);
-		‾BossEnemyLeg();
-		virtual void OnCreate();
-		virtual void OnUpdate();
-		virtual void Dead();
-
-	};
-
-
 }
 //end basecross
