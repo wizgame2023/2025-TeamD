@@ -7,12 +7,6 @@
     <Filter Include="Camera">
       <UniqueIdentifier>{2ddb7f99-1f99-4a69-b63a-c036d67d0853}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Attack">
-      <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ballet">
-      <UniqueIdentifier>{8ba9bc39-057d-4b3c-8d36-ff3d94759d2c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="File">
       <UniqueIdentifier>{38fb791a-c11d-45d5-bda3-20fe09058ecd}</UniqueIdentifier>
     </Filter>
@@ -210,9 +204,6 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
-<<<<<<< HEAD
-    <ClInclude Include="$(MSBuildThisFileDirectory)HP.h" />
-=======
     <ClInclude Include="$(MSBuildThisFileDirectory)InputAndSettings.h">
       <Filter>Character\Player</Filter>
     </ClInclude>
@@ -258,7 +249,9 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h">
       <Filter>UI\Sprite</Filter>
     </ClInclude>
->>>>>>> origin/Work_Satou
+    <ClInclude Include="$(MSBuildThisFileDirectory)HP.h">
+      <Filter>UI\HP</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp">
@@ -387,9 +380,6 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
-<<<<<<< HEAD
-    <ClCompile Include="$(MSBuildThisFileDirectory)HP.cpp" />
-=======
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerTool.cpp">
       <Filter>Character\Player</Filter>
     </ClCompile>
@@ -429,7 +419,9 @@
     <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp">
       <Filter>UI\Sprite</Filter>
     </ClCompile>
->>>>>>> origin/Work_Satou
+    <ClCompile Include="$(MSBuildThisFileDirectory)HP.cpp">
+      <Filter>UI\HP</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)PSDissolve.hlsl">
