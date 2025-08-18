@@ -162,11 +162,11 @@ namespace basecross {
      * 衝突時に相対位置に応じた攻撃を行う。
      */
     class CounterHitSphere : public BaseHitObject {
-        float m_AttachDuration; /**< プレイヤーに追従する総時間 */
-        float m_Elapsed = 0.0f; /**< 追従経過時間 */
-        Vec3  m_LocalOffset;   /**< プレイヤー基準の相対位置 */
-        float m_ChargeRate;    /**< 時間経過時の拡大速度 */
-        Effekseer::Handle m_CounterHandle;   /// パリィカウンターエフェクトハンドル
+        float m_AttachDuration;              /**< プレイヤーに追従する総時間 */
+        float m_Elapsed = 0.0f;              /**< 追従経過時間 */
+        Vec3  m_LocalOffset;                 /**< プレイヤー基準の相対位置 */
+        float m_ChargeRate;                  /**< 時間経過時の拡大速度 */
+        Effekseer::Handle m_CounterHandle;   /**< パリィカウンターエフェクトハンドル*/
 
     protected:
         /**

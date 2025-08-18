@@ -266,6 +266,7 @@ namespace basecross {
 			linePos.z = (cosf(face) * pos.z) + (sinf(face) * pos.x);
 			return enemyPos + linePos;
 		}
+		return Vec3();
 	}
 
 	void LineObject::VerticesUpdate() {

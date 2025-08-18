@@ -1,53 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Headers">
-      <UniqueIdentifier>{4b0a624a-610d-4bc6-b311-2b02a781cdf9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sources">
-      <UniqueIdentifier>{96692d2a-8790-41a9-bfac-6c5662d4ad61}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="WorkStage">
-      <UniqueIdentifier>{01191d12-9b0a-4587-9c82-a690f72538cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="TitleScene">
-      <UniqueIdentifier>{dd7a3a79-da0e-4500-ad8d-3e4eaf0051aa}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sprite">
-      <UniqueIdentifier>{72e70f84-eb12-4e21-a45e-24815ba3a84c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Enemy">
-      <UniqueIdentifier>{f7cf3f0c-40ff-49cd-a58d-cdbc266332a3}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Ballet">
-      <UniqueIdentifier>{8ba9bc39-057d-4b3c-8d36-ff3d94759d2c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Root">
-      <UniqueIdentifier>{7502858e-1949-4cf9-9ad3-37a1fb1588d8}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Builder">
       <UniqueIdentifier>{39095291-c0e8-456b-97ed-36de95d30957}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Menu">
-      <UniqueIdentifier>{7688e1c4-c642-4402-a03b-656e0c2eb412}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="HP">
-      <UniqueIdentifier>{5fb46bae-8121-4b0c-9a76-c6fbe2d5b453}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Line">
-      <UniqueIdentifier>{1595b870-0b71-4a88-bb7b-f053f86bd02e}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Attack">
-      <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Sharp">
-      <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Select">
-      <UniqueIdentifier>{46f92cd0-f4a0-44a7-b1d8-1149cbad12bf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Player">
-      <UniqueIdentifier>{9b0bf66e-aeeb-4212-9b29-041b705c43d0}</UniqueIdentifier>
     </Filter>
     <Filter Include="Camera">
       <UniqueIdentifier>{2ddb7f99-1f99-4a69-b63a-c036d67d0853}</UniqueIdentifier>
@@ -67,133 +22,157 @@
     <Filter Include="Manager">
       <UniqueIdentifier>{17070322-e32c-47ea-a580-768fa1d55ae8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{4034de16-cee5-444f-bc68-54053f9ff755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Menu">
+      <UniqueIdentifier>{7688e1c4-c642-4402-a03b-656e0c2eb412}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Sprite">
+      <UniqueIdentifier>{72e70f84-eb12-4e21-a45e-24815ba3a84c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage">
+      <UniqueIdentifier>{a3c68a25-d497-4e61-a942-8b2fbb3dc2b9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\Select">
+      <UniqueIdentifier>{46f92cd0-f4a0-44a7-b1d8-1149cbad12bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\TitleScene">
+      <UniqueIdentifier>{dd7a3a79-da0e-4500-ad8d-3e4eaf0051aa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Stage\WorkStage">
+      <UniqueIdentifier>{01191d12-9b0a-4587-9c82-a690f72538cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character">
+      <UniqueIdentifier>{87d1d848-5566-4900-bd02-d12b73bd6639}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy">
+      <UniqueIdentifier>{f7cf3f0c-40ff-49cd-a58d-cdbc266332a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy\Boss">
+      <UniqueIdentifier>{eae38737-8166-4c34-8976-da757f888f33}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy\Boss\Attack">
+      <UniqueIdentifier>{7bca552e-ec87-4140-9961-853d9bb00057}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy\Mob">
+      <UniqueIdentifier>{c5dcbae4-75fc-412a-9ab2-b28c9513304a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy\Mob\Root">
+      <UniqueIdentifier>{7502858e-1949-4cf9-9ad3-37a1fb1588d8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Enemy\Ballet">
+      <UniqueIdentifier>{8ba9bc39-057d-4b3c-8d36-ff3d94759d2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Character\Player">
+      <UniqueIdentifier>{9b0bf66e-aeeb-4212-9b29-041b705c43d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Line">
+      <UniqueIdentifier>{1595b870-0b71-4a88-bb7b-f053f86bd02e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Others">
+      <UniqueIdentifier>{b3fdb7dc-d509-4259-8266-e5ccea756ed2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Others\Headers">
+      <UniqueIdentifier>{4b0a624a-610d-4bc6-b311-2b02a781cdf9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Others\Sources">
+      <UniqueIdentifier>{96692d2a-8790-41a9-bfac-6c5662d4ad61}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\HP">
+      <UniqueIdentifier>{5fb46bae-8121-4b0c-9a76-c6fbe2d5b453}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI\Sharp">
+      <UniqueIdentifier>{d8869e88-a759-4c4b-9384-f78e0d013c5c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="$(MSBuildThisFileDirectory)AttakCollision.h">
-      <Filter>Attack</Filter>
+      <Filter>Character\Enemy\Boss\Attack</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Ballet.h">
-      <Filter>Ballet</Filter>
+      <Filter>Character\Enemy\Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)BoneCollision.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Enemy.h">
-      <Filter>Enemy</Filter>
+      <Filter>Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.h">
-      <Filter>Root</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h">
-      <Filter>Headers</Filter>
+      <Filter>Character\Enemy\Mob\Root</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ForecastLine.h">
-      <Filter>Line</Filter>
+      <Filter>UI\Line</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameSprite.h">
-      <Filter>Sprite</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
-      <Filter>Headers</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Kamata.h">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Munakata.h">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)GameStage_Satou.h">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)HPBar.h">
-      <Filter>HP</Filter>
+      <Filter>UI\HP</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Legion.h">
-      <Filter>Enemy</Filter>
+      <Filter>Character\Enemy</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Menu.h">
-      <Filter>Menu</Filter>
+      <Filter>UI\Menu</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MissileBullet.h">
-      <Filter>Ballet</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h">
-      <Filter>Enemy</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
-      <Filter>Headers</Filter>
+      <Filter>Character\Enemy\Ballet</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectBehavior.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ProjectShader.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)RayCast.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)RootPointer.h">
-      <Filter>Root</Filter>
+      <Filter>Character\Enemy\Mob\Root</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Scene.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SelectStage.h">
-      <Filter>Select</Filter>
+      <Filter>Stage\Select</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SharpFan.h">
-      <Filter>Sharp</Filter>
+      <Filter>UI\Sharp</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SoundManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Spawner.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Sprite.h">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)StageBuilder.h">
       <Filter>Builder</Filter>
     </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Timer.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TitleStage.h">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)TutorialStage.h">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Player.h">
-      <Filter>Player</Filter>
+      <Filter>Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)ResultCamera.h">
       <Filter>Camera</Filter>
@@ -205,19 +184,16 @@
       <Filter>Camera</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)SkyBackGround.h">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Icon.h">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)AreaOfEffect.h">
-      <Filter>Headers</Filter>
-    </ClInclude>
-    <ClInclude Include="$(MSBuildThisFileDirectory)Building.h">
-      <Filter>Headers</Filter>
+      <Filter>Others\Headers</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)PlayerAttack.h">
-      <Filter>Player</Filter>
+      <Filter>Character\Player</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)LoadFile.h">
       <Filter>File</Filter>
@@ -226,7 +202,7 @@
       <Filter>Shader</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)MovieStage.h">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClInclude>
     <ClInclude Include="$(MSBuildThisFileDirectory)Managers.h">
       <Filter>Manager</Filter>
@@ -234,143 +210,155 @@
     <ClInclude Include="$(MSBuildThisFileDirectory)GameManager.h">
       <Filter>Manager</Filter>
     </ClInclude>
+<<<<<<< HEAD
     <ClInclude Include="$(MSBuildThisFileDirectory)HP.h" />
+=======
+    <ClInclude Include="$(MSBuildThisFileDirectory)InputAndSettings.h">
+      <Filter>Character\Player</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossEnemy.h">
+      <Filter>Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)BossState.h">
+      <Filter>Character\Enemy\Boss</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Mob.h">
+      <Filter>Character\Enemy\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)MobState.h">
+      <Filter>Character\Enemy\Mob</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Character.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Citizen.h">
+      <Filter>Character</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Building.h">
+      <Filter>Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)flyobject.h">
+      <Filter>Builder</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Project.h">
+      <Filter>File</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)ScoreManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)GameStage.h">
+      <Filter>Stage</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)EffectManager.h">
+      <Filter>Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)TargetBoard.h">
+      <Filter>UI\Sprite</Filter>
+    </ClInclude>
+    <ClInclude Include="$(MSBuildThisFileDirectory)Plane.h">
+      <Filter>UI\Sprite</Filter>
+    </ClInclude>
+>>>>>>> origin/Work_Satou
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="$(MSBuildThisFileDirectory)AreaOfEffect.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)AttakCollision.cpp">
-      <Filter>Attack</Filter>
+      <Filter>Character\Enemy\Boss\Attack</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Ballet.cpp">
-      <Filter>Ballet</Filter>
+      <Filter>Character\Enemy\Ballet</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)BoneCollision.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Enemy.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)EnemyRouteSearch.cpp">
-      <Filter>Root</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Character\Enemy\Mob\Root</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ForecastLine.cpp">
-      <Filter>Line</Filter>
+      <Filter>UI\Line</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameSprite.cpp">
-      <Filter>Sprite</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
-      <Filter>Sources</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Kamata.cpp">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Munakata.cpp">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameStage_Satou.cpp">
-      <Filter>WorkStage</Filter>
+      <Filter>Stage\WorkStage</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)HPBar.cpp">
-      <Filter>HP</Filter>
+      <Filter>UI\HP</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Legion.cpp">
-      <Filter>Enemy</Filter>
+      <Filter>Character\Enemy</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Menu.cpp">
-      <Filter>Menu</Filter>
+      <Filter>UI\Menu</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MissileBullet.cpp">
-      <Filter>Ballet</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp">
-      <Filter>Enemy</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Character\Enemy\Ballet</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectBehavior.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)ProjectShader.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RayCast.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)RootPointer.cpp">
-      <Filter>Root</Filter>
+      <Filter>Character\Enemy\Mob\Root</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Scene.cpp">
-      <Filter>Sources</Filter>
-    </ClCompile>
-    <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SelectStage.cpp">
-      <Filter>Select</Filter>
+      <Filter>Stage\Select</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SharpFan.cpp">
-      <Filter>Sharp</Filter>
+      <Filter>UI\Sharp</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SoundManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Spawner.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Sprite.cpp">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)StageBuilder.cpp">
       <Filter>Builder</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Timer.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TitleStage.cpp">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TutorialStage.cpp">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)WinMain.cpp">
-      <Filter>Sources</Filter>
+      <Filter>Others\Sources</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Icon.cpp">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)SkyBackGround.cpp">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)TargetBoard.cpp">
-      <Filter>Sprite</Filter>
+      <Filter>UI\Sprite</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)FollowCamera.cpp">
       <Filter>Camera</Filter>
@@ -382,24 +370,66 @@
       <Filter>Camera</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)Player.cpp">
-      <Filter>Player</Filter>
+      <Filter>Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)LoadFile.cpp">
       <Filter>File</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)PlayerAttack.cpp">
-      <Filter>Player</Filter>
+      <Filter>Character\Player</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MyDrawComponents.cpp">
       <Filter>Shader</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)MovieStage.cpp">
-      <Filter>TitleScene</Filter>
+      <Filter>Stage\TitleScene</Filter>
     </ClCompile>
     <ClCompile Include="$(MSBuildThisFileDirectory)GameManager.cpp">
       <Filter>Manager</Filter>
     </ClCompile>
+<<<<<<< HEAD
     <ClCompile Include="$(MSBuildThisFileDirectory)HP.cpp" />
+=======
+    <ClCompile Include="$(MSBuildThisFileDirectory)PlayerTool.cpp">
+      <Filter>Character\Player</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossEnemy.cpp">
+      <Filter>Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)BossState.cpp">
+      <Filter>Character\Enemy\Boss</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Mob.cpp">
+      <Filter>Character\Enemy\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)MobState.cpp">
+      <Filter>Character\Enemy\Mob</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Character.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Citizen.cpp">
+      <Filter>Character</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Building.cpp">
+      <Filter>Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)flyobject.cpp">
+      <Filter>Builder</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)ScoreManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)GameStage.cpp">
+      <Filter>Stage</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)EffectManager.cpp">
+      <Filter>Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="$(MSBuildThisFileDirectory)Plane.cpp">
+      <Filter>UI\Sprite</Filter>
+    </ClCompile>
+>>>>>>> origin/Work_Satou
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="$(MSBuildThisFileDirectory)PSDissolve.hlsl">
