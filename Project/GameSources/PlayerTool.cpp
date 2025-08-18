@@ -289,11 +289,14 @@ namespace basecross {
 
 	void Player::HandlePerfectParry(const shared_ptr<GameObject>& source, const Vec3& dir)
 	{
+		Vec3 rot = dir;
 		// 攻撃元オブジェクトを取得
 		auto attack = dynamic_pointer_cast<Attack>(source);
 		if (attack) {
 			// 攻撃を跳ね返す
 			attack->ReflectParry(GetPosition());
+			auto boss = attack->GetDete();
+			rot = boss->GetPosition() - GetPosition();
 			// カメラをシェイク
 			auto cam = GetStage()->GetView()->GetTargetCamera();
 			if (auto followCam = dynamic_pointer_cast<FollowCamera>(cam)) {
@@ -305,8 +308,8 @@ namespace basecross {
 			}
 		}
 		// カウンター方向を保存して狙いを固定
-		m_TargetObject = Vec3(dir.x, 0, dir.z);
-		AimRock(dir);
+		m_TargetObject = Vec3(rot.x, 0, rot.z);
+		AimRock(rot);
 		// コンボ回数を増加・猶予タイマーを再起動
 		m_Combo.IsActive = true;
 		m_Combo.Timer = m_Combo.WindowAfterPerfect;

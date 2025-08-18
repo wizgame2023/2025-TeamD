@@ -101,8 +101,6 @@ namespace basecross {
 
 		AddTag(L"Boss");
 		m_Effect = m_Stage->GetCreateEffect();
-
-		AddTag(L"Boss");
 	}
 
 	void BossEnemy::OnAfterCreate() {
@@ -287,45 +285,5 @@ namespace basecross {
 	void BossEnemy::Move(const Vec3& direction,const bool& isGameSpeed) {
 		Character::Move(direction, isGameSpeed);
 		SetAnimation(L"Walk");
-	}
-	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage) : BossEnemyLeg(stage, Vec3(), shared_ptr<Enemy>(), float()) {}
-
-	BossEnemyLeg::BossEnemyLeg(const shared_ptr<Stage>& stage, const Vec3& position, const shared_ptr<Enemy>& enemy, const float& direction) :
-		Enemy(stage, position, Vec3(1.0f, 3.0f, 1.0f)),
-		m_Enemy(enemy),
-		m_Direction(direction)
-	{
-	}
-
-	BossEnemyLeg::‾BossEnemyLeg()
-	{
-	}
-
-	void BossEnemyLeg::OnCreate()
-	{
-		m_Transform = GetComponent<Transform>();
-		m_Transform->SetPosition(m_Position.x + m_Direction, m_Position.y - 1.5f, m_Position.z);
-		m_Transform->SetRotation(m_Rotation);
-		m_Transform->SetScale(Vec3(1.0f, 3.0f, 1.0f));
-
-		auto ptrColl = AddComponent<CollisionObb>();
-		ptrColl->SetDrawActive(true);//debug
-		ptrColl->SetFixed(true);
-		//描画設定
-		auto ptrDraw = AddComponent<BcPNTStaticDraw>();
-		ptrDraw->SetMeshResource(L"DEFAULT_CUBE");
-
-		//影をつける（シャドウマップを描画する）
-		auto shadowPtr = AddComponent<Shadowmap>();
-		//影の形（メッシュ）を設定
-		shadowPtr->SetMeshResource(L"DEFAULT_CUBE");
-
-	}
-	void BossEnemyLeg::OnUpdate()
-	{
-	}
-	void BossEnemyLeg::Dead()
-	{
-		Enemy::Dead();
 	}
 }

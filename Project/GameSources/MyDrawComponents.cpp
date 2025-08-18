@@ -7,12 +7,13 @@
 #include "Project.h"
 
 namespace basecross {
-
 	IMPLEMENT_DX11_CONSTANT_BUFFER(DissolvePsCB)
 	IMPLEMENT_DX11_CONSTANT_BUFFER(DissolveGsCB)
 
 	IMPLEMENT_DX11_PIXEL_SHADER(PSDissolve, App::GetApp()->GetShadersPath() + L"PSDissolve.cso")
-	IMPLEMENT_DX11_GEOMETRY_SHADER(GSDissolve,App::GetApp()->GetShadersPath() + L"GSDissolve.cso")
+	IMPLEMENT_DX11_GEOMETRY_SHADER(GSDissolve, App::GetApp()->GetShadersPath() + L"GSDissolve.cso")
+}
+namespace basecross {
 
 	//初期化
 	void DissolveDraw::OnCreate()
@@ -85,94 +86,6 @@ namespace basecross {
 		}
 		auto Dev = App::GetApp()->GetDeviceResources();
 		Dev->InitializeStates();
-		//	if (GetOwnShadowActive()) {
-		//		if (GetGameObject()->GetComponent<Shadowmap>(false)) {
-		//			Draw<VSPNTStaticShadow, PSDissolve>(PtrMeshResource->GetMashData());
-		//		}
-		//		else {
-		//			Draw<VSPNTStaticShadow, PSDissolve>(PtrMeshResource->GetMashData());
-		//		}
-		//	}
-		//	else {
-		//		Draw<VSPNTStatic, PSDissolve>(PtrMeshResource->GetMashData());
-		//	}
-		//}
-		////マルチメッシュリソースの取得
-		//auto PtrMultiMeshResource = GetMultiMeshResource();
-		//if (PtrMultiMeshResource) {
-		//	size_t count = PtrMultiMeshResource->GetMeshVecCount();
-		//	auto& vec = PtrMultiMeshResource->GetMeshVec();
-		//	for (size_t i = 0; i < count; i++) {
-		//		if (GetMultiMeshIsDraw(i)) {
-		//			if (GetOwnShadowActive()) {
-		//				if (GetGameObject()->GetComponent<Shadowmap>(false)) {
-		//					Draw<VSPNTStaticShadow, PSDissolve>(vec[i]);
-		//				}
-		//				else {
-		//					Draw<VSPNTStaticShadow, PSDissolve>(vec[i]);
-		//				}
-		//			}
-		//			else {
-		//				Draw<VSPNTStatic, PSPNTStatic>(vec[i]);
-		//			}
-		//		}
-		//	}
-		//}
-		////後始末
-		//auto Dev = App::GetApp()->GetDeviceResources();
-		//Dev->InitializeStates();
-
-		//PNTBoneModelDraw;
-
-		//if (GetGameObject()->GetAlphaActive()) {
-		//	if (!(GetBlendState() == BlendState::AlphaBlend || GetBlendState() == BlendState::Additive)) {
-		//		SetBlendState(BlendState::AlphaBlend);
-		//	}
-		//	SetRasterizerState(RasterizerState::DoubleDraw);
-		//}
-		////メッシュリソースの取得
-		//auto PtrMeshResource = GetMeshResource();
-		//if (PtrMeshResource) {
-		//	//シェーダの設定
-		//	if (IsOwnShadowActive()) {
-		//		//影付き
-		//		if (GetGameObject()->GetComponent<Shadowmap>(false)) {
-		//			//シャドウマップがあれば自己影防止用のピクセルシェーダ
-		//			DrawModel<VSPNTBoneShadow, PSPNTStaticShadow2>(PtrMeshResource->GetMashData());
-		//		}
-		//		else {
-		//			DrawModel<VSPNTBoneShadow, PSPNTStaticShadow>(PtrMeshResource->GetMashData());
-		//		}
-		//	}
-		//	else {
-		//		DrawModel<VSPNTBone, PSPNTStatic>(PtrMeshResource->GetMashData());
-		//	}
-		//}
-		////マルチメッシュリソースの取得
-		//auto PtrMultiMeshResource = GetMultiMeshResource();
-		//if (PtrMultiMeshResource) {
-		//	size_t count = PtrMultiMeshResource->GetMeshVecCount();
-		//	auto& vec = PtrMultiMeshResource->GetMeshVec();
-		//	for (size_t i = 0; i < count; i++) {
-		//		if (GetMultiMeshIsDraw(i)) {
-		//			if (GetOwnShadowActive()) {
-		//				if (GetGameObject()->GetComponent<Shadowmap>(false)) {
-		//					DrawModel<VSPNTBoneShadow, PSPNTStaticShadow2>(vec[i]);
-		//				}
-		//				else {
-		//					DrawModel<VSPNTBoneShadow, PSPNTStaticShadow>(vec[i]);
-		//				}
-		//			}
-		//			else {
-		//				DrawModel<VSPNTBone, PSPNTStatic>(vec[i]);
-		//			}
-		//		}
-		//	}
-		//}
-
-		////後始末
-		//auto Dev = App::GetApp()->GetDeviceResources();
-		//Dev->InitializeStates();
 	}
 }
 //end basecross
