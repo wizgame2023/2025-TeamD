@@ -249,7 +249,7 @@ namespace basecross {
 
 				float volume = SoundManager::GetInstance().GetBGMVolume();
 
-				auto button = menu->GetSprite<Sprite>(9);
+				auto button = menu->GetSprite<Sprite>(6);
 				Vec3 pos = button->GetPosition();
 				pos.x = menu->GetPositionX(volume);
 				button->SetPosition(pos);
@@ -273,7 +273,7 @@ namespace basecross {
 				auto menu = static_pointer_cast<SoundTestMenu>(object);
 				menu->TuningSE();
 				float volume = SoundManager::GetInstance().GetSEVolume();
-				auto button = menu->GetSprite<Sprite>(6);
+				auto button = menu->GetSprite<Sprite>(9);
 
 				Vec3 pos = button->GetPosition();
 				pos.x = menu->GetPositionX(volume);
